@@ -1,0 +1,9894 @@
+{
+ "meta": {
+  "ticker": "CTG",
+  "name": "Ngân hàng TMCP Công Thương Việt Nam",
+  "exchange": "HOSE",
+  "sector": "bank",
+  "peerGroup": "Big 4",
+  "updated": "2026-10-14",
+  "price": 29550,
+  "priceDate": "2026-10-14",
+  "mcap": 229513,
+  "pb": 1.18,
+  "pe": 5.71,
+  "bvps": 25071,
+  "eps": 5172,
+  "sharesOut": 7766.9,
+  "latestQuarter": "Q2/2026",
+  "view": null,
+  "irUrl": "https://investor.vietinbank.vn/",
+  "src": "WiData snapshot 2026-10-14 (giá, P/B, P/E); BCTC hợp nhất Q2/2026",
+  "roe": 22.18,
+  "roa": 1.45,
+  "nim": 2.75,
+  "cir": 28.54,
+  "casa": 23.17,
+  "npl": 1.2,
+  "llr": 133.95,
+  "ratioPeriod": "TTM Q2/2026"
+ },
+ "quarterly": [
+  {
+   "q": "Q1/2018",
+   "year": 2018,
+   "quarter": 1,
+   "audit": 1,
+   "ta": 1114094.9,
+   "cash": 20637.5,
+   "interbankA": 104458.0,
+   "secs": 122788.3,
+   "loansGross": 826357.3,
+   "llp": -10047.2,
+   "loansNet": 816310.0,
+   "ltInv": 3214.5,
+   "fixed": 11262.2,
+   "otherA": 34772.5,
+   "accrued": 14727.3,
+   "govSbv": 28084.7,
+   "interbankL": 111967.1,
+   "deposits": 789272.7,
+   "papers": 22501.8,
+   "otherL": 96096.8,
+   "equity": 66171.9,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 7233.6,
+   "intInc": 17610.6,
+   "intExp": -10377.1,
+   "nfi": 592.5,
+   "fx": 233.9,
+   "secInc": 319.0,
+   "otherInc": 356.6,
+   "equityInc": 99.0,
+   "toi": 8834.5,
+   "opex": -3455.4,
+   "ppop": 5379.1,
+   "prov": -2351.4,
+   "pbt": 3027.7,
+   "npat": 2440.5,
+   "npatParent": 2428.6,
+   "recoveries": 334.7,
+   "nim": 2.79,
+   "yea": 6.75,
+   "cof": 4.47,
+   "spread": 2.27,
+   "cir": 45.69,
+   "nfiShare": 5.74,
+   "otherShare": 5.03,
+   "toiYoY": 21.8,
+   "casa": 14.74,
+   "npl": 1.25,
+   "g2": 0.45,
+   "llr": 97.6,
+   "nplAmt": 10295.9,
+   "ldr": 95.2,
+   "creditYoY": 24.6,
+   "creditQoQ": 3.8,
+   "fundingYoY": 20.3,
+   "mltLoans": 42.7,
+   "accruedToTA": 1.32,
+   "irGap": null,
+   "roe": 12.6,
+   "roa": 0.75,
+   "pb": 2.1169,
+   "pe": 16.4549,
+   "bvps": 16344.6102,
+   "eps": 2102.7224,
+   "npatYoY": 12.7,
+   "llrInclAccrued": 40.2
+  },
+  {
+   "q": "Q2/2018",
+   "year": 2018,
+   "quarter": 2,
+   "audit": 2,
+   "ta": 1140117.5,
+   "cash": 12461.9,
+   "interbankA": 82099.8,
+   "secs": 140624.3,
+   "loansGross": 867566.2,
+   "llp": -12485.0,
+   "loansNet": 855081.2,
+   "ltInv": 3141.6,
+   "fixed": 11214.0,
+   "otherA": 35494.6,
+   "accrued": 14642.8,
+   "govSbv": 50176.4,
+   "interbankL": 84202.7,
+   "deposits": 852447.0,
+   "papers": 31116.9,
+   "otherL": 54131.9,
+   "equity": 68042.5,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 7206.9,
+   "intInc": 18513.4,
+   "intExp": -11306.6,
+   "nfi": 606.8,
+   "fx": 123.8,
+   "secInc": 24.8,
+   "otherInc": 428.4,
+   "equityInc": 111.3,
+   "toi": 8502.0,
+   "opex": -3663.2,
+   "ppop": 4838.7,
+   "prov": -2600.8,
+   "pbt": 2237.9,
+   "npat": 1812.3,
+   "npatParent": 1808.1,
+   "recoveries": 457.4,
+   "nim": 2.68,
+   "yea": 6.67,
+   "cof": 4.46,
+   "spread": 2.21,
+   "cir": 46.14,
+   "nfiShare": 6.38,
+   "otherShare": 5.91,
+   "toiYoY": 12.6,
+   "casa": 13.79,
+   "npl": 1.29,
+   "g2": 0.44,
+   "llr": 111.2,
+   "nplAmt": 11227.8,
+   "ldr": 93.4,
+   "creditYoY": 23.4,
+   "creditQoQ": 3.6,
+   "fundingYoY": 24.7,
+   "mltLoans": 42.2,
+   "accruedToTA": 1.28,
+   "irGap": null,
+   "roe": 12.1,
+   "roa": 0.72,
+   "pb": 1.4394,
+   "pe": 11.6288,
+   "bvps": 16847.6664,
+   "eps": 2085.3452,
+   "npatYoY": 5.9,
+   "writeOffEst": 163.0,
+   "nplFormation": 1094.9,
+   "nplFormationRate": 0.52,
+   "llrInclAccrued": 48.3
+  },
+  {
+   "q": "Q3/2018",
+   "year": 2018,
+   "quarter": 3,
+   "audit": 1,
+   "ta": 1172517.3,
+   "cash": 14936.2,
+   "interbankA": 103957.2,
+   "secs": 125952.3,
+   "loansGross": 891617.5,
+   "llp": -15818.2,
+   "loansNet": 875799.3,
+   "ltInv": 3276.6,
+   "fixed": 11065.8,
+   "otherA": 37425.6,
+   "accrued": 15303.4,
+   "govSbv": 60513.9,
+   "interbankL": 123346.9,
+   "deposits": 825749.1,
+   "papers": 41116.9,
+   "otherL": 51875.3,
+   "equity": 69915.1,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 7507.1,
+   "intInc": 19206.1,
+   "intExp": -11699.0,
+   "nfi": 786.6,
+   "fx": 182.0,
+   "secInc": 149.5,
+   "otherInc": 543.4,
+   "equityInc": 120.4,
+   "toi": 9288.9,
+   "opex": -3580.7,
+   "ppop": 5708.3,
+   "prov": -3378.1,
+   "pbt": 2330.1,
+   "npat": 1872.9,
+   "npatParent": 1871.5,
+   "recoveries": 0.0,
+   "nim": 2.7,
+   "yea": 6.76,
+   "cof": 4.51,
+   "spread": 2.24,
+   "cir": 44.54,
+   "nfiShare": 7.25,
+   "otherShare": 5.6,
+   "toiYoY": 16.8,
+   "casa": 14.11,
+   "npl": 1.36,
+   "g2": 0.36,
+   "llr": 130.4,
+   "nplAmt": 12127.3,
+   "ldr": 95.2,
+   "creditYoY": 14.0,
+   "creditQoQ": 2.4,
+   "fundingYoY": 16.7,
+   "mltLoans": 42.4,
+   "accruedToTA": 1.31,
+   "irGap": null,
+   "roe": 11.7,
+   "roa": 0.69,
+   "pb": 1.5866,
+   "pe": 13.3467,
+   "bvps": 17364.5423,
+   "eps": 2064.1756,
+   "npatYoY": 2.3,
+   "writeOffEst": 44.9,
+   "nplFormation": 944.4,
+   "nplFormationRate": 0.43,
+   "llrInclAccrued": 57.7
+  },
+  {
+   "q": "Q4/2018",
+   "year": 2018,
+   "quarter": 4,
+   "audit": 3,
+   "ta": 1164434.7,
+   "cash": 30210.6,
+   "interbankA": 130512.0,
+   "secs": 105231.9,
+   "loansGross": 864925.9,
+   "llp": -13008.4,
+   "loansNet": 851917.6,
+   "ltInv": 3317.4,
+   "fixed": 11114.5,
+   "otherA": 31849.6,
+   "accrued": 6901.2,
+   "govSbv": 62600.2,
+   "interbankL": 111399.6,
+   "deposits": 825816.1,
+   "papers": 46216.4,
+   "otherL": 50947.0,
+   "equity": 67455.5,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 570.6,
+   "intInc": 18846.0,
+   "intExp": -18275.4,
+   "nfi": 781.6,
+   "fx": 170.2,
+   "secInc": -3.5,
+   "otherInc": 550.0,
+   "equityInc": 43.5,
+   "toi": 2112.5,
+   "opex": -3556.9,
+   "ppop": -1444.4,
+   "prov": 579.1,
+   "pbt": -865.3,
+   "npat": -709.4,
+   "npatParent": -694.2,
+   "recoveries": 1176.6,
+   "nim": 2.09,
+   "yea": 6.89,
+   "cof": 5.29,
+   "spread": 1.6,
+   "cir": 49.61,
+   "nfiShare": 9.63,
+   "otherShare": 6.54,
+   "toiYoY": -11.9,
+   "casa": 15.4,
+   "npl": 1.56,
+   "g2": 0.62,
+   "llr": 96.2,
+   "nplAmt": 13517.6,
+   "ldr": 92.1,
+   "creditYoY": 6.1,
+   "creditQoQ": -3.7,
+   "fundingYoY": 12.3,
+   "mltLoans": 43.6,
+   "accruedToTA": 0.59,
+   "irGap": null,
+   "roe": 8.3,
+   "roa": 0.48,
+   "pb": 1.1546,
+   "pe": 13.2734,
+   "bvps": 16715.3553,
+   "eps": 1454.0319,
+   "npatYoY": -27.2,
+   "writeOffEst": 2230.7,
+   "nplFormation": 3621.0,
+   "nplFormationRate": 1.65,
+   "llrInclAccrued": 63.7
+  },
+  {
+   "q": "Q1/2019",
+   "year": 2019,
+   "quarter": 1,
+   "audit": 1,
+   "ta": 1146773.8,
+   "cash": 39238.9,
+   "interbankA": 110916.1,
+   "secs": 101839.3,
+   "loansGross": 861590.3,
+   "llp": -16270.8,
+   "loansNet": 845319.5,
+   "ltInv": 3572.3,
+   "fixed": 10923.5,
+   "otherA": 34646.2,
+   "accrued": 6963.4,
+   "govSbv": 58048.2,
+   "interbankL": 95782.4,
+   "deposits": 824612.6,
+   "papers": 46216.4,
+   "otherL": 51988.7,
+   "equity": 70125.5,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 7949.6,
+   "intInc": 19658.6,
+   "intExp": -11709.0,
+   "nfi": 969.3,
+   "fx": 414.5,
+   "secInc": 48.2,
+   "otherInc": 149.4,
+   "equityInc": 101.2,
+   "toi": 9632.3,
+   "opex": -3237.8,
+   "ppop": 6394.5,
+   "prov": -3241.5,
+   "pbt": 3152.9,
+   "npat": 2539.1,
+   "npatParent": 2528.2,
+   "recoveries": 221.5,
+   "nim": 2.13,
+   "yea": 7.0,
+   "cof": 5.36,
+   "spread": 1.64,
+   "cir": 47.53,
+   "nfiShare": 10.65,
+   "otherShare": 5.66,
+   "toiYoY": -12.4,
+   "casa": 14.96,
+   "npl": 1.85,
+   "g2": 0.59,
+   "llr": 101.9,
+   "nplAmt": 15962.4,
+   "ldr": 91.0,
+   "creditYoY": 1.7,
+   "creditQoQ": -0.5,
+   "fundingYoY": 7.4,
+   "mltLoans": 44.1,
+   "accruedToTA": 0.61,
+   "irGap": null,
+   "roe": 8.1,
+   "roa": 0.49,
+   "pb": 1.2875,
+   "pe": 15.1609,
+   "bvps": 17437.2368,
+   "eps": 1480.7875,
+   "npatYoY": -29.6,
+   "writeOffEst": -20.9,
+   "nplFormation": 2423.9,
+   "nplFormationRate": 1.12,
+   "creditCost": 1.0,
+   "nimAdj": 1.34,
+   "recoveriesTTM": 1855.5,
+   "pbtTTM": 6855.6,
+   "ppopTTM": 15497.1,
+   "llrInclAccrued": 71.0
+  },
+  {
+   "q": "Q2/2019",
+   "year": 2019,
+   "quarter": 2,
+   "audit": 2,
+   "ta": 1183795.2,
+   "cash": 39376.2,
+   "interbankA": 120643.4,
+   "secs": 101486.1,
+   "loansGross": 885535.1,
+   "llp": -13107.8,
+   "loansNet": 872427.3,
+   "ltInv": 3280.4,
+   "fixed": 10513.3,
+   "otherA": 35793.5,
+   "accrued": 6935.0,
+   "govSbv": 71482.4,
+   "interbankL": 96386.2,
+   "deposits": 846860.0,
+   "papers": 59516.4,
+   "otherL": 37053.1,
+   "equity": 72497.2,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 8227.2,
+   "intInc": 20296.6,
+   "intExp": -12069.4,
+   "nfi": 986.0,
+   "fx": 372.7,
+   "secInc": -155.1,
+   "otherInc": 195.6,
+   "equityInc": 313.7,
+   "toi": 9940.1,
+   "opex": -3619.3,
+   "ppop": 6320.9,
+   "prov": -4138.9,
+   "pbt": 2182.0,
+   "npat": 1768.3,
+   "npatParent": 1766.7,
+   "recoveries": 252.8,
+   "nim": 2.17,
+   "yea": 6.96,
+   "cof": 5.14,
+   "spread": 1.82,
+   "cir": 45.18,
+   "nfiShare": 11.38,
+   "otherShare": 4.64,
+   "toiYoY": -7.9,
+   "casa": 14.77,
+   "npl": 1.47,
+   "g2": 0.84,
+   "llr": 100.8,
+   "nplAmt": 13009.5,
+   "ldr": 90.2,
+   "creditYoY": 0.5,
+   "creditQoQ": 2.4,
+   "fundingYoY": 2.4,
+   "mltLoans": 43.5,
+   "accruedToTA": 0.59,
+   "irGap": null,
+   "roe": 7.8,
+   "roa": 0.47,
+   "pb": 1.0787,
+   "pe": 13.2684,
+   "bvps": 18076.5635,
+   "eps": 1469.6555,
+   "npatYoY": -29.5,
+   "writeOffEst": 7301.9,
+   "nplFormation": 4349.0,
+   "nplFormationRate": 1.99,
+   "creditCost": 1.16,
+   "nimAdj": 1.26,
+   "recoveriesTTM": 1650.9,
+   "pbtTTM": 6799.7,
+   "ppopTTM": 16979.3,
+   "llrInclAccrued": 65.7
+  },
+  {
+   "q": "Q3/2019",
+   "year": 2019,
+   "quarter": 3,
+   "audit": 1,
+   "ta": 1202209.8,
+   "cash": 32833.2,
+   "interbankA": 124579.4,
+   "secs": 113956.9,
+   "loansGross": 899056.2,
+   "llp": -16609.7,
+   "loansNet": 882446.5,
+   "ltInv": 3363.9,
+   "fixed": 10246.3,
+   "otherA": 34617.2,
+   "accrued": 6860.2,
+   "govSbv": 73504.3,
+   "interbankL": 93380.8,
+   "deposits": 865466.2,
+   "papers": 55116.4,
+   "otherL": 39863.4,
+   "equity": 74878.6,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 8329.9,
+   "intInc": 20873.0,
+   "intExp": -12543.2,
+   "nfi": 1091.6,
+   "fx": 401.7,
+   "secInc": 199.5,
+   "otherInc": 257.0,
+   "equityInc": 96.3,
+   "toi": 10375.9,
+   "opex": -3752.7,
+   "ppop": 6623.2,
+   "prov": -3501.8,
+   "pbt": 3121.4,
+   "npat": 2517.1,
+   "npatParent": 2511.1,
+   "recoveries": -1147.5,
+   "nim": 2.18,
+   "yea": 6.93,
+   "cof": 5.11,
+   "spread": 1.83,
+   "cir": 44.19,
+   "nfiShare": 11.94,
+   "otherShare": 3.59,
+   "toiYoY": -9.2,
+   "casa": 15.16,
+   "npl": 1.57,
+   "g2": 0.87,
+   "llr": 118.1,
+   "nplAmt": 14065.9,
+   "ldr": 91.6,
+   "creditYoY": -0.5,
+   "creditQoQ": 1.3,
+   "fundingYoY": 6.2,
+   "mltLoans": 43.0,
+   "accruedToTA": 0.57,
+   "irGap": null,
+   "roe": 8.4,
+   "roa": 0.52,
+   "pb": 1.1262,
+   "pe": 12.885,
+   "bvps": 18779.5153,
+   "eps": 1641.4485,
+   "npatYoY": -20.5,
+   "writeOffEst": -0.1,
+   "nplFormation": 1056.3,
+   "nplFormationRate": 0.47,
+   "creditCost": 1.17,
+   "nimAdj": 1.28,
+   "recoveriesTTM": 503.4,
+   "pbtTTM": 7591.0,
+   "ppopTTM": 17894.2,
+   "llrInclAccrued": 79.4
+  },
+  {
+   "q": "Q4/2019",
+   "year": 2019,
+   "quarter": 4,
+   "audit": 3,
+   "ta": 1240711.5,
+   "cash": 33156.4,
+   "interbankA": 129388.5,
+   "secs": 108440.7,
+   "loansGross": 935270.9,
+   "llp": -12945.7,
+   "loansNet": 922325.3,
+   "ltInv": 3282.7,
+   "fixed": 10997.0,
+   "otherA": 32651.2,
+   "accrued": 6675.9,
+   "govSbv": 70602.9,
+   "interbankL": 109483.1,
+   "deposits": 892785.2,
+   "papers": 57066.4,
+   "otherL": 33419.1,
+   "equity": 77354.8,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 8692.3,
+   "intInc": 21914.6,
+   "intExp": -13222.2,
+   "nfi": 1008.4,
+   "fx": 375.4,
+   "secInc": -517.8,
+   "otherInc": 895.4,
+   "equityInc": 117.3,
+   "toi": 10571.1,
+   "opex": -5125.1,
+   "ppop": 5446.0,
+   "prov": -2121.3,
+   "pbt": 3324.7,
+   "npat": 2652.5,
+   "npatParent": 2655.3,
+   "recoveries": 2011.2,
+   "nim": 2.9,
+   "yea": 7.23,
+   "cof": 4.55,
+   "spread": 2.67,
+   "cir": 38.83,
+   "nfiShare": 10.01,
+   "otherShare": 3.7,
+   "toiYoY": 41.0,
+   "casa": 16.76,
+   "npl": 1.16,
+   "g2": 0.61,
+   "llr": 119.7,
+   "nplAmt": 10813.4,
+   "ldr": 91.0,
+   "creditYoY": 7.3,
+   "creditQoQ": 3.9,
+   "fundingYoY": 9.2,
+   "mltLoans": 42.6,
+   "accruedToTA": 0.54,
+   "irGap": null,
+   "roe": 13.1,
+   "roa": 0.79,
+   "pb": 1.0775,
+   "pe": 8.225,
+   "bvps": 19395.9053,
+   "eps": 2541.0258,
+   "npatYoY": 74.8,
+   "writeOffEst": 5785.3,
+   "nplFormation": 2532.8,
+   "nplFormationRate": 1.1,
+   "creditCost": 1.46,
+   "nimAdj": 1.76,
+   "recoveriesTTM": 1338.0,
+   "pbtTTM": 11781.0,
+   "ppopTTM": 24784.6,
+   "llrInclAccrued": 74.0
+  },
+  {
+   "q": "Q1/2020",
+   "year": 2020,
+   "quarter": 1,
+   "audit": 1,
+   "ta": 1222651.5,
+   "cash": 32515.3,
+   "interbankA": 126351.1,
+   "secs": 106020.2,
+   "loansGross": 923623.1,
+   "llp": -13078.7,
+   "loansNet": 910544.3,
+   "ltInv": 3444.2,
+   "fixed": 11009.2,
+   "otherA": 32767.2,
+   "accrued": 7068.9,
+   "govSbv": 64983.6,
+   "interbankL": 91560.4,
+   "deposits": 895750.5,
+   "papers": 57066.4,
+   "otherL": 34479.4,
+   "equity": 78811.2,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 8418.4,
+   "intInc": 21511.5,
+   "intExp": -13093.1,
+   "nfi": 1059.0,
+   "fx": 393.1,
+   "secInc": 427.7,
+   "otherInc": 275.4,
+   "equityInc": 111.1,
+   "toi": 10684.8,
+   "opex": -3317.6,
+   "ppop": 7367.2,
+   "prov": -4392.8,
+   "pbt": 2974.4,
+   "npat": 2404.7,
+   "npatParent": 2414.5,
+   "recoveries": 296.4,
+   "nim": 2.93,
+   "yea": 7.37,
+   "cof": 4.77,
+   "spread": 2.6,
+   "cir": 38.04,
+   "nfiShare": 9.97,
+   "otherShare": 3.91,
+   "toiYoY": 40.8,
+   "casa": 14.66,
+   "npl": 1.83,
+   "g2": 0.86,
+   "llr": 77.3,
+   "nplAmt": 16916.9,
+   "ldr": 90.6,
+   "creditYoY": 7.4,
+   "creditQoQ": -0.4,
+   "fundingYoY": 9.5,
+   "mltLoans": 42.7,
+   "accruedToTA": 0.58,
+   "irGap": null,
+   "roe": 12.6,
+   "roa": 0.79,
+   "pb": 0.8685,
+   "pe": 6.8513,
+   "bvps": 19805.2865,
+   "eps": 2510.4798,
+   "npatYoY": 69.5,
+   "writeOffEst": 4259.8,
+   "nplFormation": 10363.3,
+   "nplFormationRate": 4.46,
+   "creditCost": 1.57,
+   "nimAdj": 1.7,
+   "recoveriesTTM": 1412.9,
+   "pbtTTM": 11602.5,
+   "ppopTTM": 25757.3,
+   "llrInclAccrued": 54.5
+  },
+  {
+   "q": "Q2/2020",
+   "year": 2020,
+   "quarter": 2,
+   "audit": 2,
+   "ta": 1239556.8,
+   "cash": 21049.9,
+   "interbankA": 130011.2,
+   "secs": 110475.1,
+   "loansGross": 941487.5,
+   "llp": -12924.4,
+   "loansNet": 928563.1,
+   "ltInv": 3122.9,
+   "fixed": 10795.1,
+   "otherA": 35078.5,
+   "accrued": 7485.7,
+   "govSbv": 44380.2,
+   "interbankL": 113721.9,
+   "deposits": 913319.8,
+   "papers": 51266.4,
+   "otherL": 35849.1,
+   "equity": 81019.4,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 7797.9,
+   "intInc": 20352.6,
+   "intExp": -12554.7,
+   "nfi": 1102.5,
+   "fx": 643.6,
+   "secInc": 96.8,
+   "otherInc": 195.1,
+   "equityInc": 138.8,
+   "toi": 9974.7,
+   "opex": -3281.7,
+   "ppop": 6693.0,
+   "prov": -2207.4,
+   "pbt": 4485.6,
+   "npat": 3610.2,
+   "npatParent": 3571.7,
+   "recoveries": 294.3,
+   "nim": 2.83,
+   "yea": 7.22,
+   "cof": 4.68,
+   "spread": 2.54,
+   "cir": 37.2,
+   "nfiShare": 10.24,
+   "otherShare": 3.9,
+   "toiYoY": 34.3,
+   "casa": 16.12,
+   "npl": 1.7,
+   "g2": 0.62,
+   "llr": 80.9,
+   "nplAmt": 15968.4,
+   "ldr": 89.2,
+   "creditYoY": 6.4,
+   "creditQoQ": 1.4,
+   "fundingYoY": 6.5,
+   "mltLoans": 42.1,
+   "accruedToTA": 0.6,
+   "irGap": null,
+   "roe": 14.6,
+   "roa": 0.92,
+   "pb": 1.0558,
+   "pe": 7.1947,
+   "bvps": 20410.3752,
+   "eps": 2995.2474,
+   "npatYoY": 103.8,
+   "writeOffEst": 2361.7,
+   "nplFormation": 1413.2,
+   "nplFormationRate": 0.61,
+   "creditCost": 1.33,
+   "nimAdj": 1.79,
+   "recoveriesTTM": 1454.4,
+   "pbtTTM": 13906.1,
+   "ppopTTM": 26129.4,
+   "llrInclAccrued": 55.1
+  },
+  {
+   "q": "Q3/2020",
+   "year": 2020,
+   "quarter": 3,
+   "audit": 1,
+   "ta": 1261204.5,
+   "cash": 25343.0,
+   "interbankA": 128657.6,
+   "secs": 113973.1,
+   "loansGross": 958011.1,
+   "llp": -15122.0,
+   "loansNet": 942889.1,
+   "ltInv": 3201.3,
+   "fixed": 10597.0,
+   "otherA": 35956.1,
+   "accrued": 7435.5,
+   "govSbv": 14715.0,
+   "interbankL": 125879.4,
+   "deposits": 939175.4,
+   "papers": 63075.6,
+   "otherL": 35036.7,
+   "equity": 83322.5,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 9078.3,
+   "intInc": 20793.4,
+   "intExp": -11715.1,
+   "nfi": 1056.6,
+   "fx": 477.5,
+   "secInc": 115.5,
+   "otherInc": 682.0,
+   "equityInc": 101.2,
+   "toi": 11511.0,
+   "opex": -3748.8,
+   "ppop": 7762.2,
+   "prov": -4858.1,
+   "pbt": 2904.0,
+   "npat": 2341.6,
+   "npatParent": 2336.7,
+   "recoveries": 623.5,
+   "nim": 2.84,
+   "yea": 7.08,
+   "cof": 4.54,
+   "spread": 2.54,
+   "cir": 36.2,
+   "nfiShare": 9.89,
+   "otherShare": 4.79,
+   "toiYoY": 33.3,
+   "casa": 17.84,
+   "npl": 1.87,
+   "g2": 0.58,
+   "llr": 84.2,
+   "nplAmt": 17949.4,
+   "ldr": 86.8,
+   "creditYoY": 6.5,
+   "creditQoQ": 1.4,
+   "fundingYoY": 9.0,
+   "mltLoans": 42.1,
+   "accruedToTA": 0.59,
+   "irGap": null,
+   "roe": 13.9,
+   "roa": 0.89,
+   "pb": 1.2614,
+   "pe": 9.0049,
+   "bvps": 21047.6866,
+   "eps": 2948.3842,
+   "npatYoY": 79.6,
+   "writeOffEst": 2660.5,
+   "nplFormation": 4641.5,
+   "nplFormationRate": 1.95,
+   "creditCost": 1.46,
+   "nimAdj": 1.71,
+   "recoveriesTTM": 3225.4,
+   "pbtTTM": 13688.7,
+   "ppopTTM": 27268.4,
+   "llrInclAccrued": 59.6
+  },
+  {
+   "q": "Q4/2020",
+   "year": 2020,
+   "quarter": 4,
+   "audit": 3,
+   "ta": 1341436.5,
+   "cash": 67546.8,
+   "interbankA": 102532.8,
+   "secs": 120543.7,
+   "loansGross": 1015333.3,
+   "llp": -12561.4,
+   "loansNet": 1002771.9,
+   "ltInv": 3335.5,
+   "fixed": 10811.1,
+   "otherA": 33757.5,
+   "accrued": 7799.0,
+   "govSbv": 44597.2,
+   "interbankL": 128519.1,
+   "deposits": 990331.3,
+   "papers": 59875.6,
+   "otherL": 32702.1,
+   "equity": 85411.2,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 10286.2,
+   "intInc": 21020.2,
+   "intExp": -10734.0,
+   "nfi": 1122.8,
+   "fx": 485.6,
+   "secInc": 322.2,
+   "otherInc": 757.3,
+   "equityInc": 172.9,
+   "toi": 13147.0,
+   "opex": -5737.3,
+   "ppop": 7409.8,
+   "prov": -688.9,
+   "pbt": 6720.8,
+   "npat": 5400.6,
+   "npatParent": 5370.8,
+   "recoveries": 537.6,
+   "nim": 2.86,
+   "yea": 6.74,
+   "cof": 4.09,
+   "spread": 2.65,
+   "cir": 35.49,
+   "nfiShare": 9.58,
+   "otherShare": 4.21,
+   "toiYoY": 11.8,
+   "casa": 19.32,
+   "npl": 0.94,
+   "g2": 0.28,
+   "llr": 132.0,
+   "nplAmt": 9519.1,
+   "ldr": 89.0,
+   "creditYoY": 7.8,
+   "creditQoQ": 5.2,
+   "fundingYoY": 10.4,
+   "mltLoans": 41.5,
+   "accruedToTA": 0.58,
+   "irGap": null,
+   "roe": 16.9,
+   "roa": 1.07,
+   "pb": 1.5998,
+   "pe": 9.3944,
+   "bvps": 21596.053,
+   "eps": 3677.7062,
+   "npatYoY": 44.7,
+   "writeOffEst": 3249.5,
+   "nplFormation": -5180.8,
+   "nplFormationRate": -2.1,
+   "creditCost": 1.27,
+   "nimAdj": 1.88,
+   "recoveriesTTM": 1751.8,
+   "pbtTTM": 17084.8,
+   "ppopTTM": 29232.2,
+   "llrInclAccrued": 72.5
+  },
+  {
+   "q": "Q1/2021",
+   "year": 2021,
+   "quarter": 1,
+   "audit": 1,
+   "ta": 1343984.5,
+   "cash": 18725.1,
+   "interbankA": 139620.4,
+   "secs": 125986.9,
+   "loansGross": 1017140.0,
+   "llp": -13911.5,
+   "loansNet": 1003228.5,
+   "ltInv": 3470.4,
+   "fixed": 10594.0,
+   "otherA": 39865.0,
+   "accrued": 9122.2,
+   "govSbv": 33117.3,
+   "interbankL": 123597.9,
+   "deposits": 1003700.4,
+   "papers": 59875.6,
+   "otherL": 31856.3,
+   "equity": 91837.1,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 10642.1,
+   "intInc": 21095.5,
+   "intExp": -10453.4,
+   "nfi": 1283.2,
+   "fx": 340.4,
+   "secInc": 67.1,
+   "otherInc": 438.5,
+   "equityInc": 151.2,
+   "toi": 12922.6,
+   "opex": -3512.2,
+   "ppop": 9410.3,
+   "prov": -1350.1,
+   "pbt": 8060.2,
+   "npat": 6471.2,
+   "npatParent": 6461.5,
+   "recoveries": 368.3,
+   "nim": 3.05,
+   "yea": 6.71,
+   "cof": 3.9,
+   "spread": 2.81,
+   "cir": 34.23,
+   "nfiShare": 9.6,
+   "otherShare": 4.36,
+   "toiYoY": 14.4,
+   "casa": 18.41,
+   "npl": 0.88,
+   "g2": 0.39,
+   "llr": 155.4,
+   "nplAmt": 8953.5,
+   "ldr": 89.8,
+   "creditYoY": 8.3,
+   "creditQoQ": 0.0,
+   "fundingYoY": 11.6,
+   "mltLoans": 41.9,
+   "accruedToTA": 0.68,
+   "irGap": null,
+   "roe": 20.9,
+   "roa": 1.39,
+   "pb": 1.7205,
+   "pe": 8.4267,
+   "bvps": 23335.8448,
+   "eps": 4764.6327,
+   "npatYoY": 89.8,
+   "writeOffEst": 0.0,
+   "nplFormation": -565.6,
+   "nplFormationRate": -0.22,
+   "creditCost": 0.94,
+   "nimAdj": 2.32,
+   "recoveriesTTM": 1823.7,
+   "pbtTTM": 22170.6,
+   "ppopTTM": 31275.3,
+   "llrInclAccrued": 77.0
+  },
+  {
+   "q": "Q2/2021",
+   "year": 2021,
+   "quarter": 2,
+   "audit": 2,
+   "ta": 1473013.8,
+   "cash": 46810.5,
+   "interbankA": 152888.6,
+   "secs": 156699.6,
+   "loansGross": 1076580.8,
+   "llp": -18675.8,
+   "loansNet": 1057905.0,
+   "ltInv": 3151.5,
+   "fixed": 10424.1,
+   "otherA": 43693.4,
+   "accrued": 9694.7,
+   "govSbv": 79885.7,
+   "interbankL": 164527.0,
+   "deposits": 1039512.6,
+   "papers": 64960.6,
+   "otherL": 30880.5,
+   "equity": 93247.5,
+   "charter": 37234.0,
+   "writtenOff": 0.0,
+   "nii": 10878.6,
+   "intInc": 21320.0,
+   "intExp": -10441.5,
+   "nfi": 1356.8,
+   "fx": 516.0,
+   "secInc": 94.1,
+   "otherInc": 1134.3,
+   "equityInc": 103.6,
+   "toi": 14083.4,
+   "opex": -4187.1,
+   "ppop": 9896.3,
+   "prov": -7106.3,
+   "pbt": 2790.1,
+   "npat": 2296.5,
+   "npatParent": 2250.2,
+   "recoveries": 1168.5,
+   "nim": 3.12,
+   "yea": 6.42,
+   "cof": 3.51,
+   "spread": 2.91,
+   "cir": 33.26,
+   "nfiShare": 9.33,
+   "otherShare": 5.83,
+   "toiYoY": 24.2,
+   "casa": 18.3,
+   "npl": 1.34,
+   "g2": 0.39,
+   "llr": 129.0,
+   "nplAmt": 14476.8,
+   "ldr": 89.4,
+   "creditYoY": 12.6,
+   "creditQoQ": 5.5,
+   "fundingYoY": 14.4,
+   "mltLoans": 40.8,
+   "accruedToTA": 0.66,
+   "irGap": null,
+   "roe": 18.9,
+   "roa": 1.22,
+   "pb": 2.8683,
+   "pe": 15.4248,
+   "bvps": 18373.5065,
+   "eps": 3416.5735,
+   "npatYoY": 47.2,
+   "writeOffEst": 2342.0,
+   "nplFormation": 7865.3,
+   "nplFormationRate": 3.01,
+   "creditCost": 1.4,
+   "nimAdj": 2.05,
+   "recoveriesTTM": 2697.9,
+   "pbtTTM": 20475.1,
+   "ppopTTM": 34478.6,
+   "llrInclAccrued": 77.3
+  },
+  {
+   "q": "Q3/2021",
+   "year": 2021,
+   "quarter": 3,
+   "audit": 1,
+   "ta": 1447809.0,
+   "cash": 37642.7,
+   "interbankA": 112616.2,
+   "secs": 173729.3,
+   "loansGross": 1084605.8,
+   "llp": -21464.2,
+   "loansNet": 1063141.5,
+   "ltInv": 3221.3,
+   "fixed": 10251.2,
+   "otherA": 45894.5,
+   "accrued": 9551.8,
+   "govSbv": 17290.6,
+   "interbankL": 160353.2,
+   "deposits": 1072892.7,
+   "papers": 70193.9,
+   "otherL": 31477.4,
+   "equity": 95601.2,
+   "charter": 48057.5,
+   "writtenOff": 0.0,
+   "nii": 9871.8,
+   "intInc": 20679.4,
+   "intExp": -10807.6,
+   "nfi": 1154.4,
+   "fx": 498.7,
+   "secInc": 238.5,
+   "otherInc": 364.8,
+   "equityInc": 127.3,
+   "toi": 12255.5,
+   "opex": -3646.9,
+   "ppop": 8608.5,
+   "prov": -5547.9,
+   "pbt": 3060.6,
+   "npat": 2465.6,
+   "npatParent": 2459.8,
+   "recoveries": 409.6,
+   "nim": 3.18,
+   "yea": 6.42,
+   "cof": 3.45,
+   "spread": 2.97,
+   "cir": 32.6,
+   "nfiShare": 9.38,
+   "otherShare": 5.14,
+   "toiYoY": 22.6,
+   "casa": 19.01,
+   "npl": 1.67,
+   "g2": 0.45,
+   "llr": 118.6,
+   "nplAmt": 18097.5,
+   "ldr": 91.3,
+   "creditYoY": 11.9,
+   "creditQoQ": 0.8,
+   "fundingYoY": 14.0,
+   "mltLoans": 40.5,
+   "accruedToTA": 0.66,
+   "irGap": null,
+   "roe": 18.6,
+   "roa": 1.23,
+   "pb": 1.6106,
+   "pe": 8.8316,
+   "bvps": 18874.4031,
+   "eps": 3442.1928,
+   "npatYoY": 50.7,
+   "writeOffEst": 2759.5,
+   "nplFormation": 6380.2,
+   "nplFormationRate": 2.36,
+   "creditCost": 1.43,
+   "nimAdj": 2.06,
+   "recoveriesTTM": 2484.0,
+   "pbtTTM": 20631.7,
+   "ppopTTM": 35324.9,
+   "llrInclAccrued": 77.6
+  },
+  {
+   "q": "Q4/2021",
+   "year": 2021,
+   "quarter": 4,
+   "audit": 3,
+   "ta": 1531587.4,
+   "cash": 34714.1,
+   "interbankA": 149316.6,
+   "secs": 180019.9,
+   "loansGross": 1130667.8,
+   "llp": -25795.1,
+   "loansNet": 1104872.7,
+   "ltInv": 3290.0,
+   "fixed": 10496.2,
+   "otherA": 47423.2,
+   "accrued": 9856.6,
+   "govSbv": 33294.4,
+   "interbankL": 138833.8,
+   "deposits": 1161848.1,
+   "papers": 64496.8,
+   "otherL": 39464.7,
+   "equity": 93649.5,
+   "charter": 48057.5,
+   "writtenOff": 0.0,
+   "nii": 10395.9,
+   "intInc": 21533.3,
+   "intExp": -11137.4,
+   "nfi": 1166.1,
+   "fx": 457.4,
+   "secInc": 320.0,
+   "otherInc": 1460.5,
+   "equityInc": 95.3,
+   "toi": 13895.2,
+   "opex": -5839.6,
+   "ppop": 8055.6,
+   "prov": -4377.3,
+   "pbt": 3678.3,
+   "npat": 2982.1,
+   "npatParent": 2917.3,
+   "recoveries": 1298.5,
+   "nim": 3.01,
+   "yea": 6.09,
+   "cof": 3.27,
+   "spread": 2.82,
+   "cir": 32.33,
+   "nfiShare": 9.33,
+   "otherShare": 6.39,
+   "toiYoY": 17.3,
+   "casa": 19.87,
+   "npl": 1.26,
+   "g2": 1.05,
+   "llr": 180.4,
+   "nplAmt": 14300.5,
+   "ldr": 90.3,
+   "creditYoY": 11.1,
+   "creditQoQ": 4.5,
+   "fundingYoY": 16.9,
+   "mltLoans": 39.6,
+   "accruedToTA": 0.64,
+   "irGap": null,
+   "roe": 15.9,
+   "roa": 0.99,
+   "pb": 1.8377,
+   "pe": 11.5635,
+   "bvps": 18446.9433,
+   "eps": 2931.6461,
+   "npatYoY": 2.9,
+   "writeOffEst": 46.4,
+   "nplFormation": -3750.6,
+   "nplFormationRate": -1.35,
+   "creditCost": 1.73,
+   "nimAdj": 1.69,
+   "recoveriesTTM": 3244.9,
+   "pbtTTM": 17589.2,
+   "ppopTTM": 35970.7,
+   "llrInclAccrued": 106.8
+  },
+  {
+   "q": "Q1/2022",
+   "year": 2022,
+   "quarter": 1,
+   "audit": 1,
+   "ta": 1663730.2,
+   "cash": 29677.7,
+   "interbankA": 177089.2,
+   "secs": 186699.6,
+   "loansGross": 1229579.1,
+   "llp": -30221.7,
+   "loansNet": 1199357.4,
+   "ltInv": 3410.0,
+   "fixed": 10273.6,
+   "otherA": 53893.5,
+   "accrued": 10645.2,
+   "govSbv": 51244.7,
+   "interbankL": 194897.5,
+   "deposits": 1212678.0,
+   "papers": 67896.8,
+   "otherL": 38716.7,
+   "equity": 98296.4,
+   "charter": 48057.5,
+   "writtenOff": 0.0,
+   "nii": 10145.9,
+   "intInc": 22132.3,
+   "intExp": -11986.5,
+   "nfi": 1278.1,
+   "fx": 783.7,
+   "secInc": -176.4,
+   "otherInc": 1877.5,
+   "equityInc": 161.4,
+   "toi": 14070.2,
+   "opex": -3821.0,
+   "ppop": 10249.2,
+   "prov": -4426.7,
+   "pbt": 5822.5,
+   "npat": 4697.9,
+   "npatParent": 4663.9,
+   "recoveries": 967.6,
+   "nim": 2.84,
+   "yea": 5.89,
+   "cof": 3.23,
+   "spread": 2.66,
+   "cir": 32.22,
+   "nfiShare": 9.12,
+   "otherShare": 8.91,
+   "toiYoY": 14.2,
+   "casa": 19.9,
+   "npl": 1.25,
+   "g2": 1.1,
+   "llr": 197.2,
+   "nplAmt": 15321.5,
+   "ldr": 90.3,
+   "creditYoY": 21.1,
+   "creditQoQ": 9.1,
+   "fundingYoY": 20.4,
+   "mltLoans": 38.8,
+   "accruedToTA": 0.64,
+   "irGap": null,
+   "roe": 13.1,
+   "roa": 0.83,
+   "pb": 1.6709,
+   "pe": 12.6877,
+   "bvps": 19421.2123,
+   "eps": 2557.5888,
+   "npatYoY": -30.7,
+   "writeOffEst": 0.1,
+   "nplFormation": 1021.1,
+   "nplFormationRate": 0.35,
+   "creditCost": 1.94,
+   "nimAdj": 1.36,
+   "recoveriesTTM": 3844.2,
+   "pbtTTM": 15351.5,
+   "ppopTTM": 36809.6,
+   "llrInclAccrued": 116.4
+  },
+  {
+   "q": "Q2/2022",
+   "year": 2022,
+   "quarter": 2,
+   "audit": 2,
+   "ta": 1691061.9,
+   "cash": 34989.7,
+   "interbankA": 188515.7,
+   "secs": 179385.5,
+   "loansGross": 1238483.3,
+   "llp": -31621.2,
+   "loansNet": 1206862.1,
+   "ltInv": 3330.4,
+   "fixed": 10122.7,
+   "otherA": 60373.7,
+   "accrued": 10499.0,
+   "govSbv": 59478.8,
+   "interbankL": 217176.9,
+   "deposits": 1205567.5,
+   "papers": 65446.8,
+   "otherL": 40609.8,
+   "equity": 102782.1,
+   "charter": 48057.5,
+   "writtenOff": 100474.0,
+   "nii": 12012.9,
+   "intInc": 25059.0,
+   "intExp": -13046.0,
+   "nfi": 1560.2,
+   "fx": 813.6,
+   "secInc": 231.2,
+   "otherInc": 1111.3,
+   "equityInc": 211.4,
+   "toi": 15940.7,
+   "opex": -4272.3,
+   "ppop": 11668.3,
+   "prov": -5883.3,
+   "pbt": 5785.1,
+   "npat": 4680.9,
+   "npatParent": 4645.4,
+   "recoveries": 1164.4,
+   "nim": 2.78,
+   "yea": 5.85,
+   "cof": 3.24,
+   "spread": 2.61,
+   "cir": 31.3,
+   "nfiShare": 9.19,
+   "otherShare": 8.57,
+   "toiYoY": 8.7,
+   "casa": 19.64,
+   "npl": 1.35,
+   "g2": 1.25,
+   "llr": 189.6,
+   "nplAmt": 16676.2,
+   "ldr": 91.2,
+   "creditYoY": 15.4,
+   "creditQoQ": 0.5,
+   "fundingYoY": 15.2,
+   "mltLoans": 40.0,
+   "accruedToTA": 0.62,
+   "irGap": null,
+   "roe": 15.1,
+   "roa": 0.94,
+   "pb": 1.2847,
+   "pe": 8.5569,
+   "bvps": 20355.4429,
+   "eps": 3055.9955,
+   "npatYoY": -10.5,
+   "writeOffEst": 4483.8,
+   "nplFormation": 5838.5,
+   "nplFormationRate": 1.89,
+   "creditCost": 1.76,
+   "nimAdj": 1.45,
+   "recoveriesTTM": 3840.1,
+   "pbtTTM": 18346.5,
+   "ppopTTM": 38581.6,
+   "llrInclAccrued": 116.4
+  },
+  {
+   "q": "Q3/2022",
+   "year": 2022,
+   "quarter": 3,
+   "audit": 1,
+   "ta": 1750789.6,
+   "cash": 25020.7,
+   "interbankA": 238664.1,
+   "secs": 188210.3,
+   "loansGross": 1245238.5,
+   "llp": -39249.2,
+   "loansNet": 1205989.3,
+   "ltInv": 3484.9,
+   "fixed": 10007.6,
+   "otherA": 72946.4,
+   "accrued": 11982.8,
+   "govSbv": 98640.0,
+   "interbankL": 232869.1,
+   "deposits": 1189722.9,
+   "papers": 80824.0,
+   "otherL": 42624.8,
+   "equity": 106108.7,
+   "charter": 48057.5,
+   "writtenOff": 99974.4,
+   "nii": 12923.6,
+   "intInc": 27098.0,
+   "intExp": -14174.3,
+   "nfi": 1465.5,
+   "fx": 843.1,
+   "secInc": -240.7,
+   "otherInc": 2238.5,
+   "equityInc": 94.2,
+   "toi": 17324.2,
+   "opex": -4847.0,
+   "ppop": 12477.2,
+   "prov": -8320.6,
+   "pbt": 4156.6,
+   "npat": 3319.7,
+   "npatParent": 3338.3,
+   "recoveries": 2209.1,
+   "nim": 2.95,
+   "yea": 6.21,
+   "cof": 3.45,
+   "spread": 2.77,
+   "cir": 30.67,
+   "nfiShare": 8.93,
+   "otherShare": 10.92,
+   "toiYoY": 16.8,
+   "casa": 20.26,
+   "npl": 1.42,
+   "g2": 1.8,
+   "llr": 222.3,
+   "nplAmt": 17651.8,
+   "ldr": 89.0,
+   "creditYoY": 15.1,
+   "creditQoQ": 0.5,
+   "fundingYoY": 11.3,
+   "mltLoans": 40.3,
+   "accruedToTA": 0.68,
+   "irGap": null,
+   "roe": 15.6,
+   "roa": 0.98,
+   "pb": 1.1015,
+   "pe": 7.1631,
+   "bvps": 21061.8695,
+   "eps": 3238.8089,
+   "npatYoY": -5.9,
+   "writeOffEst": 692.6,
+   "nplFormation": 1668.2,
+   "nplFormationRate": 0.54,
+   "creditCost": 1.94,
+   "nimAdj": 1.46,
+   "recoveriesTTM": 5639.6,
+   "pbtTTM": 19442.5,
+   "ppopTTM": 42450.3,
+   "llrInclAccrued": 132.4
+  },
+  {
+   "q": "Q4/2022",
+   "year": 2022,
+   "quarter": 4,
+   "audit": 3,
+   "ta": 1808429.8,
+   "cash": 40794.1,
+   "interbankA": 242432.0,
+   "secs": 181719.0,
+   "loansGross": 1274821.7,
+   "llp": -29763.8,
+   "loansNet": 1245057.9,
+   "ltInv": 3519.4,
+   "fixed": 10202.2,
+   "otherA": 81646.5,
+   "accrued": 12399.3,
+   "govSbv": 104779.3,
+   "interbankL": 209429.8,
+   "deposits": 1249176.0,
+   "papers": 91370.4,
+   "otherL": 45506.5,
+   "equity": 108167.7,
+   "charter": 48057.5,
+   "writtenOff": 116947.6,
+   "nii": 12709.5,
+   "intInc": 30375.3,
+   "intExp": -17665.8,
+   "nfi": 1558.1,
+   "fx": 1115.1,
+   "secInc": 43.6,
+   "otherInc": 1310.1,
+   "equityInc": 45.3,
+   "toi": 16781.6,
+   "opex": -6067.1,
+   "ppop": 10714.5,
+   "prov": -5532.6,
+   "pbt": 5181.9,
+   "npat": 4136.6,
+   "npatParent": 4127.4,
+   "recoveries": 1021.4,
+   "nim": 2.97,
+   "yea": 6.52,
+   "cof": 3.72,
+   "spread": 2.79,
+   "cir": 29.65,
+   "nfiShare": 9.14,
+   "otherShare": 10.2,
+   "toiYoY": 20.6,
+   "casa": 19.84,
+   "npl": 1.24,
+   "g2": 2.35,
+   "llr": 188.4,
+   "nplAmt": 15801.0,
+   "ldr": 86.5,
+   "creditYoY": 12.1,
+   "creditQoQ": 1.7,
+   "fundingYoY": 9.5,
+   "mltLoans": 39.4,
+   "accruedToTA": 0.69,
+   "irGap": null,
+   "roe": 16.7,
+   "roa": 1.01,
+   "pb": 1.2681,
+   "pe": 7.8066,
+   "bvps": 21489.5669,
+   "eps": 3490.6252,
+   "npatYoY": 19.1,
+   "writeOffEst": 15018.0,
+   "nplFormation": 13167.2,
+   "nplFormationRate": 4.18,
+   "creditCost": 1.97,
+   "nimAdj": 1.47,
+   "recoveriesTTM": 5362.5,
+   "pbtTTM": 20946.1,
+   "ppopTTM": 45109.2,
+   "llrInclAccrued": 105.5
+  },
+  {
+   "q": "Q1/2023",
+   "year": 2023,
+   "quarter": 1,
+   "audit": 1,
+   "ta": 1823962.2,
+   "cash": 32989.6,
+   "interbankA": 207791.4,
+   "secs": 201610.8,
+   "loansGross": 1333109.5,
+   "llp": -29470.5,
+   "loansNet": 1303639.0,
+   "ltInv": 3547.3,
+   "fixed": 10057.2,
+   "otherA": 62169.8,
+   "accrued": 13544.0,
+   "govSbv": 100058.6,
+   "interbankL": 177278.7,
+   "deposits": 1272350.4,
+   "papers": 111592.4,
+   "otherL": 49736.9,
+   "equity": 112945.2,
+   "charter": 48057.5,
+   "writtenOff": 125738.9,
+   "nii": 12666.2,
+   "intInc": 32760.3,
+   "intExp": -20094.1,
+   "nfi": 2000.7,
+   "fx": 1172.7,
+   "secInc": 42.9,
+   "otherInc": 1020.0,
+   "equityInc": 115.7,
+   "toi": 17018.0,
+   "opex": -4313.9,
+   "ppop": 12704.2,
+   "prov": -6723.8,
+   "pbt": 5980.3,
+   "npat": 4831.2,
+   "npatParent": 4806.4,
+   "recoveries": 641.8,
+   "nim": 2.98,
+   "yea": 6.82,
+   "cof": 4.08,
+   "spread": 2.75,
+   "cir": 29.08,
+   "nfiShare": 9.82,
+   "otherShare": 8.47,
+   "toiYoY": 23.5,
+   "casa": 17.88,
+   "npl": 1.28,
+   "g2": 2.67,
+   "llr": 173.0,
+   "nplAmt": 17035.4,
+   "ldr": 86.1,
+   "creditYoY": 7.4,
+   "creditQoQ": 4.5,
+   "fundingYoY": 8.3,
+   "mltLoans": 37.6,
+   "accruedToTA": 0.74,
+   "irGap": -54507.4,
+   "roe": 16.1,
+   "roa": 0.97,
+   "pb": 1.2982,
+   "pe": 8.2948,
+   "bvps": 22492.9872,
+   "eps": 3520.2709,
+   "npatYoY": 37.6,
+   "writeOffEst": 7017.1,
+   "nplFormation": 8251.5,
+   "nplFormationRate": 2.53,
+   "creditCost": 2.09,
+   "nimAdj": 1.41,
+   "recoveriesTTM": 5036.7,
+   "pbtTTM": 21103.9,
+   "ppopTTM": 47564.2,
+   "llrInclAccrued": 96.4
+  },
+  {
+   "q": "Q2/2023",
+   "year": 2023,
+   "quarter": 2,
+   "audit": 2,
+   "ta": 1860104.5,
+   "cash": 33758.0,
+   "interbankA": 230782.7,
+   "secs": 194673.2,
+   "loansGross": 1359356.7,
+   "llp": -29228.0,
+   "loansNet": 1330128.7,
+   "ltInv": 3269.7,
+   "fixed": 9867.8,
+   "otherA": 56253.5,
+   "accrued": 13307.4,
+   "govSbv": 5438.2,
+   "interbankL": 263937.8,
+   "deposits": 1310048.5,
+   "papers": 112618.4,
+   "otherL": 50001.3,
+   "equity": 118060.4,
+   "charter": 48057.5,
+   "writtenOff": 133336.4,
+   "nii": 12757.5,
+   "intInc": 34116.5,
+   "intExp": -21359.1,
+   "nfi": 1784.2,
+   "fx": 1176.8,
+   "secInc": 203.5,
+   "otherInc": 1778.1,
+   "equityInc": 71.9,
+   "toi": 17771.9,
+   "opex": -4743.4,
+   "ppop": 13028.5,
+   "prov": -6478.4,
+   "pbt": 6550.2,
+   "npat": 5263.7,
+   "npatParent": 5203.3,
+   "recoveries": 1372.5,
+   "nim": 2.97,
+   "yea": 7.23,
+   "cof": 4.52,
+   "spread": 2.7,
+   "cir": 28.99,
+   "nfiShare": 9.88,
+   "otherShare": 9.21,
+   "toiYoY": 22.7,
+   "casa": 18.62,
+   "npl": 1.27,
+   "g2": 2.58,
+   "llr": 168.9,
+   "nplAmt": 17309.0,
+   "ldr": 83.1,
+   "creditYoY": 9.0,
+   "creditQoQ": 2.0,
+   "fundingYoY": 12.2,
+   "mltLoans": 36.4,
+   "accruedToTA": 0.72,
+   "irGap": -41119.0,
+   "roe": 15.9,
+   "roa": 0.99,
+   "pb": 1.2521,
+   "pe": 8.1125,
+   "bvps": 23561.3002,
+   "eps": 3636.3595,
+   "npatYoY": 19.0,
+   "writeOffEst": 6720.9,
+   "nplFormation": 6994.5,
+   "nplFormationRate": 2.08,
+   "creditCost": 2.1,
+   "nimAdj": 1.4,
+   "recoveriesTTM": 5244.8,
+   "pbtTTM": 21869.0,
+   "ppopTTM": 48924.4,
+   "llrInclAccrued": 95.5
+  },
+  {
+   "q": "Q3/2023",
+   "year": 2023,
+   "quarter": 3,
+   "audit": 1,
+   "ta": 1888338.3,
+   "cash": 44203.8,
+   "interbankA": 254955.2,
+   "secs": 164995.0,
+   "loansGross": 1386280.1,
+   "llp": -32660.9,
+   "loansNet": 1353619.2,
+   "ltInv": 3287.0,
+   "fixed": 9766.5,
+   "otherA": 57511.5,
+   "accrued": 12780.5,
+   "govSbv": 21577.0,
+   "interbankL": 288612.6,
+   "deposits": 1310323.6,
+   "papers": 87878.6,
+   "otherL": 57941.3,
+   "equity": 122005.1,
+   "charter": 48057.5,
+   "writtenOff": 137810.2,
+   "nii": 13087.4,
+   "intInc": 32837.8,
+   "intExp": -19750.4,
+   "nfi": 1815.2,
+   "fx": 1135.3,
+   "secInc": -32.9,
+   "otherInc": 1409.8,
+   "equityInc": -21.6,
+   "toi": 17393.2,
+   "opex": -5081.9,
+   "ppop": 12311.3,
+   "prov": -7440.3,
+   "pbt": 4870.9,
+   "npat": 3895.3,
+   "npatParent": 3863.1,
+   "recoveries": 1222.6,
+   "nim": 2.9,
+   "yea": 7.38,
+   "cof": 4.76,
+   "spread": 2.61,
+   "cir": 29.3,
+   "nfiShare": 10.38,
+   "otherShare": 8.0,
+   "toiYoY": 12.6,
+   "casa": 19.83,
+   "npl": 1.37,
+   "g2": 2.37,
+   "llr": 172.4,
+   "nplAmt": 18940.8,
+   "ldr": 84.1,
+   "creditYoY": 10.6,
+   "creditQoQ": 2.0,
+   "fundingYoY": 10.1,
+   "mltLoans": 35.8,
+   "accruedToTA": 0.68,
+   "irGap": -12733.1,
+   "roe": 15.9,
+   "roa": 1.0,
+   "pb": 1.2323,
+   "pe": 8.0229,
+   "bvps": 24385.9502,
+   "eps": 3745.551,
+   "npatYoY": 15.7,
+   "writeOffEst": 4007.4,
+   "nplFormation": 5639.2,
+   "nplFormationRate": 1.64,
+   "creditCost": 1.98,
+   "nimAdj": 1.42,
+   "recoveriesTTM": 4258.3,
+   "pbtTTM": 22583.3,
+   "ppopTTM": 48758.5,
+   "llrInclAccrued": 103.0
+  },
+  {
+   "q": "Q4/2023",
+   "year": 2023,
+   "quarter": 4,
+   "audit": 3,
+   "ta": 2032613.6,
+   "cash": 50356.6,
+   "interbankA": 279841.6,
+   "secs": 183698.4,
+   "loansGross": 1473344.6,
+   "llp": -27772.9,
+   "loansNet": 1445571.6,
+   "ltInv": 3426.5,
+   "fixed": 10125.5,
+   "otherA": 59593.2,
+   "accrued": 14761.6,
+   "govSbv": 21814.1,
+   "interbankL": 304321.7,
+   "deposits": 1410899.0,
+   "papers": 115375.7,
+   "otherL": 54331.2,
+   "equity": 125871.8,
+   "charter": 53699.9,
+   "writtenOff": 147630.5,
+   "nii": 14446.4,
+   "intInc": 32957.1,
+   "intExp": -18510.7,
+   "nfi": 1513.7,
+   "fx": 763.4,
+   "secInc": -74.9,
+   "otherInc": 1595.2,
+   "equityInc": 121.3,
+   "toi": 18365.0,
+   "opex": -6304.4,
+   "ppop": 12060.7,
+   "prov": -4472.6,
+   "pbt": 7588.0,
+   "npat": 6054.4,
+   "npatParent": 6030.8,
+   "recoveries": 1434.4,
+   "nim": 2.86,
+   "yea": 7.16,
+   "cof": 4.55,
+   "spread": 2.61,
+   "cir": 28.98,
+   "nfiShare": 10.08,
+   "otherShare": 8.23,
+   "toiYoY": 10.0,
+   "casa": 22.4,
+   "npl": 1.13,
+   "g2": 1.55,
+   "llr": 167.2,
+   "nplAmt": 16608.3,
+   "ldr": 82.3,
+   "creditYoY": 15.5,
+   "creditQoQ": 6.3,
+   "fundingYoY": 13.9,
+   "mltLoans": 34.7,
+   "accruedToTA": 0.73,
+   "irGap": 9148.6,
+   "roe": 17.1,
+   "roa": 1.04,
+   "pb": 1.2025,
+   "pe": 7.3116,
+   "bvps": 22536.0361,
+   "eps": 3706.4396,
+   "npatYoY": 18.6,
+   "writeOffEst": 9360.6,
+   "nplFormation": 7028.1,
+   "nplFormationRate": 1.97,
+   "creditCost": 1.84,
+   "nimAdj": 1.5,
+   "recoveriesTTM": 4671.3,
+   "pbtTTM": 24989.4,
+   "ppopTTM": 50104.7,
+   "llrInclAccrued": 88.5
+  },
+  {
+   "q": "Q1/2024",
+   "year": 2024,
+   "quarter": 1,
+   "audit": 1,
+   "ta": 2077615.1,
+   "cash": 26749.0,
+   "interbankA": 332707.1,
+   "secs": 166091.5,
+   "loansGross": 1514397.6,
+   "llp": -30775.2,
+   "loansNet": 1483622.4,
+   "ltInv": 3530.2,
+   "fixed": 9921.2,
+   "otherA": 54728.2,
+   "accrued": 14509.5,
+   "govSbv": 46137.1,
+   "interbankL": 325515.9,
+   "deposits": 1427664.9,
+   "papers": 101544.0,
+   "otherL": 46170.7,
+   "equity": 130582.5,
+   "charter": 53699.9,
+   "writtenOff": 155529.0,
+   "nii": 15174.2,
+   "intInc": 30952.0,
+   "intExp": -15777.7,
+   "nfi": 1778.8,
+   "fx": 1344.2,
+   "secInc": -67.9,
+   "otherInc": 778.1,
+   "equityInc": 59.5,
+   "toi": 19066.9,
+   "opex": -4807.4,
+   "ppop": 14259.4,
+   "prov": -8049.2,
+   "pbt": 6210.3,
+   "npat": 5002.5,
+   "npatParent": 4958.8,
+   "recoveries": 654.4,
+   "nim": 2.92,
+   "yea": 6.89,
+   "cof": 4.23,
+   "spread": 2.66,
+   "cir": 28.84,
+   "nfiShare": 9.49,
+   "otherShare": 7.66,
+   "toiYoY": 8.2,
+   "casa": 21.86,
+   "npl": 1.35,
+   "g2": 1.58,
+   "llr": 150.8,
+   "nplAmt": 20401.4,
+   "ldr": 83.1,
+   "creditYoY": 13.5,
+   "creditQoQ": 2.7,
+   "fundingYoY": 10.3,
+   "mltLoans": 34.4,
+   "accruedToTA": 0.7,
+   "irGap": -1768.0,
+   "roe": 16.6,
+   "roa": 1.04,
+   "pb": 1.5184,
+   "pe": 9.5185,
+   "bvps": 23412.2248,
+   "eps": 3734.8257,
+   "npatYoY": 18.6,
+   "writeOffEst": 5046.9,
+   "nplFormation": 8840.0,
+   "nplFormationRate": 2.37,
+   "creditCost": 1.87,
+   "nimAdj": 1.53,
+   "recoveriesTTM": 4683.9,
+   "pbtTTM": 25219.4,
+   "ppopTTM": 51659.9,
+   "llrInclAccrued": 88.2
+  },
+  {
+   "q": "Q2/2024",
+   "year": 2024,
+   "quarter": 2,
+   "audit": 2,
+   "ta": 2161436.3,
+   "cash": 38438.4,
+   "interbankA": 351233.8,
+   "secs": 162114.3,
+   "loansGross": 1571529.4,
+   "llp": -28040.2,
+   "loansNet": 1543489.2,
+   "ltInv": 3743.8,
+   "fixed": 9763.5,
+   "otherA": 52653.3,
+   "accrued": 12967.0,
+   "govSbv": 111854.9,
+   "interbankL": 297408.5,
+   "deposits": 1466830.4,
+   "papers": 100256.9,
+   "otherL": 49112.8,
+   "equity": 135972.9,
+   "charter": 53699.9,
+   "writtenOff": 168706.7,
+   "nii": 15338.9,
+   "intInc": 30138.3,
+   "intExp": -14799.4,
+   "nfi": 1886.2,
+   "fx": 1186.1,
+   "secInc": -8.9,
+   "otherInc": 1087.2,
+   "equityInc": 150.9,
+   "toi": 19640.4,
+   "opex": -5073.8,
+   "ppop": 14566.7,
+   "prov": -7816.7,
+   "pbt": 6749.9,
+   "npat": 5409.4,
+   "npatParent": 5365.3,
+   "recoveries": 1468.9,
+   "nim": 2.96,
+   "yea": 6.47,
+   "cof": 3.75,
+   "spread": 2.72,
+   "cir": 28.56,
+   "nfiShare": 9.39,
+   "otherShare": 6.54,
+   "toiYoY": 8.1,
+   "casa": 22.53,
+   "npl": 1.57,
+   "g2": 1.44,
+   "llr": 113.8,
+   "nplAmt": 24645.7,
+   "ldr": 85.0,
+   "creditYoY": 15.5,
+   "creditQoQ": 3.8,
+   "fundingYoY": 10.0,
+   "mltLoans": 33.6,
+   "accruedToTA": 0.6,
+   "irGap": -33757.3,
+   "roe": 16.0,
+   "roa": 1.01,
+   "pb": 1.2693,
+   "pe": 8.2338,
+   "bvps": 24423.728,
+   "eps": 3764.9913,
+   "npatYoY": 15.7,
+   "writeOffEst": 10551.7,
+   "nplFormation": 14796.0,
+   "nplFormationRate": 3.84,
+   "creditCost": 1.9,
+   "nimAdj": 1.54,
+   "recoveriesTTM": 4780.3,
+   "pbtTTM": 25419.1,
+   "ppopTTM": 53198.1,
+   "llrInclAccrued": 74.5
+  },
+  {
+   "q": "Q3/2024",
+   "year": 2024,
+   "quarter": 3,
+   "audit": 1,
+   "ta": 2229791.1,
+   "cash": 36850.9,
+   "interbankA": 378231.2,
+   "secs": 184290.1,
+   "loansGross": 1605381.4,
+   "llp": -35537.0,
+   "loansNet": 1569844.4,
+   "ltInv": 3761.6,
+   "fixed": 9622.8,
+   "otherA": 46839.4,
+   "accrued": 12708.7,
+   "govSbv": 95457.5,
+   "interbankL": 298636.9,
+   "deposits": 1516890.4,
+   "papers": 131825.5,
+   "otherL": 45994.7,
+   "equity": 140986.0,
+   "charter": 53699.9,
+   "writtenOff": 164092.2,
+   "nii": 15577.5,
+   "intInc": 30924.4,
+   "intExp": -15346.8,
+   "nfi": 1801.4,
+   "fx": 608.8,
+   "secInc": -185.3,
+   "otherInc": 3963.0,
+   "equityInc": 150.8,
+   "toi": 21916.3,
+   "opex": -6095.0,
+   "ppop": 15821.3,
+   "prov": -9268.7,
+   "pbt": 6552.7,
+   "npat": 5192.5,
+   "npatParent": 5225.9,
+   "recoveries": 3907.4,
+   "nim": 3.0,
+   "yea": 6.19,
+   "cof": 3.44,
+   "spread": 2.76,
+   "cir": 28.21,
+   "nfiShare": 8.84,
+   "otherShare": 9.4,
+   "toiYoY": 14.5,
+   "casa": 22.77,
+   "npl": 1.45,
+   "g2": 1.44,
+   "llr": 153.0,
+   "nplAmt": 23225.0,
+   "ldr": 82.8,
+   "creditYoY": 15.8,
+   "creditQoQ": 2.2,
+   "fundingYoY": 17.7,
+   "mltLoans": 33.8,
+   "accruedToTA": 0.57,
+   "irGap": -31754.8,
+   "roe": 16.5,
+   "roa": 1.05,
+   "pb": 1.4563,
+   "pe": 9.1944,
+   "bvps": 25373.0818,
+   "eps": 4018.7689,
+   "npatYoY": 19.9,
+   "writeOffEst": 1771.9,
+   "nplFormation": 351.2,
+   "nplFormationRate": 0.09,
+   "creditCost": 1.96,
+   "nimAdj": 1.53,
+   "recoveriesTTM": 7465.1,
+   "pbtTTM": 27100.9,
+   "ppopTTM": 56708.1,
+   "llrInclAccrued": 98.9
+  },
+  {
+   "q": "Q4/2024",
+   "year": 2024,
+   "quarter": 4,
+   "audit": 4,
+   "ta": 2385387.7,
+   "cash": 45579.2,
+   "interbankA": 378482.9,
+   "secs": 217406.0,
+   "loansGross": 1721954.7,
+   "llp": -36664.1,
+   "loansNet": 1685290.6,
+   "ltInv": 3933.8,
+   "fixed": 10002.2,
+   "otherA": 44693.0,
+   "accrued": 13312.6,
+   "govSbv": 154284.1,
+   "interbankL": 276141.3,
+   "deposits": 1606316.7,
+   "papers": 151678.1,
+   "otherL": 48462.9,
+   "equity": 148504.7,
+   "charter": 53699.9,
+   "writtenOff": 164411.4,
+   "nii": 16312.2,
+   "intInc": 32446.1,
+   "intExp": -16133.9,
+   "nfi": 1229.5,
+   "fx": 1057.5,
+   "secInc": 65.9,
+   "otherInc": 2590.5,
+   "equityInc": 29.4,
+   "toi": 21285.1,
+   "opex": -6569.8,
+   "ppop": 14715.3,
+   "prov": -2464.3,
+   "pbt": 12251.0,
+   "npat": 9878.2,
+   "npatParent": 9798.3,
+   "recoveries": 1577.5,
+   "nim": 2.88,
+   "yea": 5.75,
+   "cof": 3.07,
+   "spread": 2.68,
+   "cir": 27.53,
+   "nfiShare": 8.18,
+   "otherShare": 10.28,
+   "toiYoY": 16.1,
+   "casa": 24.23,
+   "npl": 1.24,
+   "g2": 1.33,
+   "llr": 171.7,
+   "nplAmt": 21351.9,
+   "ldr": 83.8,
+   "creditYoY": 16.8,
+   "creditQoQ": 7.2,
+   "fundingYoY": 14.7,
+   "mltLoans": 34.0,
+   "accruedToTA": 0.56,
+   "irGap": -32156.8,
+   "roe": 18.6,
+   "roa": 1.15,
+   "pb": 1.4128,
+   "pe": 8.0079,
+   "bvps": 26756.2866,
+   "eps": 4720.3452,
+   "npatYoY": 27.4,
+   "writeOffEst": 1337.2,
+   "nplFormation": -535.9,
+   "nplFormationRate": -0.13,
+   "creditCost": 1.75,
+   "nimAdj": 1.61,
+   "recoveriesTTM": 7608.2,
+   "pbtTTM": 31763.9,
+   "ppopTTM": 59362.7,
+   "llrInclAccrued": 105.8
+  },
+  {
+   "q": "Q1/2025",
+   "year": 2025,
+   "quarter": 1,
+   "audit": 1,
+   "ta": 2469863.4,
+   "cash": 24560.8,
+   "interbankA": 406579.3,
+   "secs": 218437.1,
+   "loansGross": 1800459.2,
+   "llp": -38269.0,
+   "loansNet": 1762190.2,
+   "ltInv": 4071.1,
+   "fixed": 9800.7,
+   "otherA": 44224.2,
+   "accrued": 15277.6,
+   "govSbv": 138574.7,
+   "interbankL": 309038.7,
+   "deposits": 1621227.5,
+   "papers": 203356.2,
+   "otherL": 43684.2,
+   "equity": 153982.2,
+   "charter": 53699.9,
+   "writtenOff": 171322.7,
+   "nii": 15475.2,
+   "intInc": 32684.2,
+   "intExp": -17209.0,
+   "nfi": 1610.5,
+   "fx": 912.9,
+   "secInc": 329.2,
+   "otherInc": 2002.3,
+   "equityInc": 123.3,
+   "toi": 20453.4,
+   "opex": -5519.2,
+   "ppop": 14934.2,
+   "prov": -8111.0,
+   "pbt": 6823.2,
+   "npat": 5499.4,
+   "npatParent": 5418.9,
+   "recoveries": 1821.1,
+   "nim": 2.8,
+   "yea": 5.65,
+   "cof": 3.04,
+   "spread": 2.6,
+   "cir": 27.92,
+   "nfiShare": 7.84,
+   "otherShare": 11.58,
+   "toiYoY": 14.7,
+   "casa": 23.92,
+   "npl": 1.55,
+   "g2": 1.32,
+   "llr": 136.8,
+   "nplAmt": 27971.2,
+   "ldr": 84.5,
+   "creditYoY": 18.8,
+   "creditQoQ": 4.5,
+   "fundingYoY": 19.3,
+   "mltLoans": 33.6,
+   "accruedToTA": 0.62,
+   "irGap": -57199.1,
+   "roe": 18.3,
+   "roa": 1.14,
+   "pb": 1.4926,
+   "pe": 8.6246,
+   "bvps": 27770.8011,
+   "eps": 4806.0186,
+   "npatYoY": 28.7,
+   "writeOffEst": 6506.1,
+   "nplFormation": 13125.4,
+   "nplFormationRate": 2.98,
+   "creditCost": 1.68,
+   "nimAdj": 1.56,
+   "recoveriesTTM": 8774.9,
+   "pbtTTM": 32376.8,
+   "ppopTTM": 60037.5,
+   "llrInclAccrued": 88.5
+  },
+  {
+   "q": "Q2/2025",
+   "year": 2025,
+   "quarter": 2,
+   "audit": 2,
+   "ta": 2609788.0,
+   "cash": 25155.3,
+   "interbankA": 428879.3,
+   "secs": 229918.1,
+   "loansGross": 1899351.5,
+   "llp": -33437.4,
+   "loansNet": 1865914.1,
+   "ltInv": 4231.2,
+   "fixed": 9957.2,
+   "otherA": 45732.8,
+   "accrued": 15769.8,
+   "govSbv": 138527.5,
+   "interbankL": 306985.7,
+   "deposits": 1719957.8,
+   "papers": 227953.9,
+   "otherL": 52537.0,
+   "equity": 163826.2,
+   "charter": 53699.9,
+   "writtenOff": 182004.0,
+   "nii": 15842.6,
+   "intInc": 34876.4,
+   "intExp": -19033.8,
+   "nfi": 1434.2,
+   "fx": 1106.1,
+   "secInc": 243.8,
+   "otherInc": 2173.4,
+   "equityInc": 116.9,
+   "toi": 20917.1,
+   "opex": -5847.2,
+   "ppop": 15069.9,
+   "prov": -2972.8,
+   "pbt": 12097.2,
+   "npat": 9752.0,
+   "npatParent": 9669.9,
+   "recoveries": 2139.4,
+   "nim": 2.7,
+   "yea": 5.59,
+   "cof": 3.1,
+   "spread": 2.49,
+   "cir": 28.42,
+   "nfiShare": 7.18,
+   "otherShare": 12.69,
+   "toiYoY": 13.6,
+   "casa": 24.56,
+   "npl": 1.31,
+   "g2": 0.96,
+   "llr": 134.8,
+   "nplAmt": 24813.5,
+   "ldr": 84.2,
+   "creditYoY": 20.7,
+   "creditQoQ": 5.5,
+   "fundingYoY": 24.3,
+   "mltLoans": 34.0,
+   "accruedToTA": 0.6,
+   "irGap": -57491.1,
+   "roe": 20.2,
+   "roa": 1.27,
+   "pb": 1.4161,
+   "pe": 7.472,
+   "bvps": 29587.4052,
+   "eps": 5607.6194,
+   "npatYoY": 48.9,
+   "writeOffEst": 7804.4,
+   "nplFormation": 4646.7,
+   "nplFormationRate": 1.0,
+   "creditCost": 1.33,
+   "nimAdj": 1.73,
+   "recoveriesTTM": 9445.4,
+   "pbtTTM": 37724.1,
+   "ppopTTM": 60540.7,
+   "llrInclAccrued": 82.4
+  },
+  {
+   "q": "Q3/2025",
+   "year": 2025,
+   "quarter": 3,
+   "audit": 1,
+   "ta": 2761550.9,
+   "cash": 38309.5,
+   "interbankA": 487526.9,
+   "secs": 221085.3,
+   "loansGross": 1990563.2,
+   "llp": -38336.3,
+   "loansNet": 1952226.9,
+   "ltInv": 4385.5,
+   "fixed": 9979.2,
+   "otherA": 47814.3,
+   "accrued": 16308.0,
+   "govSbv": 167351.1,
+   "interbankL": 412057.3,
+   "deposits": 1775527.4,
+   "papers": 182199.7,
+   "otherL": 54534.4,
+   "equity": 169881.0,
+   "charter": 53699.9,
+   "writtenOff": 183176.9,
+   "nii": 17175.7,
+   "intInc": 36989.7,
+   "intExp": -19814.0,
+   "nfi": 1587.3,
+   "fx": 546.2,
+   "secInc": 230.3,
+   "otherInc": 2831.5,
+   "equityInc": 128.8,
+   "toi": 22499.7,
+   "opex": -6021.9,
+   "ppop": 16477.8,
+   "prov": -5863.4,
+   "pbt": 10614.4,
+   "npat": 8512.5,
+   "npatParent": 8448.8,
+   "recoveries": 2813.7,
+   "nim": 2.63,
+   "yea": 5.57,
+   "cof": 3.15,
+   "spread": 2.42,
+   "cir": 28.13,
+   "nfiShare": 6.88,
+   "otherShare": 11.27,
+   "toiYoY": 7.8,
+   "casa": 24.68,
+   "npl": 1.09,
+   "g2": 1.07,
+   "llr": 176.5,
+   "nplAmt": 21722.4,
+   "ldr": 84.2,
+   "creditYoY": 23.8,
+   "creditQoQ": 4.8,
+   "fundingYoY": 18.7,
+   "mltLoans": 34.2,
+   "accruedToTA": 0.59,
+   "irGap": -80055.9,
+   "roe": 21.6,
+   "roa": 1.35,
+   "pb": 1.655,
+   "pe": 8.1833,
+   "bvps": 30694.095,
+   "eps": 6207.7926,
+   "npatYoY": 54.5,
+   "writeOffEst": 964.5,
+   "nplFormation": -2126.6,
+   "nplFormationRate": -0.44,
+   "creditCost": 1.08,
+   "nimAdj": 1.84,
+   "recoveriesTTM": 8351.7,
+   "pbtTTM": 41785.8,
+   "ppopTTM": 61197.2,
+   "llrInclAccrued": 100.8
+  },
+  {
+   "q": "Q4/2025",
+   "year": 2025,
+   "quarter": 4,
+   "audit": 3,
+   "ta": 2767699.3,
+   "cash": 47809.0,
+   "interbankA": 476487.5,
+   "secs": 214822.8,
+   "loansGross": 1992272.9,
+   "llp": -34810.4,
+   "loansNet": 1957462.5,
+   "ltInv": 4428.3,
+   "fixed": 10826.7,
+   "otherA": 55633.9,
+   "accrued": 17174.0,
+   "govSbv": 144592.4,
+   "interbankL": 417724.1,
+   "deposits": 1793732.1,
+   "papers": 174030.4,
+   "otherL": 57965.4,
+   "equity": 179655.0,
+   "charter": 77669.4,
+   "writtenOff": 185652.3,
+   "nii": 17959.7,
+   "intInc": 38592.0,
+   "intExp": -20632.3,
+   "nfi": 1696.9,
+   "fx": 555.3,
+   "secInc": 53.1,
+   "otherInc": 3088.2,
+   "equityInc": 71.3,
+   "toi": 23424.6,
+   "opex": -9164.6,
+   "ppop": 14260.0,
+   "prov": -350.9,
+   "pbt": 13909.1,
+   "npat": 11107.4,
+   "npatParent": 11066.9,
+   "recoveries": 3216.9,
+   "nim": 2.62,
+   "yea": 5.64,
+   "cof": 3.25,
+   "spread": 2.39,
+   "cir": 30.42,
+   "nfiShare": 7.25,
+   "otherShare": 11.56,
+   "toiYoY": 6.6,
+   "casa": 25.22,
+   "npl": 1.1,
+   "g2": 0.87,
+   "llr": 158.8,
+   "nplAmt": 21916.2,
+   "ldr": 83.6,
+   "creditYoY": 15.6,
+   "creditQoQ": 0.0,
+   "fundingYoY": 12.2,
+   "mltLoans": 38.1,
+   "accruedToTA": 0.62,
+   "irGap": -41408.3,
+   "roe": 21.2,
+   "roa": 1.35,
+   "pb": 1.5926,
+   "pe": 8.0241,
+   "bvps": 22447.8034,
+   "eps": 4455.3531,
+   "npatYoY": 36.5,
+   "writeOffEst": 3876.8,
+   "nplFormation": 4070.6,
+   "nplFormationRate": 0.82,
+   "creditCost": 0.92,
+   "nimAdj": 1.94,
+   "recoveriesTTM": 9991.1,
+   "pbtTTM": 43443.9,
+   "ppopTTM": 60741.9,
+   "llrInclAccrued": 89.1
+  },
+  {
+   "q": "Q1/2026",
+   "year": 2026,
+   "quarter": 1,
+   "audit": 1,
+   "ta": 2924176.9,
+   "cash": 33651.0,
+   "interbankA": 600736.4,
+   "secs": 212950.2,
+   "loansGross": 2028494.6,
+   "llp": -34436.4,
+   "loansNet": 1994058.1,
+   "ltInv": 4515.2,
+   "fixed": 10766.1,
+   "otherA": 67499.8,
+   "accrued": 18925.7,
+   "govSbv": 244904.3,
+   "interbankL": 462375.7,
+   "deposits": 1824177.5,
+   "papers": 149264.5,
+   "otherL": 54762.8,
+   "equity": 188692.2,
+   "charter": 77669.4,
+   "writtenOff": 195734.6,
+   "nii": 19385.2,
+   "intInc": 41672.5,
+   "intExp": -22287.4,
+   "nfi": 1847.0,
+   "fx": 1084.7,
+   "secInc": 415.6,
+   "otherInc": 2264.5,
+   "equityInc": 104.5,
+   "toi": 25101.6,
+   "opex": -6261.3,
+   "ppop": 18840.3,
+   "prov": -7700.9,
+   "pbt": 11139.4,
+   "npat": 8960.0,
+   "npatParent": 8917.0,
+   "recoveries": 2112.0,
+   "nim": 2.65,
+   "yea": 5.74,
+   "cof": 3.3,
+   "spread": 2.44,
+   "cir": 29.69,
+   "nfiShare": 7.14,
+   "otherShare": 11.27,
+   "toiYoY": 10.4,
+   "casa": 24.49,
+   "npl": 1.01,
+   "g2": 1.07,
+   "llr": 167.2,
+   "nplAmt": 20597.7,
+   "ldr": 84.4,
+   "creditYoY": 12.5,
+   "creditQoQ": 1.8,
+   "fundingYoY": 8.1,
+   "mltLoans": 38.6,
+   "accruedToTA": 0.65,
+   "irGap": -73533.9,
+   "roe": 22.4,
+   "roa": 1.42,
+   "pb": 1.4668,
+   "pe": 7.053,
+   "bvps": 23588.6691,
+   "eps": 4905.7367,
+   "npatYoY": 47.6,
+   "writeOffEst": 8074.9,
+   "nplFormation": 6756.4,
+   "nplFormationRate": 1.34,
+   "creditCost": 0.87,
+   "nimAdj": 2.01,
+   "recoveriesTTM": 10282.0,
+   "pbtTTM": 47760.1,
+   "ppopTTM": 64648.0,
+   "llrInclAccrued": 87.1
+  },
+  {
+   "q": "Q2/2026",
+   "year": 2026,
+   "quarter": 2,
+   "audit": 2,
+   "ta": 2962003.7,
+   "cash": 31551.8,
+   "interbankA": 553189.1,
+   "secs": 231557.1,
+   "loansGross": 2092707.8,
+   "llp": -33594.5,
+   "loansNet": 2059113.3,
+   "ltInv": 4586.5,
+   "fixed": 10708.9,
+   "otherA": 71296.9,
+   "accrued": 19433.7,
+   "govSbv": 194570.6,
+   "interbankL": 472518.0,
+   "deposits": 1890809.6,
+   "papers": 142990.0,
+   "otherL": 60901.2,
+   "equity": 200214.3,
+   "charter": 77669.4,
+   "writtenOff": 203790.5,
+   "nii": 20730.5,
+   "intInc": 46918.8,
+   "intExp": -26188.4,
+   "nfi": 2268.6,
+   "fx": 925.4,
+   "secInc": 39.0,
+   "otherInc": 2327.8,
+   "equityInc": 93.3,
+   "toi": 26384.6,
+   "opex": -6355.6,
+   "ppop": 20029.0,
+   "prov": -5300.3,
+   "pbt": 14728.7,
+   "npat": 11783.5,
+   "npatParent": 11740.1,
+   "recoveries": 2591.7,
+   "nim": 2.75,
+   "yea": 6.0,
+   "cof": 3.49,
+   "spread": 2.51,
+   "cir": 28.54,
+   "nfiShare": 7.6,
+   "otherShare": 10.79,
+   "toiYoY": 15.2,
+   "casa": 23.17,
+   "npl": 1.2,
+   "g2": 0.93,
+   "llr": 133.9,
+   "nplAmt": 25079.2,
+   "ldr": 83.4,
+   "creditYoY": 10.1,
+   "creditQoQ": 3.2,
+   "fundingYoY": 4.3,
+   "mltLoans": 37.5,
+   "accruedToTA": 0.66,
+   "irGap": -19775.0,
+   "roe": 22.2,
+   "roa": 1.45,
+   "pb": 1.3542,
+   "pe": 6.5638,
+   "bvps": 25070.51,
+   "eps": 5172.2733,
+   "npatYoY": 33.4,
+   "writeOffEst": 6142.2,
+   "nplFormation": 10623.7,
+   "nplFormationRate": 2.06,
+   "creditCost": 0.96,
+   "nimAdj": 2.05,
+   "recoveriesTTM": 10734.3,
+   "pbtTTM": 50391.6,
+   "ppopTTM": 69607.1,
+   "llrInclAccrued": 75.5
+  }
+ ],
+ "quarterlyNote": "BCTC hợp nhất từ WiData (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
+ "formula": {
+  "creditCost": "Chi phí dự phòng 4 quý gần nhất / dư nợ cho vay KH bình quân 5 quý (BNK-13)",
+  "nplFormation": "NPL cuối − NPL đầu + nợ xử lý bằng dự phòng; nợ xử lý ≈ dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ (BNK-11, ước tính; chi phí dự phòng gồm cả dự phòng khác ngoài cho vay)",
+  "nplFormationRate": "Hình thành nợ xấu quý / dư nợ bình quân đầu-cuối quý × 4 (quy năm)",
+  "nimAdj": "NIM × (1 − chi phí dự phòng TTM / thu nhập lãi thuần TTM) ≈ (NII − dự phòng) / TS sinh lời (BNK-07)",
+  "llrInclAccrued": "Dự phòng cho vay KH / (nợ xấu + lãi, phí phải thu) — stress test coi lãi dự thu là nợ xấu (BNK-14)",
+  "pbFwd": "Giá × CP lưu hành / VCSH 2026F; VCSH 2026F = VCSH Q2/2026 + (LNST dự phóng 2026 − LNST 6T/2026) − cổ tức tiền mặt 450đ/CP trả 27/08/2026"
+ },
+ "annual": [
+  {
+   "y": 2014,
+   "toi": 21031.1,
+   "nii": 17580.2,
+   "nfi": 1467.8,
+   "fx": 386.5,
+   "secInc": 38.7,
+   "otherInc": 1391.5,
+   "opex": -9826.7,
+   "ppop": 11204.4,
+   "prov": -3902.0,
+   "pbt": 7302.5,
+   "npat": 5727.2,
+   "npatParent": 5712.1,
+   "loans": 439869.0,
+   "deposits": 424181.2,
+   "equity": 55238.2,
+   "ta": 661131.6,
+   "recoveries": 1204.2,
+   "cashDiv": null,
+   "stockDiv": null,
+   "payout": null,
+   "planDone": null,
+   "roe": null,
+   "eps": null
+  },
+  {
+   "y": 2015,
+   "toi": 22743.9,
+   "nii": 18839.0,
+   "nfi": 1459.9,
+   "fx": 19.8,
+   "secInc": 182.0,
+   "otherInc": 2202.3,
+   "opex": -10719.5,
+   "ppop": 12024.4,
+   "prov": -4679.0,
+   "pbt": 7345.4,
+   "npat": 5716.9,
+   "npatParent": 5697.9,
+   "loans": 538079.8,
+   "deposits": 492960.1,
+   "equity": 56110.1,
+   "ta": 779483.5,
+   "recoveries": 2241.5,
+   "cashDiv": null,
+   "stockDiv": null,
+   "payout": null,
+   "planDone": null,
+   "roe": null,
+   "eps": null
+  },
+  {
+   "y": 2016,
+   "toi": 26462.3,
+   "nii": 22405.0,
+   "nfi": 1698.0,
+   "fx": 685.1,
+   "secInc": 224.9,
+   "otherInc": 1298.8,
+   "opex": -12870.7,
+   "ppop": 13591.6,
+   "prov": -5022.1,
+   "pbt": 8569.5,
+   "npat": 6857.9,
+   "npatParent": 6837.9,
+   "loans": 661987.8,
+   "deposits": 655060.1,
+   "equity": 60399.4,
+   "ta": 948699.0,
+   "recoveries": 1814.5,
+   "cashDiv": 700,
+   "stockDiv": 0,
+   "payout": 38.1,
+   "planDone": null,
+   "roe": 11.8,
+   "eps": 1836.4553
+  },
+  {
+   "y": 2017,
+   "toi": 32619.9,
+   "nii": 27073.0,
+   "nfi": 1855.2,
+   "fx": 710.0,
+   "secInc": 243.8,
+   "otherInc": 1994.9,
+   "opex": -15069.8,
+   "ppop": 17550.1,
+   "prov": -8343.9,
+   "pbt": 9206.2,
+   "npat": 7458.9,
+   "npatParent": 7432.4,
+   "loans": 790688.1,
+   "deposits": 752935.3,
+   "equity": 63765.3,
+   "ta": 1095060.8,
+   "recoveries": 2289.2,
+   "cashDiv": null,
+   "stockDiv": 0,
+   "payout": null,
+   "planDone": 105.6,
+   "roe": 12.0,
+   "eps": 1996.1202
+  },
+  {
+   "y": 2018,
+   "toi": 28737.9,
+   "nii": 22518.1,
+   "nfi": 2767.5,
+   "fx": 709.9,
+   "secInc": 489.8,
+   "otherInc": 1878.4,
+   "opex": -14256.3,
+   "ppop": 14481.7,
+   "prov": -7751.3,
+   "pbt": 6730.4,
+   "npat": 5416.4,
+   "npatParent": 5413.9,
+   "loans": 864925.9,
+   "deposits": 825816.1,
+   "equity": 67455.5,
+   "ta": 1164434.7,
+   "recoveries": 1968.7,
+   "cashDiv": null,
+   "stockDiv": 0,
+   "payout": null,
+   "planDone": 62.7,
+   "roe": 8.3,
+   "eps": 1454.0319
+  },
+  {
+   "y": 2019,
+   "toi": 40519.4,
+   "nii": 33199.0,
+   "nfi": 4055.4,
+   "fx": 1564.3,
+   "secInc": -425.2,
+   "otherInc": 1497.4,
+   "opex": -15734.9,
+   "ppop": 24784.5,
+   "prov": -13003.5,
+   "pbt": 11781.0,
+   "npat": 9477.0,
+   "npatParent": 9461.3,
+   "loans": 935270.9,
+   "deposits": 892785.2,
+   "equity": 77354.8,
+   "ta": 1240711.5,
+   "recoveries": 1338.0,
+   "cashDiv": 500,
+   "stockDiv": 0,
+   "payout": 19.7,
+   "planDone": 124.5,
+   "roe": 13.1,
+   "eps": 2541.0258
+  },
+  {
+   "y": 2020,
+   "toi": 45317.4,
+   "nii": 35580.8,
+   "nfi": 4340.9,
+   "fx": 1999.7,
+   "secInc": 962.2,
+   "otherInc": 1909.7,
+   "opex": -16085.3,
+   "ppop": 29232.1,
+   "prov": -12147.2,
+   "pbt": 17084.8,
+   "npat": 13757.2,
+   "npatParent": 13693.6,
+   "loans": 1015333.3,
+   "deposits": 990331.3,
+   "equity": 85411.2,
+   "ta": 1341436.5,
+   "recoveries": 1751.8,
+   "cashDiv": 800,
+   "stockDiv": 40.8,
+   "payout": 21.8,
+   "planDone": 164.6,
+   "roe": 16.9,
+   "eps": 3677.7062
+  },
+  {
+   "y": 2021,
+   "toi": 53156.6,
+   "nii": 41788.5,
+   "nfi": 4960.5,
+   "fx": 1812.5,
+   "secInc": 719.7,
+   "otherInc": 3398.1,
+   "opex": -17185.8,
+   "ppop": 35970.8,
+   "prov": -18381.6,
+   "pbt": 17589.2,
+   "npat": 14215.3,
+   "npatParent": 14088.8,
+   "loans": 1130667.8,
+   "deposits": 1161848.1,
+   "equity": 93649.5,
+   "ta": 1531587.4,
+   "recoveries": 3245.0,
+   "cashDiv": null,
+   "stockDiv": 0,
+   "payout": null,
+   "planDone": 104.8,
+   "roe": 15.9,
+   "eps": 2931.6461
+  },
+  {
+   "y": 2022,
+   "toi": 64116.7,
+   "nii": 47792.0,
+   "nfi": 5861.9,
+   "fx": 3555.5,
+   "secInc": -142.3,
+   "otherInc": 6537.4,
+   "opex": -19007.5,
+   "ppop": 45109.2,
+   "prov": -24163.2,
+   "pbt": 20946.1,
+   "npat": 16835.0,
+   "npatParent": 16775.1,
+   "loans": 1274821.7,
+   "deposits": 1249176.0,
+   "equity": 108167.7,
+   "ta": 1808429.8,
+   "recoveries": 5362.5,
+   "cashDiv": null,
+   "stockDiv": 0,
+   "payout": null,
+   "planDone": 108.5,
+   "roe": 16.7,
+   "eps": 3490.6252
+  },
+  {
+   "y": 2023,
+   "toi": 70548.2,
+   "nii": 52957.5,
+   "nfi": 7113.7,
+   "fx": 4248.1,
+   "secInc": 138.5,
+   "otherInc": 5803.1,
+   "opex": -20443.5,
+   "ppop": 50104.7,
+   "prov": -25115.1,
+   "pbt": 24989.5,
+   "npat": 20044.6,
+   "npatParent": 19903.5,
+   "loans": 1473344.6,
+   "deposits": 1410899.0,
+   "equity": 125871.8,
+   "ta": 2032613.6,
+   "recoveries": 4671.3,
+   "cashDiv": null,
+   "stockDiv": 0,
+   "payout": null,
+   "planDone": 127.9,
+   "roe": 17.1,
+   "eps": 3706.4396
+  },
+  {
+   "y": 2024,
+   "toi": 81908.7,
+   "nii": 62402.8,
+   "nfi": 6696.0,
+   "fx": 4196.7,
+   "secInc": -196.2,
+   "otherInc": 8418.8,
+   "opex": -22545.9,
+   "ppop": 59362.8,
+   "prov": -27598.8,
+   "pbt": 31763.9,
+   "npat": 25482.6,
+   "npatParent": 25348.2,
+   "loans": 1721954.7,
+   "deposits": 1606316.7,
+   "equity": 148504.7,
+   "ta": 2385387.7,
+   "recoveries": 7608.1,
+   "cashDiv": 450,
+   "stockDiv": 0,
+   "payout": 9.5,
+   "planDone": null,
+   "roe": 18.6,
+   "eps": 4720.3452
+  },
+  {
+   "y": 2025,
+   "toi": 87294.8,
+   "nii": 66453.2,
+   "nfi": 6329.0,
+   "fx": 3120.5,
+   "secInc": 856.4,
+   "otherInc": 10095.4,
+   "opex": -26552.9,
+   "ppop": 60741.9,
+   "prov": -17298.1,
+   "pbt": 43443.8,
+   "npat": 34871.3,
+   "npatParent": 34604.5,
+   "loans": 1992272.9,
+   "deposits": 1793732.1,
+   "equity": 179655.0,
+   "ta": 2767699.3,
+   "recoveries": 9991.1,
+   "cashDiv": 450,
+   "stockDiv": 44.6,
+   "payout": 10.1,
+   "planDone": null,
+   "roe": 21.2,
+   "eps": 4455.3531
+  }
+ ],
+ "plan": {
+  "year": 2026,
+  "pbt": 42600,
+  "npat": 34080,
+  "ytdQuarters": 2,
+  "ytdLabel": "6T/2026",
+  "pbtYTD": 25868.1,
+  "npatYTD": 20743.5,
+  "src": "WiData co_plans (ĐHĐCĐ 24/04/2026); YTD cộng từ BCTC quý",
+  "pbtDone": 60.7,
+  "npatDone": 60.9,
+  "pbtYTDyoy": 36.7,
+  "npatYTDyoy": 36.0
+ },
+ "loanMix": [
+  {
+   "q": "Q4/2019",
+   "byCustomer": {
+    "private_enterprises": 52.2,
+    "individuals_households": 29.4,
+    "soe": 12.6,
+    "fdi_enterprises": 5.4
+   },
+   "bySector": {
+    "wholesale_retail": 31.4,
+    "manufacturing": 25.3,
+    "trade_services": 14.3,
+    "household_activities": 4.5,
+    "utilities": 3.6,
+    "construction_realestate": 10.3,
+    "agriculture": 4.2,
+    "transport_storage": 2.4
+   },
+   "byTenor": {
+    "short_term": 57.4,
+    "medium_term": 6.6,
+    "long_term": 35.9
+   }
+  },
+  {
+   "q": "Q4/2020",
+   "byCustomer": {
+    "private_enterprises": 52.2,
+    "individuals_households": 30.0,
+    "soe": 11.9,
+    "fdi_enterprises": 5.4
+   },
+   "bySector": {
+    "wholesale_retail": 31.9,
+    "manufacturing": 24.4,
+    "trade_services": 14.9,
+    "household_activities": 4.6,
+    "utilities": 4.4,
+    "construction_realestate": 9.2,
+    "agriculture": 4.3,
+    "transport_storage": 2.4
+   },
+   "byTenor": {
+    "short_term": 58.5,
+    "medium_term": 6.1,
+    "long_term": 35.4
+   }
+  },
+  {
+   "q": "Q4/2021",
+   "byCustomer": {
+    "private_enterprises": 52.5,
+    "individuals_households": 32.1,
+    "soe": 9.9,
+    "fdi_enterprises": 5.1
+   },
+   "bySector": {
+    "wholesale_retail": 33.2,
+    "manufacturing": 23.3,
+    "trade_services": 15.1,
+    "household_activities": 4.7,
+    "utilities": 5.6,
+    "construction_realestate": 8.1,
+    "agriculture": 3.9,
+    "transport_storage": 2.0
+   },
+   "byTenor": {
+    "short_term": 60.5,
+    "medium_term": 5.9,
+    "long_term": 33.7
+   }
+  },
+  {
+   "q": "Q4/2022",
+   "byCustomer": {
+    "private_enterprises": 49.2,
+    "individuals_households": 37.0,
+    "soe": 8.8,
+    "fdi_enterprises": 4.8
+   },
+   "bySector": {
+    "wholesale_retail": 34.3,
+    "manufacturing": 21.1,
+    "trade_services": 18.6,
+    "household_activities": 5.4,
+    "utilities": 5.1,
+    "construction_realestate": 6.9,
+    "agriculture": 3.7,
+    "transport_storage": 1.9
+   },
+   "byTenor": {
+    "short_term": 60.6,
+    "medium_term": 6.5,
+    "long_term": 32.9
+   }
+  },
+  {
+   "q": "Q4/2023",
+   "byCustomer": {
+    "private_enterprises": 49.6,
+    "individuals_households": 37.6,
+    "soe": 7.3,
+    "fdi_enterprises": 5.3
+   },
+   "bySector": {
+    "wholesale_retail": 37.4,
+    "manufacturing": 20.7,
+    "trade_services": 17.6,
+    "household_activities": 5.1,
+    "utilities": 4.6,
+    "construction_realestate": 5.5,
+    "agriculture": 3.3,
+    "transport_storage": 2.0
+   },
+   "byTenor": {
+    "short_term": 65.3,
+    "medium_term": 5.9,
+    "long_term": 28.8
+   }
+  },
+  {
+   "q": "Q4/2024",
+   "byCustomer": {
+    "private_enterprises": 47.2,
+    "individuals_households": 39.3,
+    "soe": 7.6,
+    "fdi_enterprises": 5.8
+   },
+   "bySector": {
+    "wholesale_retail": 37.6,
+    "manufacturing": 20.0,
+    "trade_services": 17.6,
+    "household_activities": 6.3,
+    "utilities": 4.7,
+    "construction_realestate": 4.7,
+    "agriculture": 2.9,
+    "transport_storage": 2.2
+   },
+   "byTenor": {
+    "short_term": 66.0,
+    "medium_term": 5.8,
+    "long_term": 28.2
+   }
+  },
+  {
+   "q": "Q4/2025",
+   "byCustomer": {
+    "private_enterprises": 46.8,
+    "individuals_households": 40.6,
+    "soe": 7.0,
+    "fdi_enterprises": 5.5
+   },
+   "bySector": {
+    "wholesale_retail": 36.4,
+    "manufacturing": 17.5,
+    "trade_services": 20.2,
+    "household_activities": 7.2,
+    "utilities": 5.3,
+    "construction_realestate": 4.2,
+    "agriculture": 2.8,
+    "transport_storage": 2.8
+   },
+   "byTenor": {
+    "short_term": 61.9,
+    "medium_term": 6.5,
+    "long_term": 31.6
+   }
+  },
+  {
+   "q": "Q2/2026",
+   "byCustomer": {
+    "private_enterprises": null,
+    "individuals_households": null,
+    "soe": null,
+    "fdi_enterprises": null
+   },
+   "bySector": {
+    "wholesale_retail": null,
+    "manufacturing": null,
+    "trade_services": null,
+    "household_activities": null,
+    "utilities": null,
+    "construction_realestate": null,
+    "agriculture": null,
+    "transport_storage": null
+   },
+   "byTenor": {
+    "short_term": 62.5,
+    "medium_term": 6.1,
+    "long_term": 31.4
+   }
+  }
+ ],
+ "car": [
+  {
+   "period": "6T/2021",
+   "y": 2021,
+   "h": 2,
+   "car": 8.52,
+   "tier1": 6.86,
+   "ownFunds": 114168.8,
+   "rwaCredit": 1221830.1
+  },
+  {
+   "period": "2021",
+   "y": 2021,
+   "h": 0,
+   "car": 9.14,
+   "tier1": 6.47,
+   "ownFunds": 130296.4,
+   "rwaCredit": 1303010.5
+  },
+  {
+   "period": "6T/2022",
+   "y": 2022,
+   "h": 2,
+   "car": 8.96,
+   "tier1": 6.44,
+   "ownFunds": 140798.5,
+   "rwaCredit": 1441153.8
+  },
+  {
+   "period": "2022",
+   "y": 2022,
+   "h": 0,
+   "car": 8.98,
+   "tier1": 6.58,
+   "ownFunds": 145073.9,
+   "rwaCredit": 1486797.9
+  },
+  {
+   "period": "6T/2023",
+   "y": 2023,
+   "h": 2,
+   "car": 8.94,
+   "tier1": 6.81,
+   "ownFunds": 152241.5,
+   "rwaCredit": 1562617.8
+  },
+  {
+   "period": "2023",
+   "y": 2023,
+   "h": 0,
+   "car": 9.31,
+   "tier1": 6.79,
+   "ownFunds": 169574.0,
+   "rwaCredit": 1669053.9
+  },
+  {
+   "period": "6T/2024",
+   "y": 2024,
+   "h": 2,
+   "car": 9.54,
+   "tier1": 7.01,
+   "ownFunds": 181733.2,
+   "rwaCredit": 1747126.3
+  },
+  {
+   "period": "2024",
+   "y": 2024,
+   "h": 0,
+   "car": 9.54,
+   "tier1": 7.02,
+   "ownFunds": 198343.5,
+   "rwaCredit": 1907732.5
+  },
+  {
+   "period": "6T/2025",
+   "y": 2025,
+   "h": 2,
+   "car": 10.29,
+   "tier1": 7.21,
+   "ownFunds": 228905.4,
+   "rwaCredit": 2050869.2
+  },
+  {
+   "period": "2025",
+   "y": 2025,
+   "h": 0,
+   "car": 9.89,
+   "tier1": 7.38,
+   "ownFunds": 236195.3,
+   "rwaCredit": 2208014.1
+  }
+ ],
+ "peers": {
+  "period": "Q2/2026 (NIM, COF, YEA, CIR, ROE, ROA: TTM)",
+  "rows": [
+   {
+    "symbol": "VCB",
+    "group": "Big 4",
+    "nim": 2.81,
+    "cof": 2.6,
+    "yea": 5.14,
+    "cir": 34.05,
+    "toiYoY": 21.8,
+    "casa": 32.8,
+    "npl": 0.61,
+    "g2": 0.25,
+    "llr": 279.0,
+    "ldr": 81.1,
+    "creditYoY": 12.8,
+    "accruedToTA": 0.43,
+    "roe": 18.0,
+    "roa": 1.71,
+    "npatYoY": 20.2
+   },
+   {
+    "symbol": "BID",
+    "group": "Big 4",
+    "nim": 2.15,
+    "cof": 3.6,
+    "yea": 5.53,
+    "cir": 32.72,
+    "toiYoY": 14.2,
+    "casa": 20.4,
+    "npl": 1.83,
+    "g2": 1.22,
+    "llr": 76.0,
+    "ldr": 85.7,
+    "creditYoY": 14.7,
+    "accruedToTA": 0.85,
+    "roe": 18.1,
+    "roa": 1.02,
+    "npatYoY": 26.2
+   },
+   {
+    "symbol": "CTG",
+    "group": "Big 4",
+    "nim": 2.75,
+    "cof": 3.49,
+    "yea": 6.0,
+    "cir": 28.54,
+    "toiYoY": 15.2,
+    "casa": 23.2,
+    "npl": 1.2,
+    "g2": 0.93,
+    "llr": 134.0,
+    "ldr": 83.4,
+    "creditYoY": 10.1,
+    "accruedToTA": 0.66,
+    "roe": 22.2,
+    "roa": 1.45,
+    "npatYoY": 33.4
+   },
+   {
+    "symbol": "MBB",
+    "group": "Tư nhân lớn",
+    "nim": 4.03,
+    "cof": 3.99,
+    "yea": 7.56,
+    "cir": 28.43,
+    "toiYoY": 18.0,
+    "casa": 34.4,
+    "npl": 1.45,
+    "g2": 0.98,
+    "llr": 94.0,
+    "ldr": 89.3,
+    "creditYoY": 37.8,
+    "accruedToTA": 0.96,
+    "roe": 21.7,
+    "roa": 2.04,
+    "npatYoY": 22.7
+   },
+   {
+    "symbol": "TCB",
+    "group": "Tư nhân lớn",
+    "nim": 3.73,
+    "cof": 4.03,
+    "yea": 7.21,
+    "cir": 30.88,
+    "toiYoY": 26.3,
+    "casa": 35.0,
+    "npl": 1.08,
+    "g2": 0.67,
+    "llr": 126.0,
+    "ldr": 88.4,
+    "creditYoY": 25.1,
+    "accruedToTA": 0.89,
+    "roe": 16.1,
+    "roa": 2.45,
+    "npatYoY": 27.3
+   },
+   {
+    "symbol": "ACB",
+    "group": "Tư nhân lớn",
+    "nim": 2.92,
+    "cof": 4.5,
+    "yea": 6.97,
+    "cir": 31.94,
+    "toiYoY": 2.2,
+    "casa": 20.5,
+    "npl": 1.03,
+    "g2": 0.65,
+    "llr": 105.0,
+    "ldr": 85.0,
+    "creditYoY": 17.9,
+    "accruedToTA": 0.73,
+    "roe": 16.8,
+    "roa": 1.57,
+    "npatYoY": -7.6
+   },
+   {
+    "symbol": "VPB",
+    "group": "Tư nhân lớn",
+    "nim": 5.23,
+    "cof": 5.24,
+    "yea": 9.68,
+    "cir": 22.44,
+    "toiYoY": 32.6,
+    "casa": 12.1,
+    "npl": 3.28,
+    "g2": 3.16,
+    "llr": 56.0,
+    "ldr": 111.4,
+    "creditYoY": 40.6,
+    "accruedToTA": 1.44,
+    "roe": 17.8,
+    "roa": 2.35,
+    "npatYoY": 71.3
+   },
+   {
+    "symbol": "HDB",
+    "group": "Tư nhân vừa",
+    "nim": 4.21,
+    "cof": 5.38,
+    "yea": 9.25,
+    "cir": 26.83,
+    "toiYoY": 14.7,
+    "casa": 10.9,
+    "npl": 2.79,
+    "g2": 4.7,
+    "llr": 50.0,
+    "ldr": 73.6,
+    "creditYoY": 32.7,
+    "accruedToTA": 0.84,
+    "roe": 25.5,
+    "roa": 2.16,
+    "npatYoY": 33.7
+   },
+   {
+    "symbol": "VIB",
+    "group": "Tư nhân vừa",
+    "nim": 3.06,
+    "cof": 4.89,
+    "yea": 7.52,
+    "cir": 34.15,
+    "toiYoY": 8.0,
+    "casa": 11.9,
+    "npl": 2.93,
+    "g2": 2.56,
+    "llr": 44.0,
+    "ldr": 86.5,
+    "creditYoY": 11.4,
+    "accruedToTA": 0.81,
+    "roe": 16.2,
+    "roa": 1.33,
+    "npatYoY": -1.5
+   },
+   {
+    "symbol": "TPB",
+    "group": "Tư nhân vừa",
+    "nim": 3.0,
+    "cof": 5.2,
+    "yea": 7.87,
+    "cir": 36.14,
+    "toiYoY": 9.8,
+    "casa": 21.0,
+    "npl": 1.86,
+    "g2": 1.89,
+    "llr": 67.0,
+    "ldr": 77.2,
+    "creditYoY": 17.2,
+    "accruedToTA": 1.06,
+    "roe": 17.4,
+    "roa": 1.57,
+    "npatYoY": 18.4
+   },
+   {
+    "symbol": "SHB",
+    "group": "Tư nhân vừa",
+    "nim": 2.16,
+    "cof": 5.7,
+    "yea": 7.63,
+    "cir": 21.71,
+    "toiYoY": 0.5,
+    "casa": 8.1,
+    "npl": 2.18,
+    "g2": 0.78,
+    "llr": 77.0,
+    "ldr": 82.8,
+    "creditYoY": 10.2,
+    "accruedToTA": 1.93,
+    "roe": 17.5,
+    "roa": 1.36,
+    "npatYoY": 10.7
+   },
+   {
+    "symbol": "STB",
+    "group": "Tư nhân vừa",
+    "nim": 3.06,
+    "cof": 4.7,
+    "yea": 7.38,
+    "cir": 35.76,
+    "toiYoY": 12.5,
+    "casa": 16.6,
+    "npl": 7.54,
+    "g2": 2.65,
+    "llr": 57.0,
+    "ldr": 83.0,
+    "creditYoY": 8.2,
+    "accruedToTA": 0.76,
+    "roe": 5.0,
+    "roa": 0.36,
+    "npatYoY": -73.4
+   }
+  ]
+ },
+ "governance": {
+  "shareholders": [
+   {
+    "name": "Ngân hàng Nhà nước Việt Nam",
+    "shares": 5006850325,
+    "percent": 64.458,
+    "asOf": "2026-06-30"
+   },
+   {
+    "name": "MUFG Bank, Ltd",
+    "shares": 1532391718,
+    "percent": 19.73,
+    "asOf": "2025-12-31"
+   },
+   {
+    "name": "Công đoàn CTG",
+    "shares": 89145089,
+    "percent": 1.147,
+    "asOf": "2026-06-30"
+   },
+   {
+    "name": "Công ty TNHH Bảo hiểm Nhân Thọ Prudential Việt Nam",
+    "shares": 57619985,
+    "percent": 1.073,
+    "asOf": "2024-08-28"
+   }
+  ],
+  "leadership": [
+   {
+    "name": "Trần Minh Bình",
+    "role": "Chủ tịch HĐQT",
+    "since": "2021-09-07"
+   },
+   {
+    "name": "Nguyễn Trần Mạnh Trung",
+    "role": "Tổng Giám đốc",
+    "since": "2022-05-12"
+   },
+   {
+    "name": "Trần Văn Tần",
+    "role": "Thành viên HĐQT",
+    "since": "2019-04-23"
+   },
+   {
+    "name": "Phạm Thị Thanh Hoài",
+    "role": "Thành viên HĐQT",
+    "since": "2019-04-23"
+   },
+   {
+    "name": "Nguyễn Thế Huân",
+    "role": "Thành viên HĐQT",
+    "since": "2019-04-23"
+   },
+   {
+    "name": "Lê Thanh Tùng",
+    "role": "Thành viên HĐQT",
+    "since": "2021-11-03"
+   },
+   {
+    "name": "Koji Iriguchi",
+    "role": "Thành viên HĐQT",
+    "since": "2023-06-02"
+   },
+   {
+    "name": "Takeo Shimotsu",
+    "role": "Thành viên HĐQT",
+    "since": "2024-04-27"
+   },
+   {
+    "name": "Nguyễn Trần Mạnh Trung",
+    "role": "Thành viên HĐQT",
+    "since": "2024-10-17"
+   },
+   {
+    "name": "Nguyễn Vân Anh",
+    "role": "Thành viên HĐQT",
+    "since": "2025-04-18"
+   },
+   {
+    "name": "Đặng Thị Việt Hà",
+    "role": "Thành viên HĐQT",
+    "since": "2026-04-24"
+   },
+   {
+    "name": "Cát Quang Dương",
+    "role": "Thành viên HĐQT độc lập",
+    "since": "2024-04-27"
+   },
+   {
+    "name": "Lê Anh Hà",
+    "role": "Trưởng Ban kiểm soát",
+    "since": "2019-04-23"
+   },
+   {
+    "name": "Trần Công Quỳnh Lân",
+    "role": "Phó Tổng giám đốc",
+    "since": "2015-03-05"
+   },
+   {
+    "name": "Lê Như Hoa",
+    "role": "Phó Tổng giám đốc",
+    "since": "2016-08-01"
+   },
+   {
+    "name": "Nguyễn Bảo Thanh Vân",
+    "role": "Phó Tổng giám đốc",
+    "since": "2021-11-10"
+   },
+   {
+    "name": "Nguyễn Đức Thành",
+    "role": "Phó Tổng giám đốc",
+    "since": "2022-04-29"
+   },
+   {
+    "name": "Lê Duy Hải",
+    "role": "Phó Tổng giám đốc",
+    "since": "2022-05-09"
+   },
+   {
+    "name": "Đỗ Thanh Sơn",
+    "role": "Phó Tổng giám đốc",
+    "since": "2022-10-11"
+   },
+   {
+    "name": "Dương Văn Quân",
+    "role": "Phó Tổng giám đốc",
+    "since": "2025-05-28"
+   },
+   {
+    "name": "Nguyễn Việt Dũng",
+    "role": "Phó Tổng giám đốc",
+    "since": "2026-04-24"
+   },
+   {
+    "name": "Nguyễn Thanh Tùng",
+    "role": "Phó Tổng giám đốc",
+    "since": "2026-07-01"
+   },
+   {
+    "name": "Nguyễn Hải Hưng",
+    "role": "Kế toán trưởng",
+    "since": "2011-06-01"
+   }
+  ],
+  "trades": [
+   {
+    "name": "Mai Xuân Hiền",
+    "role": null,
+    "side": "Bán",
+    "executed": -20200,
+    "to": "2025-10-21",
+    "after": 0.002048
+   },
+   {
+    "name": "Đỗ Thị Thanh Thúy",
+    "role": null,
+    "side": "Mua",
+    "executed": 5000,
+    "to": "2025-09-15",
+    "after": 9.311e-05
+   },
+   {
+    "name": "Phạm Thị Minh Tú",
+    "role": null,
+    "side": "Mua",
+    "executed": 9000,
+    "to": "2021-09-30",
+    "after": 0.000278
+   },
+   {
+    "name": "Trần Thu Huyền",
+    "role": "Thành viên HĐQT",
+    "side": "Mua",
+    "executed": 50000,
+    "to": "2021-08-25",
+    "after": 0
+   },
+   {
+    "name": "Trần Tiến Duy",
+    "role": "Giám đốc",
+    "side": "Mua",
+    "executed": 12000,
+    "to": "2021-03-18",
+    "after": 0
+   },
+   {
+    "name": "International Finance Corporation",
+    "role": null,
+    "side": "Mua",
+    "executed": 55711914,
+    "to": "2020-01-09",
+    "after": 4.99
+   },
+   {
+    "name": "IFC Capitalization ( Equity ) Fund L.P",
+    "role": null,
+    "side": "Bán",
+    "executed": -57372184,
+    "to": "2019-11-14",
+    "after": 6.49
+   },
+   {
+    "name": "Nguyễn Hoàng Dũng",
+    "role": "Phó Giám đốc",
+    "side": "Bán",
+    "executed": -42000,
+    "to": "2018-06-10",
+    "after": 0
+   },
+   {
+    "name": "Trần Công Quỳnh Lân",
+    "role": "Phó Tổng giám đốc",
+    "side": "Bán",
+    "executed": -31920,
+    "to": "2018-01-24",
+    "after": 0
+   }
+  ],
+  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)"
+ },
+ "price": {
+  "series": [
+   {
+    "d": "2023-10-02",
+    "c": 18100
+   },
+   {
+    "d": "2023-10-03",
+    "c": 17590
+   },
+   {
+    "d": "2023-10-04",
+    "c": 17460
+   },
+   {
+    "d": "2023-10-05",
+    "c": 16990
+   },
+   {
+    "d": "2023-10-06",
+    "c": 17340
+   },
+   {
+    "d": "2023-10-09",
+    "c": 17620
+   },
+   {
+    "d": "2023-10-10",
+    "c": 17710
+   },
+   {
+    "d": "2023-10-11",
+    "c": 17840
+   },
+   {
+    "d": "2023-10-12",
+    "c": 17890
+   },
+   {
+    "d": "2023-10-13",
+    "c": 17710
+   },
+   {
+    "d": "2023-10-16",
+    "c": 17400
+   },
+   {
+    "d": "2023-10-17",
+    "c": 17280
+   },
+   {
+    "d": "2023-10-18",
+    "c": 17140
+   },
+   {
+    "d": "2023-10-19",
+    "c": 17280
+   },
+   {
+    "d": "2023-10-20",
+    "c": 17780
+   },
+   {
+    "d": "2023-10-23",
+    "c": 17710
+   },
+   {
+    "d": "2023-10-24",
+    "c": 17840
+   },
+   {
+    "d": "2023-10-25",
+    "c": 17530
+   },
+   {
+    "d": "2023-10-26",
+    "c": 17140
+   },
+   {
+    "d": "2023-10-27",
+    "c": 17050
+   },
+   {
+    "d": "2023-10-30",
+    "c": 16710
+   },
+   {
+    "d": "2023-10-31",
+    "c": 16740
+   },
+   {
+    "d": "2023-11-01",
+    "c": 16560
+   },
+   {
+    "d": "2023-11-02",
+    "c": 17080
+   },
+   {
+    "d": "2023-11-03",
+    "c": 16930
+   },
+   {
+    "d": "2023-11-06",
+    "c": 17250
+   },
+   {
+    "d": "2023-11-07",
+    "c": 17250
+   },
+   {
+    "d": "2023-11-08",
+    "c": 17690
+   },
+   {
+    "d": "2023-11-09",
+    "c": 17840
+   },
+   {
+    "d": "2023-11-10",
+    "c": 17780
+   },
+   {
+    "d": "2023-11-13",
+    "c": 17780
+   },
+   {
+    "d": "2023-11-14",
+    "c": 18010
+   },
+   {
+    "d": "2023-11-15",
+    "c": 18260
+   },
+   {
+    "d": "2023-11-16",
+    "c": 18280
+   },
+   {
+    "d": "2023-11-17",
+    "c": 17950
+   },
+   {
+    "d": "2023-11-20",
+    "c": 17870
+   },
+   {
+    "d": "2023-11-21",
+    "c": 17780
+   },
+   {
+    "d": "2023-11-22",
+    "c": 17890
+   },
+   {
+    "d": "2023-11-23",
+    "c": 17650
+   },
+   {
+    "d": "2023-11-24",
+    "c": 17890
+   },
+   {
+    "d": "2023-11-27",
+    "c": 17780
+   },
+   {
+    "d": "2023-11-28",
+    "c": 17710
+   },
+   {
+    "d": "2023-11-29",
+    "c": 17780
+   },
+   {
+    "d": "2023-11-30",
+    "c": 17770
+   },
+   {
+    "d": "2023-12-01",
+    "c": 17770
+   },
+   {
+    "d": "2023-12-04",
+    "c": 17930
+   },
+   {
+    "d": "2023-12-05",
+    "c": 17900
+   },
+   {
+    "d": "2023-12-06",
+    "c": 18000
+   },
+   {
+    "d": "2023-12-07",
+    "c": 18170
+   },
+   {
+    "d": "2023-12-08",
+    "c": 18170
+   },
+   {
+    "d": "2023-12-11",
+    "c": 18130
+   },
+   {
+    "d": "2023-12-12",
+    "c": 18240
+   },
+   {
+    "d": "2023-12-13",
+    "c": 18070
+   },
+   {
+    "d": "2023-12-14",
+    "c": 18070
+   },
+   {
+    "d": "2023-12-15",
+    "c": 18030
+   },
+   {
+    "d": "2023-12-18",
+    "c": 17600
+   },
+   {
+    "d": "2023-12-19",
+    "c": 17900
+   },
+   {
+    "d": "2023-12-20",
+    "c": 17930
+   },
+   {
+    "d": "2023-12-21",
+    "c": 17930
+   },
+   {
+    "d": "2023-12-22",
+    "c": 17870
+   },
+   {
+    "d": "2023-12-25",
+    "c": 18170
+   },
+   {
+    "d": "2023-12-26",
+    "c": 18100
+   },
+   {
+    "d": "2023-12-27",
+    "c": 18130
+   },
+   {
+    "d": "2023-12-28",
+    "c": 18300
+   },
+   {
+    "d": "2023-12-29",
+    "c": 18300
+   },
+   {
+    "d": "2024-01-02",
+    "c": 18370
+   },
+   {
+    "d": "2024-01-03",
+    "c": 18640
+   },
+   {
+    "d": "2024-01-04",
+    "c": 19310
+   },
+   {
+    "d": "2024-01-05",
+    "c": 19590
+   },
+   {
+    "d": "2024-01-08",
+    "c": 19950
+   },
+   {
+    "d": "2024-01-09",
+    "c": 20270
+   },
+   {
+    "d": "2024-01-10",
+    "c": 20940
+   },
+   {
+    "d": "2024-01-11",
+    "c": 20940
+   },
+   {
+    "d": "2024-01-12",
+    "c": 21280
+   },
+   {
+    "d": "2024-01-15",
+    "c": 21210
+   },
+   {
+    "d": "2024-01-16",
+    "c": 21210
+   },
+   {
+    "d": "2024-01-17",
+    "c": 21040
+   },
+   {
+    "d": "2024-01-18",
+    "c": 21280
+   },
+   {
+    "d": "2024-01-19",
+    "c": 22020
+   },
+   {
+    "d": "2024-01-22",
+    "c": 22050
+   },
+   {
+    "d": "2024-01-23",
+    "c": 21750
+   },
+   {
+    "d": "2024-01-24",
+    "c": 21610
+   },
+   {
+    "d": "2024-01-25",
+    "c": 21650
+   },
+   {
+    "d": "2024-01-26",
+    "c": 21680
+   },
+   {
+    "d": "2024-01-29",
+    "c": 21810
+   },
+   {
+    "d": "2024-01-30",
+    "c": 21750
+   },
+   {
+    "d": "2024-01-31",
+    "c": 21350
+   },
+   {
+    "d": "2024-02-01",
+    "c": 21650
+   },
+   {
+    "d": "2024-02-02",
+    "c": 21410
+   },
+   {
+    "d": "2024-02-05",
+    "c": 22900
+   },
+   {
+    "d": "2024-02-06",
+    "c": 23230
+   },
+   {
+    "d": "2024-02-07",
+    "c": 23970
+   },
+   {
+    "d": "2024-02-15",
+    "c": 23640
+   },
+   {
+    "d": "2024-02-16",
+    "c": 23810
+   },
+   {
+    "d": "2024-02-19",
+    "c": 23910
+   },
+   {
+    "d": "2024-02-20",
+    "c": 23770
+   },
+   {
+    "d": "2024-02-21",
+    "c": 24010
+   },
+   {
+    "d": "2024-02-22",
+    "c": 24110
+   },
+   {
+    "d": "2024-02-23",
+    "c": 23770
+   },
+   {
+    "d": "2024-02-26",
+    "c": 24080
+   },
+   {
+    "d": "2024-02-27",
+    "c": 24410
+   },
+   {
+    "d": "2024-02-28",
+    "c": 24280
+   },
+   {
+    "d": "2024-02-29",
+    "c": 24010
+   },
+   {
+    "d": "2024-03-01",
+    "c": 24040
+   },
+   {
+    "d": "2024-03-04",
+    "c": 24320
+   },
+   {
+    "d": "2024-03-05",
+    "c": 24620
+   },
+   {
+    "d": "2024-03-06",
+    "c": 24380
+   },
+   {
+    "d": "2024-03-07",
+    "c": 24180
+   },
+   {
+    "d": "2024-03-08",
+    "c": 23300
+   },
+   {
+    "d": "2024-03-11",
+    "c": 23070
+   },
+   {
+    "d": "2024-03-12",
+    "c": 23300
+   },
+   {
+    "d": "2024-03-13",
+    "c": 23740
+   },
+   {
+    "d": "2024-03-14",
+    "c": 23260
+   },
+   {
+    "d": "2024-03-15",
+    "c": 23470
+   },
+   {
+    "d": "2024-03-18",
+    "c": 22490
+   },
+   {
+    "d": "2024-03-19",
+    "c": 22490
+   },
+   {
+    "d": "2024-03-20",
+    "c": 23200
+   },
+   {
+    "d": "2024-03-21",
+    "c": 23580
+   },
+   {
+    "d": "2024-03-22",
+    "c": 24110
+   },
+   {
+    "d": "2024-03-25",
+    "c": 23440
+   },
+   {
+    "d": "2024-03-26",
+    "c": 23770
+   },
+   {
+    "d": "2024-03-27",
+    "c": 23970
+   },
+   {
+    "d": "2024-03-28",
+    "c": 24150
+   },
+   {
+    "d": "2024-03-29",
+    "c": 24010
+   },
+   {
+    "d": "2024-04-01",
+    "c": 23640
+   },
+   {
+    "d": "2024-04-02",
+    "c": 23640
+   },
+   {
+    "d": "2024-04-03",
+    "c": 23010
+   },
+   {
+    "d": "2024-04-04",
+    "c": 22660
+   },
+   {
+    "d": "2024-04-05",
+    "c": 22430
+   },
+   {
+    "d": "2024-04-08",
+    "c": 22620
+   },
+   {
+    "d": "2024-04-09",
+    "c": 23130
+   },
+   {
+    "d": "2024-04-10",
+    "c": 22730
+   },
+   {
+    "d": "2024-04-11",
+    "c": 22760
+   },
+   {
+    "d": "2024-04-12",
+    "c": 24250
+   },
+   {
+    "d": "2024-04-15",
+    "c": 22590
+   },
+   {
+    "d": "2024-04-16",
+    "c": 23010
+   },
+   {
+    "d": "2024-04-17",
+    "c": 22090
+   },
+   {
+    "d": "2024-04-19",
+    "c": 21350
+   },
+   {
+    "d": "2024-04-22",
+    "c": 21810
+   },
+   {
+    "d": "2024-04-23",
+    "c": 21280
+   },
+   {
+    "d": "2024-04-24",
+    "c": 22260
+   },
+   {
+    "d": "2024-04-25",
+    "c": 22290
+   },
+   {
+    "d": "2024-04-26",
+    "c": 22160
+   },
+   {
+    "d": "2024-05-02",
+    "c": 21850
+   },
+   {
+    "d": "2024-05-03",
+    "c": 21880
+   },
+   {
+    "d": "2024-05-06",
+    "c": 22430
+   },
+   {
+    "d": "2024-05-07",
+    "c": 22160
+   },
+   {
+    "d": "2024-05-08",
+    "c": 22020
+   },
+   {
+    "d": "2024-05-09",
+    "c": 22230
+   },
+   {
+    "d": "2024-05-10",
+    "c": 22190
+   },
+   {
+    "d": "2024-05-13",
+    "c": 21810
+   },
+   {
+    "d": "2024-05-14",
+    "c": 21810
+   },
+   {
+    "d": "2024-05-15",
+    "c": 21850
+   },
+   {
+    "d": "2024-05-16",
+    "c": 22430
+   },
+   {
+    "d": "2024-05-17",
+    "c": 22360
+   },
+   {
+    "d": "2024-05-20",
+    "c": 22520
+   },
+   {
+    "d": "2024-05-21",
+    "c": 22730
+   },
+   {
+    "d": "2024-05-22",
+    "c": 22290
+   },
+   {
+    "d": "2024-05-23",
+    "c": 22450
+   },
+   {
+    "d": "2024-05-24",
+    "c": 21950
+   },
+   {
+    "d": "2024-05-27",
+    "c": 21880
+   },
+   {
+    "d": "2024-05-28",
+    "c": 21750
+   },
+   {
+    "d": "2024-05-29",
+    "c": 21380
+   },
+   {
+    "d": "2024-05-30",
+    "c": 21480
+   },
+   {
+    "d": "2024-05-31",
+    "c": 21550
+   },
+   {
+    "d": "2024-06-03",
+    "c": 22020
+   },
+   {
+    "d": "2024-06-04",
+    "c": 22160
+   },
+   {
+    "d": "2024-06-05",
+    "c": 21880
+   },
+   {
+    "d": "2024-06-06",
+    "c": 22020
+   },
+   {
+    "d": "2024-06-07",
+    "c": 22160
+   },
+   {
+    "d": "2024-06-10",
+    "c": 22620
+   },
+   {
+    "d": "2024-06-11",
+    "c": 22430
+   },
+   {
+    "d": "2024-06-12",
+    "c": 22620
+   },
+   {
+    "d": "2024-06-13",
+    "c": 22900
+   },
+   {
+    "d": "2024-06-14",
+    "c": 22160
+   },
+   {
+    "d": "2024-06-17",
+    "c": 22120
+   },
+   {
+    "d": "2024-06-18",
+    "c": 21850
+   },
+   {
+    "d": "2024-06-19",
+    "c": 21950
+   },
+   {
+    "d": "2024-06-20",
+    "c": 21750
+   },
+   {
+    "d": "2024-06-21",
+    "c": 21750
+   },
+   {
+    "d": "2024-06-24",
+    "c": 21380
+   },
+   {
+    "d": "2024-06-25",
+    "c": 21350
+   },
+   {
+    "d": "2024-06-26",
+    "c": 21140
+   },
+   {
+    "d": "2024-06-27",
+    "c": 21140
+   },
+   {
+    "d": "2024-06-28",
+    "c": 20940
+   },
+   {
+    "d": "2024-07-01",
+    "c": 21610
+   },
+   {
+    "d": "2024-07-02",
+    "c": 21810
+   },
+   {
+    "d": "2024-07-03",
+    "c": 21850
+   },
+   {
+    "d": "2024-07-04",
+    "c": 21810
+   },
+   {
+    "d": "2024-07-05",
+    "c": 22090
+   },
+   {
+    "d": "2024-07-08",
+    "c": 22020
+   },
+   {
+    "d": "2024-07-09",
+    "c": 22090
+   },
+   {
+    "d": "2024-07-10",
+    "c": 21880
+   },
+   {
+    "d": "2024-07-11",
+    "c": 21750
+   },
+   {
+    "d": "2024-07-12",
+    "c": 21610
+   },
+   {
+    "d": "2024-07-15",
+    "c": 21680
+   },
+   {
+    "d": "2024-07-16",
+    "c": 21950
+   },
+   {
+    "d": "2024-07-17",
+    "c": 22290
+   },
+   {
+    "d": "2024-07-18",
+    "c": 22590
+   },
+   {
+    "d": "2024-07-19",
+    "c": 22560
+   },
+   {
+    "d": "2024-07-22",
+    "c": 22730
+   },
+   {
+    "d": "2024-07-23",
+    "c": 21880
+   },
+   {
+    "d": "2024-07-24",
+    "c": 21750
+   },
+   {
+    "d": "2024-07-25",
+    "c": 21310
+   },
+   {
+    "d": "2024-07-26",
+    "c": 21650
+   },
+   {
+    "d": "2024-07-29",
+    "c": 21680
+   },
+   {
+    "d": "2024-07-30",
+    "c": 21610
+   },
+   {
+    "d": "2024-07-31",
+    "c": 21610
+   },
+   {
+    "d": "2024-08-01",
+    "c": 21240
+   },
+   {
+    "d": "2024-08-02",
+    "c": 21310
+   },
+   {
+    "d": "2024-08-05",
+    "c": 20370
+   },
+   {
+    "d": "2024-08-06",
+    "c": 20630
+   },
+   {
+    "d": "2024-08-07",
+    "c": 20400
+   },
+   {
+    "d": "2024-08-08",
+    "c": 20400
+   },
+   {
+    "d": "2024-08-09",
+    "c": 21280
+   },
+   {
+    "d": "2024-08-12",
+    "c": 21410
+   },
+   {
+    "d": "2024-08-13",
+    "c": 21510
+   },
+   {
+    "d": "2024-08-14",
+    "c": 21480
+   },
+   {
+    "d": "2024-08-15",
+    "c": 21510
+   },
+   {
+    "d": "2024-08-16",
+    "c": 21950
+   },
+   {
+    "d": "2024-08-19",
+    "c": 22050
+   },
+   {
+    "d": "2024-08-20",
+    "c": 22430
+   },
+   {
+    "d": "2024-08-21",
+    "c": 23100
+   },
+   {
+    "d": "2024-08-22",
+    "c": 23370
+   },
+   {
+    "d": "2024-08-23",
+    "c": 23610
+   },
+   {
+    "d": "2024-08-26",
+    "c": 23370
+   },
+   {
+    "d": "2024-08-27",
+    "c": 23540
+   },
+   {
+    "d": "2024-08-28",
+    "c": 23580
+   },
+   {
+    "d": "2024-08-29",
+    "c": 23640
+   },
+   {
+    "d": "2024-08-30",
+    "c": 23680
+   },
+   {
+    "d": "2024-09-04",
+    "c": 23840
+   },
+   {
+    "d": "2024-09-05",
+    "c": 23640
+   },
+   {
+    "d": "2024-09-06",
+    "c": 23970
+   },
+   {
+    "d": "2024-09-09",
+    "c": 23950
+   },
+   {
+    "d": "2024-09-10",
+    "c": 23610
+   },
+   {
+    "d": "2024-09-11",
+    "c": 23610
+   },
+   {
+    "d": "2024-09-12",
+    "c": 23640
+   },
+   {
+    "d": "2024-09-13",
+    "c": 23580
+   },
+   {
+    "d": "2024-09-16",
+    "c": 23400
+   },
+   {
+    "d": "2024-09-17",
+    "c": 23610
+   },
+   {
+    "d": "2024-09-18",
+    "c": 24110
+   },
+   {
+    "d": "2024-09-19",
+    "c": 24320
+   },
+   {
+    "d": "2024-09-20",
+    "c": 24320
+   },
+   {
+    "d": "2024-09-23",
+    "c": 24250
+   },
+   {
+    "d": "2024-09-24",
+    "c": 24350
+   },
+   {
+    "d": "2024-09-25",
+    "c": 24320
+   },
+   {
+    "d": "2024-09-26",
+    "c": 24590
+   },
+   {
+    "d": "2024-09-27",
+    "c": 24990
+   },
+   {
+    "d": "2024-09-30",
+    "c": 24960
+   },
+   {
+    "d": "2024-10-01",
+    "c": 24660
+   },
+   {
+    "d": "2024-10-02",
+    "c": 24320
+   },
+   {
+    "d": "2024-10-03",
+    "c": 24450
+   },
+   {
+    "d": "2024-10-04",
+    "c": 24040
+   },
+   {
+    "d": "2024-10-07",
+    "c": 24180
+   },
+   {
+    "d": "2024-10-08",
+    "c": 24150
+   },
+   {
+    "d": "2024-10-09",
+    "c": 24380
+   },
+   {
+    "d": "2024-10-10",
+    "c": 24410
+   },
+   {
+    "d": "2024-10-11",
+    "c": 24480
+   },
+   {
+    "d": "2024-10-14",
+    "c": 24350
+   },
+   {
+    "d": "2024-10-15",
+    "c": 24410
+   },
+   {
+    "d": "2024-10-16",
+    "c": 24520
+   },
+   {
+    "d": "2024-10-17",
+    "c": 24690
+   },
+   {
+    "d": "2024-10-18",
+    "c": 24480
+   },
+   {
+    "d": "2024-10-21",
+    "c": 23970
+   },
+   {
+    "d": "2024-10-22",
+    "c": 23640
+   },
+   {
+    "d": "2024-10-23",
+    "c": 23680
+   },
+   {
+    "d": "2024-10-24",
+    "c": 23540
+   },
+   {
+    "d": "2024-10-25",
+    "c": 23370
+   },
+   {
+    "d": "2024-10-28",
+    "c": 23440
+   },
+   {
+    "d": "2024-10-29",
+    "c": 23610
+   },
+   {
+    "d": "2024-10-30",
+    "c": 23470
+   },
+   {
+    "d": "2024-10-31",
+    "c": 24110
+   },
+   {
+    "d": "2024-11-01",
+    "c": 24040
+   },
+   {
+    "d": "2024-11-04",
+    "c": 24110
+   },
+   {
+    "d": "2024-11-05",
+    "c": 23680
+   },
+   {
+    "d": "2024-11-06",
+    "c": 24250
+   },
+   {
+    "d": "2024-11-07",
+    "c": 24040
+   },
+   {
+    "d": "2024-11-08",
+    "c": 23640
+   },
+   {
+    "d": "2024-11-11",
+    "c": 23610
+   },
+   {
+    "d": "2024-11-12",
+    "c": 23300
+   },
+   {
+    "d": "2024-11-13",
+    "c": 23200
+   },
+   {
+    "d": "2024-11-14",
+    "c": 22690
+   },
+   {
+    "d": "2024-11-15",
+    "c": 22360
+   },
+   {
+    "d": "2024-11-18",
+    "c": 22490
+   },
+   {
+    "d": "2024-11-19",
+    "c": 22520
+   },
+   {
+    "d": "2024-11-20",
+    "c": 22970
+   },
+   {
+    "d": "2024-11-21",
+    "c": 23640
+   },
+   {
+    "d": "2024-11-22",
+    "c": 23640
+   },
+   {
+    "d": "2024-11-25",
+    "c": 23710
+   },
+   {
+    "d": "2024-11-26",
+    "c": 23840
+   },
+   {
+    "d": "2024-11-27",
+    "c": 23740
+   },
+   {
+    "d": "2024-11-28",
+    "c": 23910
+   },
+   {
+    "d": "2024-11-29",
+    "c": 24150
+   },
+   {
+    "d": "2024-12-02",
+    "c": 24220
+   },
+   {
+    "d": "2024-12-03",
+    "c": 24250
+   },
+   {
+    "d": "2024-12-04",
+    "c": 23840
+   },
+   {
+    "d": "2024-12-05",
+    "c": 24590
+   },
+   {
+    "d": "2024-12-06",
+    "c": 24480
+   },
+   {
+    "d": "2024-12-09",
+    "c": 24620
+   },
+   {
+    "d": "2024-12-10",
+    "c": 24550
+   },
+   {
+    "d": "2024-12-11",
+    "c": 24550
+   },
+   {
+    "d": "2024-12-12",
+    "c": 24520
+   },
+   {
+    "d": "2024-12-13",
+    "c": 24550
+   },
+   {
+    "d": "2024-12-16",
+    "c": 24480
+   },
+   {
+    "d": "2024-12-17",
+    "c": 24480
+   },
+   {
+    "d": "2024-12-18",
+    "c": 24480
+   },
+   {
+    "d": "2024-12-19",
+    "c": 24450
+   },
+   {
+    "d": "2024-12-20",
+    "c": 24410
+   },
+   {
+    "d": "2024-12-23",
+    "c": 24480
+   },
+   {
+    "d": "2024-12-24",
+    "c": 24450
+   },
+   {
+    "d": "2024-12-25",
+    "c": 25800
+   },
+   {
+    "d": "2024-12-26",
+    "c": 25800
+   },
+   {
+    "d": "2024-12-27",
+    "c": 26210
+   },
+   {
+    "d": "2024-12-30",
+    "c": 26280
+   },
+   {
+    "d": "2024-12-31",
+    "c": 25540
+   },
+   {
+    "d": "2025-01-02",
+    "c": 25730
+   },
+   {
+    "d": "2025-01-03",
+    "c": 25120
+   },
+   {
+    "d": "2025-01-06",
+    "c": 25120
+   },
+   {
+    "d": "2025-01-07",
+    "c": 25300
+   },
+   {
+    "d": "2025-01-08",
+    "c": 25540
+   },
+   {
+    "d": "2025-01-09",
+    "c": 25260
+   },
+   {
+    "d": "2025-01-10",
+    "c": 25330
+   },
+   {
+    "d": "2025-01-13",
+    "c": 25470
+   },
+   {
+    "d": "2025-01-14",
+    "c": 24960
+   },
+   {
+    "d": "2025-01-15",
+    "c": 24820
+   },
+   {
+    "d": "2025-01-16",
+    "c": 24860
+   },
+   {
+    "d": "2025-01-17",
+    "c": 25120
+   },
+   {
+    "d": "2025-01-20",
+    "c": 25190
+   },
+   {
+    "d": "2025-01-21",
+    "c": 25190
+   },
+   {
+    "d": "2025-01-22",
+    "c": 25190
+   },
+   {
+    "d": "2025-01-23",
+    "c": 25730
+   },
+   {
+    "d": "2025-01-24",
+    "c": 25670
+   },
+   {
+    "d": "2025-02-03",
+    "c": 25690
+   },
+   {
+    "d": "2025-02-04",
+    "c": 26610
+   },
+   {
+    "d": "2025-02-05",
+    "c": 26570
+   },
+   {
+    "d": "2025-02-06",
+    "c": 26680
+   },
+   {
+    "d": "2025-02-07",
+    "c": 27560
+   },
+   {
+    "d": "2025-02-10",
+    "c": 27220
+   },
+   {
+    "d": "2025-02-11",
+    "c": 27490
+   },
+   {
+    "d": "2025-02-12",
+    "c": 27350
+   },
+   {
+    "d": "2025-02-13",
+    "c": 27600
+   },
+   {
+    "d": "2025-02-14",
+    "c": 27390
+   },
+   {
+    "d": "2025-02-17",
+    "c": 27120
+   },
+   {
+    "d": "2025-02-18",
+    "c": 27220
+   },
+   {
+    "d": "2025-02-19",
+    "c": 27350
+   },
+   {
+    "d": "2025-02-20",
+    "c": 27600
+   },
+   {
+    "d": "2025-02-21",
+    "c": 28030
+   },
+   {
+    "d": "2025-02-24",
+    "c": 28290
+   },
+   {
+    "d": "2025-02-25",
+    "c": 28270
+   },
+   {
+    "d": "2025-02-26",
+    "c": 27930
+   },
+   {
+    "d": "2025-02-27",
+    "c": 28030
+   },
+   {
+    "d": "2025-02-28",
+    "c": 28030
+   },
+   {
+    "d": "2025-03-03",
+    "c": 27860
+   },
+   {
+    "d": "2025-03-04",
+    "c": 28100
+   },
+   {
+    "d": "2025-03-05",
+    "c": 27830
+   },
+   {
+    "d": "2025-03-06",
+    "c": 28140
+   },
+   {
+    "d": "2025-03-07",
+    "c": 28640
+   },
+   {
+    "d": "2025-03-10",
+    "c": 28670
+   },
+   {
+    "d": "2025-03-11",
+    "c": 28780
+   },
+   {
+    "d": "2025-03-12",
+    "c": 28810
+   },
+   {
+    "d": "2025-03-13",
+    "c": 28570
+   },
+   {
+    "d": "2025-03-14",
+    "c": 28570
+   },
+   {
+    "d": "2025-03-17",
+    "c": 28780
+   },
+   {
+    "d": "2025-03-18",
+    "c": 28360
+   },
+   {
+    "d": "2025-03-19",
+    "c": 28070
+   },
+   {
+    "d": "2025-03-20",
+    "c": 28100
+   },
+   {
+    "d": "2025-03-21",
+    "c": 28140
+   },
+   {
+    "d": "2025-03-24",
+    "c": 28230
+   },
+   {
+    "d": "2025-03-25",
+    "c": 28570
+   },
+   {
+    "d": "2025-03-26",
+    "c": 28200
+   },
+   {
+    "d": "2025-03-27",
+    "c": 28100
+   },
+   {
+    "d": "2025-03-28",
+    "c": 27930
+   },
+   {
+    "d": "2025-03-31",
+    "c": 28000
+   },
+   {
+    "d": "2025-04-01",
+    "c": 28270
+   },
+   {
+    "d": "2025-04-02",
+    "c": 28330
+   },
+   {
+    "d": "2025-04-03",
+    "c": 26370
+   },
+   {
+    "d": "2025-04-04",
+    "c": 26140
+   },
+   {
+    "d": "2025-04-08",
+    "c": 24320
+   },
+   {
+    "d": "2025-04-09",
+    "c": 22830
+   },
+   {
+    "d": "2025-04-10",
+    "c": 24410
+   },
+   {
+    "d": "2025-04-11",
+    "c": 25930
+   },
+   {
+    "d": "2025-04-14",
+    "c": 25870
+   },
+   {
+    "d": "2025-04-15",
+    "c": 25500
+   },
+   {
+    "d": "2025-04-16",
+    "c": 25120
+   },
+   {
+    "d": "2025-04-17",
+    "c": 25160
+   },
+   {
+    "d": "2025-04-18",
+    "c": 25300
+   },
+   {
+    "d": "2025-04-21",
+    "c": 25160
+   },
+   {
+    "d": "2025-04-22",
+    "c": 25050
+   },
+   {
+    "d": "2025-04-23",
+    "c": 25190
+   },
+   {
+    "d": "2025-04-24",
+    "c": 25260
+   },
+   {
+    "d": "2025-04-25",
+    "c": 25090
+   },
+   {
+    "d": "2025-04-28",
+    "c": 24890
+   },
+   {
+    "d": "2025-04-29",
+    "c": 25120
+   },
+   {
+    "d": "2025-05-05",
+    "c": 25230
+   },
+   {
+    "d": "2025-05-06",
+    "c": 25400
+   },
+   {
+    "d": "2025-05-07",
+    "c": 25300
+   },
+   {
+    "d": "2025-05-08",
+    "c": 25360
+   },
+   {
+    "d": "2025-05-09",
+    "c": 25300
+   },
+   {
+    "d": "2025-05-12",
+    "c": 25570
+   },
+   {
+    "d": "2025-05-13",
+    "c": 26610
+   },
+   {
+    "d": "2025-05-14",
+    "c": 26750
+   },
+   {
+    "d": "2025-05-15",
+    "c": 26850
+   },
+   {
+    "d": "2025-05-16",
+    "c": 26340
+   },
+   {
+    "d": "2025-05-19",
+    "c": 26410
+   },
+   {
+    "d": "2025-05-20",
+    "c": 26680
+   },
+   {
+    "d": "2025-05-21",
+    "c": 26640
+   },
+   {
+    "d": "2025-05-22",
+    "c": 26250
+   },
+   {
+    "d": "2025-05-23",
+    "c": 26210
+   },
+   {
+    "d": "2025-05-26",
+    "c": 26510
+   },
+   {
+    "d": "2025-05-27",
+    "c": 26750
+   },
+   {
+    "d": "2025-05-28",
+    "c": 26710
+   },
+   {
+    "d": "2025-05-29",
+    "c": 26280
+   },
+   {
+    "d": "2025-05-30",
+    "c": 25870
+   },
+   {
+    "d": "2025-06-02",
+    "c": 25930
+   },
+   {
+    "d": "2025-06-03",
+    "c": 26040
+   },
+   {
+    "d": "2025-06-04",
+    "c": 26000
+   },
+   {
+    "d": "2025-06-05",
+    "c": 26040
+   },
+   {
+    "d": "2025-06-06",
+    "c": 25800
+   },
+   {
+    "d": "2025-06-09",
+    "c": 25670
+   },
+   {
+    "d": "2025-06-10",
+    "c": 25570
+   },
+   {
+    "d": "2025-06-11",
+    "c": 25670
+   },
+   {
+    "d": "2025-06-12",
+    "c": 26000
+   },
+   {
+    "d": "2025-06-13",
+    "c": 26960
+   },
+   {
+    "d": "2025-06-16",
+    "c": 27220
+   },
+   {
+    "d": "2025-06-17",
+    "c": 27260
+   },
+   {
+    "d": "2025-06-18",
+    "c": 27120
+   },
+   {
+    "d": "2025-06-19",
+    "c": 27490
+   },
+   {
+    "d": "2025-06-20",
+    "c": 27900
+   },
+   {
+    "d": "2025-06-23",
+    "c": 27930
+   },
+   {
+    "d": "2025-06-24",
+    "c": 28070
+   },
+   {
+    "d": "2025-06-25",
+    "c": 28170
+   },
+   {
+    "d": "2025-06-26",
+    "c": 28290
+   },
+   {
+    "d": "2025-06-27",
+    "c": 28330
+   },
+   {
+    "d": "2025-06-30",
+    "c": 28290
+   },
+   {
+    "d": "2025-07-01",
+    "c": 28290
+   },
+   {
+    "d": "2025-07-02",
+    "c": 28290
+   },
+   {
+    "d": "2025-07-03",
+    "c": 28710
+   },
+   {
+    "d": "2025-07-04",
+    "c": 28850
+   },
+   {
+    "d": "2025-07-07",
+    "c": 29990
+   },
+   {
+    "d": "2025-07-08",
+    "c": 29990
+   },
+   {
+    "d": "2025-07-09",
+    "c": 30390
+   },
+   {
+    "d": "2025-07-10",
+    "c": 30390
+   },
+   {
+    "d": "2025-07-11",
+    "c": 30130
+   },
+   {
+    "d": "2025-07-14",
+    "c": 29920
+   },
+   {
+    "d": "2025-07-15",
+    "c": 29820
+   },
+   {
+    "d": "2025-07-16",
+    "c": 30360
+   },
+   {
+    "d": "2025-07-17",
+    "c": 30390
+   },
+   {
+    "d": "2025-07-18",
+    "c": 30430
+   },
+   {
+    "d": "2025-07-21",
+    "c": 30530
+   },
+   {
+    "d": "2025-07-22",
+    "c": 30800
+   },
+   {
+    "d": "2025-07-23",
+    "c": 30840
+   },
+   {
+    "d": "2025-07-24",
+    "c": 30870
+   },
+   {
+    "d": "2025-07-25",
+    "c": 30800
+   },
+   {
+    "d": "2025-07-28",
+    "c": 30800
+   },
+   {
+    "d": "2025-07-29",
+    "c": 29580
+   },
+   {
+    "d": "2025-07-30",
+    "c": 31210
+   },
+   {
+    "d": "2025-07-31",
+    "c": 31000
+   },
+   {
+    "d": "2025-08-01",
+    "c": 29920
+   },
+   {
+    "d": "2025-08-04",
+    "c": 30840
+   },
+   {
+    "d": "2025-08-05",
+    "c": 31410
+   },
+   {
+    "d": "2025-08-06",
+    "c": 32090
+   },
+   {
+    "d": "2025-08-07",
+    "c": 32320
+   },
+   {
+    "d": "2025-08-08",
+    "c": 32220
+   },
+   {
+    "d": "2025-08-11",
+    "c": 32090
+   },
+   {
+    "d": "2025-08-12",
+    "c": 32420
+   },
+   {
+    "d": "2025-08-13",
+    "c": 33500
+   },
+   {
+    "d": "2025-08-14",
+    "c": 33910
+   },
+   {
+    "d": "2025-08-15",
+    "c": 33100
+   },
+   {
+    "d": "2025-08-18",
+    "c": 32760
+   },
+   {
+    "d": "2025-08-19",
+    "c": 33500
+   },
+   {
+    "d": "2025-08-20",
+    "c": 34170
+   },
+   {
+    "d": "2025-08-21",
+    "c": 34980
+   },
+   {
+    "d": "2025-08-22",
+    "c": 34380
+   },
+   {
+    "d": "2025-08-25",
+    "c": 33170
+   },
+   {
+    "d": "2025-08-26",
+    "c": 34590
+   },
+   {
+    "d": "2025-08-27",
+    "c": 34520
+   },
+   {
+    "d": "2025-08-28",
+    "c": 34850
+   },
+   {
+    "d": "2025-08-29",
+    "c": 34650
+   },
+   {
+    "d": "2025-09-03",
+    "c": 34170
+   },
+   {
+    "d": "2025-09-04",
+    "c": 34450
+   },
+   {
+    "d": "2025-09-05",
+    "c": 33980
+   },
+   {
+    "d": "2025-09-08",
+    "c": 33440
+   },
+   {
+    "d": "2025-09-09",
+    "c": 33500
+   },
+   {
+    "d": "2025-09-10",
+    "c": 34110
+   },
+   {
+    "d": "2025-09-11",
+    "c": 34170
+   },
+   {
+    "d": "2025-09-12",
+    "c": 34050
+   },
+   {
+    "d": "2025-09-15",
+    "c": 34850
+   },
+   {
+    "d": "2025-09-16",
+    "c": 35460
+   },
+   {
+    "d": "2025-09-17",
+    "c": 34720
+   },
+   {
+    "d": "2025-09-18",
+    "c": 34590
+   },
+   {
+    "d": "2025-09-19",
+    "c": 34590
+   },
+   {
+    "d": "2025-09-22",
+    "c": 33300
+   },
+   {
+    "d": "2025-09-23",
+    "c": 33770
+   },
+   {
+    "d": "2025-09-24",
+    "c": 34110
+   },
+   {
+    "d": "2025-09-25",
+    "c": 33980
+   },
+   {
+    "d": "2025-09-26",
+    "c": 34240
+   },
+   {
+    "d": "2025-09-29",
+    "c": 34450
+   },
+   {
+    "d": "2025-09-30",
+    "c": 34310
+   },
+   {
+    "d": "2025-10-01",
+    "c": 34780
+   },
+   {
+    "d": "2025-10-02",
+    "c": 34780
+   },
+   {
+    "d": "2025-10-03",
+    "c": 34310
+   },
+   {
+    "d": "2025-10-06",
+    "c": 35400
+   },
+   {
+    "d": "2025-10-07",
+    "c": 34850
+   },
+   {
+    "d": "2025-10-08",
+    "c": 35730
+   },
+   {
+    "d": "2025-10-09",
+    "c": 37150
+   },
+   {
+    "d": "2025-10-10",
+    "c": 37290
+   },
+   {
+    "d": "2025-10-13",
+    "c": 37830
+   },
+   {
+    "d": "2025-10-14",
+    "c": 37040
+   },
+   {
+    "d": "2025-10-15",
+    "c": 37320
+   },
+   {
+    "d": "2025-10-16",
+    "c": 36640
+   },
+   {
+    "d": "2025-10-17",
+    "c": 35540
+   },
+   {
+    "d": "2025-10-20",
+    "c": 33300
+   },
+   {
+    "d": "2025-10-21",
+    "c": 34010
+   },
+   {
+    "d": "2025-10-22",
+    "c": 34390
+   },
+   {
+    "d": "2025-10-23",
+    "c": 33840
+   },
+   {
+    "d": "2025-10-24",
+    "c": 33910
+   },
+   {
+    "d": "2025-10-27",
+    "c": 33090
+   },
+   {
+    "d": "2025-10-28",
+    "c": 33370
+   },
+   {
+    "d": "2025-10-29",
+    "c": 33810
+   },
+   {
+    "d": "2025-10-30",
+    "c": 33500
+   },
+   {
+    "d": "2025-10-31",
+    "c": 33370
+   },
+   {
+    "d": "2025-11-03",
+    "c": 33020
+   },
+   {
+    "d": "2025-11-04",
+    "c": 34010
+   },
+   {
+    "d": "2025-11-05",
+    "c": 34930
+   },
+   {
+    "d": "2025-11-06",
+    "c": 34790
+   },
+   {
+    "d": "2025-11-07",
+    "c": 33370
+   },
+   {
+    "d": "2025-11-10",
+    "c": 32690
+   },
+   {
+    "d": "2025-11-11",
+    "c": 33020
+   },
+   {
+    "d": "2025-11-12",
+    "c": 33500
+   },
+   {
+    "d": "2025-11-13",
+    "c": 33260
+   },
+   {
+    "d": "2025-11-14",
+    "c": 33060
+   },
+   {
+    "d": "2025-11-17",
+    "c": 33260
+   },
+   {
+    "d": "2025-11-18",
+    "c": 33630
+   },
+   {
+    "d": "2025-11-19",
+    "c": 33600
+   },
+   {
+    "d": "2025-11-20",
+    "c": 33440
+   },
+   {
+    "d": "2025-11-21",
+    "c": 33440
+   },
+   {
+    "d": "2025-11-24",
+    "c": 33230
+   },
+   {
+    "d": "2025-11-25",
+    "c": 32790
+   },
+   {
+    "d": "2025-11-26",
+    "c": 33300
+   },
+   {
+    "d": "2025-11-27",
+    "c": 33260
+   },
+   {
+    "d": "2025-11-28",
+    "c": 33370
+   },
+   {
+    "d": "2025-12-01",
+    "c": 32950
+   },
+   {
+    "d": "2025-12-02",
+    "c": 33400
+   },
+   {
+    "d": "2025-12-03",
+    "c": 35410
+   },
+   {
+    "d": "2025-12-04",
+    "c": 35410
+   },
+   {
+    "d": "2025-12-05",
+    "c": 35070
+   },
+   {
+    "d": "2025-12-08",
+    "c": 34790
+   },
+   {
+    "d": "2025-12-09",
+    "c": 34120
+   },
+   {
+    "d": "2025-12-10",
+    "c": 34390
+   },
+   {
+    "d": "2025-12-11",
+    "c": 34120
+   },
+   {
+    "d": "2025-12-12",
+    "c": 33700
+   },
+   {
+    "d": "2025-12-15",
+    "c": 33840
+   },
+   {
+    "d": "2025-12-16",
+    "c": 34730
+   },
+   {
+    "d": "2025-12-17",
+    "c": 34170
+   },
+   {
+    "d": "2025-12-18",
+    "c": 33830
+   },
+   {
+    "d": "2025-12-19",
+    "c": 33930
+   },
+   {
+    "d": "2025-12-22",
+    "c": 34620
+   },
+   {
+    "d": "2025-12-23",
+    "c": 34470
+   },
+   {
+    "d": "2025-12-24",
+    "c": 34770
+   },
+   {
+    "d": "2025-12-25",
+    "c": 34470
+   },
+   {
+    "d": "2025-12-26",
+    "c": 34670
+   },
+   {
+    "d": "2025-12-29",
+    "c": 34770
+   },
+   {
+    "d": "2025-12-30",
+    "c": 35110
+   },
+   {
+    "d": "2025-12-31",
+    "c": 35210
+   },
+   {
+    "d": "2026-01-05",
+    "c": 34960
+   },
+   {
+    "d": "2026-01-06",
+    "c": 35650
+   },
+   {
+    "d": "2026-01-07",
+    "c": 36880
+   },
+   {
+    "d": "2026-01-08",
+    "c": 37620
+   },
+   {
+    "d": "2026-01-09",
+    "c": 40130
+   },
+   {
+    "d": "2026-01-12",
+    "c": 40870
+   },
+   {
+    "d": "2026-01-13",
+    "c": 40670
+   },
+   {
+    "d": "2026-01-14",
+    "c": 40820
+   },
+   {
+    "d": "2026-01-15",
+    "c": 39390
+   },
+   {
+    "d": "2026-01-16",
+    "c": 39000
+   },
+   {
+    "d": "2026-01-19",
+    "c": 39390
+   },
+   {
+    "d": "2026-01-20",
+    "c": 39050
+   },
+   {
+    "d": "2026-01-21",
+    "c": 39590
+   },
+   {
+    "d": "2026-01-22",
+    "c": 39300
+   },
+   {
+    "d": "2026-01-23",
+    "c": 38410
+   },
+   {
+    "d": "2026-01-26",
+    "c": 37620
+   },
+   {
+    "d": "2026-01-27",
+    "c": 37670
+   },
+   {
+    "d": "2026-01-28",
+    "c": 37820
+   },
+   {
+    "d": "2026-01-29",
+    "c": 37720
+   },
+   {
+    "d": "2026-01-30",
+    "c": 38160
+   },
+   {
+    "d": "2026-02-02",
+    "c": 38750
+   },
+   {
+    "d": "2026-02-03",
+    "c": 39100
+   },
+   {
+    "d": "2026-02-04",
+    "c": 39000
+   },
+   {
+    "d": "2026-02-05",
+    "c": 38020
+   },
+   {
+    "d": "2026-02-06",
+    "c": 36830
+   },
+   {
+    "d": "2026-02-09",
+    "c": 36540
+   },
+   {
+    "d": "2026-02-10",
+    "c": 36540
+   },
+   {
+    "d": "2026-02-11",
+    "c": 37330
+   },
+   {
+    "d": "2026-02-12",
+    "c": 37420
+   },
+   {
+    "d": "2026-02-13",
+    "c": 38020
+   },
+   {
+    "d": "2026-02-23",
+    "c": 38110
+   },
+   {
+    "d": "2026-02-24",
+    "c": 37620
+   },
+   {
+    "d": "2026-02-25",
+    "c": 37920
+   },
+   {
+    "d": "2026-02-26",
+    "c": 37920
+   },
+   {
+    "d": "2026-02-27",
+    "c": 37670
+   },
+   {
+    "d": "2026-03-02",
+    "c": 36290
+   },
+   {
+    "d": "2026-03-03",
+    "c": 35360
+   },
+   {
+    "d": "2026-03-04",
+    "c": 35850
+   },
+   {
+    "d": "2026-03-05",
+    "c": 35650
+   },
+   {
+    "d": "2026-03-06",
+    "c": 35110
+   },
+   {
+    "d": "2026-03-09",
+    "c": 32700
+   },
+   {
+    "d": "2026-03-10",
+    "c": 34520
+   },
+   {
+    "d": "2026-03-11",
+    "c": 34570
+   },
+   {
+    "d": "2026-03-12",
+    "c": 33780
+   },
+   {
+    "d": "2026-03-13",
+    "c": 33480
+   },
+   {
+    "d": "2026-03-16",
+    "c": 33630
+   },
+   {
+    "d": "2026-03-17",
+    "c": 33880
+   },
+   {
+    "d": "2026-03-18",
+    "c": 34470
+   },
+   {
+    "d": "2026-03-19",
+    "c": 34130
+   },
+   {
+    "d": "2026-03-20",
+    "c": 33090
+   },
+   {
+    "d": "2026-03-23",
+    "c": 32010
+   },
+   {
+    "d": "2026-03-24",
+    "c": 33040
+   },
+   {
+    "d": "2026-03-25",
+    "c": 33530
+   },
+   {
+    "d": "2026-03-26",
+    "c": 33290
+   },
+   {
+    "d": "2026-03-27",
+    "c": 34270
+   },
+   {
+    "d": "2026-03-30",
+    "c": 33530
+   },
+   {
+    "d": "2026-03-31",
+    "c": 34080
+   },
+   {
+    "d": "2026-04-01",
+    "c": 34220
+   },
+   {
+    "d": "2026-04-02",
+    "c": 33780
+   },
+   {
+    "d": "2026-04-03",
+    "c": 33290
+   },
+   {
+    "d": "2026-04-06",
+    "c": 33190
+   },
+   {
+    "d": "2026-04-07",
+    "c": 33190
+   },
+   {
+    "d": "2026-04-08",
+    "c": 34960
+   },
+   {
+    "d": "2026-04-09",
+    "c": 34470
+   },
+   {
+    "d": "2026-04-10",
+    "c": 34470
+   },
+   {
+    "d": "2026-04-13",
+    "c": 34270
+   },
+   {
+    "d": "2026-04-14",
+    "c": 34370
+   },
+   {
+    "d": "2026-04-15",
+    "c": 34520
+   },
+   {
+    "d": "2026-04-16",
+    "c": 34080
+   },
+   {
+    "d": "2026-04-17",
+    "c": 34320
+   },
+   {
+    "d": "2026-04-20",
+    "c": 34570
+   },
+   {
+    "d": "2026-04-21",
+    "c": 34320
+   },
+   {
+    "d": "2026-04-22",
+    "c": 34370
+   },
+   {
+    "d": "2026-04-23",
+    "c": 34960
+   },
+   {
+    "d": "2026-04-24",
+    "c": 34470
+   },
+   {
+    "d": "2026-04-28",
+    "c": 34270
+   },
+   {
+    "d": "2026-04-29",
+    "c": 34420
+   },
+   {
+    "d": "2026-05-04",
+    "c": 34810
+   },
+   {
+    "d": "2026-05-05",
+    "c": 34770
+   },
+   {
+    "d": "2026-05-06",
+    "c": 35010
+   },
+   {
+    "d": "2026-05-07",
+    "c": 35260
+   },
+   {
+    "d": "2026-05-08",
+    "c": 35650
+   },
+   {
+    "d": "2026-05-11",
+    "c": 35060
+   },
+   {
+    "d": "2026-05-12",
+    "c": 34720
+   },
+   {
+    "d": "2026-05-13",
+    "c": 35010
+   },
+   {
+    "d": "2026-05-14",
+    "c": 35410
+   },
+   {
+    "d": "2026-05-15",
+    "c": 35260
+   },
+   {
+    "d": "2026-05-18",
+    "c": 35750
+   },
+   {
+    "d": "2026-05-19",
+    "c": 35260
+   },
+   {
+    "d": "2026-05-20",
+    "c": 34670
+   },
+   {
+    "d": "2026-05-21",
+    "c": 34420
+   },
+   {
+    "d": "2026-05-22",
+    "c": 34270
+   },
+   {
+    "d": "2026-05-25",
+    "c": 34270
+   },
+   {
+    "d": "2026-05-26",
+    "c": 34720
+   },
+   {
+    "d": "2026-05-27",
+    "c": 34810
+   },
+   {
+    "d": "2026-05-28",
+    "c": 34320
+   },
+   {
+    "d": "2026-05-29",
+    "c": 34270
+   },
+   {
+    "d": "2026-06-01",
+    "c": 34030
+   },
+   {
+    "d": "2026-06-02",
+    "c": 33340
+   },
+   {
+    "d": "2026-06-03",
+    "c": 33440
+   },
+   {
+    "d": "2026-06-04",
+    "c": 33580
+   },
+   {
+    "d": "2026-06-05",
+    "c": 33390
+   },
+   {
+    "d": "2026-06-08",
+    "c": 32750
+   },
+   {
+    "d": "2026-06-09",
+    "c": 32890
+   },
+   {
+    "d": "2026-06-10",
+    "c": 32990
+   },
+   {
+    "d": "2026-06-11",
+    "c": 32840
+   },
+   {
+    "d": "2026-06-12",
+    "c": 32890
+   },
+   {
+    "d": "2026-06-15",
+    "c": 33190
+   },
+   {
+    "d": "2026-06-16",
+    "c": 33190
+   },
+   {
+    "d": "2026-06-17",
+    "c": 33780
+   },
+   {
+    "d": "2026-06-18",
+    "c": 33440
+   },
+   {
+    "d": "2026-06-19",
+    "c": 33240
+   },
+   {
+    "d": "2026-06-22",
+    "c": 33340
+   },
+   {
+    "d": "2026-06-23",
+    "c": 33480
+   },
+   {
+    "d": "2026-06-24",
+    "c": 33390
+   },
+   {
+    "d": "2026-06-25",
+    "c": 32990
+   },
+   {
+    "d": "2026-06-26",
+    "c": 33090
+   },
+   {
+    "d": "2026-06-29",
+    "c": 33390
+   },
+   {
+    "d": "2026-06-30",
+    "c": 33440
+   },
+   {
+    "d": "2026-07-01",
+    "c": 33880
+   },
+   {
+    "d": "2026-07-02",
+    "c": 33730
+   },
+   {
+    "d": "2026-07-03",
+    "c": 33630
+   },
+   {
+    "d": "2026-07-06",
+    "c": 33630
+   },
+   {
+    "d": "2026-07-07",
+    "c": 33730
+   },
+   {
+    "d": "2026-07-08",
+    "c": 33980
+   },
+   {
+    "d": "2026-07-09",
+    "c": 33530
+   },
+   {
+    "d": "2026-07-10",
+    "c": 33190
+   },
+   {
+    "d": "2026-07-13",
+    "c": 32110
+   },
+   {
+    "d": "2026-07-14",
+    "c": 32110
+   },
+   {
+    "d": "2026-07-15",
+    "c": 31660
+   },
+   {
+    "d": "2026-07-16",
+    "c": 31810
+   },
+   {
+    "d": "2026-07-17",
+    "c": 31520
+   },
+   {
+    "d": "2026-07-20",
+    "c": 30330
+   },
+   {
+    "d": "2026-07-21",
+    "c": 30430
+   },
+   {
+    "d": "2026-07-22",
+    "c": 29250
+   },
+   {
+    "d": "2026-07-23",
+    "c": 29050
+   },
+   {
+    "d": "2026-07-24",
+    "c": 29000
+   },
+   {
+    "d": "2026-07-27",
+    "c": 28750
+   },
+   {
+    "d": "2026-07-28",
+    "c": 29000
+   },
+   {
+    "d": "2026-07-29",
+    "c": 29350
+   },
+   {
+    "d": "2026-07-30",
+    "c": 30450
+   },
+   {
+    "d": "2026-07-31",
+    "c": 30800
+   },
+   {
+    "d": "2026-08-03",
+    "c": 31800
+   },
+   {
+    "d": "2026-08-04",
+    "c": 31850
+   },
+   {
+    "d": "2026-08-05",
+    "c": 31850
+   },
+   {
+    "d": "2026-08-06",
+    "c": 31350
+   },
+   {
+    "d": "2026-08-07",
+    "c": 32500
+   },
+   {
+    "d": "2026-08-10",
+    "c": 32800
+   },
+   {
+    "d": "2026-08-11",
+    "c": 32300
+   },
+   {
+    "d": "2026-08-12",
+    "c": 32200
+   },
+   {
+    "d": "2026-08-13",
+    "c": 32150
+   },
+   {
+    "d": "2026-08-14",
+    "c": 31450
+   },
+   {
+    "d": "2026-08-17",
+    "c": 31500
+   },
+   {
+    "d": "2026-08-18",
+    "c": 31550
+   },
+   {
+    "d": "2026-08-19",
+    "c": 31000
+   },
+   {
+    "d": "2026-08-20",
+    "c": 31400
+   },
+   {
+    "d": "2026-08-21",
+    "c": 32150
+   },
+   {
+    "d": "2026-08-24",
+    "c": 31800
+   },
+   {
+    "d": "2026-08-25",
+    "c": 31500
+   },
+   {
+    "d": "2026-08-26",
+    "c": 31850
+   },
+   {
+    "d": "2026-08-27",
+    "c": 31900
+   },
+   {
+    "d": "2026-08-28",
+    "c": 31950
+   },
+   {
+    "d": "2026-09-03",
+    "c": 31500
+   },
+   {
+    "d": "2026-09-04",
+    "c": 31400
+   },
+   {
+    "d": "2026-09-07",
+    "c": 30800
+   },
+   {
+    "d": "2026-09-08",
+    "c": 30750
+   },
+   {
+    "d": "2026-09-09",
+    "c": 30700
+   },
+   {
+    "d": "2026-09-10",
+    "c": 30550
+   },
+   {
+    "d": "2026-09-11",
+    "c": 29950
+   },
+   {
+    "d": "2026-09-14",
+    "c": 29850
+   },
+   {
+    "d": "2026-09-15",
+    "c": 30550
+   },
+   {
+    "d": "2026-09-16",
+    "c": 30850
+   },
+   {
+    "d": "2026-09-17",
+    "c": 31400
+   },
+   {
+    "d": "2026-09-18",
+    "c": 30250
+   },
+   {
+    "d": "2026-09-21",
+    "c": 31000
+   },
+   {
+    "d": "2026-09-22",
+    "c": 30950
+   },
+   {
+    "d": "2026-09-23",
+    "c": 30700
+   },
+   {
+    "d": "2026-09-24",
+    "c": 30150
+   },
+   {
+    "d": "2026-09-25",
+    "c": 30150
+   },
+   {
+    "d": "2026-09-28",
+    "c": 29850
+   },
+   {
+    "d": "2026-09-29",
+    "c": 29750
+   },
+   {
+    "d": "2026-09-30",
+    "c": 30000
+   },
+   {
+    "d": "2026-10-01",
+    "c": 30050
+   },
+   {
+    "d": "2026-10-02",
+    "c": 29750
+   },
+   {
+    "d": "2026-10-05",
+    "c": 29650
+   },
+   {
+    "d": "2026-10-06",
+    "c": 29800
+   },
+   {
+    "d": "2026-10-07",
+    "c": 29750
+   },
+   {
+    "d": "2026-10-08",
+    "c": 29200
+   },
+   {
+    "d": "2026-10-09",
+    "c": 29500
+   },
+   {
+    "d": "2026-10-12",
+    "c": 29600
+   },
+   {
+    "d": "2026-10-13",
+    "c": 29400
+   },
+   {
+    "d": "2026-10-14",
+    "c": 29550
+   }
+  ],
+  "high52": {
+   "d": "2026-01-12",
+   "c": 40870
+  },
+  "low52": {
+   "d": "2026-07-27",
+   "c": 28750
+  },
+  "src": "WiData eod_adjust (giá đã điều chỉnh)"
+ },
+ "valuation": {
+  "history": [
+   {
+    "q": "Q1/2018",
+    "pb": 2.1169,
+    "pe": 16.4549
+   },
+   {
+    "q": "Q2/2018",
+    "pb": 1.4394,
+    "pe": 11.6288
+   },
+   {
+    "q": "Q3/2018",
+    "pb": 1.5866,
+    "pe": 13.3467
+   },
+   {
+    "q": "Q4/2018",
+    "pb": 1.1546,
+    "pe": 13.2734
+   },
+   {
+    "q": "Q1/2019",
+    "pb": 1.2875,
+    "pe": 15.1609
+   },
+   {
+    "q": "Q2/2019",
+    "pb": 1.0787,
+    "pe": 13.2684
+   },
+   {
+    "q": "Q3/2019",
+    "pb": 1.1262,
+    "pe": 12.885
+   },
+   {
+    "q": "Q4/2019",
+    "pb": 1.0775,
+    "pe": 8.225
+   },
+   {
+    "q": "Q1/2020",
+    "pb": 0.8685,
+    "pe": 6.8513
+   },
+   {
+    "q": "Q2/2020",
+    "pb": 1.0558,
+    "pe": 7.1947
+   },
+   {
+    "q": "Q3/2020",
+    "pb": 1.2614,
+    "pe": 9.0049
+   },
+   {
+    "q": "Q4/2020",
+    "pb": 1.5998,
+    "pe": 9.3944
+   },
+   {
+    "q": "Q1/2021",
+    "pb": 1.7205,
+    "pe": 8.4267
+   },
+   {
+    "q": "Q2/2021",
+    "pb": 2.8683,
+    "pe": 15.4248
+   },
+   {
+    "q": "Q3/2021",
+    "pb": 1.6106,
+    "pe": 8.8316
+   },
+   {
+    "q": "Q4/2021",
+    "pb": 1.8377,
+    "pe": 11.5635
+   },
+   {
+    "q": "Q1/2022",
+    "pb": 1.6709,
+    "pe": 12.6877
+   },
+   {
+    "q": "Q2/2022",
+    "pb": 1.2847,
+    "pe": 8.5569
+   },
+   {
+    "q": "Q3/2022",
+    "pb": 1.1015,
+    "pe": 7.1631
+   },
+   {
+    "q": "Q4/2022",
+    "pb": 1.2681,
+    "pe": 7.8066
+   },
+   {
+    "q": "Q1/2023",
+    "pb": 1.2982,
+    "pe": 8.2948
+   },
+   {
+    "q": "Q2/2023",
+    "pb": 1.2521,
+    "pe": 8.1125
+   },
+   {
+    "q": "Q3/2023",
+    "pb": 1.2323,
+    "pe": 8.0229
+   },
+   {
+    "q": "Q4/2023",
+    "pb": 1.2025,
+    "pe": 7.3116
+   },
+   {
+    "q": "Q1/2024",
+    "pb": 1.5184,
+    "pe": 9.5185
+   },
+   {
+    "q": "Q2/2024",
+    "pb": 1.2693,
+    "pe": 8.2338
+   },
+   {
+    "q": "Q3/2024",
+    "pb": 1.4563,
+    "pe": 9.1944
+   },
+   {
+    "q": "Q4/2024",
+    "pb": 1.4128,
+    "pe": 8.0079
+   },
+   {
+    "q": "Q1/2025",
+    "pb": 1.4926,
+    "pe": 8.6246
+   },
+   {
+    "q": "Q2/2025",
+    "pb": 1.4161,
+    "pe": 7.472
+   },
+   {
+    "q": "Q3/2025",
+    "pb": 1.655,
+    "pe": 8.1833
+   },
+   {
+    "q": "Q4/2025",
+    "pb": 1.5926,
+    "pe": 8.0241
+   },
+   {
+    "q": "Q1/2026",
+    "pb": 1.4668,
+    "pe": 7.053
+   },
+   {
+    "q": "Q2/2026",
+    "pb": 1.3542,
+    "pe": 6.5638
+   }
+  ],
+  "pbBand": {
+   "mean": 1.42,
+   "median": 1.41,
+   "sd": 0.18,
+   "lo": 1.24,
+   "hi": 1.6,
+   "n": 20,
+   "from": "Q3/2021",
+   "to": "Q2/2026"
+  },
+  "peBand": {
+   "mean": 8.46,
+   "median": 8.15,
+   "sd": 1.42,
+   "lo": 7.04,
+   "hi": 9.88,
+   "n": 20,
+   "from": "Q3/2021",
+   "to": "Q2/2026"
+  },
+  "note": "P/B, P/E cuối quý (giá cuối quý / BVPS, EPS TTM theo Wi). Dải ±1σ tính trên 20 quý gần nhất."
+ },
+ "consensus": {
+  "rows": [
+   {
+    "broker": "Vietcap",
+    "date": "2026-09-22",
+    "rating": "MUA",
+    "tp": 48800,
+    "tpAdj": 48800,
+    "upside": 65.1,
+    "toiF": 82012,
+    "toiF1": 93700,
+    "npF": 41595,
+    "npF1": 47868,
+    "thesis": "Đà tăng trưởng lợi nhuận duy trì tích cực mặc dù tăng trưởng tín dụng chậm lại - Cập nhật",
+    "stale": false,
+    "summary": "Vietcap duy trì khuyến nghị MUA đối với cổ phiếu CTG với giá mục tiêu 48,800 đồng/cổ phiếu, tương ứng mức tăng tiềm năng 54.9%, bất chấp việc điều chỉnh giảm nhẹ định giá do áp lực từ lãi suất phi rủi ro tăng cao. Quyết định này dựa trên kết quả kinh doanh nửa đầu năm 2026 vượt kỳ vọng và triển vọng lợi nhuận giai đoạn 2026-2030 tăng trưởng ổn định, trong đó động lực chính đến từ sự cải thiện biên lãi thuần (NIM) thông qua tối ưu hóa chi phí vốn và tái định giá hiệu quả danh mục cho vay. Tăng trưởng tín dụng dự kiến sẽ tăng tốc trong nửa cuối năm 2026, tập trung vào phân khúc sản xuất và hạ tầng trọng điểm, giúp CTG hưởng lợi trực tiếp từ làn sóng đầu tư công nhờ vị thế dẫn đầu và mối quan hệ chiến lược với các tập đoàn lớn. Theo dự báo, lợi nhuận sau thuế năm 2026 sẽ đạt 41,595 tỷ đồng, tăng 20.2% so với năm 2025, kéo theo EPS tăng trưởng 20.3% và duy trì ROE ở mức cao 21.3%, chưa kể khoản lợi nhuận bổ sung tiềm năng từ việc hoàn tất chuyển nhượng dự án VietinBank Tower. Tuy nhiên, triển vọng này vẫn đối mặt với các rủi ro từ khả năng NIM thấp hơn dự kiến do áp lực chi phí huy động, tỷ lệ nợ xấu gia tăng và các biến động vĩ mô toàn cầu tác động tiêu cực đến lãi suất tham chiếu cũng như chi phí vốn chủ sở hữu."
+   },
+   {
+    "broker": "VDS",
+    "date": "2026-09-17",
+    "rating": "MUA",
+    "tp": 45000,
+    "tpAdj": 45000,
+    "upside": 52.3,
+    "toiF": 80630,
+    "toiF1": 97997,
+    "npF": 42929,
+    "npF1": 53512,
+    "thesis": "Định giá chiết khấu sâu so với lịch sử dù hiệu quả hoạt động trong nhóm đầu ngành",
+    "stale": false,
+    "summary": "Duy trì khuyến nghị MUA đối với cổ phiếu CTG với giá mục tiêu 45,000 đồng/cổ phiếu, tương ứng mức upside +46%, báo cáo cập nhật kết quả kinh doanh tháng 9/2026 của CTCK Rồng Việt (VDSC) nhấn mạnh sự lệch pha giữa hiệu quả sinh lời ROE thuộc nhóm dẫn đầu ngành và mặt bằng định giá đang ở vùng chiết khấu sâu so với lịch sử trong khi lợi nhuận trước thuế năm 2026 dự kiến đạt gần 54,000 tỷ đồng, tăng 24% so với năm trước. Động lực tăng trưởng chính đến từ thu nhập lãi thuần nhờ biên lãi thuần (NIM) mở rộng và thu nhập phí dịch vụ tăng trưởng mạnh, đi kèm dự báo tăng trưởng tín dụng cả năm đạt 13% tập trung vào khối khách hàng doanh nghiệp điện, sắt thép, thiết bị điện tử, đồng thời thu nhập ngoài lãi được hỗ trợ bởi dịch vụ thanh toán, bảo hiểm phi nhân thọ và khoản lợi nhuận một lần khoảng 800 tỷ đồng từ chuyển nhượng dự án VietinBank Tower. Hiệu quả hoạt động được tối ưu hóa nhờ chi phí vốn giảm khi lãi suất huy động tạo đỉnh và nguồn tiền gửi từ Kho bạc Nhà nước, tuy nhiên chất lượng tài sản vẫn là yếu tố cần theo dõi chặt chẽ do nợ xấu tăng trong nửa đầu năm 2026 tại lĩnh vực bất động sản, tiêu dùng, thực phẩm khiến tỷ lệ bao phủ nợ xấu (LLR) suy giảm đáng kể. Bên cạnh rủi ro từ các khoản nợ cơ cấu không thể quay về nhóm tiêu chuẩn, áp lực chi phí vốn từ việc sụt giảm tỷ lệ CASA và biến động lãi suất trái phiếu Chính phủ có thể trở thành rào cản hạn chế dư địa mở rộng NIM của ngân hàng trong tương lai."
+   },
+   {
+    "broker": "SSI",
+    "date": "2026-08-27",
+    "rating": "MUA",
+    "tp": 38800,
+    "tpAdj": 38800,
+    "upside": 31.3,
+    "toiF": 81175,
+    "toiF1": 92531,
+    "npF": 43318,
+    "npF1": 51434,
+    "thesis": "Yếu tố bất ngờ đã qua, việc tái định giá cần thêm cú hích",
+    "stale": false,
+    "summary": "Khuyến nghị đầu tư đối với cổ phiếu CTG được điều chỉnh xuống mức KHẢ QUAN với giá mục tiêu 12 tháng là 38,800 đồng/cổ phiếu, tương ứng tiềm năng tăng giá 22%, trong bối cảnh định giá P/B dự phóng năm 2026 ở mức 1.17x dù hấp dẫn so với các ngân hàng quốc doanh nhưng khả năng tái định giá vẫn bị hạn chế bởi bộ đệm vốn mỏng. Động lực tăng trưởng của ngân hàng tập trung vào chiến lược đa dạng hóa nguồn thu nhằm giảm phụ thuộc vào thu nhập lãi thuần thông qua thúc đẩy phí dịch vụ từ L/C, bảo lãnh, thanh toán và thu hồi nợ xấu đã xử lý, qua đó dự báo lợi nhuận trước thuế năm 2026 đạt 54,000 tỷ đồng, tăng 24.3% so với cùng kỳ nhờ biên lãi thuần cải thiện và thu nhập phí tăng mạnh. Sang năm 2027, lợi nhuận trước thuế dự kiến đạt 64,000 tỷ đồng, tăng 18.7% so với cùng kỳ, được dẫn dắt bởi mức tăng trưởng tín dụng 15% khi ngân hàng tham gia tài trợ các dự án hạ tầng trọng điểm quốc gia, đồng thời việc cải thiện hệ số an toàn vốn thêm 40 điểm cơ bản mỗi năm sẽ củng cố khả năng mở rộng bảng cân đối kế toán và duy trì mức ROE cao. Tuy nhiên, triển vọng này đối mặt với rủi ro chất lượng tài sản suy giảm mạnh hơn dự báo khi lãi suất cao kéo dài gây áp lực lên khách hàng vay lãi suất thả nổi, đi kèm với áp lực từ nợ xấu mới và việc chuyển nhóm nợ theo dữ liệu CIC làm tăng chi phí dự phòng, trong khi hệ số CAR nếu cải thiện chậm hơn kỳ vọng sẽ trực tiếp hạn chế dư địa tăng trưởng và khả năng tái định giá cổ phiếu."
+   },
+   {
+    "broker": "BETA",
+    "date": "2026-08-26",
+    "rating": "MUA",
+    "tp": 44250,
+    "tpAdj": 44250,
+    "upside": 49.7,
+    "toiF": null,
+    "toiF1": null,
+    "npF": 39930,
+    "npF1": null,
+    "thesis": "Cập nhật kết quả kinh doanh Q2/2026: Tăng trưởng tín dụng ổn định cùng với tối ưu NIM trong kỳ giúp LNTT duy trì mức tăng trưởng hiệu quả",
+    "stale": false,
+    "summary": "Dựa trên kết quả kinh doanh quý 2/2026, VietinBank (CTG) duy trì triển vọng tích cực với giá mục tiêu 12 tháng là 44,250 đồng/cổ phiếu, tương ứng mức tăng trưởng kỳ vọng 40.5% nhờ khả năng tối ưu biên lãi ròng (NIM) và kiểm soát chi phí hiệu quả. Động lực tăng trưởng chính đến từ việc tối ưu hóa danh mục tài sản sinh lãi giúp NIM đạt 2.72% trong quý 2/2026, trong khi tín dụng tăng trưởng ổn định 10.1% so với cùng kỳ với sự đóng góp mạnh mẽ từ phân khúc khách hàng doanh nghiệp FDI (tăng 17.2%) và SME (tăng 14.5%). Thu nhập ngoài lãi ghi nhận diễn biến khả quan từ mảng dịch vụ và thu hồi nợ đã xử lý, đồng thời tỷ lệ chi phí trên thu nhập (CIR) cải thiện xuống mức 24.1% nhờ quản trị tốt chi phí vận hành. Trong nửa cuối năm 2026, ngân hàng dự kiến ghi nhận lợi nhuận đột biến từ việc chuyển nhượng tòa tháp VietinBank Tower và tiếp tục đẩy mạnh thu hồi nợ, đưa dự báo doanh thu cả năm đạt 102,761 tỷ đồng, lợi nhuận sau thuế đạt 39,930 tỷ đồng và EPS ở mức 5,141 đồng. Tuy nhiên, rủi ro về chất lượng tài sản cần được theo dõi chặt chẽ khi tỷ lệ nợ xấu (NPL) tăng 18 điểm cơ bản so với quý trước, tập trung tại mảng bất động sản và tiêu dùng, khiến tỷ lệ bao phủ nợ xấu (LLCR) sụt giảm mạnh xuống 134% trong bối cảnh chi phí dự phòng rủi ro tín dụng tăng cao so với nền thấp của năm trước."
+   },
+   {
+    "broker": "DSC",
+    "date": "2026-08-21",
+    "rating": "MUA",
+    "tp": 40000,
+    "tpAdj": 40000,
+    "upside": 35.4,
+    "toiF": null,
+    "toiF1": null,
+    "npF": 43609,
+    "npF1": null,
+    "thesis": "Tối ưu biên lãi thuần tiếp tục là động lực",
+    "stale": false,
+    "summary": "Khuyến nghị Mua dành cho mã cổ phiếu CTG được củng cố bởi mức giá mục tiêu 40,000 VND cho năm 2026, tương ứng tiềm năng tăng giá 22% dựa trên lợi thế quy mô của một ngân hàng quốc doanh, chất lượng tài sản được kiểm soát tốt và hiệu suất sinh lời ROE dự kiến dẫn đầu ngành. Động lực tăng trưởng cốt lõi nằm ở khả năng tối ưu hóa biên lãi thuần (NIM) nhằm bù đắp cho sự chậm lại của tín dụng, trong đó NIM ghi nhận sự cải thiện tích cực khi tốc độ tăng lãi suất cho vay vượt xa chi phí vốn nhờ lợi thế thanh khoản từ các chính sách hỗ trợ của Ngân hàng Nhà nước. Triển vọng duy trì và cải thiện NIM trong năm 2026 so với năm 2025 càng được củng cố bởi việc thay đổi cách tính tỷ lệ tiền gửi có kỳ hạn của Kho bạc Nhà nước vào chỉ số LDR từ tháng 8/2026, giúp hạ nhiệt áp lực thanh khoản và tạo dư địa tăng trưởng tín dụng, qua đó thúc đẩy doanh thu hoạt động dự báo đạt 109,283 tỷ đồng (tăng 25% YoY) và lợi nhuận trước thuế đạt 54,512 tỷ đồng (tăng 26% YoY). Bên cạnh nguồn thu đột biến kỳ vọng từ kế hoạch ký hợp đồng chuyển nhượng dự án Ciputra Tower vào tháng 8/2028, ngân hàng vẫn đối mặt với rủi ro từ áp lực nợ xấu gia tăng trong ngắn hạn khiến chi phí trích lập dự phòng tăng cao khi tỷ lệ bao phủ nợ xấu giảm xuống dưới mức mục tiêu. Môi trường kinh doanh còn chịu thách thức từ chi phí vốn duy trì cao hơn mức trung bình 5 năm, sự chững lại của thị trường bất động sản và các biến động giá năng lượng gây rủi ro cho nhóm khách hàng xuất nhập khẩu."
+   },
+   {
+    "broker": "MAS",
+    "date": "2026-08-17",
+    "rating": "MUA",
+    "tp": 41500,
+    "tpAdj": 41500,
+    "upside": 40.4,
+    "toiF": 78510,
+    "toiF1": 86497,
+    "npF": 39837,
+    "npF1": 42063,
+    "thesis": "Kết quả tích cực",
+    "stale": false,
+    "summary": "Khuyến nghị Mua đối với cổ phiếu CTG được duy trì với giá mục tiêu nâng lên 41,500 VNĐ/CP, tương ứng mức tăng giá kỳ vọng 32%, phản ánh kết quả kinh doanh tích cực và chất lượng tài sản ổn định trong bối cảnh lợi nhuận được dự báo tăng trưởng bền bỉ bất chấp áp lực từ chi phí huy động. Động lực tăng trưởng chính của ngân hàng xuất phát từ sự phục hồi trong mảng cho vay cá nhân cùng vai trò dẫn dắt của khối khách hàng doanh nghiệp, thúc đẩy tín dụng dự kiến tăng 14.3% trong năm 2026 nhờ hoạt động giải ngân mạnh mẽ vào nửa cuối năm. Thu nhập lãi thuần (NII) được dự báo tăng 18.1% khi biên lãi thuần (NIM) điều chỉnh lên mức 2.80%, góp phần đưa lợi nhuận trước thuế năm 2026 đạt 49,900 tỷ đồng, tăng 14.9% so với năm 2025, đồng thời duy trì các chỉ số sinh lời ROA và ROE lần lượt ở mức 1.4% và 20.1% trước khi gia tốc mạnh mẽ hơn trong dài hạn. Tuy nhiên, triển vọng này đối mặt với rủi ro từ sự suy giảm nhẹ của chất lượng tài sản khi tỷ lệ nợ xấu (NPL) tăng lên 1.20% trong nửa đầu năm 2026 và tỷ lệ bao phủ nợ xấu (LLR) giảm từ 159% xuống 134%, đi kèm áp lực chi phí vốn do tỷ lệ CASA sụt giảm và nhu cầu huy động cao để phục vụ tăng trưởng. Bên cạnh đó, sự gia tăng mạnh của các khoản phải thu, lãi dự thu cùng nền so sánh cao của năm 2025 có thể là những yếu tố kìm hãm đà tăng trưởng lợi nhuận trong giai đoạn tới."
+   },
+   {
+    "broker": "NSI",
+    "date": "2026-08-06",
+    "rating": "MUA",
+    "tp": 36950,
+    "tpAdj": 36950,
+    "upside": 25.0,
+    "toiF": null,
+    "toiF1": null,
+    "npF": null,
+    "npF1": null,
+    "thesis": "Báo cáo cập nhật KQKD Q2/2026 ",
+    "stale": false,
+    "summary": "TCBS đánh giá cổ phiếu CTG duy trì vị thế hấp dẫn để nắm giữ và tích lũy trong các nhịp điều chỉnh khi sở hữu ROE đạt 21.8%, cao thứ hai hệ thống, trong khi định giá P/B 1.24 lần hiện thấp hơn mức trung bình ngành và lịch sử của chính doanh nghiệp. Động lực tăng trưởng trong nửa cuối năm 2026 dự kiến được thúc đẩy bởi việc nới hạn mức tín dụng và quy định mới cho phép tính 50% tiền gửi Kho bạc Nhà nước vào tỷ lệ LDR, tạo dư địa mở rộng cho vay với dự báo tăng trưởng tín dụng cả năm đạt 14%, tập trung vào phân khúc bán lẻ và doanh nghiệp FDI. Lợi nhuận trước thuế năm 2026 được kỳ vọng đạt 54,216 tỷ đồng, tăng 24.8% so với năm trước, nhờ NIM duy trì ở mức 2.92% và chỉ số CIR thuộc nhóm thấp nhất ngành phản ánh hiệu quả vận hành tối ưu, nối tiếp đà phục hồi từ quý 2/2026 khi lợi nhuận lập đỉnh lịch sử nhờ biên lãi thuần cải thiện mạnh mẽ do lãi suất tài sản gia tăng nhanh hơn chi phí vốn. Tuy nhiên, chất lượng tài sản vẫn là biến số cần theo dõi sát sao khi nợ xấu có dấu hiệu tăng trở lại trong quý 2/2026 tại các lĩnh vực bất động sản, tiêu dùng và nông nghiệp, đồng thời tỷ lệ bao phủ nợ xấu giảm mạnh xuống mức thấp nhất trong hai năm là 134%, tạo áp lực duy trì chi phí dự phòng cao để củng cố bộ đệm rủi ro. Bên cạnh đó, sự suy giảm của tỷ lệ CASA cùng áp lực chi phí vốn đi lên có thể trở thành rào cản kìm hãm đà cải thiện biên lãi thuần của ngân hàng trong thời gian tới."
+   },
+   {
+    "broker": "NHSV",
+    "date": "2026-08-05",
+    "rating": "MUA",
+    "tp": 41300,
+    "tpAdj": 41300,
+    "upside": 39.8,
+    "toiF": 83391,
+    "toiF1": 97838,
+    "npF": 42625,
+    "npF1": 47978,
+    "thesis": "NIM tiếp tục phục hồi, chất lượng tài sản giảm nhẹ song vẫn ở mức tốt",
+    "stale": false,
+    "summary": "Cổ phiếu CTG duy trì đà phục hồi tích cực với chất lượng tài sản ổn định, thúc đẩy NHSV đưa ra khuyến nghị khả quan với giá mục tiêu 41,300 VNĐ/cổ phiếu, tương ứng mức upside 29.7% dựa trên kỳ vọng cải thiện biên lãi thuần (NIM) và dư địa tăng trưởng tín dụng mới. Trong nửa đầu năm 2026, ngân hàng ghi nhận lợi nhuận sau thuế đạt 20,744 tỷ đồng, tăng 36% so với cùng kỳ nhờ thu nhập lãi thuần tăng trưởng 28.1% khi NIM phục hồi lên mức 2.86% trong quý 2/2026, đồng thời việc Ngân hàng Nhà nước nâng giới hạn tỷ lệ vốn ngắn hạn cho vay trung dài hạn lên 40% đã hỗ trợ CTG tối ưu hóa cấu trúc tài sản trước khi tiếp tục mở rộng NIM thông qua tái phân bổ nguồn vốn vào nửa cuối năm. Dự báo cho cả năm 2026, lợi nhuận sau thuế có thể đạt 42,625 tỷ đồng, tăng 22.3% và duy trì đà tăng 12.6% vào năm 2027, trong khi tăng trưởng tín dụng được kỳ vọng ổn định ở mức 15% cho giai đoạn 2026-2027 nhờ việc nới lỏng tỷ lệ LDR tạo ra khoảng 55,000 tỷ đồng dư địa cho vay tập trung vào phân khúc doanh nghiệp lớn và FDI. Tuy nhiên, triển vọng này đối mặt với áp lực từ chi phí vốn (COF) gia tăng do lãi suất huy động neo cao và tỷ lệ CASA sụt giảm, cùng với việc tỷ lệ nợ xấu quý 2/2026 tiến lên mức 1.2% buộc ngân hàng phải duy trì chi phí dự phòng ở mức cao nhằm củng cố bộ đệm rủi ro trước các biến động kinh tế vĩ mô và rủi ro tiềm ẩn từ các nhóm nợ cần chú ý."
+   },
+   {
+    "broker": "MBS",
+    "date": "2026-07-06",
+    "rating": "MUA",
+    "tp": 50900,
+    "tpAdj": 50125,
+    "upside": 72.3,
+    "toiF": 77742,
+    "toiF1": 87196,
+    "npF": 39876,
+    "npF1": 44834,
+    "thesis": "Lợi nhuận khả quan tiếp tục được củng cố",
+    "stale": true,
+    "summary": "MBS duy trì khuyến nghị Khả quan đối với cổ phiếu CTG với giá mục tiêu 50,900 đồng/cổ phiếu, tương ứng mức tăng giá tiềm năng 48.6%, dựa trên nền tảng chất lượng tài sản hàng đầu giúp giảm áp lực trích lập dự phòng, duy trì tỷ suất sinh lời trên vốn chủ sở hữu (ROE) trên mức 20% và kỳ vọng lợi nhuận bất thường từ việc chuyển nhượng dự án Vietinbank Tower. Động lực tăng trưởng của ngân hàng được củng cố bởi sự phục hồi của biên lãi thuần (NIM) nhờ gia tăng tỷ trọng cho vay trung dài hạn cùng thu nhập ngoài lãi tích cực, trong đó tín dụng doanh nghiệp, đặc biệt là phân khúc FDI và xây dựng hạ tầng, dự kiến sẽ dẫn dắt đà tăng trưởng trong nửa cuối năm 2026 khi đầu tư công được đẩy mạnh. Theo dự báo, lợi nhuận sau thuế năm 2026 sẽ tăng 14.9% so với cùng kỳ với thu nhập trên mỗi cổ phiếu (EPS) đạt 5,134 đồng, trong khi tăng trưởng tín dụng và huy động lần lượt đạt mức 12% và 13.2%. Bên cạnh đó, việc duy trì tỷ lệ tiền gửi không kỳ hạn (CASA) quanh mức 25% giúp kiểm soát hiệu quả chi phí vốn, kết hợp với yếu tố hỗ trợ từ việc hoàn tất pháp lý chuyển nhượng Vietinbank Tower trong năm 2026 sẽ tạo lực đẩy mạnh cho giá cổ phiếu. Tuy nhiên, triển vọng này vẫn đối mặt với các rủi ro từ áp lực thanh khoản hệ thống khiến chi phí vốn neo cao gây sức ép lên biên lãi thuần toàn ngành, nhu cầu gia tăng tỷ lệ an toàn vốn (CAR) của CTG lớn hơn so với các ngân hàng thương mại cổ phần quốc doanh khác, cùng các biến động địa chính trị từ xung đột Mỹ - Iran và môi trường lãi suất cao có thể ảnh hưởng đến khả năng trả nợ của khách hàng cá nhân và doanh nghiệp vừa và nhỏ, từ đó gây áp lực lên nợ xấu."
+   },
+   {
+    "broker": "ACBS",
+    "date": "2026-06-09",
+    "rating": "MUA",
+    "tp": 50000,
+    "tpAdj": 49237,
+    "upside": 69.2,
+    "toiF": 100536,
+    "toiF1": 112337,
+    "npF": 39795,
+    "npF1": 43827,
+    "thesis": "Báo cáo cập nhật",
+    "stale": true,
+    "summary": "ACBS duy trì khuyến nghị mua đối với cổ phiếu CTG với giá mục tiêu 50,000 đồng/cổ phiếu, tương ứng mức tăng dự kiến 50.4%, dựa trên kỳ vọng lợi nhuận năm 2026 tăng trưởng 15% so với nền cao của năm 2025 cùng chất lượng tài sản ổn định. Động lực tăng trưởng chính được thúc đẩy bởi biên lãi thuần (NIM) dự kiến đạt 2.75% khi lợi suất cho vay tăng mạnh do các gói ưu đãi hết hạn, giúp ngân hàng hướng tới mục tiêu tăng trưởng tín dụng 12% trong năm 2026 bất chấp việc Ngân hàng Nhà nước giảm hạn mức. Bên cạnh dự báo thu nhập ngoài lãi tăng 8% từ mảng thanh toán, bảo hiểm và ngoại hối, hiệu quả vận hành của CTG tiếp tục được tối ưu hóa với tỷ lệ chi phí trên thu nhập (CIR) giảm xuống 29.3%, đưa lợi nhuận trước thuế năm 2026 đạt 49,944 tỷ đồng trong khi tỷ lệ CASA duy trì ổn định ở mức 25% nhờ lợi thế chi phí vốn thấp. Tuy nhiên, triển vọng này đối mặt với áp lực từ tỷ lệ nợ chuyển quá hạn tăng trong quý 1/2026 do yếu tố mùa vụ và lãi suất cao, buộc chi phí dự phòng phải tăng 22.1% để củng cố bộ đệm rủi ro, cùng khả năng thu hồi nợ ngoại bảng chỉ tăng trưởng nhẹ 5% nếu thị trường bất động sản điều chỉnh."
+   },
+   {
+    "broker": "AGRISECO",
+    "date": "2026-05-18",
+    "rating": "MUA",
+    "tp": 42000,
+    "tpAdj": 41364,
+    "upside": 42.1,
+    "toiF": null,
+    "toiF1": null,
+    "npF": null,
+    "npF1": null,
+    "thesis": "Chất lượng tài sản tiếp tục cải thiện",
+    "stale": true,
+    "summary": "Agriseco khuyến nghị tăng tỷ trọng đối với cổ phiếu CTG với giá mục tiêu 42,000 đồng/cp, tương ứng mức tăng giá kỳ vọng 16%, dựa trên dự báo lợi nhuận trước thuế năm 2026 tăng trưởng hai chữ số khi biên lãi ròng (NIM) cải thiện và áp lực trích lập dự phòng giảm dần nhờ chất lượng tài sản được kiểm soát chặt chẽ. Động lực tăng trưởng chính đến từ NIM dự kiến đạt trên 2.9% nhờ lợi thế chi phí vốn thấp cùng lợi suất tài sản gia tăng, kết hợp với kế hoạch nâng vốn điều lệ từ 77,600 tỷ đồng lên hơn 105,000 tỷ đồng nhằm tạo dư địa phát triển trung hạn. Về chất lượng tài sản, tỷ lệ nợ xấu (NPL) được duy trì quanh mức 1% trong khi tỷ lệ bao phủ nợ xấu (LLR) đạt mức cao 167%, đồng thời việc dư nợ nhóm 5 giảm mạnh giúp giảm bớt gánh nặng dự phòng cho các quý tới. Trong kịch bản dự báo, lợi nhuận trước thuế quý 1/2026 ước đạt 11,139 tỷ đồng, tăng 63% so với cùng kỳ, trong khi mục tiêu cả năm 2026 bao gồm tổng tài sản tăng 5-10%, tăng trưởng tín dụng 11.1%, kiểm soát nợ xấu dưới 1.8% và tỷ lệ chi phí trên thu nhập (CIR) cải thiện về mức 29.6%. Tuy nhiên, triển vọng này vẫn đối mặt với rủi ro từ sự cạnh tranh lãi suất huy động làm suy giảm tỷ lệ tiền gửi không kỳ hạn (CASA) vốn đạt 25% vào cuối quý 1/2026, cùng những biến động thị trường có thể tác động tiêu cực đến lộ trình tăng vốn và khả năng thực hiện hạn mức tăng trưởng tín dụng được cấp."
+   },
+   {
+    "broker": "KAFI",
+    "date": "2026-05-14",
+    "rating": "MUA",
+    "tp": 43800,
+    "tpAdj": 43141,
+    "upside": 48.2,
+    "toiF": 76315,
+    "toiF1": null,
+    "npF": 39246,
+    "npF1": null,
+    "thesis": "Nội lực củng cố, dư địa tái định giá mở rộng",
+    "stale": true,
+    "summary": "Khuyến nghị MUA đối với cổ phiếu CTG được xác lập với mức giá mục tiêu 43,800 đồng/cp, tương ứng kỳ vọng tăng trưởng 23% dựa trên nền tảng chất lượng tài sản cải thiện, khả năng duy trì ROE trên 20% và động lực từ lộ trình tăng vốn dài hạn. Triển vọng tăng trưởng tín dụng dự kiến đạt 15% vào năm 2026 nhờ tập trung vào phân khúc sản xuất và SME thay vì bất động sản dân dụng, trong khi thu nhập ngoài lãi được củng cố bởi nguồn thu hồi nợ ngoại bảng ổn định khoảng 10,000 tỷ đồng mỗi năm cùng tiềm năng ghi nhận 2,000 – 3,000 tỷ đồng lợi nhuận từ việc chuyển nhượng VietinBank Tower. Theo dự báo tài chính cho năm 2026, lợi nhuận trước thuế của ngân hàng có thể đạt 49,063 tỷ đồng, tăng 13% so với năm 2025, với thu nhập lãi thuần đạt 76,315 tỷ đồng và thu nhập ngoài lãi đạt 24,074 tỷ đồng trong bối cảnh NIM duy trì ổn định quanh mức 2.6 – 2.7%. Các chỉ số an toàn tài chính được kỳ vọng giữ vững với tỷ lệ nợ xấu kiểm soát ở mức 1.09% và tỷ lệ bao phủ nợ xấu (LLR) trên 150%, đồng thời kế hoạch tăng vốn 44,400 tỷ đồng từ lợi nhuận giữ lại giai đoạn 2023-2025 sẽ giúp cải thiện hệ số CAR và mở rộng dư địa tăng trưởng dài hạn. Tuy nhiên, nhà đầu tư cần lưu ý các rủi ro từ áp lực chi phí huy động vốn lên biên lãi thuần, tiến độ tăng vốn và thu hồi nợ chậm hơn dự phóng, cũng như nguy cơ suy giảm chất lượng tài sản nếu môi trường lãi suất cao kéo dài."
+   },
+   {
+    "broker": "VPBS",
+    "date": "2026-05-06",
+    "rating": "MUA",
+    "tp": 40600,
+    "tpAdj": 39983,
+    "upside": 37.4,
+    "toiF": null,
+    "toiF1": null,
+    "npF": null,
+    "npF1": null,
+    "thesis": "Ưu tiên củng cố bộ đệm và phòng ngừa rủi ro ",
+    "stale": true,
+    "summary": null
+   },
+   {
+    "broker": "SSV",
+    "date": "2026-03-27",
+    "rating": "MUA",
+    "tp": 43700,
+    "tpAdj": 43041,
+    "upside": 47.9,
+    "toiF": 76113,
+    "toiF1": null,
+    "npF": 40164,
+    "npF1": null,
+    "thesis": "Chất lượng tài sản cải thiện tích cực",
+    "stale": true,
+    "summary": null
+   },
+   {
+    "broker": "KBSV",
+    "date": "2026-03-19",
+    "rating": "MUA",
+    "tp": 40000,
+    "tpAdj": 39394,
+    "upside": 35.4,
+    "toiF": 79930,
+    "toiF1": 89564,
+    "npF": 39441,
+    "npF1": 43250,
+    "thesis": "Tăng trưởng bền vững",
+    "stale": true,
+    "summary": null
+   }
+  ],
+  "forecastOnly": [
+   {
+    "broker": "TCBS",
+    "date": "2026-08-03",
+    "rating": "KHÁC",
+    "tp": null,
+    "npF": 43453,
+    "npF1": null,
+    "toiF": 83164,
+    "thesis": "Báo cáo cập nhật KQKD Q2/2026",
+    "stale": false,
+    "summary": "TCBS đánh giá cổ phiếu CTG duy trì vị thế hấp dẫn để nắm giữ và tích lũy trong các nhịp điều chỉnh khi sở hữu ROE đạt 21.8%, cao thứ hai hệ thống, trong khi định giá P/B 1.24 lần hiện thấp hơn mức trung bình ngành và lịch sử của chính doanh nghiệp. Động lực tăng trưởng trong nửa cuối năm 2026 dự kiến được thúc đẩy bởi việc nới hạn mức tín dụng và quy định mới cho phép tính 50% tiền gửi Kho bạc Nhà nước vào tỷ lệ LDR, tạo dư địa mở rộng cho vay với dự báo tăng trưởng tín dụng cả năm đạt 14%, tập trung vào phân khúc bán lẻ và doanh nghiệp FDI. Lợi nhuận trước thuế năm 2026 được kỳ vọng đạt 54,216 tỷ đồng, tăng 24.8% so với năm trước, nhờ NIM duy trì ở mức 2.92% và chỉ số CIR thuộc nhóm thấp nhất ngành phản ánh hiệu quả vận hành tối ưu, nối tiếp đà phục hồi từ quý 2/2026 khi lợi nhuận lập đỉnh lịch sử nhờ biên lãi thuần cải thiện mạnh mẽ do lãi suất tài sản gia tăng nhanh hơn chi phí vốn. Tuy nhiên, chất lượng tài sản vẫn là biến số cần theo dõi sát sao khi nợ xấu có dấu hiệu tăng trở lại trong quý 2/2026 tại các lĩnh vực bất động sản, tiêu dùng và nông nghiệp, đồng thời tỷ lệ bao phủ nợ xấu giảm mạnh xuống mức thấp nhất trong hai năm là 134%, tạo áp lực duy trì chi phí dự phòng cao để củng cố bộ đệm rủi ro. Bên cạnh đó, sự suy giảm của tỷ lệ CASA cùng áp lực chi phí vốn đi lên có thể trở thành rào cản kìm hãm đà cải thiện biên lãi thuần của ngân hàng trong thời gian tới."
+   }
+  ],
+  "fadeBefore": "2026-07-14",
+  "summary": {
+   "n": 8,
+   "median": 41400.0,
+   "mean": 42075,
+   "min": 36950,
+   "max": 48800,
+   "upsideMedian": 40.1,
+   "buy": 8,
+   "npMedian": 42777.0,
+   "npMin": 39837,
+   "npMax": 43609,
+   "npN": 8
+  },
+  "fwd": {
+   "bv2026F": 218752.7,
+   "npat2026F": 42777.0,
+   "pbFwd": 1.05,
+   "peFwd": 5.37,
+   "bvps2026F": 28165,
+   "npatH1": 20743.5,
+   "impliedH2": 22033.5,
+   "npat2025": 34871.3,
+   "h2_2025": 19619.9,
+   "divPaid": 3495.1
+  },
+  "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
+ },
+ "events": [
+  {
+   "d": "2026-12-31",
+   "type": "Doanh nghiệp",
+   "t": "Chuyển nhượng dự án VietinBank Tower (Ciputra) — các CTCK kỳ vọng ghi nhận lợi nhuận một lần",
+   "impact": "+",
+   "status": "pending",
+   "detail": "Ước tính khác nhau giữa CTCK: ~800 tỷ (VDS), ~1.000 tỷ (VDS 06/2026), 2.000–3.000 tỷ (KAFI); thời điểm từng được kỳ vọng Q2, rồi 08/2026, chưa xác nhận hoàn tất.",
+   "src": "WiData ai_news — báo cáo CTCK 05–09/2026"
+  },
+  {
+   "d": "2026-12-31",
+   "type": "Vốn & huy động",
+   "t": "Phương án tăng vốn điều lệ và nâng sở hữu Nhà nước lên ≥ 65%",
+   "impact": "+",
+   "status": "pending",
+   "detail": "Vốn điều lệ 77.669 tỷ (Q2/2026); Agriseco nêu kế hoạch lên hơn 105.000 tỷ. CAR 2025 9,89% là ràng buộc chính của tăng trưởng.",
+   "src": "WiData ai_news; BCTC Q2/2026"
+  },
+  {
+   "d": "2026-12-01",
+   "type": "Luật/Chính sách",
+   "t": "TT50/2026/TT-NHNN có hiệu lực: LDR mới, LCR, NSFR thay SMLR",
+   "impact": "?",
+   "status": "pending",
+   "detail": "Tiền gửi KBNN mặc định 20% trong LDR theo TT50 (Thống đốc có thể điều chỉnh); liên ngân hàng chỉ tính vị thế ròng.",
+   "src": "Deck slide 21, 53; báo cáo TT50 FinSuccess"
+  },
+  {
+   "d": "2026-10-31",
+   "type": "Vốn & huy động",
+   "t": "Chào bán trái phiếu ra công chúng (đã có Giấy chứng nhận 08/10, Bản cáo bạch 12/10)",
+   "impact": "+",
+   "status": "pending",
+   "detail": "GTCG ổn định vì không rút trước hạn; theo TT50, GTCG do TCTD khác nắm giữ bị loại khỏi LDR.",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-10-20",
+   "type": "KQKD",
+   "t": "Hạn công bố BCTC hợp nhất Q3/2026 (≤ 20 ngày sau quý, TT96/2020)",
+   "impact": "?",
+   "status": "pending",
+   "src": "Quy định CBTT; ngày công bố thực tế theo CTG"
+  },
+  {
+   "d": "2026-10-12",
+   "type": "Vốn & huy động",
+   "t": "Bản cáo bạch và thông báo chào bán trái phiếu ra công chúng",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-10-08",
+   "type": "Vốn & huy động",
+   "t": "Giấy chứng nhận đăng ký chào bán trái phiếu ra công chúng",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-10-01",
+   "type": "Thoái vốn",
+   "t": "Báo cáo kết quả đợt chào bán cổ phiếu PHP do Vietinbank sở hữu ra công chúng",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-09-17",
+   "type": "Vốn & huy động",
+   "t": "Nghị quyết HĐQT về việc thông qua các nội dung liên quan đến phương án phát hành trái phiếu ra công chúng",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-08-27",
+   "type": "Cổ tức",
+   "t": "Trả cổ tức năm 2025 bằng tiền 450 đồng/CP",
+   "impact": "0",
+   "status": "done",
+   "src": "WiData co_events"
+  },
+  {
+   "d": "2026-08-22",
+   "type": "Cổ đông chiến lược",
+   "t": "HĐQT thông qua nội dung hợp đồng khung tiền gửi bằng VND với MUFG Chi nhánh TPHCM",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-08-21",
+   "type": "Cổ đông chiến lược",
+   "t": "Nghị quyết HĐQT về việc thông qua các Hợp đồng hạn mức với MUFG - Chi nhánh TP.HCM",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-08-01",
+   "type": "Luật/Chính sách",
+   "t": "Hệ số tiền gửi KBNN tính vào LDR nâng lên 50% (từ Q3/2026)",
+   "impact": "+",
+   "status": "done",
+   "detail": "Big 4 hưởng lợi nhiều nhất do giữ nhiều tiền gửi KBNN; NHSV ước dư địa cho vay thêm ~55.000 tỷ cho CTG.",
+   "src": "Công thức LDR WiData; WiData ai_news (NHSV 05/08/2026)"
+  },
+  {
+   "d": "2026-07-31",
+   "type": "Quản trị",
+   "t": "Báo cáo tình hình quản trị 6 tháng đầu năm 2026",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-07-30",
+   "type": "KQKD",
+   "t": "Kết quả kinh doanh Quý 2/2026",
+   "detail": "Ngân hàng TMCP Công Thương Việt Nam (HOSE: CTG) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 2.2026 tích cực đạt 11.740 tỷ đồng (+21.4%YoY). Lũy kế 6 tháng đầu năm 2026, LNST cổ đông công ty mẹ vượt trội đạt 20.657 tỷ đồng (+36.9%YoY), hoàn thành 60.6% kế hoạch năm và 50.4% lợi nhuận dự phóng từ các CTCK (Kỳ vọng 2026F: 41.013 tỷ đồng, tăng 18.5%YoY). Về định giá P/E forward ở mức 6.1 lần so với P/E trailing 5.9 lần.",
+   "impact": "+",
+   "status": "done",
+   "src": "WiData ai_news"
+  },
+  {
+   "d": "2026-07-27",
+   "type": "Vốn & huy động",
+   "t": "Báo cáo định kỳ tình hình thanh toán gốc, lãi trái phiếu doanh nghiệp (từ 01/01/2026 - 30/06/2026)",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-07-22",
+   "type": "Nhân sự",
+   "t": "Thông báo về việc kéo dài thời gian giữ chức vụ Phó TGĐ",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-07-08",
+   "type": "Cổ đông chiến lược",
+   "t": "HĐQT thông qua hợp đồng khung vay vốn qua kênh tài trợ TM với MUFG Singapore",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-07-08",
+   "type": "Thoái vốn",
+   "t": "CBTT chào bán cổ phiếu PHP do Vietinbank sở hữu ra công chúng",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-07-01",
+   "type": "Vốn & huy động",
+   "t": "Nhận được Quyết định và Thông báo của HNX về việc hủy niêm yết trái phiếu CTG123018",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-06-30",
+   "type": "Cổ đông chiến lược",
+   "t": "CBTT thông qua nội dung Thỏa thuận sửa đổi của Thỏa thuận và Hợp đồng với MUFG Bank",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-06-25",
+   "type": "Nhân sự",
+   "t": "Thông báo thay đổi nhân sự - Miễn nhiệm và bổ nhiệm Phó TGĐ",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-06-17",
+   "type": "BCTC",
+   "t": "Thông báo ký hợp đồng kiểm toán BCTC 2026",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-05-27",
+   "type": "Nhân sự",
+   "t": "Thông báo thay đổi nhân sự",
+   "impact": "0",
+   "status": "done",
+   "src": "HOSE CBTT qua WiData"
+  },
+  {
+   "d": "2026-04-29",
+   "type": "KQKD",
+   "t": "Kết quả kinh doanh Quý 1/2026",
+   "detail": "Ngân hàng TMCP Công Thương Việt Nam (HOSE:CTG) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 1.2026 vượt trội đạt 8.917 tỷ đồng (+64.6% YoY), hoàn thành 34.3% kế hoạch năm. Các chỉ số tài chính khả quan với tăng trưởng tín dụng 12.5% và nợ xấu ở mức 1.0%.",
+   "impact": "+",
+   "status": "done",
+   "src": "WiData ai_news"
+  },
+  {
+   "d": "2026-04-24",
+   "type": "Nghị quyết/CBTT",
+   "t": "Họp ĐHCĐ thường niên năm 2026",
+   "impact": "0",
+   "status": "done",
+   "src": "WiData co_events"
+  },
+  {
+   "d": "2026-04-21",
+   "type": "KQKD",
+   "t": "Kết quả kinh doanh Quý 4/2025",
+   "detail": "Ngân hàng TMCP Công Thương Việt Nam (HOSE:CTG) công bố lợi nhuận sau thuế công ty mẹ Quý 4.2025 ổn định đạt 11.067 tỷ đồng (+12.9% YoY), đưa lũy kế cả năm 2025 lên mức 34.604 tỷ đồng, tăng 36.5% so với kết quả năm 2024. Các chỉ số tài chính khả quan với tăng trưởng tín dụng 15.6%, nợ xấu ở mức 1.1% và NIM đạt 2.6%.",
+   "impact": "+",
+   "status": "done",
+   "src": "WiData ai_news"
+  },
+  {
+   "d": "2025-12-17",
+   "type": "Cổ tức",
+   "t": "Trả cổ tức năm 2025 bằng cổ phiếu tỷ lệ 100:44.63658403",
+   "impact": "0",
+   "status": "done",
+   "src": "WiData co_events"
+  },
+  {
+   "d": "2025-11-17",
+   "type": "Cổ tức",
+   "t": "Trả cổ tức năm 2024 bằng tiền 450 đồng/CP",
+   "impact": "0",
+   "status": "done",
+   "src": "WiData co_events"
+  },
+  {
+   "d": "2025-04-01",
+   "type": "Nghị quyết/CBTT",
+   "t": "Họp ĐHCĐ thường niên năm 2025",
+   "impact": "0",
+   "status": "done",
+   "src": "WiData co_events"
+  },
+  {
+   "d": "2024-10-17",
+   "type": "Nghị quyết/CBTT",
+   "t": "Họp ĐHCĐ Bất thường năm 2024",
+   "impact": "0",
+   "status": "done",
+   "src": "WiData co_events"
+  },
+  {
+   "d": "2024-04-27",
+   "type": "Nghị quyết/CBTT",
+   "t": "Họp ĐHCĐ thường niên năm 2024",
+   "impact": "0",
+   "status": "done",
+   "src": "WiData co_events"
+  }
+ ],
+ "macro": {
+  "fx": {
+   "nhtmSell": [
+    {
+     "d": "2025-06-30",
+     "v": 26250
+    },
+    {
+     "d": "2025-07-31",
+     "v": 26390
+    },
+    {
+     "d": "2025-08-31",
+     "v": 26502
+    },
+    {
+     "d": "2025-09-30",
+     "v": 26446
+    },
+    {
+     "d": "2025-10-31",
+     "v": 26347
+    },
+    {
+     "d": "2025-11-30",
+     "v": 26412
+    },
+    {
+     "d": "2025-12-31",
+     "v": 26377
+    },
+    {
+     "d": "2026-01-30",
+     "v": 26110
+    },
+    {
+     "d": "2026-02-27",
+     "v": 26230
+    },
+    {
+     "d": "2026-03-31",
+     "v": 26357
+    },
+    {
+     "d": "2026-04-30",
+     "v": 26368
+    },
+    {
+     "d": "2026-05-31",
+     "v": 26395
+    },
+    {
+     "d": "2026-06-30",
+     "v": 26466
+    },
+    {
+     "d": "2026-07-31",
+     "v": 26490
+    },
+    {
+     "d": "2026-08-31",
+     "v": 26260
+    },
+    {
+     "d": "2026-09-30",
+     "v": 26160
+    },
+    {
+     "d": "2026-10-14",
+     "v": 26080
+    }
+   ],
+   "central": [
+    {
+     "d": "2025-04-29",
+     "v": 24956
+    },
+    {
+     "d": "2025-05-30",
+     "v": 24978
+    },
+    {
+     "d": "2025-06-30",
+     "v": 25052
+    },
+    {
+     "d": "2025-07-31",
+     "v": 25240
+    },
+    {
+     "d": "2025-08-29",
+     "v": 25240
+    },
+    {
+     "d": "2025-09-30",
+     "v": 25187
+    },
+    {
+     "d": "2025-10-31",
+     "v": 25093
+    },
+    {
+     "d": "2025-11-28",
+     "v": 25155
+    },
+    {
+     "d": "2025-12-31",
+     "v": 25121
+    },
+    {
+     "d": "2026-01-30",
+     "v": 25074
+    },
+    {
+     "d": "2026-02-27",
+     "v": 25044
+    },
+    {
+     "d": "2026-03-31",
+     "v": 25102
+    },
+    {
+     "d": "2026-04-29",
+     "v": 25113
+    },
+    {
+     "d": "2026-05-29",
+     "v": 25139
+    },
+    {
+     "d": "2026-06-30",
+     "v": 25206
+    },
+    {
+     "d": "2026-07-31",
+     "v": 25338
+    },
+    {
+     "d": "2026-08-28",
+     "v": 25610
+    },
+    {
+     "d": "2026-09-30",
+     "v": 25627
+    },
+    {
+     "d": "2026-10-14",
+     "v": 25646
+    }
+   ],
+   "ceiling": [
+    {
+     "d": "2025-04-29",
+     "v": 26203.8
+    },
+    {
+     "d": "2025-05-30",
+     "v": 26226.9
+    },
+    {
+     "d": "2025-06-30",
+     "v": 26304.6
+    },
+    {
+     "d": "2025-07-31",
+     "v": 26502
+    },
+    {
+     "d": "2025-08-29",
+     "v": 26502
+    },
+    {
+     "d": "2025-09-30",
+     "v": 26446.35
+    },
+    {
+     "d": "2025-10-31",
+     "v": 26347.65
+    },
+    {
+     "d": "2025-11-28",
+     "v": 26412.75
+    },
+    {
+     "d": "2025-12-31",
+     "v": 26377.05
+    },
+    {
+     "d": "2026-01-30",
+     "v": 26327.7
+    },
+    {
+     "d": "2026-02-27",
+     "v": 26296.2
+    },
+    {
+     "d": "2026-03-31",
+     "v": 26357.1
+    },
+    {
+     "d": "2026-04-29",
+     "v": 26368.65
+    },
+    {
+     "d": "2026-05-29",
+     "v": 26395.95
+    },
+    {
+     "d": "2026-06-30",
+     "v": 26466.3
+    },
+    {
+     "d": "2026-07-31",
+     "v": 26604.9
+    },
+    {
+     "d": "2026-08-28",
+     "v": 26890.5
+    },
+    {
+     "d": "2026-09-30",
+     "v": 26908.35
+    },
+    {
+     "d": "2026-10-14",
+     "v": 26928.3
+    }
+   ],
+   "sbvSell": [
+    {
+     "d": "2025-04-29",
+     "v": 26153
+    },
+    {
+     "d": "2025-05-30",
+     "v": 26176
+    },
+    {
+     "d": "2025-06-30",
+     "v": 26254
+    },
+    {
+     "d": "2025-07-31",
+     "v": 26452
+    },
+    {
+     "d": "2025-08-29",
+     "v": 26452
+    },
+    {
+     "d": "2025-09-30",
+     "v": 26396
+    },
+    {
+     "d": "2025-10-31",
+     "v": 26297
+    },
+    {
+     "d": "2025-11-28",
+     "v": 26362
+    },
+    {
+     "d": "2025-12-31",
+     "v": 26327
+    },
+    {
+     "d": "2026-01-30",
+     "v": 26277
+    },
+    {
+     "d": "2026-02-27",
+     "v": 26246
+    },
+    {
+     "d": "2026-03-31",
+     "v": 26307
+    },
+    {
+     "d": "2026-04-29",
+     "v": 26318
+    },
+    {
+     "d": "2026-05-29",
+     "v": 26345
+    },
+    {
+     "d": "2026-06-30",
+     "v": 26416
+    },
+    {
+     "d": "2026-07-31",
+     "v": 26554
+    },
+    {
+     "d": "2026-08-28",
+     "v": 26840
+    },
+    {
+     "d": "2026-09-30",
+     "v": 26858
+    },
+    {
+     "d": "2026-10-14",
+     "v": 26878
+    }
+   ],
+   "dxy": [
+    {
+     "d": "2025-07-31",
+     "v": 99.743
+    },
+    {
+     "d": "2025-08-31",
+     "v": 97.785
+    },
+    {
+     "d": "2025-09-30",
+     "v": 97.451
+    },
+    {
+     "d": "2025-10-31",
+     "v": 99.295
+    },
+    {
+     "d": "2025-11-30",
+     "v": 99.405
+    },
+    {
+     "d": "2025-12-31",
+     "v": 97.94
+    },
+    {
+     "d": "2026-01-30",
+     "v": 96.37
+    },
+    {
+     "d": "2026-02-27",
+     "v": 97.565
+    },
+    {
+     "d": "2026-03-31",
+     "v": 99.759
+    },
+    {
+     "d": "2026-04-30",
+     "v": 97.919
+    },
+    {
+     "d": "2026-05-31",
+     "v": 98.95
+    },
+    {
+     "d": "2026-06-30",
+     "v": 100.957
+    },
+    {
+     "d": "2026-07-31",
+     "v": 99.789
+    },
+    {
+     "d": "2026-08-31",
+     "v": 99.385
+    },
+    {
+     "d": "2026-09-30",
+     "v": 101.191
+    },
+    {
+     "d": "2026-10-14",
+     "v": 102.01
+    }
+   ],
+   "note": "Cuối tháng (Wi nén chuỗi ngày về tháng). Tỷ giá NHTM bán ra, trung tâm, trần biên độ, giá NHNN bán can thiệp."
+  },
+  "rates": {
+   "onMonthEnd": [
+    {
+     "d": "2025-04-28",
+     "v": 2.54
+    },
+    {
+     "d": "2025-05-30",
+     "v": 3.1
+    },
+    {
+     "d": "2025-06-30",
+     "v": 6.45
+    },
+    {
+     "d": "2025-07-31",
+     "v": 3.35
+    },
+    {
+     "d": "2025-08-29",
+     "v": 2.03
+    },
+    {
+     "d": "2025-09-30",
+     "v": 4.38
+    },
+    {
+     "d": "2025-10-31",
+     "v": 4.45
+    },
+    {
+     "d": "2025-11-28",
+     "v": 5.4
+    },
+    {
+     "d": "2025-12-31",
+     "v": 1.77
+    },
+    {
+     "d": "2026-01-30",
+     "v": 5.09
+    },
+    {
+     "d": "2026-02-27",
+     "v": 4.7
+    },
+    {
+     "d": "2026-03-31",
+     "v": 9.57
+    },
+    {
+     "d": "2026-04-29",
+     "v": 3.88
+    },
+    {
+     "d": "2026-05-29",
+     "v": 6.97
+    },
+    {
+     "d": "2026-06-30",
+     "v": 12.49
+    },
+    {
+     "d": "2026-07-31",
+     "v": 5.72
+    },
+    {
+     "d": "2026-08-28",
+     "v": 1.19
+    },
+    {
+     "d": "2026-09-30",
+     "v": 6.95
+    },
+    {
+     "d": "2026-10-13",
+     "v": 4.8
+    }
+   ],
+   "omo": [
+    {
+     "d": "2025-04-29",
+     "v": 4
+    },
+    {
+     "d": "2025-05-30",
+     "v": 4
+    },
+    {
+     "d": "2025-06-30",
+     "v": 4
+    },
+    {
+     "d": "2025-07-31",
+     "v": 4
+    },
+    {
+     "d": "2025-08-29",
+     "v": 4
+    },
+    {
+     "d": "2025-09-30",
+     "v": 4
+    },
+    {
+     "d": "2025-10-31",
+     "v": 4
+    },
+    {
+     "d": "2025-11-28",
+     "v": 4
+    },
+    {
+     "d": "2025-12-31",
+     "v": 4.5
+    },
+    {
+     "d": "2026-01-30",
+     "v": 4.5
+    },
+    {
+     "d": "2026-02-27",
+     "v": 4.5
+    },
+    {
+     "d": "2026-03-31",
+     "v": 4.5
+    },
+    {
+     "d": "2026-04-29",
+     "v": 4.5
+    },
+    {
+     "d": "2026-05-29",
+     "v": 4.5
+    },
+    {
+     "d": "2026-06-30",
+     "v": 4.5
+    },
+    {
+     "d": "2026-07-31",
+     "v": 4.5
+    },
+    {
+     "d": "2026-08-28",
+     "v": 4.5
+    },
+    {
+     "d": "2026-09-30",
+     "v": 4.5
+    },
+    {
+     "d": "2026-10-13",
+     "v": 4.5
+    }
+   ],
+   "dep12State": [
+    {
+     "d": "2025-04-30",
+     "v": 4.675
+    },
+    {
+     "d": "2025-05-30",
+     "v": 4.675
+    },
+    {
+     "d": "2025-06-30",
+     "v": 4.675
+    },
+    {
+     "d": "2025-07-31",
+     "v": 4.675
+    },
+    {
+     "d": "2025-08-29",
+     "v": 4.675
+    },
+    {
+     "d": "2025-09-30",
+     "v": 4.675
+    },
+    {
+     "d": "2025-10-31",
+     "v": 4.675
+    },
+    {
+     "d": "2025-11-28",
+     "v": 4.675
+    },
+    {
+     "d": "2025-12-31",
+     "v": 5.2
+    },
+    {
+     "d": "2026-01-30",
+     "v": 5.2
+    },
+    {
+     "d": "2026-02-27",
+     "v": 5.2
+    },
+    {
+     "d": "2026-03-31",
+     "v": 5.9
+    },
+    {
+     "d": "2026-04-30",
+     "v": 5.9
+    },
+    {
+     "d": "2026-05-29",
+     "v": 5.9
+    },
+    {
+     "d": "2026-06-30",
+     "v": 5.9
+    },
+    {
+     "d": "2026-07-31",
+     "v": 5.9
+    },
+    {
+     "d": "2026-08-31",
+     "v": 5.9
+    },
+    {
+     "d": "2026-09-30",
+     "v": 5.9
+    },
+    {
+     "d": "2026-10-14",
+     "v": 5.9
+    }
+   ],
+   "dep12Other": [
+    {
+     "d": "2025-04-30",
+     "v": 5.2085
+    },
+    {
+     "d": "2025-05-30",
+     "v": 5.2008
+    },
+    {
+     "d": "2025-06-30",
+     "v": 5.2008
+    },
+    {
+     "d": "2025-07-31",
+     "v": 5.195
+    },
+    {
+     "d": "2025-08-29",
+     "v": 5.195
+    },
+    {
+     "d": "2025-09-30",
+     "v": 5.1912
+    },
+    {
+     "d": "2025-10-31",
+     "v": 5.2462
+    },
+    {
+     "d": "2025-11-28",
+     "v": 5.3527
+    },
+    {
+     "d": "2025-12-31",
+     "v": 5.7423
+    },
+    {
+     "d": "2026-01-30",
+     "v": 5.8692
+    },
+    {
+     "d": "2026-02-27",
+     "v": 5.8769
+    },
+    {
+     "d": "2026-03-31",
+     "v": 6.075
+    },
+    {
+     "d": "2026-04-30",
+     "v": 5.9981
+    },
+    {
+     "d": "2026-05-29",
+     "v": 5.9942
+    },
+    {
+     "d": "2026-06-30",
+     "v": 5.9907
+    },
+    {
+     "d": "2026-07-31",
+     "v": 5.9889
+    },
+    {
+     "d": "2026-08-31",
+     "v": 5.9889
+    },
+    {
+     "d": "2026-09-30",
+     "v": 5.9889
+    },
+    {
+     "d": "2026-10-14",
+     "v": 5.9889
+    }
+   ],
+   "dep12CTG": [
+    {
+     "d": "2025-04-30",
+     "v": 4.7
+    },
+    {
+     "d": "2025-05-30",
+     "v": 4.7
+    },
+    {
+     "d": "2025-06-30",
+     "v": 4.7
+    },
+    {
+     "d": "2025-07-31",
+     "v": 4.7
+    },
+    {
+     "d": "2025-08-29",
+     "v": 4.7
+    },
+    {
+     "d": "2025-09-30",
+     "v": 4.7
+    },
+    {
+     "d": "2025-10-31",
+     "v": 4.7
+    },
+    {
+     "d": "2025-11-28",
+     "v": 4.7
+    },
+    {
+     "d": "2025-12-31",
+     "v": 5.2
+    },
+    {
+     "d": "2026-01-30",
+     "v": 5.2
+    },
+    {
+     "d": "2026-02-27",
+     "v": 5.2
+    },
+    {
+     "d": "2026-03-31",
+     "v": 5.9
+    },
+    {
+     "d": "2026-04-30",
+     "v": 5.9
+    },
+    {
+     "d": "2026-05-29",
+     "v": 5.9
+    },
+    {
+     "d": "2026-06-30",
+     "v": 5.9
+    },
+    {
+     "d": "2026-07-31",
+     "v": 5.9
+    },
+    {
+     "d": "2026-08-31",
+     "v": 5.9
+    },
+    {
+     "d": "2026-09-30",
+     "v": 5.9
+    },
+    {
+     "d": "2026-10-14",
+     "v": 5.9
+    }
+   ],
+   "effr": [
+    {
+     "d": "2025-09-30",
+     "v": 4.09
+    },
+    {
+     "d": "2025-10-31",
+     "v": 3.86
+    },
+    {
+     "d": "2025-11-30",
+     "v": 3.89
+    },
+    {
+     "d": "2025-12-31",
+     "v": 3.64
+    },
+    {
+     "d": "2026-01-31",
+     "v": 3.64
+    },
+    {
+     "d": "2026-02-28",
+     "v": 3.64
+    },
+    {
+     "d": "2026-03-31",
+     "v": 3.64
+    },
+    {
+     "d": "2026-04-30",
+     "v": 3.64
+    },
+    {
+     "d": "2026-05-31",
+     "v": 3.62
+    },
+    {
+     "d": "2026-06-30",
+     "v": 3.63
+    },
+    {
+     "d": "2026-07-31",
+     "v": 3.63
+    },
+    {
+     "d": "2026-08-31",
+     "v": 3.63
+    },
+    {
+     "d": "2026-09-30",
+     "v": 3.88
+    },
+    {
+     "d": "2026-10-12",
+     "v": 3.88
+    }
+   ]
+  },
+  "onDaily": [
+   {
+    "d": "2026-07-15",
+    "v": 4.16
+   },
+   {
+    "d": "2026-07-16",
+    "v": 4.11
+   },
+   {
+    "d": "2026-07-17",
+    "v": 3.87
+   },
+   {
+    "d": "2026-07-20",
+    "v": 3.68
+   },
+   {
+    "d": "2026-07-21",
+    "v": 3.54
+   },
+   {
+    "d": "2026-07-22",
+    "v": 3.33
+   },
+   {
+    "d": "2026-07-23",
+    "v": 2.97
+   },
+   {
+    "d": "2026-07-24",
+    "v": 2.43
+   },
+   {
+    "d": "2026-07-27",
+    "v": 2.37
+   },
+   {
+    "d": "2026-07-28",
+    "v": 2.17
+   },
+   {
+    "d": "2026-07-29",
+    "v": 1.33
+   },
+   {
+    "d": "2026-07-30",
+    "v": 0.75
+   },
+   {
+    "d": "2026-07-31",
+    "v": 5.72
+   },
+   {
+    "d": "2026-08-03",
+    "v": 6.22
+   },
+   {
+    "d": "2026-08-04",
+    "v": 6.32
+   },
+   {
+    "d": "2026-08-05",
+    "v": 4.83
+   },
+   {
+    "d": "2026-08-06",
+    "v": 4.58
+   },
+   {
+    "d": "2026-08-07",
+    "v": 5.97
+   },
+   {
+    "d": "2026-08-10",
+    "v": 6.09
+   },
+   {
+    "d": "2026-08-11",
+    "v": 5.26
+   },
+   {
+    "d": "2026-08-12",
+    "v": 4.47
+   },
+   {
+    "d": "2026-08-13",
+    "v": 4.38
+   },
+   {
+    "d": "2026-08-14",
+    "v": 4.91
+   },
+   {
+    "d": "2026-08-17",
+    "v": 5.77
+   },
+   {
+    "d": "2026-08-18",
+    "v": 4.89
+   },
+   {
+    "d": "2026-08-19",
+    "v": 4
+   },
+   {
+    "d": "2026-08-20",
+    "v": 3.01
+   },
+   {
+    "d": "2026-08-21",
+    "v": 3.26
+   },
+   {
+    "d": "2026-08-22",
+    "v": 3.28
+   },
+   {
+    "d": "2026-08-24",
+    "v": 3.96
+   },
+   {
+    "d": "2026-08-25",
+    "v": 2.7
+   },
+   {
+    "d": "2026-08-26",
+    "v": 2.06
+   },
+   {
+    "d": "2026-08-27",
+    "v": 1.19
+   },
+   {
+    "d": "2026-08-28",
+    "v": 1.19
+   },
+   {
+    "d": "2026-09-03",
+    "v": 6.01
+   },
+   {
+    "d": "2026-09-04",
+    "v": 4.62
+   },
+   {
+    "d": "2026-09-07",
+    "v": 3.58
+   },
+   {
+    "d": "2026-09-08",
+    "v": 2.49
+   },
+   {
+    "d": "2026-09-09",
+    "v": 1.63
+   },
+   {
+    "d": "2026-09-10",
+    "v": 1.68
+   },
+   {
+    "d": "2026-09-11",
+    "v": 3.28
+   },
+   {
+    "d": "2026-09-14",
+    "v": 5.16
+   },
+   {
+    "d": "2026-09-15",
+    "v": 4.37
+   },
+   {
+    "d": "2026-09-16",
+    "v": 3.69
+   },
+   {
+    "d": "2026-09-17",
+    "v": 3.31
+   },
+   {
+    "d": "2026-09-18",
+    "v": 4.68
+   },
+   {
+    "d": "2026-09-21",
+    "v": 6.84
+   },
+   {
+    "d": "2026-09-22",
+    "v": 4.43
+   },
+   {
+    "d": "2026-09-23",
+    "v": 2.56
+   },
+   {
+    "d": "2026-09-24",
+    "v": 1.1
+   },
+   {
+    "d": "2026-09-25",
+    "v": 0.87
+   },
+   {
+    "d": "2026-09-28",
+    "v": 0.48
+   },
+   {
+    "d": "2026-09-29",
+    "v": 0.56
+   },
+   {
+    "d": "2026-09-30",
+    "v": 6.95
+   },
+   {
+    "d": "2026-10-01",
+    "v": 4.29
+   },
+   {
+    "d": "2026-10-02",
+    "v": 2.73
+   },
+   {
+    "d": "2026-10-05",
+    "v": 2.05
+   },
+   {
+    "d": "2026-10-06",
+    "v": 1.18
+   },
+   {
+    "d": "2026-10-07",
+    "v": 0.72
+   },
+   {
+    "d": "2026-10-08",
+    "v": 0.99
+   },
+   {
+    "d": "2026-10-09",
+    "v": 4.52
+   },
+   {
+    "d": "2026-10-12",
+    "v": 4.75
+   },
+   {
+    "d": "2026-10-13",
+    "v": 4.8
+   }
+  ],
+  "omoNetDaily": [
+   {
+    "d": "2026-07-15",
+    "v": -2561.86
+   },
+   {
+    "d": "2026-07-16",
+    "v": -2149.07
+   },
+   {
+    "d": "2026-07-17",
+    "v": -1338.06
+   },
+   {
+    "d": "2026-07-20",
+    "v": -4569.67
+   },
+   {
+    "d": "2026-07-21",
+    "v": -5812.08
+   },
+   {
+    "d": "2026-07-22",
+    "v": -13102.13
+   },
+   {
+    "d": "2026-07-23",
+    "v": -3660.43
+   },
+   {
+    "d": "2026-07-24",
+    "v": 791.6
+   },
+   {
+    "d": "2026-07-27",
+    "v": -14187.42
+   },
+   {
+    "d": "2026-07-28",
+    "v": -1961.37
+   },
+   {
+    "d": "2026-07-29",
+    "v": 283.71
+   },
+   {
+    "d": "2026-07-30",
+    "v": 4900.21
+   },
+   {
+    "d": "2026-07-31",
+    "v": 23287.81
+   },
+   {
+    "d": "2026-08-03",
+    "v": 15067.19
+   },
+   {
+    "d": "2026-08-04",
+    "v": 7116.9
+   },
+   {
+    "d": "2026-08-05",
+    "v": -975.75
+   },
+   {
+    "d": "2026-08-06",
+    "v": -3211.44
+   },
+   {
+    "d": "2026-08-07",
+    "v": 6729.83
+   },
+   {
+    "d": "2026-08-10",
+    "v": -10530.23
+   },
+   {
+    "d": "2026-08-11",
+    "v": 380.95
+   },
+   {
+    "d": "2026-08-12",
+    "v": -2251.18
+   },
+   {
+    "d": "2026-08-13",
+    "v": 475.67
+   },
+   {
+    "d": "2026-08-14",
+    "v": 332.01
+   },
+   {
+    "d": "2026-08-17",
+    "v": -4978.7
+   },
+   {
+    "d": "2026-08-18",
+    "v": 304.63
+   },
+   {
+    "d": "2026-08-19",
+    "v": -1380.43
+   },
+   {
+    "d": "2026-08-20",
+    "v": 1224.14
+   },
+   {
+    "d": "2026-08-21",
+    "v": -3008.98
+   },
+   {
+    "d": "2026-08-22",
+    "v": 4526.61
+   },
+   {
+    "d": "2026-08-24",
+    "v": -762.01
+   },
+   {
+    "d": "2026-08-25",
+    "v": 6481.27
+   },
+   {
+    "d": "2026-08-26",
+    "v": 3315.31
+   },
+   {
+    "d": "2026-08-27",
+    "v": 9596.25
+   },
+   {
+    "d": "2026-08-28",
+    "v": 36262.58
+   },
+   {
+    "d": "2026-09-03",
+    "v": 5161.3
+   },
+   {
+    "d": "2026-09-04",
+    "v": 5625.56
+   },
+   {
+    "d": "2026-09-07",
+    "v": 2713.42
+   },
+   {
+    "d": "2026-09-08",
+    "v": -1411.82
+   },
+   {
+    "d": "2026-09-09",
+    "v": 5893.29
+   },
+   {
+    "d": "2026-09-10",
+    "v": -2577.59
+   },
+   {
+    "d": "2026-09-11",
+    "v": -37617.95
+   },
+   {
+    "d": "2026-09-14",
+    "v": -24884.16
+   },
+   {
+    "d": "2026-09-15",
+    "v": -14266.03
+   },
+   {
+    "d": "2026-09-16",
+    "v": -12829.17
+   },
+   {
+    "d": "2026-09-17",
+    "v": -11853.57
+   },
+   {
+    "d": "2026-09-18",
+    "v": 1289.83
+   },
+   {
+    "d": "2026-09-21",
+    "v": 47915.02
+   },
+   {
+    "d": "2026-09-22",
+    "v": -650.22
+   },
+   {
+    "d": "2026-09-23",
+    "v": -3115.5
+   },
+   {
+    "d": "2026-09-24",
+    "v": -4518.46
+   },
+   {
+    "d": "2026-09-25",
+    "v": -5301.8
+   },
+   {
+    "d": "2026-09-28",
+    "v": -44793.22
+   },
+   {
+    "d": "2026-09-29",
+    "v": -1564.97
+   },
+   {
+    "d": "2026-09-30",
+    "v": 10038
+   },
+   {
+    "d": "2026-10-01",
+    "v": -584.43
+   },
+   {
+    "d": "2026-10-02",
+    "v": -16570.58
+   },
+   {
+    "d": "2026-10-05",
+    "v": -18377.37
+   },
+   {
+    "d": "2026-10-06",
+    "v": -11555.34
+   },
+   {
+    "d": "2026-10-07",
+    "v": -9195.95
+   },
+   {
+    "d": "2026-10-08",
+    "v": -668.82
+   },
+   {
+    "d": "2026-10-09",
+    "v": 3199.9
+   },
+   {
+    "d": "2026-10-12",
+    "v": 2943.4
+   },
+   {
+    "d": "2026-10-13",
+    "v": 11999.38
+   }
+  ],
+  "omoRateDaily": [
+   {
+    "d": "2026-07-15",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-16",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-17",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-20",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-21",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-22",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-23",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-24",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-27",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-28",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-29",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-30",
+    "v": 4.5
+   },
+   {
+    "d": "2026-07-31",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-03",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-04",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-05",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-06",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-07",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-10",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-11",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-12",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-13",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-14",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-17",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-18",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-19",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-20",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-21",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-24",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-25",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-26",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-27",
+    "v": 4.5
+   },
+   {
+    "d": "2026-08-28",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-03",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-04",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-07",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-08",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-09",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-10",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-11",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-14",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-15",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-16",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-17",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-18",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-21",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-22",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-23",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-24",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-25",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-28",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-29",
+    "v": 4.5
+   },
+   {
+    "d": "2026-09-30",
+    "v": 4.5
+   },
+   {
+    "d": "2026-10-01",
+    "v": 4.5
+   },
+   {
+    "d": "2026-10-02",
+    "v": 4.5
+   },
+   {
+    "d": "2026-10-06",
+    "v": 4.5
+   },
+   {
+    "d": "2026-10-07",
+    "v": 4.5
+   },
+   {
+    "d": "2026-10-09",
+    "v": 4.5
+   },
+   {
+    "d": "2026-10-12",
+    "v": 4.5
+   },
+   {
+    "d": "2026-10-13",
+    "v": 4.5
+   }
+  ],
+  "credit": {
+   "ytd": [
+    {
+     "d": "2022-01-01",
+     "v": 2.4936
+    },
+    {
+     "d": "2022-02-01",
+     "v": 2.6591
+    },
+    {
+     "d": "2022-03-01",
+     "v": 5.9755
+    },
+    {
+     "d": "2022-04-01",
+     "v": 7.2354
+    },
+    {
+     "d": "2022-05-01",
+     "v": 8.0938
+    },
+    {
+     "d": "2022-06-01",
+     "v": 9.4346
+    },
+    {
+     "d": "2022-07-01",
+     "v": 9.5501
+    },
+    {
+     "d": "2022-08-01",
+     "v": 9.977
+    },
+    {
+     "d": "2022-09-01",
+     "v": 11.0495
+    },
+    {
+     "d": "2022-10-01",
+     "v": 11.6211
+    },
+    {
+     "d": "2022-11-01",
+     "v": 12.01
+    },
+    {
+     "d": "2022-12-01",
+     "v": 14.1819
+    },
+    {
+     "d": "2023-01-01",
+     "v": 0.1023
+    },
+    {
+     "d": "2023-02-01",
+     "v": 0.8546
+    },
+    {
+     "d": "2023-03-01",
+     "v": 2.577
+    },
+    {
+     "d": "2023-04-01",
+     "v": 3.0255
+    },
+    {
+     "d": "2023-05-01",
+     "v": 3.2675
+    },
+    {
+     "d": "2023-06-01",
+     "v": 4.7254
+    },
+    {
+     "d": "2023-07-01",
+     "v": 4.5437
+    },
+    {
+     "d": "2023-08-01",
+     "v": 5.5673
+    },
+    {
+     "d": "2023-09-01",
+     "v": 6.9625
+    },
+    {
+     "d": "2023-10-01",
+     "v": 7.4137
+    },
+    {
+     "d": "2023-11-01",
+     "v": 9.1858
+    },
+    {
+     "d": "2023-12-01",
+     "v": 13.7914
+    },
+    {
+     "d": "2024-01-01",
+     "v": -0.6838
+    },
+    {
+     "d": "2024-02-01",
+     "v": -0.7472
+    },
+    {
+     "d": "2024-03-01",
+     "v": 1.4182
+    },
+    {
+     "d": "2024-04-01",
+     "v": 2.0133
+    },
+    {
+     "d": "2024-05-01",
+     "v": 3.4272
+    },
+    {
+     "d": "2024-06-01",
+     "v": 6.0969
+    },
+    {
+     "d": "2024-07-01",
+     "v": 5.9284
+    },
+    {
+     "d": "2024-08-01",
+     "v": 7.3145
+    },
+    {
+     "d": "2024-09-01",
+     "v": 9.1133
+    },
+    {
+     "d": "2024-10-01",
+     "v": 10.1452
+    },
+    {
+     "d": "2024-11-01",
+     "v": 11.8468
+    },
+    {
+     "d": "2024-12-01",
+     "v": 15.0876
+    },
+    {
+     "d": "2025-01-01",
+     "v": 0.5491
+    },
+    {
+     "d": "2025-02-01",
+     "v": 0.7641
+    },
+    {
+     "d": "2025-03-01",
+     "v": 3.9078
+    },
+    {
+     "d": "2025-04-01",
+     "v": 5.3172
+    },
+    {
+     "d": "2025-05-01",
+     "v": 6.7188
+    },
+    {
+     "d": "2025-06-01",
+     "v": 9.9059
+    },
+    {
+     "d": "2025-07-01",
+     "v": 10.2383
+    },
+    {
+     "d": "2025-08-01",
+     "v": 11.7762
+    },
+    {
+     "d": "2025-09-01",
+     "v": 13.861
+    },
+    {
+     "d": "2025-10-01",
+     "v": 15.3131
+    },
+    {
+     "d": "2025-11-01",
+     "v": 16.8504
+    },
+    {
+     "d": "2025-12-01",
+     "v": 19.0745
+    },
+    {
+     "d": "2026-01-01",
+     "v": 1.1882
+    },
+    {
+     "d": "2026-02-01",
+     "v": 1.3306
+    },
+    {
+     "d": "2026-03-01",
+     "v": 3.1831
+    },
+    {
+     "d": "2026-04-01",
+     "v": 4.5851
+    },
+    {
+     "d": "2026-05-01",
+     "v": 5.9636
+    },
+    {
+     "d": "2026-06-01",
+     "v": 8.3651
+    },
+    {
+     "d": "2026-07-01",
+     "v": 8.9658
+    }
+   ],
+   "yoy": [
+    {
+     "d": "2022-01-01",
+     "v": 15.5613
+    },
+    {
+     "d": "2022-02-01",
+     "v": 15.865
+    },
+    {
+     "d": "2022-03-01",
+     "v": 16.9438
+    },
+    {
+     "d": "2022-04-01",
+     "v": 16.9543
+    },
+    {
+     "d": "2022-05-01",
+     "v": 17.0067
+    },
+    {
+     "d": "2022-06-01",
+     "v": 16.7984
+    },
+    {
+     "d": "2022-07-01",
+     "v": 16.3996
+    },
+    {
+     "d": "2022-08-01",
+     "v": 16.2793
+    },
+    {
+     "d": "2022-09-01",
+     "v": 16.9434
+    },
+    {
+     "d": "2022-10-01",
+     "v": 16.5913
+    },
+    {
+     "d": "2022-11-01",
+     "v": 14.8423
+    },
+    {
+     "d": "2022-12-01",
+     "v": 14.1819
+    },
+    {
+     "d": "2023-01-01",
+     "v": 11.518
+    },
+    {
+     "d": "2023-02-01",
+     "v": 12.1748
+    },
+    {
+     "d": "2023-03-01",
+     "v": 10.5202
+    },
+    {
+     "d": "2023-04-01",
+     "v": 9.6993
+    },
+    {
+     "d": "2023-05-01",
+     "v": 9.0838
+    },
+    {
+     "d": "2023-06-01",
+     "v": 9.2685
+    },
+    {
+     "d": "2023-07-01",
+     "v": 8.9638
+    },
+    {
+     "d": "2023-08-01",
+     "v": 9.6036
+    },
+    {
+     "d": "2023-09-01",
+     "v": 9.9795
+    },
+    {
+     "d": "2023-10-01",
+     "v": 9.8779
+    },
+    {
+     "d": "2023-11-01",
+     "v": 11.303
+    },
+    {
+     "d": "2023-12-01",
+     "v": 13.7914
+    },
+    {
+     "d": "2024-01-01",
+     "v": 12.8978
+    },
+    {
+     "d": "2024-02-01",
+     "v": 11.9841
+    },
+    {
+     "d": "2024-03-01",
+     "v": 12.5059
+    },
+    {
+     "d": "2024-04-01",
+     "v": 12.6734
+    },
+    {
+     "d": "2024-05-01",
+     "v": 13.9674
+    },
+    {
+     "d": "2024-06-01",
+     "v": 15.2816
+    },
+    {
+     "d": "2024-07-01",
+     "v": 15.2987
+    },
+    {
+     "d": "2024-08-01",
+     "v": 15.6747
+    },
+    {
+     "d": "2024-09-01",
+     "v": 16.0796
+    },
+    {
+     "d": "2024-10-01",
+     "v": 16.6851
+    },
+    {
+     "d": "2024-11-01",
+     "v": 16.5646
+    },
+    {
+     "d": "2024-12-01",
+     "v": 15.0876
+    },
+    {
+     "d": "2025-01-01",
+     "v": 16.5163
+    },
+    {
+     "d": "2025-02-01",
+     "v": 16.8401
+    },
+    {
+     "d": "2025-03-01",
+     "v": 17.9127
+    },
+    {
+     "d": "2025-04-01",
+     "v": 18.8149
+    },
+    {
+     "d": "2025-05-01",
+     "v": 18.7504
+    },
+    {
+     "d": "2025-06-01",
+     "v": 19.2194
+    },
+    {
+     "d": "2025-07-01",
+     "v": 19.7702
+    },
+    {
+     "d": "2025-08-01",
+     "v": 19.8724
+    },
+    {
+     "d": "2025-09-01",
+     "v": 20.0953
+    },
+    {
+     "d": "2025-10-01",
+     "v": 20.4874
+    },
+    {
+     "d": "2025-11-01",
+     "v": 20.2362
+    },
+    {
+     "d": "2025-12-01",
+     "v": 19.0745
+    },
+    {
+     "d": "2026-01-01",
+     "v": 19.8314
+    },
+    {
+     "d": "2026-02-01",
+     "v": 19.744
+    },
+    {
+     "d": "2026-03-01",
+     "v": 18.2441
+    },
+    {
+     "d": "2026-04-01",
+     "v": 18.2467
+    },
+    {
+     "d": "2026-05-01",
+     "v": 18.2318
+    },
+    {
+     "d": "2026-06-01",
+     "v": 17.4052
+    },
+    {
+     "d": "2026-07-01",
+     "v": 17.7
+    }
+   ],
+   "depositsYoY": [
+    {
+     "d": "2022-01-01",
+     "v": 9.9945
+    },
+    {
+     "d": "2022-02-01",
+     "v": 11.1912
+    },
+    {
+     "d": "2022-03-01",
+     "v": 11.5044
+    },
+    {
+     "d": "2022-04-01",
+     "v": 10.6184
+    },
+    {
+     "d": "2022-05-01",
+     "v": 10.3102
+    },
+    {
+     "d": "2022-06-01",
+     "v": 10.228
+    },
+    {
+     "d": "2022-07-01",
+     "v": 9.7776
+    },
+    {
+     "d": "2022-08-01",
+     "v": 8.4011
+    },
+    {
+     "d": "2022-09-01",
+     "v": 8.2531
+    },
+    {
+     "d": "2022-10-01",
+     "v": 8.3015
+    },
+    {
+     "d": "2022-11-01",
+     "v": 8.1738
+    },
+    {
+     "d": "2022-12-01",
+     "v": 7.9812
+    },
+    {
+     "d": "2023-01-01",
+     "v": 6.988
+    },
+    {
+     "d": "2023-02-01",
+     "v": 6.2992
+    },
+    {
+     "d": "2023-03-01",
+     "v": 5.3376
+    },
+    {
+     "d": "2023-04-01",
+     "v": 5.8291
+    },
+    {
+     "d": "2023-05-01",
+     "v": 6.3299
+    },
+    {
+     "d": "2023-06-01",
+     "v": 7.8337
+    },
+    {
+     "d": "2023-07-01",
+     "v": 7.9408
+    },
+    {
+     "d": "2023-08-01",
+     "v": 10.0035
+    },
+    {
+     "d": "2023-09-01",
+     "v": 11.0232
+    },
+    {
+     "d": "2023-10-01",
+     "v": 11.177
+    },
+    {
+     "d": "2023-11-01",
+     "v": 11.2668
+    },
+    {
+     "d": "2023-12-01",
+     "v": 13.1564
+    },
+    {
+     "d": "2024-01-01",
+     "v": 12.1424
+    },
+    {
+     "d": "2024-02-01",
+     "v": 11.569
+    },
+    {
+     "d": "2024-03-01",
+     "v": 11.3746
+    },
+    {
+     "d": "2024-04-01",
+     "v": 10.8803
+    },
+    {
+     "d": "2024-05-01",
+     "v": 10.9787
+    },
+    {
+     "d": "2024-06-01",
+     "v": 10.9813
+    },
+    {
+     "d": "2024-07-01",
+     "v": 10.6337
+    },
+    {
+     "d": "2024-08-01",
+     "v": 10.5789
+    },
+    {
+     "d": "2024-09-01",
+     "v": 10.681
+    },
+    {
+     "d": "2024-10-01",
+     "v": 11.2813
+    },
+    {
+     "d": "2024-11-01",
+     "v": 11.0053
+    },
+    {
+     "d": "2024-12-01",
+     "v": 10.1521
+    },
+    {
+     "d": "2025-01-01",
+     "v": 10.9851
+    },
+    {
+     "d": "2025-02-01",
+     "v": 11.9158
+    },
+    {
+     "d": "2025-03-01",
+     "v": 12.6811
+    },
+    {
+     "d": "2025-04-01",
+     "v": 14.0738
+    },
+    {
+     "d": "2025-05-01",
+     "v": 14.3068
+    },
+    {
+     "d": "2025-06-01",
+     "v": 15.1116
+    },
+    {
+     "d": "2025-07-01",
+     "v": 15.5674
+    },
+    {
+     "d": "2025-08-01",
+     "v": 15.956
+    },
+    {
+     "d": "2025-09-01",
+     "v": 15.309
+    },
+    {
+     "d": "2025-10-01",
+     "v": 14.8569
+    },
+    {
+     "d": "2025-11-01",
+     "v": 14.8947
+    },
+    {
+     "d": "2025-12-01",
+     "v": 14.4158
+    },
+    {
+     "d": "2026-01-01",
+     "v": 14.9011
+    },
+    {
+     "d": "2026-02-01",
+     "v": 13.7478
+    },
+    {
+     "d": "2026-03-01",
+     "v": 12.8535
+    },
+    {
+     "d": "2026-04-01",
+     "v": 13.0371
+    },
+    {
+     "d": "2026-05-01",
+     "v": 13.0378
+    },
+    {
+     "d": "2026-06-01",
+     "v": 12.6634
+    }
+   ]
+  },
+  "src": "WiData macro: 82223, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202862, 7079, 241732, 75847, 265963"
+ },
+ "signals": [
+  {
+   "id": "R-01",
+   "label": "DXY 3 tháng",
+   "value": 1.0,
+   "unit": "%",
+   "asOf": "2026-10-14",
+   "rule": "DXY tăng mạnh → áp lực USD/VND, NHNN ưu tiên ổn định",
+   "threshold": "> +3% / 3 tháng (giả định)",
+   "state": "watch",
+   "impact": "Dư địa nới lỏng của NHNN → COF, định giá"
+  },
+  {
+   "id": "FX",
+   "label": "Tỷ giá NHTM bán / trần biên độ",
+   "value": -3.15,
+   "unit": "% (âm = còn cách trần)",
+   "asOf": "2026-10-14",
+   "rule": "Khoảng cách tới trần thu hẹp → NHNN phải bán USD, hút VND",
+   "threshold": "> −1% (giả định)",
+   "state": "ok",
+   "impact": "Tỷ giá trung tâm +2.1% từ đầu năm"
+  },
+  {
+   "id": "R-09",
+   "label": "Tín dụng − tiền gửi (YoY)",
+   "value": 5.0,
+   "unit": "điểm %",
+   "asOf": "tín dụng 2026-07, tiền gửi 2026-06",
+   "rule": "Tín dụng tăng nhanh hơn huy động → LDR căng, cạnh tranh tiền gửi",
+   "threshold": "> +3 điểm % (giả định)",
+   "state": "risk",
+   "impact": "LS huy động TT1 → COF CTG (1–2 quý)"
+  },
+  {
+   "id": "R-10",
+   "label": "LNH qua đêm TB 20 phiên vs OMO",
+   "value": -1.43,
+   "unit": "điểm %",
+   "asOf": "2026-10-13",
+   "rule": "OMO bơm ròng 20 phiên -64.194 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
+   "threshold": "> 0 kéo dài (giả định)",
+   "state": "ok",
+   "impact": "OMO không giúp tuân thủ LDR; TT1 chỉ hạ khi có nới tỉ lệ"
+  },
+  {
+   "id": "R-13",
+   "label": "LS huy động 12T NHTM Nhà nước, Δ 3 tháng",
+   "value": 0.0,
+   "unit": "điểm %",
+   "asOf": "2026-10-14",
+   "rule": "Mức 5.9%; tăng → COF tăng theo kỳ tái định giá",
+   "threshold": "> +0,3 điểm % (giả định)",
+   "state": "ok",
+   "impact": "COF, NIM (1–3 quý)"
+  },
+  {
+   "id": "R-14",
+   "label": "Hình thành nợ xấu quy năm",
+   "value": 2.06,
+   "unit": "% dư nợ",
+   "asOf": "Q2/2026",
+   "rule": "NPL 1.2% (quý trước 1.01%), LLR 133.9%",
+   "threshold": "> 1,5% (giả định)",
+   "state": "risk",
+   "impact": "Chi phí tín dụng tăng sau lãi suất cao 2–4 quý"
+  }
+ ],
+ "thesisPillars": [
+  {
+   "id": "p1",
+   "step": "Bước 5 · Biên lãi",
+   "t": "NIM phục hồi từ đáy",
+   "evidence": "NIM TTM 2.75% (Q2/2026) so với đáy 8 quý 2.62%; YEA 6.0%, COF 3.49%",
+   "status": "holding"
+  },
+  {
+   "id": "p2",
+   "step": "Bước 4 · Chất lượng tài sản",
+   "t": "Nợ xấu trong tầm kiểm soát, bộ đệm dự phòng đủ",
+   "evidence": "NPL 1.2% (Q trước 1.01%), nhóm 2 0.93%, LLR 133.9% (Q trước 167.2%); hình thành nợ xấu quy năm 2.06%",
+   "status": "watch"
+  },
+  {
+   "id": "p3",
+   "step": "Bước 2–3 · Nguồn vốn & tăng trưởng",
+   "t": "Dư địa tăng tín dụng (LDR, room)",
+   "evidence": "LDR (công thức Wi, KBNN tính theo hệ số TT26/TT08) 83.4%; tín dụng YoY 10.1%, huy động YoY 4.3%; CASA 23.17%",
+   "status": "watch"
+  },
+  {
+   "id": "p4",
+   "step": "Bước 7 · Vốn",
+   "t": "CAR đủ để tăng trưởng và chia cổ tức",
+   "evidence": "CAR 9.89% (2025, TT41), Tier 1 7.38%; cổ tức tiền mặt 450đ/CP",
+   "status": "watch"
+  },
+  {
+   "id": "p5",
+   "step": "Bước 8 · Định giá",
+   "t": "Định giá chưa phản ánh ROE",
+   "evidence": "P/B 1.18x (2026-10-14) vs trung bình 5 năm 1.42x (±1σ 1.24–1.6x); ROE TTM 22.2%",
+   "status": "holding"
+  }
+ ],
+ "thesisNote": "Trạng thái tính theo quy tắc từ số mới nhất (AI dựng khung theo deck), CHƯA phải nhận định analyst/FinSuccess.",
+ "reg": [
+  {
+   "id": "REG-01",
+   "rule": "Giới hạn tín dụng 1 KH / KH + người liên quan",
+   "level": "13% / 21% vốn tự có (2026)",
+   "doc": "Luật TCTD 2024, Điều 136",
+   "path": "12/19% (2027) → 11/17% (2028) → 10/15% (từ 2029)"
+  },
+  {
+   "id": "REG-02",
+   "rule": "Tỉ lệ vốn ngắn hạn cho vay trung dài hạn (SMLR)",
+   "level": "40%",
+   "doc": "TT25/2026/TT-NHNN · 1/7/2026",
+   "path": "Chuyển sang NSFR theo TT50 (1/12/2026)"
+  },
+  {
+   "id": "REG-03",
+   "rule": "Tiền gửi có kỳ hạn KBNN tính vào LDR",
+   "level": "50% (từ Q3/2026 theo công thức LDR của Wi)",
+   "doc": "TT08/2026 (20% từ 15/5/2026) → nâng 50%",
+   "path": "TT26/2022: 50% (2023), 40% (2024), 20% (2025), 0% (Q1/2026)",
+   "flag": "Deck ghi 20% — đã lệch so với mức hiện hành; analyst xác nhận văn bản nâng lên 50%"
+  },
+  {
+   "id": "REG-04",
+   "rule": "Trần LDR",
+   "level": "85% (TT22) [cần xác minh mức sau TT50]",
+   "doc": "TT22/2019 và sửa đổi",
+   "path": "—"
+  },
+  {
+   "id": "REG-05",
+   "rule": "TT50/2026: LDR, NSFR, LCR",
+   "level": "Theo TT50 [cần xác minh chi tiết]",
+   "doc": "TT50/2026 · 1/12/2026",
+   "path": "Thay SMLR bằng NSFR; đối tượng gửi tiền quan trọng hơn kỳ hạn"
+  },
+  {
+   "id": "REG-06",
+   "rule": "Chỉ tiêu tín dụng 2026",
+   "level": "~15% toàn hệ thống",
+   "doc": "CV 11686/NHNN-CSTT · 31/12/2025",
+   "path": "Có thể điều chỉnh trong năm"
+  },
+  {
+   "id": "REG-07",
+   "rule": "Loại trừ khỏi room",
+   "level": "18 dự án trọng điểm; NOXH, KCN, KCX; du lịch, khách sạn",
+   "doc": "CV 4551/NHNN-CSTT (29/5/2026)",
+   "path": "Áp dụng hết 31/12/2026"
+  },
+  {
+   "id": "REG-09",
+   "rule": "CAR tối thiểu",
+   "level": "8% (Basel II) [cần xác minh]",
+   "doc": "TT41/2016 và sửa đổi",
+   "path": "—"
+  }
+ ],
+ "sources": [
+  {
+   "n": "WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
+   "u": "https://widata.vn/CTG"
+  },
+  {
+   "n": "VietinBank — Quan hệ nhà đầu tư",
+   "u": "https://investor.vietinbank.vn/"
+  },
+  {
+   "n": "Deck \"Hướng dẫn xây dựng dashboard ngân hàng\" (FinSuccess, 10/2026) — khung 8 bước, BNK/DOM/R/REG",
+   "u": ""
+  },
+  {
+   "n": "Báo cáo \"Ngành Ngân hàng: Tác động Thông tư 50/2026\" (FinSuccess, 05/10/2026)",
+   "u": "https://fisc.vn/xu-huong-dau-tu/thong-tu-50-huong-toi-tang-truong-quan-tri-rui-ro-thuc-chat-p37070.html"
+  }
+ ]
+}

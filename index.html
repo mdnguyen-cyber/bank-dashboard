@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CTG Tracker · FinSuccess</title>
+<style>
+:root{
+  --navy:#1D2678;--blue:#2938A8;--teal:#59C5C8;--teal-ink:#1f8a8d;--purple:#861C52;--gold:#FFD45D;--gold-ink:#9a7400;
+  --ink:#303540;--ink2:#596272;--muted:#8a93a3;--line:#d9dde4;--line2:#e9ecf2;--bg:#F7F9FD;--card:#fff;--soft:#F0F4FF;
+  --pos:#1e8f5a;--neg:#c0392b;--warn:#b7791f;--radius:16px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Arial,"Helvetica Neue",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+.wrap{max-width:1440px;margin:0 auto;padding:0 24px}
+/* header */
+.logo-bar{background:#fff;border-bottom:1px solid var(--line2)}
+.logo-bar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo-bar img{height:38px}
+.logo-bar .stamp{font-size:12px;color:var(--ink2)}
+.stock-head{background:#fff;border-bottom:1px solid var(--line2)}
+.stock-head .wrap{display:flex;align-items:center;gap:16px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.tick{background:var(--soft);color:var(--navy);font-weight:800;font-size:22px;padding:8px 14px;border-radius:12px}
+.cname{font-weight:700;color:var(--navy);font-size:17px;flex:1;min-width:220px}
+.cname small{display:block;font-weight:400;color:var(--ink2);font-size:12px}
+.hstats{display:flex;gap:22px;align-items:flex-end;flex-wrap:wrap}
+.hstat{text-align:right}.hstat span{display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.hstat b{font-size:17px;color:var(--navy)}
+.view-chip{background:var(--teal);color:var(--navy);border-radius:12px;padding:8px 14px;text-align:center;font-weight:800;font-size:14px;min-width:120px}
+.view-chip small{display:block;font-size:9.5px;letter-spacing:.08em;font-weight:700}
+.view-chip.none{background:#eef1f6;color:var(--ink2)}
+/* tabs */
+.tabs{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs button{border:0;background:none;padding:14px 14px 12px;font:600 13.5px Arial,sans-serif;color:#5a6682;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs button.active{color:var(--navy);border-bottom-color:var(--teal)}
+.tabs button:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+main{padding:24px 0 60px}
+.pane{display:none}.pane.active{display:block}
+h2.sec{font-size:22px;color:var(--navy);margin:8px 0 6px;padding-left:12px;border-left:4px solid var(--teal);line-height:1.25}
+.sec-sub{color:var(--ink2);font-size:13px;margin:0 0 16px}
+h3.sub{font-size:16px;color:var(--navy);margin:0 0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chart-sub{font-size:12px;color:var(--ink2);margin:0 0 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:18px;min-width:0}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2>.card,.g3>.card{margin-bottom:0}
+.gap{margin-bottom:18px}
+.span2{grid-column:1/-1}
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.kpis.k4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.kpi span{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);font-weight:700}
+.kpi b{display:block;font-size:22px;font-weight:800;color:var(--navy);margin:4px 0 2px}
+.kpi em{font-style:normal;font-size:12px;color:var(--ink2)}
+.kpi em.pos{color:var(--pos)}.kpi em.neg{color:var(--neg)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.fact{background:#f5f7fb;border:1px solid var(--line2);border-radius:10px;padding:10px 12px}
+.fact span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);font-weight:700}
+.fact b{color:var(--navy);font-size:16px}.fact small{display:block;color:var(--muted);font-size:11px}
+.banner{background:#eef9f9;border-left:4px solid var(--teal);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px}
+.banner.warn{background:#fff8e5;border-left-color:var(--gold)}
+.banner.chain{background:var(--soft);border-left-color:var(--navy);font-weight:600;color:var(--navy)}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+th{background:var(--soft);color:var(--navy);text-align:left;font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:7px 10px;border-bottom:1px solid var(--line2);vertical-align:top}
+td.n,th.n{text-align:right;white-space:nowrap}
+tr.hl td{background:#fffbea;font-weight:700}
+tr.stale td{color:#9aa3b2}
+.tscroll{overflow-x:auto}
+/* charts */
+.cbox{position:relative;height:280px}
+.cbox.tall{height:340px}.cbox.short{height:230px}
+.ctl{display:inline-flex;gap:2px;background:#f1f3f8;border-radius:8px;padding:2px;margin-left:auto}
+.ctl button{border:0;background:none;font:600 11.5px Arial;color:#5a6682;padding:4px 8px;border-radius:6px;cursor:pointer}
+.ctl button.on{background:var(--navy);color:#fff}
+.src{font-size:11px;color:#9aa3b2;margin-top:8px}
+.note{font-size:12.5px;color:var(--ink2);margin-top:8px}
+.insight{font-size:13px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.insight b{color:var(--navy)}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:#eef1f6;color:var(--ink2)}
+.pill.ok{background:#e3f5ec;color:var(--pos)}.pill.watch{background:#fff4d6;color:var(--gold-ink)}.pill.risk{background:#fde8e6;color:var(--neg)}
+.pill.ai{background:#e6f6f6;color:var(--teal-ink)}.pill.pending{background:#eef1f6;color:var(--ink2)}
+.imp{font-weight:800}.imp.p{color:var(--pos)}.imp.m{color:var(--neg)}.imp.z{color:var(--ink2)}
+/* subtabs */
+.subtabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.subtabs button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 14px;font:400 13px Arial;color:var(--ink);cursor:pointer}
+.subtabs button.on{background:#e6f6f6;border-color:var(--teal);font-weight:700}
+.sub{display:none}.sub.on{display:block}
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.pillar{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.pillar .st{margin-bottom:6px}.pillar h4{margin:0 0 4px;font-size:13.5px;color:var(--navy)}
+.pillar small{display:block;color:var(--muted);font-size:11px;margin-bottom:4px}
+.pillar p{margin:0;font-size:12.5px;color:var(--ink2)}
+/* matrix */
+.matrix{display:grid;grid-template-columns:120px 1fr 1fr;gap:8px;font-size:12.5px}
+.matrix .cell{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}
+.matrix .cell b{display:block;color:var(--navy)}
+.matrix .ax{display:flex;align-items:center;justify-content:center;text-align:center;color:var(--ink2);font-weight:700;font-size:11.5px}
+/* forms */
+.form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.form label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);font-weight:700;margin-bottom:4px}
+.form input,.form select,.form textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:13px Arial;color:var(--ink)}
+.form textarea{min-height:72px}
+.form .wide{grid-column:span 2}.form .full{grid-column:1/-1}
+.btn{border:0;background:var(--navy);color:#fff;border-radius:8px;padding:8px 14px;font:700 12.5px Arial;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.calc{font-size:12.5px;color:var(--ink2);margin-top:6px}
+.calc b{color:var(--navy)}
+.filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filter button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:5px 12px;font:12.5px Arial;cursor:pointer}
+.filter button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+details.more summary{cursor:pointer;color:var(--blue);font-size:12.5px;margin-top:6px}
+footer{color:var(--muted);font-size:11.5px;padding:24px 0;border-top:1px solid var(--line2)}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  .wrap{padding:0 16px}.g2,.g3{grid-template-columns:1fr}.kpis,.kpis.k4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .form{grid-template-columns:1fr 1fr}.form .wide{grid-column:1/-1}.pillars{grid-template-columns:1fr}
+  .hstats{gap:14px}.cname{min-width:0}.matrix{grid-template-columns:70px 1fr 1fr}.card{padding:16px}
+}
+@media print{.tabs{position:static}.pane{display:block!important}.ctl,.btn{display:none}}
+</style>
+</head>
+<body>
+<div class="logo-bar"><div class="wrap"><img src="assets/fin-success-logo.png" alt="FinSuccess"><div class="stamp" id="stamp"></div></div></div>
+<div class="stock-head"><div class="wrap" id="stockHead"></div></div>
+<nav class="tabs" role="tablist" aria-label="Các mục dashboard"><div class="wrap" id="tabbar">
+  <button role="tab" data-tab="overview" class="active">Tổng quan</button>
+  <button role="tab" data-tab="macro">Vĩ mô &amp; Tỉ lệ an toàn</button>
+  <button role="tab" data-tab="fin">Tài chính</button>
+  <button role="tab" data-tab="events">Catalyst &amp; Sự kiện</button>
+  <button role="tab" data-tab="cons">Consensus CTCK</button>
+  <button role="tab" data-tab="val">💎 FinSuccess</button>
+</div></nav>
+<main><div class="wrap">
+  <section class="pane active" id="overview" role="tabpanel"></section>
+  <section class="pane" id="macro" role="tabpanel"></section>
+  <section class="pane" id="fin" role="tabpanel"></section>
+  <section class="pane" id="events" role="tabpanel"></section>
+  <section class="pane" id="cons" role="tabpanel"></section>
+  <section class="pane" id="val" role="tabpanel"></section>
+</div></main>
+<footer><div class="wrap" id="foot"></div></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="data/ctg-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
