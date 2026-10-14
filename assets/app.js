@@ -58,7 +58,7 @@ function mk(id, cfg, opt = {}) {
   const el = document.getElementById(id); if (!el) return;
   if (charts[id]) charts[id].destroy();
   cfg.options = cfg.options || {};
-  cfg.options.interaction = cfg.options.interaction || { mode: 'index', intersect: false };
+  cfg.options.interaction = cfg.options.interaction || { mode: 'index', intersect: false, axis: cfg.options.indexAxis === 'y' ? 'y' : 'x' };
   charts[id] = new Chart(el, cfg);
   charts[id]._base = JSON.parse(JSON.stringify(cfg.data.datasets.map(d => d.type || cfg.type)));
   if (opt.switch) {
