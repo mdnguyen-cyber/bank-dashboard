@@ -195,6 +195,8 @@ function checklist() {
    TAB 2 · VĨ MÔ & TỈ LỆ AN TOÀN
 ===================================================================== */
 function paneMacro() {
+  const SX = window.SECTOR_DATA ? window.SECTOR_DATA.idx : null;
+  const qc = (k, b, txt) => `<div class="cell ${SX && SX.now.q === k ? 'on' : ''}"><b>${b}</b>${txt}${SX && SX.now.q === k ? '<br><span class="now">Hiện tại</span>' : ''}</div>`;
   const MA = D.macro; const fx = MA.fx, r = MA.rates;
   const lastv = a => a[a.length - 1];
   const sigRows = D.signals.map(s => `<tr><td style="white-space:nowrap"><b>${s.id}</b></td><td>${esc(s.label)}</td><td class="n">${nf(s.value, 2)} ${s.unit}</td><td>${esc(s.threshold)}</td><td>${pill(s.state)}</td><td>${esc(s.rule)}</td><td>${esc(s.impact)}</td><td style="white-space:nowrap">${esc(s.asOf)}</td></tr>`).join('');
@@ -216,17 +218,17 @@ function paneMacro() {
   </div>
   <div class="grid g2 gap">
     <article class="card span2"><h3 class="sub">Kịch bản lãi suất (IDX-FX × IDX-LIQ)</h3>
-      <p class="chart-sub">Hai chỉ số tổng hợp (z-score 3 năm) sẽ lấy từ dashboard CSTT · chưa tính ở bản này</p>
+      <p class="chart-sub">${SX ? `Lấy từ dashboard Ngành Ngân hàng · ${SX.now.m.slice(5)}/${SX.now.m.slice(0, 4)} · ±1 là ngưỡng mạnh` : 'Hai chỉ số tổng hợp (z-score 3 năm) lấy từ dashboard CSTT'}</p>
       <div class="matrix">
         <div></div><div class="ax">Áp lực tỉ giá THẤP</div><div class="ax">Áp lực tỉ giá CAO</div>
         <div class="ax">Thanh khoản DỒI DÀO</div>
-        <div class="cell"><b>Nới lỏng mạnh</b>Lãi suất giảm nhanh → NIM mở rộng, CTG được định giá lại</div>
-        <div class="cell"><b>NHNN hút tiền về</b>LNH tăng → tín dụng chậm lại</div>
+        ${qc('ease', 'Nới lỏng mạnh', 'Lãi suất giảm nhanh → NIM mở rộng, CTG được định giá lại')}
+        ${qc('drain', 'NHNN hút tiền về', 'LNH tăng → tín dụng chậm lại')}
         <div class="ax">Thanh khoản THIẾU</div>
-        <div class="cell"><b>Dư địa bơm tiền</b>Huy động gần đỉnh → theo dõi tín hiệu nới sớm</div>
-        <div class="cell"><b>Thắt chặt kéo dài</b>COF tăng, nợ xấu tăng → áp lực P/B</div>
+        ${qc('room', 'Dư địa bơm tiền', 'Huy động gần đỉnh → theo dõi tín hiệu nới sớm')}
+        ${qc('tight', 'Thắt chặt kéo dài', 'COF tăng, nợ xấu tăng → áp lực P/B')}
       </div>
-      <div class="note">Đọc tạm bằng tín hiệu bên dưới: tỉ giá NHTM còn cách trần ${pc(Math.abs((lastv(fx.nhtmSell).v / lastv(fx.ceiling).v - 1) * 100), 1)} (áp lực vừa), lãi suất huy động 12T đứng ở ${pc(lastv(r.dep12State).v, 1)} từ 03/2026, tín dụng tăng nhanh hơn tiền gửi → gần ô <b>Dư địa bơm tiền</b> hơn là Nới lỏng mạnh. Kết luận chính thức chờ IDX tính đủ thành phần.</div>
+      ${SX ? `<div class="insight">IDX-FX <b>${sg(SX.now.fx, 2, '')}</b>, IDX-LIQ <b>${sg(SX.now.liq, 2, '')}</b> → ô <b>${({ ease: 'Nới lỏng mạnh', drain: 'NHNN hút tiền về', room: 'Dư địa bơm tiền', tight: 'Thắt chặt kéo dài' })[SX.now.q]}</b> (cả hai trong vùng ±1: mức vừa). Với CTG: COF tăng theo LS huy động 12T nhưng LDR được tiền gửi KBNN đỡ (hệ số 50% từ Q3). Backtest bản đầu đúng hướng ${SX.backtest.h6.rate}% (6 tháng), dưới ngưỡng 60% — đọc như bản đồ áp lực, xem <a href="nganh.html#picture">Ngành › Kịch bản IDX</a>.</div>` : ''}
     </article>
     <article class="card span2"><h3 class="sub">Tín hiệu theo quy tắc R-xx <span class="pill ai">quy tắc</span></h3>
       <p class="chart-sub">Ngưỡng là giả định theo dõi từ deck (slide 50–51), chưa backtest</p>

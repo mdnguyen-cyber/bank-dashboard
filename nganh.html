@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ngành Ngân hàng · CSTT · FinSuccess</title>
+<link rel="stylesheet" href="assets/fs.css">
+</head>
+<body>
+<div class="logo-bar"><div class="wrap"><img src="assets/fin-success-logo.png" alt="FinSuccess"><div class="logo-right"><nav class="site-nav" aria-label="Dashboard"><a href="nganh.html" class="on">Ngành Ngân hàng</a><a href="index.html">CTG</a></nav><div class="stamp" id="stamp"></div><div class="mode-sw" id="modeSw" role="group" aria-label="Mức hiển thị"><button type="button" data-mode="compact">Gọn</button><button type="button" data-mode="full">Chi tiết</button></div></div></div></div>
+<div class="stock-head"><div class="wrap" id="stockHead"></div></div>
+<nav class="tabs" role="tablist" aria-label="Các mục dashboard"><div class="wrap" id="tabbar">
+  <button role="tab" data-tab="overview" class="active">1. Tổng quan ngành</button>
+  <button role="tab" data-tab="picture">2. Bức tranh ngành</button>
+  <button role="tab" data-tab="policy">3. Chính sách · Quy định</button>
+  <button role="tab" data-tab="catalyst">4. Catalyst · Risk</button>
+  <button role="tab" data-tab="cons">5. Consensus CTCK</button>
+  <button role="tab" data-tab="hot">6. Chủ đề nóng</button>
+  <button role="tab" data-tab="src">7. Sources</button>
+</div></nav>
+<main><div class="wrap">
+  <section class="pane active" id="overview" role="tabpanel"></section>
+  <section class="pane" id="picture" role="tabpanel"></section>
+  <section class="pane" id="policy" role="tabpanel"></section>
+  <section class="pane" id="catalyst" role="tabpanel"></section>
+  <section class="pane" id="cons" role="tabpanel"></section>
+  <section class="pane" id="hot" role="tabpanel"></section>
+  <section class="pane" id="src" role="tabpanel"></section>
+</div></main>
+<footer><div class="wrap" id="foot"></div></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="data/sector-data.js"></script>
+<script src="assets/sector.js"></script>
+</body>
+</html>

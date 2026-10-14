@@ -22,13 +22,15 @@ jobs:
       - name: Gom file trang
         run: |
           mkdir -p _site/data _site/assets
-          cp index.html .nojekyll _site/
-          cp assets/app.js assets/fin-success-logo.png _site/assets/
-          cp data/ctg-data.js _site/data/
+          cp index.html nganh.html .nojekyll _site/
+          cp assets/app.js assets/sector.js assets/fs.css assets/fin-success-logo.png _site/assets/
+          cp data/ctg-data.js data/sector-data.js _site/data/
           # Gắn mã commit vào đường dẫn script để trình duyệt không dùng bản cache cũ sau mỗi lần deploy
           V=${GITHUB_SHA::7}
-          sed -i "s|data/ctg-data.js\"|data/ctg-data.js?v=$V\"|; s|assets/app.js\"|assets/app.js?v=$V\"|" _site/index.html
-          grep -n '?v=' _site/index.html
+          for f in _site/index.html _site/nganh.html; do
+            sed -i -E "s#(data/[a-z-]+\.js|assets/[a-z]+\.js|assets/fs\.css)\"#\1?v=$V\"#g" "$f"
+          done
+          grep -n '?v=' _site/index.html _site/nganh.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

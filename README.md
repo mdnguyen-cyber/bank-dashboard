@@ -1,10 +1,16 @@
 # Bank Dashboard · FinSuccess
 
-Dashboard ngân hàng theo chuẩn layout FinSuccess. Xem online: https://mdnguyen-cyber.github.io/bank-dashboard/ (tự deploy qua GitHub Actions mỗi lần push `main`). Hoặc mở `index.html` trong trình duyệt (cần mạng để tải Chart.js từ cdnjs).
+Dashboard ngân hàng theo chuẩn layout FinSuccess. Xem online (tự deploy qua GitHub Actions mỗi lần push `main`):
+- CTG: https://mdnguyen-cyber.github.io/bank-dashboard/
+- Ngành Ngân hàng · CSTT: https://mdnguyen-cyber.github.io/bank-dashboard/nganh.html
+
+ Hoặc mở `index.html` trong trình duyệt (cần mạng để tải Chart.js từ cdnjs).
 
 ## Lộ trình
 1. **CTG v1** (bản này) — dashboard cổ phiếu theo khung 6 tab của Stock dashboard (MWG Tracker).
-2. **CSTT + Ngành Ngân hàng** — chuỗi 3 tab Quốc tế → Nội địa → Ngân hàng, hai chỉ số IDX-FX, IDX-LIQ; ô kịch bản ở tab 2 của CTG sẽ lấy từ đây.
+2. **CSTT + Ngành Ngân hàng** (`nganh.html`) — layout dashboard ngành của công ty (bản Dầu khí), 7 tab: Tổng quan ngành (kèm 💎 Nhận định FinSuccess) · Bức tranh ngành (Quốc tế → Nội địa → Ngân hàng → Kịch bản IDX-FX × IDX-LIQ) · Chính sách · Quy định (độ nhạy LDR theo hệ số KBNN) · Catalyst · Risk (R-01…R-16) · Consensus CTCK · Chủ đề nóng · Sources. Ô kịch bản ở tab Vĩ mô của CTG đọc kết quả IDX từ đây.
+   - Dữ liệu: `scripts/build_sector_data.py` → `data/sector-data.js` (`window.SECTOR_DATA`); test `tests/test_sector_data.py`.
+   - IDX-FX, IDX-LIQ theo công thức slide 52 (z-score 36 tháng), tính theo tháng; chỗ thay thế thành phần ghi ở tab Sources. Backtest bản trọng số bằng nhau đúng hướng ~43–45% → **chưa đạt ngưỡng 60%**, cần hiệu chỉnh trọng số.
 
 ## Hiển thị
 - Công tắc **Gọn / Chi tiết** ở góc phải trên (mặc định Gọn, nhớ theo trình duyệt). Gọn ẩn lời đọc dưới chart, chú thích và nguồn.
@@ -25,13 +31,15 @@ Dashboard ngân hàng theo chuẩn layout FinSuccess. Xem online: https://mdnguy
 - `scripts/build_ctg_data.py` → `data/ctg-data.js` (`window.PVS_DATA`, cùng tên khóa với Stock dashboard: `meta`, `governance`, `events`, `consensus`, `valuation`, `thesisPillars`…) và `data/ctg-data.json`.
 - Cập nhật: gọi lại WiMCP trong phiên Claude → `python3 scripts/wi_capture_transcript.py <transcript.jsonl>` → `python3 scripts/build_ctg_data.py` → `python3 tests/test_ctg_data.py`.
 
+- Style dùng chung: `assets/fs.css`.
+
 ## Phân vai nội dung
 - **Số liệu**: WiData; số tự tính có công thức ở chân trang (chi phí tín dụng, hình thành nợ xấu, NIM sau dự phòng, LLR gồm lãi dự thu, P/B forward).
 - **Lời đọc dưới chart, trạng thái trụ luận điểm, dấu ± sự kiện**: AI viết từ số đang hiển thị, theo quy tắc của deck.
 - **Quan điểm FinSuccess**: chỉ phần analyst nhập ở tab 💎 FinSuccess; hiện lưu `localStorage` theo trình duyệt (chưa có backend).
 
 ## Hạn chế đã biết (v1)
-- IDX-FX × IDX-LIQ chưa tính (chờ dashboard CSTT); tạm đọc bằng tín hiệu R-xx.
+- IDX-FX × IDX-LIQ: bản đầu, trọng số bằng nhau, chưa đạt backtest 60%.
 - LDR là công thức WiData (TT22 + hệ số KBNN); chưa dựng LDR/NSFR/LCR theo TT50.
 - CAR chỉ có kỳ bán niên/năm (TT41) tới 2025.
 - Room tín dụng riêng CTG chưa có nguồn công bố.
