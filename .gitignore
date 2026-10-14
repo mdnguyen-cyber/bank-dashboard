@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# Response WiData gốc: giữ ở máy, không đưa lên repo public
+data/raw/

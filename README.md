@@ -1,6 +1,6 @@
 # Bank Dashboard · FinSuccess
 
-Dashboard ngân hàng theo chuẩn layout FinSuccess. Mở `index.html` trong trình duyệt (cần mạng để tải Chart.js từ cdnjs).
+Dashboard ngân hàng theo chuẩn layout FinSuccess. Xem online: https://mdnguyen-cyber.github.io/bank-dashboard/ (tự deploy qua GitHub Actions mỗi lần push `main`). Hoặc mở `index.html` trong trình duyệt (cần mạng để tải Chart.js từ cdnjs).
 
 ## Lộ trình
 1. **CTG v1** (bản này) — dashboard cổ phiếu theo khung 6 tab của Stock dashboard (MWG Tracker).
@@ -17,7 +17,7 @@ Dashboard ngân hàng theo chuẩn layout FinSuccess. Mở `index.html` trong tr
 | 💎 FinSuccess | Quyết định (mỗi mức giá kèm P/B, P/B fwd), dải P/B–P/E ±1σ, định giá thu nhập thặng dư theo 4 kịch bản lãi suất, rủi ro, thesis tracker, nhật ký | Bước 8 |
 
 ## Dữ liệu
-- `data/raw/wi/*.json` — response WiData **nguyên văn** (lưu bằng `scripts/wi_capture_transcript.py` từ log phiên Claude; đã bỏ thông tin cá nhân và tài liệu nội bộ của Wi).
+- `data/raw/wi/*.json` — response WiData **nguyên văn** (lưu bằng `scripts/wi_capture_transcript.py` từ log phiên Claude; đã bỏ thông tin cá nhân và tài liệu nội bộ của Wi). **Không commit** (đã `.gitignore`): giữ ở máy, giải nén `ctg-wi-raw.zip` vào `data/` khi cần build lại.
 - `scripts/build_ctg_data.py` → `data/ctg-data.js` (`window.PVS_DATA`, cùng tên khóa với Stock dashboard: `meta`, `governance`, `events`, `consensus`, `valuation`, `thesisPillars`…) và `data/ctg-data.json`.
 - Cập nhật: gọi lại WiMCP trong phiên Claude → `python3 scripts/wi_capture_transcript.py <transcript.jsonl>` → `python3 scripts/build_ctg_data.py` → `python3 tests/test_ctg_data.py`.
 
