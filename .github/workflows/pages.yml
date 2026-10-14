@@ -25,6 +25,10 @@ jobs:
           cp index.html .nojekyll _site/
           cp assets/app.js assets/fin-success-logo.png _site/assets/
           cp data/ctg-data.js _site/data/
+          # Gắn mã commit vào đường dẫn script để trình duyệt không dùng bản cache cũ sau mỗi lần deploy
+          V=${GITHUB_SHA::7}
+          sed -i "s|data/ctg-data.js\"|data/ctg-data.js?v=$V\"|; s|assets/app.js\"|assets/app.js?v=$V\"|" _site/index.html
+          grep -n '?v=' _site/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
