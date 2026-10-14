@@ -156,10 +156,10 @@ function paneOverview() {
     <article class="card"><h3 class="sub">Checklist điều kiện mua</h3><p class="chart-sub">Ngưỡng đề xuất theo khung 8 bước, analyst chỉnh ở tab FinSuccess. ✓ = đạt điều kiện.</p>
       <table><thead><tr><th>Điều kiện</th><th class="n">Hiện tại</th><th class="n">Ngưỡng</th><th></th></tr></thead><tbody>
       ${checks.map(c => `<tr><td>${c.l}</td><td class="n">${c.v}</td><td class="n">${c.t}</td><td>${c.ok ? '<span class="pill ok">✓</span>' : '<span class="pill risk">✗</span>'}</td></tr>`).join('')}
-      </tbody></table><div class="note">Đạt ${checks.filter(c => c.ok).length}/${checks.length} điều kiện.</div></article>
+      </tbody></table><div class="note keep">Đạt ${checks.filter(c => c.ok).length}/${checks.length} điều kiện.</div></article>
     <article class="card"><h3 class="sub">Có gì mới ±45 ngày</h3><p class="chart-sub">Sự kiện đã diễn ra và sắp tới trong 45 ngày quanh ${dvn(TODAY)}</p>
       <table><tbody>${recent.slice(0, 10).map(e => `<tr><td style="white-space:nowrap">${dvn(e.d)}</td><td>${impact(e.impact)}</td><td>${esc(e.t)}${e.status === 'pending' ? ' <span class="pill pending">Chờ</span>' : ''}</td></tr>`).join('')}</tbody></table>
-      <div class="note"><a href="#events" data-go="events">Xem toàn bộ Catalyst &amp; Sự kiện →</a></div></article>
+      <div class="note keep"><a href="#events" data-go="events">Xem toàn bộ Catalyst &amp; Sự kiện →</a></div></article>
   </div>
   <h2 class="sec">Quản trị &amp; sở hữu</h2><p class="sec-sub">Ngân hàng do Nhà nước sở hữu chi phối; MUFG là cổ đông chiến lược nước ngoài.</p>
   <div class="grid g2 gap">
@@ -202,12 +202,14 @@ function paneMacro() {
   const ytdPrevSame = MA.credit.ytd.find(v => v.d.slice(5, 7) === ytdNow.d.slice(5, 7) && +v.d.slice(0, 4) === +ytdNow.d.slice(0, 4) - 1);
   const mix = D.loanMix[D.loanMix.length - 1], mix0 = D.loanMix.find(m => m.q.startsWith('Q4/2019'));
   const mixQ4 = [...D.loanMix].reverse().find(m => m.q.startsWith('Q4'));
+  const fxGap = lastv(fx.free).v - lastv(fx.nhtmSell).v;
+  const fxPk = fx.nhtmSell.map(b => { const f = fx.free.find(s => s.d.slice(0, 7) === b.d.slice(0, 7)); return f ? { g: f.v - b.v, d: b.d.slice(5, 7) + '/' + b.d.slice(0, 4) } : null; }).filter(Boolean).reduce((a, b) => b.g > a.g ? b : a);
   $('#macro').innerHTML = `
   <h2 class="sec">Vĩ mô &amp; Tỉ lệ an toàn</h2>
   <p class="sec-sub">Tab tùy biến cho ngân hàng: lãi suất quyết định lợi nhuận và định giá; tỉ giá quyết định dư địa nới lỏng của NHNN.</p>
   <div class="banner chain">Thế giới → Tỉ giá → Phản ứng NHNN → Lãi suất (TT2 → TT1) → COF, NIM, nợ xấu, định giá CTG</div>
   <div class="kpis k4">
-    ${kpi('USD/VND NHTM bán ra', nf(lastv(fx.nhtmSell).v), 'trần ' + nf(lastv(fx.ceiling).v) + ' · cách trần ' + pc(Math.abs((lastv(fx.nhtmSell).v / lastv(fx.ceiling).v - 1) * 100), 1))}
+    ${kpi('USD/VND NHTM bán ra', nf(lastv(fx.nhtmSell).v), 'tự do ' + nf(lastv(fx.free).v) + ' (' + (lastv(fx.free).v - lastv(fx.nhtmSell).v >= 0 ? '+' : '−') + nf(Math.abs(lastv(fx.free).v - lastv(fx.nhtmSell).v)) + 'đ) · cách trần ' + pc(Math.abs((lastv(fx.nhtmSell).v / lastv(fx.ceiling).v - 1) * 100), 1))}
     ${kpi('LNH qua đêm', pc(lastv(MA.onDaily).v, 2), dvn(lastv(MA.onDaily).d) + ' · OMO ' + pc(lastv(MA.omoRateDaily).v, 1))}
     ${kpi('Huy động 12T NHTM Nhà nước', pc(lastv(r.dep12State).v, 2), 'CTG ' + pc(lastv(r.dep12CTG).v, 2) + ' · NHTM khác ' + pc(lastv(r.dep12Other).v, 2))}
     ${kpi('Tín dụng so đầu năm', pc(ytdNow.v, 2), dvn(ytdNow.d).slice(3) + ' · cùng kỳ ' + pc(ytdPrevSame && ytdPrevSame.v, 2) + ' · chỉ tiêu ~15%')}
@@ -232,9 +234,9 @@ function paneMacro() {
     </article>
   </div>
   <div class="grid g2 gap">
-    ${card({ id: 'chFx', title: 'Hành lang tỷ giá USD/VND', sub: 'VND/USD · cuối tháng · tỷ giá NHTM bán ra so với trung tâm, trần biên độ và giá NHNN bán can thiệp', ctl: true,
-      insight: `Tỷ giá NHTM bán ra <b>${nf(lastv(fx.nhtmSell).v)}</b> còn cách trần <b>${nf(lastv(fx.ceiling).v - lastv(fx.nhtmSell).v)}đ</b>; trung tâm đã tăng <b>${sg((lastv(fx.central).v / fx.central.find(v => v.d.startsWith('2025-12')).v - 1) * 100)}</b> từ cuối 2025 — NHNN chủ động cho VND yếu dần trong khi giá thị trường chưa áp trần. DXY ${nf(lastv(fx.dxy).v, 1)} tăng lại từ ${nf(fx.dxy.find(v => v.d.startsWith('2026-01')).v, 1)} (01/2026): áp lực bên ngoài nhích lên, chưa tới mức buộc NHNN bán USD liên tục.`,
-      src: 'WiData macro 82223, 82227, 82228, 82231, 235028' })}
+    ${card({ id: 'chFx', title: 'Hành lang tỷ giá USD/VND', sub: 'VND/USD · cuối tháng · tỷ giá NHTM bán ra và tự do bán ra so với trung tâm, trần biên độ, giá NHNN bán can thiệp. Chênh tự do − NHTM nới rộng = cầu USD ngoài hệ thống ngân hàng tăng (USD khan, hoặc vàng trong nước cao hơn thế giới kéo cầu USD tiền mặt).', ctl: true,
+      insight: `Tỷ giá NHTM bán ra <b>${nf(lastv(fx.nhtmSell).v)}</b> còn cách trần <b>${nf(lastv(fx.ceiling).v - lastv(fx.nhtmSell).v)}đ</b>; trung tâm đã tăng <b>${sg((lastv(fx.central).v / fx.central.find(v => v.d.startsWith('2025-12')).v - 1) * 100)}</b> từ cuối 2025 — NHNN chủ động cho VND yếu dần trong khi giá thị trường chưa áp trần. DXY ${nf(lastv(fx.dxy).v, 1)} tăng lại từ ${nf(fx.dxy.find(v => v.d.startsWith('2026-01')).v, 1)} (01/2026): áp lực bên ngoài nhích lên, chưa tới mức buộc NHNN bán USD liên tục. Tỷ giá tự do <b>${nf(lastv(fx.free).v)}</b>, ${fxGap >= 0 ? 'cao hơn' : 'thấp hơn'} NHTM <b>${nf(Math.abs(fxGap))}đ</b>, đã thu hẹp mạnh từ đỉnh chênh <b>+${nf(fxPk.g)}đ</b> (${fxPk.d}) — áp lực USD ngoài hệ thống đã hạ nhiệt.`,
+      src: 'WiData macro 82223, 82226, 82227, 82228, 82231, 235028' })}
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · ngày · LNH qua đêm so với lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động mạnh <b>${nf(Math.min(...MA.onDaily.map(v => v.v)), 2)}–${nf(Math.max(...MA.onDaily.map(v => v.v)), 2)}%</b> trong 3 tháng, đỉnh thường rơi vào cuối tháng (căng mùa vụ) và NHNN bơm OMO đúng các phiên đó. Theo deck (R-10), OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR — nên TT2 hạ không tự kéo lãi suất huy động TT1 xuống.`,
       src: 'WiData macro 82237, 81522, 82268' })}
@@ -270,13 +272,14 @@ function paneMacro() {
     </tbody></table></div></article>
   <article class="card"><h3 class="sub">Lịch quy định (REG)</h3><p class="chart-sub">Bảng REG của deck, cập nhật theo dữ liệu hiện hành — dòng tô vàng là chỗ lệch cần analyst xác nhận</p><div class="tscroll"><table>
     <thead><tr><th>ID</th><th>Quy định</th><th>Mức hiện hành</th><th>Văn bản</th><th>Lộ trình</th></tr></thead><tbody>
-    ${D.reg.map(g => `<tr class="${g.flag ? 'hl' : ''}"><td style="white-space:nowrap">${g.id}</td><td>${esc(g.rule)}</td><td>${esc(g.level)}${g.flag ? `<div class="note">⚠ ${esc(g.flag)}</div>` : ''}</td><td>${esc(g.doc)}</td><td>${esc(g.path)}</td></tr>`).join('')}
+    ${D.reg.map(g => `<tr class="${g.flag ? 'hl' : ''}"><td style="white-space:nowrap">${g.id}</td><td>${esc(g.rule)}</td><td>${esc(g.level)}${g.flag ? `<div class="note keep">⚠ ${esc(g.flag)}</div>` : ''}</td><td>${esc(g.doc)}</td><td>${esc(g.path)}</td></tr>`).join('')}
     </tbody></table></div></article>`;
 
   mk('chFx', { type: 'line', data: { labels: fx.nhtmSell.map(v => v.d.slice(0, 7)), datasets: [
     { label: 'NHTM bán ra', data: fx.nhtmSell.map(v => v.v), borderColor: C.navy, backgroundColor: C.navy, borderWidth: 2.2, dp: 0 },
     { label: 'Trung tâm', data: alignM(fx.central, fx.nhtmSell), borderColor: C.teal, backgroundColor: C.teal, dp: 0 },
     { label: 'Trần biên độ', data: alignM(fx.ceiling, fx.nhtmSell), borderColor: C.red, backgroundColor: C.red, borderDash: [5, 4], dp: 0, keep: true },
+    { label: 'Tự do bán ra', data: alignM(fx.free, fx.nhtmSell), borderColor: '#d9a400', backgroundColor: '#d9a400', borderWidth: 2.2, dp: 0 },
     { label: 'NHNN bán can thiệp', data: alignM(fx.sbvSell, fx.nhtmSell), borderColor: C.purple, backgroundColor: C.purple, borderDash: [2, 3], dp: 0, keep: true },
   ] }, options: { scales: { y: numAxis() } } }, { switch: 'line' });
   mk('chOn', { type: 'bar', data: { labels: MA.onDaily.map(v => dvn(v.d).slice(0, 5)), datasets: [
@@ -673,7 +676,7 @@ function paneVal() {
   $('#pSave').onclick = () => { const p = {}; $$('[data-p]').forEach(tr => { p[tr.dataset.p] = { status: $('[data-f="status"]', tr).value, note: $('[data-f="note"]', tr).value }; }); $('#pMsg').textContent = store.set({ pillars: p }) ? 'Đã lưu.' : 'Không lưu được.'; rerender('overview'); };
   $('#ckSave').onclick = () => { const c = {}; $$('[data-ck]').forEach(i => c[i.dataset.ck] = +i.value); store.set({ check: c }); rerender('overview'); };
   // --- log
-  const drawLog = () => { const L = store.get().log || []; $('#logList').innerHTML = L.length ? `<table><tbody>${L.map(l => `<tr><td style="white-space:nowrap">${dvn(l.at)}</td><td>${esc(l.t)}</td></tr>`).join('')}</tbody></table>` : '<div class="note">Chưa có ghi chép.</div>'; };
+  const drawLog = () => { const L = store.get().log || []; $('#logList').innerHTML = L.length ? `<table><tbody>${L.map(l => `<tr><td style="white-space:nowrap">${dvn(l.at)}</td><td>${esc(l.t)}</td></tr>`).join('')}</tbody></table>` : '<div class="note keep">Chưa có ghi chép.</div>'; };
   $('#logAdd').onclick = () => { const t = $('#logTxt').value.trim(); if (!t) return; const L = store.get().log || []; L.unshift({ at: new Date().toISOString(), t }); store.set({ log: L }); $('#logTxt').value = ''; drawLog(); };
   $('#logExp').onclick = () => { const blob = new Blob([JSON.stringify(store.get(), null, 1)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${M.ticker}-finsuccess-${TODAY}.json`; a.click(); };
   drawLog();
@@ -707,6 +710,64 @@ function show(k) {
 }
 $$('#tabbar button').forEach(b => b.onclick = () => { show(b.dataset.tab); window.scrollTo({ top: 0 }); });
 document.addEventListener('click', e => { const a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); show(a.dataset.go); } });
+/* ---------- chế độ Gọn / Chi tiết + nút (i) ---------- */
+const UI_KEY = 'fs-bank-ui';
+function setMode(m) {
+  document.body.classList.toggle('compact', m === 'compact');
+  $$('#modeSw button').forEach(b => { const on = b.dataset.mode === m; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  try { localStorage.setItem(UI_KEY, m); } catch (e) {}
+  hideTip();
+}
+function decorate() {
+  $$('article.card').forEach(c => {
+    if (c.dataset.i) return;
+    const h = c.querySelector(':scope > h3.sub'); if (!h) return;
+    c.dataset.i = '1';
+    if (c.querySelector(':scope > .chart-sub')) {   // (i) cạnh tiêu đề = mô tả chart
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'info'; b.dataset.k = 'sub'; b.textContent = 'i'; b.setAttribute('aria-label', 'Mô tả');
+      const ctl = h.querySelector('.ctl'); ctl ? h.insertBefore(b, ctl) : h.appendChild(b);
+    }
+    const hasIns = c.querySelector(':scope > .insight, :scope > .note:not(.keep)'), hasSrc = c.querySelector(':scope > .src');
+    if (hasIns || hasSrc) {   // nút Insight / Nguồn cuối thẻ (chế độ Gọn)
+      const row = document.createElement('div'); row.className = 'ibar';
+      row.innerHTML = (hasIns ? '<button type="button" class="ipill" data-k="ins">ⓘ Insight</button>' : '') + (hasSrc ? '<button type="button" class="ipill" data-k="src">ⓘ Nguồn</button>' : '');
+      c.appendChild(row);
+    }
+  });
+}
+const tip = document.createElement('div'); tip.className = 'tip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true; document.body.appendChild(tip);
+let tipFor = null;
+function tipHtml(b) {
+  const c = b.closest('.card'), k = b.dataset.k;
+  const part = sel => [...c.querySelectorAll(':scope > ' + sel)].map(e => e.innerHTML);
+  const title = esc((c.querySelector(':scope > h3.sub').childNodes[0] || {}).textContent || '');
+  if (k === 'sub') return part('.chart-sub').map(t => `<p>${t}</p>`).join('');
+  if (k === 'src') return `<h5>${title} · Nguồn</h5>` + part('.src').map(t => `<p class="ts">${t}</p>`).join('');
+  return `<h5>${title}</h5>` + part('.insight').map(t => `<p class="ti">${t}</p>`).join('') + part('.note:not(.keep)').map(t => `<p class="tn">${t}</p>`).join('');
+}
+function showTip(b) {
+  tipFor = b; tip.className = 'tip ' + (b.dataset.k === 'sub' ? 'dark' : 'light'); tip.innerHTML = tipHtml(b); tip.hidden = false;
+  const r = b.getBoundingClientRect(), w = tip.offsetWidth, hh = tip.offsetHeight;
+  let left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8);
+  let top = r.bottom + 8; if (top + hh > innerHeight - 8 && r.top - hh - 8 > 8) top = r.top - hh - 8;
+  tip.style.left = left + 'px'; tip.style.top = top + 'px';
+}
+function hideTip() { tip.hidden = true; tipFor = null; }
+document.addEventListener('mouseover', e => { const b = e.target.closest('.info,.ipill'); if (b && b !== tipFor && matchMedia('(hover:hover)').matches) showTip(b); });
+document.addEventListener('mouseout', e => { const b = e.target.closest('.info,.ipill'); if (b && matchMedia('(hover:hover)').matches && !b.contains(e.relatedTarget)) hideTip(); });
+document.addEventListener('click', e => { const b = e.target.closest('.info,.ipill'); if (b) { e.stopPropagation(); b === tipFor && !matchMedia('(hover:hover)').matches ? hideTip() : showTip(b); } else if (!e.target.closest('.tip')) hideTip(); });
+document.addEventListener('focusin', e => { if (e.target.closest && e.target.closest('.info,.ipill')) showTip(e.target.closest('.info,.ipill')); });
+document.addEventListener('focusout', e => { if (e.target.closest && e.target.closest('.info,.ipill')) hideTip(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTip(); });
+addEventListener('scroll', hideTip, { passive: true }); addEventListener('resize', hideTip);
+new MutationObserver(() => requestAnimationFrame(decorate)).observe(document.querySelector('main'), { childList: true, subtree: true });
+$$('#modeSw button').forEach(b => b.onclick = () => setMode(b.dataset.mode));
+let mode0 = 'compact'; try { mode0 = localStorage.getItem(UI_KEY) || 'compact'; } catch (e) {}
+setMode(mode0);
 header(); footer();
 show((location.hash || '#overview').slice(1));
+decorate();
+// hash trùng id của pane làm trình duyệt tự cuộn xuống giữa trang khi mở link — luôn bắt đầu từ đầu trang
+try { history.scrollRestoration = 'manual'; } catch (e) {}
+scrollTo(0, 0); addEventListener('load', () => setTimeout(() => scrollTo(0, 0), 0));
 })();

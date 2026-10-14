@@ -395,12 +395,12 @@ def build(raw):
     def ser(iid, tt='monthly'):
         return [{'d': v['date'], 'v': v['value']} for v in macro.get((iid, tt), [])]
     M = {
-        'fx': {'nhtmSell': ser(82223), 'central': ser(82227), 'ceiling': ser(82228), 'sbvSell': ser(82231), 'dxy': ser(235028),
-               'note': 'Cuối tháng (Wi nén chuỗi ngày về tháng). Tỷ giá NHTM bán ra, trung tâm, trần biên độ, giá NHNN bán can thiệp.'},
+        'fx': {'nhtmSell': ser(82223), 'central': ser(82227), 'ceiling': ser(82228), 'sbvSell': ser(82231), 'free': ser(82226), 'dxy': ser(235028),
+               'note': 'Cuối tháng (Wi nén chuỗi ngày về tháng). Tỷ giá NHTM bán ra, trung tâm, trần biên độ, giá NHNN bán can thiệp, tỷ giá tự do bán ra.'},
         'rates': {'onMonthEnd': ser(82237), 'omo': ser(81522), 'dep12State': ser(202886), 'dep12Other': ser(202880), 'dep12CTG': ser(202862), 'effr': ser(7079)},
         'onDaily': ser(82237, 'daily'), 'omoNetDaily': ser(82268, 'daily'), 'omoRateDaily': ser(81522, 'daily'),
         'credit': {'ytd': ser(241732), 'yoy': ser(75847), 'depositsYoY': ser(265963)},
-        'src': 'WiData macro: 82223, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202862, 7079, 241732, 75847, 265963',
+        'src': 'WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202862, 7079, 241732, 75847, 265963',
     }
     D['macro'] = M
 

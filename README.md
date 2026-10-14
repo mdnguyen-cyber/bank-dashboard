@@ -6,11 +6,15 @@ Dashboard ngân hàng theo chuẩn layout FinSuccess. Xem online: https://mdnguy
 1. **CTG v1** (bản này) — dashboard cổ phiếu theo khung 6 tab của Stock dashboard (MWG Tracker).
 2. **CSTT + Ngành Ngân hàng** — chuỗi 3 tab Quốc tế → Nội địa → Ngân hàng, hai chỉ số IDX-FX, IDX-LIQ; ô kịch bản ở tab 2 của CTG sẽ lấy từ đây.
 
+## Hiển thị
+- Công tắc **Gọn / Chi tiết** ở góc phải trên (mặc định Gọn, nhớ theo trình duyệt). Gọn ẩn lời đọc dưới chart, chú thích và nguồn.
+- Nút **(i)** cạnh tiêu đề: mô tả chart (đơn vị, kỳ, cách đọc). Ở chế độ Gọn, cuối mỗi thẻ có **ⓘ Insight** và **ⓘ Nguồn** để mở phần đã ẩn.
+
 ## 6 tab CTG
 | Tab | Nội dung | Ánh xạ deck |
 |---|---|---|
 | Tổng quan | KPI, thông tin DN, giá 1 năm (52W), 5 trụ luận điểm, checklist mua, tin ±45 ngày, quản trị & sở hữu | Bước 1, 8 |
-| Vĩ mô & Tỉ lệ an toàn *(tab tùy biến)* | Ma trận kịch bản, tín hiệu R-01/09/10/13/14, tỷ giá, LNH–OMO, LS huy động, tín dụng, LDR, CAR, cơ cấu dư nợ, ánh xạ vĩ mô → CTG, bảng REG | Slide 35–39, 50–54 |
+| Vĩ mô & Tỉ lệ an toàn *(tab tùy biến)* | Ma trận kịch bản, tín hiệu R-01/09/10/13/14, tỷ giá (NHTM, tự do, trung tâm, trần, NHNN bán), LNH–OMO, LS huy động, tín dụng, LDR, CAR, cơ cấu dư nợ, ánh xạ vĩ mô → CTG, bảng REG | Slide 35–39, 50–54 |
 | Tài chính | Bảng cân đối (waterfall), KQKD (năm + KH/YTD), biên lãi, chất lượng tài sản, hiệu quả & vốn, so sánh nhóm, CAMEL | Bước 2–7, BNK-01…17 |
 | Catalyst & Sự kiện | Sắp tới + dòng sự kiện có bộ lọc, dấu ± | — |
 | Consensus CTCK | Lollipop TP, LNST 2026F vs KH ĐHĐCĐ & run-rate, implied H2, P/E–P/B forward | BNK-18 |

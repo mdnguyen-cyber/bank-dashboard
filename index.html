@@ -16,7 +16,7 @@ a{color:var(--blue)}
 .wrap{max-width:1440px;margin:0 auto;padding:0 24px}
 /* header */
 .logo-bar{background:#fff;border-bottom:1px solid var(--line2)}
-.logo-bar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding-top:8px;padding-bottom:8px}
 .logo-bar img{height:38px}
 .logo-bar .stamp{font-size:12px;color:var(--ink2)}
 .stock-head{background:#fff;border-bottom:1px solid var(--line2)}
@@ -77,6 +77,22 @@ tr.stale td{color:#9aa3b2}
 .ctl button{border:0;background:none;font:600 11.5px Arial;color:#5a6682;padding:4px 8px;border-radius:6px;cursor:pointer}
 .ctl button.on{background:var(--navy);color:#fff}
 .src{font-size:11px;color:#9aa3b2;margin-top:8px}
+.logo-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+.mode-sw{display:inline-flex;background:#f1f3f8;border-radius:99px;padding:3px}
+.mode-sw button{border:0;background:none;border-radius:99px;padding:5px 12px;font:700 12px Arial,sans-serif;color:var(--ink2);cursor:pointer}
+.mode-sw button.on{background:var(--navy);color:#fff}
+.info{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:0;background:#e6eaf4;color:var(--navy);font:italic 700 11.5px Georgia,serif;cursor:pointer;padding:0;flex:none}
+.info:hover,.info:focus-visible{background:var(--navy);color:#fff;outline:none}
+.tip{position:fixed;z-index:50;max-width:min(380px,calc(100vw - 16px));border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.55;box-shadow:0 10px 30px rgba(20,26,60,.18)}
+.tip.dark{background:#1f2433;color:#fff;font-weight:600}.tip.dark b{color:#fff}
+.tip.light{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.tip h5{margin:0 0 8px;font-size:12.5px;color:var(--navy)}.tip p{margin:0 0 6px}.tip p:last-child{margin:0}
+.tip .ti b{color:var(--navy)}.tip .tn{font-size:11.5px;color:var(--ink2)}.tip .ts{font-size:11.5px;color:var(--ink2)}
+.ibar{display:none;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line2)}
+body.compact .ibar{display:flex}
+.ipill{border:1px solid var(--line);background:#f3f5fb;color:var(--navy);border-radius:8px;padding:5px 10px;font:700 11.5px Arial,sans-serif;cursor:pointer}
+.ipill:hover,.ipill:focus-visible{background:#e3e8f7;outline:none}
+body.compact .insight,body.compact .chart-sub,body.compact .sec-sub,body.compact .banner.chain,body.compact .note:not(.keep),body.compact details.more,body.compact .card>.src{display:none}
 .note{font-size:12.5px;color:var(--ink2);margin-top:8px}
 .insight{font-size:13px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
 .insight b{color:var(--navy)}
@@ -125,7 +141,7 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0;border-top:1px solid v
 </style>
 </head>
 <body>
-<div class="logo-bar"><div class="wrap"><img src="assets/fin-success-logo.png" alt="FinSuccess"><div class="stamp" id="stamp"></div></div></div>
+<div class="logo-bar"><div class="wrap"><img src="assets/fin-success-logo.png" alt="FinSuccess"><div class="logo-right"><div class="stamp" id="stamp"></div><div class="mode-sw" id="modeSw" role="group" aria-label="Mức hiển thị"><button type="button" data-mode="compact">Gọn</button><button type="button" data-mode="full">Chi tiết</button></div></div></div></div>
 <div class="stock-head"><div class="wrap" id="stockHead"></div></div>
 <nav class="tabs" role="tablist" aria-label="Các mục dashboard"><div class="wrap" id="tabbar">
   <button role="tab" data-tab="overview" class="active">Tổng quan</button>
