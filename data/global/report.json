@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-15T07:42:45Z",
+ "fetched": "2026-10-15T07:44:48Z",
  "report": {
   "us_cpi": [
    {
@@ -653,341 +653,410 @@
     "nb": 1
    }
   ],
-  "STATJP/CPIm": [
+  "ECB/HICP": [
    [
-    "001",
-    "All items"
+    "A.U2.N.000000.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "002",
-    "Food"
+    "A.U2.N.010000.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "003",
-    "Cereals"
+    "A.U2.N.011000.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "021",
-    "Fish & seafood"
+    "A.U2.N.011100.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "055",
-    "Meats"
+    "A.U2.N.011110.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "067",
-    "Dairy products & eggs"
+    "A.U2.N.011120.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "079",
-    "Vegetables & seaweeds"
+    "A.U2.N.011130.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "129",
-    "Fruits"
+    "A.U2.N.011140.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "149",
-    "Oils, fats & seasonings"
+    "A.U2.N.011150.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "172",
-    "Cakes & candies"
+    "A.U2.N.011190.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "190",
-    "Cooked food"
+    "A.U2.N.011200.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "222",
-    "Beverages"
+    "A.U2.N.011220.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "243",
-    "Alcoholic beverages"
+    "A.U2.N.011221.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "253",
-    "Meals outside the home"
+    "A.U2.N.011222.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "281",
-    "Housing"
+    "A.U2.N.011223.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "282",
-    "Rent"
+    "A.U2.N.011224.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "290",
-    "Repairs & maintenance"
+    "A.U2.N.011225.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "310",
-    "Fuel, light & water charges"
+    "A.U2.N.011226.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "311",
-    "Electricity"
+    "A.U2.N.011229.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "313",
-    "Gas"
+    "A.U2.N.011230.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "316",
-    "Other fuel & light"
+    "A.U2.N.011240.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "318",
-    "Water & sewerage charges"
+    "A.U2.N.011250.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "321",
-    "Furniture & household utensils"
+    "A.U2.N.011300.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "322",
-    "Household durable goods"
+    "A.U2.N.011310.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "339",
-    "Interior furnishings"
+    "A.U2.N.011320.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "344",
-    "Bedding"
+    "A.U2.N.011330.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "350",
-    "Domestic utensils"
+    "A.U2.N.011340.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "365",
-    "Domestic non-durable goods"
+    "A.U2.N.011350.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "380",
-    "Domestic services"
+    "A.U2.N.011360.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "388",
-    "Clothes & footwear"
+    "A.U2.N.011400.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "389",
-    "Clothes"
+    "A.U2.N.011410.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "390",
-    "Japanese clothing"
+    "A.U2.N.011420.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "393",
-    "Clothing"
+    "A.U2.N.011430.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "423",
-    "Shirts, sweaters & underwear"
+    "A.U2.N.011440.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "424",
-    "Shirts & sweaters"
+    "A.U2.N.011450.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "440",
-    "Underwear"
+    "A.U2.N.011460.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "451",
-    "Footwear"
+    "A.U2.N.011470.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "458",
-    "Other clothing"
+    "A.U2.N.011480.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "466",
-    "Services related to clothing"
+    "A.U2.N.011490.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ],
    [
-    "471",
-    "Medical care"
-   ],
-   [
-    "472",
-    "Medicines & health fortification"
-   ],
-   [
-    "486",
-    "Medical supplies & appliances"
-   ],
-   [
-    "499",
-    "Medical services"
-   ],
-   [
-    "504",
-    "Transportation & communication"
-   ],
-   [
-    "505",
-    "Public transportation"
-   ],
-   [
-    "524",
-    "Private transportation"
-   ],
-   [
-    "550",
-    "Communication"
-   ],
-   [
-    "557",
-    "Education"
-   ],
-   [
-    "558",
-    "School fees"
-   ],
-   [
-    "568",
-    "School textbooks & reference books for study"
-   ],
-   [
-    "571",
-    "Tutorial fees"
-   ],
-   [
-    "575",
-    "Culture & recreation"
-   ],
-   [
-    "576",
-    "Recreational durable goods"
-   ],
-   [
-    "586",
-    "Recreational goods"
-   ],
-   [
-    "621",
-    "Books & other reading materials"
-   ],
-   [
-    "631",
-    "Recreational services"
-   ],
-   [
-    "669",
-    "Miscellaneous"
-   ],
-   [
-    "670",
-    "Personal care services"
-   ],
-   [
-    "677",
-    "Toilet articles"
-   ],
-   [
-    "704",
-    "Personal effects"
-   ],
-   [
-    "716",
-    "Tobacco"
-   ],
-   [
-    "719",
-    "Other miscellaneous"
-   ],
-   [
-    "729",
-    "Fresh food"
-   ],
-   [
-    "730",
-    "Fresh fish & seafood (reentry)"
-   ],
-   [
-    "731",
-    "Fresh vegetables (reentry)"
-   ],
-   [
-    "732",
-    "Fresh fruits (reentry)"
-   ],
-   [
-    "733",
-    "All items, less fresh food"
-   ],
-   [
-    "734",
-    "Food, less fresh food"
-   ],
-   [
-    "735",
-    "All items, less imputed rent"
-   ],
-   [
-    "736",
-    "Housing, less imputed rent"
-   ],
-   [
-    "737",
-    "Rent, less imputed rent"
-   ],
-   [
-    "738",
-    "All items, less imputed rent & fresh food"
-   ],
-   [
-    "739",
-    "Energy"
-   ],
-   [
-    "740",
-    "All items, less fresh food and energy"
-   ],
-   [
-    "741",
-    "All items, less food (less alcoholic beverages) and energy"
-   ],
-   [
-    "742",
-    "Expenses for education"
-   ],
-   [
-    "743",
-    "Expenses for culture & recreation"
-   ],
-   [
-    "744",
-    "Expenses for information & communication"
-   ],
-   [
-    "901",
-    "All items, seasonally adjusted"
-   ],
-   [
-    "902",
-    "All items, less fresh food, seasonally adjusted"
-   ],
-   [
-    "903",
-    "All items, less fresh food and energy, seasonally adjusted"
-   ],
-   [
-    "904",
-    "Goods, seasonally adjusted"
-   ],
-   [
-    "905",
-    "Services, seasonally adjusted"
+    "A.U2.N.011500.4D0.AVR",
+    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
+    "2026-10-12"
    ]
   ],
-  "ecb_HICP/M.U2..": "HTTP Error 400: Bad Request",
-  "ecb_HICP/M.U2": "HTTP Error 400: Bad Request"
+  "Eurostat/PRC_HICP_FP": [
+   [
+    "M.I05.CP00.FIN.EA",
+    "Monthly – Index, 2005=100 – All-items HICP – Final – Euro area (EA11-1999, EA12-2001, EA13",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP00.FIN.EA18",
+    "Monthly – Index, 2005=100 – All-items HICP – Final – Euro area - 18 countries (2014)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP00.FIN.EA19",
+    "Monthly – Index, 2005=100 – All-items HICP – Final – Euro area - 19 countries  (2015-2022)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP00.FIN.EA20",
+    "Monthly – Index, 2005=100 – All-items HICP – Final – Euro area – 20 countries (from 2023)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP01.FIN.EA",
+    "Monthly – Index, 2005=100 – Food and non-alcoholic beverages – Final – Euro area (EA11-199",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP01.FIN.EA18",
+    "Monthly – Index, 2005=100 – Food and non-alcoholic beverages – Final – Euro area - 18 coun",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP01.FIN.EA19",
+    "Monthly – Index, 2005=100 – Food and non-alcoholic beverages – Final – Euro area - 19 coun",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP01.FIN.EA20",
+    "Monthly – Index, 2005=100 – Food and non-alcoholic beverages – Final – Euro area – 20 coun",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP011.FIN.EA",
+    "Monthly – Index, 2005=100 – Food – Final – Euro area (EA11-1999, EA12-2001, EA13-2007, EA1",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP011.FIN.EA18",
+    "Monthly – Index, 2005=100 – Food – Final – Euro area - 18 countries (2014)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP011.FIN.EA19",
+    "Monthly – Index, 2005=100 – Food – Final – Euro area - 19 countries  (2015-2022)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP011.FIN.EA20",
+    "Monthly – Index, 2005=100 – Food – Final – Euro area – 20 countries (from 2023)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0111.FIN.EA",
+    "Monthly – Index, 2005=100 – Bread and cereals – Final – Euro area (EA11-1999, EA12-2001, E",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0111.FIN.EA18",
+    "Monthly – Index, 2005=100 – Bread and cereals – Final – Euro area - 18 countries (2014)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0111.FIN.EA19",
+    "Monthly – Index, 2005=100 – Bread and cereals – Final – Euro area - 19 countries  (2015-20",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0111.FIN.EA20",
+    "Monthly – Index, 2005=100 – Bread and cereals – Final – Euro area – 20 countries (from 202",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0112.FIN.EA",
+    "Monthly – Index, 2005=100 – Meat – Final – Euro area (EA11-1999, EA12-2001, EA13-2007, EA1",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0112.FIN.EA18",
+    "Monthly – Index, 2005=100 – Meat – Final – Euro area - 18 countries (2014)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0112.FIN.EA19",
+    "Monthly – Index, 2005=100 – Meat – Final – Euro area - 19 countries  (2015-2022)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0112.FIN.EA20",
+    "Monthly – Index, 2005=100 – Meat – Final – Euro area – 20 countries (from 2023)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0113.FIN.EA",
+    "Monthly – Index, 2005=100 – Fish and seafood – Final – Euro area (EA11-1999, EA12-2001, EA",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0113.FIN.EA18",
+    "Monthly – Index, 2005=100 – Fish and seafood – Final – Euro area - 18 countries (2014)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0113.FIN.EA19",
+    "Monthly – Index, 2005=100 – Fish and seafood – Final – Euro area - 19 countries  (2015-202",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0113.FIN.EA20",
+    "Monthly – Index, 2005=100 – Fish and seafood – Final – Euro area – 20 countries (from 2023",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0114.FIN.EA",
+    "Monthly – Index, 2005=100 – Milk, cheese and eggs – Final – Euro area (EA11-1999, EA12-200",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0114.FIN.EA18",
+    "Monthly – Index, 2005=100 – Milk, cheese and eggs – Final – Euro area - 18 countries (2014",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0114.FIN.EA19",
+    "Monthly – Index, 2005=100 – Milk, cheese and eggs – Final – Euro area - 19 countries  (201",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0114.FIN.EA20",
+    "Monthly – Index, 2005=100 – Milk, cheese and eggs – Final – Euro area – 20 countries (from",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0115.FIN.EA",
+    "Monthly – Index, 2005=100 – Oils and fats – Final – Euro area (EA11-1999, EA12-2001, EA13-",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0115.FIN.EA18",
+    "Monthly – Index, 2005=100 – Oils and fats – Final – Euro area - 18 countries (2014)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0115.FIN.EA19",
+    "Monthly – Index, 2005=100 – Oils and fats – Final – Euro area - 19 countries  (2015-2022)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0115.FIN.EA20",
+    "Monthly – Index, 2005=100 – Oils and fats – Final – Euro area – 20 countries (from 2023)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0116.FIN.EA",
+    "Monthly – Index, 2005=100 – Fruit – Final – Euro area (EA11-1999, EA12-2001, EA13-2007, EA",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0116.FIN.EA18",
+    "Monthly – Index, 2005=100 – Fruit – Final – Euro area - 18 countries (2014)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0116.FIN.EA19",
+    "Monthly – Index, 2005=100 – Fruit – Final – Euro area - 19 countries  (2015-2022)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0116.FIN.EA20",
+    "Monthly – Index, 2005=100 – Fruit – Final – Euro area – 20 countries (from 2023)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0117.FIN.EA",
+    "Monthly – Index, 2005=100 – Vegetables – Final – Euro area (EA11-1999, EA12-2001, EA13-200",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0117.FIN.EA18",
+    "Monthly – Index, 2005=100 – Vegetables – Final – Euro area - 18 countries (2014)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0117.FIN.EA19",
+    "Monthly – Index, 2005=100 – Vegetables – Final – Euro area - 19 countries  (2015-2022)",
+    "2025-03-24"
+   ],
+   [
+    "M.I05.CP0117.FIN.EA20",
+    "Monthly – Index, 2005=100 – Vegetables – Final – Euro area – 20 countries (from 2023)",
+    "2025-03-24"
+   ]
+  ],
+  "Eurostat/prc_hicp_fp": "HTTP Error 404: NOT FOUND"
  }
 }
