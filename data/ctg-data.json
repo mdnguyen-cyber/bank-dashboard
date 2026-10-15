@@ -10321,8 +10321,8 @@
   },
   {
    "id": "REG-04",
-   "rule": "Trần LDR",
-   "level": "85% → 95% từ 1/12/2026",
+   "rule": "Giới hạn LDR (công thức mới)",
+   "level": "95% theo cách tính của TT50 từ 1/12/2026 (TT22: 85% theo cách tính cũ) — tử số, mẫu số đều thay đổi nên không phải nới trần đơn thuần",
    "doc": "TT22/2019 → TT50/2026/TT-NHNN (ký 30/9/2026)",
    "path": "Ngân hàng đạt đồng thời LCR và NSFR 100% không bị áp trần LDR"
   },
