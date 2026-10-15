@@ -401,14 +401,14 @@ def main():
     D['news'] = news
 
     # ------------------------------------------------ LDR: độ nhạy theo hệ số tiền gửi KBNN (Q2/2026)
-    def latest_rows(endpoint):
+    def latest_rows(endpoint, need):
         for d in raw[::-1]:
             if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == endpoint and \
-                    flt(d['request']).get('symbol', '').count(',') >= 10:
+                    flt(d['request']).get('symbol', '').count(',') >= 10 and need in d['request'].get('columns', ''):
                 return rows(d['response'])
         return []
-    kb = {x['symbol']: x['fnx107'] for x in latest_rows('fs_bank_notes')}
-    fs = {x['symbol']: x for x in latest_rows('fs_bank') if x.get('year') == 2026 and x.get('quarter') == 2}
+    kb = {x['symbol']: x['fnx107'] for x in latest_rows('fs_bank_notes', 'fnx107')}
+    fs = {x['symbol']: x for x in latest_rows('fs_bank', 'bs160_1') if x.get('year') == 2026 and x.get('quarter') == 2}
     sens = []
     for s, K in kb.items():
         L = fs.get(s, {}).get('bs160_1')
@@ -423,6 +423,12 @@ def main():
     sens.sort(key=lambda x: -x['kbnn'])
     D['ldrSens'] = {'quarter': QL[-1], 'rows': sens,
                     'formula': 'LDR(c) = Cho vay KH / (Mẫu số LDR Wi ở hệ số 20% + (c − 20%) × Tiền gửi KBNN). Wi tính Q2/2026 với hệ số 20%; tiền gửi KBNN lấy tổng (fnx107) chứ không riêng có kỳ hạn → mức nhạy là cận trên.'}
+
+    # ------------------------------------------------ mô phỏng xếp hạng TT21 + room ngụ ý (26 NH)
+    from camel_tt21 import build as camel_build
+    D['camel'] = camel_build(latest_rows('fs_bank', 'bs210_2'), latest_rows('fs_bank_notes', 'fnx79'),
+                             latest_rows('ratio_bank', 'interest_rate_gap'), latest_rows('bank_car_tt41', 'tt41_10'),
+                             banks, QL, BANKS, GROUP)
 
     # ------------------------------------------------ REG (dùng chung bảng của dashboard CTG)
     ctg = json.loads((ROOT / 'data/ctg-data.json').read_text(encoding='utf-8'))

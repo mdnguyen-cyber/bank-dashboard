@@ -524,7 +524,35 @@ function camel() {
   return `<article class="card"><h3 class="sub">Bảng CAMEL</h3><p class="chart-sub">Năm = số Q4 (chỉ số TTM); hai cột cuối là quý gần nhất. * = tự tính (xem công thức ở chân trang).</p><div class="tscroll"><table>
     <thead><tr><th></th><th>Chỉ tiêu</th>${cols.map(c => `<th class="n">${c.quarter === 4 && c !== QL && c !== QP ? c.year : c.q}</th>`).join('')}</tr></thead><tbody>
     ${rows.map(([g, l, f]) => `<tr><td><b>${g}</b></td><td>${l}</td>${cols.map(c => `<td class="n">${f(c)}</td>`).join('')}</tr>`).join('')}
-    </tbody></table></div><div class="src">Nguồn: WiData fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm, bank_car_tt41</div></article>`;
+    </tbody></table></div><div class="src">Nguồn: WiData fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm, bank_car_tt41</div></article>${camelTT21()}`;
+}
+function camelTT21() {   // điểm TT21 của CTG và vị trí trong nhóm NH quy mô lớn (dữ liệu từ dashboard ngành)
+  const CM = (window.SECTOR_DATA || {}).camel; if (!CM) return '';
+  const P = CM.periods.TTM2Q26, R = P.rows, me = R.find(r => r.s === 'CTG'); if (!me) return '';
+  const peers = R.filter(r => r.big === me.big);
+  const qual = CM.qualDefault, wl = Object.values(CM.crit).reduce((a, c) => a + c.wl, 0) / 100;
+  const tot = r => r.quant.pt + wl * qual, gr = t => t >= 4.5 ? 'A' : t >= 3.5 ? 'B' : t >= 2.5 ? 'C' : t >= 1.5 ? 'D' : 'E';
+  const rankAll = [...R].sort((a, b) => tot(b) - tot(a)).indexOf(me) + 1, rankP = [...peers].sort((a, b) => tot(b) - tot(a)).indexOf(me) + 1;
+  const col = v => v == null ? '#eef0f4' : v >= 4.5 ? '#1e8f5a' : v >= 3.75 ? '#7cc49b' : v >= 3 ? '#f2d27a' : v >= 2.25 ? '#ef9f76' : '#c0392b';
+  const med = a => { const x = a.filter(v => v != null).sort((p, q) => p - q); return x.length ? (x.length % 2 ? x[(x.length - 1) / 2] : (x[x.length / 2 - 1] + x[x.length / 2]) / 2) : null; };
+  const unit = I => I.id === 'E4' ? ' ngày' : '%';
+  const rows = CM.ind.filter(I => (me.big ? I.wL : I.wS) > 0).map(I => {
+    const d = me.v[I.id], vals = peers.map(r => r.v[I.id].v).filter(v => v != null);
+    const key = v => I.dir === 'up' ? -v : I.dir === 'zero' ? Math.abs(v) : v;
+    const rk = d.v == null ? null : vals.filter(v => key(v) < key(d.v)).length + 1;
+    const th = me.big ? I.thL : I.thS;
+    return `<tr><td><b>${I.c}</b></td><td>${esc(I.name)}</td><td class="n">${d.v == null ? '<span class="muted">' + esc(I.missing || 'thiếu số') + '</span>' : nf(d.v, I.id === 'E4' ? 0 : 2) + unit(I)}</td>
+      <td class="n">${med(vals) == null ? '—' : nf(med(vals), I.id === 'E4' ? 0 : 2) + unit(I)}</td><td class="n">${rk ? rk + '/' + vals.length : '—'}</td>
+      <td class="n" style="color:#8a93a3">${th.map(x => nf(x, x % 1 ? 1 : 0)).join(' · ')}</td>
+      <td class="n"><span style="display:inline-block;min-width:30px;border-radius:6px;padding:2px 6px;font-weight:700;text-align:center;background:${col(d.s)};color:${d.s != null && (d.s >= 5 || d.s < 3) ? '#fff' : '#303540'}">${d.s == null ? '1–5' : d.s}</span></td></tr>`;
+  }).join('');
+  const T = tot(me);
+  return `<article class="card"><h3 class="sub">CTG theo Thông tư 21/2025 · so với nhóm NH quy mô lớn</h3>
+    <p class="chart-sub">${P.label} · ngưỡng của nhóm quy mô lớn (tổng tài sản bq &gt; 300 nghìn tỷ) · hạng trong nhóm: 1 = tốt nhất · định tính giả định ${nf(qual, 1)} điểm · chỉ tiêu không công bố chấm 1–5</p>
+    <div class="kpis k4">${kpi('Điểm ước tính', nf(T, 2) + ' · ' + gr(T), 'khoảng ' + nf(me.quant.lo + wl * qual, 2) + '–' + nf(me.quant.hi + wl * qual, 2))}${kpi('Xếp hạng', rankP + '/' + peers.length + ' nhóm lớn', rankAll + '/' + R.length + ' toàn ngành')}${kpi('Room ngụ ý', nf(T * CM.roomCoef, 1) + '%', 'điểm × ' + nf(CM.roomCoef, 1) + '% (công thức room 2026)')}${kpi('Tiêu chí yếu nhất', Object.entries(me.crit).sort((a, b) => a[1].pt - b[1].pt)[0][0] + ' · ' + nf(Object.entries(me.crit).sort((a, b) => a[1].pt - b[1].pt)[0][1].pt, 1), 'điểm tiêu chí 1–5')}</div>
+    <div class="tscroll"><table><thead><tr><th></th><th>Chỉ tiêu TT21</th><th class="n">CTG</th><th class="n">Trung vị nhóm</th><th class="n">Hạng trong nhóm</th><th class="n">Ngưỡng 5 · 4 · 3 · 2</th><th class="n">Điểm</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="insight">Room năm N+2 được giao theo điểm xếp hạng năm N (công văn room 2026: điểm 2024 × 2,6%), nên số liệu năm 2026 của CTG quyết định room 2028. So sánh đủ 26 ngân hàng, chỉnh điểm định tính và xem đòn bẩy room ở <a href="nganh.html#camel">dashboard Ngành › Bức tranh ngành › Xếp hạng TT21 &amp; room</a>.</div>
+    <div class="src">Nguồn: BCTC hợp nhất, thuyết minh, báo cáo CAR TT41 của 26 NH niêm yết; ngưỡng, trọng số theo TT 21/2025/TT-NHNN · tự tính, ước tính (kết quả xếp hạng thật không công bố)</div></article>`;
 }
 
 /* =====================================================================

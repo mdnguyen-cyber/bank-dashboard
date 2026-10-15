@@ -218,3 +218,19 @@ code{font:12px ui-monospace,Menlo,Consolas,monospace;background:#eef0f4;border-r
 .zsel{position:absolute;background:rgba(41,56,168,.12);border-left:1px solid rgba(41,56,168,.6);border-right:1px solid rgba(41,56,168,.6);pointer-events:none}
 .rng + .cbox canvas{cursor:crosshair}
 @media (hover:none){.rng-hint{display:none}.rng + .cbox canvas{cursor:auto}}
+
+/* xếp hạng TT21 */
+table.cm td,table.cm th{white-space:nowrap}
+table.cm td.c,table.cm th.c,table.cmd td.c{text-align:center}
+table.cm tbody tr{cursor:pointer}
+table.cm tbody tr.sel td{background:var(--soft)}
+.sc{display:inline-block;min-width:34px;border-radius:6px;padding:2px 6px;font-weight:700;font-size:12px;text-align:center}
+.qin{width:56px;border:1px solid var(--line);border-radius:6px;padding:3px 4px;font:12px Arial;text-align:center}
+.rgbar{position:relative;height:4px;background:#eef0f4;border-radius:3px;margin-top:3px;min-width:70px}
+.rgbar span{position:absolute;top:0;height:4px;background:#b3bde8;border-radius:3px}
+.rgbar i{position:absolute;top:-2px;width:2px;height:8px;background:var(--navy)}
+.gr{display:inline-block;width:24px;border-radius:6px;font-weight:800;color:#fff}
+.gr.gA{background:#1e8f5a}.gr.gB{background:#4f9bd1}.gr.gC{background:#d9a400}.gr.gD{background:#e07b39}.gr.gE{background:#c0392b}
+.pri{color:var(--gold-ink, #b7791f)}
+table.cmd tr.grp td{background:var(--soft)}
+table.cmd .note{font-size:11px}

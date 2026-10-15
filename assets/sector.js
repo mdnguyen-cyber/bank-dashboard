@@ -83,7 +83,7 @@ const charts = {};
 /* ---------- Chart book: mk() lưu cấu hình từng chart theo id để vẽ lại ở Chart book / Cập nhật nhanh ---------- */
 const SPEC = {};
 const cl = o => Array.isArray(o) ? o.map(cl) : (o && Object.getPrototypeOf(o) === Object.prototype) ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cl(v)])) : o;
-const PANE_LBL = { overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', bank: 'Ngân hàng', idx: 'Kịch bản IDX' };
+const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', bank: 'Ngân hàng', idx: 'Kịch bản IDX' };
 function cardMeta(el) {
   const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane');
   const h = c && c.querySelector(':scope > h3.sub'), one = sel => { const e = c && c.querySelector(':scope > ' + sel); return e ? e.innerHTML : ''; };
@@ -92,7 +92,7 @@ function cardMeta(el) {
 }
 function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình chart
   Object.keys(builders).forEach(k => { if (!['quick', 'book'].includes(k) && !built[k]) { builders[k](); built[k] = true; } });
-  ['intl', 'dom', 'bank', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, bank: chBank, idx: chIdx })[k](); pDone[k] = true; } });
+  ['intl', 'dom', 'bank', 'camel', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; } });
 }
 function drawSpec(src, cid, last) {   // vẽ lại chart `src` vào canvas `cid`; last = mở sẵn khung N điểm cuối (vẫn kéo/chọn lại được)
   const sp = SPEC[src]; if (!sp) return false;
@@ -290,7 +290,7 @@ function drawTable(k, dir) {
 /* =====================================================================
    TAB 2 · BỨC TRANH NGÀNH (Quốc tế → Nội địa → Ngân hàng → Kịch bản IDX)
 ===================================================================== */
-const PSUB = [['intl', 'Quốc tế'], ['dom', 'Nội địa'], ['bank', 'Ngân hàng'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
+const PSUB = [['intl', 'Quốc tế'], ['dom', 'Nội địa'], ['bank', 'Ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
 const pDone = {};
 function panePicture() {
   $('#picture').innerHTML = `
@@ -301,6 +301,7 @@ function panePicture() {
   <div class="sub on" data-pp="intl">${subIntl()}</div>
   <div class="sub" data-pp="dom">${subDom()}</div>
   <div class="sub" data-pp="bank">${subBank()}</div>
+  <div class="sub" data-pp="camel">${subCamel()}</div>
   <div class="sub" data-pp="idx">${subIdx()}</div>`;
   $$('#picture .subtabs button').forEach(b => b.onclick = () => openP(b.dataset.p));
   Object.keys(pDone).forEach(k => delete pDone[k]);
@@ -309,7 +310,92 @@ function panePicture() {
 function openP(k) {
   $$('#picture .subtabs button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
   $$('#picture [data-pp]').forEach(p => p.classList.toggle('on', p.dataset.pp === k));
-  if (!pDone[k]) { ({ intl: chIntl, dom: chDom, bank: chBank, idx: chIdx })[k](); pDone[k] = true; }
+  if (!pDone[k]) { ({ intl: chIntl, dom: chDom, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; }
+}
+
+/* ---- Xếp hạng TT21 & room (mô phỏng phần định lượng) ---- */
+const CM = D.camel, CK = ['C', 'A', 'M', 'E', 'L', 'S'];
+const cmS = { p: 'TTM2Q26', sel: 'CTG' };
+const qualOf = s => { const q = (store.get().qual || {})[s]; return q == null ? CM.qualDefault : +q; };
+const cmTot = r => { const q = qualOf(r.s), qp = CK.reduce((a, k) => a + CM.crit[k].wl, 0) / 100 * q; return { pt: r.quant.pt + qp, lo: r.quant.lo + qp, hi: r.quant.hi + qp }; };
+const cmGrade = t => t >= 4.5 ? 'A' : t >= 3.5 ? 'B' : t >= 2.5 ? 'C' : t >= 1.5 ? 'D' : 'E';
+const cmCol = v => v == null ? '#eef0f4' : v >= 4.5 ? '#1e8f5a' : v >= 3.75 ? '#7cc49b' : v >= 3 ? '#f2d27a' : v >= 2.25 ? '#ef9f76' : '#c0392b';
+const cmInk = v => v != null && (v >= 4.5 || v < 2.25) ? '#fff' : '#303540';
+function cmRows() { return CM.periods[cmS.p].rows.map(r => Object.assign({}, r, { T: cmTot(r) })).sort((a, b) => b.T.pt - a.T.pt); }
+function subCamel() {
+  return `<div class="banner chain">TT 21/2025: 6 tiêu chí C·A·M·E·L·S (định lượng 70%, định tính 30%) → điểm 1–5 → hạng A–E · Room năm N+2 = điểm × ${nf(CM.roomCoef, 1)}% (công văn giao room 2026)</div>
+  <div class="picker" id="cmP">${Object.entries(CM.periods).map(([k, P]) => `<button type="button" data-k="${k}">${P.label}</button>`).join('')}<span class="muted" style="margin-left:8px">Số liệu năm 2025 chấm điểm cho room 2027 (theo TT52); số liệu năm 2026 chấm theo TT21 cho room 2028.</span></div>
+  <div class="kpis k4" id="cmK"></div>
+  <article class="card"><h3 class="sub">Bảng điểm CAMELS ước tính · 26 ngân hàng</h3>
+    <p class="chart-sub">Điểm 1–5 từng tiêu chí theo ngưỡng TT21 của nhóm đồng hạng (tổng tài sản bq &gt; 300 nghìn tỷ = nhóm lớn) · ô định tính chỉnh được (mặc định ${nf(CM.qualDefault, 1)}) · khoảng điểm = chỉ tiêu không công bố chấm từ 1 đến 5 · bấm 1 dòng để xem chi tiết</p>
+    <div class="tscroll"><table class="cm"><thead><tr><th>#</th><th>NH</th><th>Nhóm</th>${CK.map(k => `<th class="c" title="${esc(CM.crit[k].name)}">${k}</th>`).join('')}<th class="c">Định tính</th><th class="n">Tổng điểm</th><th class="c">Hạng</th><th class="n">Room ngụ ý</th><th class="n">Tín dụng YTD</th></tr></thead><tbody id="cmBody"></tbody></table></div>
+    <div class="src">Nguồn: BCTC hợp nhất, thuyết minh và báo cáo CAR (TT41) của 26 ngân hàng niêm yết · ngưỡng, trọng số theo Điều 14, 15, 19, 21 TT 21/2025/TT-NHNN · tự tính. Kết quả xếp hạng thật là mật (Điều 24) — đây là ước tính.</div>
+  </article>
+  <div class="grid g2 gap">
+    ${card({ id: 'chCmRoom', title: 'Room ngụ ý so với tăng trưởng tín dụng thực tế', h: 'tall',
+      sub: 'trục ngang = điểm ước tính × 2,6% · trục dọc = tăng trưởng tín dụng (TTM Q2/2026: từ đầu năm, so với nửa room; năm 2025: cả năm) · trên đường đỏ = chạy nhanh hơn room theo công thức (thường là NH được ưu tiên hoặc được nới)',
+      insight: '<span id="cmIns"></span>', src: 'tự tính từ bảng điểm bên cạnh và tín dụng (cho vay + trái phiếu DN) theo BCTC' })}
+    <article class="card" id="cmDet"></article>
+  </div>`;
+}
+function cmLever(r) {   // chỉ tiêu nào nhích lên 1 điểm thì được thêm bao nhiêu room
+  const out = [];
+  CM.ind.forEach(I => {
+    const d = r.v[I.id], th = r.big ? I.thL : I.thS, w = r.big ? I.wL : I.wS; if (!d || d.s == null || d.s >= 5 || !w) return;
+    const t = th[4 - d.s], gap = I.dir === 'up' ? t - d.v : (I.dir === 'zero' ? Math.abs(d.v) - t : d.v - t);
+    const wsum = CM.ind.filter(J => J.c === I.c).reduce((a, J) => a + (r.big ? J.wL : J.wS), 0);
+    const dT = w / wsum * CM.crit[I.c].wq / 100;
+    out.push({ I, d, t, gap, dT, dRoom: dT * CM.roomCoef });
+  });
+  return out.sort((a, b) => b.dRoom - a.dRoom);
+}
+function cmDetail() {
+  const r = cmRows().find(x => x.s === cmS.sel) || cmRows()[0]; const T = r.T;
+  const lev = cmLever(r).slice(0, 4);
+  $('#cmDet').innerHTML = `<h3 class="sub">${r.s} · chi tiết chấm điểm</h3>
+    <p class="chart-sub">${r.big ? 'Nhóm NH quy mô lớn' : 'Nhóm NH quy mô nhỏ'} (TTS bq ${nf(r.taAvg / 1000, 0)} nghìn tỷ) · tổng ${nf(T.pt, 2)} (${nf(T.lo, 2)}–${nf(T.hi, 2)}) · hạng ${cmGrade(T.pt)} · room ngụ ý ${nf(T.pt * CM.roomCoef, 1)}%${r.priority ? ' · <b>NH nhận chuyển giao bắt buộc: room thực tế cao hơn công thức</b>' : ''}</p>
+    <div class="tscroll"><table class="cmd"><thead><tr><th>Chỉ tiêu</th><th class="n">Giá trị</th><th class="n">Ngưỡng 5 · 4 · 3 · 2</th><th class="c">Điểm</th></tr></thead><tbody>
+    ${CK.map(k => `<tr class="grp"><td colspan="4"><b>${k} · ${esc(CM.crit[k].name)}</b> <span class="muted">· ${nf(CM.crit[k].wq, 0)}% định lượng + ${nf(CM.crit[k].wl, 0)}% định tính · điểm ${nf(r.crit[k].pt, 2)}${r.crit[k].cov < 100 ? ` · có số ${r.crit[k].cov}% trọng số` : ''}</span></td></tr>` +
+      CM.ind.filter(I => I.c === k && (r.big ? I.wL : I.wS) > 0).map(I => { const d = r.v[I.id], th = r.big ? I.thL : I.thS;
+        return `<tr><td>${esc(I.name)} <span class="muted">(${r.big ? I.wL : I.wS}%)</span>${I.note ? `<div class="note">${esc(I.note)}</div>` : ''}</td>
+        <td class="n">${d.v == null ? `<span class="muted">${esc(I.missing || 'thiếu số')}</span>` : nf(d.v, I.id === 'E4' ? 0 : 2) + (I.id === 'E4' ? ' ngày' : '%')}${I.c === 'C' && r.carPeriod && d.v != null ? `<div class="muted">${r.carPeriod}</div>` : ''}${I.id === 'A6' && r.a6From ? `<div class="muted">số ${r.a6From}</div>` : ''}</td>
+        <td class="n muted">${th.map(x => nf(x, x % 1 ? 1 : 0)).join(' · ')}</td>
+        <td class="c"><span class="sc" style="background:${cmCol(d.s)};color:${cmInk(d.s)}">${d.s == null ? '1–5' : d.s}</span></td></tr>`; }).join('')).join('')}
+    </tbody></table></div>
+    ${lev.length ? `<div class="insight"><b>Đòn bẩy room:</b> ${lev.map(x => `${esc(x.I.name.split(' (')[0])} ${x.I.dir === 'up' ? 'tăng' : 'giảm'} thêm <b>${nf(Math.abs(x.gap), 2)}${x.I.id === 'E4' ? ' ngày' : ' điểm %'}</b> (về ${nf(x.t, 1)}) → +${nf(x.dT, 2)} điểm, +${nf(x.dRoom, 2)} điểm % room`).join('; ')}.</div>` : ''}`;
+}
+function cmRender() {
+  const R = cmRows();
+  $$('#cmP button').forEach(b => b.classList.toggle('on', b.dataset.k === cmS.p));
+  $('#cmBody').innerHTML = R.map((r, i) => `<tr data-s="${r.s}" class="${r.s === cmS.sel ? 'sel' : ''}"><td>${i + 1}</td><td><b>${r.s}</b>${r.priority ? ' <span class="pri" title="Nhận chuyển giao bắt buộc — được ưu tiên room">★</span>' : ''}</td><td style="white-space:nowrap">${gdot(r.group)}${r.big ? 'Lớn' : 'Nhỏ'}</td>
+    ${CK.map(k => `<td class="c"><span class="sc" style="background:${cmCol(r.crit[k].pt)};color:${cmInk(r.crit[k].pt)}" title="${esc(CM.crit[k].name)}${r.crit[k].cov < 100 ? ' · có số ' + r.crit[k].cov + '% trọng số' : ''}">${nf(r.crit[k].pt, 1)}${r.crit[k].cov < 100 ? '*' : ''}</span></td>`).join('')}
+    <td class="c"><input class="qin" type="number" min="1" max="5" step="0.5" value="${qualOf(r.s)}" data-s="${r.s}" aria-label="Điểm định tính ${r.s}"></td>
+    <td class="n"><b>${nf(r.T.pt, 2)}</b><div class="rgbar"><span style="left:${(r.T.lo - 1) / 4 * 100}%;width:${(r.T.hi - r.T.lo) / 4 * 100}%"></span><i style="left:${(r.T.pt - 1) / 4 * 100}%"></i></div></td>
+    <td class="c"><span class="gr g${cmGrade(r.T.pt)}">${cmGrade(r.T.pt)}</span></td><td class="n">${nf(r.T.pt * CM.roomCoef, 1)}%</td><td class="n">${r.creditYtd == null ? '—' : pc(r.creditYtd, 1)}</td></tr>`).join('');
+  $$('#cmBody tr').forEach(tr => tr.onclick = e => { if (e.target.tagName === 'INPUT') return; cmS.sel = tr.dataset.s; cmRender(); });
+  $$('#cmBody .qin').forEach(inp => inp.onchange = () => { const v = Math.min(5, Math.max(1, +inp.value || CM.qualDefault)); const q = store.get().qual || {}; q[inp.dataset.s] = v; store.set({ qual: q }); cmRender(); });
+  const ctg = R.find(r => r.s === 'CTG'), rk = R.indexOf(ctg) + 1, big = R.filter(r => r.big), rkB = big.indexOf(ctg) + 1;
+  const cnt = g => R.filter(r => cmGrade(r.T.pt) === g).length;
+  $('#cmK').innerHTML = kpi('CTG · điểm ước tính', nf(ctg.T.pt, 2) + ' · ' + cmGrade(ctg.T.pt), `hạng ${rk}/${R.length} toàn ngành · ${rkB}/${big.length} nhóm lớn`) +
+    kpi('Room ngụ ý CTG', nf(ctg.T.pt * CM.roomCoef, 1) + '%', `trung vị ngành ${nf(med(R.map(r => r.T.pt * CM.roomCoef)), 1)}%`) +
+    kpi('Phân bố hạng', `${cnt('A')} A · ${cnt('B')} B · ${cnt('C') + cnt('D') + cnt('E')} C–E`, 'với định tính hiện tại') +
+    kpi('Độ phủ dữ liệu', `${med(R.map(r => r.cov))}%`, 'trọng số định lượng có số công khai');
+  const half = cmS.p === 'TTM2Q26', f = half ? 0.5 : 1;   // H1/2026: so với nửa room cả năm
+  const pts = R.map(r => ({ x: r.T.pt * CM.roomCoef, y: half ? r.creditYtd : r.creditYoY, s: r.s, g: r.group })).filter(p => p.y != null);
+  const mx = Math.max(...pts.map(p => p.x)), mn = Math.min(...pts.map(p => p.x));
+  mk('chCmRoom', { type: 'scatter', data: { datasets: [...GROUPS.map(g => ({ label: g, data: pts.filter(p => p.g === g), backgroundColor: GC[g], pointRadius: 5, pointHoverRadius: 7 })),
+      { type: 'line', label: half ? 'Nửa room ngụ ý (nhịp 6 tháng)' : 'Tăng trưởng = room ngụ ý', data: [{ x: mn - 0.3, y: (mn - 0.3) * f }, { x: mx + 0.3, y: (mx + 0.3) * f }], borderColor: '#c0392b', borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0, fill: false }] },
+    options: { plugins: { tooltip: { callbacks: { label: c => c.raw.s ? `${c.raw.s}: room ngụ ý ${nf(c.raw.x, 1)}% · tín dụng ${pc(c.raw.y, 1)}` : '' } } },
+      scales: { x: { title: { display: true, text: 'Room ngụ ý (%)' }, ticks: { callback: v => nf(v, 1) + '%' } }, y: { title: { display: true, text: half ? 'Tín dụng tăng từ đầu năm 2026 (%)' : 'Tín dụng 2025 (%)' }, ticks: { callback: v => nf(v, 0) + '%' } } } },
+    plugins: [{ id: 'cmLbl', afterDatasetsDraw(ch) { const { ctx } = ch; ctx.save(); ctx.font = '600 10px Arial'; ctx.fillStyle = '#3f4656';
+      ch.data.datasets.forEach((d, i) => { if (!d.data[0] || !d.data[0].s) return; ch.getDatasetMeta(i).data.forEach((e, j) => ctx.fillText(d.data[j].s, e.x + 6, e.y - 4)); }); ctx.restore(); } }] });
+  const over = pts.filter(p => p.y > p.x * f + (half ? 1.5 : 3)).sort((a, b) => (b.y - b.x * f) - (a.y - a.x * f));
+  $('#cmIns').innerHTML = `CTG xếp <b>${rk}/${R.length}</b> (${nf(ctg.T.pt, 2)} điểm, hạng ${cmGrade(ctg.T.pt)}) → room ngụ ý <b>${nf(ctg.T.pt * CM.roomCoef, 1)}%</b>; tiêu chí kéo điểm xuống: ${CK.filter(k => ctg.crit[k].pt < 4).map(k => `${k} ${nf(ctg.crit[k].pt, 1)}`).join(', ') || 'không có'}. ${over.length ? `${half ? 'Nửa đầu 2026 đã tăng vượt nửa room ngụ ý trên 1,5 điểm %' : 'Năm 2025 tăng vượt room ngụ ý trên 3 điểm %'}: ${over.slice(0, 6).map(p => `<b>${p.s}</b> ${pc(p.y, 0)}`).join(', ')} — phần lớn là NH được ưu tiên (★) hoặc được nới room trong năm; NH khác vượt chỉ tiêu bị trừ 1 điểm M định tính (Điều 16.6).` : ''}`;
+  cmDetail(); decorate && decorate();
+}
+function chCamel() {
+  $$('#cmP button').forEach(b => b.onclick = () => { cmS.p = b.dataset.k; cmRender(); });
+  cmRender();
 }
 
 /* ---- Quốc tế ---- */
@@ -914,7 +1000,7 @@ let mode0 = 'compact'; try { mode0 = localStorage.getItem(UI_KEY) || 'compact'; 
 setMode(mode0);
 
 header(); footer();
-show((location.hash || '#overview').slice(1));
+{ const h = (location.hash || '#overview').slice(1); if (PSUB.some(([k]) => k === h)) { show('picture'); openP(h); } else show(h); }
 decorate();
 try { history.scrollRestoration = 'manual'; } catch (e) {}
 scrollTo(0, 0); addEventListener('load', () => setTimeout(() => scrollTo(0, 0), 0));

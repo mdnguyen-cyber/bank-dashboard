@@ -87,6 +87,22 @@ def test_quick_updates_valid():
         assert 'widata' not in json.dumps(u, ensure_ascii=False).lower()
 
 
+
+def test_camel_tt21():
+    C = D['camel']
+    assert sum(c['wq'] + c['wl'] for c in C['crit'].values()) == 100
+    for big in (True, False):
+        for k in C['crit']:
+            assert sum(i['wL' if big else 'wS'] for i in C['ind'] if i['c'] == k) == 100, (k, big)
+    rows = C['periods']['TTM2Q26']['rows']
+    assert len(rows) >= 25
+    ctg = next(r for r in rows if r['s'] == 'CTG')
+    assert abs(ctg['v']['A1']['v'] - 1.20) < 0.02          # NPL Q2/2026 khớp BCTC (1,20%)
+    for r in rows:
+        assert 1 <= r['quant']['lo'] <= r['quant']['pt'] <= r['quant']['hi'] <= 5
+        assert all(d['s'] in (None, 1, 2, 3, 4, 5) for d in r['v'].values())
+
+
 if __name__ == '__main__':
     for k, f in list(globals().items()):
         if k.startswith('test_'):
