@@ -16,7 +16,7 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,7 +25,7 @@ jobs:
       - name: Cài OCR
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq tesseract-ocr
-          pip install -q pillow pytesseract
+          pip install -q pillow pytesseract numpy
       - name: Đọc bảng VNIBOR / SOFR
         env:
           MAX_PAGES: ${{ github.event.inputs.max_pages || '2' }}
