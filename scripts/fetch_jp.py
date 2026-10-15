@@ -34,14 +34,28 @@ def get(url, tries=3, raw=False):
     raise err
 
 
+ERR = []
+
+
+def boj_one(db, codes, start):
+    try:
+        js = json.loads(get(f'{BOJ}&db={db}&code={",".join(codes)}&startDate={start}', tries=1))
+    except Exception as e:  # noqa: BLE001
+        if len(codes) == 1:
+            ERR.append(f'{codes[0]}: {str(e)[:80]}')
+            return []
+        return [r for c in codes for r in boj_one(db, [c], start)]   # gói lỗi → thử từng mã
+    if js.get('STATUS') != 200:
+        ERR.append(f"{db}: {js.get('MESSAGE')}")
+        return []
+    return js.get('RESULTSET', [])
+
+
 def boj(db, codes, start):
     """→ {code: {period: value}}; period 'YYYY-MM' (tháng) hoặc 'YYYY-Qn' (quý)."""
     out = {}
     for i in range(0, len(codes), 50):
-        js = json.loads(get(f'{BOJ}&db={db}&code={",".join(codes[i:i + 50])}&startDate={start}'))
-        if js.get('STATUS') != 200:
-            raise RuntimeError(f"BoJ {db}: {js.get('MESSAGE')}")
-        for r in js.get('RESULTSET', []):
+        for r in boj_one(db, codes[i:i + 50], start):
             v = r['VALUES']
             freq = r.get('FREQUENCY', '')
             d = {}
@@ -61,8 +75,12 @@ def bs01():
 
 
 def ff():
-    codes = [f'FOF_FFAS{s}A31{t}' for s in FFS.values() for t in (0, 1)] + ['FOF_FFAS700L310', 'FOF_FFAS700L311']
-    raw = boj('FF', codes, '201201')
+    codes = [f'FOF_FFAS{s}A31{t}' for k, s in FFS.items() if k != 'total' for t in (0, 1) if not (k == 'hh' and t == 0)] + ['FOF_FFAS700L310', 'FOF_FFAS700L311']
+    raw = {}
+    for start in ('201201', '2012Q1', '20121'):     # định dạng ngày bắt đầu cho chuỗi quý
+        raw = boj('FF', codes, start)
+        if raw:
+            break
     res = {}
     for k, s in FFS.items():
         a = 'L' if k == 'total' else 'A'
@@ -104,22 +122,28 @@ def reserves():
     txt = b.decode('cp932', 'replace')
     rows = list(csv.reader(io.StringIO(txt)))
     head = rows[:14]
-    out = {}
+    out, sample = {}, []
     for r in rows:
-        if not r:
+        if len(r) < 6:
             continue
-        c0 = r[0].strip()
-        m = re.match(r'^(\d{4})[./-](\d{1,2})', c0) or re.match(r'^(\d{4})\D+(\d{1,2})\D*$', c0)
+        lead = ' '.join(x.strip() for x in r[:4])
+        m = re.search(r'(\d{4})\D{1,3}(\d{1,2})(?!\d)', lead)
         if not m:
             continue
-        nums = []
-        for x in r[1:]:
+        try:
+            tot = float(r[4].replace(',', ''))
+        except ValueError:
+            continue
+        fx = []
+        for x in r[5:20]:
             try:
-                nums.append(float(x.replace(',', '')))
+                fx.append(float(x.replace(',', '')))
             except ValueError:
-                nums.append(None)
-        if nums and nums[0] is not None:
-            out[f'{int(m.group(1)):04d}-{int(m.group(2)):02d}'] = {'total': nums[0], 'row': nums[:8]}
+                fx.append(None)
+        out[f'{int(m.group(1)):04d}-{int(m.group(2)):02d}'] = {'total': tot, 'row': fx}
+        if len(sample) < 3:
+            sample.append(r[:22])
+    head = head[-2:] + sample
     return dict(sorted(out.items())), head
 
 
@@ -144,6 +168,7 @@ def main():
         print(name, rep[name], file=sys.stderr)
     res['fetched'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
     res['report'] = rep
+    res['boj_err'] = ERR[:40]
     p.write_text(json.dumps(res, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 
 
