@@ -113,7 +113,7 @@
   },
   {
    "k": "Trần LDR",
-   "v": "85% (TT22/2019) → 95% từ 1/12/2026",
+   "v": "95% theo công thức mới TT50 từ 1/12/2026 (TT22/2019: 85% theo công thức cũ)",
    "since": "2026-12-01",
    "doc": "TT 50/2026/TT-NHNN",
    "src": "Tạp chí Thị trường Tài chính Tiền tệ",
@@ -162,7 +162,7 @@
    "dType": "công bố",
    "tool": "Quy định",
    "t": "Ban hành Thông tư 50/2026: nâng trần LDR lên 95%, lộ trình LCR, NSFR theo Basel III",
-   "detail": "TT 50/2026/TT-NHNN ký 30/9/2026, hiệu lực 1/12/2026: trần LDR 85% → 95%, loại 80% tiền gửi có kỳ hạn KBNN; LCR tối thiểu 50% từ 1/10/2028, tăng 10 điểm/năm lên 100% từ 1/10/2033; NSFR 90% (2028) → 100% (1/10/2030).",
+   "detail": "TT 50/2026/TT-NHNN ký 30/9/2026, hiệu lực 1/12/2026: thay công thức LDR (giới hạn 95% theo cách tính mới, TT22 là 85% theo cách tính cũ; tiền gửi có kỳ hạn KBNN chỉ tính 20%, liên ngân hàng tính ròng); LCR tối thiểu 50% từ 1/10/2028, tăng 10 điểm/năm lên 100% từ 1/10/2033; NSFR 90% (2028) → 100% (1/10/2030).",
    "dir": "nới",
    "impact": "Giải phóng dư địa cho vay ngắn hạn cho nhóm LDR sát trần (nhiều NHTM tư nhân); dài hạn tăng chi phí vốn do phải nắm giữ tài sản thanh khoản cao và nguồn vốn ổn định, gây áp lực NIM cho ngân hàng phụ thuộc vốn ngắn hạn/LNH.",
    "doc": "TT 50/2026/TT-NHNN",

@@ -1106,8 +1106,8 @@ function sbvBlock() {
   const short = v => v.replace('/năm', '').replace(/ \(.*\)$/, '');
   const tiles = pick(['Tái cấp vốn', 'Tái chiết khấu', 'Lãi suất OMO', 'Cho vay qua đêm', 'Trần LS huy động 1', 'Biên độ', 'Chỉ tiêu tăng trưởng', 'Tăng trưởng tín dụng YTD', 'Trần LDR', 'Tỷ lệ tiền gửi có kỳ hạn KBNN']);
   const lbl = { 'Cho vay qua đêm LNH (và bù đắp thiếu hụt thanh toán bù trừ)': 'Cho vay qua đêm LNH', 'Lãi suất OMO (cầm cố GTCG)': 'Lãi suất OMO', 'Trần LS huy động 1 – <6 tháng': 'Trần LS huy động 1–<6T', 'Biên độ tỷ giá USD/VND': 'Biên độ tỷ giá', 'Chỉ tiêu tăng trưởng tín dụng 2026': 'Chỉ tiêu tín dụng 2026', 'Tăng trưởng tín dụng YTD': 'Tín dụng so đầu năm', 'Tỷ lệ tiền gửi có kỳ hạn KBNN được tính vào LDR': 'KBNN tính vào LDR' };
-  const val = c => c.k.startsWith('Tăng trưởng tín dụng') ? c.v.split(' ')[0] : c.k.startsWith('Biên độ') ? '±5%' : c.k.startsWith('Chỉ tiêu') ? '~15%' : c.k.startsWith('Trần LDR') ? '85% → 95%' : short(c.v);
-  const sub = c => c.k.startsWith('Tăng trưởng tín dụng') ? 'đến 30/9/2026' : c.k.startsWith('Trần LDR') ? 'từ 1/12/2026 · TT50' : `từ ${dvn(c.since)}${c.doc ? ' · ' + c.doc.replace('/QĐ-NHNN', '').replace('/TT-NHNN', '').replace('/NHNN-CSTT', '') : ''}`;
+  const val = c => c.k.startsWith('Tăng trưởng tín dụng') ? c.v.split(' ')[0] : c.k.startsWith('Biên độ') ? '±5%' : c.k.startsWith('Chỉ tiêu') ? '~15%' : c.k.startsWith('Trần LDR') ? '95%*' : short(c.v);
+  const sub = c => c.k.startsWith('Tăng trưởng tín dụng') ? 'đến 30/9/2026' : c.k.startsWith('Trần LDR') ? '*công thức mới TT50 từ 1/12/2026 — không so trực tiếp với 85% của TT22' : `từ ${dvn(c.since)}${c.doc ? ' · ' + c.doc.replace('/QĐ-NHNN', '').replace('/TT-NHNN', '').replace('/NHNN-CSTT', '') : ''}`;
   const act = E.filter(e => e.tool !== 'Thị trường');
   const y26 = act.filter(e => e.d >= '2026'), n26 = y26.filter(e => e.dir === 'nới').length, t26 = y26.filter(e => e.dir === 'thắt').length;
   const lastRate = E.filter(e => e.tool === 'Lãi suất điều hành')[0];
