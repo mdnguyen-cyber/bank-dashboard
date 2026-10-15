@@ -180,7 +180,12 @@ def hlw(country):   # Holston-Laubach-Williams r* (NY Fed), file xlsx công khai
 
 def nyfed_sofr99():
     js = json.loads(get(f'https://markets.newyorkfed.org/api/rates/secured/sofr/search.json?startDate=2018-04-02&endDate=2100-01-01'))
-    out = [[r['effectiveDate'], r.get('percentPercentile99')] for r in js['refRates'] if r.get('percentPercentile99') is not None]
+    out = []
+    for r in js['refRates']:
+        try:
+            out.append([r['effectiveDate'], float(r.get('percentPercentile99'))])
+        except (TypeError, ValueError):
+            pass
     return sorted(out)
 
 

@@ -24,7 +24,7 @@ jobs:
           mkdir -p _site/data _site/assets
           cp index.html nganh.html .nojekyll _site/
           cp assets/app.js assets/sector.js assets/chartkit.js assets/fs.css assets/fin-success-logo.png _site/assets/
-          cp data/ctg-data.js data/sector-data.js _site/data/
+          cp data/ctg-data.js data/sector-data.js data/global-data.js _site/data/
           # Gắn mã commit vào đường dẫn script để trình duyệt không dùng bản cache cũ sau mỗi lần deploy
           V=${GITHUB_SHA::7}
           for f in _site/index.html _site/nganh.html; do

@@ -85,14 +85,15 @@ const SPEC = {};
 const cl = o => Array.isArray(o) ? o.map(cl) : (o && Object.getPrototypeOf(o) === Object.prototype) ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cl(v)])) : o;
 const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', bank: 'Ngân hàng', idx: 'Kịch bản IDX' };
 function cardMeta(el) {
-  const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane');
+  const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane'), cc = el.closest('[data-cc]');
   const h = c && c.querySelector(':scope > h3.sub'), one = sel => { const e = c && c.querySelector(':scope > ' + sel); return e ? e.innerHTML : ''; };
   return { title: h ? (h.childNodes[0] || {}).textContent || '' : el.id, sub: one('.chart-sub'), src: one('.src'), insight: one('.insight'),
-    group: PANE_LBL[pp ? pp.dataset.pp : pane ? pane.id : ''] || 'Khác', pane: pane ? pane.id : '', sp: pp ? pp.dataset.pp : '' };
+    group: cc && cc.dataset.cc !== 'ov' ? 'Quốc tế · ' + (GCOUNTRY.find(x => x[0] === cc.dataset.cc) || ['', ''])[1] : PANE_LBL[pp ? pp.dataset.pp : pane ? pane.id : ''] || 'Khác', pane: pane ? pane.id : '', sp: pp ? pp.dataset.pp : '', cc: cc ? cc.dataset.cc : '' };
 }
 function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình chart
   Object.keys(builders).forEach(k => { if (!['quick', 'book'].includes(k) && !built[k]) { builders[k](); built[k] = true; } });
   ['intl', 'dom', 'bank', 'camel', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; } });
+  GCOUNTRY.forEach(([k]) => { if (!gDone[k]) { gDone[k] = true; ({ us: drUS, ea: drEA, jp: drJP, cn: drCN, cmp: drCMP, ov: chIntlOverview })[k](); } });
 }
 function drawSpec(src, cid, last) {   // vẽ lại chart `src` vào canvas `cid`; last = mở sẵn khung N điểm cuối (vẫn kéo/chọn lại được)
   const sp = SPEC[src]; if (!sp) return false;
@@ -399,7 +400,7 @@ function chCamel() {
 }
 
 /* ---- Quốc tế ---- */
-function subIntl() {
+function subIntlOverview() {
   const b = lastv(intl.brent);
   return `<div class="kpis k4">
     ${kpi('Fed (EFFR)', pc(lastv(intl.effr).v, 2), 'tăng 25 bps 16/09/2026 · FOMC tới 27–28/10', 'neg')}
@@ -419,7 +420,179 @@ function subIntl() {
     insight: `Brent <b>${nf(b.v, 1)} USD</b>, ${sg(yoyAt(intl.brent, b.d), 0)} so với cùng kỳ — vượt xa ngưỡng +20% của R-06. Cú sốc tháng 3–4/2026 (118 USD) trùng thời điểm LS huy động 12T NHTM Nhà nước tăng 5,2% → 5,9% và tỷ giá tự do vọt 28.080. CPI VN đang ${pc(lastv(dom.cpi).v, 2)}, CPI bình quân 9T ${pc(lastv(dom.cpiAvg).v, 2)} — sát mục tiêu ~4,5%.`,
     src: 'WiData commodity 203084' })}`;
 }
+/* ---- Quốc tế theo nước: số liệu public tự cập nhật hằng ngày (data/global-data.js) ---- */
+const GD = window.GLOBAL_DATA || { s: {}, ladder: [], taylor: {}, label: {}, src: {} };
+const gs = k => GD.s[k] || { d: [], v: [] };
+const glast = k => { const x = gs(k); for (let i = x.v.length - 1; i >= 0; i--) if (x.v[i] != null) return { d: x.d[i], v: x.v[i] }; return { d: null, v: null }; };
+const gprev = (k, n = 1) => { const x = gs(k); let c = 0; for (let i = x.v.length - 1; i >= 0; i--) if (x.v[i] != null && c++ === n) return x.v[i]; return null; };
+const gLab = d => d.length === 7 ? mvn(d) : dvn(d);
+function gLines(keys, names, colors, o = {}) {   // nhiều chuỗi → labels hợp nhất theo ngày
+  const all = [...new Set(keys.flatMap(k => gs(k).d))].sort().filter(d => !o.from || d >= o.from);
+  const maps = keys.map(k => { const x = gs(k), m = {}; x.d.forEach((d, i) => m[d] = x.v[i]); return m; });
+  return { labels: all.map(gLab), datasets: keys.map((k, i) => L(names[i], all.map(d => maps[i][d] ?? null), colors[i], Object.assign({ unit: o.unit ?? '%', dp: o.dp ?? 2, spanGaps: true }, (o.ds || [])[i] || {}))) };
+}
+const GCOUNTRY = [['us', 'Mỹ'], ['ea', 'Khu vực đồng Euro'], ['jp', 'Nhật Bản'], ['cn', 'Trung Quốc'], ['cmp', 'So sánh NHTW'], ['ov', 'Tổng quan (chuỗi IDX)']];
+const gDone = {};
+const PAL = ['#1D2678', '#c0392b', '#1f8a8d', '#d9a400', '#861C52', '#4f9bd1', '#7a8291'];
+const gsrc = keys => 'Nguồn: ' + [...new Set(keys.map(k => (GD.src[k.replace(/_(yoy|m3|mom|d|m)$/, '')] || '').split(':')[0]).filter(Boolean))].map(x => ({ fred: 'FRED (BLS, BEA, Fed, CBO, Kho bạc Mỹ)', ecb: 'ECB Data Portal', dbn: 'DBnomics (Eurostat, Cục Thống kê Nhật Bản, NBS)', oecd: 'OECD', nbs: 'NBS Trung Quốc qua DBnomics', nyfed: 'NY Fed Markets', hlw: 'NY Fed (Holston–Laubach–Williams)' }[x] || x)).join(' · ') + ` · tự động cập nhật ${dvn((GD.fetched || '').slice(0, 10))}`;
+function tfPick(id, opts) { return `<div class="picker tf" data-tf="${id}">${opts.map(([k, l], i) => `<button type="button" data-k="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>`; }
+function wireTf(id, draw) { const box = document.querySelector(`[data-tf="${id}"]`); if (!box) { draw(); return; } const btns = [...box.querySelectorAll('button')]; btns.forEach(b => b.onclick = () => { btns.forEach(x => x.classList.toggle('on', x === b)); draw(b.dataset.k); }); draw(btns[0].dataset.k); }
+const TF = [['yoy', 'YoY'], ['m3', '3 tháng quy năm'], ['mom', 'MoM']];
+
+function subIntl() {
+  return `<div class="subtabs cty" role="tablist">${GCOUNTRY.map(([k, l], i) => `<button type="button" data-c="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
+  <p class="muted" style="margin:-4px 0 12px">Số liệu quốc tế lấy trực tiếp từ nguồn công bố (FRED, ECB, NY Fed, Cục Thống kê Nhật Bản, NBS, OECD) và tự cập nhật mỗi sáng · lần tải gần nhất ${dvn((GD.fetched || '').slice(0, 10))}${GD.stale && GD.stale.length ? ' · <b>' + GD.stale.length + ' chuỗi dùng bản cũ do lỗi tải</b>' : ''}</p>
+  ${GCOUNTRY.map(([k], i) => `<div class="csub${i ? '' : ' on'}" data-cc="${k}">${k === 'ov' ? subIntlOverview() : ({ us: gUS, ea: gEA, jp: gJP, cn: gCN, cmp: gCMP })[k]()}</div>`).join('')}`;
+}
+function openC(k) {
+  $$('#picture .cty button').forEach(b => b.classList.toggle('on', b.dataset.c === k));
+  $$('#picture [data-cc]').forEach(p => p.classList.toggle('on', p.dataset.cc === k));
+  if (!gDone[k]) { gDone[k] = true; ({ us: drUS, ea: drEA, jp: drJP, cn: drCN, cmp: drCMP, ov: chIntlOverview })[k](); }
+}
+/* -------- Mỹ -------- */
+function gUS() {
+  const t = GD.taylor || {}, tl = k => (t[k] && t[k].v.length) ? t[k].v[t[k].v.length - 1] : null;
+  const up = glast('us_fedtgt_up_d'), lo = glast('us_fedtgt_lo_d');
+  const lad = GD.ladder || [];
+  const st = r => { const v = r.v; const m = { us_rrp: v < 50 ? ['risk', 'Cạn đệm'] : v > 1000 ? ['ok', 'Thừa'] : ['watch', 'Trung tính'], tgcr_iorb: v >= 0 ? ['risk', 'Khát vốn'] : v < -7 ? ['ok', 'Thừa'] : ['watch', 'Trung tính'],
+    sofr_iorb: v > 0 ? ['risk', 'Tắc nghẽn'] : ['ok', 'Bình thường'], sofr99_iorb: v > 10 ? ['risk', 'Căng'] : v > 5 ? ['watch', 'Theo dõi'] : ['ok', 'Bình thường'], us_repo: v > 1 ? ['risk', 'Đang dùng'] : ['ok', 'Bình thường'],
+    us_reserves: v < 2800 ? ['risk', 'Sát ngưỡng'] : v < 3000 ? ['watch', 'Vừa đủ'] : ['ok', 'Dồi dào'], bills4w: v > 0 ? ['watch', 'Đang bơm'] : ['ok', 'QT'] }[r.k] || ['', '']; return `<span class="pill ${m[0]}">${m[1]}</span>`; };
+  return `<div class="kpis">
+    ${kpi('CPI', pc(glast('us_cpi_yoy').v, 2), `lõi ${pc(glast('us_cpi_core_yoy').v, 2)} · ${mvn(glast('us_cpi_yoy').d)}`, glast('us_cpi_yoy').v > 3 ? 'neg' : '')}
+    ${kpi('PCE lõi', pc(glast('us_pce_core_yoy').v, 2), `supercore ${pc(glast('us_pce_supercore_yoy').v, 2)} · ${mvn(glast('us_pce_core_yoy').d)}`, 'neg')}
+    ${kpi('PPI cầu cuối cùng', pc(glast('us_ppi_fd_yoy').v, 1), `lõi ${pc(glast('us_ppi_core_yoy').v, 1)} · ${mvn(glast('us_ppi_fd_yoy').d)}`)}
+    ${kpi('Lãi suất Fed', `${nf(lo.v, 2)}–${nf(up.v, 2)}%`, `EFFR ${pc(glast('us_effr_d').v, 2)} · IORB ${pc(glast('us_iorb_d').v, 2)}`)}
+    ${kpi('Taylor V1 (PCE lõi)', pc(tl('v1'), 2), `trimmed ${pc(tl('v1_trim'), 2)} · FFR ${pc(tl('ffr'), 2)}`, tl('v1') - tl('ffr') > 0.5 ? 'neg' : '')}
+    ${kpi('Thất nghiệp', pc(glast('us_unrate').v, 1), `NFP ${sg(glast('us_payems_chg').v, 0, ' nghìn')} · ${mvn(glast('us_unrate').d)}`)}
+  </div>
+  <div class="grid g2 gap">
+    ${card({ id: 'gUsCpi', title: 'CPI: tổng, lõi và supercore', sub: 'supercore = dịch vụ trừ nhà ở (CUSR0000SASL2RS) · chọn YoY / 3 tháng quy năm / MoM', body: tfPick('usCpi', TF), src: gsrc(['us_cpi']) })}
+    ${card({ id: 'gUsCpiC', title: 'CPI theo cấu phần', sub: 'YoY · nhà ở (shelter), hàng hóa lõi, dịch vụ trừ năng lượng, năng lượng, lương thực', body: tfPick('usCpiC', TF), src: gsrc(['us_cpi']) })}
+    ${card({ id: 'gUsPce', title: 'PCE: tổng, lõi, supercore và trimmed mean', sub: 'thước đo lạm phát Fed theo dõi · supercore = dịch vụ trừ năng lượng và nhà ở (IA001260M) · trimmed mean của Dallas Fed chỉ có YoY', body: tfPick('usPce', TF), src: gsrc(['us_pce', 'us_pce_trim']) })}
+    ${card({ id: 'gUsPpi', title: 'PPI: cầu cuối cùng, lõi, trung gian, thô', sub: 'chuỗi dẫn dắt của CPI hàng hóa · lõi = trừ thực phẩm, năng lượng, dịch vụ thương mại', body: tfPick('usPpi', TF), src: gsrc(['us_ppi_fd']) })}
+    ${card({ id: 'gUsTaylor', title: 'Quy tắc Taylor so với lãi suất Fed thực tế', h: 'tall', sub: `i* = r* + π + 0,5(π − 2) + 0,5 × độ lệch sản lượng · V1: lệch GDP (CBO) · V2: lệch thất nghiệp × (−2) (Okun) · r* = HLW (NY Fed)`, body: tfPick('usTay', [['core', 'π = PCE lõi'], ['trim', 'π = PCE trimmed mean']]), insight: '<span id="gTayIns"></span>', src: gsrc(['us_pce_core', 'us_rstar', 'us_gdp']) })}
+    ${card({ id: 'gUsJobs', title: 'Thị trường lao động', h: 'tall', sub: 'cột = việc làm phi nông nghiệp tăng thêm (nghìn) · đường = tỷ lệ thất nghiệp (trục phải)', src: gsrc(['us_payems']) })}
+    ${card({ id: 'gUsBs', title: 'Bảng cân đối Fed và thanh khoản hệ thống', h: 'tall', sub: 'tỷ USD, theo tuần · tổng tài sản Fed, dự trữ NH, TGA của Kho bạc, ON RRP', src: gsrc(['us_walcl', 'us_rrp']) })}
+    ${card({ id: 'gUsSpr', title: 'Áp lực thị trường repo', h: 'tall', sub: 'bps, theo ngày · SOFR, TGCR và SOFR phân vị 99 so với IORB · trên 0 = tiền qua đêm đắt hơn lãi Fed trả cho dự trữ', src: gsrc(['us_sofr', 'us_sofr99']) })}
+  </div>
+  <article class="card"><h3 class="sub">Bậc thang thanh khoản hệ thống ngân hàng Mỹ</h3><p class="chart-sub">①–② đo độ thừa tiền → ③–④ áp lực giá → ⑤–⑦ phản ứng của Fed · cột "Kỳ trước" = 5 phiên/tuần trước</p>
+    <div class="tscroll"><table><thead><tr><th>Chỉ báo</th><th class="n">Mới nhất</th><th class="n">Kỳ trước</th><th>Ngưỡng tham chiếu</th><th>Trạng thái</th><th>Ngày</th></tr></thead><tbody>
+    ${lad.map(r => `<tr><td><b>${esc(r.n)}</b></td><td class="n">${nf(r.v, 1)} ${r.u}</td><td class="n">${r.p == null ? '—' : nf(r.p, 1)}</td><td class="muted">${esc(r.ref)}</td><td>${st(r)}</td><td>${dvn(r.d)}</td></tr>`).join('')}</tbody></table></div>
+    <div class="src">${gsrc(['us_rrp', 'us_sofr99', 'us_walcl'])}</div></article>
+  ${card({ id: 'gUsRates', title: 'Lợi suất TPCP Mỹ và lãi suất Fed', sub: '%/năm, theo ngày · EFFR, 2 năm, 10 năm', src: gsrc(['us_10y']) })}`;
+}
+function tfDraw(id, keys, names, k, o = {}) {
+  const suf = k || 'yoy', ks = keys.map(x => x.endsWith('!') ? x.slice(0, -1) : x + '_' + suf);
+  mk(id, { type: 'line', data: gLines(ks, names, PAL, Object.assign({ from: suf === 'yoy' ? '2018-01' : '2021-01' }, o)), options: { plugins: { refLines: { lines: suf === 'yoy' ? [{ value: 2, label: 'Mục tiêu 2%' }] : [] } }, scales: { y: pctAxis('') } } });
+}
+function drUS() {
+  wireTf('usCpi', k => tfDraw('gUsCpi', ['us_cpi', 'us_cpi_core', 'us_cpi_supercore'], ['CPI', 'CPI lõi', 'Supercore'], k));
+  wireTf('usCpiC', k => tfDraw('gUsCpiC', ['us_cpi_shelter', 'us_cpi_coregoods', 'us_cpi_svc_ex_energy', 'us_cpi_energy', 'us_cpi_food'], ['Nhà ở', 'Hàng hóa lõi', 'Dịch vụ trừ năng lượng', 'Năng lượng', 'Lương thực'], k));
+  wireTf('usPce', k => tfDraw('gUsPce', ['us_pce', 'us_pce_core', 'us_pce_supercore', ...(k === 'yoy' || !k ? ['us_pce_trim!'] : [])], ['PCE', 'PCE lõi', 'Supercore', 'Trimmed mean'], k));
+  wireTf('usPpi', k => tfDraw('gUsPpi', ['us_ppi_fd', 'us_ppi_core', 'us_ppi_inter', 'us_ppi_crude'], ['Cầu cuối cùng', 'Lõi', 'Trung gian', 'Thô'], k));
+  const T = GD.taylor || {};
+  wireTf('usTay', k => {
+    const tg = k === 'trim' ? '_trim' : '', ser = n => { const x = T[n] || { d: [], v: [] }; return x; };
+    const all = [...new Set(['v1' + tg, 'v2' + tg, 'ffr', 'rstar'].flatMap(n => ser(n).d))].sort().filter(d => d >= '2015-01');
+    const al2 = n => { const x = ser(n), m = {}; x.d.forEach((d, i) => m[d] = x.v[i]); return all.map(d => m[d] ?? null); };
+    mk('gUsTaylor', { type: 'line', data: { labels: all.map(mvn), datasets: [L('Taylor V1 (lệch GDP)', al2('v1' + tg), C.red, { borderWidth: 2.2 }), L('Taylor V2 (lệch thất nghiệp)', al2('v2' + tg), C.gold, { borderDash: [5, 4] }), L('Fed funds thực tế', al2('ffr'), C.navy, { borderWidth: 2.6 }), L('r* (HLW)', al2('rstar'), C.grey, { borderDash: [2, 3] })] }, options: { scales: { y: pctAxis('') } } });
+    const v1 = al2('v1' + tg).filter(x => x != null).pop(), v2 = al2('v2' + tg).filter(x => x != null).pop(), f = al2('ffr').filter(x => x != null).pop();
+    const gap = (v1 - f) * 100;
+    $('#gTayIns').innerHTML = `Với π = ${k === 'trim' ? 'PCE trimmed mean' : 'PCE lõi'}: Taylor V1 <b>${pc(v1, 2)}</b>, V2 <b>${pc(v2, 2)}</b> so với fed funds <b>${pc(f, 2)}</b> → chênh V1 <b>${sg(gap, 0, ' bps')}</b>: ${Math.abs(gap) < 50 ? 'chính sách gần trung lập' : gap > 0 ? 'Fed đang <b>lỏng</b> hơn quy tắc — nghiêng về giữ hoặc tăng' : 'Fed đang <b>chặt</b> hơn quy tắc — có dư địa giảm'}. Chọn thước đo lạm phát ảnh hưởng mạnh: hai cách cho kết quả lệch ${nf(Math.abs(((T.v1 || { v: [0] }).v.slice(-1)[0] - (T.v1_trim || { v: [0] }).v.slice(-1)[0]) * 100), 0)} bps.`;
+  });
+  const p = gs('us_payems_chg'), u = gs('us_unrate'), um = {}; u.d.forEach((d, i) => um[d] = u.v[i]);
+  const pd = p.d.filter(d => d >= '2021-01'), pv = pd.map(d => p.v[p.d.indexOf(d)]);
+  mk('gUsJobs', { type: 'bar', data: { labels: pd.map(mvn), datasets: [{ label: 'Việc làm tăng thêm (nghìn)', data: pv, backgroundColor: pv.map(v => v < 0 ? 'rgba(192,57,43,.7)' : 'rgba(41,56,168,.55)'), dp: 0, unit: '' }, L('Thất nghiệp', pd.map(d => um[d] ?? null), C.red, { yAxisID: 'y1', dp: 1 })] },
+    options: { scales: { y: numAxis('nghìn'), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
+  const bs = gLines(['us_walcl', 'us_reserves', 'us_tga', 'us_rrp_d'], ['Tổng tài sản Fed', 'Dự trữ NH', 'TGA', 'ON RRP'], PAL, { unit: ' tỷ USD', dp: 0, from: '2020-01-01' });
+  mk('gUsBs', { type: 'line', data: bs, options: { scales: { y: numAxis('tỷ USD') } } });
+  mk('gUsSpr', { type: 'line', data: gLines(['sofr_iorb', 'tgcr_iorb', 'sofr99_iorb'], ['SOFR − IORB', 'TGCR − IORB', 'SOFR p99 − IORB'], [C.navy, C.tealInk, C.red], { unit: ' bps', dp: 0 }), options: { plugins: { refLines: { lines: [{ value: 0, label: '' }] } }, scales: { y: numAxis('bps') } } });
+  mk('gUsRates', { type: 'line', data: gLines(['us_effr_d', 'us_2y_d', 'us_10y_d'], ['EFFR', '2 năm', '10 năm'], [C.navy, C.gold, C.red], { from: '2023-07-01' }), options: { scales: { y: pctAxis('') } } });
+}
+/* -------- Euro -------- */
+function gEA() {
+  return `<div class="kpis k4">
+    ${kpi('HICP', pc(glast('ea_hicp').v, 1), `lõi ${pc(glast('ea_hicp_core').v, 1)} · ${mvn(glast('ea_hicp').d)}`, glast('ea_hicp').v > 2.5 ? 'neg' : '')}
+    ${kpi('HICP dịch vụ', pc(glast('ea_hicp_serv').v, 1), mvn(glast('ea_hicp_serv').d))}
+    ${kpi('Lãi suất tiền gửi ECB', pc(glast('ea_dfr_d').v, 2), 'DFR · ' + dvn(glast('ea_dfr_d').d))}
+    ${kpi('Bund 10 năm', pc(glast('de_10y_m').v, 2), `EUR/USD ${nf(glast('eurusd_d').v, 4)}`)}
+  </div>
+  <div class="grid g2 gap">
+    ${card({ id: 'gEaHicp', title: 'Lạm phát HICP khu vực đồng Euro', sub: '% YoY · tổng, lõi (trừ năng lượng, thực phẩm), dịch vụ · từ 2026 theo COICOP 2018', src: gsrc(['ea_hicp']) })}
+    ${card({ id: 'gEaRate', title: 'ECB: lãi suất tiền gửi so với lạm phát lõi', sub: '%/năm · DFR theo tháng, HICP lõi, Bund 10 năm', src: gsrc(['ea_dfr', 'de_10y']) })}
+    ${card({ id: 'gEaFx', title: 'EUR/USD và thất nghiệp khu vực Euro', sub: 'EUR/USD theo ngày (trục trái) · thất nghiệp % (trục phải)', src: gsrc(['eurusd', 'ea_unrate']) })}
+  </div>`;
+}
+function drEA() {
+  mk('gEaHicp', { type: 'line', data: gLines(['ea_hicp', 'ea_hicp_core', 'ea_hicp_serv'], ['HICP', 'HICP lõi', 'Dịch vụ'], PAL, { from: '2018-01' }), options: { plugins: { refLines: { lines: [{ value: 2, label: 'Mục tiêu 2%' }] } }, scales: { y: pctAxis('') } } });
+  mk('gEaRate', { type: 'line', data: gLines(['ea_dfr_m', 'ea_hicp_core', 'de_10y_m'], ['Lãi suất tiền gửi ECB', 'HICP lõi', 'Bund 10 năm'], [C.navy, C.red, C.gold], { from: '2018-01' }), options: { scales: { y: pctAxis('') } } });
+  const fx = gs('eurusd_d'), un = gs('ea_unrate'); const um = {}; un.d.forEach((d, i) => um[d.slice(0, 7)] = un.v[i]);
+  mk('gEaFx', { type: 'line', data: { labels: fx.d.map(dvn), datasets: [L('EUR/USD', fx.v, C.navy, { unit: '', dp: 4 }), L('Thất nghiệp', fx.d.map((d, i) => (i === fx.d.length - 1 || fx.d[i + 1].slice(0, 7) !== d.slice(0, 7)) ? um[d.slice(0, 7)] ?? null : null), C.red, { yAxisID: 'y1', dp: 1, spanGaps: true })] },
+    options: { scales: { y: numAxis('', { ticks: { callback: v => nf(v, 2) } }), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
+}
+/* -------- Nhật -------- */
+function gJP() {
+  return `<div class="kpis k4">
+    ${kpi('CPI Nhật', pc(glast('jp_cpi_main').v, 1), mvn(glast('jp_cpi_main').d))}
+    ${kpi('CPI trừ thực phẩm tươi sống', pc(glast('jp_cpi_xff_idx_yoy').v, 1), `trừ cả năng lượng ${pc(glast('jp_cpi_xffe_idx_yoy').v, 1)}`)}
+    ${kpi('Lãi suất qua đêm', pc(glast('jp_rate_m').v, 2), 'call rate · ' + mvn(glast('jp_rate_m').d))}
+    ${kpi('JGB 10 năm', pc(glast('jp_10y_m').v, 2), `USD/JPY ${nf(glast('usdjpy_d').v, 2)}`)}
+  </div>
+  <div class="grid g2 gap">
+    ${card({ id: 'gJpCpi', title: 'Lạm phát Nhật Bản', sub: '% YoY · tổng, trừ thực phẩm tươi sống (core, BOJ theo dõi), trừ thực phẩm tươi sống và năng lượng (core-core)', src: gsrc(['jp_cpi_idx']) })}
+    ${card({ id: 'gJpRate', title: 'BOJ: lãi suất qua đêm và JGB 10 năm', sub: '%/năm, trung bình tháng', src: gsrc(['jp_rate', 'jp_10y']) })}
+    ${card({ id: 'gJpFx', title: 'USD/JPY', sub: 'theo ngày · tăng = JPY mất giá', src: gsrc(['usdjpy']) })}
+  </div>`;
+}
+function drJP() {
+  mk('gJpCpi', { type: 'line', data: gLines(['jp_cpi_idx_yoy', 'jp_cpi_xff_idx_yoy', 'jp_cpi_xffe_idx_yoy'], ['CPI', 'Trừ thực phẩm tươi sống', 'Trừ thực phẩm tươi sống và năng lượng'], PAL, { from: '2018-01' }), options: { plugins: { refLines: { lines: [{ value: 2, label: 'Mục tiêu 2%' }] } }, scales: { y: pctAxis('') } } });
+  mk('gJpRate', { type: 'line', data: gLines(['jp_rate_m', 'jp_10y_m'], ['Qua đêm', 'JGB 10 năm'], [C.navy, C.red], { from: '2018-01' }), options: { scales: { y: pctAxis('') } } });
+  mk('gJpFx', { type: 'line', data: gLines(['usdjpy_d'], ['USD/JPY'], [C.navy], { unit: '', dp: 2 }), options: { scales: { y: numAxis('') } } });
+}
+/* -------- Trung Quốc -------- */
+function gCN() {
+  return `<div class="kpis k4">
+    ${kpi('CPI Trung Quốc', pc(glast('cn_cpi').v, 1), mvn(glast('cn_cpi').d), glast('cn_cpi').v < 1 ? 'neg' : '')}
+    ${kpi('PPI Trung Quốc', pc(glast('cn_ppi').v, 1), mvn(glast('cn_ppi').d) + ' · nguồn chậm', glast('cn_ppi').v < 0 ? 'neg' : '')}
+    ${kpi('Lãi suất liên NH 3 tháng', pc(glast('cn_rate_m').v, 2), mvn(glast('cn_rate_m').d))}
+    ${kpi('USD/CNY', nf(glast('usdcny_d').v, 4), dvn(glast('usdcny_d').d))}
+  </div>
+  <div class="grid g2 gap">
+    ${card({ id: 'gCnPx', title: 'CPI và PPI Trung Quốc', sub: '% YoY · PPI âm kéo dài = giảm phát hàng công nghiệp, lan sang giá xuất khẩu', src: gsrc(['cn_cpi', 'cn_ppi']) })}
+    ${card({ id: 'gCnFx', title: 'USD/CNY và lãi suất liên ngân hàng', sub: 'USD/CNY theo ngày (trục trái) · lãi suất 3 tháng (trục phải)', src: gsrc(['usdcny', 'cn_rate']) })}
+  </div>`;
+}
+function drCN() {
+  mk('gCnPx', { type: 'line', data: gLines(['cn_cpi', 'cn_ppi'], ['CPI', 'PPI'], [C.navy, C.red], { from: '2018-01' }), options: { plugins: { refLines: { lines: [{ value: 0, label: '' }] } }, scales: { y: pctAxis('') } } });
+  const fx = gs('usdcny_d'), r = gs('cn_rate_m'); const rm = {}; r.d.forEach((d, i) => rm[d] = r.v[i]);
+  mk('gCnFx', { type: 'line', data: { labels: fx.d.map(dvn), datasets: [L('USD/CNY', fx.v, C.navy, { unit: '', dp: 4 }), L('Liên NH 3 tháng', fx.d.map((d, i) => (i === fx.d.length - 1 || fx.d[i + 1].slice(0, 7) !== d.slice(0, 7)) ? rm[d.slice(0, 7)] ?? null : null), C.red, { yAxisID: 'y1', spanGaps: true })] },
+    options: { scales: { y: numAxis('', { ticks: { callback: v => nf(v, 2) } }), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
+}
+/* -------- So sánh -------- */
+function gCMP() {
+  return `<div class="grid g2 gap">
+    ${card({ id: 'gCmpRate', title: 'Lãi suất điều hành các NHTW lớn', sub: '%/năm, trung bình tháng · Fed (EFFR), ECB (lãi suất tiền gửi), BOJ (qua đêm), Trung Quốc (liên NH 3 tháng)', src: gsrc(['us_effr', 'ea_dfr', 'jp_rate', 'cn_rate']) })}
+    ${card({ id: 'gCmpCpi', title: 'Lạm phát tổng: Mỹ, Euro, Nhật, Trung Quốc', sub: '% YoY', src: gsrc(['us_cpi', 'ea_hicp', 'jp_cpi_idx', 'cn_cpi']) })}
+    ${card({ id: 'gCmpBs', title: 'Quy mô bảng cân đối NHTW', h: 'tall', sub: 'tỷ USD (quy đổi theo tỷ giá bình quân tháng) · Fed, Eurosystem, BOJ', insight: '<span id="gBsIns"></span>', src: gsrc(['us_walcl', 'ea_assets', 'jp_assets']) })}
+    ${card({ id: 'gCmp10', title: 'Lợi suất trái phiếu chính phủ 10 năm', sub: '%/năm, trung bình tháng · Mỹ, Đức, Nhật', src: gsrc(['us_10y', 'de_10y', 'jp_10y']) })}
+  </div>`;
+}
+function drCMP() {
+  mk('gCmpRate', { type: 'line', data: gLines(['us_effr_m', 'ea_dfr_m', 'jp_rate_m', 'cn_rate_m'], ['Fed', 'ECB', 'BOJ', 'Trung Quốc'], PAL, { from: '2015-01' }), options: { scales: { y: pctAxis('') } } });
+  mk('gCmpCpi', { type: 'line', data: gLines(['us_cpi_yoy', 'ea_hicp', 'jp_cpi_main', 'cn_cpi'], ['Mỹ (CPI)', 'Euro (HICP)', 'Nhật (CPI)', 'Trung Quốc (CPI)'], PAL, { from: '2018-01' }), options: { plugins: { refLines: { lines: [{ value: 2, label: '2%' }] } }, scales: { y: pctAxis('') } } });
+  mk('gCmpBs', { type: 'line', data: gLines(['cb_fed', 'cb_ecb', 'cb_boj'], ['Fed', 'Eurosystem', 'BOJ'], PAL, { unit: ' tỷ USD', dp: 0, from: '2015-01' }), options: { scales: { y: numAxis('tỷ USD') } } });
+  mk('gCmp10', { type: 'line', data: gLines(['us_10y_m', 'de_10y_m', 'jp_10y_m'], ['Mỹ', 'Đức', 'Nhật'], PAL, { from: '2015-01' }), options: { scales: { y: pctAxis('') } } });
+  const pk = k => { const x = gs(k); let m = -1, i0 = 0; x.v.forEach((v, i) => { if (v > m) { m = v; i0 = i; } }); return { v: m, d: x.d[i0] }; };
+  const f = pk('cb_fed'), e = pk('cb_ecb'), b = pk('cb_boj');
+  $('#gBsIns').innerHTML = `So với đỉnh: Fed <b>${sg((glast('cb_fed').v / f.v - 1) * 100, 0)}</b> (đỉnh ${mvn(f.d)}), Eurosystem <b>${sg((glast('cb_ecb').v / e.v - 1) * 100, 0)}</b> (${mvn(e.d)}), BOJ <b>${sg((glast('cb_boj').v / b.v - 1) * 100, 0)}</b> theo USD (${mvn(b.d)}) — mức thu hẹp bảng cân đối (QT) quyết định thanh khoản USD toàn cầu và áp lực lên tỷ giá các nước mới nổi.`;
+}
+
 function chIntl() {
+  $$('#picture .cty button').forEach(b => b.onclick = () => openC(b.dataset.c));
+  Object.keys(gDone).forEach(k => delete gDone[k]);
+  openC('us');
+}
+function chIntlOverview() {
   const labs = monthsFrom('2022-01', TODAY.slice(0, 7));
   mk('chRates', { type: 'line', data: { labels: labs.map(mvn), datasets: [L('EFFR', al(intl.effr, labs), C.navy, { borderWidth: 2.4 }), L('UST 10Y', al(intl.ust10, labs), C.red), L('TPCP VN 10Y', al(intl.vn10, labs), C.tealInk, { borderDash: [5, 4] })] },
     options: { scales: { y: pctAxis() } } }, { switch: 'line' });
@@ -958,7 +1131,7 @@ function paneBook() {
       <h3 class="sub">${esc(m.title)}</h3>${m.sub ? `<p class="chart-sub">${m.sub}</p>` : ''}
       ${chartBox(id, 'cb-' + id)}
       ${m.insight ? `<div class="insight">${m.insight}</div>` : ''}${m.src ? `<div class="src">${m.src.startsWith('Nguồn') ? '' : 'Nguồn: '}${m.src}</div>` : ''}
-      <div class="qfoot"><span><code>${id}</code> · ${esc(m.group)}</span><button type="button" class="lnk" data-go="${m.pane}" data-sp="${m.sp}">Xem ở tab gốc →</button></div>
+      <div class="qfoot"><span><code>${id}</code> · ${esc(m.group)}</span><button type="button" class="lnk" data-go="${m.pane}" data-sp="${m.sp}" data-cc="${m.cc || ''}">Xem ở tab gốc →</button></div>
     </article>`; }).join('')}</div>`;
   const drawn = new Set();
   const draw = c => { const id = c.dataset.id; drawSpec(id, 'cb-' + id); drawn.add(id); };
@@ -971,7 +1144,7 @@ function paneBook() {
   $$('#bkGrid .bk').forEach(c => bookObs ? bookObs.observe(c) : draw(c));
   $$('#bkG button').forEach(b => b.onclick = () => { bookF.g = b.dataset.k; apply(); });
   $('#bkQ').oninput = e => { bookF.q = e.target.value.trim().toLowerCase(); apply(); };
-  $$('#bkGrid [data-go]').forEach(b => b.onclick = () => { show(b.dataset.go); if (b.dataset.sp) openP(b.dataset.sp); const t = SPEC[b.closest('.bk').dataset.id].el; setTimeout(() => t.scrollIntoView({ block: 'center' }), 60); });
+  $$('#bkGrid [data-go]').forEach(b => b.onclick = () => { show(b.dataset.go); if (b.dataset.sp) openP(b.dataset.sp); if (b.dataset.cc) openC(b.dataset.cc); const t = SPEC[b.closest('.bk').dataset.id].el; setTimeout(() => t.scrollIntoView({ block: 'center' }), 60); });
   apply();
 }
 function openBook(id) {
