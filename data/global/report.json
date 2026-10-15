@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-15T07:40:50Z",
+ "fetched": "2026-10-15T07:42:45Z",
  "report": {
   "us_cpi": [
    {
@@ -653,407 +653,341 @@
     "nb": 1
    }
   ],
-  "NBS/M_A010H": [
+  "STATJP/CPIm": [
    [
-    "A010H01",
-    "Producer Price Index for Industrial Products (The _same month last year=100)"
+    "001",
+    "All items"
    ],
    [
-    "A010H02",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining and Washing of _Coal"
+    "002",
+    "Food"
    ],
    [
-    "A010H03",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Extraction of Petroleum _and Natural Gas"
+    "003",
+    "Cereals"
    ],
    [
-    "A010H04",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining and Processing of _Ferrous Metal Ores"
+    "021",
+    "Fish & seafood"
    ],
    [
-    "A010H05",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining and Processing of _Non-Ferrous Metal Ores"
+    "055",
+    "Meats"
    ],
    [
-    "A010H06",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining and Processing of _Non-metal Ores"
+    "067",
+    "Dairy products & eggs"
    ],
    [
-    "A010H07",
-    "Producer Price Index for Industrial Products (The _same month last year=100), Mining and Support Activities"
+    "079",
+    "Vegetables & seaweeds"
    ],
    [
-    "A010H08",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining of Other Ores"
+    "129",
+    "Fruits"
    ],
    [
-    "A010H09",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Processing of Food from _Agricultural Products"
+    "149",
+    "Oils, fats & seasonings"
    ],
    [
-    "A010H0A",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Foods"
+    "172",
+    "Cakes & candies"
    ],
    [
-    "A010H0B",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Liquor, _Beverages and Refined Tea"
+    "190",
+    "Cooked food"
    ],
    [
-    "A010H0C",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Tobacco"
+    "222",
+    "Beverages"
    ],
    [
-    "A010H0D",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Textile"
+    "243",
+    "Alcoholic beverages"
    ],
    [
-    "A010H0E",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Textile, _Wearing Apparel and Accessories"
+    "253",
+    "Meals outside the home"
    ],
    [
-    "A010H0F",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Leather, _Fur, Feather and Related Products and Footwear"
+    "281",
+    "Housing"
    ],
    [
-    "A010H0G",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Processing of Timber, _Manufacture of Wood, Bamboo, Rattan, Palm and Straw _Products"
+    "282",
+    "Rent"
    ],
    [
-    "A010H0H",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Furniture"
+    "290",
+    "Repairs & maintenance"
    ],
    [
-    "A010H0I",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Paper and _Paper Products"
+    "310",
+    "Fuel, light & water charges"
    ],
    [
-    "A010H0J",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Printing and Reproduction _of Recording Media"
+    "311",
+    "Electricity"
    ],
    [
-    "A010H0K",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Articles _for Culture, Education, Arts and Crafts, Sport and _Entertainment Activities"
+    "313",
+    "Gas"
    ],
    [
-    "A010H0L",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Processing of Petroleum, Coal and Other Fuels"
+    "316",
+    "Other fuel & light"
    ],
    [
-    "A010H0M",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Raw Chemical _Materials and Chemical Products"
+    "318",
+    "Water & sewerage charges"
    ],
    [
-    "A010H0N",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Medicines"
+    "321",
+    "Furniture & household utensils"
    ],
    [
-    "A010H0O",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Chemical _Fibres"
+    "322",
+    "Household durable goods"
    ],
    [
-    "A010H0P",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Rubber _and Plastics Products"
+    "339",
+    "Interior furnishings"
    ],
    [
-    "A010H0Q",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Non-metallic _Mineral Products"
+    "344",
+    "Bedding"
    ],
    [
-    "A010H0R",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Smelting and Pressing of _Ferrous Metals"
+    "350",
+    "Domestic utensils"
    ],
    [
-    "A010H0S",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Smelting and Pressing of _Non-ferrous Metals"
+    "365",
+    "Domestic non-durable goods"
    ],
    [
-    "A010H0T",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Metal _Products"
+    "380",
+    "Domestic services"
    ],
    [
-    "A010H0U",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of General _Purpose Machinery"
+    "388",
+    "Clothes & footwear"
    ],
    [
-    "A010H0V",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Special _Purpose Machinery"
+    "389",
+    "Clothes"
    ],
    [
-    "A010H0W",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of _Automobiles"
+    "390",
+    "Japanese clothing"
    ],
    [
-    "A010H0X",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Railway, _Ship, Aerospace and Other Transport Equipments"
+    "393",
+    "Clothing"
    ],
    [
-    "A010H0Y",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Electrical _Machinery and Apparatus"
+    "423",
+    "Shirts, sweaters & underwear"
    ],
    [
-    "A010H0Z",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Computers, _Communication and Other Electronic Equipment"
+    "424",
+    "Shirts & sweaters"
    ],
    [
-    "A010H10",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Measuring _Instruments and Machinery"
+    "440",
+    "Underwear"
    ],
    [
-    "A010H11",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Other Manufacture"
+    "451",
+    "Footwear"
    ],
    [
-    "A010H12",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Utilization of Waste _Resources"
+    "458",
+    "Other clothing"
    ],
    [
-    "A010H13",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Repair Service of Metal _Products, Machinery and Equipment"
+    "466",
+    "Services related to clothing"
    ],
    [
-    "A010H14",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Production and Supply of _Electric Power and Heat Power"
+    "471",
+    "Medical care"
    ],
    [
-    "A010H15",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Production and Supply of _Gas"
+    "472",
+    "Medicines & health fortification"
    ],
    [
-    "A010H16",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Production and Supply of _Water"
+    "486",
+    "Medical supplies & appliances"
+   ],
+   [
+    "499",
+    "Medical services"
+   ],
+   [
+    "504",
+    "Transportation & communication"
+   ],
+   [
+    "505",
+    "Public transportation"
+   ],
+   [
+    "524",
+    "Private transportation"
+   ],
+   [
+    "550",
+    "Communication"
+   ],
+   [
+    "557",
+    "Education"
+   ],
+   [
+    "558",
+    "School fees"
+   ],
+   [
+    "568",
+    "School textbooks & reference books for study"
+   ],
+   [
+    "571",
+    "Tutorial fees"
+   ],
+   [
+    "575",
+    "Culture & recreation"
+   ],
+   [
+    "576",
+    "Recreational durable goods"
+   ],
+   [
+    "586",
+    "Recreational goods"
+   ],
+   [
+    "621",
+    "Books & other reading materials"
+   ],
+   [
+    "631",
+    "Recreational services"
+   ],
+   [
+    "669",
+    "Miscellaneous"
+   ],
+   [
+    "670",
+    "Personal care services"
+   ],
+   [
+    "677",
+    "Toilet articles"
+   ],
+   [
+    "704",
+    "Personal effects"
+   ],
+   [
+    "716",
+    "Tobacco"
+   ],
+   [
+    "719",
+    "Other miscellaneous"
+   ],
+   [
+    "729",
+    "Fresh food"
+   ],
+   [
+    "730",
+    "Fresh fish & seafood (reentry)"
+   ],
+   [
+    "731",
+    "Fresh vegetables (reentry)"
+   ],
+   [
+    "732",
+    "Fresh fruits (reentry)"
+   ],
+   [
+    "733",
+    "All items, less fresh food"
+   ],
+   [
+    "734",
+    "Food, less fresh food"
+   ],
+   [
+    "735",
+    "All items, less imputed rent"
+   ],
+   [
+    "736",
+    "Housing, less imputed rent"
+   ],
+   [
+    "737",
+    "Rent, less imputed rent"
+   ],
+   [
+    "738",
+    "All items, less imputed rent & fresh food"
+   ],
+   [
+    "739",
+    "Energy"
+   ],
+   [
+    "740",
+    "All items, less fresh food and energy"
+   ],
+   [
+    "741",
+    "All items, less food (less alcoholic beverages) and energy"
+   ],
+   [
+    "742",
+    "Expenses for education"
+   ],
+   [
+    "743",
+    "Expenses for culture & recreation"
+   ],
+   [
+    "744",
+    "Expenses for information & communication"
+   ],
+   [
+    "901",
+    "All items, seasonally adjusted"
+   ],
+   [
+    "902",
+    "All items, less fresh food, seasonally adjusted"
+   ],
+   [
+    "903",
+    "All items, less fresh food and energy, seasonally adjusted"
+   ],
+   [
+    "904",
+    "Goods, seasonally adjusted"
+   ],
+   [
+    "905",
+    "Services, seasonally adjusted"
    ]
   ],
-  "NBS/M_A010B": [
-   [
-    "A010B01",
-    "Producer Price Index for Industrial Products (The _same month last year=100)"
-   ],
-   [
-    "A010B02",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining and Washing of _Coal"
-   ],
-   [
-    "A010B03",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Extraction of Petroleum _and Natural Gas"
-   ],
-   [
-    "A010B04",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining and Processing of _Ferrous Metal Ores"
-   ],
-   [
-    "A010B05",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining and Processing of _Non-Ferrous Metal Ores"
-   ],
-   [
-    "A010B06",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining and Processing of _Non-metal Ores"
-   ],
-   [
-    "A010B07",
-    "Producer Price Index for Industrial Products (The _same month last year=100), Mining and Support Activities"
-   ],
-   [
-    "A010B08",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Mining of Other Ores"
-   ],
-   [
-    "A010B09",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Processing of Food from _Agricultural Products"
-   ],
-   [
-    "A010B0A",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Foods"
-   ],
-   [
-    "A010B0B",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Liquor, _Beverages and Refined Tea"
-   ],
-   [
-    "A010B0C",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Tobacco"
-   ],
-   [
-    "A010B0D",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Textile"
-   ],
-   [
-    "A010B0E",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Textile, _Wearing Apparel and Accessories"
-   ],
-   [
-    "A010B0F",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Leather, _Fur, Feather and Related Products and Footwear"
-   ],
-   [
-    "A010B0G",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Processing of Timber, _Manufacture of Wood, Bamboo, Rattan, Palm and Straw _Products"
-   ],
-   [
-    "A010B0H",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Furniture"
-   ],
-   [
-    "A010B0I",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Paper and _Paper Products"
-   ],
-   [
-    "A010B0J",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Printing and Reproduction _of Recording Media"
-   ],
-   [
-    "A010B0K",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Articles _for Culture, Education, Arts and Crafts, Sport and _Entertainment Activities"
-   ],
-   [
-    "A010B0L",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Processing of Petroleum, Coal and Other Fuels"
-   ],
-   [
-    "A010B0M",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Raw Chemical _Materials and Chemical Products"
-   ],
-   [
-    "A010B0N",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Medicines"
-   ],
-   [
-    "A010B0O",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Chemical _Fibres"
-   ],
-   [
-    "A010B0P",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Rubber _and Plastics Products"
-   ],
-   [
-    "A010B0Q",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Non-metallic _Mineral Products"
-   ],
-   [
-    "A010B0R",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Smelting and Pressing of _Ferrous Metals"
-   ],
-   [
-    "A010B0S",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Smelting and Pressing of _Non-ferrous Metals"
-   ],
-   [
-    "A010B0T",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Metal _Products"
-   ],
-   [
-    "A010B0U",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of General _Purpose Machinery"
-   ],
-   [
-    "A010B0V",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Special _Purpose Machinery"
-   ],
-   [
-    "A010B0W",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of _Automobiles"
-   ],
-   [
-    "A010B0X",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Railway, _Ship, Aerospace and Other Transport Equipments"
-   ],
-   [
-    "A010B0Y",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Electrical _Machinery and Apparatus"
-   ],
-   [
-    "A010B0Z",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Computers, _Communication and Other Electronic Equipment"
-   ],
-   [
-    "A010B10",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Manufacture of Measuring _Instruments and Machinery"
-   ],
-   [
-    "A010B11",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Other Manufacture"
-   ],
-   [
-    "A010B12",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Utilization of Waste _Resources"
-   ],
-   [
-    "A010B13",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Repair Service of Metal _Products, Machinery and Equipment"
-   ],
-   [
-    "A010B14",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Production and Supply of _Electric Power and Heat Power"
-   ],
-   [
-    "A010B15",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Production and Supply of _Gas"
-   ],
-   [
-    "A010B16",
-    "Producer Price Index for Industrial Products (The _same month last year=100),Production and Supply of _Water"
-   ]
-  ],
-  "ecb_icp_latest": [
-   [
-    "ICP.M.U2.N.092220.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.031100.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.073100.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.091120.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.011740.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.031220.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.031230.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.073110.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.021330.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.121000.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.053240.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.091500.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.045220.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.112000.4.ANR",
-    "2025-12"
-   ],
-   [
-    "ICP.M.U2.N.083020.4.ANR",
-    "2025-12"
-   ]
-  ]
+  "ecb_HICP/M.U2..": "HTTP Error 400: Bad Request",
+  "ecb_HICP/M.U2": "HTTP Error 400: Bad Request"
  }
 }
