@@ -18,7 +18,7 @@ Tab Cập nhật nhanh trả lời một câu hỏi: **lúc này điều gì đa
 
 ## Xuất PDF
 
-Nút **⤓ Xuất PDF** trên tab Cập nhật nhanh mở hộp in của trình duyệt chỉ với bản đang xem (ẩn menu, nút, lịch sử). Chọn "Lưu dưới dạng PDF"; tên file mặc định là `FinSuccess_Cập Nhật Vĩ Mô Ngày dd-mm-yyyy` (ngày xuất), tiêu đề trong file là "Cập nhật nhanh Ngày dd/mm/yyyy".
+Nút **⤓ Xuất PDF** trên tab Cập nhật nhanh tải thẳng file `FinSuccess_Cập Nhật Vĩ Mô Ngày dd-mm-yyyy.pdf` (ngày xuất) của bản đang xem — có logo, dòng "Tổng hợp có sự hỗ trợ của AI", tiêu đề "Cập nhật nhanh Ngày dd/mm/yyyy"; bỏ nút và lịch sử. Chỉ khi không tải được thư viện tạo PDF mới mở hộp in.
 
 ## Các bước khi AI được yêu cầu cập nhật
 

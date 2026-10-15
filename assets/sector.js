@@ -1340,18 +1340,40 @@ function quList() {
   if (dr && !U.some(x => x.id === dr.id)) U.unshift(Object.assign(dr, { _draft: true }));
   return U;
 }
-/* Xuất PDF bản cập nhật nhanh: in riêng tab này, tên file "FinSuccess_Cập Nhật Vĩ Mô Ngày dd-mm-yyyy" (tên mặc định khi Lưu PDF = tiêu đề trang) */
-function quPdf() {
+/* Xuất PDF bản cập nhật nhanh: tải thẳng file "FinSuccess_Cập Nhật Vĩ Mô Ngày dd-mm-yyyy.pdf" (html2pdf, nạp khi bấm lần đầu).
+   Không tải được thư viện thì mới mở hộp in của trình duyệt. */
+const H2P = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+function loadH2P() { return window.html2pdf ? Promise.resolve() : new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = H2P; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); }); }
+async function quPdf() {
+  const btn = $('#quPdf'), lbl = btn ? btn.textContent : '';
   const t = new Date(), dd = String(t.getDate()).padStart(2, '0'), mm = String(t.getMonth() + 1).padStart(2, '0'), yy = t.getFullYear();
-  const oldTitle = document.title, dateEl = $('#quick .qprint-date');
-  if (dateEl) dateEl.textContent = ` Ngày ${dd}/${mm}/${yy}`;
-  document.title = `FinSuccess_Cập Nhật Vĩ Mô Ngày ${dd}-${mm}-${yy}`;
-  const imgs = [];   // chart → ảnh để bản in không bị co giãn
-  $$('#quick canvas').forEach(c => { try { const im = new Image(); im.src = c.toDataURL('image/png'); im.className = 'qprint-img'; c.style.display = 'none'; c.after(im); imgs.push([c, im]); } catch (e) {} });
-  document.body.classList.add('print-quick');
-  const done = () => { document.body.classList.remove('print-quick'); document.title = oldTitle; if (dateEl) dateEl.textContent = ''; imgs.forEach(([c, im]) => { im.remove(); c.style.display = ''; }); window.removeEventListener('afterprint', done); };
-  window.addEventListener('afterprint', done);
-  setTimeout(() => { window.print(); setTimeout(() => { if (document.body.classList.contains('print-quick')) done(); }, 1500); }, 150);
+  const fname = `FinSuccess_Cập Nhật Vĩ Mô Ngày ${dd}-${mm}-${yy}.pdf`;
+  if (btn) { btn.disabled = true; btn.textContent = 'Đang tạo PDF…'; }
+  // bản sao gọn để dựng PDF: chart → ảnh, bỏ nút, lịch sử
+  const src = $('#quick'), pics = $$('canvas', src).map(c => { try { return c.toDataURL('image/png'); } catch (e) { return null; } });
+  const wrap = document.createElement('div'); wrap.className = 'pdf-wrap';
+  wrap.innerHTML = `<div class="pdf-top"><img src="assets/fin-success-logo.png" alt="FinSuccess"><span>Tổng hợp có sự hỗ trợ của AI</span></div>`;
+  const cl = src.cloneNode(true); cl.removeAttribute('id'); cl.classList.add('pdf-body');
+  $$('canvas', cl).forEach((c, i) => { if (pics[i]) { const im = new Image(); im.src = pics[i]; im.className = 'qprint-img'; c.replaceWith(im); } else c.remove(); });
+  const h = $('.qprint-date', cl); if (h) h.textContent = ` Ngày ${dd}/${mm}/${yy}`;
+  $$('.qbtns, .qfoot, .qdraft, .qhint, .rng, .zsel, .rng-hint, [contenteditable]', cl).forEach(e => { if (e.matches('[contenteditable]')) e.removeAttribute('contenteditable'); else e.remove(); });
+  const hist = $$('article.card', cl).find(a => /Lịch sử cập nhật/.test(a.textContent)); if (hist) hist.remove();
+  wrap.appendChild(cl);
+  const host = document.createElement('div'); host.className = 'pdf-host'; host.appendChild(wrap); document.body.appendChild(host);
+  try {
+    await loadH2P();
+    await html2pdf().set({ margin: [10, 10, 12, 10], filename: fname, image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['css'], avoid: ['.card', '.qc-h', '.qnote', '.qchg', 'tr', '.kpi'] } }).from(wrap).save();
+  } catch (e) {
+    console.warn('html2pdf lỗi, chuyển sang hộp in', e);
+    const old = document.title; document.title = fname.replace(/\.pdf$/, ''); document.body.classList.add('print-quick');
+    const dEl = $('#quick .qprint-date'); if (dEl) dEl.textContent = ` Ngày ${dd}/${mm}/${yy}`;
+    window.print(); document.body.classList.remove('print-quick'); document.title = old; if (dEl) dEl.textContent = '';
+  } finally {
+    host.remove(); if (btn) { btn.disabled = false; btn.textContent = lbl; }
+  }
 }
 function paneQuick() {
   buildAll();
@@ -1369,7 +1391,7 @@ function paneQuick() {
   <div class="qhead card${E ? ' editing' : ''}">
     <div class="qmeta"><span class="qdate">${dvn(u.date)}</span><span>Cập nhật bởi: ${byLine(u.author)}</span>${u._draft ? '<span class="pill watch">Nháp</span>' : quSel ? '<span class="pill">Bản cũ</span>' : '<span class="pill ok">Mới nhất</span>'}
       <span class="qbtns">${E ? `<label class="muted">Người sửa <input id="quWho" value="${esc(who)}" size="12"></label><button type="button" class="btn ghost" id="quCheck" title="Sửa lỗi thiếu dấu, Việt hoá thuật ngữ tiếng Anh trong các đoạn đang sửa">Rà soát chính tả</button><button type="button" class="btn" id="quSave">Lưu thành bản mới</button><button type="button" class="btn ghost" id="quCancel">Huỷ</button>`
-        : `<button type="button" class="btn ghost" id="quEditBtn">✎ Chỉnh sửa</button><button type="button" class="btn" id="quPdf" title="Mở hộp in → chọn Lưu dưới dạng PDF">⤓ Xuất PDF</button>`}</span></div>
+        : `<button type="button" class="btn ghost" id="quEditBtn">✎ Chỉnh sửa</button><button type="button" class="btn" id="quPdf" title="Tải file PDF của bản đang xem">⤓ Xuất PDF</button>`}</span></div>
     ${E ? '<p class="qhint">Bấm vào đoạn chữ bất kỳ để sửa (Ctrl+B để in đậm). Trạng thái từng mục chọn ở ô bên cạnh tiêu đề. Bản của AI giữ nguyên, bản sửa lưu thành bản mới của bạn.</p>' : ''}
     ${f('headline', esc(u.headline), 'h3', 'qtitle')}
     ${prev ? `<p class="qprev">Tiếp nối bản ${dvn(prev.date)} (${prev.author.type === 'AI' ? 'AI' : 'chuyên viên ' + esc(prev.author.name)}): ${u.vsPrev || ''}</p>` : ''}
