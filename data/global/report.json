@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-15T07:36:54Z",
+ "fetched": "2026-10-15T07:39:11Z",
  "report": {
   "us_cpi": [
    {
@@ -328,6 +328,11 @@
   ],
   "ea_hicp": [
    {
+    "id": "ecb:ICP/M.U2.N.000000.4.ANR",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
     "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA20",
     "n": 192,
     "last": "2025-12-01"
@@ -340,6 +345,11 @@
   ],
   "ea_hicp_core": [
    {
+    "id": "ecb:ICP/M.U2.N.XEF000.4.ANR",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
     "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA20",
     "n": 192,
     "last": "2025-12-01"
@@ -351,6 +361,11 @@
    }
   ],
   "ea_hicp_serv": [
+   {
+    "id": "ecb:ICP/M.U2.N.SERV00.4.ANR",
+    "n": 192,
+    "last": "2025-12-01"
+   },
    {
     "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA20",
     "n": 192,
@@ -378,6 +393,11 @@
   ],
   "ea_unrate": [
    {
+    "id": "ecb:LFSI/M.I9.S.UNEHRT.TOTAL0.15_74.T",
+    "n": 200,
+    "last": "2026-08-01"
+   },
+   {
     "id": "fred:LRHUTTTTEZM156S",
     "n": 157,
     "last": "2023-01-01"
@@ -399,6 +419,11 @@
   ],
   "jp_cpi": [
    {
+    "id": "oecd:JPN.M.N.CPI.PA._T.N.GY",
+    "n": 138,
+    "last": "2021-06-01"
+   },
+   {
     "id": "dbn:IMF/CPI/M.JP.PCPI_PC_CP_A_PT",
     "n": 187,
     "last": "2025-07-01"
@@ -410,6 +435,11 @@
    }
   ],
   "jp_cpi_core": [
+   {
+    "id": "oecd:JPN.M.N.CPI.PA._TXCP01_NRG.N.GY",
+    "n": 138,
+    "last": "2021-06-01"
+   },
    {
     "id": "fred:CPGRLE01JPM659N",
     "n": 138,
@@ -456,6 +486,11 @@
   ],
   "cn_cpi": [
    {
+    "id": "oecd:CHN.M.N.CPI.PA._T.N.GY",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
     "id": "dbn:IMF/CPI/M.CN.PCPI_PC_CP_A_PT",
     "n": 187,
     "last": "2025-07-01"
@@ -493,6 +528,94 @@
     "id": "fred:DEXCHUS",
     "n": 4196,
     "last": "2026-10-09"
+   }
+  ]
+ },
+ "probe": {
+  "china producer price index": [
+   {
+    "code": "FAO/PP",
+    "name": "Prices: Producer Prices",
+    "nb": 642
+   },
+   {
+    "code": "FAO/PI",
+    "name": "Prices: Producer Price Indices - Annual",
+    "nb": 361
+   },
+   {
+    "code": "NBS/M_A010A",
+    "name": "Producer Price Indices for Manufactured Goods by _Sector (The same month last year=100) (2014-2017)",
+    "nb": 42
+   },
+   {
+    "code": "NBS/M_A010B",
+    "name": "Producer Price Indices for Manufactured Goods by _Sector (The same month last year=100) (2018-2025)",
+    "nb": 42
+   },
+   {
+    "code": "NBS/M_A010E",
+    "name": "Producer Price Indices for Manufactured Goods by _Sector (The same period last year=100)(-2025)",
+    "nb": 42
+   },
+   {
+    "code": "NBS/M_A010H",
+    "name": "Producer Price Indices for Manufactured Goods by _Sector (The same month last year=100) (2026-)",
+    "nb": 42
+   },
+   {
+    "code": "NBS/M_A010I",
+    "name": "Producer Price Indices for Manufactured Goods by _Sector (The same period last year=100)(2026-)",
+    "nb": 42
+   },
+   {
+    "code": "NBS/M_A010J",
+    "name": "Producer Price Indices for Manufactured Goods by _Sector (preceding month=100)(2026-)",
+    "nb": 42
+   }
+  ],
+  "china loan prime rate": [],
+  "japan consumer price index core": [],
+  "china consumer price index": [
+   {
+    "code": "ILO/CPI_NCYR_COI_RT",
+    "name": "National consumer price index (CPI) by COICOP, percentage change from previous year (%)",
+    "nb": 78
+   },
+   {
+    "code": "ILO/CPI_XCPI_COI_RT",
+    "name": "National consumer price index (CPI) by COICOP (2017 = 100)",
+    "nb": 78
+   },
+   {
+    "code": "ILO/CPI_NCPD_COI_RT",
+    "name": "National consumer price index (CPI) by COICOP, percentage change from previous period (%)",
+    "nb": 52
+   },
+   {
+    "code": "IMF/CPI",
+    "name": "Consumer Price Index (CPI)",
+    "nb": 45
+   },
+   {
+    "code": "ILO/CPI_NWGT_COI_NB",
+    "name": "National consumer price index (CPI) by COICOP, country weights",
+    "nb": 24
+   },
+   {
+    "code": "IMF/IFS",
+    "name": "International Financial Statistics (IFS)",
+    "nb": 24
+   },
+   {
+    "code": "ILO/CPI_NWGT_COI_RT",
+    "name": "National consumer price index (CPI) by COICOP, country weights (%)",
+    "nb": 23
+   },
+   {
+    "code": "IMF/PGI",
+    "name": "Principal Global Indicators (PGI)",
+    "nb": 21
    }
   ]
  }
