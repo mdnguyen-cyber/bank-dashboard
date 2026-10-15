@@ -99,7 +99,7 @@ put('us_jolts', {m: v / 1000 for m, v in monthly('us_jolts').items() if m >= '20
 # ---------------- lãi suất (ngày, từ 2021) và tháng (dài)
 for k in ['us_effr', 'us_fedtgt_up', 'us_fedtgt_lo', 'us_iorb', 'us_sofr', 'us_tgcr', 'us_sofr99', 'us_2y', 'us_10y', 'ea_dfr', 'eurusd', 'usdjpy', 'usdcny', 'us_dxy', 'us_rrp', 'us_repo']:
     if k in SER:
-        put(k + '_d', {d: v for d, v in obs(k) if d >= DAILY_FROM}, 4 if k.startswith('usd') or k == 'eurusd' else 3)
+        put(k + '_d', {d: v for d, v in obs(k) if d >= ('2022-01-01' if k == 'usdjpy' else DAILY_FROM)}, 4 if k.startswith('usd') or k == 'eurusd' else 3)
 for k in ['us_effr', 'us_2y', 'us_10y', 'ea_dfr', 'de_10y', 'jp_10y', 'jp_rate', 'cn_rate', 'us_wti', 'us_brent', 'usdjpy', 'eurusd', 'usdcny']:
     if k in SER:
         put(k + '_m', monthly(k, 'avg'), 3)
@@ -174,6 +174,106 @@ for m in months:
             tay['v2' + tag][m] = rs + p + 0.5 * (p - 2) + 0.5 * g2 if g2 is not None else None
 G['taylor'] = {k: pack({m: v for m, v in d.items() if v is not None}) for k, d in tay.items()}
 G['taylor']['params'] = {'piStar': 2, 'alpha': 0.5, 'beta': 0.5, 'okun': -2}
+
+# ---------------- Mỹ: cấu phần bảng cân đối Fed (tỷ USD, theo tuần, từ 2019)
+def wk2(k, frm='2019-01-01'):
+    return {d: v / 1000 for d, v in obs(k) if d >= frm}
+fa = {k: wk2(s_) for k, s_ in [('total', 'us_walcl'), ('bills', 'us_bills'), ('notes', 'fed_notes'), ('tips', 'fed_tips'), ('tipsic', 'fed_tips_ic'), ('mbs', 'fed_mbs'), ('loans', 'fed_loans'),
+                               ('cur', 'fed_currency_wed' if 'fed_currency_wed' in SER else 'fed_currency'), ('res', 'fed_res_wed' if 'fed_res_wed' in SER else 'us_reserves'),
+                               ('tga', 'fed_tga_wed' if 'fed_tga_wed' in SER else 'us_tga'), ('rrp', 'fed_rrp_all')]}
+if fa['total'] and fa['notes']:
+    ds = [d for d in sorted(fa['total']) if all(d in fa[k] for k in ['bills', 'notes', 'mbs'])]
+    g = lambda k, d: fa[k].get(d) or 0
+    G['fedbs'] = {'d': ds,
+                  'a': {'Tín phiếu (bills)': [round(g('bills', d)) for d in ds], 'Trái phiếu notes & bonds': [round(g('notes', d)) for d in ds],
+                        'TIPS (gồm bù lạm phát)': [round(g('tips', d) + g('tipsic', d)) for d in ds], 'MBS': [round(g('mbs', d)) for d in ds], 'Cho vay': [round(g('loans', d)) for d in ds],
+                        'Khác': [round(g('total', d) - g('bills', d) - g('notes', d) - g('tips', d) - g('tipsic', d) - g('mbs', d) - g('loans', d)) for d in ds]},
+                  'l': {'Tiền mặt lưu hành': [round(g('cur', d)) for d in ds], 'Dự trữ NH': [round(g('res', d)) for d in ds], 'TGA (Kho bạc)': [round(g('tga', d)) for d in ds],
+                        'Reverse repo': [round(g('rrp', d)) for d in ds],
+                        'Khác (gồm vốn)': [max(0, round(g('total', d) - g('cur', d) - g('res', d) - g('tga', d) - g('rrp', d))) for d in ds]}}
+
+# ---------------- Mỹ: ai nắm UST (Z.1, tỷ USD, quý)
+HOLD = [('ust_fed', 'Fed'), ('ust_row', 'Nước ngoài'), ('ust_banks', 'Ngân hàng Mỹ'), ('ust_mmf', 'Quỹ thị trường tiền tệ'), ('ust_mf', 'Quỹ tương hỗ'),
+        ('ust_etf', 'ETF'), ('ust_hh', 'Hộ gia đình (gồm quỹ phòng hộ)'), ('ust_pension', 'Quỹ hưu trí tư nhân'), ('ust_slpen', 'Hưu trí công chức bang, địa phương'), ('ust_fedpen', 'Hưu trí công chức liên bang'),
+        ('ust_ins', 'Bảo hiểm'), ('ust_slg', 'Chính quyền bang, địa phương'), ('ust_broker', 'Công ty chứng khoán'), ('ust_nfc', 'Doanh nghiệp phi tài chính'), ('ust_gse', 'GSE')]
+tot = {d[:7]: v / 1000 for d, v in obs('ust_total')}
+sc = lambda k: 1 if SER.get(k, {}).get('src', '').startswith('fred:FDH') else 1000   # FDHBFIN/FDHBFRBN đã là tỷ USD; Z.1 là triệu USD
+hs = {lab: {d[:7]: v / sc(k) for d, v in obs(k)} for k, lab in HOLD if obs(k)}
+if tot and hs:
+    qs = [q for q in sorted(tot) if q >= '2015' and all(q in h for h in hs.values())]
+    G['ustHold'] = {'d': qs, 'total': [round(tot[q]) for q in qs], 'h': {lab: [round(h[q]) for q in qs] for lab, h in hs.items()}}
+    G['ustHold']['h']['Khác'] = [max(0, round(tot[q] - sum(h[q] for h in hs.values()))) for q in qs]
+    G['ustHoldSrc'] = {k: SER[k]['src'] for k, _ in HOLD if k in SER}
+
+# ---------------- Kho bạc Mỹ: cơ cấu nợ, phát hành ròng, đấu thầu, TIC, thâm hụt
+UP = ROOT / 'data/global/ust.json'
+if UP.exists():
+    U = json.loads(UP.read_text(encoding='utf-8'))
+    ms = U.get('mspd', {})
+    mk_ = sorted(m for m in ms if m >= '2015')
+    cls = [('bills', 'Tín phiếu'), ('notes', 'Notes'), ('bonds', 'Bonds'), ('tips', 'TIPS'), ('frn', 'FRN')]
+    G['mspd'] = {'d': mk_, 'c': {lab: [ms[m].get(k) for m in mk_] for k, lab in cls},
+                 'billShare': [round(ms[m]['bills'] / sum(ms[m].get(k, 0) for k, _ in cls) * 100, 2) if ms[m].get('bills') else None for m in mk_]}
+    # phát hành ròng (thay đổi dư nợ do công chúng nắm) theo tháng
+    G['netIss'] = {'d': mk_[1:], 'bills': [round(ms[m].get('bills', 0) - ms[p_].get('bills', 0)) for p_, m in zip(mk_, mk_[1:])],
+                   'coupons': [round(sum(ms[m].get(k, 0) - ms[p_].get(k, 0) for k in ['notes', 'bonds', 'tips', 'frn'])) for p_, m in zip(mk_, mk_[1:])]}
+    au = U.get('auctions', {})
+    am = sorted(m for m in au if m >= '2018')
+    def share(g_, k):
+        out = []
+        for m in am:
+            a = au[m].get(g_)
+            out.append(round(a[k] / a['total_accepted'] * 100, 1) if a and a.get('total_accepted') else None)
+        return out
+    G['auct'] = {'d': am, **{g_: {'amt': [round(au[m][g_]['total_accepted']) if g_ in au[m] else None for m in am],
+                                  'Primary dealer': share(g_, 'primary_dealer_accepted'), 'Direct (trong nước trực tiếp)': share(g_, 'direct_bidder_accepted'),
+                                  'Indirect (nước ngoài, quỹ qua đại lý)': share(g_, 'indirect_bidder_accepted'), 'Fed (SOMA)': share(g_, 'soma_accepted'),
+                                  'Không cạnh tranh + FIMA': [None if v is None else round(v + (w or 0), 1) for v, w in zip(share(g_, 'noncomp_accepted'), share(g_, 'fima_noncomp_accepted'))]}
+                             for g_ in ['bills', 'coupons']}}
+    G['auctRecent'] = U.get('recent', [])
+    tic = U.get('tic', {})
+    G['tic'] = {c: pack({m: v for m, v in tic[c].items() if m >= '2015'}, 1) for c in ['Japan', 'China', 'United Kingdom', 'Total', 'Official', 'Cayman Islands', 'Belgium', 'Luxembourg', 'Canada'] if c in tic}
+    G['ustFetched'] = U.get('fetched')
+df = monthly('tsy_deficit')
+if df:
+    ks = sorted(df)
+    G['s']['tsy_def12'] = pack({m: sum(df[k] for k in ks[i - 11:i + 1]) / 1000 for i, m in enumerate(ks) if i >= 11 and m >= '2015'}, 0)
+    G['s']['tsy_def_m'] = pack({m: v / 1000 for m, v in df.items() if m >= '2019'}, 0)
+
+# ---------------- Nhật: BoJ theo cấu phần, ai nắm JGB, can thiệp, dự trữ
+JP = ROOT / 'data/global/jp.json'
+if JP.exists():
+    J = json.loads(JP.read_text(encoding='utf-8'))
+    bs = J.get('bs', {})
+    if bs.get('total'):
+        ms_ = sorted(m for m in bs['total'] if m >= '2012')
+        t = lambda k, m: (bs.get(k, {}).get(m) or 0) / 10000      # 100 triệu JPY → nghìn tỷ JPY
+        G['bojbs'] = {'d': ms_,
+                      'a': {'JGB': [round(t('jgb', m), 1) for m in ms_], 'Tín phiếu (T-bills)': [round(t('tbills', m), 1) for m in ms_], 'ETF + J-REIT': [round(t('etf', m) + t('reit', m), 1) for m in ms_],
+                            'Cho vay': [round(t('loans', m), 1) for m in ms_], 'Tài sản ngoại tệ': [round(t('fx', m), 1) for m in ms_],
+                            'Khác': [round(t('total', m) - t('jgb', m) - t('tbills', m) - t('etf', m) - t('reit', m) - t('loans', m) - t('fx', m), 1) for m in ms_]},
+                      'l': {'Tiền giấy': [round(t('notes', m), 1) for m in ms_], 'Tiền gửi NH (current account)': [round(t('current', m), 1) for m in ms_],
+                            'Tiền gửi Chính phủ': [round(t('gov', m), 1) for m in ms_], 'Repo': [round(t('repo_l', m), 1) for m in ms_],
+                            'Khác (gồm vốn)': [round(t('total', m) - t('notes', m) - t('current', m) - t('gov', m) - t('repo_l', m), 1) for m in ms_]}}
+    ff = J.get('ff', {})
+    if ff.get('total'):
+        qs = [q for q in sorted(ff['total']) if q >= '2012']
+        lab = [('boj', 'BoJ'), ('dep', 'Ngân hàng, tổ chức nhận tiền gửi'), ('ins', 'Bảo hiểm'), ('pen', 'Quỹ hưu trí'), ('pub_pen', 'Hưu trí công (GPIF…)'),
+               ('ofi', 'Trung gian tài chính khác'), ('hh', 'Hộ gia đình'), ('overseas', 'Nước ngoài')]
+        lab = [(k, l) for k, l in lab if ff.get(k)]
+        qs = [q for q in qs if all(q in ff[k] for k, _ in lab)]
+        G['jgbHold'] = {'d': qs, 'total': [round(ff['total'][q] / 10000, 1) for q in qs],
+                        'h': {l: [round(ff[k][q] / 10000, 1) for q in qs] for k, l in lab}}
+        G['jgbHold']['h']['Khác'] = [max(0, round(G['jgbHold']['total'][i] - sum(v[i] for v in G['jgbHold']['h'].values()), 1)) for i in range(len(qs))]
+    fe = J.get('feio', [])
+    G['feio'] = [x for x in fe if x['d'] >= '1998']
+    rv = J.get('reserves', {})
+    if rv:
+        G['s']['jp_res_mof'] = pack({m: x['total'] / 1000 for m, x in rv.items() if m >= '2010'}, 1)
+    G['jpFetched'] = J.get('fetched')
+if 'jp_reserves' in SER:
+    put('jp_res_imf', {m: v / 1000 for m, v in monthly('jp_reserves').items() if m >= '2010'}, 1)
+put('ea_assets_w', {d: v / 1000 for d, v in obs('ea_assets') if d >= '2015'}, 0)
 
 js = 'window.GLOBAL_DATA = ' + json.dumps(G, ensure_ascii=False, separators=(',', ':')) + ';\n'
 (ROOT / 'data/global-data.js').write_text(js, encoding='utf-8')
