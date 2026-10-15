@@ -483,13 +483,13 @@ function gUS() {
   ${gUSFlow()}`;
 }
 /* ---- dùng chung: chart chồng (stacked), nhãn quý ---- */
-const PAL2 = ['#1D2678', '#c0392b', '#1f8a8d', '#d9a400', '#861C52', '#4f9bd1', '#7cc49b', '#ef9f76', '#8997D6', '#9aa3b2', '#5b3a8c'];
+const PAL2 = ['#1D2678', '#c0392b', '#1f8a8d', '#d9a400', '#861C52', '#4f9bd1', '#7cc49b', '#ef9f76', '#8997D6', '#5b3a8c', '#b5651d', '#2e8b57', '#e377c2', '#6b6b00', '#17becf', '#9aa3b2'];
 const qLab = d => /Q\d$/.test(d) ? `Q${d.slice(-1)}/${d.slice(2, 4)}` : `Q${Math.ceil(+d.slice(5, 7) / 3)}/${d.slice(2, 4)}`;
 function stk(id, labels, obj, o = {}) {   // obj = {tên: [giá trị]}; o.pct = quy về % tổng; o.type = 'bar' | 'line'
   const names = Object.keys(obj), n = labels.length;
   const tot = o.pct ? labels.map((_, i) => names.reduce((a, k) => a + Math.max(0, obj[k][i] || 0), 0)) : null;
   const ds = names.map((k, j) => {
-    const data = obj[k].map((v, i) => v == null ? null : o.pct ? (tot[i] ? +(v / tot[i] * 100).toFixed(1) : null) : v);
+    const data = obj[k].map((v, i) => v == null ? null : (o.type === 'line' && v < 0) ? 0 : o.pct ? (tot[i] ? +(v / tot[i] * 100).toFixed(1) : null) : v);   // diện tích chồng: số âm (vị thế bán) vẽ bằng 0
     const col = (o.colors || PAL2)[j % PAL2.length];
     return o.type === 'line' ? { type: 'line', label: k, data, borderColor: col, backgroundColor: col + 'cc', fill: j ? '-1' : 'origin', pointRadius: 0, borderWidth: 1, stack: 's', unit: o.pct ? '%' : (o.unit ?? ''), dp: o.dp ?? 0 }
       : { type: 'bar', label: k, data, backgroundColor: col, stack: 's', unit: o.pct ? '%' : (o.unit ?? ''), dp: o.dp ?? 0 };
@@ -497,10 +497,10 @@ function stk(id, labels, obj, o = {}) {   // obj = {tên: [giá trị]}; o.pct =
   const extra = o.extra || [];
   return mk(id, { type: o.type === 'line' ? 'line' : 'bar', data: { labels, datasets: [...ds, ...extra] }, options: Object.assign({
     plugins: { tooltip: { callbacks: { footer: o.pct ? undefined : items => { const t = items.filter(x => x.dataset.stack === 's').reduce((a, x) => a + (x.raw || 0), 0); return 'Tổng: ' + nf(t, o.dp ?? 0) + (o.unit || ''); } } } },
-    scales: Object.assign({ x: { stacked: true }, y: Object.assign({ stacked: true, ticks: { callback: v => nf(v, 0) + (o.pct ? '%' : '') }, grid: { color: '#eef0f4' } }, o.pct ? { min: 0, max: 100 } : {}, o.y || {}) }, o.scales || {}) }, o.options || {}) });
+    scales: Object.assign({ x: { stacked: true }, y: Object.assign({ stacked: true, beginAtZero: true, ticks: { callback: v => nf(v, 0) + (o.pct ? '%' : '') }, grid: { color: '#eef0f4' } }, o.pct ? { min: 0, max: 100 } : {}, o.y || {}) }, o.scales || {}) }, o.options || {}) });
 }
 function deltaBars(id, labels, obj, back, o = {}) {   // thay đổi nắm giữ theo nhóm trong `back` kỳ → cột ngang
-  const n = labels.length - 1, rows = Object.entries(obj).map(([k, v]) => [k, v[n] != null && v[n - back] != null ? +(v[n] - v[n - back]).toFixed(1) : null]).filter(r => r[1] != null).sort((a, b) => b[1] - a[1]);
+  const n = labels.length - 1, rows = Object.entries(obj).filter(([k]) => !(o.skip || []).includes(k)).map(([k, v]) => [k, v[n] != null && v[n - back] != null ? +(v[n] - v[n - back]).toFixed(1) : null]).filter(r => r[1] != null).sort((a, b) => b[1] - a[1]);
   mk(id, { type: 'bar', data: { labels: rows.map(r => r[0]), datasets: [{ label: `Thay đổi ${labels[n - back]} → ${labels[n]}`, data: rows.map(r => r[1]), backgroundColor: rows.map(r => r[1] >= 0 ? 'rgba(31,138,141,.8)' : 'rgba(192,57,43,.75)'), unit: o.unit || '', dp: o.dp ?? 0 }] },
     options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { ticks: { callback: v => nf(v, 0) }, grid: { color: '#eef0f4' } } } } });
   return rows;

@@ -194,7 +194,7 @@ if fa['total'] and fa['notes']:
 
 # ---------------- Mỹ: ai nắm UST (Z.1, tỷ USD, quý)
 HOLD = [('ust_fed', 'Fed'), ('ust_row', 'Nước ngoài'), ('ust_banks', 'Ngân hàng Mỹ'), ('ust_mmf', 'Quỹ thị trường tiền tệ'), ('ust_mf', 'Quỹ tương hỗ'),
-        ('ust_etf', 'ETF'), ('ust_hh', 'Hộ gia đình (gồm quỹ phòng hộ)'), ('ust_pension', 'Quỹ hưu trí tư nhân'), ('ust_slpen', 'Hưu trí công chức bang, địa phương'), ('ust_fedpen', 'Hưu trí công chức liên bang'),
+        ('ust_etf', 'ETF'), ('ust_hh', 'Hộ gia đình (gồm quỹ phòng hộ)'), ('ust_pension', 'Quỹ hưu trí (tư nhân và công)'),
         ('ust_ins', 'Bảo hiểm'), ('ust_slg', 'Chính quyền bang, địa phương'), ('ust_broker', 'Công ty chứng khoán'), ('ust_nfc', 'Doanh nghiệp phi tài chính'), ('ust_gse', 'GSE')]
 tot = {d[:7]: v / 1000 for d, v in obs('ust_total')}
 sc = lambda k: 1 if SER.get(k, {}).get('src', '').startswith('fred:FDH') else 1000   # FDHBFIN/FDHBFRBN đã là tỷ USD; Z.1 là triệu USD
