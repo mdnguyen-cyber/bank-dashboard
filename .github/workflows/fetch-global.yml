@@ -21,6 +21,8 @@ jobs:
         run: |
           pip install -q openpyxl
           python scripts/fetch_global.py
+          python scripts/fetch_ust.py || echo "fetch_ust lỗi"
+          python scripts/fetch_jp.py || echo "fetch_jp lỗi"
       - name: Dựng dữ liệu cho trang
         run: |
           if [ -f scripts/build_global.py ]; then python scripts/build_global.py; fi
@@ -34,5 +36,5 @@ jobs:
           [ -f data/global-data.js ] && git add data/global-data.js
           if git diff --cached --quiet; then echo "Không có số mới"; exit 0; fi
           git commit -m "Số liệu quốc tế $(date -u +%Y-%m-%d) (tự động)"
-          git push
+          for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
           gh workflow run pages.yml --ref main
