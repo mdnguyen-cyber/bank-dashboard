@@ -59,7 +59,9 @@ function mk(id, cfg, opt = {}) {
   if (charts[id]) charts[id].destroy();
   cfg.options = cfg.options || {};
   cfg.options.interaction = cfg.options.interaction || { mode: 'index', intersect: false, axis: cfg.options.indexAxis === 'y' ? 'y' : 'x' };
+  FSK.prep(cfg);
   charts[id] = new Chart(el, cfg);
+  FSK.enhance(charts[id], { today: new Date(TODAY), last: opt.last });
   charts[id]._base = JSON.parse(JSON.stringify(cfg.data.datasets.map(d => d.type || cfg.type)));
   if (opt.switch) {
     const box = document.querySelector(`[data-ctl="${id}"]`);
@@ -68,7 +70,7 @@ function mk(id, cfg, opt = {}) {
       const set = t => {
         const ch = charts[id];
         ch.data.datasets.forEach((d, i) => { if (!d.keep) { d.type = t; d.fill = false; d.pointRadius = t === 'line' ? 2 : 0; } });
-        ch.update(); $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === t));
+        FSK.reorder(ch); ch.update(); $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === t));
       };
       $$('button', box).forEach(b => b.onclick = () => set(b.dataset.t));
       $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === opt.switch));

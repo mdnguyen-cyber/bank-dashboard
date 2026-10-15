@@ -94,16 +94,11 @@ function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình c
   Object.keys(builders).forEach(k => { if (!['quick', 'book'].includes(k) && !built[k]) { builders[k](); built[k] = true; } });
   ['intl', 'dom', 'bank', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, bank: chBank, idx: chIdx })[k](); pDone[k] = true; } });
 }
-function drawSpec(src, cid, last) {   // vẽ lại chart `src` vào canvas `cid`; last = chỉ giữ N điểm cuối
+function drawSpec(src, cid, last) {   // vẽ lại chart `src` vào canvas `cid`; last = mở sẵn khung N điểm cuối (vẫn kéo/chọn lại được)
   const sp = SPEC[src]; if (!sp) return false;
-  const cfg = cl(sp.cfg), n = cfg.data && cfg.data.labels ? cfg.data.labels.length : 0;
-  if (cfg.options) delete cfg.options.onClick;
-  const timeAxis = n && cfg.data.labels.every(l => /\d{4}|\d{2}\/\d{2}|Q\d/.test(String(l)));   // chỉ cắt chuỗi thời gian, không cắt chart theo mã NH
-  if (last && n > last && timeAxis && cfg.type !== 'scatter' && !(cfg.plugins && cfg.plugins.length)) {   // chart có plugin vẽ riêng (nền kịch bản…) giữ nguyên chuỗi
-    cfg.data.labels = cfg.data.labels.slice(-last);
-    cfg.data.datasets.forEach(d => { ['data', 'backgroundColor', 'borderColor', 'pointRadius'].forEach(k => { if (Array.isArray(d[k]) && d[k].length === n) d[k] = d[k].slice(-last); }); });
-  }
-  mk(cid, cfg); return true;
+  const cfg = cl(sp.cfg);
+  if (cfg.options) { delete cfg.options.onClick; if (cfg.options.scales && cfg.options.scales.x) { delete cfg.options.scales.x.min; delete cfg.options.scales.x.max; } }
+  mk(cid, cfg, { last }); return true;
 }
 function chartBox(src, cid, h = '') { return `<div class="cbox ${h}"><canvas id="${cid}" role="img" aria-label="${esc(SPEC[src] ? cardMeta(SPEC[src].el).title : src)}"></canvas></div>`; }
 
@@ -112,13 +107,15 @@ function mk(id, cfg, opt = {}) {
   if (charts[id]) charts[id].destroy();
   cfg.options = cfg.options || {};
   cfg.options.interaction = cfg.options.interaction || { mode: 'index', intersect: false, axis: cfg.options.indexAxis === 'y' ? 'y' : 'x' };
+  FSK.prep(cfg);
   if (!id.startsWith('cb-') && !id.startsWith('qu-')) SPEC[id] = { cfg: cl(cfg), el };
   charts[id] = new Chart(el, cfg);
+  FSK.enhance(charts[id], { today: new Date(TODAY), last: opt.last });
   if (opt.switch) {
     const box = document.querySelector(`[data-ctl="${id}"]`);
     if (box) {
       box.innerHTML = [['bar', 'Cột'], ['line', 'Đường']].map(([t, l]) => `<button type="button" data-t="${t}">${l}</button>`).join('');
-      const set = t => { const ch = charts[id]; ch.data.datasets.forEach(d => { if (!d.keep) { d.type = t; d.fill = false; d.pointRadius = t === 'line' ? 2 : 0; } }); ch.update(); $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === t)); };
+      const set = t => { const ch = charts[id]; ch.data.datasets.forEach(d => { if (!d.keep) { d.type = t; d.fill = false; d.pointRadius = t === 'line' ? 2 : 0; } }); FSK.reorder(ch); ch.update(); $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === t)); };
       $$('button', box).forEach(b => b.onclick = () => set(b.dataset.t));
       $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === opt.switch));
     }
@@ -526,8 +523,8 @@ function chIdx() {
   const qc = { ease: 'rgba(30,143,90,.10)', drain: 'rgba(217,164,0,.12)', room: 'rgba(41,56,168,.08)', tight: 'rgba(192,57,43,.10)' };
   mk('chIdxHist', { type: 'line', data: { labels: H.map(h => mvn(h.m)), datasets: [L('IDX-FX', H.map(h => h.fx), C.red, { unit: '', borderWidth: 2.4 }), L('IDX-LIQ', H.map(h => h.liq), C.navy, { unit: '', borderWidth: 2.4 })] },
     options: { scales: { y: numAxis('z', { ticks: { callback: v => nf(v, 1) } }) }, plugins: { refLines: { lines: [{ value: 1, color: C.grey, label: '+1' }, { value: -1, color: C.grey, label: '−1' }] } } },
-    plugins: [{ id: 'qband', beforeDatasetsDraw(ch) { const { ctx, chartArea: a, scales: { x: sx } } = ch; const w = (a.right - a.left) / H.length; ctx.save();
-      H.forEach((h, i) => { ctx.fillStyle = qc[h.q]; ctx.fillRect(sx.getPixelForValue(i) - w / 2, a.top, w, a.bottom - a.top); }); ctx.restore(); } }] });
+    plugins: [{ id: 'qband', beforeDatasetsDraw(ch) { const { ctx, chartArea: a, scales: { x: sx } } = ch; const w = (a.right - a.left) / Math.max(1, sx.max - sx.min + 1); ctx.save(); ctx.beginPath(); ctx.rect(a.left, a.top, a.right - a.left, a.bottom - a.top); ctx.clip();
+      H.forEach((h, i) => { if (i < sx.min || i > sx.max) return; ctx.fillStyle = qc[h.q]; ctx.fillRect(sx.getPixelForValue(i) - w / 2, a.top, w, a.bottom - a.top); }); ctx.restore(); } }] });
 }
 
 /* =====================================================================
@@ -808,7 +805,7 @@ function paneQuick() {
 /* =====================================================================
    TAB · CHART BOOK — mọi chart của dashboard, vẽ lại từ cấu hình đã lưu
 ===================================================================== */
-const bookF = { g: '', q: '', last: 0 };
+const bookF = { g: '', q: '' };
 let bookObs = null;
 function paneBook() {
   buildAll();
@@ -818,7 +815,7 @@ function paneBook() {
   <h2 class="sec">Chart book</h2>
   <p class="sec-sub">${ids.length} chart của dashboard ở một chỗ, luôn theo dữ liệu mới nhất. Mã chart (vd. <code>chOn</code>) dùng để gọi trong Cập nhật nhanh hoặc nhắn AI.</p>
   <div class="picker" id="bkG"><button type="button" data-k="">Tất cả <small>${ids.length}</small></button>${groups.map(g => `<button type="button" data-k="${g}">${g} <small>${ids.filter(id => M[id].group === g).length}</small></button>`).join('')}</div>
-  <div class="bk-bar"><input id="bkQ" type="search" placeholder="Tìm chart: tỷ giá, LNH, NIM, P/B…" aria-label="Tìm chart"><div class="picker" id="bkR"><span class="muted">Khoảng:</span><button type="button" data-k="0">Toàn bộ</button><button type="button" data-k="24">24 điểm</button><button type="button" data-k="12">12 điểm</button></div></div>
+  <div class="bk-bar"><input id="bkQ" type="search" placeholder="Tìm chart: tỷ giá, LNH, NIM, P/B…" aria-label="Tìm chart"><span class="muted">Mỗi chart có nút 1M…5Y và kéo chuột để zoom; nhấp đúp để về toàn bộ.</span></div>
   <div class="grid g2 gap" id="bkGrid">${ids.map(id => { const m = M[id]; return `
     <article class="card bk" data-id="${id}" data-g="${esc(m.group)}" data-s="${esc((m.title + ' ' + id + ' ' + m.group + ' ' + m.sub.replace(/<[^>]+>/g, '')).toLowerCase())}">
       <h3 class="sub">${esc(m.title)}</h3>${m.sub ? `<p class="chart-sub">${m.sub}</p>` : ''}
@@ -827,17 +824,15 @@ function paneBook() {
       <div class="qfoot"><span><code>${id}</code> · ${esc(m.group)}</span><button type="button" class="lnk" data-go="${m.pane}" data-sp="${m.sp}">Xem ở tab gốc →</button></div>
     </article>`; }).join('')}</div>`;
   const drawn = new Set();
-  const draw = c => { const id = c.dataset.id; drawSpec(id, 'cb-' + id, bookF.last); drawn.add(id); };
+  const draw = c => { const id = c.dataset.id; drawSpec(id, 'cb-' + id); drawn.add(id); };
   if (bookObs) bookObs.disconnect();
   bookObs = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !drawn.has(e.target.dataset.id)) draw(e.target); }), { rootMargin: '300px' }) : null;
   const apply = () => {
     $$('#bkG button').forEach(b => b.classList.toggle('on', b.dataset.k === bookF.g));
-    $$('#bkR button').forEach(b => b.classList.toggle('on', +b.dataset.k === bookF.last));
     $$('#bkGrid .bk').forEach(c => { c.hidden = !((!bookF.g || c.dataset.g === bookF.g) && (!bookF.q || c.dataset.s.includes(bookF.q))); });
   };
   $$('#bkGrid .bk').forEach(c => bookObs ? bookObs.observe(c) : draw(c));
   $$('#bkG button').forEach(b => b.onclick = () => { bookF.g = b.dataset.k; apply(); });
-  $$('#bkR button').forEach(b => b.onclick = () => { bookF.last = +b.dataset.k; apply(); [...drawn].forEach(id => drawSpec(id, 'cb-' + id, bookF.last)); });
   $('#bkQ').oninput = e => { bookF.q = e.target.value.trim().toLowerCase(); apply(); };
   $$('#bkGrid [data-go]').forEach(b => b.onclick = () => { show(b.dataset.go); if (b.dataset.sp) openP(b.dataset.sp); const t = SPEC[b.closest('.bk').dataset.id].el; setTimeout(() => t.scrollIntoView({ block: 'center' }), 60); });
   apply();

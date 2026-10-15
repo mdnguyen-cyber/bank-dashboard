@@ -208,3 +208,13 @@ code{font:12px ui-monospace,Menlo,Consolas,monospace;background:#eef0f4;border-r
 .muted{color:var(--muted)}
 .qbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;text-align:left;border:1px solid var(--line);border-left:4px solid var(--navy);background:#fff;border-radius:12px;padding:10px 14px;margin:0 0 16px;cursor:pointer;font:13.5px Arial;color:var(--ink)}
 .qbar:hover{background:var(--soft)}.qbar-t{flex:1 1 300px;min-width:0;font-weight:700;color:var(--navy)}.qbar-go{font-weight:700;color:var(--navy);white-space:nowrap}
+
+/* khung thời gian + kéo để zoom (chartkit.js) */
+.rng{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:2px 0 8px}
+.rng button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:2px 8px;font:600 11.5px Arial;color:var(--ink2);cursor:pointer}
+.rng button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.rng button:disabled{opacity:.35;cursor:default}
+.rng-hint{margin-left:auto;font-size:11px;color:var(--muted)}
+.zsel{position:absolute;background:rgba(41,56,168,.12);border-left:1px solid rgba(41,56,168,.6);border-right:1px solid rgba(41,56,168,.6);pointer-events:none}
+.rng + .cbox canvas{cursor:crosshair}
+@media (hover:none){.rng-hint{display:none}.rng + .cbox canvas{cursor:auto}}
