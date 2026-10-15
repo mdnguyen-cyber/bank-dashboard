@@ -143,17 +143,19 @@ def probe():
             out[q] = [{'code': f"{d.get('provider_code')}/{d.get('code')}", 'name': d.get('name'), 'nb': d.get('nb_matching_series')} for d in js['results']['docs']]
         except Exception as e:  # noqa: BLE001
             out[q] = str(e)[:200]
-    for ds in ['NBS/M_A010H', 'NBS/M_A010B']:
+    for ds in ['STATJP/CPIm']:
         try:
-            js = json.loads(get(f'https://api.db.nomics.world/v22/series/{ds}?limit=60&observations=0'))
-            out[ds] = [(d['series_code'], d.get('series_name')) for d in js['series']['docs']][:60]
+            js = json.loads(get(f'https://api.db.nomics.world/v22/series/{ds}?limit=90&observations=0'))
+            out[ds] = [(d['series_code'], d.get('series_name')) for d in js['series']['docs']]
         except Exception as e:  # noqa: BLE001
             out[ds] = str(e)[:200]
-    try:
-        txt = get('https://data-api.ecb.europa.eu/service/data/ICP/M.U2.N..4.ANR?lastNObservations=1&format=csvdata')
-        out['ecb_icp_latest'] = sorted({(r['KEY'], r['TIME_PERIOD']) for r in csv.DictReader(io.StringIO(txt))}, key=lambda x: x[1])[-15:]
-    except Exception as e:  # noqa: BLE001
-        out['ecb_icp_latest'] = str(e)[:200]
+    for key in ['HICP/M.U2..', 'HICP/M.U2']:
+        try:
+            txt = get(f'https://data-api.ecb.europa.eu/service/data/{key}?lastNObservations=1&format=csvdata')
+            rs = list(csv.DictReader(io.StringIO(txt)))
+            out['ecb_' + key] = [(r['KEY'], r['TIME_PERIOD'], r.get('TITLE', '')[:80]) for r in rs if r['TIME_PERIOD'] >= '2026'][:60]
+        except Exception as e:  # noqa: BLE001
+            out['ecb_' + key] = str(e)[:200]
     return out
 
 
