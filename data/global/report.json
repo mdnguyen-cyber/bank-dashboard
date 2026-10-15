@@ -1,0 +1,499 @@
+{
+ "fetched": "2026-10-15T07:36:54Z",
+ "report": {
+  "us_cpi": [
+   {
+    "id": "fred:CPIAUCSL",
+    "n": 200,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_cpi_core": [
+   {
+    "id": "fred:CPILFESL",
+    "n": 200,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_cpi_shelter": [
+   {
+    "id": "fred:CUSR0000SAH1",
+    "n": 200,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_cpi_coregoods": [
+   {
+    "id": "fred:CUSR0000SACL1E",
+    "n": 200,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_cpi_svc_ex_energy": [
+   {
+    "id": "fred:CUSR0000SASLE",
+    "n": 200,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_cpi_supercore": [
+   {
+    "id": "fred:CUSR0000SASL2RS",
+    "n": 200,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_cpi_energy": [
+   {
+    "id": "fred:CPIENGSL",
+    "n": 200,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_cpi_food": [
+   {
+    "id": "fred:CPIUFDSL",
+    "n": 200,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_pce": [
+   {
+    "id": "fred:PCEPI",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_pce_core": [
+   {
+    "id": "fred:PCEPILFE",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_pce_supercore": [
+   {
+    "id": "fred:IA001260M",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_pce_goods": [
+   {
+    "id": "fred:DGDSRG3M086SBEA",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_pce_services": [
+   {
+    "id": "fred:DSERRG3M086SBEA",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_pce_trim": [
+   {
+    "id": "fred:PCETRIM12M159SFRBDAL",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_ppi_fd": [
+   {
+    "id": "fred:PPIFIS",
+    "n": 200,
+    "last": "2026-08-01"
+   },
+   {
+    "id": "fred:WPSFD49207",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_ppi_core": [
+   {
+    "id": "fred:PPICOR",
+    "n": 197,
+    "last": "2026-08-01"
+   },
+   {
+    "id": "fred:WPSFD4111",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_ppi_inter": [
+   {
+    "id": "fred:WPSID61",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_ppi_crude": [
+   {
+    "id": "fred:WPSID62",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_breakeven5": [
+   {
+    "id": "fred:T5YIE",
+    "n": 4198,
+    "last": "2026-10-14"
+   }
+  ],
+  "us_unrate": [
+   {
+    "id": "fred:UNRATE",
+    "n": 200,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_payems": [
+   {
+    "id": "fred:PAYEMS",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_ahe": [
+   {
+    "id": "fred:CES0500000003",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "us_claims": [
+   {
+    "id": "fred:ICSA",
+    "n": 875,
+    "last": "2026-10-03"
+   }
+  ],
+  "us_jolts": [
+   {
+    "id": "fred:JTSJOL",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_gdp": [
+   {
+    "id": "fred:GDPC1",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "us_gdppot": [
+   {
+    "id": "fred:GDPPOT",
+    "n": 108,
+    "last": "2036-10-01"
+   }
+  ],
+  "us_nrou": [
+   {
+    "id": "fred:NROU",
+    "n": 108,
+    "last": "2036-10-01"
+   }
+  ],
+  "us_effr": [
+   {
+    "id": "fred:DFF",
+    "n": 6130,
+    "last": "2026-10-13"
+   }
+  ],
+  "us_fedtgt_up": [
+   {
+    "id": "fred:DFEDTARU",
+    "n": 6131,
+    "last": "2026-10-14"
+   }
+  ],
+  "us_fedtgt_lo": [
+   {
+    "id": "fred:DFEDTARL",
+    "n": 6131,
+    "last": "2026-10-14"
+   }
+  ],
+  "us_iorb": [
+   {
+    "id": "fred:IORB",
+    "n": 1905,
+    "last": "2026-10-15"
+   }
+  ],
+  "us_sofr": [
+   {
+    "id": "fred:SOFR",
+    "n": 2130,
+    "last": "2026-10-13"
+   }
+  ],
+  "us_tgcr": [
+   {
+    "id": "fred:TGCRRATE",
+    "n": 2131,
+    "last": "2026-10-13"
+   }
+  ],
+  "us_sofr99": [
+   {
+    "id": "nyfed:sofr99",
+    "n": 2131,
+    "last": "2026-10-13"
+   }
+  ],
+  "us_2y": [
+   {
+    "id": "fred:DGS2",
+    "n": 4197,
+    "last": "2026-10-13"
+   }
+  ],
+  "us_10y": [
+   {
+    "id": "fred:DGS10",
+    "n": 4197,
+    "last": "2026-10-13"
+   }
+  ],
+  "us_walcl": [
+   {
+    "id": "fred:WALCL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "us_reserves": [
+   {
+    "id": "fred:WRESBAL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "us_tga": [
+   {
+    "id": "fred:WTREGEN",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "us_rrp": [
+   {
+    "id": "fred:RRPONTSYD",
+    "n": 3272,
+    "last": "2026-10-14"
+   }
+  ],
+  "us_repo": [
+   {
+    "id": "fred:RPONTSYD",
+    "n": 1777,
+    "last": "2026-10-14"
+   }
+  ],
+  "us_dxy": [
+   {
+    "id": "fred:DTWEXBGS",
+    "n": 4177,
+    "last": "2026-10-09"
+   }
+  ],
+  "us_casehiller": [
+   {
+    "id": "fred:CSUSHPISA",
+    "n": 199,
+    "last": "2026-07-01"
+   }
+  ],
+  "us_wti": [
+   {
+    "id": "fred:DCOILWTICO",
+    "n": 4150,
+    "last": "2026-10-06"
+   }
+  ],
+  "us_brent": [
+   {
+    "id": "fred:DCOILBRENTEU",
+    "n": 4240,
+    "last": "2026-10-06"
+   }
+  ],
+  "ea_hicp": [
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA20",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA",
+    "n": 192,
+    "last": "2025-12-01"
+   }
+  ],
+  "ea_hicp_core": [
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA20",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA",
+    "n": 192,
+    "last": "2025-12-01"
+   }
+  ],
+  "ea_hicp_serv": [
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA20",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA",
+    "n": 192,
+    "last": "2025-12-01"
+   }
+  ],
+  "ea_dfr": [
+   {
+    "id": "fred:ECBDFR",
+    "n": 6131,
+    "last": "2026-10-14"
+   }
+  ],
+  "ea_assets": [
+   {
+    "id": "fred:ECBASSETSW",
+    "n": 876,
+    "last": "2026-10-09"
+   }
+  ],
+  "ea_unrate": [
+   {
+    "id": "fred:LRHUTTTTEZM156S",
+    "n": 157,
+    "last": "2023-01-01"
+   }
+  ],
+  "de_10y": [
+   {
+    "id": "fred:IRLTLT01DEM156N",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "eurusd": [
+   {
+    "id": "fred:DEXUSEU",
+    "n": 4196,
+    "last": "2026-10-09"
+   }
+  ],
+  "jp_cpi": [
+   {
+    "id": "dbn:IMF/CPI/M.JP.PCPI_PC_CP_A_PT",
+    "n": 187,
+    "last": "2025-07-01"
+   },
+   {
+    "id": "fred:CPALTT01JPM659N",
+    "n": 138,
+    "last": "2021-06-01"
+   }
+  ],
+  "jp_cpi_core": [
+   {
+    "id": "fred:CPGRLE01JPM659N",
+    "n": 138,
+    "last": "2021-06-01"
+   },
+   {
+    "id": "dbn:OECD/DSD_PRICES@DF_PRICES_ALL/JPN.M.N.CPI.PA._TXCP01_NRG.N.GY",
+    "n": 138,
+    "last": "2021-06-01"
+   }
+  ],
+  "jp_rate": [
+   {
+    "id": "fred:IRSTCI01JPM156N",
+    "n": 200,
+    "last": "2026-08-01"
+   },
+   {
+    "id": "fred:IR3TIB01JPM156N",
+    "n": 199,
+    "last": "2026-07-01"
+   }
+  ],
+  "jp_assets": [
+   {
+    "id": "fred:JPNASSETS",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "jp_10y": [
+   {
+    "id": "fred:IRLTLT01JPM156N",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "usdjpy": [
+   {
+    "id": "fred:DEXJPUS",
+    "n": 4196,
+    "last": "2026-10-09"
+   }
+  ],
+  "cn_cpi": [
+   {
+    "id": "dbn:IMF/CPI/M.CN.PCPI_PC_CP_A_PT",
+    "n": 187,
+    "last": "2025-07-01"
+   },
+   {
+    "id": "fred:CPALTT01CNM659N",
+    "n": 184,
+    "last": "2025-04-01"
+   }
+  ],
+  "cn_ppi": [
+   {
+    "id": "dbn:IMF/PPI/M.CN.PPPI_PC_CP_A_PT",
+    "error": "HTTP Error 404: NOT FOUND"
+   },
+   {
+    "id": "fred:CHNPIEATI01GPM",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "cn_rate": [
+   {
+    "id": "fred:IR3TIB01CNM156N",
+    "n": 199,
+    "last": "2026-07-01"
+   },
+   {
+    "id": "fred:INTDSRCNM193N",
+    "n": 185,
+    "last": "2025-06-01"
+   }
+  ],
+  "usdcny": [
+   {
+    "id": "fred:DEXCHUS",
+    "n": 4196,
+    "last": "2026-10-09"
+   }
+  ]
+ }
+}
