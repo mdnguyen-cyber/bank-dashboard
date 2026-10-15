@@ -428,6 +428,11 @@ def main():
     ctg = json.loads((ROOT / 'data/ctg-data.json').read_text(encoding='utf-8'))
     D['reg'] = ctg['reg']
 
+    # ------------------------------------------------ nhật ký điều hành NHNN (biên tập tay, nguồn gốc public: data/sbv-log.json)
+    sbv = json.loads((ROOT / 'data/sbv-log.json').read_text(encoding='utf-8'))
+    sbv['events'].sort(key=lambda e: e['d'], reverse=True)
+    D['sbv'] = sbv
+
     # ------------------------------------------------ tín hiệu R-01…R-16 (ngưỡng = giả định theo deck slide 50–51)
     def vn(x, nd=1, sign=False):
         s = f'{x:+,.{nd}f}' if sign else f'{x:,.{nd}f}'
@@ -490,8 +495,8 @@ def main():
          'detail': 'Đảo chiều sau chu kỳ hạ 2024–2025; UST 10Y lên 5,2%.', 'src': 'fedratecalc.com; WiData 7079, 234521'},
         {'d': '2026-09-15', 'type': 'Thanh khoản', 't': 'OMO lưu hành đạt đỉnh 255,2 nghìn tỷ, sau đó NHNN rút dần về 110,9 nghìn tỷ (14/10)', 'impact': '0', 'status': 'done',
          'detail': 'LNH qua đêm dao động 0,5–7% quanh các kỳ cuối tháng.', 'src': 'WiData ai_news 14/10/2026'},
-        {'d': '2026-08-01', 'type': 'Quy định', 't': 'Hệ số tiền gửi KBNN tính vào LDR lên 50% (từ Q3/2026)', 'impact': '+', 'status': 'done',
-         'detail': 'Big 4 hưởng lợi nhiều nhất (VCB, BID, CTG giữ ~185–195 nghìn tỷ tiền gửi KBNN mỗi bên).', 'src': 'Công thức LDR WiData; fs_bank_notes Q2/2026'},
+        {'d': '2026-08-01', 'type': 'Quy định', 't': 'QĐ 1743: tiền gửi có kỳ hạn KBNN tính vào LDR lên 50% (1/8/2026 – 31/7/2028)', 'impact': '+', 'status': 'done',
+         'detail': 'Big 4 hưởng lợi nhiều nhất (VCB, BID, CTG giữ ~185–195 nghìn tỷ tiền gửi KBNN mỗi bên).', 'src': 'QĐ 1743/QĐ-NHNN (VnEconomy 31/7/2026); tiền gửi KBNN theo thuyết minh BCTC Q2/2026'},
         {'d': '2026-03-31', 'type': 'Lãi suất', 't': 'LS huy động 12T NHTM Nhà nước tăng 5,2% → 5,9%; tỷ giá tự do vọt 28.080', 'impact': '−', 'status': 'done',
          'detail': 'Brent lên 118 USD/thùng cùng tháng; chênh tự do − NHTM +1.723đ.', 'src': 'WiData 202886, 82226, 203084'},
         {'d': '2026-10-14', 'type': 'Doanh nghiệp', 't': 'Eximbank bỏ trần sở hữu nước ngoài 6%; MSB dự kiến chào bán 936 triệu CP; SHB vay 340 triệu USD từ SMBC', 'impact': '+', 'status': 'done',

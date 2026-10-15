@@ -53,6 +53,20 @@ def test_no_nan():
     assert 'NaN' not in txt and 'Infinity' not in txt
 
 
+
+def test_sbv_log_has_sources():
+    tools = {'Lãi suất điều hành', 'OMO · tín phiếu', 'Tỷ giá', 'Tín dụng', 'Quy định', 'Chỉ đạo · khác', 'Thị trường'}
+    E = D['sbv']['events']
+    assert len(E) >= 40 and [e['d'] for e in E] == sorted((e['d'] for e in E), reverse=True)
+    for e in E:
+        assert e['tool'] in tools and e['dir'] in ('nới', 'thắt', 'trung tính'), e['t']
+        assert e['url'].startswith('http') and e['src'] and e['impact'], e['t']
+        assert 'widata' not in (e['src'] + e['url']).lower(), e['t']
+    cur = {c['k']: c for c in D['sbv']['current']}
+    assert cur['Tái cấp vốn']['v'].startswith('4,5%')
+    assert not any(r.get('flag') for r in D['reg'])
+
+
 if __name__ == '__main__':
     for k, f in list(globals().items()):
         if k.startswith('test_'):

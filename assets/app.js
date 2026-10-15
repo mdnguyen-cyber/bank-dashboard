@@ -266,7 +266,7 @@ function paneMacro() {
   <article class="card"><h3 class="sub">Ánh xạ vĩ mô → chỉ số CTG</h3><p class="chart-sub">Theo deck slide 54; cột cuối là mức nhạy riêng của CTG</p><div class="tscroll"><table>
     <thead><tr><th>Biến vĩ mô</th><th>Chỉ số ngân hàng</th><th>Chiều tác động</th><th>Độ trễ</th><th>CTG</th></tr></thead><tbody>
     <tr><td>LS huy động 12T (DOM-13)</td><td>COF, NIM</td><td>Tăng: COF tăng; NIM giảm nếu YOEA chậm</td><td>1–3 quý</td><td>Cho vay ngắn hạn ${pc(mix.byTenor.short_term, 0)} → YOEA điều chỉnh nhanh; CASA ${pc(QL.casa, 0)} thấp hơn VCB, TCB, MBB</td></tr>
-    <tr><td>Room tín dụng (REG-06/07)</td><td>Tăng trưởng tín dụng, NII</td><td>Nới room: tín dụng, NII tăng</td><td>1–2 quý</td><td>Hưởng lợi từ dự án hạ tầng loại trừ room (CV 4551)</td></tr>
+    <tr><td>Room tín dụng (REG-06/07)</td><td>Tăng trưởng tín dụng, NII</td><td>Nới room: tín dụng, NII tăng</td><td>1–2 quý</td><td>Hưởng lợi từ dự án trọng điểm loại trừ khỏi room (CV 5386)</td></tr>
     <tr><td>LDR, KBNN (REG-03/04)</td><td>LDR, tăng trưởng tín dụng</td><td>Nới: dư địa cho vay tăng</td><td>1–2 quý</td><td>Big 4 giữ nhiều tiền gửi KBNN → hưởng lợi nhiều nhất khi hệ số lên 50%</td></tr>
     <tr><td>LS cho vay, chu kỳ BĐS (DOM-14)</td><td>NPL, hình thành nợ xấu, CP tín dụng</td><td>Cao kéo dài: nợ xấu, dự phòng tăng</td><td>2–4 quý</td><td>BĐS ${pc(mixQ4.bySector.construction_realestate, 1)} dư nợ, nhưng cá nhân ${pc(mixQ4.byCustomer.individuals_households, 0)} (gồm vay mua nhà)</td></tr>
     <tr><td>Lợi suất TPCP (DOM-17)</td><td>Lãi/lỗ CK đầu tư</td><td>Lợi suất tăng: lỗ danh mục</td><td>Quý</td><td>CK đầu tư ~${nf(QL.secs / QL.ta * 100, 1)}% tổng tài sản</td></tr>

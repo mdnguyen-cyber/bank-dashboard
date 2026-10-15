@@ -469,12 +469,12 @@ def build(raw):
     D['reg'] = [
         {'id': 'REG-01', 'rule': 'Giới hạn tín dụng 1 KH / KH + người liên quan', 'level': '13% / 21% vốn tự có (2026)', 'doc': 'Luật TCTD 2024, Điều 136', 'path': '12/19% (2027) → 11/17% (2028) → 10/15% (từ 2029)'},
         {'id': 'REG-02', 'rule': 'Tỉ lệ vốn ngắn hạn cho vay trung dài hạn (SMLR)', 'level': '40%', 'doc': 'TT25/2026/TT-NHNN · 1/7/2026', 'path': 'Chuyển sang NSFR theo TT50 (1/12/2026)'},
-        {'id': 'REG-03', 'rule': 'Tiền gửi có kỳ hạn KBNN tính vào LDR', 'level': '50% (từ Q3/2026 theo công thức LDR của Wi)', 'doc': 'TT08/2026 (20% từ 15/5/2026) → nâng 50%', 'path': 'TT26/2022: 50% (2023), 40% (2024), 20% (2025), 0% (Q1/2026)', 'flag': 'Deck ghi 20% — đã lệch so với mức hiện hành; analyst xác nhận văn bản nâng lên 50%'},
-        {'id': 'REG-04', 'rule': 'Trần LDR', 'level': '85% (TT22) [cần xác minh mức sau TT50]', 'doc': 'TT22/2019 và sửa đổi', 'path': '—'},
-        {'id': 'REG-05', 'rule': 'TT50/2026: LDR, NSFR, LCR', 'level': 'Theo TT50 [cần xác minh chi tiết]', 'doc': 'TT50/2026 · 1/12/2026', 'path': 'Thay SMLR bằng NSFR; đối tượng gửi tiền quan trọng hơn kỳ hạn'},
+        {'id': 'REG-03', 'rule': 'Tiền gửi có kỳ hạn KBNN tính vào LDR', 'level': '50% (1/8/2026 – 31/7/2028)', 'doc': 'QĐ 1743/QĐ-NHNN (căn cứ TT25/2026); trước đó TT08/2026: 20% từ 15/5/2026', 'path': 'TT26/2022: 50% (2023), 40% (2024), 20% (2025), 0% (từ 1/1/2026) → 20% (15/5/2026) → 50% (1/8/2026); TT50 từ 1/12/2026 mặc định 20%, Thống đốc có thể điều chỉnh'},
+        {'id': 'REG-04', 'rule': 'Trần LDR', 'level': '85% → 95% từ 1/12/2026', 'doc': 'TT22/2019 → TT50/2026/TT-NHNN (ký 30/9/2026)', 'path': 'Ngân hàng đạt đồng thời LCR và NSFR 100% không bị áp trần LDR'},
+        {'id': 'REG-05', 'rule': 'TT50/2026: LCR, NSFR (Basel III)', 'level': 'Hiệu lực 1/12/2026', 'doc': 'TT50/2026/TT-NHNN', 'path': 'LCR ≥ 50% từ 1/10/2028, +10 điểm %/năm lên 100% (2033); NSFR 90% (2028) → 100% (1/10/2030); thay dần SMLR'},
         {'id': 'REG-06', 'rule': 'Chỉ tiêu tín dụng 2026', 'level': '~15% toàn hệ thống', 'doc': 'CV 11686/NHNN-CSTT · 31/12/2025', 'path': 'Có thể điều chỉnh trong năm'},
-        {'id': 'REG-07', 'rule': 'Loại trừ khỏi room', 'level': '18 dự án trọng điểm; NOXH, KCN, KCX; du lịch, khách sạn', 'doc': 'CV 4551/NHNN-CSTT (29/5/2026)', 'path': 'Áp dụng hết 31/12/2026'},
-        {'id': 'REG-09', 'rule': 'CAR tối thiểu', 'level': '8% (Basel II) [cần xác minh]', 'doc': 'TT41/2016 và sửa đổi', 'path': '—'},
+        {'id': 'REG-07', 'rule': 'Loại trừ khỏi room tín dụng / room BĐS', 'level': '18 dự án trọng điểm (room chung); NOXH, KCN, KCX và du lịch, khách sạn (room BĐS)', 'doc': 'CV 5386/NHNN-TD (6/2026); CV 4551/NHNN-CSTT (29/5/2026); CV 8509/NHNN-CSTT (16/9/2026)', 'path': 'Áp dụng cho năm 2026'},
+        {'id': 'REG-09', 'rule': 'CAR tối thiểu', 'level': 'CAR 8%, CET1 4,5%, Tier 1 6% + đệm bảo toàn vốn', 'doc': 'TT14/2025/TT-NHNN (hiệu lực 15/9/2025)', 'path': 'Đệm bảo toàn vốn 0,625% → 2,5% sau 4 năm (CAR gồm đệm 10,5%)'},
     ]
     D['sources'] = [
         {'n': 'WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô', 'u': 'https://widata.vn/CTG'},

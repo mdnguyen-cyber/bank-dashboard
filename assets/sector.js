@@ -502,11 +502,71 @@ function chIdx() {
 /* =====================================================================
    TAB 3 · CHÍNH SÁCH · QUY ĐỊNH
 ===================================================================== */
+/* ---------- nhật ký điều hành NHNN ---------- */
+const SBV_TOOLS = ['Lãi suất điều hành', 'OMO · tín phiếu', 'Tỷ giá', 'Tín dụng', 'Quy định', 'Chỉ đạo · khác', 'Thị trường'];
+const dirTag = d => `<span class="dir ${d === 'nới' ? 'n' : d === 'thắt' ? 't' : 'z'}">${d === 'nới' ? 'Nới' : d === 'thắt' ? 'Thắt' : 'Trung tính'}</span>`;
+const qOf = d => d.slice(0, 4) + '-Q' + (Math.floor((+d.slice(5, 7) - 1) / 3) + 1);
+const qLbl = q => 'Q' + q.slice(-1) + '/' + q.slice(2, 4);
+function sbvBlock() {
+  const S = D.sbv, E = S.events, cur = S.current;
+  const pick = ks => ks.map(k => cur.find(c => c.k.startsWith(k))).filter(Boolean);
+  const short = v => v.replace('/năm', '').replace(/ \(.*\)$/, '');
+  const tiles = pick(['Tái cấp vốn', 'Tái chiết khấu', 'Lãi suất OMO', 'Cho vay qua đêm', 'Trần LS huy động 1', 'Biên độ', 'Chỉ tiêu tăng trưởng', 'Tăng trưởng tín dụng YTD', 'Trần LDR', 'Tỷ lệ tiền gửi có kỳ hạn KBNN']);
+  const lbl = { 'Cho vay qua đêm LNH (và bù đắp thiếu hụt thanh toán bù trừ)': 'Cho vay qua đêm LNH', 'Lãi suất OMO (cầm cố GTCG)': 'Lãi suất OMO', 'Trần LS huy động 1 – <6 tháng': 'Trần LS huy động 1–<6T', 'Biên độ tỷ giá USD/VND': 'Biên độ tỷ giá', 'Chỉ tiêu tăng trưởng tín dụng 2026': 'Chỉ tiêu tín dụng 2026', 'Tăng trưởng tín dụng YTD': 'Tín dụng so đầu năm', 'Tỷ lệ tiền gửi có kỳ hạn KBNN được tính vào LDR': 'KBNN tính vào LDR' };
+  const val = c => c.k.startsWith('Tăng trưởng tín dụng') ? c.v.split(' ')[0] : c.k.startsWith('Biên độ') ? '±5%' : c.k.startsWith('Chỉ tiêu') ? '~15%' : c.k.startsWith('Trần LDR') ? '85% → 95%' : short(c.v);
+  const sub = c => c.k.startsWith('Tăng trưởng tín dụng') ? 'đến 30/9/2026' : c.k.startsWith('Trần LDR') ? 'từ 1/12/2026 · TT50' : `từ ${dvn(c.since)}${c.doc ? ' · ' + c.doc.replace('/QĐ-NHNN', '').replace('/TT-NHNN', '').replace('/NHNN-CSTT', '') : ''}`;
+  const act = E.filter(e => e.tool !== 'Thị trường');
+  const y26 = act.filter(e => e.d >= '2026'), n26 = y26.filter(e => e.dir === 'nới').length, t26 = y26.filter(e => e.dir === 'thắt').length;
+  const lastRate = E.filter(e => e.tool === 'Lãi suất điều hành')[0];
+  return `
+  <div class="kpis pol">${tiles.map(c => kpi(lbl[c.k] || c.k, esc(val(c)), esc(sub(c)))).join('')}</div>
+  ${card({ id: 'chSbvStance', title: 'Nhịp điều hành NHNN theo quý', h: 'tall',
+    sub: 'số quyết định nới (trên 0) và thắt (dưới 0) mỗi quý, không tính dòng diễn biến thị trường · rê chuột xem tên quyết định · bấm vào cột để lọc bảng bên dưới',
+    insight: `Lãi suất điều hành <b>giữ nguyên từ 19/6/2023</b> (tái cấp vốn 4,5%, tái chiết khấu 3,0%). NHNN điều tiết bằng OMO (lần đổi gần nhất: ${esc(lastRate.t.toLowerCase())}, ${dvn(lastRate.d)}), room tín dụng và quy định an toàn. Từ đầu 2026 có <b>${n26} quyết định nới, ${t26} thắt</b>: nới chủ yếu ở room (loại trừ dự án trọng điểm, NOXH, KCN, du lịch) và LDR (KBNN 50%, trần 95% theo TT50); trong khi thanh khoản căng đẩy LNH qua đêm lên 11–12,5% (6/2026) và lãi suất huy động lên 6,38% (9/2026) bất chấp chỉ đạo giảm lãi suất.`,
+    src: 'NHNN (sbv.gov.vn), văn bản pháp luật và báo chính thống — link từng dòng ở bảng nhật ký' })}
+  <article class="card"><h3 class="sub">Nhật ký điều hành NHNN</h3>
+    <p class="chart-sub">${E.length} mốc từ 6/2023 đến ${dvn(E[0].d)} · mới nhất trên cùng · dòng "Thị trường" là diễn biến, không phải quyết định của NHNN</p>
+    <div class="picker" id="sbvTool"><button type="button" data-k="">Tất cả</button>${SBV_TOOLS.map(t => `<button type="button" data-k="${t}">${t} <small>${E.filter(e => e.tool === t).length}</small></button>`).join('')}</div>
+    <div class="picker" id="sbvDir"><button type="button" data-k="">Mọi hướng</button><button type="button" data-k="nới">Nới</button><button type="button" data-k="thắt">Thắt</button><button type="button" data-k="trung tính">Trung tính</button><span id="sbvQ"></span></div>
+    <div class="tscroll"><table class="sbv"><thead><tr><th>Ngày</th><th>Công cụ</th><th>Quyết định</th><th>Hướng</th><th>Tác động lên ngân hàng</th><th>Văn bản · nguồn</th></tr></thead><tbody id="sbvBody"></tbody></table></div>
+    <div class="src">Nguồn: ghi theo từng dòng (NHNN, Chính phủ, báo chính thống). Ngày là ngày hiệu lực hoặc ngày công bố như ghi dưới ngày.</div>
+  </article>`;
+}
+function sbvWire() {
+  const E = D.sbv.events, f = { tool: '', dir: '', q: '' };
+  const render = () => {
+    const rows = E.filter(e => (!f.tool || e.tool === f.tool) && (!f.dir || e.dir === f.dir) && (!f.q || qOf(e.d) === f.q));
+    $('#sbvBody').innerHTML = rows.map(e => `<tr${e.verify ? ' class="vf"' : ''}><td style="white-space:nowrap">${dvn(e.d)}<div class="muted">${esc(e.dType)}</div></td><td style="white-space:nowrap">${esc(e.tool)}</td>
+      <td><b>${esc(e.t)}</b><div class="note">${esc(e.detail)}</div>${e.verify ? `<div class="note keep">⚠ Cần xác minh: ${esc(e.note)}</div>` : ''}</td><td>${dirTag(e.dir)}</td><td>${esc(e.impact)}</td>
+      <td>${e.doc ? `<b>${esc(e.doc)}</b><br>` : ''}${e.url ? `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.src)}</a>` : esc(e.src)}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">Không có mốc nào khớp bộ lọc.</td></tr>';
+    $$('#sbvTool button').forEach(b => b.classList.toggle('on', b.dataset.k === f.tool));
+    $$('#sbvDir button').forEach(b => b.classList.toggle('on', b.dataset.k === f.dir));
+    $('#sbvQ').innerHTML = f.q ? `<button type="button" class="on" id="sbvQx">${qLbl(f.q)} ✕</button>` : '';
+    if (f.q) $('#sbvQx').onclick = () => { f.q = ''; render(); };
+  };
+  $$('#sbvTool button').forEach(b => b.onclick = () => { f.tool = b.dataset.k; render(); });
+  $$('#sbvDir button').forEach(b => b.onclick = () => { f.dir = b.dataset.k; render(); });
+  // chart: nới/thắt theo quý + LNH qua đêm cuối quý
+  const act = E.filter(e => e.tool !== 'Thị trường');
+  const qs = []; for (let y = 2024; y <= 2026; y++) for (let k = 1; k <= 4; k++) { const q = `${y}-Q${k}`; if (q <= qOf(D.meta.asOf || E[0].d)) qs.push(q); }
+  const cnt = (q, d) => act.filter(e => qOf(e.d) === q && e.dir === d);
+  mk('chSbvStance', { type: 'bar', data: { labels: qs.map(qLbl), datasets: [
+      { label: 'Nới', data: qs.map(q => cnt(q, 'nới').length), backgroundColor: '#1e8f5a', stack: 's', dp: 0, unit: '', yAxisID: 'y' },
+      { label: 'Thắt', data: qs.map(q => -cnt(q, 'thắt').length), backgroundColor: '#c0392b', stack: 's', dp: 0, unit: '', yAxisID: 'y' }] },
+    options: { plugins: { tooltip: { callbacks: {
+        label: c => `${c.dataset.label}: ${Math.abs(c.raw)} quyết định`,
+        footer: items => { const q = qs[items[0].dataIndex]; return act.filter(e => qOf(e.d) === q && e.dir !== 'trung tính').slice(0, 6).map(e => (e.dir === 'nới' ? '+ ' : '− ') + (e.t.length > 64 ? e.t.slice(0, 62) + '…' : e.t)); } } } },
+      scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => Math.abs(v), stepSize: 1 }, title: { display: true, text: 'số quyết định' }, grid: { color: '#eef0f4' } } },
+      onClick: (ev, els) => { if (!els.length) return; f.q = qs[els[0].index]; render(); document.getElementById('sbvBody').closest('article').scrollIntoView({ behavior: 'smooth', block: 'start' }); } } });
+  render();
+}
+
 function panePolicy() {
   const S = D.ldrSens, cur = store.get().kbnn || '50';
   $('#policy').innerHTML = `
   <h2 class="sec">Chính sách · Quy định</h2>
-  <p class="sec-sub">Quy định quyết định trần tăng trưởng và chi phí vốn của từng nhóm ngân hàng. Bảng REG dùng chung với dashboard CTG.</p>
+  <p class="sec-sub">Điều hành của NHNN và các quy định quyết định trần tăng trưởng, chi phí vốn của từng nhóm ngân hàng. Bảng REG dùng chung với dashboard CTG.</p>
+  ${sbvBlock()}
   ${card({ id: 'chLdrSens', title: 'Tiền gửi Kho bạc trong LDR: ai hưởng lợi khi hệ số thay đổi', h: 'tall', ctl: false,
     sub: `% · ${S.quarter} · chọn hệ số tiền gửi KBNN tính vào mẫu số LDR · đường đỏ = trần 85% (TT22)`,
     body: `<div class="picker" id="kbPick">${[['0', '0% (Q1/2026)'], ['20', '20% (Q2/2026 · mặc định TT50)'], ['50', '50% (từ Q3/2026)']].map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div>`,
@@ -527,7 +587,7 @@ function panePolicy() {
     $('#kbIns').innerHTML = `Ở hệ số ${k}%: ${rows.filter(r => r[key] > 85).map(r => `<b>${r.s} ${pc(r[key], 1)}</b>`).join(', ') || 'không NH nào'} vượt 85%. Chỉ Big 4 có tiền gửi KBNN đáng kể (${big.map(r => `${r.s} ${nf(r.kbnn / 1000, 0)} nghìn tỷ`).join(', ')}) — mỗi 30 điểm % hệ số kéo LDR của họ xuống ~1,7–2,1 điểm %; nhóm tư nhân gần như không đổi. TT50 (1/12/2026) đặt mặc định 20%, Thống đốc có thể điều chỉnh — nếu về 20% thì lợi thế Q3 của Big 4 mất đi.`;
   };
   $$('#kbPick button').forEach(b => b.onclick = () => draw(b.dataset.k));
-  draw(cur);
+  draw(cur);  sbvWire();
 }
 
 /* =====================================================================
