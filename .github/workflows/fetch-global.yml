@@ -18,7 +18,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Tải chuỗi số liệu
-        run: python scripts/fetch_global.py
+        run: |
+          pip install -q openpyxl
+          python scripts/fetch_global.py
       - name: Dựng dữ liệu cho trang
         run: |
           if [ -f scripts/build_global.py ]; then python scripts/build_global.py; fi

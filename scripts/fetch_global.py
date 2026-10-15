@@ -54,6 +54,8 @@ CAT = {
     'us_2y': ('Lợi suất TPCP Mỹ 2 năm', ['fred:DGS2']),
     'us_10y': ('Lợi suất TPCP Mỹ 10 năm', ['fred:DGS10']),
     'us_walcl': ('Tổng tài sản Fed (triệu USD)', ['fred:WALCL']),
+    'us_bills': ('Fed nắm giữ tín phiếu Kho bạc (triệu USD)', ['fred:WSHOBL']),
+    'us_rstar': ('Lãi suất trung lập r* (HLW, NY Fed)', ['hlw:US']),
     'us_reserves': ('Dự trữ của NH tại Fed (triệu USD)', ['fred:WRESBAL']),
     'us_tga': ('Tài khoản Kho bạc tại Fed - TGA (triệu USD)', ['fred:WTREGEN']),
     'us_rrp': ('ON RRP (tỷ USD)', ['fred:RRPONTSYD']),
@@ -63,15 +65,18 @@ CAT = {
     'us_wti': ('Dầu WTI', ['fred:DCOILWTICO']),
     'us_brent': ('Dầu Brent', ['fred:DCOILBRENTEU']),
     # ---------------- Khu vực đồng Euro
-    'ea_hicp': ('HICP (% YoY)', ['ecb:ICP/M.U2.N.000000.4.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA']),
-    'ea_hicp_core': ('HICP lõi trừ năng lượng, thực phẩm (% YoY)', ['ecb:ICP/M.U2.N.XEF000.4.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA']),
-    'ea_hicp_serv': ('HICP dịch vụ (% YoY)', ['ecb:ICP/M.U2.N.SERV00.4.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA']),
+    'ea_hicp': ('HICP (% YoY)', ['ecb:HICP/M.U2.N.000000.4D0.ANR', 'dbn:ECB/HICP/M.U2.N.000000.4D0.ANR', 'ecb:ICP/M.U2.N.000000.4.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA']),
+    'ea_hicp_core': ('HICP lõi trừ năng lượng, thực phẩm (% YoY)', ['ecb:HICP/M.U2.N.XEF000.4D0.ANR', 'dbn:ECB/HICP/M.U2.N.XEF000.4D0.ANR', 'ecb:ICP/M.U2.N.XEF000.4.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA']),
+    'ea_hicp_serv': ('HICP dịch vụ (% YoY)', ['ecb:HICP/M.U2.N.SERV00.4D0.ANR', 'dbn:ECB/HICP/M.U2.N.SERV00.4D0.ANR', 'ecb:ICP/M.U2.N.SERV00.4.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA']),
     'ea_dfr': ('Lãi suất tiền gửi ECB', ['fred:ECBDFR']),
     'ea_assets': ('Tổng tài sản Eurosystem (triệu EUR)', ['fred:ECBASSETSW']),
     'ea_unrate': ('Thất nghiệp khu vực Euro', ['ecb:LFSI/M.I9.S.UNEHRT.TOTAL0.15_74.T', 'fred:LRHUTTTTEZM156S']),
     'de_10y': ('Lợi suất Bund 10 năm', ['fred:IRLTLT01DEM156N']),
     'eurusd': ('EUR/USD', ['fred:DEXUSEU']),
     # ---------------- Nhật Bản
+    'jp_cpi_idx': ('CPI Nhật (chỉ số 2020=100)', ['dbn:STATJP/CPIm/001']),
+    'jp_cpi_xff_idx': ('CPI Nhật trừ thực phẩm tươi sống (chỉ số)', ['dbn:STATJP/CPIm/733']),
+    'jp_cpi_xffe_idx': ('CPI Nhật trừ thực phẩm tươi sống và năng lượng (chỉ số)', ['dbn:STATJP/CPIm/740']),
     'jp_cpi': ('CPI Nhật (% YoY)', ['oecd:JPN.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.JP.PCPI_PC_CP_A_PT', 'fred:CPALTT01JPM659N']),
     'jp_cpi_core': ('CPI Nhật trừ thực phẩm và năng lượng (% YoY)', ['oecd:JPN.M.N.CPI.PA._TXCP01_NRG.N.GY', 'fred:CPGRLE01JPM659N', 'dbn:OECD/DSD_PRICES@DF_PRICES_ALL/JPN.M.N.CPI.PA._TXCP01_NRG.N.GY']),
     'jp_rate': ('Lãi suất qua đêm Nhật', ['fred:IRSTCI01JPM156N', 'fred:IR3TIB01JPM156N']),
@@ -80,7 +85,7 @@ CAT = {
     'usdjpy': ('USD/JPY', ['fred:DEXJPUS']),
     # ---------------- Trung Quốc
     'cn_cpi': ('CPI Trung Quốc (% YoY)', ['oecd:CHN.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.CN.PCPI_PC_CP_A_PT', 'fred:CPALTT01CNM659N']),
-    'cn_ppi': ('PPI Trung Quốc (% YoY)', ['dbn:IMF/PPI/M.CN.PPPI_PC_CP_A_PT', 'fred:CHNPIEATI01GPM']),
+    'cn_ppi': ('PPI Trung Quốc (% YoY)', ['nbs:NBS/M_A010B/A010B01|NBS/M_A010H/A010H01']),
     'cn_rate': ('Lãi suất liên ngân hàng Trung Quốc', ['fred:IR3TIB01CNM156N', 'fred:INTDSRCNM193N']),
     'usdcny': ('USD/CNY', ['fred:DEXCHUS']),
 }
@@ -143,12 +148,33 @@ def probe():
             out[q] = [{'code': f"{d.get('provider_code')}/{d.get('code')}", 'name': d.get('name'), 'nb': d.get('nb_matching_series')} for d in js['results']['docs']]
         except Exception as e:  # noqa: BLE001
             out[q] = str(e)[:200]
-    for ds, q in [('ECB/HICP', 'euro area annual rate of change'), ('Eurostat/PRC_HICP_FP', 'euro area annual rate'), ('Eurostat/prc_hicp_fp', 'euro area annual rate')]:
-        try:
-            js = json.loads(get(f'https://api.db.nomics.world/v22/series/{ds}?q=' + urllib.parse.quote(q) + '&limit=40&observations=0'))
-            out[ds] = [(d['series_code'], d.get('series_name', '')[:90], d.get('indexed_at', '')[:10]) for d in js['series']['docs']]
-        except Exception as e:  # noqa: BLE001
-            out[ds] = str(e)[:200]
+    try:
+        js = json.loads(get('https://api.db.nomics.world/v22/series/ECB/HICP?q=' + urllib.parse.quote('monthly euro area changing composition annual rate of change') + '&limit=40&observations=0'))
+        out['ECB/HICP M'] = [(d['series_code'], d.get('series_name', '')[:120]) for d in js['series']['docs'] if d['series_code'].startswith('M.U2')]
+    except Exception as e:  # noqa: BLE001
+        out['ECB/HICP M'] = str(e)[:200]
+    return out
+
+
+def nbs(paths):   # NBS 'cùng tháng năm trước = 100' → % YoY, nối các giai đoạn
+    out = {}
+    for pth in paths.split('|'):
+        for d, v in dbn(pth):
+            out[d] = round(v - 100, 2)
+    return sorted(out.items())
+
+
+def hlw(country):   # Holston-Laubach-Williams r* (NY Fed), file xlsx công khai
+    import openpyxl
+    url = 'https://www.newyorkfed.org/medialibrary/media/research/economists/williams/data/Holston_Laubach_Williams_current_estimates.xlsx'
+    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
+        wb = openpyxl.load_workbook(io.BytesIO(r.read()), read_only=True, data_only=True)
+    ws = wb['HLW Estimates'] if 'HLW Estimates' in wb.sheetnames else wb.worksheets[0]
+    out = []
+    for row in ws.iter_rows(values_only=True):
+        d, v = row[0], row[10] if len(row) > 10 else None   # cột K = r* Mỹ (Date, …, Natural Rate US)
+        if hasattr(d, 'year') and isinstance(v, (int, float)) and d.year >= 2010:
+            out.append([d.strftime('%Y-%m-%d'), round(float(v), 4)])
     return out
 
 
@@ -160,7 +186,7 @@ def nyfed_sofr99():
 
 def fetch(c):
     src, sid = c.split(':', 1)
-    return {'fred': fred, 'dbn': dbn, 'ecb': ecb, 'oecd': oecd, 'nyfed': lambda _: nyfed_sofr99()}[src](sid)
+    return {'fred': fred, 'dbn': dbn, 'ecb': ecb, 'oecd': oecd, 'nbs': nbs, 'hlw': hlw, 'nyfed': lambda _: nyfed_sofr99()}[src](sid)
 
 
 def main():
