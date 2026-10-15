@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-15T09:10:11Z",
+ "fetched": "2026-10-15T09:15:34Z",
  "report": {
   "us_cpi": [
    {
@@ -457,7 +457,12 @@
     "error": "HTTP Error 404: Not Found"
    },
    {
-    "id": "fred:BOGZ1FL263061100Q",
+    "id": "fred:BOGZ1LM263061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL263061103Q",
     "error": "HTTP Error 404: Not Found"
    },
    {
@@ -521,7 +526,16 @@
     "error": "HTTP Error 404: Not Found"
    },
    {
-    "id": "fred:BOGZ1FL153061100Q",
+    "id": "fred:BOGZ1LM153061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL153061103Q",
+    "error": "HTTP Error 404: Not Found"
+   },
+   {
+    "id": "fred:BOGZ1LM153061103Q",
     "error": "HTTP Error 404: Not Found"
    }
   ],
@@ -551,11 +565,17 @@
   ],
   "ust_slg": [
    {
-    "id": "fred:BOGZ1FL213061105Q",
-    "error": "HTTP Error 404: Not Found"
+    "id": "fred:BOGZ1FL213061103Q",
+    "n": 66,
+    "last": "2026-04-01"
    },
    {
-    "id": "fred:BOGZ1FL213061100Q",
+    "id": "fred:BOGZ1LM213061103Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL213061105Q",
     "error": "HTTP Error 404: Not Found"
    }
   ],
@@ -784,13 +804,6 @@
     "id": "fred:TRESEGJPM052N",
     "n": 200,
     "last": "2026-08-01"
-   }
-  ],
-  "jp_m_base": [
-   {
-    "id": "fred:MABMM301JPM189S",
-    "n": 167,
-    "last": "2023-11-01"
    }
   ],
   "cn_cpi": [
