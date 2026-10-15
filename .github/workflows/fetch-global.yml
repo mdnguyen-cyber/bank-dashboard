@@ -1,0 +1,35 @@
+name: Cập nhật số liệu quốc tế (FRED, NY Fed, DBnomics)
+on:
+  schedule:
+    - cron: '17 23 * * *'   # 06:17 giờ Việt Nam mỗi ngày
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: fetch-global
+  cancel-in-progress: false
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Tải chuỗi số liệu
+        run: python scripts/fetch_global.py
+      - name: Dựng dữ liệu cho trang
+        run: |
+          if [ -f scripts/build_global.py ]; then python scripts/build_global.py; fi
+      - name: Commit nếu có số mới và deploy lại trang
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "fs-data-bot"
+          git config user.email "fs-data-bot@users.noreply.github.com"
+          git add data/global data/global-data.js 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Không có số mới"; exit 0; fi
+          git commit -m "Số liệu quốc tế $(date -u +%Y-%m-%d) (tự động)"
+          git push
+          gh workflow run pages.yml --ref main
