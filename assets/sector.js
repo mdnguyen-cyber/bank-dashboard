@@ -180,17 +180,7 @@ function paneOverview() {
   ${qu ? `<button type="button" class="qbar" id="goQuick"><span class="qdate">Cập nhật nhanh ${dvn(qu.date)}</span><span class="who ${qu.author.type === 'AI' ? 'ai' : 'cv'}">${qu.author.type === 'AI' ? 'AI' : 'Chuyên viên'}</span><span class="qbar-t">${esc(qu.headline)}</span><span class="qbar-go">Xem →</span></button>` : ''}
   <h2 class="sec">Tổng quan ngành ngân hàng</h2>
   <p class="sec-sub">Ngân hàng là ngành "ăn theo" chính sách tiền tệ: tỷ giá quyết định NHNN được nới hay phải siết, lãi suất quyết định biên lãi, nợ xấu và định giá.</p>
-  <article class="card"><h3 class="sub">💎 Nhận định FinSuccess <span class="pill">analyst</span></h3>
-    <p class="chart-sub">Phần quan điểm do chuyên viên nhập — lưu trên trình duyệt này. Số liệu bên dưới lấy từ nguồn công bố, lời đọc là AI viết theo số.</p>
-    <div class="form" id="viewForm">
-      <div><label for="vStance">Quan điểm ngành</label><select id="vStance"><option value="">—</option>${['Tích cực', 'Trung lập', 'Tiêu cực'].map(s => `<option ${v.stance === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
-      <div><label for="vScn">Kịch bản analyst chọn</label><select id="vScn"><option value="">— theo IDX: ${SCN[NOW.q].t}</option>${Object.entries(SCN).map(([k, s]) => `<option value="${k}" ${v.scn === k ? 'selected' : ''}>${s.t}</option>`).join('')}</select></div>
-      <div><label for="vGroup">Nhóm ưu tiên</label><select id="vGroup"><option value="">—</option>${GROUPS.map(g => `<option ${v.group === g ? 'selected' : ''}>${g}</option>`).join('')}</select></div>
-      <div><label for="vPicks">Mã ưu tiên</label><input id="vPicks" value="${esc(v.picks || '')}" placeholder="VD: CTG, MBB"></div>
-      <div class="full"><label for="vNote">Luận điểm</label><textarea id="vNote" placeholder="Vì sao, điều kiện thay đổi quan điểm…">${esc(v.note || '')}</textarea></div>
-      <div class="full"><button class="btn" type="button" id="vSave">Lưu nhận định</button> <button class="btn ghost" type="button" id="vCheck" title="Sửa lỗi gõ thiếu dấu thường gặp, Việt hoá thuật ngữ tiếng Anh">Rà soát chính tả &amp; thuật ngữ</button> <span class="calc" id="vMsg">${v.at ? 'Lưu lần cuối ' + dvn(v.at) : ''}</span>
-        <div id="vCheckOut" class="vchk" hidden></div></div>
-    </div></article>
+  <article class="card fsn" id="viewNote"></article>
   <div class="kpis">
     ${kpi('P/B ngành', x(SV.now.pb), `TB từ ${mvn(SV.from)}: ${x(SV.pb.mean)} (${sg(pbZ, 1, 'σ')})`, pbZ < 0 ? 'pos' : '')}
     ${kpi('P/E ngành', x(SV.now.pe), `TB ${x(SV.pe.mean)} · LNST TTM ${nf(SV.profitTTM, 1)} nghìn tỷ`)}
@@ -228,11 +218,19 @@ function paneOverview() {
   </div>`;
 
   // form
-  $('#vCheck').onclick = () => vcPanel($('#vNote'), $('#vCheckOut'));
-  $('#vSave').onclick = () => {
-    const o = { stance: $('#vStance').value, scn: $('#vScn').value, group: $('#vGroup').value, picks: $('#vPicks').value.trim(), note: $('#vNote').value.trim(), at: new Date().toISOString().slice(0, 10) };
-    const ok = store.set({ view: o }); $('#vMsg').textContent = ok ? 'Đã lưu ' + dvn(o.at) : 'Trình duyệt không cho lưu'; header();
-  };
+  FSN.mount($('#viewNote'), {
+    key: 'sector-view', title: '💎 Nhận định FinSuccess <span class="pill">analyst</span>', textLabel: 'Luận điểm', placeholder: 'Vì sao, điều kiện thay đổi quan điểm…',
+    sub: 'Quan điểm do chuyên viên viết. Mỗi lần lưu là một bản mới theo ngày; bản đã đăng được AI đọc lại khi viết cập nhật nhanh. Số liệu bên dưới lấy từ nguồn công bố, lời đọc là AI viết theo số.',
+    fields: f => `<div><label>Quan điểm ngành</label><select data-k="stance"><option value="">—</option>${['Tích cực', 'Trung lập', 'Tiêu cực'].map(o => `<option ${f.stance === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div>
+      <div><label>Kịch bản analyst chọn</label><select data-k="scn"><option value="">— theo IDX: ${SCN[NOW.q].t}</option>${Object.entries(SCN).map(([k, x]) => `<option value="${k}" ${f.scn === k ? 'selected' : ''}>${x.t}</option>`).join('')}</select></div>
+      <div><label>Nhóm ưu tiên</label><select data-k="group"><option value="">—</option>${GROUPS.map(g => `<option ${f.group === g ? 'selected' : ''}>${g}</option>`).join('')}</select></div>
+      <div><label>Mã ưu tiên</label><input data-k="picks" value="${esc(f.picks || '')}" placeholder="VD: CTG, MBB"></div>`,
+    read: el => Object.fromEntries($$('[data-k]', el).map(i => [i.dataset.k, i.value.trim()])),
+    meta: f => [f.stance && `<span class="fsn-chip">Quan điểm: <b>${esc(f.stance)}</b></span>`, `<span class="fsn-chip">Kịch bản: <b>${esc(f.scn ? SCN[f.scn].t : 'theo IDX — ' + SCN[NOW.q].t)}</b></span>`,
+      f.group && `<span class="fsn-chip">Nhóm ưu tiên: <b>${esc(f.group)}</b></span>`, f.picks && `<span class="fsn-chip">Mã ưu tiên: <b>${esc(f.picks)}</b></span>`].filter(Boolean).join(''),
+    seed: () => v.note || v.stance ? { id: 'sector-view-seed', at: (v.at || TODAY) + ' 00:00', author: 'Minh Đức', f: { stance: v.stance || '', scn: v.scn || '', group: v.group || '', picks: v.picks || '' }, html: FSN.textToHtml(v.note), text: v.note || '' } : null,
+    onSave: x => { store.set({ view: Object.assign({}, x.f, { note: x.text, html: x.html, at: x.at.slice(0, 10) }) }); header(); },
+  });
   drawCompare('nim', 'Tất cả');
   $$('#cmpMetric button').forEach(b => b.onclick = () => drawCompare(b.dataset.k, $('#cmpGroup button.on').dataset.g));
   $$('#cmpGroup button').forEach(b => b.onclick = () => drawCompare($('#cmpMetric button.on').dataset.k, b.dataset.g));
@@ -1341,57 +1339,6 @@ function quList() {
   let dr = null; try { dr = JSON.parse(localStorage.getItem(QD_KEY) || 'null'); } catch (e) {}
   if (dr && !U.some(x => x.id === dr.id)) U.unshift(Object.assign(dr, { _draft: true }));
   return U;
-}
-/* ---- Rà soát chính tả & thuật ngữ (chạy ngay trên trình duyệt, theo từ điển) ----
-   1) từ gõ thiếu dấu thường gặp, không nhập nhằng (cac → các); 2) thuật ngữ tiếng Anh → "tiếng Việt (thuật ngữ gốc)".
-   Từ điển có hạn: bản cần đăng chính thức thì bấm "Nhờ AI rà kỹ" để AI soát toàn bộ câu chữ. */
-const VC_ACCENT = { cac: 'các', duoc: 'được', khong: 'không', nguoi: 'người', cua: 'của', nhieu: 'nhiều', voi: 'với', hon: 'hơn', viec: 'việc', dieu: 'điều', nhung: 'nhưng',
-  'ngan hang': 'ngân hàng', 'lai suat': 'lãi suất', 'ty gia': 'tỷ giá', 'ti gia': 'tỷ giá', 'tin dung': 'tín dụng', 'chinh sach': 'chính sách', 'thi truong': 'thị trường', 'tang truong': 'tăng trưởng',
-  'lam phat': 'lạm phát', 'huy dong': 'huy động', 'no xau': 'nợ xấu', 'du phong': 'dự phòng', 'thanh khoan': 'thanh khoản', 'dinh gia': 'định giá', 'kho bac': 'kho bạc', 'bo tai chinh': 'bộ tài chính',
-  'trai phieu': 'trái phiếu', 'co phieu': 'cổ phiếu', 'loi nhuan': 'lợi nhuận', 'rui ro': 'rủi ro', 'tuy nhien': 'tuy nhiên', 'do do': 'do đó', 'vi vay': 'vì vậy', 'hien tai': 'hiện tại', 'tiep tuc': 'tiếp tục' };
-const VC_TERM = [['carry trade', 'giao dịch chênh lệch lãi suất'], ['term premium', 'phần bù kỳ hạn'], ['risk-off', 'tâm lý né rủi ro'], ['risk-on', 'tâm lý ưa rủi ro'], ['sell-off', 'bán tháo'],
-  ['credit growth', 'tăng trưởng tín dụng'], ['cost of fund', 'chi phí vốn'], ['re-rating', 'định giá lại'], ['rerating', 'định giá lại'], ['action', 'hành động'], ['actions', 'các hành động'], ['spread', 'chênh lệch'],
-  ['yield', 'lợi suất'], ['liquidity', 'thanh khoản'], ['justify', 'biện minh'], ['upside', 'dư địa tăng'], ['downside', 'rủi ro giảm'], ['outlook', 'triển vọng'], ['guidance', 'định hướng'],
-  ['hawkish', 'diều hâu (thiên thắt chặt)'], ['dovish', 'bồ câu (thiên nới lỏng)'], ['tightening', 'thắt chặt'], ['easing', 'nới lỏng'], ['valuation', 'định giá'], ['pricing', 'định giá'], ['catalyst', 'chất xúc tác'],
-  ['consensus', 'đồng thuận'], ['rally', 'nhịp tăng'], ['buffer', 'vùng đệm'], ['provision', 'dự phòng'], ['funding', 'nguồn vốn'], ['deposit', 'tiền gửi'], ['momentum', 'đà'], ['trend', 'xu hướng'],
-  ['peak', 'đỉnh'], ['bottom', 'đáy'], ['target', 'mục tiêu'], ['scenario', 'kịch bản'], ['stance', 'quan điểm'], ['pivot', 'xoay trục chính sách'], ['frontload', 'dồn sớm'], ['front-load', 'dồn sớm'],
-  ['test', 'thử'], ['timing', 'thời điểm'], ['priced in', 'đã phản ánh vào giá'], ['overweight', 'tỷ trọng cao hơn thị trường'], ['underweight', 'tỷ trọng thấp hơn thị trường'], ['outperform', 'vượt trội thị trường'],
-  ['underperform', 'kém thị trường'], ['headwind', 'lực cản'], ['tailwind', 'lực đẩy'], ['soft landing', 'hạ cánh mềm'], ['hard landing', 'hạ cánh cứng'], ['inflation', 'lạm phát'], ['recession', 'suy thoái']];
-const vcEsc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-function vcCheck(text) {
-  const changes = [];
-  let out = text;
-  for (const [a, b] of Object.entries(VC_ACCENT)) {
-    const re = new RegExp(`(^|[^\\p{L}])(${vcEsc(a)})(?=$|[^\\p{L}])`, 'giu');
-    out = out.replace(re, (m, pre, w) => { const r = w[0] === w[0].toUpperCase() ? b[0].toUpperCase() + b.slice(1) : b; changes.push({ from: w, to: r, kind: 'Thiếu dấu' }); return pre + r; });
-  }
-  for (const [en, vi] of [...VC_TERM].sort((x, y) => y[0].length - x[0].length)) {
-    const re = new RegExp(`(^|[^\\p{L}(])(${vcEsc(en)})(?=$|[^\\p{L}])(?!\\s*\\))`, 'giu');
-    out = out.replace(re, (m, pre, w, off, all) => {
-      const before = all.slice(Math.max(0, off - vi.length - 3), off + pre.length);
-      if (before.toLowerCase().includes(vi.toLowerCase())) return m;      // đã có tiếng Việt đứng trước
-      changes.push({ from: w, to: `${vi} (${w})`, kind: 'Thuật ngữ' }); return `${pre}${vi} (${w})`; });
-  }
-  return { text: out, changes };
-}
-function vcPanel(field, box) {   // field: textarea; hiện danh sách sửa + nút áp dụng
-  const r = vcCheck(field.value);
-  box.hidden = false;
-  if (!r.changes.length) { box.innerHTML = '<p class="muted">Không thấy lỗi thiếu dấu hay thuật ngữ tiếng Anh nào trong từ điển. Muốn soát kỹ câu chữ, bấm "Nhờ AI rà kỹ".</p>' + vcAiBtn(); vcAiWire(box, field.value); return; }
-  box.innerHTML = `<p><b>${r.changes.length} chỗ đề xuất sửa:</b></p><ul>${r.changes.map(c => `<li><span class="pill">${c.kind}</span> “${esc(c.from)}” → “${esc(c.to)}”</li>`).join('')}</ul>
-    <button type="button" class="btn" data-vc="apply">Áp dụng tất cả</button> <button type="button" class="btn ghost" data-vc="close">Bỏ qua</button> ${vcAiBtn()}`;
-  box.querySelector('[data-vc="apply"]').onclick = () => { field.value = r.text; box.innerHTML = '<p class="muted">Đã áp dụng — nhớ bấm Lưu.</p>'; };
-  box.querySelector('[data-vc="close"]').onclick = () => { box.hidden = true; };
-  vcAiWire(box, r.text);
-}
-const vcAiBtn = () => '<button type="button" class="btn ghost" data-vc="ai" title="Sao chép đoạn văn kèm yêu cầu, dán vào chat với AI">Nhờ AI rà kỹ</button> <span class="muted" data-vc="msg"></span>';
-function vcAiWire(box, text) {
-  const b = box.querySelector('[data-vc="ai"]'); if (!b) return;
-  b.onclick = async () => {
-    const msg = `Rà soát chính tả đoạn nhận định dưới đây: sửa lỗi gõ, thiếu dấu; thuật ngữ tiếng Anh đổi sang tiếng Việt và giữ thuật ngữ gốc trong ngoặc, ví dụ "các hành động (action)"; giữ nguyên ý và số liệu.\n\n${text}`;
-    const m = box.querySelector('[data-vc="msg"]');
-    try { await navigator.clipboard.writeText(msg); m.textContent = 'Đã sao chép — dán vào chat với AI.'; } catch (e) { m.textContent = 'Không sao chép được, hãy bôi đen đoạn văn và gửi cho AI.'; }
-  };
 }
 /* Xuất PDF bản cập nhật nhanh: in riêng tab này, tên file "FinSuccess_Cập Nhật Vĩ Mô Ngày dd-mm-yyyy" (tên mặc định khi Lưu PDF = tiêu đề trang) */
 function quPdf() {

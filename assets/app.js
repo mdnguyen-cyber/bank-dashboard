@@ -634,16 +634,7 @@ function paneVal() {
   $('#val').innerHTML = `<h2 class="sec">FinSuccess — định giá &amp; quyết định đầu tư</h2>
   <div class="subtabs"><button type="button" data-v="1" class="on">1 · Quyết định &amp; vị thế định giá</button><button type="button" data-v="2">2 · Kịch bản lãi suất &amp; rủi ro</button><button type="button" data-v="3">3 · Thesis &amp; nhật ký</button></div>
   <div class="sub on" data-vp="1">
-    <article class="card"><h3 class="sub">1 · Quyết định hiện tại</h3><p class="chart-sub">Lưu trên trình duyệt này (chưa đồng bộ). Mỗi mức giá tự quy ra P/B hiện tại (BVPS ${nf(M.bvps)}đ) và P/B forward (BVPS 2026F ${nf(FW.bvps2026F)}đ).</p>
-      <div class="form">
-        <div><label for="fStatus">Trạng thái</label><select id="fStatus"><option value="">— chọn —</option>${['Tích cực', 'Trung lập', 'Tiêu cực'].map(o => `<option ${dec.status === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div>
-        <div><label for="fAction">Hành động</label><select id="fAction"><option value="">— chọn —</option>${['Theo dõi', 'Chờ điểm mua', 'Mua thăm dò', 'Mua', 'Nắm giữ', 'Giảm tỷ trọng', 'Không đầu tư'].map(o => `<option ${dec.action === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div>
-        <div><label for="fTp">Giá mục tiêu (đ)</label><input id="fTp" inputmode="numeric" placeholder="vd 38000" value="${esc(dec.tp || '')}"><div class="calc" id="cTp"></div></div>
-        <div><label for="fBuy">Giá mua (đ)</label><input id="fBuy" inputmode="numeric" placeholder="vd 28500" value="${esc(dec.buy || '')}"><div class="calc" id="cBuy"></div></div>
-        <div><label for="fStop">Cắt lỗ (đ)</label><input id="fStop" inputmode="numeric" placeholder="vd 25500" value="${esc(dec.stop || '')}"><div class="calc" id="cStop"></div></div>
-        <div class="wide"><label for="fWhy">Lý do / điều kiện kích hoạt</label><textarea id="fWhy" placeholder="Mua khi: nêu điều kiện cụ thể…">${esc(dec.why || '')}</textarea></div>
-        <div><label>&nbsp;</label><button class="btn" id="fSave" type="button">Lưu quyết định</button><div class="calc" id="fMsg"></div></div>
-      </div></article>
+    <article class="card fsn" id="decNote"></article>
     <article class="card"><h3 class="sub">Vị thế định giá so với lịch sử</h3><p class="chart-sub">Dải ±1σ trên 20 quý (${pbB.from}–${pbB.to}); giá quy đổi = bội số × BVPS hiện tại / BVPS 2026F</p>
       <div class="grid g2">
         <div><h4 style="margin:0 0 8px;color:var(--navy)">P/B hiện tại ${x(M.pb)} · forward ${x(FW.pbFwd)}</h4><table><thead><tr><th>Mốc</th><th class="n">P/B</th><th class="n">Giá (BVPS hiện tại)</th><th class="n">Giá (BVPS 2026F)</th></tr></thead><tbody>
@@ -689,12 +680,21 @@ function paneVal() {
   // --- sub-tab
   $$('#val .subtabs button').forEach(b => b.onclick = () => { $$('#val .subtabs button').forEach(x => x.classList.toggle('on', x === b)); $$('#val .sub').forEach(p => p.classList.toggle('on', p.dataset.vp === b.dataset.v)); });
   // --- price → P/B calc (yêu cầu: mọi mức giá ghi kèm P/B và P/B forward)
-  const calc = (inp, out) => { const v = +String($(inp).value).replace(/\D/g, ''); $(out).innerHTML = v ? `P/B <b>${x(v / M.bvps)}</b> · P/B fwd <b>${x(v / FW.bvps2026F)}</b> · ${sg((v / M.price - 1) * 100)} vs giá` : ''; };
-  [['#fTp', '#cTp'], ['#fBuy', '#cBuy'], ['#fStop', '#cStop']].forEach(([i, o]) => { $(i).oninput = () => calc(i, o); calc(i, o); });
-  $('#fSave').onclick = () => {
-    const ok = store.set({ decision: { status: $('#fStatus').value, action: $('#fAction').value, tp: $('#fTp').value.replace(/\D/g, ''), buy: $('#fBuy').value.replace(/\D/g, ''), stop: $('#fStop').value.replace(/\D/g, ''), why: $('#fWhy').value, at: new Date().toISOString() } });
-    $('#fMsg').textContent = ok ? 'Đã lưu trên trình duyệt này.' : 'Không lưu được (trình duyệt chặn bộ nhớ).'; header(); rerender('overview'); rerender('cons');
-  };
+  const calcTxt = v => v ? `P/B <b>${x(v / M.bvps)}</b> · P/B fwd <b>${x(v / FW.bvps2026F)}</b> · ${sg((v / M.price - 1) * 100)} vs giá` : '';
+  const num = v => +String(v || '').replace(/\D/g, '');
+  FSN.mount($('#decNote'), {
+    key: `bank-${M.ticker}-decision`, title: '1 · Quyết định hiện tại', textLabel: 'Lý do / điều kiện kích hoạt', placeholder: 'Mua khi: nêu điều kiện cụ thể…',
+    sub: `Mỗi lần lưu là một bản mới theo ngày; bản đã đăng được AI đọc lại. Mỗi mức giá tự quy ra P/B hiện tại (BVPS ${nf(M.bvps)}đ) và P/B forward (BVPS 2026F ${nf(FW.bvps2026F)}đ).`,
+    fields: f => `<div><label>Trạng thái</label><select data-k="status"><option value="">— chọn —</option>${['Tích cực', 'Trung lập', 'Tiêu cực'].map(o => `<option ${f.status === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div>
+      <div><label>Hành động</label><select data-k="action"><option value="">— chọn —</option>${['Theo dõi', 'Chờ điểm mua', 'Mua thăm dò', 'Mua', 'Nắm giữ', 'Giảm tỷ trọng', 'Không đầu tư'].map(o => `<option ${f.action === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div>
+      ${[['tp', 'Giá mục tiêu (đ)', 'vd 38000'], ['buy', 'Giá mua (đ)', 'vd 28500'], ['stop', 'Cắt lỗ (đ)', 'vd 25500']].map(([k, l, ph]) => `<div><label>${l}</label><input data-k="${k}" inputmode="numeric" placeholder="${ph}" value="${esc(f[k] || '')}"><div class="calc" data-c="${k}"></div></div>`).join('')}`,
+    afterFields: el => $$('input[data-k]', el).forEach(i => { const c = $(`[data-c="${i.dataset.k}"]`, el); const f = () => c.innerHTML = calcTxt(num(i.value)); i.oninput = f; f(); }),
+    read: el => Object.fromEntries($$('[data-k]', el).map(i => [i.dataset.k, i.tagName === 'INPUT' ? String(num(i.value) || '') : i.value])),
+    meta: f => [f.status && `<span class="fsn-chip">Trạng thái: <b>${esc(f.status)}</b></span>`, f.action && `<span class="fsn-chip">Hành động: <b>${esc(f.action)}</b></span>`,
+      ...[['tp', 'Giá mục tiêu'], ['buy', 'Giá mua'], ['stop', 'Cắt lỗ']].filter(([k]) => num(f[k])).map(([k, l]) => `<span class="fsn-chip">${l}: <b>${nf(num(f[k]))}đ</b> <small>${calcTxt(num(f[k]))}</small></span>`)].filter(Boolean).join(''),
+    seed: () => dec.at ? { id: `bank-${M.ticker}-decision-seed`, at: dec.at.slice(0, 16).replace('T', ' '), author: 'Minh Đức', f: { status: dec.status || '', action: dec.action || '', tp: dec.tp || '', buy: dec.buy || '', stop: dec.stop || '' }, html: FSN.textToHtml(dec.why), text: dec.why || '' } : null,
+    onSave: v => { store.set({ decision: Object.assign({}, v.f, { why: v.text, whyHtml: v.html, at: new Date().toISOString() }) }); header(); rerender('overview'); rerender('cons'); },
+  });
   // --- scenarios
   const recalc = () => $$('#scTable tbody tr').forEach(tr => {
     const g = f => +$(`[data-f="${f}"]`, tr).value; const roe = g('roe'), coe = g('coe'), gg = g('g');

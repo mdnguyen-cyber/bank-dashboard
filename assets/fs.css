@@ -285,3 +285,29 @@ li.ed{list-style-position:inside}
   body.print-quick *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 .vchk{margin-top:8px;padding:10px 12px;border:1px dashed var(--line);border-radius:8px;font-size:13px}.vchk ul{margin:6px 0 10px 18px;padding:0}.vchk li{margin:3px 0}
+
+/* ---- ghi chép chuyên viên (notes.js) ---- */
+.fsn-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.fsn-head h3.sub{margin:0}
+.fsn-btns{display:flex;gap:6px}
+.fsn-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted,#5b6475);margin:6px 0 8px}
+.fsn-sum{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.fsn-chip{background:#eef1fb;border-radius:999px;padding:3px 10px;font-size:12.5px}
+.fsn-chip small{color:var(--muted,#5b6475);margin-left:4px}
+.fsn-body{font-size:14px;line-height:1.65;border-left:3px solid var(--teal);padding:4px 0 4px 14px}
+.fsn-body ul,.fsn-body ol{margin:4px 0 4px 20px;padding:0}
+.fsn-pub{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;padding:10px 12px;background:#fff8e1;border-radius:8px;font-size:13px}
+.fsn-hist{margin-top:12px;border-top:1px dashed var(--line);padding-top:8px}
+.fsn-hist details{padding:6px 0;border-bottom:1px solid var(--line)}
+.fsn-hist summary{cursor:pointer;font-size:13px}
+.fsn-hist .fsn-body{margin-top:8px}
+.fsn-ed{border:1px solid var(--line);border-radius:8px;background:#fff}
+.fsn-tb{display:flex;flex-wrap:wrap;gap:4px;padding:6px;border-bottom:1px solid var(--line);background:#f7f8fc;border-radius:8px 8px 0 0}
+.fsn-tb button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:3px 9px;font-size:12.5px;cursor:pointer;min-width:30px}
+.fsn-tb button:hover{background:#eef1fb}
+.fsn-tb .fsn-vc{margin-left:auto}
+.fsn-area{min-height:140px;padding:10px 12px;font-size:14px;line-height:1.6;outline:none}
+.fsn-area:empty:before{content:attr(data-ph);color:#9aa3b2}
+.fsn-area ul,.fsn-area ol{margin:4px 0 4px 20px}
+.fsn-vcout{font-size:12.5px;padding:0 12px 8px}
+.fsn-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
