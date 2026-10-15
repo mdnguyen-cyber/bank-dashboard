@@ -13,6 +13,12 @@ Tab Cập nhật nhanh trả lời một câu hỏi: **lúc này điều gì đa
 2. Trang tạo bản nháp trên máy (bản AI giữ nguyên): `author` = chuyên viên, `follows` = bản gốc, `edited` = danh sách đoạn đã sửa (hiện vạch vàng).
 3. Bấm **Sao chép để đăng**, dán vào chat với AI kèm câu "đăng bản cập nhật này". AI lưu JSON ra file rồi chạy `python3 scripts/add_update.py <file>`, build, test, push.
 4. Lần cập nhật sau, AI coi các đoạn trong `edited` là quan điểm của chuyên viên: giữ nguyên ý, chỉ cập nhật số liệu.
+5. **Rà soát chữ trước khi đăng (bắt buộc).** Mỗi khi đăng đoạn chữ của chuyên viên (bản sửa, nhận định FinSuccess), AI soát toàn bộ: sửa lỗi gõ và thiếu dấu; thuật ngữ tiếng Anh đổi sang tiếng Việt, giữ thuật ngữ gốc trong ngoặc ở lần xuất hiện đầu tiên, ví dụ "với cac action chủ yếu" → "với các hành động (action) chủ yếu"; viết tắt chuẩn ngành giữ nguyên (NIM, CASA, LDR, OMO, QT). Không đổi ý, không đổi số. Liệt kê các chỗ đã sửa cho chuyên viên xem lại.
+   Trên trang có nút **Rà soát chính tả** (chế độ sửa) và **Rà soát chính tả & thuật ngữ** (ô Nhận định FinSuccess): sửa nhanh theo từ điển ngay trên máy; nút **Nhờ AI rà kỹ** sao chép đoạn văn kèm yêu cầu để dán vào chat.
+
+## Xuất PDF
+
+Nút **⤓ Xuất PDF** trên tab Cập nhật nhanh mở hộp in của trình duyệt chỉ với bản đang xem (ẩn menu, nút, lịch sử). Chọn "Lưu dưới dạng PDF"; tên file mặc định là `FinSuccess_Cập Nhật Vĩ Mô Ngày dd-mm-yyyy` (ngày xuất), tiêu đề trong file là "Cập nhật nhanh Ngày dd/mm/yyyy".
 
 ## Các bước khi AI được yêu cầu cập nhật
 

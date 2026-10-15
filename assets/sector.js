@@ -129,6 +129,8 @@ const L = (label, data, color, o = {}) => Object.assign({ type: 'line', label, d
 
 /* ---------- templates ---------- */
 function card({ id, title, sub, insight, src, h = '', ctl = false, body = '', cls = '' }) {
+  if (!insight && id && typeof INS !== 'undefined' && INS[id]) { try { insight = INS[id](); } catch (e) { insight = ''; } }   // insight tự tính từ số (khối INS)
+  if (src) src = String(src).replace(/^Nguồn:\s*/, '');
   return `<article class="card ${cls}">
     <h3 class="sub">${title}${ctl ? `<span class="ctl" data-ctl="${id}"></span>` : ''}</h3>
     ${sub ? `<p class="chart-sub">${sub}</p>` : ''}
@@ -179,14 +181,15 @@ function paneOverview() {
   <h2 class="sec">Tổng quan ngành ngân hàng</h2>
   <p class="sec-sub">Ngân hàng là ngành "ăn theo" chính sách tiền tệ: tỷ giá quyết định NHNN được nới hay phải siết, lãi suất quyết định biên lãi, nợ xấu và định giá.</p>
   <article class="card"><h3 class="sub">💎 Nhận định FinSuccess <span class="pill">analyst</span></h3>
-    <p class="chart-sub">Phần quan điểm do chuyên viên nhập — lưu trên trình duyệt này. Số liệu bên dưới là WiData, lời đọc là AI viết theo số.</p>
+    <p class="chart-sub">Phần quan điểm do chuyên viên nhập — lưu trên trình duyệt này. Số liệu bên dưới lấy từ nguồn công bố, lời đọc là AI viết theo số.</p>
     <div class="form" id="viewForm">
       <div><label for="vStance">Quan điểm ngành</label><select id="vStance"><option value="">—</option>${['Tích cực', 'Trung lập', 'Tiêu cực'].map(s => `<option ${v.stance === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
       <div><label for="vScn">Kịch bản analyst chọn</label><select id="vScn"><option value="">— theo IDX: ${SCN[NOW.q].t}</option>${Object.entries(SCN).map(([k, s]) => `<option value="${k}" ${v.scn === k ? 'selected' : ''}>${s.t}</option>`).join('')}</select></div>
       <div><label for="vGroup">Nhóm ưu tiên</label><select id="vGroup"><option value="">—</option>${GROUPS.map(g => `<option ${v.group === g ? 'selected' : ''}>${g}</option>`).join('')}</select></div>
       <div><label for="vPicks">Mã ưu tiên</label><input id="vPicks" value="${esc(v.picks || '')}" placeholder="VD: CTG, MBB"></div>
       <div class="full"><label for="vNote">Luận điểm</label><textarea id="vNote" placeholder="Vì sao, điều kiện thay đổi quan điểm…">${esc(v.note || '')}</textarea></div>
-      <div class="full"><button class="btn" type="button" id="vSave">Lưu nhận định</button> <span class="calc" id="vMsg">${v.at ? 'Lưu lần cuối ' + dvn(v.at) : ''}</span></div>
+      <div class="full"><button class="btn" type="button" id="vSave">Lưu nhận định</button> <button class="btn ghost" type="button" id="vCheck" title="Sửa lỗi gõ thiếu dấu thường gặp, Việt hoá thuật ngữ tiếng Anh">Rà soát chính tả &amp; thuật ngữ</button> <span class="calc" id="vMsg">${v.at ? 'Lưu lần cuối ' + dvn(v.at) : ''}</span>
+        <div id="vCheckOut" class="vchk" hidden></div></div>
     </div></article>
   <div class="kpis">
     ${kpi('P/B ngành', x(SV.now.pb), `TB từ ${mvn(SV.from)}: ${x(SV.pb.mean)} (${sg(pbZ, 1, 'σ')})`, pbZ < 0 ? 'pos' : '')}
@@ -225,6 +228,7 @@ function paneOverview() {
   </div>`;
 
   // form
+  $('#vCheck').onclick = () => vcPanel($('#vNote'), $('#vCheckOut'));
   $('#vSave').onclick = () => {
     const o = { stance: $('#vStance').value, scn: $('#vScn').value, group: $('#vGroup').value, picks: $('#vPicks').value.trim(), note: $('#vNote').value.trim(), at: new Date().toISOString().slice(0, 10) };
     const ok = store.set({ view: o }); $('#vMsg').textContent = ok ? 'Đã lưu ' + dvn(o.at) : 'Trình duyệt không cho lưu'; header();
@@ -400,6 +404,93 @@ function chCamel() {
   cmRender();
 }
 
+/* ---- Insight tự tính cho các chart Quốc tế & Tiền tệ: "số đang nói gì" + "cách đọc" ---- */
+const gv = k => glast(k).v, gd = k => glast(k).d;
+const gback = (k, n) => gprev(k, n);
+const dir = (a, b, up = 'tăng', dn = 'giảm', eps = 0.05) => a == null || b == null ? '' : a - b > eps ? up : b - a > eps ? dn : 'đi ngang';
+const how = t => `<br><span class="howto"><b>Cách đọc:</b> ${t}</span>`;
+const INS = {
+  gUsCpi: () => { const h = gv('us_cpi_yoy'), c = gv('us_cpi_core_yoy'), sc = gv('us_cpi_supercore_yoy'), c3 = gv('us_cpi_core_m3');
+    return `${mvn(gd('us_cpi_yoy'))}: CPI <b>${pc(h, 1)}</b>, lõi <b>${pc(c, 1)}</b>, supercore <b>${pc(sc, 1)}</b> YoY. Lõi 3 tháng quy năm ${pc(c3, 1)} — ${c3 > c + 0.2 ? '<b>cao hơn</b> YoY: lạm phát đang tăng tốc trở lại' : c3 < c - 0.2 ? 'thấp hơn YoY: đà tăng giá đang chậm lại' : 'xấp xỉ YoY: đà tăng giá ổn định'}. ${c > 3 ? 'Lõi còn xa mục tiêu 2% → Fed khó nới.' : ''}`
+      + how('YoY cho xu hướng, "3 tháng quy năm" cho tín hiệu sớm (đường này cắt lên trên YoY = lạm phát tăng tốc). Supercore (dịch vụ trừ nhà ở) gắn với tiền lương — Fed theo dõi sát nhất. Lạm phát Mỹ cao → Fed giữ/tăng lãi suất → USD mạnh → áp lực lên tỷ giá USD/VND.'); },
+  gUsCpiC: () => { const it = [['Nhà ở', 'us_cpi_shelter_yoy'], ['Hàng hóa lõi', 'us_cpi_coregoods_yoy'], ['Dịch vụ trừ năng lượng', 'us_cpi_svc_ex_energy_yoy'], ['Năng lượng', 'us_cpi_energy_yoy'], ['Lương thực', 'us_cpi_food_yoy']].map(([n, k]) => [n, gv(k), gback(k, 3)]);
+    const mx = it.reduce((a, b) => b[1] > a[1] ? b : a);
+    return `Tăng mạnh nhất: <b>${mx[0]}</b> ${pc(mx[1], 1)} YoY. ${it.map(([n, v, p]) => `${n} ${pc(v, 1)} (${dir(v, p)} so với 3 tháng trước)`).join('; ')}.`
+      + how('Nhà ở (chiếm ~1/3 CPI) đi chậm sau giá thuê thị trường 9–12 tháng; hàng hóa lõi phản ánh thuế quan, chuỗi cung ứng; năng lượng biến động theo dầu. Nếu lạm phát do dịch vụ và nhà ở thì dai dẳng; do năng lượng thì thường tự hạ.'); },
+  gUsPce: () => { const c = gv('us_pce_core_yoy'), sc = gv('us_pce_supercore_yoy'), t = gv('us_pce_trim');
+    return `${mvn(gd('us_pce_core_yoy'))}: PCE lõi <b>${pc(c, 2)}</b>, supercore ${pc(sc, 2)}, trimmed mean ${pc(t, 2)}. ${c > 2.5 ? `Còn cao hơn mục tiêu 2% <b>${nf((c - 2) * 100, 0)} bps</b>.` : 'Đã gần mục tiêu 2%.'} ${t != null && Math.abs(t - c) > 0.3 ? (t > c ? 'Trimmed mean cao hơn lõi: tăng giá lan rộng chứ không do vài mặt hàng.' : 'Trimmed mean thấp hơn lõi: tăng giá tập trung ở vài mặt hàng.') : ''}`
+      + how('PCE lõi là thước đo Fed dùng cho mục tiêu 2% (khác CPI ở trọng số: nhà ở nhẹ hơn, y tế nặng hơn). Trimmed mean bỏ các mặt hàng biến động cực đoan → cho biết lạm phát "nền".'); },
+  gUsPpi: () => { const f = gv('us_ppi_fd_yoy'), c = gv('us_ppi_core_yoy'), i = gv('us_ppi_inter_yoy'), cr = gv('us_ppi_crude_yoy');
+    return `PPI cầu cuối cùng <b>${pc(f, 1)}</b>, lõi ${pc(c, 1)}; giá trung gian ${pc(i, 1)}, nguyên liệu thô ${pc(cr, 1)} YoY. ${i > f ? 'Chi phí đầu vào tăng nhanh hơn giá đầu ra → doanh nghiệp sẽ chuyển dần sang giá bán lẻ.' : 'Đầu vào tăng chậm hơn đầu ra → áp lực chi phí đang dịu.'}`
+      + how('Đọc theo chuỗi: thô → trung gian → cầu cuối cùng → CPI hàng hóa, độ trễ 1–6 tháng. PPI thô/trung gian tăng là tín hiệu sớm cho CPI hàng hóa.'); },
+  gUsJobs: () => { const p = gs('us_payems_chg').v.slice(-3), avg = p.reduce((a, v) => a + v, 0) / p.length, u = gv('us_unrate'), u12 = gback('us_unrate', 12);
+    return `Việc làm tăng thêm trung bình 3 tháng <b>${nf(avg, 0)} nghìn</b>/tháng; thất nghiệp <b>${pc(u, 1)}</b> (${sg(u - u12, 1, ' đ%')} so với 12 tháng trước). ${avg < 50 ? 'Thị trường lao động đang <b>yếu</b> — đủ để Fed cân nhắc nới.' : avg > 150 ? 'Lao động còn mạnh — Fed không vội nới.' : 'Tạo việc làm chậm lại nhưng chưa xấu.'}`
+      + how('Mỹ cần khoảng 50–100 nghìn việc làm mới mỗi tháng để giữ thất nghiệp ổn định. Cột âm hoặc thất nghiệp tăng ≥ 0,5 đ% từ đáy (quy tắc Sahm) thường báo suy thoái → Fed hạ lãi suất → USD yếu đi, tốt cho VND.'); },
+  gUsSpr: () => { const s1 = gv('sofr_iorb'), t = gv('tgcr_iorb'), p = gv('sofr99_iorb'), m = gs('sofr99_iorb').v.slice(-21), mx = Math.max(...m);
+    return `${dvn(gd('sofr_iorb'))}: SOFR − IORB <b>${sg(s1, 0, ' bps')}</b>, TGCR − IORB ${sg(t, 0, ' bps')}, SOFR p99 − IORB <b>${sg(p, 0, ' bps')}</b> (cao nhất 1 tháng ${sg(mx, 0, ' bps')}). ${s1 > 0 ? 'Repo đắt hơn lãi dự trữ: <b>thanh khoản USD đang căng</b>.' : p > 10 ? 'Mặt bằng ổn nhưng phần đuôi (p99) căng — một số bên phải vay rất đắt.' : 'Thị trường repo bình thường, dự trữ còn đủ.'}`
+      + how('IORB là lãi Fed trả cho dự trữ ngân hàng — "trần mềm" của lãi qua đêm. Lãi repo vượt IORB nghĩa là ngân hàng thiếu tiền mặt để cho vay (dự trữ khan) — dấu hiệu Fed phải dừng QT hoặc bơm thêm. Đỉnh thường rơi vào cuối tháng/cuối quý, ngày nộp thuế, ngày thanh toán TPCP.'); },
+  gUsRates: () => { const e = gv('us_effr_d'), y2 = gv('us_2y_d'), y10 = gv('us_10y_d'), y2m = gback('us_2y_d', 21), y10m = gback('us_10y_d', 21);
+    return `EFFR <b>${pc(e, 2)}</b>, UST 2 năm <b>${pc(y2, 2)}</b> (${sg((y2 - y2m) * 100, 0, ' bps')} 1 tháng), 10 năm <b>${pc(y10, 2)}</b> (${sg((y10 - y10m) * 100, 0, ' bps')}). Chênh 10Y − 2Y ${sg((y10 - y2) * 100, 0, ' bps')}; 2Y ${y2 < e - 0.15 ? 'thấp hơn EFFR → thị trường đặt cược Fed <b>hạ</b> lãi suất' : y2 > e + 0.15 ? 'cao hơn EFFR → thị trường đặt cược Fed <b>tăng</b> lãi suất' : 'sát EFFR → kỳ vọng Fed đứng yên'}.`
+      + how('Lợi suất 2 năm phản ánh kỳ vọng lãi suất Fed 1–2 năm tới; 10 năm gồm kỳ vọng + phần bù kỳ hạn (term premium, tăng khi thâm hụt và lượng phát hành lớn). UST 10Y cao → chênh với TPCP VN âm sâu → nhà đầu tư thích giữ USD hơn.'); },
+  gUsDebt: () => { const M = GD.mspd; if (!M) return ''; const n = M.d.length - 1, tot = Object.values(M.c).reduce((a, v) => a + (v[n] || 0), 0), tot12 = Object.values(M.c).reduce((a, v) => a + (v[n - 12] || 0), 0);
+    return `${mvn(M.d[n])}: nợ thị trường do công chúng nắm <b>${nf(tot / 1000, 2)} nghìn tỷ USD</b> (${sg((tot / tot12 - 1) * 100, 1)} 12 tháng); tín phiếu chiếm <b>${pc(M.billShare[n], 1)}</b> (${sg(M.billShare[n] - M.billShare[n - 12], 1, ' đ%')}).`
+      + how('Kho bạc tài trợ thâm hụt bằng tín phiếu (≤ 1 năm) hay trái phiếu dài hạn. Tỷ trọng tín phiếu vượt ~20% (mức TBAC khuyến nghị) = Kho bạc né phát hành dài hạn để giữ lợi suất dài thấp; tín phiếu được quỹ thị trường tiền tệ hấp thụ bằng tiền rút từ RRP. Khi chuyển sang phát hành coupon nhiều hơn → áp lực lên lợi suất 10Y.'); },
+  gUsNet: () => { const ni = GD.netIss; if (!ni) return ''; const b3 = ni.bills.slice(-3).reduce((a, v) => a + v, 0), c3 = ni.coupons.slice(-3).reduce((a, v) => a + v, 0);
+    return `3 tháng gần nhất: phát hành ròng tín phiếu <b>${sg(b3, 0, ' tỷ USD')}</b>, coupon <b>${sg(c3, 0, ' tỷ USD')}</b>. ${b3 > c3 ? 'Kho bạc đang dựa vào <b>tín phiếu</b> — hút tiền từ quỹ thị trường tiền tệ/RRP, ít áp lực lên lợi suất dài.' : 'Phần lớn là <b>coupon</b> — cần nhà đầu tư dài hạn hấp thụ, dễ đẩy lợi suất dài lên.'}`
+      + how('Cột dương = dư nợ tăng (phát hành mới nhiều hơn đáo hạn). Tín phiếu âm vào tháng 4 là bình thường (tiền thuế về, Kho bạc trả bớt nợ ngắn hạn). Phát hành ròng lớn + TGA tăng = rút thanh khoản khỏi hệ thống ngân hàng.'); },
+  gUsHold: () => { const H = GD.ustHold; if (!H) return ''; const n = H.d.length - 1, sh = k => H.h[k][n] / H.total[n] * 100, sh8 = k => H.h[k][n - 8] / H.total[n - 8] * 100;
+    return `${qLab(H.d[n])}: nước ngoài <b>${pc(sh('Nước ngoài'), 1)}</b> (${sg(sh('Nước ngoài') - sh8('Nước ngoài'), 1, ' đ%')} so với 2 năm trước), Fed ${pc(sh('Fed'), 1)} (${sg(sh('Fed') - sh8('Fed'), 1, ' đ%')}), quỹ thị trường tiền tệ ${pc(sh('Quỹ thị trường tiền tệ'), 1)} (${sg(sh('Quỹ thị trường tiền tệ') - sh8('Quỹ thị trường tiền tệ'), 1, ' đ%')}), hộ gia đình ${pc(sh('Hộ gia đình (gồm quỹ phòng hộ)'), 1)}.`
+      + how('Người mua "không nhạy giá" (Fed, NHTW nước ngoài) đang giảm tỷ trọng; phần còn lại phải do người mua "nhạy giá" (quỹ, hộ gia đình, quỹ phòng hộ) gánh — họ chỉ mua khi lợi suất đủ hấp dẫn. Đây là lý do lợi suất dài hạn Mỹ khó giảm sâu dù Fed hạ lãi suất.'); },
+  gUsAuct: () => { const A = GD.auct; if (!A) return ''; const g = A.coupons, last = k => g[k].slice(-4, -1).filter(x => x != null), av = k => { const x = last(k); return x.reduce((a, v) => a + v, 0) / (x.length || 1); }, prev = k => { const x = g[k].slice(-16, -4).filter(v => v != null); return x.reduce((a, v) => a + v, 0) / (x.length || 1); };
+    const ind = av('Indirect (nước ngoài, quỹ qua đại lý)'), indP = prev('Indirect (nước ngoài, quỹ qua đại lý)'), pd = av('Primary dealer'), pdP = prev('Primary dealer');
+    return `Đấu thầu coupon 3 tháng gần nhất: indirect <b>${pc(ind, 1)}</b> (TB 12 tháng trước đó ${pc(indP, 1)}), primary dealer phải nhận <b>${pc(pd, 1)}</b> (trước ${pc(pdP, 1)}). ${pd > pdP + 2 ? 'Đại lý phải ôm nhiều hơn → <b>cầu cuối cùng yếu đi</b>.' : pd < pdP - 2 ? 'Đại lý nhận ít hơn → cầu cuối cùng <b>tốt lên</b>.' : 'Cơ cấu người mua ổn định.'}`
+      + how('Primary dealer bắt buộc đặt thầu và nhận phần còn thừa — tỷ lệ này cao (> 15–20%) là phiên yếu, đại lý sẽ bán lại sau, gây áp lực lợi suất. Indirect cao = cầu từ nước ngoài và quỹ lớn tốt. Fed (SOMA) chỉ tái đầu tư phần đáo hạn, không làm thay đổi lượng bán cho công chúng.'); },
+  gUsTic: () => { const t = GD.tic || {}, f = (c, n = 0) => t[c] ? t[c].v[t[c].v.length - 1 - n] : null, d = t.Japan ? t.Japan.d[t.Japan.d.length - 1] : '';
+    return `${mvn(d)}: Nhật <b>${nf(f('Japan'), 0)} tỷ USD</b> (${sg(f('Japan') - f('Japan', 12), 0, ' tỷ')} 12 tháng), Trung Quốc <b>${nf(f('China'), 0)}</b> (${sg(f('China') - f('China', 12), 0, ' tỷ')}), Anh ${nf(f('United Kingdom'), 0)} (${sg(f('United Kingdom') - f('United Kingdom', 12), 0, ' tỷ')}). Tổng nước ngoài ${nf(f('Total'), 0)} tỷ, trong đó khu vực chính thức ${nf(f('Official'), 0)} tỷ.`
+      + how('Trung Quốc giảm đều = đa dạng hóa dự trữ khỏi USD. Nhật giảm đột ngột thường trùng các đợt MOF bán USD can thiệp (xem tab Nhật Bản). Anh, Bỉ, Luxembourg, Cayman là trung tâm lưu ký/quỹ phòng hộ — biến động theo giao dịch basis, không phải NHTW.'); },
+  gUsDef: () => { const d12 = glast('tsy_def12');
+    return `Thâm hụt cộng dồn 12 tháng đến ${mvn(d12.d)}: <b>${nf(-d12.v, 0)} tỷ USD</b> (${sg((d12.v - gback('tsy_def12', 12)) / 1, 0, ' tỷ')} so với 12 tháng trước; dương = thâm hụt thu hẹp).`
+      + how('Thâm hụt quyết định lượng TPCP Kho bạc phải bán. Tháng 4, 6, 9, 12 thường thặng dư nhờ thuế. Thâm hụt ~6–7% GDP khi kinh tế không suy thoái là nguồn cung UST lớn kéo dài → phần bù kỳ hạn cao.'); },
+  gEaHicp: () => { const h = gv('ea_hicp'), c = gv('ea_hicp_core'), s_ = gv('ea_hicp_serv');
+    return `${mvn(gd('ea_hicp'))}: HICP <b>${pc(h, 1)}</b>, lõi ${pc(c, 1)}, dịch vụ <b>${pc(s_, 1)}</b> (${dir(s_, gback('ea_hicp_serv', 3))} so với 3 tháng trước).`
+      + how('ECB nhắm HICP 2% trung hạn; lạm phát dịch vụ gắn với lương là phần dai dẳng nhất. HICP về quanh 2% mà dịch vụ vẫn > 3% thì ECB thận trọng khi hạ tiếp.'); },
+  gEaRate: () => { const r = gv('ea_dfr_m'), c = gv('ea_hicp_core');
+    return `Lãi suất tiền gửi ECB <b>${pc(r, 2)}</b>, lạm phát lõi ${pc(c, 1)} → lãi suất thực ${sg(r - c, 2, ' đ%')}; Bund 10 năm ${pc(gv('de_10y_m'), 2)}.`
+      + how('Lãi suất thực (lãi điều hành − lạm phát lõi) dương = chính sách thắt chặt, âm = nới lỏng. Chênh lãi suất ECB với Fed hẹp lại → EUR mạnh lên, DXY yếu đi.'); },
+  gEaFx: () => { const x = gv('eurusd_d'), x1 = gback('eurusd_d', 21);
+    return `EUR/USD <b>${nf(x, 4)}</b> (${sg((x / x1 - 1) * 100, 1)} 1 tháng); thất nghiệp khu vực Euro ${pc(gv('ea_unrate'), 1)}.`
+      + how('EUR chiếm ~58% rổ DXY: EUR/USD tăng ≈ USD yếu toàn cầu → giảm áp lực lên USD/VND. Thất nghiệp thấp kỷ lục giữ lương và lạm phát dịch vụ cao.'); },
+  gJpCpi: () => { const h = gv('jp_cpi_idx_yoy'), c = gv('jp_cpi_xff_idx_yoy'), cc = gv('jp_cpi_xffe_idx_yoy');
+    return `${mvn(gd('jp_cpi_idx_yoy'))}: CPI <b>${pc(h, 1)}</b>, trừ thực phẩm tươi sống (core) <b>${pc(c, 1)}</b>, core-core ${pc(cc, 1)}. ${cc >= 2 ? 'Lạm phát nền đã ở/ trên 2% → BoJ có lý do tiếp tục tăng lãi suất.' : 'Lạm phát nền dưới 2% → BoJ khó tăng lãi suất nhanh.'}`
+      + how('BoJ chủ yếu nhìn core và core-core (bỏ năng lượng), cùng với tăng lương (đàm phán shunto). JPY yếu làm giá nhập khẩu tăng — nên lạm phát Nhật cao một phần do chính đồng yên.'); },
+  gJpRate: () => { const r = gv('jp_rate_m'), y = gv('jp_10y_m'), y12 = gback('jp_10y_m', 12);
+    return `Lãi suất qua đêm <b>${pc(r, 2)}</b>, JGB 10 năm <b>${pc(y, 2)}</b> (${sg((y - y12) * 100, 0, ' bps')} 12 tháng). Chênh UST 10Y − JGB 10Y ≈ ${nf((gv('us_10y_m') - y) * 100, 0)} bps.`
+      + how('Chênh lãi suất Mỹ − Nhật là động lực chính của USD/JPY và của giao dịch carry (vay JPY rẻ đầu tư tài sản lãi cao). Chênh thu hẹp nhanh → JPY tăng giá, carry bị đóng → bán tháo tài sản rủi ro toàn cầu (như 08/2024).'); },
+  gJpBsL: () => { const B = GD.bojbs; if (!B) return ''; const n = B.d.length - 1, c = B.l['Tiền gửi NH (current account)'];
+    return `Tiền gửi NH tại BoJ <b>${nf(c[n], 0)} nghìn tỷ JPY</b> (${sg(c[n] - c[n - 12], 0, ' nghìn tỷ')} 12 tháng), tiền giấy ${nf(B.l['Tiền giấy'][n], 0)} nghìn tỷ.`
+      + how('Khi BoJ giảm mua JGB, tài sản co lại và tiền gửi của ngân hàng tại BoJ (thanh khoản dư thừa) giảm tương ứng — đây là "QT kiểu Nhật". Tiền giấy ổn định, nên thay đổi gần như dồn hết vào current account.'); },
+  gJpHold: () => { const H = GD.jgbHold; if (!H) return ''; const n = H.d.length - 1, sh = (k, i = n) => H.h[k][i] / H.total[i] * 100;
+    return `${qLab(H.d[n])}: BoJ nắm <b>${pc(sh('BoJ'), 1)}</b> (đỉnh ${pc(Math.max(...H.h.BoJ.map((v, i) => v / H.total[i] * 100)), 1)}), nước ngoài ${pc(sh('Nước ngoài'), 1)}, ngân hàng ${pc(sh('Ngân hàng, tổ chức nhận tiền gửi'), 1)}, bảo hiểm ${pc(sh('Bảo hiểm'), 1)}.`
+      + how('BoJ từng hấp thụ gần một nửa JGB. Khi BoJ rút, ngân hàng và nhà đầu tư nước ngoài phải mua thay — họ đòi lợi suất cao hơn. Bảo hiểm nhân thọ giảm nắm giữ JGB siêu dài là điểm yếu của đầu dài đường cong.'); },
+  gJpFx: () => { const x = gv('usdjpy_d'), ep = jpEpisodes(), le = ep[ep.length - 1];
+    return `USD/JPY <b>${nf(x, 2)}</b> (${dvn(gd('usdjpy_d'))}). ${le ? `Đợt can thiệp gần nhất ${dvn(le.from)}–${dvn(le.to)}: ${le.amt > 0 ? 'bán USD' : 'mua USD'} <b>${nf(Math.abs(le.amt) / 10000, 2)} nghìn tỷ JPY</b>.` : ''} ${x > 155 ? 'Tỷ giá đang ở vùng MOF từng can thiệp (155–162) → rủi ro can thiệp cao.' : ''}`
+      + how('MOF thường can thiệp khi JPY mất giá nhanh (vài yên trong vài ngày) quanh 150–162, thường sau phát biểu cảnh báo của Thứ trưởng Tài chính về tiền tệ. Số ngày/lượng can thiệp chỉ công bố cuối tháng (tổng) và cuối quý (từng ngày), nên cột đỏ có độ trễ.'); },
+  gJpRes: () => { const r = glast('jp_res_imf'), tj = (GD.tic || {}).Japan;
+    return `Dự trữ trừ vàng ${mvn(r.d)}: <b>${nf(r.v, 0)} tỷ USD</b> (${sg(r.v - gback('jp_res_imf', 12), 0, ' tỷ')} 12 tháng)${tj ? `; UST Nhật nắm ${nf(tj.v[tj.v.length - 1], 0)} tỷ (${mvn(tj.d[tj.d.length - 1])})` : ''}.`
+      + how('Để có USD bán ra khi can thiệp, MOF rút tiền gửi USD rồi bán UST trong dự trữ → dự trữ và lượng UST Nhật nắm giảm cùng lúc với cột can thiệp. Đây là kênh Nhật can thiệp tác động ngược lên lợi suất UST.'); },
+  gCnPx: () => { const c = gv('cn_cpi'), p = gv('cn_ppi');
+    return `CPI <b>${pc(c, 1)}</b> (${mvn(gd('cn_cpi'))}), PPI <b>${pc(p, 1)}</b> (${mvn(gd('cn_ppi'))}). ${p < 0 ? 'PPI âm = giảm phát giá xuất xưởng: Trung Quốc "xuất khẩu giảm phát" sang các nước nhập hàng (kể cả VN).' : 'PPI đã dương lại — giảm phát công nghiệp kết thúc.'}`
+      + how('PPI âm kéo dài làm giá hàng nhập khẩu từ Trung Quốc rẻ → kìm CPI hàng hóa ở VN nhưng gây áp lực cạnh tranh cho sản xuất trong nước. CPI gần 0 cho thấy cầu nội địa yếu → PBOC tiếp tục nới.'); },
+  gCnFx: () => { const x = gv('usdcny_d'), x3 = gback('usdcny_d', 63);
+    return `USD/CNY <b>${nf(x, 4)}</b> (${sg((x / x3 - 1) * 100, 1)} 3 tháng; âm = CNY tăng giá); lãi suất liên NH 3 tháng ${pc(gv('cn_rate_m'), 2)}.`
+      + how('CNY là đồng tiền tham chiếu quan trọng của VND (đối tác thương mại lớn nhất). CNY mạnh lên giúp NHNN dễ giữ tỷ giá; CNY mất giá mạnh thường kéo VND theo.'); },
+  mmSpTs: () => { if (!VR.d.length) return ''; const n = VR.d.length - 1, sp = t => mmSp(t, n), sp0 = t => { for (let i = Math.max(0, n - 20); i <= n; i++) { const v = mmSp(t, i); if (v != null) return v; } return null; };
+    return `Chênh VND − USD hôm nay: qua đêm ${sg(sp('ON'), 2, '')}, 1 tháng ${sg(sp('1M'), 2, '')}, 3 tháng <b>${sg(sp('3M'), 2, '')}</b>, 1 năm <b>${sg(sp('1Y'), 2, '')}</b> điểm %. So với khoảng 1 tháng trước, chênh 3 tháng ${dir(sp('3M'), sp0('3M'), 'nới rộng', 'thu hẹp', 0.1)}.`
+      + how('Chênh dương và nới rộng = giữ VND ngày càng có lợi → hỗ trợ tỷ giá. Chênh qua đêm dao động mạnh theo thanh khoản ngắn hạn (cuối tháng, cuối quý, đợt NHNN hút/bơm), nên nhìn kỳ 3 tháng–1 năm cho xu hướng.'); },
+  mmLvTs: () => { if (!VR.d.length) return ''; const n = VR.d.length - 1, v = (c, t) => VR[c][t] ? VR[c][t][n] : null;
+    return `VNIBOR VND: qua đêm ${pc(v('vnd', 'ON'), 2)}, 3 tháng <b>${pc(v('vnd', '3M'), 2)}</b>, 1 năm ${pc(v('vnd', '1Y'), 2)}; VNIBOR USD 3 tháng ${pc(v('usd', '3M'), 2)}, SOFR 3 tháng ${pc(v('sofr', '3M'), 2)}.`
+      + how('VND qua đêm phản ánh thanh khoản hằng ngày (NHNN điều tiết qua OMO); 3 tháng–1 năm phản ánh chi phí vốn mà ngân hàng chấp nhận trả → đi trước lãi suất huy động và COF. VNIBOR USD bám SOFR; khi VNIBOR USD cao hơn SOFR là USD trong nước khan.'); },
+};
 /* ---- Quốc tế ---- */
 function subIntlOverview() {
   const b = lastv(intl.brent);
@@ -1236,6 +1327,70 @@ function quList() {
   if (dr && !U.some(x => x.id === dr.id)) U.unshift(Object.assign(dr, { _draft: true }));
   return U;
 }
+/* ---- Rà soát chính tả & thuật ngữ (chạy ngay trên trình duyệt, theo từ điển) ----
+   1) từ gõ thiếu dấu thường gặp, không nhập nhằng (cac → các); 2) thuật ngữ tiếng Anh → "tiếng Việt (thuật ngữ gốc)".
+   Từ điển có hạn: bản cần đăng chính thức thì bấm "Nhờ AI rà kỹ" để AI soát toàn bộ câu chữ. */
+const VC_ACCENT = { cac: 'các', duoc: 'được', khong: 'không', nguoi: 'người', cua: 'của', nhieu: 'nhiều', voi: 'với', hon: 'hơn', viec: 'việc', dieu: 'điều', nhung: 'nhưng',
+  'ngan hang': 'ngân hàng', 'lai suat': 'lãi suất', 'ty gia': 'tỷ giá', 'ti gia': 'tỷ giá', 'tin dung': 'tín dụng', 'chinh sach': 'chính sách', 'thi truong': 'thị trường', 'tang truong': 'tăng trưởng',
+  'lam phat': 'lạm phát', 'huy dong': 'huy động', 'no xau': 'nợ xấu', 'du phong': 'dự phòng', 'thanh khoan': 'thanh khoản', 'dinh gia': 'định giá', 'kho bac': 'kho bạc', 'bo tai chinh': 'bộ tài chính',
+  'trai phieu': 'trái phiếu', 'co phieu': 'cổ phiếu', 'loi nhuan': 'lợi nhuận', 'rui ro': 'rủi ro', 'tuy nhien': 'tuy nhiên', 'do do': 'do đó', 'vi vay': 'vì vậy', 'hien tai': 'hiện tại', 'tiep tuc': 'tiếp tục' };
+const VC_TERM = [['carry trade', 'giao dịch chênh lệch lãi suất'], ['term premium', 'phần bù kỳ hạn'], ['risk-off', 'tâm lý né rủi ro'], ['risk-on', 'tâm lý ưa rủi ro'], ['sell-off', 'bán tháo'],
+  ['credit growth', 'tăng trưởng tín dụng'], ['cost of fund', 'chi phí vốn'], ['re-rating', 'định giá lại'], ['rerating', 'định giá lại'], ['action', 'hành động'], ['actions', 'các hành động'], ['spread', 'chênh lệch'],
+  ['yield', 'lợi suất'], ['liquidity', 'thanh khoản'], ['justify', 'biện minh'], ['upside', 'dư địa tăng'], ['downside', 'rủi ro giảm'], ['outlook', 'triển vọng'], ['guidance', 'định hướng'],
+  ['hawkish', 'diều hâu (thiên thắt chặt)'], ['dovish', 'bồ câu (thiên nới lỏng)'], ['tightening', 'thắt chặt'], ['easing', 'nới lỏng'], ['valuation', 'định giá'], ['pricing', 'định giá'], ['catalyst', 'chất xúc tác'],
+  ['consensus', 'đồng thuận'], ['rally', 'nhịp tăng'], ['buffer', 'vùng đệm'], ['provision', 'dự phòng'], ['funding', 'nguồn vốn'], ['deposit', 'tiền gửi'], ['momentum', 'đà'], ['trend', 'xu hướng'],
+  ['peak', 'đỉnh'], ['bottom', 'đáy'], ['target', 'mục tiêu'], ['scenario', 'kịch bản'], ['stance', 'quan điểm'], ['pivot', 'xoay trục chính sách'], ['frontload', 'dồn sớm'], ['front-load', 'dồn sớm'],
+  ['test', 'thử'], ['timing', 'thời điểm'], ['priced in', 'đã phản ánh vào giá'], ['overweight', 'tỷ trọng cao hơn thị trường'], ['underweight', 'tỷ trọng thấp hơn thị trường'], ['outperform', 'vượt trội thị trường'],
+  ['underperform', 'kém thị trường'], ['headwind', 'lực cản'], ['tailwind', 'lực đẩy'], ['soft landing', 'hạ cánh mềm'], ['hard landing', 'hạ cánh cứng'], ['inflation', 'lạm phát'], ['recession', 'suy thoái']];
+const vcEsc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+function vcCheck(text) {
+  const changes = [];
+  let out = text;
+  for (const [a, b] of Object.entries(VC_ACCENT)) {
+    const re = new RegExp(`(^|[^\\p{L}])(${vcEsc(a)})(?=$|[^\\p{L}])`, 'giu');
+    out = out.replace(re, (m, pre, w) => { const r = w[0] === w[0].toUpperCase() ? b[0].toUpperCase() + b.slice(1) : b; changes.push({ from: w, to: r, kind: 'Thiếu dấu' }); return pre + r; });
+  }
+  for (const [en, vi] of [...VC_TERM].sort((x, y) => y[0].length - x[0].length)) {
+    const re = new RegExp(`(^|[^\\p{L}(])(${vcEsc(en)})(?=$|[^\\p{L}])(?!\\s*\\))`, 'giu');
+    out = out.replace(re, (m, pre, w, off, all) => {
+      const before = all.slice(Math.max(0, off - vi.length - 3), off + pre.length);
+      if (before.toLowerCase().includes(vi.toLowerCase())) return m;      // đã có tiếng Việt đứng trước
+      changes.push({ from: w, to: `${vi} (${w})`, kind: 'Thuật ngữ' }); return `${pre}${vi} (${w})`; });
+  }
+  return { text: out, changes };
+}
+function vcPanel(field, box) {   // field: textarea; hiện danh sách sửa + nút áp dụng
+  const r = vcCheck(field.value);
+  box.hidden = false;
+  if (!r.changes.length) { box.innerHTML = '<p class="muted">Không thấy lỗi thiếu dấu hay thuật ngữ tiếng Anh nào trong từ điển. Muốn soát kỹ câu chữ, bấm "Nhờ AI rà kỹ".</p>' + vcAiBtn(); vcAiWire(box, field.value); return; }
+  box.innerHTML = `<p><b>${r.changes.length} chỗ đề xuất sửa:</b></p><ul>${r.changes.map(c => `<li><span class="pill">${c.kind}</span> “${esc(c.from)}” → “${esc(c.to)}”</li>`).join('')}</ul>
+    <button type="button" class="btn" data-vc="apply">Áp dụng tất cả</button> <button type="button" class="btn ghost" data-vc="close">Bỏ qua</button> ${vcAiBtn()}`;
+  box.querySelector('[data-vc="apply"]').onclick = () => { field.value = r.text; box.innerHTML = '<p class="muted">Đã áp dụng — nhớ bấm Lưu.</p>'; };
+  box.querySelector('[data-vc="close"]').onclick = () => { box.hidden = true; };
+  vcAiWire(box, r.text);
+}
+const vcAiBtn = () => '<button type="button" class="btn ghost" data-vc="ai" title="Sao chép đoạn văn kèm yêu cầu, dán vào chat với AI">Nhờ AI rà kỹ</button> <span class="muted" data-vc="msg"></span>';
+function vcAiWire(box, text) {
+  const b = box.querySelector('[data-vc="ai"]'); if (!b) return;
+  b.onclick = async () => {
+    const msg = `Rà soát chính tả đoạn nhận định dưới đây: sửa lỗi gõ, thiếu dấu; thuật ngữ tiếng Anh đổi sang tiếng Việt và giữ thuật ngữ gốc trong ngoặc, ví dụ "các hành động (action)"; giữ nguyên ý và số liệu.\n\n${text}`;
+    const m = box.querySelector('[data-vc="msg"]');
+    try { await navigator.clipboard.writeText(msg); m.textContent = 'Đã sao chép — dán vào chat với AI.'; } catch (e) { m.textContent = 'Không sao chép được, hãy bôi đen đoạn văn và gửi cho AI.'; }
+  };
+}
+/* Xuất PDF bản cập nhật nhanh: in riêng tab này, tên file "FinSuccess_Cập Nhật Vĩ Mô Ngày dd-mm-yyyy" (tên mặc định khi Lưu PDF = tiêu đề trang) */
+function quPdf() {
+  const t = new Date(), dd = String(t.getDate()).padStart(2, '0'), mm = String(t.getMonth() + 1).padStart(2, '0'), yy = t.getFullYear();
+  const oldTitle = document.title, dateEl = $('#quick .qprint-date');
+  if (dateEl) dateEl.textContent = ` Ngày ${dd}/${mm}/${yy}`;
+  document.title = `FinSuccess_Cập Nhật Vĩ Mô Ngày ${dd}-${mm}-${yy}`;
+  const imgs = [];   // chart → ảnh để bản in không bị co giãn
+  $$('#quick canvas').forEach(c => { try { const im = new Image(); im.src = c.toDataURL('image/png'); im.className = 'qprint-img'; c.style.display = 'none'; c.after(im); imgs.push([c, im]); } catch (e) {} });
+  document.body.classList.add('print-quick');
+  const done = () => { document.body.classList.remove('print-quick'); document.title = oldTitle; if (dateEl) dateEl.textContent = ''; imgs.forEach(([c, im]) => { im.remove(); c.style.display = ''; }); window.removeEventListener('afterprint', done); };
+  window.addEventListener('afterprint', done);
+  setTimeout(() => { window.print(); setTimeout(() => { if (document.body.classList.contains('print-quick')) done(); }, 1500); }, 150);
+}
 function paneQuick() {
   buildAll();
   const U = quList();
@@ -1246,13 +1401,13 @@ function paneQuick() {
   const f = (key, html, tag = 'span', cls = '') => `<${tag} class="${cls}${ed.has(key) ? ' ed' : ''}" data-f="${key}"${E ? ' contenteditable="true"' : ''}${ed.has(key) ? ' title="Chuyên viên đã sửa"' : ''}>${html}</${tag}>`;
   let who = 'Minh Đức'; try { who = localStorage.getItem('quWho') || who; } catch (e) {}
   $('#quick').innerHTML = `
-  <h2 class="sec">Cập nhật nhanh</h2>
+  <h2 class="sec">Cập nhật nhanh<span class="qprint-date"></span></h2>
   ${u._draft ? `<div class="qdraft"><b>Bản nháp trên máy bạn — chưa đăng lên web.</b> Bấm "Sao chép để đăng" rồi dán vào chat với AI kèm câu "đăng bản cập nhật này".
     <span class="qbtns"><button type="button" class="btn" id="quCopy">Sao chép để đăng</button><button type="button" class="btn ghost" id="quDrop">Xoá nháp</button></span><textarea id="quJson" readonly hidden></textarea><span id="quMsg" class="muted"></span></div>` : ''}
   <div class="qhead card${E ? ' editing' : ''}">
     <div class="qmeta"><span class="qdate">${dvn(u.date)}</span><span>Cập nhật bởi: ${byLine(u.author)}</span>${u._draft ? '<span class="pill watch">Nháp</span>' : quSel ? '<span class="pill">Bản cũ</span>' : '<span class="pill ok">Mới nhất</span>'}
-      <span class="qbtns">${E ? `<label class="muted">Người sửa <input id="quWho" value="${esc(who)}" size="12"></label><button type="button" class="btn" id="quSave">Lưu thành bản mới</button><button type="button" class="btn ghost" id="quCancel">Huỷ</button>`
-        : `<button type="button" class="btn ghost" id="quEditBtn">✎ Chỉnh sửa</button>`}</span></div>
+      <span class="qbtns">${E ? `<label class="muted">Người sửa <input id="quWho" value="${esc(who)}" size="12"></label><button type="button" class="btn ghost" id="quCheck" title="Sửa lỗi thiếu dấu, Việt hoá thuật ngữ tiếng Anh trong các đoạn đang sửa">Rà soát chính tả</button><button type="button" class="btn" id="quSave">Lưu thành bản mới</button><button type="button" class="btn ghost" id="quCancel">Huỷ</button>`
+        : `<button type="button" class="btn ghost" id="quEditBtn">✎ Chỉnh sửa</button><button type="button" class="btn" id="quPdf" title="Mở hộp in → chọn Lưu dưới dạng PDF">⤓ Xuất PDF</button>`}</span></div>
     ${E ? '<p class="qhint">Bấm vào đoạn chữ bất kỳ để sửa (Ctrl+B để in đậm). Trạng thái từng mục chọn ở ô bên cạnh tiêu đề. Bản của AI giữ nguyên, bản sửa lưu thành bản mới của bạn.</p>' : ''}
     ${f('headline', esc(u.headline), 'h3', 'qtitle')}
     ${prev ? `<p class="qprev">Tiếp nối bản ${dvn(prev.date)} (${prev.author.type === 'AI' ? 'AI' : 'chuyên viên ' + esc(prev.author.name)}): ${u.vsPrev || ''}</p>` : ''}
@@ -1285,6 +1440,13 @@ function paneQuick() {
   $$('#quick [data-book]').forEach(b => b.onclick = () => openBook(b.dataset.book));
   const on = (id, fn) => { const el = document.getElementById(id); if (el) el.onclick = fn; };
   on('quEditBtn', () => { quEdit = true; paneQuick(); });
+  on('quPdf', quPdf);
+  on('quCheck', () => {
+    const ch = [];
+    $$('#quick [data-f][contenteditable]').forEach(el => { const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) { const r = vcCheck(n.nodeValue); if (r.changes.length) { n.nodeValue = r.text; ch.push(...r.changes); } } });
+    const hint = $('#quick .qhint');
+    if (hint) hint.innerHTML = ch.length ? `<b>Đã sửa ${ch.length} chỗ:</b> ${ch.map(c => `“${esc(c.from)}” → “${esc(c.to)}”`).join(' · ')}. Kiểm tra lại rồi bấm "Lưu thành bản mới".` : 'Không thấy lỗi thiếu dấu hay thuật ngữ tiếng Anh nào trong từ điển.';
+  });
   on('quCancel', () => { quEdit = false; paneQuick(); });
   on('quSave', () => {
     const nu = JSON.parse(JSON.stringify(u)); delete nu._draft;

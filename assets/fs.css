@@ -264,3 +264,24 @@ li.ed{list-style-position:inside}
 .subtabs.cty{margin-top:4px}
 .subtabs.cty button{font-size:12.5px}
 .picker.tf{margin:0 0 6px}
+.howto{display:block;margin-top:6px;color:var(--muted,#5b6475);font-size:12.5px}
+
+.qprint-date{font-weight:inherit}
+.qprint-img{max-width:100%;height:auto;display:block}
+@media print{
+  @page{size:A4;margin:12mm}
+  body.print-quick{background:#fff}
+  body.print-quick .tabs,body.print-quick .stock-head,body.print-quick footer,body.print-quick .site-nav,body.print-quick .logo-right,body.print-quick .pane:not(#quick){display:none!important}
+  body.print-quick #quick{display:block!important}
+  body.print-quick #quick .qbtns,body.print-quick #quick .qfoot,body.print-quick #quick .qdraft,body.print-quick #quick .qhist,body.print-quick #quick .note.keep{display:none!important}
+  body.print-quick #quick article.card:last-of-type{display:none!important}
+  body.print-quick #quick .card{break-inside:avoid;box-shadow:none}
+  body.print-quick #quick .qc-h{break-after:avoid}
+  body.print-quick #quick .grid{display:grid;grid-template-columns:minmax(0,1fr)}
+  body.print-quick #quick .qchart{width:100%;box-sizing:border-box}
+  body.print-quick #quick .cbox{height:auto!important}
+  body.print-quick #quick .qprint-img{width:auto;max-width:100%;max-height:340px;margin:0 auto}
+  body.print-quick #quick .rng,body.print-quick #quick .zsel,body.print-quick #quick .rng-hint{display:none!important}
+  body.print-quick *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.vchk{margin-top:8px;padding:10px 12px;border:1px dashed var(--line);border-radius:8px;font-size:13px}.vchk ul{margin:6px 0 10px 18px;padding:0}.vchk li{margin:3px 0}
