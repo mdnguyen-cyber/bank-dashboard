@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-15T09:15:34Z",
+ "fetched": "2026-10-15T09:24:58Z",
  "report": {
   "us_cpi": [
    {
@@ -394,6 +394,91 @@
     "id": "fred:WLRRAL",
     "n": 875,
     "last": "2026-10-07"
+   }
+  ],
+  "fed_res_wed": [
+   {
+    "id": "fred:WRBWFRBL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_tga_wed": [
+   {
+    "id": "fred:WDTGAL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_currency_wed": [
+   {
+    "id": "fred:WLFN",
+    "n": 875,
+    "last": "2026-10-07"
+   },
+   {
+    "id": "fred:WCURCIR",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "ust_nfc": [
+   {
+    "id": "fred:BOGZ1LM103061103Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL103061103Q",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "ust_etf": [
+   {
+    "id": "fred:BOGZ1LM563061103Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL563061103Q",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "ust_gse": [
+   {
+    "id": "fred:BOGZ1FL403061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1LM403061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "ust_slpen": [
+   {
+    "id": "fred:BOGZ1FL223061143Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1LM223061143Q",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "ust_fedpen": [
+   {
+    "id": "fred:BOGZ1FL343061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1LM343061105Q",
+    "n": 66,
+    "last": "2026-04-01"
    }
   ],
   "fed_rrp_foreign": [
