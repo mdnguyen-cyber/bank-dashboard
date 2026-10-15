@@ -67,6 +67,26 @@ def test_sbv_log_has_sources():
     assert not any(r.get('flag') for r in D['reg'])
 
 
+
+def test_quick_updates_valid():
+    import sys
+    sys.path.insert(0, str(ROOT / 'scripts'))
+    from chart_ids import chart_ids
+    ids = chart_ids()
+    U = D['quick']['updates']
+    assert U and len({u['id'] for u in U}) == len(U)
+    known = {u['id'] for u in U}
+    for u in U:
+        assert u['author']['type'] in ('AI', 'Chuyên viên') and u['author']['name']
+        assert u['follows'] in (None, *known)
+        for c in u['concerns']:
+            assert c['status'] in ('mới', 'nóng lên', 'tiếp diễn', 'hạ nhiệt'), c['title']
+            assert c['charts'], c['title']
+            for g in c['charts']:
+                assert g['id'] in ids, g['id']
+        assert 'widata' not in json.dumps(u, ensure_ascii=False).lower()
+
+
 if __name__ == '__main__':
     for k, f in list(globals().items()):
         if k.startswith('test_'):

@@ -80,11 +80,39 @@ const quadBg = { id: 'quadBg', beforeDatasetsDraw(chart, _a, opt) {
 Chart.register(refLines, quadBg);
 
 const charts = {};
+/* ---------- Chart book: mk() lưu cấu hình từng chart theo id để vẽ lại ở Chart book / Cập nhật nhanh ---------- */
+const SPEC = {};
+const cl = o => Array.isArray(o) ? o.map(cl) : (o && Object.getPrototypeOf(o) === Object.prototype) ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cl(v)])) : o;
+const PANE_LBL = { overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', bank: 'Ngân hàng', idx: 'Kịch bản IDX' };
+function cardMeta(el) {
+  const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane');
+  const h = c && c.querySelector(':scope > h3.sub'), one = sel => { const e = c && c.querySelector(':scope > ' + sel); return e ? e.innerHTML : ''; };
+  return { title: h ? (h.childNodes[0] || {}).textContent || '' : el.id, sub: one('.chart-sub'), src: one('.src'), insight: one('.insight'),
+    group: PANE_LBL[pp ? pp.dataset.pp : pane ? pane.id : ''] || 'Khác', pane: pane ? pane.id : '', sp: pp ? pp.dataset.pp : '' };
+}
+function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình chart
+  Object.keys(builders).forEach(k => { if (!['quick', 'book'].includes(k) && !built[k]) { builders[k](); built[k] = true; } });
+  ['intl', 'dom', 'bank', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, bank: chBank, idx: chIdx })[k](); pDone[k] = true; } });
+}
+function drawSpec(src, cid, last) {   // vẽ lại chart `src` vào canvas `cid`; last = chỉ giữ N điểm cuối
+  const sp = SPEC[src]; if (!sp) return false;
+  const cfg = cl(sp.cfg), n = cfg.data && cfg.data.labels ? cfg.data.labels.length : 0;
+  if (cfg.options) delete cfg.options.onClick;
+  const timeAxis = n && cfg.data.labels.every(l => /\d{4}|\d{2}\/\d{2}|Q\d/.test(String(l)));   // chỉ cắt chuỗi thời gian, không cắt chart theo mã NH
+  if (last && n > last && timeAxis && cfg.type !== 'scatter' && !(cfg.plugins && cfg.plugins.length)) {   // chart có plugin vẽ riêng (nền kịch bản…) giữ nguyên chuỗi
+    cfg.data.labels = cfg.data.labels.slice(-last);
+    cfg.data.datasets.forEach(d => { ['data', 'backgroundColor', 'borderColor', 'pointRadius'].forEach(k => { if (Array.isArray(d[k]) && d[k].length === n) d[k] = d[k].slice(-last); }); });
+  }
+  mk(cid, cfg); return true;
+}
+function chartBox(src, cid, h = '') { return `<div class="cbox ${h}"><canvas id="${cid}" role="img" aria-label="${esc(SPEC[src] ? cardMeta(SPEC[src].el).title : src)}"></canvas></div>`; }
+
 function mk(id, cfg, opt = {}) {
   const el = document.getElementById(id); if (!el) return;
   if (charts[id]) charts[id].destroy();
   cfg.options = cfg.options || {};
   cfg.options.interaction = cfg.options.interaction || { mode: 'index', intersect: false, axis: cfg.options.indexAxis === 'y' ? 'y' : 'x' };
+  if (!id.startsWith('cb-') && !id.startsWith('qu-')) SPEC[id] = { cfg: cl(cfg), el };
   charts[id] = new Chart(el, cfg);
   if (opt.switch) {
     const box = document.querySelector(`[data-ctl="${id}"]`);
@@ -147,7 +175,9 @@ function paneOverview() {
   const nimY = AG.nim.all[QY], nimN = AG.nim.all[QI];
   const pbZ = (SV.now.pb - SV.pb.mean) / SV.pb.sd;
   const sigBy = id => D.signals.find(s => s.id === id);
+  const qu = D.quick && D.quick.updates[0];
   $('#overview').innerHTML = `
+  ${qu ? `<button type="button" class="qbar" id="goQuick"><span class="qdate">Cập nhật nhanh ${dvn(qu.date)}</span><span class="who ${qu.author.type === 'AI' ? 'ai' : 'cv'}">${qu.author.type === 'AI' ? 'AI' : 'Chuyên viên'}</span><span class="qbar-t">${esc(qu.headline)}</span><span class="qbar-go">Xem →</span></button>` : ''}
   <h2 class="sec">Tổng quan ngành ngân hàng</h2>
   <p class="sec-sub">Ngân hàng là ngành "ăn theo" chính sách tiền tệ: tỷ giá quyết định NHNN được nới hay phải siết, lãi suất quyết định biên lãi, nợ xấu và định giá.</p>
   <article class="card"><h3 class="sub">💎 Nhận định FinSuccess <span class="pill">analyst</span></h3>
@@ -204,6 +234,7 @@ function paneOverview() {
   drawCompare('nim', 'Tất cả');
   $$('#cmpMetric button').forEach(b => b.onclick = () => drawCompare(b.dataset.k, $('#cmpGroup button.on').dataset.g));
   $$('#cmpGroup button').forEach(b => b.onclick = () => drawCompare($('#cmpMetric button.on').dataset.k, b.dataset.g));
+  const gq = $('#goQuick'); if (gq) gq.onclick = () => { show('quick'); window.scrollTo({ top: 0 }); };
   mk('chRoePb', { type: 'scatter', data: { datasets: GROUPS.map(g => ({ label: g, data: Lr.filter(r => r.group === g && r.roe != null && r.pb != null && r.roe > 3).map(r => ({ x: r.roe, y: r.pb, s: r.s })), backgroundColor: GC[g], pointRadius: 5, pointHoverRadius: 7 })) },
     options: { interaction: { mode: 'nearest', intersect: true }, plugins: { tooltip: { callbacks: { label: c => `${c.raw.s}: ROE ${pc(c.raw.x, 1)} · P/B ${x(c.raw.y)}` } }, refLines: { lines: [{ value: SV.now.pb, label: 'P/B ngành ' + x(SV.now.pb), color: C.grey }] } },
       scales: { x: pctAxis('ROE TTM'), y: numAxis('P/B', { ticks: { callback: v => nf(v, 1) + 'x' } }) } },
@@ -728,12 +759,101 @@ function paneSrc() {
 }
 
 /* =====================================================================
+   TAB · CẬP NHẬT NHANH (Chuyên viên / AI) — data/quick-updates.json
+===================================================================== */
+const ST = { 'mới': ['watch', 'Mới'], 'nóng lên': ['risk', 'Nóng lên'], 'tiếp diễn': ['', 'Tiếp diễn'], 'hạ nhiệt': ['ok', 'Hạ nhiệt'] };
+const stPill = k => { const [c, l] = ST[k] || ['', k]; return `<span class="pill ${c}">${l}</span>`; };
+const byLine = a => a.type === 'AI' ? `<span class="who ai">AI</span> ${esc(a.name)}${a.requestedBy ? ` · theo yêu cầu của chuyên viên <b>${esc(a.requestedBy)}</b>` : ''}` : `<span class="who cv">Chuyên viên</span> <b>${esc(a.name)}</b>`;
+let quSel = 0;
+function paneQuick() {
+  buildAll();
+  const U = (D.quick && D.quick.updates) || [];
+  if (!U.length) { $('#quick').innerHTML = '<h2 class="sec">Cập nhật nhanh</h2><p class="sec-sub">Chưa có bản cập nhật nào.</p>'; return; }
+  const u = U[quSel], prev = u.follows ? U.find(x => x.id === u.follows) : null;
+  $('#quick').innerHTML = `
+  <h2 class="sec">Cập nhật nhanh</h2>
+  <div class="qhead card">
+    <div class="qmeta"><span class="qdate">${dvn(u.date)}</span><span>Cập nhật bởi: ${byLine(u.author)}</span>${quSel ? '<span class="pill">Bản cũ</span>' : '<span class="pill ok">Mới nhất</span>'}</div>
+    <h3 class="qtitle">${esc(u.headline)}</h3>
+    ${prev ? `<p class="qprev">Tiếp nối bản ${dvn(prev.date)} (${prev.author.type === 'AI' ? 'AI' : 'chuyên viên ' + esc(prev.author.name)}): ${u.vsPrev || ''}</p>` : ''}
+    <ul class="qsum">${u.summary.map(t => `<li>${t}</li>`).join('')}</ul>
+    ${u.kpis ? `<div class="kpis k4 qk">${u.kpis.map(k => kpi(esc(k.l), esc(k.v), esc(k.s || ''), k.cls || '')).join('')}</div>` : ''}
+  </div>
+  ${u.concerns.map((c, i) => `
+  <section class="qc">
+    <div class="qc-h"><span class="qn">${i + 1}</span><h3>${esc(c.title)}</h3>${stPill(c.status)}</div>
+    <p class="qnote">${c.note}</p>
+    ${c.change ? `<p class="qchg"><b>So với bản trước:</b> ${c.change}</p>` : ''}
+    <div class="grid ${c.charts.length > 1 ? 'g2' : ''} gap">${c.charts.map((g, j) => SPEC[g.id] ? `
+      <article class="card qchart"><h3 class="sub">${esc(g.title || cardMeta(SPEC[g.id].el).title)}</h3>
+        ${chartBox(g.id, `qu-${i}-${j}-${g.id}`, g.h || '')}
+        ${g.caption ? `<p class="qcap">${g.caption}</p>` : ''}
+        <div class="qfoot"><span>Chart book: <code>${g.id}</code>${g.last ? ` · ${g.last} điểm gần nhất` : ''}</span><button type="button" class="lnk" data-book="${g.id}">Mở trong Chart book →</button></div>
+      </article>` : `<article class="card"><p class="muted">Chart <code>${esc(g.id)}</code> không còn trong dashboard.</p></article>`).join('')}</div>
+  </section>`).join('')}
+  ${u.watch && u.watch.length ? `<article class="card"><h3 class="sub">Theo dõi tiếp</h3><div class="tscroll"><table><thead><tr><th>Ngày</th><th>Sự kiện</th><th>Vì sao quan trọng</th></tr></thead><tbody>
+    ${u.watch.map(w => `<tr><td style="white-space:nowrap">${dvn(w.d)}</td><td><b>${esc(w.t)}</b></td><td>${esc(w.why)}</td></tr>`).join('')}</tbody></table></div></article>` : ''}
+  ${u.sources && u.sources.length ? `<p class="qsrc">Nguồn: ${u.sources.map(esc).join(' · ')}</p>` : ''}
+  <article class="card"><h3 class="sub">Lịch sử cập nhật</h3>
+    <div class="tscroll"><table class="qhist"><thead><tr><th>Ngày</th><th>Người cập nhật</th><th>Nội dung chính</th><th></th></tr></thead><tbody>
+    ${U.map((x, k) => `<tr class="${k === quSel ? 'hl' : ''}"><td style="white-space:nowrap">${dvn(x.date)}</td><td>${byLine(x.author)}</td><td>${esc(x.headline)}</td><td>${k === quSel ? 'đang xem' : `<button type="button" class="lnk" data-qv="${k}">Xem</button>`}</td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="note keep">Cách cập nhật: chuyên viên nhắn AI <i>"Cập nhật nhanh ngành ngân hàng"</i> (có thể kèm chủ đề muốn soi). AI đọc các bản trước — ưu tiên bản gần nhất của chuyên viên — rồi viết tiếp: giữ mối quan tâm còn nóng, đánh dấu cái hạ nhiệt, thêm diễn biến mới, chọn chart từ Chart book làm bằng chứng. Chuyên viên tự viết thì ghi tên mình ở mục người cập nhật.</p>
+  </article>`;
+  u.concerns.forEach((c, i) => c.charts.forEach((g, j) => drawSpec(g.id, `qu-${i}-${j}-${g.id}`, g.last)));
+  $$('#quick [data-qv]').forEach(b => b.onclick = () => { quSel = +b.dataset.qv; paneQuick(); window.scrollTo({ top: 0 }); });
+  $$('#quick [data-book]').forEach(b => b.onclick = () => openBook(b.dataset.book));
+}
+
+/* =====================================================================
+   TAB · CHART BOOK — mọi chart của dashboard, vẽ lại từ cấu hình đã lưu
+===================================================================== */
+const bookF = { g: '', q: '', last: 0 };
+let bookObs = null;
+function paneBook() {
+  buildAll();
+  const ids = Object.keys(SPEC), M = Object.fromEntries(ids.map(id => [id, cardMeta(SPEC[id].el)]));
+  const groups = [...new Set(ids.map(id => M[id].group))];
+  $('#book').innerHTML = `
+  <h2 class="sec">Chart book</h2>
+  <p class="sec-sub">${ids.length} chart của dashboard ở một chỗ, luôn theo dữ liệu mới nhất. Mã chart (vd. <code>chOn</code>) dùng để gọi trong Cập nhật nhanh hoặc nhắn AI.</p>
+  <div class="picker" id="bkG"><button type="button" data-k="">Tất cả <small>${ids.length}</small></button>${groups.map(g => `<button type="button" data-k="${g}">${g} <small>${ids.filter(id => M[id].group === g).length}</small></button>`).join('')}</div>
+  <div class="bk-bar"><input id="bkQ" type="search" placeholder="Tìm chart: tỷ giá, LNH, NIM, P/B…" aria-label="Tìm chart"><div class="picker" id="bkR"><span class="muted">Khoảng:</span><button type="button" data-k="0">Toàn bộ</button><button type="button" data-k="24">24 điểm</button><button type="button" data-k="12">12 điểm</button></div></div>
+  <div class="grid g2 gap" id="bkGrid">${ids.map(id => { const m = M[id]; return `
+    <article class="card bk" data-id="${id}" data-g="${esc(m.group)}" data-s="${esc((m.title + ' ' + id + ' ' + m.group + ' ' + m.sub.replace(/<[^>]+>/g, '')).toLowerCase())}">
+      <h3 class="sub">${esc(m.title)}</h3>${m.sub ? `<p class="chart-sub">${m.sub}</p>` : ''}
+      ${chartBox(id, 'cb-' + id)}
+      ${m.insight ? `<div class="insight">${m.insight}</div>` : ''}${m.src ? `<div class="src">${m.src.startsWith('Nguồn') ? '' : 'Nguồn: '}${m.src}</div>` : ''}
+      <div class="qfoot"><span><code>${id}</code> · ${esc(m.group)}</span><button type="button" class="lnk" data-go="${m.pane}" data-sp="${m.sp}">Xem ở tab gốc →</button></div>
+    </article>`; }).join('')}</div>`;
+  const drawn = new Set();
+  const draw = c => { const id = c.dataset.id; drawSpec(id, 'cb-' + id, bookF.last); drawn.add(id); };
+  if (bookObs) bookObs.disconnect();
+  bookObs = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !drawn.has(e.target.dataset.id)) draw(e.target); }), { rootMargin: '300px' }) : null;
+  const apply = () => {
+    $$('#bkG button').forEach(b => b.classList.toggle('on', b.dataset.k === bookF.g));
+    $$('#bkR button').forEach(b => b.classList.toggle('on', +b.dataset.k === bookF.last));
+    $$('#bkGrid .bk').forEach(c => { c.hidden = !((!bookF.g || c.dataset.g === bookF.g) && (!bookF.q || c.dataset.s.includes(bookF.q))); });
+  };
+  $$('#bkGrid .bk').forEach(c => bookObs ? bookObs.observe(c) : draw(c));
+  $$('#bkG button').forEach(b => b.onclick = () => { bookF.g = b.dataset.k; apply(); });
+  $$('#bkR button').forEach(b => b.onclick = () => { bookF.last = +b.dataset.k; apply(); [...drawn].forEach(id => drawSpec(id, 'cb-' + id, bookF.last)); });
+  $('#bkQ').oninput = e => { bookF.q = e.target.value.trim().toLowerCase(); apply(); };
+  $$('#bkGrid [data-go]').forEach(b => b.onclick = () => { show(b.dataset.go); if (b.dataset.sp) openP(b.dataset.sp); const t = SPEC[b.closest('.bk').dataset.id].el; setTimeout(() => t.scrollIntoView({ block: 'center' }), 60); });
+  apply();
+}
+function openBook(id) {
+  show('book'); bookF.g = ''; bookF.q = id.toLowerCase(); const q = $('#bkQ'); if (q) { q.value = id; q.dispatchEvent(new Event('input')); }
+  window.scrollTo({ top: 0 });
+}
+
+/* =====================================================================
    FOOTER, ĐIỀU HƯỚNG, CHẾ ĐỘ GỌN
 ===================================================================== */
 function footer() {
   $('#foot').innerHTML = `<div>FinSuccess · Dashboard CSTT &amp; ngành Ngân hàng · dữ liệu WiData cập nhật ${dvn(TODAY)}. Không phải khuyến nghị đầu tư.</div>`;
 }
-const builders = { overview: paneOverview, picture: panePicture, policy: panePolicy, catalyst: paneCatalyst, cons: paneCons, hot: paneHot, src: paneSrc };
+const builders = { overview: paneOverview, quick: paneQuick, picture: panePicture, policy: panePolicy, catalyst: paneCatalyst, cons: paneCons, hot: paneHot, book: paneBook, src: paneSrc };
 const built = {};
 function show(k) {
   if (!builders[k]) k = 'overview';

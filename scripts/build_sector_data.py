@@ -433,6 +433,11 @@ def main():
     sbv['events'].sort(key=lambda e: e['d'], reverse=True)
     D['sbv'] = sbv
 
+    # ------------------------------------------------ cập nhật nhanh (chuyên viên / AI): data/quick-updates.json, mới nhất trước
+    qu = json.loads((ROOT / 'data/quick-updates.json').read_text(encoding='utf-8'))
+    qu['updates'].sort(key=lambda u: (u['date'], u['id']), reverse=True)
+    D['quick'] = qu
+
     # ------------------------------------------------ tín hiệu R-01…R-16 (ngưỡng = giả định theo deck slide 50–51)
     def vn(x, nd=1, sign=False):
         s = f'{x:+,.{nd}f}' if sign else f'{x:,.{nd}f}'

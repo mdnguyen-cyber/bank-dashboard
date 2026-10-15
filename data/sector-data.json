@@ -23152,6 +23152,180 @@
    }
   ]
  },
+ "quick": {
+  "note": "Mỗi bản cập nhật là một phần tử trong updates. Bản mới thêm vào, không sửa bản cũ. author.type = 'AI' hoặc 'Chuyên viên'. follows = id bản trước mà bản này viết tiếp. concerns[].status: mới | nóng lên | tiếp diễn | hạ nhiệt. charts[].id = mã chart trong Chart book (python3 scripts/chart_ids.py), last = chỉ hiện N điểm gần nhất. Quy trình: docs/cap-nhat-nhanh.md",
+  "updates": [
+   {
+    "id": "QU-2026-10-15-AI",
+    "date": "2026-10-15",
+    "author": {
+     "type": "AI",
+     "name": "Claude",
+     "requestedBy": "Minh Đức"
+    },
+    "follows": null,
+    "vsPrev": "",
+    "headline": "Fed tăng lãi suất, lạm phát vượt mục tiêu, chi phí vốn neo cao: kịch bản \"thắt\" sang tháng thứ 8, định giá ngành về vùng đáy 4 năm",
+    "summary": [
+     "Áp lực bên ngoài <b>nóng lên</b>: Fed tăng 25 bps (9/2026), UST 10Y <b>5,20%</b> cao hơn TPCP VN 10Y <b>62 bps</b>. NHNN nâng dần tỷ giá trung tâm lên đỉnh <b>25.646</b> (+2,1% từ đầu năm), nhưng giá USD trên thị trường đã hạ nhiệt từ tháng 7.",
+     "Thanh khoản <b>hạ nhiệt</b> sau kỳ cuối quý: LNH qua đêm từ 6,95% (30/9) về <b>4,8%</b> (13/10); NHNN hút ròng khoảng <b>78 nghìn tỷ</b> qua OMO từ 15/9.",
+     "Chi phí vốn <b>tiếp diễn</b> ở mức cao: COF ngành <b>4,21%</b> (Q2/2026, +62 bps YoY) trong khi NIM giảm còn <b>3,08%</b> — mùa KQKD Q3 sẽ cho thấy biên lãi có bị ép thêm không.",
+     "Lạm phát <b>nóng lên</b>: CPI 9/2026 <b>5,08%</b> YoY, bình quân 9 tháng <b>4,52%</b> đã vượt mục tiêu khoảng 4,5% → NHNN khó hạ lãi suất.",
+     "Định giá: P/B ngành <b>1,42x</b>, ngang đáy 10/2022 (1,42x) và 4/2025 (1,41x), thấp hơn bình quân 1,58x khoảng 1,5σ."
+    ],
+    "kpis": [
+     {
+      "l": "Kịch bản IDX",
+      "v": "Thắt",
+      "s": "từ 3/2026 · FX 0,84 · LIQ −0,23",
+      "cls": "neg"
+     },
+     {
+      "l": "Tỷ giá trung tâm",
+      "v": "25.646",
+      "s": "14/10 · đỉnh mới, +2,1% YTD",
+      "cls": "neg"
+     },
+     {
+      "l": "COF ngành Q2/26",
+      "v": "4,21%",
+      "s": "+62 bps YoY · NIM 3,08%",
+      "cls": "neg"
+     },
+     {
+      "l": "P/B ngành",
+      "v": "1,42x",
+      "s": "14/10 · bình quân 1,58x",
+      "cls": "pos"
+     }
+    ],
+    "concerns": [
+     {
+      "title": "Áp lực tỷ giá từ bên ngoài tăng khi Fed đảo chiều",
+      "status": "nóng lên",
+      "note": "Fed tăng 25 bps lên 3,75–4,00% ngày 16/9, DXY từ 99,4 (cuối 8) lên <b>102,0</b>. Lợi suất UST 10Y <b>5,20%</b> so với TPCP VN 10Y <b>4,58%</b>: chênh âm <b>62 bps</b>, giữ USD hấp dẫn hơn VND. NHNN nâng tỷ giá trung tâm liên tục từ tháng 5 (25.139) lên đỉnh <b>25.646</b> (14/10). Trên thị trường thì ngược lại: giá bán NHTM giảm từ 26.490 (cuối 7) xuống <b>26.090</b>, tỷ giá tự do từ 26.720 (cuối 6) xuống <b>26.050</b>, thấp hơn cả giá NHTM. Áp lực vì vậy chủ yếu đến từ bên ngoài và đang được NHNN hấp thụ qua tỷ giá trung tâm; cần theo dõi nếu Fed tăng tiếp ngày 28/10.",
+      "change": "",
+      "charts": [
+       {
+        "id": "chFx",
+        "last": 18,
+        "caption": "Tỷ giá trung tâm đi lên từ tháng 5 trong khi giá NHTM và tự do giảm từ giữa năm; giá NHTM còn cách trần 26.928 khoảng 3,1%."
+       },
+       {
+        "id": "chRates",
+        "last": 18,
+        "caption": "UST 10Y vượt TPCP VN 10Y từ giữa 2026 và hiện cao hơn 62 bps — chênh lệch lãi suất bất lợi cho VND."
+       }
+      ]
+     },
+     {
+      "title": "Thanh khoản liên ngân hàng: dịu lại sau kỳ cuối quý",
+      "status": "hạ nhiệt",
+      "note": "Lãi suất qua đêm vượt 5% ở 11 phiên từ cuối tháng 7, cao nhất <b>6,95%</b> ngày 30/9 (cuối quý). Sang tháng 10 lãi suất rơi về 0,7–1,0% rồi ổn định quanh <b>4,5–4,8%</b>, sát lãi suất OMO 4,5%. NHNN rút ròng khoảng <b>78 nghìn tỷ đồng</b> qua OMO từ 15/9 đến 13/10, cho thấy hệ thống không còn thiếu vốn cấp bách. Rủi ro còn lại là kỳ cuối năm, khi nhu cầu thanh toán và tín dụng mùa vụ tăng.",
+      "change": "",
+      "charts": [
+       {
+        "id": "chOn",
+        "caption": "LNH qua đêm theo ngày từ 15/7/2026 so với lãi suất OMO; cột là bơm (+)/hút (−) ròng của NHNN."
+       }
+      ]
+     },
+     {
+      "title": "Chi phí vốn neo cao, biên lãi chịu sức ép",
+      "status": "tiếp diễn",
+      "note": "Lãi suất huy động 12 tháng của nhóm NHTM Nhà nước đứng ở <b>5,9%</b> từ tháng 3 (so với 4,675% tháng 9/2025), nhóm còn lại khoảng 5,9–6,0% dù NHNN nhiều lần chỉ đạo giảm lãi suất. COF bình quân 26 ngân hàng niêm yết lên <b>4,21%</b> ở Q2/2026, tăng 62 bps so với cùng kỳ, trong khi NIM giảm 13 bps còn <b>3,08%</b>. Mùa KQKD Q3 (từ khoảng 20/10) là phép thử: COF tiếp tục tăng thì nhóm có CASA thấp và phụ thuộc vốn LNH chịu tác động mạnh nhất.",
+      "change": "",
+      "charts": [
+       {
+        "id": "chNimDep",
+        "caption": "COF đi lên từ Q2/2025 trong khi NIM đi ngang–giảm; lãi suất huy động 12T là chỉ báo sớm của COF."
+       },
+       {
+        "id": "chDep",
+        "last": 24,
+        "caption": "Lãi suất huy động 12 tháng tăng mạnh nhất vào tháng 12/2025 và tháng 3/2026, chưa giảm lại."
+       }
+      ]
+     },
+     {
+      "title": "Tín dụng tăng nhanh hơn huy động, LDR sát trần cũ",
+      "status": "tiếp diễn",
+      "note": "Tín dụng tăng <b>17,7%</b> YoY (7/2026) trong khi tiền gửi chỉ tăng <b>12,7%</b> (6/2026): khoảng cách khoảng 5 điểm %. LDR bình quân 26 ngân hàng niêm yết <b>84,5%</b> ở Q2/2026, sát trần 85%. Hai thay đổi gỡ áp lực: tiền gửi KBNN được tính 50% vào LDR từ 1/8 và trần LDR lên 95% từ 1/12 theo TT50. Tín dụng đến 30/9 đã tăng <b>11,59%</b> so với đầu năm, còn khoảng 3,4 điểm % so với chỉ tiêu khoảng 15% cho quý 4.",
+      "change": "",
+      "charts": [
+       {
+        "id": "chMoney",
+        "last": 36,
+        "caption": "Tín dụng tăng nhanh hơn tiền gửi 4–6 điểm % liên tục từ giữa 2024; khoảng cách rộng nhất tháng 10/2025 (20,5% so với 14,9%) — gốc của cuộc đua lãi suất huy động."
+       },
+       {
+        "id": "chLdrSens",
+        "caption": "LDR từng ngân hàng theo hệ số tiền gửi KBNN — chọn hệ số ở tab Chính sách."
+       }
+      ]
+     },
+     {
+      "title": "Lạm phát vượt mục tiêu, khóa dư địa hạ lãi suất",
+      "status": "nóng lên",
+      "note": "CPI tháng 9 tăng <b>5,08%</b> YoY, lần thứ ba trong năm vượt 5% (đỉnh 5,60% tháng 5). CPI bình quân 9 tháng <b>4,52%</b>, đã vượt mục tiêu khoảng 4,5%; lạm phát cơ bản 4,45%. Giá dầu Brent quanh 106 USD/thùng vẫn là nguồn đẩy giá chính. Với lạm phát như vậy, NHNN khó hạ lãi suất điều hành (giữ nguyên từ 6/2023) và nhiều khả năng tiếp tục dùng OMO thay vì công cụ lãi suất.",
+      "change": "",
+      "charts": [
+       {
+        "id": "chCpi",
+        "last": 24,
+        "caption": "CPI bình quân từ đầu năm (đường đứt) đã chạm mục tiêu; CPI tháng 10 công bố ngày 6/11."
+       }
+      ]
+     },
+     {
+      "title": "Định giá ngành về vùng đáy 4 năm",
+      "status": "mới",
+      "note": "P/B ngành giảm từ 1,53x (cuối 8) xuống <b>1,42x</b> (14/10), ngang hai đáy gần nhất là 10/2022 (1,42x) và 4/2025 (1,41x); P/E 8,45x. Thị trường đang chiết khấu cả rủi ro biên lãi lẫn tỷ giá. Nếu KQKD Q3 cho thấy NIM giữ được và nợ xấu không tăng (NPL ngành 2,01% ở Q2), mức định giá này có biên an toàn; ngược lại COF tăng tiếp sẽ kéo ROE và P/B xuống thêm.",
+      "change": "",
+      "charts": [
+       {
+        "id": "chPbBand",
+        "caption": "P/B ngành so với bình quân và dải ±1σ từ 10/2022."
+       },
+       {
+        "id": "chIdxHist",
+        "caption": "IDX-FX dương và IDX-LIQ âm liên tục từ 3/2026 (nền đỏ = kịch bản \"thắt\": áp lực tỷ giá kèm thanh khoản kém)."
+       }
+      ]
+     }
+    ],
+    "watch": [
+     {
+      "d": "2026-10-20",
+      "t": "Mùa công bố KQKD Q3/2026 của ngân hàng niêm yết",
+      "why": "Xác nhận COF, NIM, dự phòng và tín dụng 9 tháng so với room."
+     },
+     {
+      "d": "2026-10-28",
+      "t": "FOMC 27–28/10",
+      "why": "Fed tăng tiếp sẽ nới rộng chênh lệch lãi suất USD–VND, gây thêm áp lực tỷ giá."
+     },
+     {
+      "d": "2026-11-06",
+      "t": "CPI tháng 10 (Cục Thống kê)",
+      "why": "Bình quân năm vượt rõ 4,5% thì khả năng hạ lãi suất gần như không còn."
+     },
+     {
+      "d": "2026-12-01",
+      "t": "TT50/2026 có hiệu lực (trần LDR 95%, LCR, NSFR)",
+      "why": "Nới dư địa cho vay cho nhóm LDR sát trần ngay trước mùa tín dụng cuối năm."
+     }
+    ],
+    "sources": [
+     "NHNN (tỷ giá, LNH, OMO, tín dụng, tiền gửi)",
+     "Cục Thống kê (CPI)",
+     "Fed, U.S. Treasury (lãi suất Mỹ)",
+     "HNX (TPCP VN 10Y)",
+     "BCTC 26 ngân hàng niêm yết (COF, NIM, LDR, P/B) — tự tổng hợp"
+    ]
+   }
+  ]
+ },
  "signals": [
   {
    "id": "R-01",
