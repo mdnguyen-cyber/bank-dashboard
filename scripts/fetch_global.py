@@ -4,7 +4,7 @@ Chạy trên GitHub Actions (máy chủ có internet), không cần API key.
 Mỗi khái niệm có danh sách mã ứng viên; script lấy mã có số mới nhất và ghi báo cáo vào data/global/report.json.
 Chuỗi lưu từ 2010 để file gọn.
 """
-import csv, io, json, sys, time, urllib.request
+import csv, io, json, sys, time, urllib.parse, urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,23 +63,23 @@ CAT = {
     'us_wti': ('Dầu WTI', ['fred:DCOILWTICO']),
     'us_brent': ('Dầu Brent', ['fred:DCOILBRENTEU']),
     # ---------------- Khu vực đồng Euro
-    'ea_hicp': ('HICP (% YoY)', ['dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA']),
-    'ea_hicp_core': ('HICP lõi trừ năng lượng, thực phẩm (% YoY)', ['dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA']),
-    'ea_hicp_serv': ('HICP dịch vụ (% YoY)', ['dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA']),
+    'ea_hicp': ('HICP (% YoY)', ['ecb:ICP/M.U2.N.000000.4.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.EA']),
+    'ea_hicp_core': ('HICP lõi trừ năng lượng, thực phẩm (% YoY)', ['ecb:ICP/M.U2.N.XEF000.4.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.TOT_X_NRG_FOOD.EA']),
+    'ea_hicp_serv': ('HICP dịch vụ (% YoY)', ['ecb:ICP/M.U2.N.SERV00.4.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA20', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.SERV.EA']),
     'ea_dfr': ('Lãi suất tiền gửi ECB', ['fred:ECBDFR']),
     'ea_assets': ('Tổng tài sản Eurosystem (triệu EUR)', ['fred:ECBASSETSW']),
-    'ea_unrate': ('Thất nghiệp khu vực Euro', ['fred:LRHUTTTTEZM156S']),
+    'ea_unrate': ('Thất nghiệp khu vực Euro', ['ecb:LFSI/M.I9.S.UNEHRT.TOTAL0.15_74.T', 'fred:LRHUTTTTEZM156S']),
     'de_10y': ('Lợi suất Bund 10 năm', ['fred:IRLTLT01DEM156N']),
     'eurusd': ('EUR/USD', ['fred:DEXUSEU']),
     # ---------------- Nhật Bản
-    'jp_cpi': ('CPI Nhật (% YoY)', ['dbn:IMF/CPI/M.JP.PCPI_PC_CP_A_PT', 'fred:CPALTT01JPM659N']),
-    'jp_cpi_core': ('CPI lõi Nhật (trừ thực phẩm tươi sống, năng lượng; % YoY)', ['fred:CPGRLE01JPM659N', 'dbn:OECD/DSD_PRICES@DF_PRICES_ALL/JPN.M.N.CPI.PA._TXCP01_NRG.N.GY']),
+    'jp_cpi': ('CPI Nhật (% YoY)', ['oecd:JPN.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.JP.PCPI_PC_CP_A_PT', 'fred:CPALTT01JPM659N']),
+    'jp_cpi_core': ('CPI Nhật trừ thực phẩm và năng lượng (% YoY)', ['oecd:JPN.M.N.CPI.PA._TXCP01_NRG.N.GY', 'fred:CPGRLE01JPM659N', 'dbn:OECD/DSD_PRICES@DF_PRICES_ALL/JPN.M.N.CPI.PA._TXCP01_NRG.N.GY']),
     'jp_rate': ('Lãi suất qua đêm Nhật', ['fred:IRSTCI01JPM156N', 'fred:IR3TIB01JPM156N']),
     'jp_assets': ('Tổng tài sản BOJ (100 triệu JPY)', ['fred:JPNASSETS']),
     'jp_10y': ('Lợi suất JGB 10 năm', ['fred:IRLTLT01JPM156N']),
     'usdjpy': ('USD/JPY', ['fred:DEXJPUS']),
     # ---------------- Trung Quốc
-    'cn_cpi': ('CPI Trung Quốc (% YoY)', ['dbn:IMF/CPI/M.CN.PCPI_PC_CP_A_PT', 'fred:CPALTT01CNM659N']),
+    'cn_cpi': ('CPI Trung Quốc (% YoY)', ['oecd:CHN.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.CN.PCPI_PC_CP_A_PT', 'fred:CPALTT01CNM659N']),
     'cn_ppi': ('PPI Trung Quốc (% YoY)', ['dbn:IMF/PPI/M.CN.PPPI_PC_CP_A_PT', 'fred:CHNPIEATI01GPM']),
     'cn_rate': ('Lãi suất liên ngân hàng Trung Quốc', ['fred:IR3TIB01CNM156N', 'fred:INTDSRCNM193N']),
     'usdcny': ('USD/CNY', ['fred:DEXCHUS']),
@@ -118,6 +118,34 @@ def dbn(path):
     return out
 
 
+def ecb(key):
+    flow, k = key.split('/', 1)
+    txt = get(f'https://data-api.ecb.europa.eu/service/data/{flow}/{k}?format=csvdata&startPeriod={START[:7]}')
+    rows = list(csv.DictReader(io.StringIO(txt)))
+    return [[(r['TIME_PERIOD'] + '-01') if len(r['TIME_PERIOD']) == 7 else r['TIME_PERIOD'], round(float(r['OBS_VALUE']), 4)] for r in rows if r.get('OBS_VALUE') not in (None, '', 'NaN')]
+
+
+def oecd(key):
+    url = f'https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/{key}?startPeriod={START[:7]}&format=csvfile'
+    rows = list(csv.DictReader(io.StringIO(get(url))))
+    out = [[r['TIME_PERIOD'] + '-01', round(float(r['OBS_VALUE']), 4)] for r in rows if r.get('OBS_VALUE') not in (None, '')]
+    return sorted(out)
+
+
+PROBES = ['china producer price index', 'china loan prime rate', 'japan consumer price index core', 'china consumer price index']
+
+
+def probe():
+    out = {}
+    for q in PROBES:
+        try:
+            js = json.loads(get('https://api.db.nomics.world/v22/search?q=' + urllib.parse.quote(q) + '&limit=8'))
+            out[q] = [{'code': f"{d.get('provider_code')}/{d.get('code')}", 'name': d.get('name'), 'nb': d.get('nb_matching_series')} for d in js['results']['docs']]
+        except Exception as e:  # noqa: BLE001
+            out[q] = str(e)[:200]
+    return out
+
+
 def nyfed_sofr99():
     js = json.loads(get(f'https://markets.newyorkfed.org/api/rates/secured/sofr/search.json?startDate=2018-04-02&endDate=2100-01-01'))
     out = [[r['effectiveDate'], r.get('percentPercentile99')] for r in js['refRates'] if r.get('percentPercentile99') is not None]
@@ -126,7 +154,7 @@ def nyfed_sofr99():
 
 def fetch(c):
     src, sid = c.split(':', 1)
-    return {'fred': fred, 'dbn': dbn, 'nyfed': lambda _: nyfed_sofr99()}[src](sid)
+    return {'fred': fred, 'dbn': dbn, 'ecb': ecb, 'oecd': oecd, 'nyfed': lambda _: nyfed_sofr99()}[src](sid)
 
 
 def main():
@@ -155,7 +183,7 @@ def main():
         print(key, '→', best[0] if best else 'KHÔNG CÓ', best[1][-1] if best else '', file=sys.stderr)
     stamp = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
     (OUT / 'series.json').write_text(json.dumps({'fetched': stamp, 'series': series}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-    (OUT / 'report.json').write_text(json.dumps({'fetched': stamp, 'report': report}, ensure_ascii=False, indent=1), encoding='utf-8')
+    (OUT / 'report.json').write_text(json.dumps({'fetched': stamp, 'report': report, 'probe': probe()}, ensure_ascii=False, indent=1), encoding='utf-8')
     miss = [k for k in CAT if k not in series]
     print(f'{len(series)}/{len(CAT)} chuỗi; thiếu: {miss}', file=sys.stderr)
 
