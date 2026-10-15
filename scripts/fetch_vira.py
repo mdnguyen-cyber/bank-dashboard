@@ -63,7 +63,7 @@ def bands(mask_line):
     return out
 
 
-def clean(cell, scale=5):
+def clean(cell, scale=5, thr=150):
     """ô màu bất kỳ → chữ đen trên nền trắng: đo độ lệch so với màu nền (trung vị viền ô), phóng to mượt rồi mới cắt ngưỡng."""
     h, w, _ = cell.shape
     edge = np.concatenate([cell[:2].reshape(-1, 3), cell[-2:].reshape(-1, 3), cell[:, :2].reshape(-1, 3), cell[:, -2:].reshape(-1, 3)])
@@ -71,14 +71,15 @@ def clean(cell, scale=5):
     dist = np.sqrt(((cell.astype(float) - bg) ** 2).sum(axis=2))
     dist = np.clip(dist / max(dist.max(), 1) * 255, 0, 255)
     im = Image.fromarray((255 - dist).astype('uint8')).resize((w * scale, h * scale), Image.BICUBIC)
-    im = im.point(lambda x: 0 if x < 150 else 255)
+    im = im.point(lambda x: 0 if x < thr else 255)
     return ImageOps.expand(im, border=30, fill=255)
 
 
-def ocr_cell(cell, num_only=True):
+def ocr_cell(cell, num_only=True, alt=0):
     if not num_only:
         return pytesseract.image_to_string(clean(cell), config='--psm 6').strip()
-    t = pytesseract.image_to_string(clean(cell), config='--psm 7 -c tessedit_char_whitelist=0123456789,.-').strip().replace('.', ',')
+    scale, thr = [(5, 150), (4, 120), (6, 180), (3, 150)][alt]
+    t = pytesseract.image_to_string(clean(cell, scale, thr), config='--psm 7 -c tessedit_char_whitelist=0123456789,.-').strip().replace('.', ',')
     if re.fullmatch(r'-?\d{3,4}', t):          # mất dấu phẩy: mọi số trong bảng đều có 2 chữ số thập phân
         t = t[:-2] + ',' + t[-2:]
     return t
@@ -96,9 +97,11 @@ def grid(img):
 def parse(img):
     """→ {'vnd'|'usd'|'sofr': {tenor: {...}}}, header date nếu có, dòng thô để gỡ lỗi."""
     res, cur, hdr, raw, k = {}, None, None, [], 0
-    for cells in grid(img):
-        if len(cells) < 11:
-            continue
+    for n, cells in enumerate(grid(img)):
+        if len(cells) < 11 or len(cells) > 12:
+            return res, hdr, raw              # không phải bảng VNIBOR/SOFR (11 cột)
+        if n >= 2 and not cur:
+            return res, hdr, raw
         name = ocr_cell(cells[1], False).upper().replace('\n', ' ')
         if 'VNIBOR' in name or 'SOFR' in name:
             cur = 'sofr' if 'SOFR' in name else 'usd' if 'USD' in name else 'vnd' if 'VND' in name else None
@@ -111,73 +114,95 @@ def parse(img):
             continue
         if not cur:
             continue
-        toks = [ocr_cell(c) for c in cells[2:11]]
-        raw.append(f'{cur} {name} ' + ' '.join(toks))
         ten = name.strip().replace('O', '0').replace('0N', 'ON')
         ten = ten if ten in TENORS[cur] else (TENORS[cur][k] if k < len(TENORS[cur]) else None)
         k += 1
-        if not ten or not all(NUM.match(t) for t in toks):
+        if not ten:
             continue
-        v = [num(x) for x in toks]   # Last, D/D, W/W, YTD, Y/Y, H52, chgH, L52, chgL
-        # dấu trừ trên nền đỏ hay bị mất; theo định nghĩa Last − H52W ≤ 0 và Last − L52W ≥ 0
-        last, h52, ch, l52, cl = v[0], v[5], -abs(v[6]), v[7], abs(v[8])
-        ok = abs(last - h52 - ch) <= 0.011 and abs(last - l52 - cl) <= 0.011
-        if not ok and abs((h52 + ch) - (l52 + cl)) <= 0.011:   # ô Last đọc sai nhưng hai cặp đỉnh/đáy 52 tuần khớp nhau → suy ra Last
-            last, ok = round(h52 + ch, 2), True
+        # cột cần: Last, D/D, W/W, (bỏ YTD, Y/Y), H52W, chg, L52W, chg
+        need = [2, 3, 4, 7, 8, 9, 10]
+        for alt in range(4):       # đọc lại với cách xử lý ảnh khác nếu dòng chưa khớp
+            toks = [ocr_cell(cells[j], alt=alt) for j in need]
+            raw.append(f'{cur} {ten} a{alt} ' + ' '.join(toks))
+            if not all(NUM.match(t) for t in (toks[0], toks[3], toks[4], toks[5], toks[6])):
+                ok = False; continue
+            v = [num(x) if NUM.match(x) else None for x in toks]
+            # dấu trừ trên nền đỏ hay bị mất; theo định nghĩa Last − H52W ≤ 0 và Last − L52W ≥ 0
+            last, h52, ch, l52, cl = v[0], v[3], -abs(v[4]), v[5], abs(v[6])
+            ok = abs(last - h52 - ch) <= 0.011 and abs(last - l52 - cl) <= 0.011
+            if not ok and abs((h52 + ch) - (l52 + cl)) <= 0.011:   # ô Last đọc sai nhưng hai cặp đỉnh/đáy 52 tuần khớp → suy ra Last
+                last, ok = round(h52 + ch, 2), True
+            if ok:
+                break
+        if not all(NUM.match(t) for t in (toks[0], toks[3], toks[4], toks[5], toks[6])):
+            res.setdefault(cur, {})[ten] = {'v': None, 'ok': False}
+            continue
         res.setdefault(cur, {})[ten] = {'v': last, 'dd': v[1], 'ww': v[2], 'h52': h52, 'l52': l52, 'ok': ok}
     return res, hdr, raw
 
 
+def one(url):
+    """một số Market Watch → (ngày, bản ghi hoặc None, dòng log)."""
+    try:
+        html = get(url)
+        imgs = re.findall(r'<img[^>]+src="(https://static\.vira\.org\.vn/upload/news/(\d\d)/(\d\d)/(\d\d)/[A-Z0-9]+\.(?:png|jpg|jpeg))"', html)
+        if not imgs:
+            return None, None, {'src': url, 'err': 'không thấy ảnh'}
+        day = imgs[0][1:]          # chỉ ảnh của chính số này: cùng ngày đăng với ảnh đầu tiên
+        pub = f'20{day[0]}-{day[1]}-{day[2]}'
+        got, hdr, raws = {}, None, []
+        for src, yy, mm, dd in imgs:
+            if (yy, mm, dd) != day:
+                continue
+            res, h, raw = parse(Image.open(io.BytesIO(get(src, True))))
+            if res:
+                raws.append(raw)
+            for k, v in res.items():
+                got.setdefault(k, {}).update(v)
+            hdr = hdr or h
+        n_ok = sum(1 for k in got for t in got[k].values() if t['ok'])
+        n_all = sum(len(got[k]) for k in got)
+        # ngày số liệu = ngày trên tiêu đề bảng VND (thường là phiên trước ngày đăng); đọc lỗi → phiên làm việc liền trước ngày đăng
+        pd = datetime.date.fromisoformat(pub)
+        try:
+            ok_hdr = hdr is not None and 0 <= (pd - datetime.date.fromisoformat(hdr)).days <= 7
+        except ValueError:
+            ok_hdr = False
+        if ok_hdr:
+            date = hdr
+        else:
+            g = pd - datetime.timedelta(days=1)
+            while g.weekday() >= 5:
+                g -= datetime.timedelta(days=1)
+            date = g.isoformat()
+        rec = {'pub': pub, 'src': url, 'dateFromHeader': ok_hdr, 'ok': n_ok, 'rows': n_all,
+               **{k: {t: x['v'] for t, x in got[k].items() if x['ok']} for k in got}} if n_ok else None
+        lg = {'src': url, 'date': date, 'ok': n_ok, 'rows': n_all, 'bad': [f'{k}:{t}' for k in got for t, x in got[k].items() if not x['ok']],
+              'raw': [r for rr in raws for r in rr if not r.startswith('[')][-40:] if n_ok < 20 else None}
+        return date, rec, lg
+    except Exception as e:  # noqa: BLE001
+        return None, None, {'src': url, 'err': str(e)[:200]}
+
+
 def main():
+    from multiprocessing import Pool
     OUT.mkdir(parents=True, exist_ok=True)
     pth = OUT / 'mm.json'
     db = json.loads(pth.read_text(encoding='utf-8')) if pth.exists() else {'days': {}}
     seen = {d.get('src') for d in db['days'].values()}
+    todo = [BASE + l for l in issues(int(os.environ.get('MAX_PAGES', '2'))) if BASE + l not in seen]
+    print(len(todo), 'số cần đọc', file=sys.stderr)
     log = []
-    max_pages = int(os.environ.get('MAX_PAGES', '2'))
-    for link in issues(max_pages):
-        url = BASE + link
-        if url in seen:
-            continue
-        try:
-            html = get(url)
-            imgs = re.findall(r'<img[^>]+src="(https://static\.vira\.org\.vn/upload/news/(\d\d)/(\d\d)/(\d\d)/[A-Z0-9]+\.(?:png|jpg|jpeg))"', html)
-            # chỉ ảnh của chính số này: cùng ngày đăng với ảnh đầu tiên
-            if not imgs:
-                log.append({'src': url, 'err': 'không thấy ảnh'}); continue
-            day = imgs[0][1:]
-            pub = f'20{day[0]}-{day[1]}-{day[2]}'
-            got, hdr, raws = {}, None, []
-            for src, yy, mm, dd in imgs:
-                if (yy, mm, dd) != day:
-                    continue
-                res, h, raw = parse(Image.open(io.BytesIO(get(src, True))))
-                if res:
-                    raws.append(raw)
-                for k, v in res.items():
-                    got.setdefault(k, {}).update(v)
-                hdr = hdr or h
-            n_ok = sum(1 for k in got for t in got[k].values() if t['ok'])
-            n_all = sum(len(got[k]) for k in got)
-            # ngày số liệu = ngày trên tiêu đề bảng VND (thường là phiên trước ngày đăng); đọc lỗi → phiên làm việc liền trước ngày đăng
-            pd = datetime.date.fromisoformat(pub)
-            ok_hdr = hdr and re.fullmatch(r'\d{4}-\d{2}-\d{2}', hdr) and 0 <= (pd - datetime.date.fromisoformat(hdr)).days <= 7 if hdr else False
-            if not ok_hdr:
-                g = pd - datetime.timedelta(days=1)
-                while g.weekday() >= 5:
-                    g -= datetime.timedelta(days=1)
-                hdr = None
-            date = hdr if ok_hdr else g.isoformat()
-            if n_ok:
-                db['days'][date] = {'pub': pub, 'src': url, 'dateFromHeader': bool(hdr), 'ok': n_ok, 'rows': n_all,
-                                    **{k: {t: x['v'] for t, x in got[k].items() if x['ok']} for k in got}}
-            log.append({'src': url, 'date': date, 'ok': n_ok, 'rows': n_all, 'bad': [f'{k}:{t}' for k in got for t, x in got[k].items() if not x['ok']],
-                        'raw': raws if n_ok < 20 else None})
-            print(date, n_ok, '/', n_all, file=sys.stderr)
-        except Exception as e:  # noqa: BLE001
-            log.append({'src': url, 'err': str(e)[:200]})
-        if len(log) % 10 == 0:
-            save(db, log)
+    with Pool(int(os.environ.get('WORKERS', '4'))) as pool:
+        for date, rec, lg in pool.imap_unordered(one, todo):
+            log.append(lg)
+            if rec:
+                old = db['days'].get(date)
+                if not old or old.get('ok', 0) <= rec['ok']:
+                    db['days'][date] = rec
+            print(lg.get('date'), lg.get('ok'), '/', lg.get('rows'), lg.get('err', ''), file=sys.stderr)
+            if len(log) % 20 == 0:
+                save(db, log)
     save(db, log)
 
 

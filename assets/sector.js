@@ -83,7 +83,7 @@ const charts = {};
 /* ---------- Chart book: mk() lưu cấu hình từng chart theo id để vẽ lại ở Chart book / Cập nhật nhanh ---------- */
 const SPEC = {};
 const cl = o => Array.isArray(o) ? o.map(cl) : (o && Object.getPrototypeOf(o) === Object.prototype) ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cl(v)])) : o;
-const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', bank: 'Ngân hàng', idx: 'Kịch bản IDX' };
+const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', mm: 'Tiền tệ VND vs USD', bank: 'Ngân hàng', idx: 'Kịch bản IDX' };
 function cardMeta(el) {
   const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane'), cc = el.closest('[data-cc]');
   const h = c && c.querySelector(':scope > h3.sub'), one = sel => { const e = c && c.querySelector(':scope > ' + sel); return e ? e.innerHTML : ''; };
@@ -92,7 +92,7 @@ function cardMeta(el) {
 }
 function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình chart
   Object.keys(builders).forEach(k => { if (!['quick', 'book'].includes(k) && !built[k]) { builders[k](); built[k] = true; } });
-  ['intl', 'dom', 'bank', 'camel', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; } });
+  ['intl', 'dom', 'mm', 'bank', 'camel', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; } });
   GCOUNTRY.forEach(([k]) => { if (!gDone[k]) { gDone[k] = true; ({ us: drUS, ea: drEA, jp: drJP, cn: drCN, cmp: drCMP, ov: chIntlOverview })[k](); } });
 }
 function drawSpec(src, cid, last) {   // vẽ lại chart `src` vào canvas `cid`; last = mở sẵn khung N điểm cuối (vẫn kéo/chọn lại được)
@@ -291,7 +291,7 @@ function drawTable(k, dir) {
 /* =====================================================================
    TAB 2 · BỨC TRANH NGÀNH (Quốc tế → Nội địa → Ngân hàng → Kịch bản IDX)
 ===================================================================== */
-const PSUB = [['intl', 'Quốc tế'], ['dom', 'Nội địa'], ['bank', 'Ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
+const PSUB = [['intl', 'Quốc tế'], ['dom', 'Nội địa'], ['mm', 'Tiền tệ VND vs USD'], ['bank', 'Ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
 const pDone = {};
 function panePicture() {
   $('#picture').innerHTML = `
@@ -301,6 +301,7 @@ function panePicture() {
   <div class="subtabs" role="tablist">${PSUB.map(([k, l], i) => `<button type="button" data-p="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
   <div class="sub on" data-pp="intl">${subIntl()}</div>
   <div class="sub" data-pp="dom">${subDom()}</div>
+  <div class="sub" data-pp="mm">${subMM()}</div>
   <div class="sub" data-pp="bank">${subBank()}</div>
   <div class="sub" data-pp="camel">${subCamel()}</div>
   <div class="sub" data-pp="idx">${subIdx()}</div>`;
@@ -311,7 +312,7 @@ function panePicture() {
 function openP(k) {
   $$('#picture .subtabs button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
   $$('#picture [data-pp]').forEach(p => p.classList.toggle('on', p.dataset.pp === k));
-  if (!pDone[k]) { ({ intl: chIntl, dom: chDom, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; }
+  if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; }
 }
 
 /* ---- Xếp hạng TT21 & room (mô phỏng phần định lượng) ---- */
@@ -604,6 +605,91 @@ function chIntlOverview() {
 }
 
 /* ---- Nội địa ---- */
+/* ---- Thị trường tiền tệ: VNIBOR VND vs VNIBOR USD vs SOFR theo kỳ hạn (VIRA Market Watch, tự cập nhật) ---- */
+const VR = window.VIRA_DATA || { d: [], vnd: {}, usd: {}, sofr: {}, src: {} };
+const MT = ['ON', '1W', '2W', '1M', '2M', '3M', '6M', '9M', '1Y'];
+const SOFR_AT = { ON: null, '1W': 'SW', '2W': '2W', '1M': '1M', '2M': null, '3M': '3M', '6M': '6M', '9M': '9M', '1Y': '1Y' };
+const mmIdx = (back = 0) => {   // phiên gần nhất cách `back` ngày (không lùi quá 7 ngày so với mốc, tránh lấy nhầm phiên quá cũ khi chuỗi thưa)
+  const n = VR.d.length - 1; if (n < 0) return -1; if (!back) return n;
+  const t = new Date(VR.d[n]); t.setDate(t.getDate() - back); const ts = t.toISOString().slice(0, 10); t.setDate(t.getDate() - 7); const lo = t.toISOString().slice(0, 10);
+  let i = n; while (i > 0 && VR.d[i] > ts) i--; return VR.d[i] <= ts && VR.d[i] >= lo ? i : -1; };
+const mmV = (c, t, i) => i < 0 || !VR[c][t] ? null : VR[c][t][i];
+const mmCurve = (c, i) => MT.map(t => c === 'sofr' ? (SOFR_AT[t] ? mmV('sofr', SOFR_AT[t], i) : null) : mmV(c, t, i));
+const mmSp = (t, i) => { const a = mmV('vnd', t, i), b = mmV('usd', t, i); return a == null || b == null ? null : +(a - b).toFixed(2); };
+function mmDep() {   // mức VND mất giá so với USD (NHTM bán ra): 12 tháng và 3 tháng quy năm → "điểm hòa vốn" của chênh lãi suất
+  const a = dom.nhtmSell; if (!a || a.length < 13) return {};
+  const l = lastv(a), y = a[a.length - 13], q = a[a.length - 4];
+  return { d: l.d, y12: (l.v / y.v - 1) * 100, m3: ((l.v / q.v) ** 4 - 1) * 100 };
+}
+function subMM() {
+  if (!VR.d.length) return `<div class="banner">Chưa có số liệu VIRA — đang chờ lần tải đầu tiên.</div>`;
+  const i = mmIdx(), w = mmIdx(7), m = mmIdx(30), dep = mmDep(), d = VR.d[i];
+  const sp3 = mmSp('3M', i), sp3w = mmSp('3M', w), sp1y = mmSp('1Y', i), spOn = mmSp('ON', i);
+  const prem = mmV('usd', '3M', i) != null && mmV('sofr', '3M', i) != null ? mmV('usd', '3M', i) - mmV('sofr', '3M', i) : null;
+  const be = dep.y12, hold = sp1y != null && be != null ? sp1y - be : null;
+  const rows = MT.map(t => { const v = mmV('vnd', t, i), u = mmV('usd', t, i), s = mmSp(t, i), sw = mmSp(t, w), sm = mmSp(t, m), so = SOFR_AT[t] ? mmV('sofr', SOFR_AT[t], i) : null;
+    const dv = (a, b) => a == null || b == null ? '—' : sg((a - b) * 100, 0, '');
+    return `<tr><td><b>${t}</b></td><td class="n">${nf(v, 2)}</td><td class="n">${dv(v, mmV('vnd', t, i - 1))}</td><td class="n">${dv(v, mmV('vnd', t, w))}</td><td class="n">${nf(u, 2)}</td><td class="n">${dv(u, mmV('usd', t, w))}</td><td class="n">${nf(so, 2)}</td><td class="n"><b>${s == null ? '—' : sg(s, 2, '')}</b></td><td class="n">${dv(s, sw)}</td><td class="n">${dv(s, sm)}</td></tr>`; }).join('');
+  const many = VR.d.length >= 20;
+  return `<div class="banner chain">Giữ VND hay USD? So lãi suất liên ngân hàng VND (VNIBOR VND) với USD trong nước (VNIBOR USD) và quốc tế (SOFR) ở từng kỳ hạn · chênh VND − USD phải lớn hơn mức VND mất giá kỳ vọng thì giữ VND mới có lời</div>
+  <p class="muted" style="margin:-4px 0 12px">Số liệu phiên ${dvn(d)} · ${VR.d.length} phiên trong kho (từ ${dvn(VR.d[0])}) · tự đọc từ bảng VIRA Market Watch mỗi chiều ngày làm việc, mỗi dòng được kiểm tra chéo bằng đỉnh/đáy 52 tuần trong chính bảng.</p>
+  <div class="kpis">
+    ${kpi('VNIBOR VND qua đêm', pc(mmV('vnd', 'ON', i), 2), `1W ${pc(mmV('vnd', '1W', i), 2)} · ${sg((mmV('vnd', 'ON', i) - mmV('vnd', 'ON', w)) * 100, 0, ' bps')} 1 tuần`)}
+    ${kpi('VNIBOR VND 3 tháng', pc(mmV('vnd', '3M', i), 2), `1Y ${pc(mmV('vnd', '1Y', i), 2)}`)}
+    ${kpi('VNIBOR USD 3 tháng', pc(mmV('usd', '3M', i), 2), `SOFR 3M ${pc(mmV('sofr', '3M', i), 2)}`)}
+    ${kpi('Chênh VND − USD 3M', sg(sp3, 2, ' đ%'), `${sp3w == null ? '' : sg((sp3 - sp3w) * 100, 0, ' bps') + ' 1 tuần · '}qua đêm ${sg(spOn, 2, '')}`, sp3 != null && sp3 < 1 ? 'neg' : '')}
+    ${kpi('USD/VND 12 tháng', sg(be, 2), `${be < 0 ? 'VND tăng giá' : 'VND mất giá'} · 3 tháng quy năm ${sg(dep.m3, 1)} · NHTM bán ra`, be > 3 ? 'neg' : be < 0 ? 'pos' : '')}
+    ${kpi('Lợi thế giữ VND 1 năm', sg(hold, 2, ' đ%'), 'chênh 1Y − thay đổi USD/VND 12T (nhìn lại)', hold != null && hold < 0 ? 'neg' : 'pos')}
+  </div>
+  <div class="grid g2 gap">
+    ${card({ id: 'mmCurve', title: 'Đường cong lãi suất liên ngân hàng theo kỳ hạn', sub: `%/năm · phiên ${dvn(d)} so với 1 tuần và 1 tháng trước · SOFR kỳ hạn SW đặt ở cột 1W`,
+      insight: mmCurveIns(i, w, m), src: 'Nguồn: VIRA Market Watch (VNIBOR do NHNN công bố; SOFR kỳ hạn) · ' + mmLink() })}
+    ${card({ id: 'mmSpread', title: 'Chênh VND − USD theo kỳ hạn: lợi suất thêm khi giữ VND', sub: 'điểm % · cột = VNIBOR VND − VNIBOR USD hôm nay và 1 tháng trước · đường đỏ = thay đổi USD/VND 12 tháng (điểm hòa vốn nếu tỷ giá đi tiếp như vậy)',
+      insight: mmSpreadIns(i, dep), src: 'Nguồn: VIRA Market Watch; tỷ giá NHTM bán ra (NHNN) · ' + mmLink() })}
+    ${card({ id: 'mmSpTs', title: 'Chênh VND − USD theo thời gian', sub: `điểm %, theo phiên · qua đêm, 1 tháng, 3 tháng, 1 năm${many ? '' : ' · đang nạp lịch sử'}`, h: 'tall',
+      src: 'Nguồn: VIRA Market Watch' })}
+    ${card({ id: 'mmLvTs', title: 'VNIBOR VND, VNIBOR USD và SOFR theo thời gian', sub: '%/năm, theo phiên · VND qua đêm, 1M, 3M, 1Y; USD 3M; SOFR 3M', h: 'tall',
+      src: 'Nguồn: VIRA Market Watch' })}
+  </div>
+  <article class="card"><h3 class="sub">Bảng kỳ hạn · phiên ${dvn(d)}</h3><p class="chart-sub">%/năm · thay đổi tính bằng bps · "1T" = so với phiên gần nhất cách 1 tuần, "1Th" = 1 tháng</p>
+    <div class="tscroll"><table><thead><tr><th>Kỳ hạn</th><th class="n">VND</th><th class="n">Δ phiên</th><th class="n">Δ 1T</th><th class="n">USD</th><th class="n">Δ 1T</th><th class="n">SOFR</th><th class="n">VND − USD</th><th class="n">Δ 1T</th><th class="n">Δ 1Th</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="src">Nguồn: VIRA Market Watch · ${mmLink()}</div></article>
+  <p class="muted">Cách đọc: chênh VND − USD dương và lớn hơn mức VND mất giá kỳ vọng → nắm giữ VND có lợi hơn (đường đỏ dùng mức thay đổi tỷ giá 12 tháng qua làm mốc tham chiếu, không phải dự báo) (tiền chảy vào VND, đỡ tỷ giá). Chênh co lại hoặc thấp hơn mức mất giá → động cơ giữ USD tăng, áp lực lên tỷ giá. VNIBOR USD cao hơn SOFR = USD trong nước khan hơn quốc tế.${prem != null ? ` Hiện VNIBOR USD 3M ${prem >= 0 ? 'cao' : 'thấp'} hơn SOFR 3M <b>${nf(Math.abs(prem) * 100, 0)} bps</b>.` : ''}</p>`;
+}
+function mmLink() { const k = VR.d[VR.d.length - 1], u = VR.src && VR.src[k]; return u ? `<a href="${esc(u)}" target="_blank" rel="noopener">số ${dvn(k)}</a>` : ''; }
+function mmCurveIns(i, w, m) {
+  const on = mmV('vnd', 'ON', i), y1 = mmV('vnd', '1Y', i), onW = mmV('vnd', 'ON', w), y1M = mmV('vnd', '1Y', m);
+  const slope = y1 != null && on != null ? y1 - on : null;
+  return `VND: qua đêm <b>${pc(on, 2)}</b>, 1 năm <b>${pc(y1, 2)}</b> → độ dốc ${sg(slope, 2, ' điểm %')}${onW != null ? `; qua đêm ${on > onW ? 'tăng' : on < onW ? 'giảm' : 'đi ngang'} ${nf(Math.abs(on - onW) * 100, 0)} bps trong 1 tuần` : ''}${y1M != null ? `, 1 năm ${sg((y1 - y1M) * 100, 0, ' bps')} trong 1 tháng` : ''}. USD gần như phẳng (${pc(mmV('usd', 'ON', i), 2)} → ${pc(mmV('usd', '1Y', i), 2)}). ${slope > 3 ? 'Đường VND rất dốc: tiền ngắn hạn dồi dào nhưng các ngân hàng chấp nhận trả cao để giữ vốn dài — kỳ vọng lãi suất còn tăng hoặc lo thanh khoản cuối năm.' : slope < 1 ? 'Đường VND phẳng: thị trường không kỳ vọng tiền đắt lên.' : ''}`;
+}
+function mmSpreadIns(i, dep) {
+  const sp = MT.map(t => [t, mmSp(t, i)]).filter(x => x[1] != null), be = dep.y12;
+  if (!sp.length) return '';
+  const above = sp.filter(x => be != null && x[1] > be).map(x => x[0]), mx = sp.reduce((a, b) => b[1] > a[1] ? b : a), mn = sp.reduce((a, b) => b[1] < a[1] ? b : a);
+  return `Chênh lớn nhất ở kỳ hạn <b>${mx[0]}</b> (${sg(mx[1], 2, ' điểm %')}), nhỏ nhất ở <b>${mn[0]}</b> (${sg(mn[1], 2, '')}). USD/VND (NHTM bán ra) ${sg(be, 2)} trong 12 tháng, ${sg(dep.m3, 1)} quy năm 3 tháng gần nhất. ${be < 0 ? `VND còn <b>tăng giá</b>, nên cả lãi suất lẫn tỷ giá đều nghiêng về giữ VND ở ${above.length ? 'các kỳ hạn ' + above.join(', ') : 'mọi kỳ hạn chênh dương'}; rủi ro là tỷ giá đảo chiều (Fed tăng lãi suất, cuối năm cầu USD nhập khẩu).` : above.length ? `Ở các kỳ hạn ${above.join(', ')} chênh lãi suất đã bù được mức mất giá này → giữ VND có lời nếu tỷ giá không tăng nhanh hơn.` : 'Chưa kỳ hạn nào bù được mức mất giá 12 tháng → động cơ giữ USD vẫn còn.'} ${mn[1] < 0 ? `Kỳ hạn ${mn[0]} chênh âm: vay VND rẻ hơn vay USD — dễ phát sinh vay VND mua USD.` : ''}`;
+}
+function chMM() {
+  if (!VR.d.length) return;
+  const i = mmIdx(), w = mmIdx(7), m = mmIdx(30), dep = mmDep();
+  mk('mmCurve', { type: 'line', data: { labels: MT, datasets: [
+    L('VND ' + dvn(VR.d[i]).slice(0, 5), mmCurve('vnd', i), C.navy, { borderWidth: 2.6, pointRadius: 3 }),
+    ...(w >= 0 && w !== i ? [L('VND ' + dvn(VR.d[w]).slice(0, 5), mmCurve('vnd', w), C.navy, { borderDash: [5, 4], borderWidth: 1.4, pointRadius: 2 })] : []),
+    ...(m >= 0 && m !== w ? [L('VND ' + dvn(VR.d[m]).slice(0, 5), mmCurve('vnd', m), C.grey, { borderDash: [2, 3], borderWidth: 1.4, pointRadius: 2 })] : []),
+    L('USD ' + dvn(VR.d[i]).slice(0, 5), mmCurve('usd', i), C.red, { borderWidth: 2.2, pointRadius: 3 }),
+    L('SOFR kỳ hạn', mmCurve('sofr', i), C.gold, { borderWidth: 1.8, pointRadius: 3, borderDash: [6, 3] })] }, options: { scales: { y: pctAxis('') } } });
+  const today = MT.map(t => mmSp(t, i)), mo = MT.map(t => mmSp(t, m));
+  mk('mmSpread', { type: 'bar', data: { labels: MT, datasets: [
+    { label: 'Hôm nay', data: today, backgroundColor: today.map(v => v != null && dep.y12 != null && v > dep.y12 ? 'rgba(31,138,141,.85)' : 'rgba(29,38,120,.75)'), unit: ' đ%', dp: 2 },
+    ...(m >= 0 && m !== i ? [{ label: '1 tháng trước', data: mo, backgroundColor: 'rgba(154,163,178,.55)', unit: ' đ%', dp: 2 }] : [])] },
+    options: { plugins: { refLines: { lines: dep.y12 != null ? [{ value: dep.y12, label: 'USD/VND 12T ' + sg(dep.y12, 2), color: C.red }] : [] } }, scales: { y: { ticks: { callback: v => nf(v, 1) }, grid: { color: '#eef0f4' } } } } });
+  const labs = VR.d.map(dvn);
+  mk('mmSpTs', { type: 'line', data: { labels: labs, datasets: [['ON', 'Qua đêm', C.grey], ['1M', '1 tháng', C.teal], ['3M', '3 tháng', C.navy], ['1Y', '1 năm', C.purple]].map(([t, n, c]) =>
+    L(n, VR.d.map((_, k) => mmSp(t, k)), c, { unit: ' đ%', borderWidth: t === '3M' ? 2.6 : 1.8 })) },
+    options: { plugins: { refLines: { lines: dep.y12 != null ? [{ value: dep.y12, label: 'USD/VND 12T', color: C.red }, { value: 0, label: '', color: C.grey }] : [] } }, scales: { y: { ticks: { callback: v => nf(v, 1) }, grid: { color: '#eef0f4' } } } } });
+  mk('mmLvTs', { type: 'line', data: { labels: labs, datasets: [
+    L('VND qua đêm', VR.vnd.ON || [], C.grey), L('VND 1M', VR.vnd['1M'] || [], C.teal), L('VND 3M', VR.vnd['3M'] || [], C.navy, { borderWidth: 2.6 }), L('VND 1Y', VR.vnd['1Y'] || [], C.purple),
+    L('USD 3M', VR.usd['3M'] || [], C.red, { borderWidth: 2.2 }), L('SOFR 3M', VR.sofr['3M'] || [], C.gold, { borderDash: [6, 3] })] }, options: { scales: { y: pctAxis('') } } });
+}
 function subDom() {
   const fxGap = lastv(dom.free).v - lastv(dom.nhtmSell).v;
   const gaps = dom.nhtmSell.filter(p => p.d >= '2022').map(p => { const f = byM(dom.free)[p.d.slice(0, 7)]; return f ? { d: p.d, g: f - p.v } : null; }).filter(Boolean);
