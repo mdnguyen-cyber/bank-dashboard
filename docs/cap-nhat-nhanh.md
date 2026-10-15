@@ -7,6 +7,13 @@ Tab Cập nhật nhanh trả lời một câu hỏi: **lúc này điều gì đa
 - **Chuyên viên** tự viết: `author = {"type": "Chuyên viên", "name": "<tên>"}`.
 - **AI** viết khi chuyên viên yêu cầu: `author = {"type": "AI", "name": "Claude", "requestedBy": "<tên chuyên viên>"}`.
 
+## Chuyên viên chỉ sửa vài điểm
+
+1. Trên tab Cập nhật nhanh bấm **✎ Chỉnh sửa**, sửa trực tiếp đoạn chữ (Ctrl+B in đậm) hoặc đổi trạng thái từng mục, chọn tên người sửa, bấm **Lưu thành bản mới**.
+2. Trang tạo bản nháp trên máy (bản AI giữ nguyên): `author` = chuyên viên, `follows` = bản gốc, `edited` = danh sách đoạn đã sửa (hiện vạch vàng).
+3. Bấm **Sao chép để đăng**, dán vào chat với AI kèm câu "đăng bản cập nhật này". AI lưu JSON ra file rồi chạy `python3 scripts/add_update.py <file>`, build, test, push.
+4. Lần cập nhật sau, AI coi các đoạn trong `edited` là quan điểm của chuyên viên: giữ nguyên ý, chỉ cập nhật số liệu.
+
 ## Các bước khi AI được yêu cầu cập nhật
 
 1. **Đọc lịch sử trước.** Mở `data/quick-updates.json`, đọc bản mới nhất và bản gần nhất **của chuyên viên** (nếu có). Lấy danh sách mối quan tâm, trạng thái, các mốc "Theo dõi tiếp" đã đến hạn. Quan điểm của chuyên viên là khung: AI viết tiếp, không viết đè.

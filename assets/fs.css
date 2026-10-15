@@ -234,3 +234,18 @@ table.cm tbody tr.sel td{background:var(--soft)}
 .pri{color:var(--gold-ink, #b7791f)}
 table.cmd tr.grp td{background:var(--soft)}
 table.cmd .note{font-size:11px}
+
+/* chỉnh sửa cập nhật nhanh */
+.qbtns{margin-left:auto;display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:8px;padding:5px 12px;font:600 12.5px Arial;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--navy)}
+.qhead.editing [contenteditable],.qc [contenteditable],.qchart [contenteditable],td [contenteditable]{outline:1px dashed #b3bde8;outline-offset:2px;border-radius:4px;min-height:1.2em;display:inline-block;min-width:40px}
+.qhead.editing h3[contenteditable],.qc p[contenteditable],.qchart p[contenteditable],li[contenteditable]{display:block}
+[contenteditable]:focus{outline:2px solid var(--navy);background:#fff}
+.qhint{font-size:12.5px;color:var(--ink2);background:#fffbea;border-radius:8px;padding:6px 10px;margin:8px 0 0}
+.ed{box-shadow:inset 3px 0 0 #d9a400;padding-left:8px}
+li.ed{list-style-position:inside}
+.qdraft{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;background:#fffbea;border:1px solid #f2d27a;border-radius:12px;padding:10px 14px;margin:0 0 14px;font-size:13px}
+.qdraft textarea{width:100%;min-height:140px;font:12px ui-monospace,Consolas,monospace}
+.qc-h select{border:1px solid var(--line);border-radius:6px;padding:3px 6px;font:12px Arial}
+#quWho{border:1px solid var(--line);border-radius:6px;padding:3px 6px;font:12px Arial}

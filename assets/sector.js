@@ -847,45 +847,96 @@ function paneSrc() {
 const ST = { 'mới': ['watch', 'Mới'], 'nóng lên': ['risk', 'Nóng lên'], 'tiếp diễn': ['', 'Tiếp diễn'], 'hạ nhiệt': ['ok', 'Hạ nhiệt'] };
 const stPill = k => { const [c, l] = ST[k] || ['', k]; return `<span class="pill ${c}">${l}</span>`; };
 const byLine = a => a.type === 'AI' ? `<span class="who ai">AI</span> ${esc(a.name)}${a.requestedBy ? ` · theo yêu cầu của chuyên viên <b>${esc(a.requestedBy)}</b>` : ''}` : `<span class="who cv">Chuyên viên</span> <b>${esc(a.name)}</b>`;
-let quSel = 0;
+let quSel = 0, quEdit = false;
+const QD_KEY = 'quDraft';   // bản nháp chuyên viên sửa, lưu trên máy (chưa đăng)
+const gp = (o, path) => path.split('.').reduce((a, k) => a == null ? a : a[k], o);
+const spath = (o, path, v) => { const ks = path.split('.'), last = ks.pop(); ks.reduce((a, k) => a[k], o)[last] = v; };
+function cleanHTML(el) {   // chỉ giữ chữ và <b>
+  const walk = n => [...n.childNodes].map(c => c.nodeType === 3 ? esc(c.textContent) : /^(B|STRONG)$/.test(c.nodeName) ? `<b>${walk(c)}</b>` : c.nodeName === 'BR' ? ' ' : walk(c)).join('');
+  return walk(el).replace(/\s+/g, ' ').trim();
+}
+function quList() {
+  const U = ((D.quick && D.quick.updates) || []).slice();
+  let dr = null; try { dr = JSON.parse(localStorage.getItem(QD_KEY) || 'null'); } catch (e) {}
+  if (dr && !U.some(x => x.id === dr.id)) U.unshift(Object.assign(dr, { _draft: true }));
+  return U;
+}
 function paneQuick() {
   buildAll();
-  const U = (D.quick && D.quick.updates) || [];
+  const U = quList();
   if (!U.length) { $('#quick').innerHTML = '<h2 class="sec">Cập nhật nhanh</h2><p class="sec-sub">Chưa có bản cập nhật nào.</p>'; return; }
+  if (quSel >= U.length) quSel = 0;
   const u = U[quSel], prev = u.follows ? U.find(x => x.id === u.follows) : null;
+  const ed = new Set(u.edited || []), E = quEdit;
+  const f = (key, html, tag = 'span', cls = '') => `<${tag} class="${cls}${ed.has(key) ? ' ed' : ''}" data-f="${key}"${E ? ' contenteditable="true"' : ''}${ed.has(key) ? ' title="Chuyên viên đã sửa"' : ''}>${html}</${tag}>`;
+  let who = 'Minh Đức'; try { who = localStorage.getItem('quWho') || who; } catch (e) {}
   $('#quick').innerHTML = `
   <h2 class="sec">Cập nhật nhanh</h2>
-  <div class="qhead card">
-    <div class="qmeta"><span class="qdate">${dvn(u.date)}</span><span>Cập nhật bởi: ${byLine(u.author)}</span>${quSel ? '<span class="pill">Bản cũ</span>' : '<span class="pill ok">Mới nhất</span>'}</div>
-    <h3 class="qtitle">${esc(u.headline)}</h3>
+  ${u._draft ? `<div class="qdraft"><b>Bản nháp trên máy bạn — chưa đăng lên web.</b> Bấm "Sao chép để đăng" rồi dán vào chat với AI kèm câu "đăng bản cập nhật này".
+    <span class="qbtns"><button type="button" class="btn" id="quCopy">Sao chép để đăng</button><button type="button" class="btn ghost" id="quDrop">Xoá nháp</button></span><textarea id="quJson" readonly hidden></textarea><span id="quMsg" class="muted"></span></div>` : ''}
+  <div class="qhead card${E ? ' editing' : ''}">
+    <div class="qmeta"><span class="qdate">${dvn(u.date)}</span><span>Cập nhật bởi: ${byLine(u.author)}</span>${u._draft ? '<span class="pill watch">Nháp</span>' : quSel ? '<span class="pill">Bản cũ</span>' : '<span class="pill ok">Mới nhất</span>'}
+      <span class="qbtns">${E ? `<label class="muted">Người sửa <input id="quWho" value="${esc(who)}" size="12"></label><button type="button" class="btn" id="quSave">Lưu thành bản mới</button><button type="button" class="btn ghost" id="quCancel">Huỷ</button>`
+        : `<button type="button" class="btn ghost" id="quEditBtn">✎ Chỉnh sửa</button>`}</span></div>
+    ${E ? '<p class="qhint">Bấm vào đoạn chữ bất kỳ để sửa (Ctrl+B để in đậm). Trạng thái từng mục chọn ở ô bên cạnh tiêu đề. Bản của AI giữ nguyên, bản sửa lưu thành bản mới của bạn.</p>' : ''}
+    ${f('headline', esc(u.headline), 'h3', 'qtitle')}
     ${prev ? `<p class="qprev">Tiếp nối bản ${dvn(prev.date)} (${prev.author.type === 'AI' ? 'AI' : 'chuyên viên ' + esc(prev.author.name)}): ${u.vsPrev || ''}</p>` : ''}
-    <ul class="qsum">${u.summary.map(t => `<li>${t}</li>`).join('')}</ul>
+    <ul class="qsum">${u.summary.map((t, k) => f('summary.' + k, t, 'li')).join('')}</ul>
     ${u.kpis ? `<div class="kpis k4 qk">${u.kpis.map(k => kpi(esc(k.l), esc(k.v), esc(k.s || ''), k.cls || '')).join('')}</div>` : ''}
   </div>
   ${u.concerns.map((c, i) => `
   <section class="qc">
-    <div class="qc-h"><span class="qn">${i + 1}</span><h3>${esc(c.title)}</h3>${stPill(c.status)}</div>
-    <p class="qnote">${c.note}</p>
-    ${c.change ? `<p class="qchg"><b>So với bản trước:</b> ${c.change}</p>` : ''}
+    <div class="qc-h"><span class="qn">${i + 1}</span>${f(`concerns.${i}.title`, esc(c.title), 'h3')}${E ? `<select data-st="${i}">${Object.entries(ST).map(([k, [, l]]) => `<option value="${k}"${k === c.status ? ' selected' : ''}>${l}</option>`).join('')}</select>` : stPill(c.status)}${ed.has(`concerns.${i}.status`) ? '<span class="pill watch" title="Chuyên viên đổi trạng thái">đã đổi</span>' : ''}</div>
+    ${f(`concerns.${i}.note`, c.note, 'p', 'qnote')}
+    ${c.change || E ? `<p class="qchg"><b>So với bản trước:</b> ${f(`concerns.${i}.change`, c.change || '')}</p>` : ''}
     <div class="grid ${c.charts.length > 1 ? 'g2' : ''} gap">${c.charts.map((g, j) => SPEC[g.id] ? `
       <article class="card qchart"><h3 class="sub">${esc(g.title || cardMeta(SPEC[g.id].el).title)}</h3>
         ${chartBox(g.id, `qu-${i}-${j}-${g.id}`, g.h || '')}
-        ${g.caption ? `<p class="qcap">${g.caption}</p>` : ''}
+        ${g.caption || E ? f(`concerns.${i}.charts.${j}.caption`, g.caption || '', 'p', 'qcap') : ''}
         <div class="qfoot"><span>Chart book: <code>${g.id}</code>${g.last ? ` · ${g.last} điểm gần nhất` : ''}</span><button type="button" class="lnk" data-book="${g.id}">Mở trong Chart book →</button></div>
       </article>` : `<article class="card"><p class="muted">Chart <code>${esc(g.id)}</code> không còn trong dashboard.</p></article>`).join('')}</div>
   </section>`).join('')}
   ${u.watch && u.watch.length ? `<article class="card"><h3 class="sub">Theo dõi tiếp</h3><div class="tscroll"><table><thead><tr><th>Ngày</th><th>Sự kiện</th><th>Vì sao quan trọng</th></tr></thead><tbody>
-    ${u.watch.map(w => `<tr><td style="white-space:nowrap">${dvn(w.d)}</td><td><b>${esc(w.t)}</b></td><td>${esc(w.why)}</td></tr>`).join('')}</tbody></table></div></article>` : ''}
+    ${u.watch.map((w, k) => `<tr><td style="white-space:nowrap">${dvn(w.d)}</td><td><b>${esc(w.t)}</b></td><td>${f(`watch.${k}.why`, esc(w.why))}</td></tr>`).join('')}</tbody></table></div></article>` : ''}
   ${u.sources && u.sources.length ? `<p class="qsrc">Nguồn: ${u.sources.map(esc).join(' · ')}</p>` : ''}
   <article class="card"><h3 class="sub">Lịch sử cập nhật</h3>
     <div class="tscroll"><table class="qhist"><thead><tr><th>Ngày</th><th>Người cập nhật</th><th>Nội dung chính</th><th></th></tr></thead><tbody>
-    ${U.map((x, k) => `<tr class="${k === quSel ? 'hl' : ''}"><td style="white-space:nowrap">${dvn(x.date)}</td><td>${byLine(x.author)}</td><td>${esc(x.headline)}</td><td>${k === quSel ? 'đang xem' : `<button type="button" class="lnk" data-qv="${k}">Xem</button>`}</td></tr>`).join('')}
+    ${U.map((x, k) => `<tr class="${k === quSel ? 'hl' : ''}"><td style="white-space:nowrap">${dvn(x.date)}${x._draft ? ' <span class="pill watch">nháp</span>' : ''}</td><td>${byLine(x.author)}</td><td>${esc(x.headline)}${x.edited && x.edited.length ? ` <span class="muted">· sửa ${x.edited.length} chỗ</span>` : ''}</td><td>${k === quSel ? 'đang xem' : `<button type="button" class="lnk" data-qv="${k}">Xem</button>`}</td></tr>`).join('')}
     </tbody></table></div>
-    <p class="note keep">Cách cập nhật: chuyên viên nhắn AI <i>"Cập nhật nhanh ngành ngân hàng"</i> (có thể kèm chủ đề muốn soi). AI đọc các bản trước — ưu tiên bản gần nhất của chuyên viên — rồi viết tiếp: giữ mối quan tâm còn nóng, đánh dấu cái hạ nhiệt, thêm diễn biến mới, chọn chart từ Chart book làm bằng chứng. Chuyên viên tự viết thì ghi tên mình ở mục người cập nhật.</p>
+    <p class="note keep">Cách cập nhật: (1) chuyên viên bấm <b>✎ Chỉnh sửa</b> để sửa vài đoạn của bản đang xem → lưu thành bản mới mang tên mình (đoạn đã sửa có vạch vàng); hoặc (2) nhắn AI <i>"Cập nhật nhanh ngành ngân hàng"</i> — AI đọc các bản trước, ưu tiên bản gần nhất của chuyên viên, rồi viết tiếp.</p>
   </article>`;
   u.concerns.forEach((c, i) => c.charts.forEach((g, j) => drawSpec(g.id, `qu-${i}-${j}-${g.id}`, g.last)));
-  $$('#quick [data-qv]').forEach(b => b.onclick = () => { quSel = +b.dataset.qv; paneQuick(); window.scrollTo({ top: 0 }); });
+  $$('#quick [data-qv]').forEach(b => b.onclick = () => { quSel = +b.dataset.qv; quEdit = false; paneQuick(); window.scrollTo({ top: 0 }); });
   $$('#quick [data-book]').forEach(b => b.onclick = () => openBook(b.dataset.book));
+  const on = (id, fn) => { const el = document.getElementById(id); if (el) el.onclick = fn; };
+  on('quEditBtn', () => { quEdit = true; paneQuick(); });
+  on('quCancel', () => { quEdit = false; paneQuick(); });
+  on('quSave', () => {
+    const nu = JSON.parse(JSON.stringify(u)); delete nu._draft;
+    const changed = [];
+    const plain = k => /^headline$|title$|why$/.test(k);
+    const canon = (k, x) => { const t = document.createElement('div'); t.innerHTML = plain(k) ? esc(x) : x; return cleanHTML(t); };
+    $$('#quick [data-f]').forEach(el => { const k = el.dataset.f, v = cleanHTML(el), old = gp(u, k) || '';
+      if (v !== canon(k, old)) { spath(nu, k, plain(k) ? el.textContent.replace(/\s+/g, ' ').trim() : v); changed.push(k); } });
+    $$('#quick [data-st]').forEach(sel => { const i = +sel.dataset.st; if (sel.value !== u.concerns[i].status) { nu.concerns[i].status = sel.value; changed.push(`concerns.${i}.status`); } });
+    if (!changed.length) { quEdit = false; paneQuick(); return; }
+    const name = ($('#quWho').value || 'Chuyên viên').trim(); try { localStorage.setItem('quWho', name); } catch (e) {}
+    const today = new Date(), iso = new Date(today.getTime() - today.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+    const base = u._draft ? (u.follows ? U.find(x => x.id === u.follows) || u : u) : u;
+    const titles = [...new Set(changed.map(k => k.startsWith('concerns.') ? `mục ${+k.split('.')[1] + 1}` : k.startsWith('summary') ? 'tóm tắt' : k.startsWith('watch') ? 'theo dõi tiếp' : 'tiêu đề'))];
+    Object.assign(nu, { id: `QU-${iso}-CV-${Date.now() % 100000}`, date: iso, author: { type: 'Chuyên viên', name },
+      follows: base.id, vsPrev: `chuyên viên ${name} chỉnh ${changed.length} chỗ (${titles.join(', ')}); phần còn lại giữ nguyên bản ${dvn(base.date)}.`,
+      edited: [...new Set([...(u._draft ? u.edited || [] : []), ...changed])] });
+    try { localStorage.setItem(QD_KEY, JSON.stringify(nu)); } catch (e) {}
+    quEdit = false; quSel = 0; paneQuick(); window.scrollTo({ top: 0 });
+  });
+  on('quDrop', () => { try { localStorage.removeItem(QD_KEY); } catch (e) {} quSel = 0; paneQuick(); });
+  on('quCopy', () => {
+    const d = Object.assign({}, u); delete d._draft; const txt = 'Đăng bản cập nhật nhanh này lên dashboard ngành:\n' + JSON.stringify(d, null, 1);
+    const ta = $('#quJson'); ta.value = txt;
+    const done = ok => { $('#quMsg').textContent = ok ? ' Đã sao chép — dán vào chat với AI.' : ' Trình duyệt chặn sao chép: chọn toàn bộ ô bên dưới rồi Ctrl+C.'; if (!ok) { ta.hidden = false; ta.select(); } };
+    (navigator.clipboard ? navigator.clipboard.writeText(txt).then(() => done(true), () => done(false)) : done(false));
+  });
 }
 
 /* =====================================================================
