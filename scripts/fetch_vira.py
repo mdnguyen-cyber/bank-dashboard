@@ -34,9 +34,9 @@ def get(url, binary=False):
     raise err
 
 
-def issues(max_pages):
+def issues(max_pages, start=1):
     out = []
-    for p in range(1, max_pages + 1):
+    for p in range(start, max_pages + 1):
         html = get(f'{BASE}/tin/Market-Watch.html' + (f'?page={p}' if p > 1 else ''))
         links = re.findall(r'href="(/tin/Market-Watch/Market-Watch-[^"]+\.html)"', html)
         new = [l for l in dict.fromkeys(links) if l not in out]
@@ -190,7 +190,10 @@ def main():
     pth = OUT / 'mm.json'
     db = json.loads(pth.read_text(encoding='utf-8')) if pth.exists() else {'days': {}}
     seen = {d.get('src') for d in db['days'].values()}
-    todo = [BASE + l for l in issues(int(os.environ.get('MAX_PAGES', '2'))) if BASE + l not in seen]
+    part = os.environ.get('OUT_PART')          # chạy song song theo khúc trang: chỉ ghi phần mới vào file riêng, job gộp sau
+    if part:
+        db, seen = {'days': {}}, set()
+    todo = [BASE + l for l in issues(int(os.environ.get('MAX_PAGES', '2')), int(os.environ.get('START_PAGE', '1'))) if BASE + l not in seen]
     print(len(todo), 'số cần đọc', file=sys.stderr)
     log = []
     with Pool(int(os.environ.get('WORKERS', '4'))) as pool:
@@ -201,8 +204,12 @@ def main():
                 if not old or old.get('ok', 0) <= rec['ok']:
                     db['days'][date] = rec
             print(lg.get('date'), lg.get('ok'), '/', lg.get('rows'), lg.get('err', ''), file=sys.stderr)
-            if len(log) % 20 == 0:
+            if len(log) % 20 == 0 and not part:
                 save(db, log)
+    if part:
+        Path(part).parent.mkdir(parents=True, exist_ok=True)
+        Path(part).write_text(json.dumps({'days': db['days'], 'log': log}, ensure_ascii=False), encoding='utf-8')
+        return
     save(db, log)
 
 

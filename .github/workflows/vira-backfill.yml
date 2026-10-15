@@ -1,0 +1,74 @@
+name: Nạp lịch sử VIRA (song song theo khúc trang)
+on:
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: 'Tổng số trang danh sách cần quét (~12 số/trang)'
+        default: '60'
+      chunk:
+        description: 'Số trang mỗi máy chạy'
+        default: '3'
+permissions:
+  contents: write
+  actions: write
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      chunks: ${{ steps.p.outputs.chunks }}
+    steps:
+      - id: p
+        run: |
+          python3 -c "import json;P=int('${{ github.event.inputs.pages }}');C=int('${{ github.event.inputs.chunk }}');print('chunks='+json.dumps([[s,min(s+C-1,P)] for s in range(1,P+1,C)]))" >> "$GITHUB_OUTPUT"
+  ocr:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        rng: ${{ fromJson(needs.plan.outputs.chunks) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq tesseract-ocr
+          pip install -q pillow pytesseract numpy
+      - env:
+          START_PAGE: ${{ matrix.rng[0] }}
+          MAX_PAGES: ${{ matrix.rng[1] }}
+          OUT_PART: parts/p${{ matrix.rng[0] }}.json
+          WORKERS: '2'
+        run: python scripts/fetch_vira.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: part-${{ matrix.rng[0] }}
+          path: parts/
+  merge:
+    needs: ocr
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          path: parts
+      - name: Gộp, dựng, commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/merge_vira.py parts
+          python scripts/build_vira.py
+          git config user.name "fs-data-bot"
+          git config user.email "fs-data-bot@users.noreply.github.com"
+          git add -A data/vira data/vira-data.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Lịch sử VIRA (nạp song song)"
+          for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
+          gh workflow run pages.yml --ref main
