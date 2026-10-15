@@ -45,3 +45,9 @@ Dashboard ngân hàng theo chuẩn layout FinSuccess. Xem online (tự deploy qu
 - Room tín dụng riêng CTG chưa có nguồn công bố.
 - Model CTG v2.3 (Excel) chưa nối; giả định kịch bản ở tab FinSuccess là giá trị khởi tạo để thử.
 - Deck REG-03 ghi 20% tiền gửi KBNN vào LDR — WiData dùng 50% từ Q3/2026; cần analyst xác nhận văn bản.
+
+## Số liệu quốc tế tự động
+
+- `scripts/fetch_global.py` tải ~65 chuỗi từ nguồn public (FRED, ECB Data Portal, NY Fed Markets, NY Fed HLW, DBnomics: Cục Thống kê Nhật Bản, NBS Trung Quốc; OECD) → `data/global/series.json` + `report.json` (mã nào tải được, mã nào lỗi).
+- `scripts/build_global.py` tính YoY / 3 tháng quy năm / MoM, Taylor rule (V1 lệch GDP, V2 lệch thất nghiệp), bậc thang thanh khoản Mỹ, tài sản NHTW quy USD → `data/global-data.js`.
+- Workflow `fetch-global.yml` chạy 06:17 sáng (giờ VN) mỗi ngày, commit số mới và deploy lại trang. Chạy tay: Actions → "Cập nhật số liệu quốc tế" → Run workflow.

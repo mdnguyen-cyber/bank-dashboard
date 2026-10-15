@@ -220,7 +220,7 @@ def main():
         print(key, '→', best[0] if best else 'KHÔNG CÓ', best[1][-1] if best else '', file=sys.stderr)
     stamp = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
     (OUT / 'series.json').write_text(json.dumps({'fetched': stamp, 'series': series}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-    (OUT / 'report.json').write_text(json.dumps({'fetched': stamp, 'report': report, 'probe': probe()}, ensure_ascii=False, indent=1), encoding='utf-8')
+    (OUT / 'report.json').write_text(json.dumps({'fetched': stamp, 'report': report}, ensure_ascii=False, indent=1), encoding='utf-8')
     miss = [k for k in CAT if k not in series]
     print(f'{len(series)}/{len(CAT)} chuỗi; thiếu: {miss}', file=sys.stderr)
 
