@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-15T07:44:48Z",
+ "fetched": "2026-10-15T07:47:28Z",
  "report": {
   "us_cpi": [
    {
@@ -270,6 +270,20 @@
     "last": "2026-10-07"
    }
   ],
+  "us_bills": [
+   {
+    "id": "fred:WSHOBL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "us_rstar": [
+   {
+    "id": "hlw:US",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
   "us_reserves": [
    {
     "id": "fred:WRESBAL",
@@ -328,6 +342,16 @@
   ],
   "ea_hicp": [
    {
+    "id": "ecb:HICP/M.U2.N.000000.4D0.ANR",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "dbn:ECB/HICP/M.U2.N.000000.4D0.ANR",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
     "id": "ecb:ICP/M.U2.N.000000.4.ANR",
     "n": 192,
     "last": "2025-12-01"
@@ -345,6 +369,16 @@
   ],
   "ea_hicp_core": [
    {
+    "id": "ecb:HICP/M.U2.N.XEF000.4D0.ANR",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "dbn:ECB/HICP/M.U2.N.XEF000.4D0.ANR",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
     "id": "ecb:ICP/M.U2.N.XEF000.4.ANR",
     "n": 192,
     "last": "2025-12-01"
@@ -361,6 +395,16 @@
    }
   ],
   "ea_hicp_serv": [
+   {
+    "id": "ecb:HICP/M.U2.N.SERV00.4D0.ANR",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "dbn:ECB/HICP/M.U2.N.SERV00.4D0.ANR",
+    "n": 201,
+    "last": "2026-09-01"
+   },
    {
     "id": "ecb:ICP/M.U2.N.SERV00.4.ANR",
     "n": 192,
@@ -415,6 +459,27 @@
     "id": "fred:DEXUSEU",
     "n": 4196,
     "last": "2026-10-09"
+   }
+  ],
+  "jp_cpi_idx": [
+   {
+    "id": "dbn:STATJP/CPIm/001",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "jp_cpi_xff_idx": [
+   {
+    "id": "dbn:STATJP/CPIm/733",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "jp_cpi_xffe_idx": [
+   {
+    "id": "dbn:STATJP/CPIm/740",
+    "n": 200,
+    "last": "2026-08-01"
    }
   ],
   "jp_cpi": [
@@ -503,12 +568,9 @@
   ],
   "cn_ppi": [
    {
-    "id": "dbn:IMF/PPI/M.CN.PPPI_PC_CP_A_PT",
-    "error": "HTTP Error 404: NOT FOUND"
-   },
-   {
-    "id": "fred:CHNPIEATI01GPM",
-    "error": "HTTP Error 404: Not Found"
+    "id": "nbs:NBS/M_A010B/A010B01|NBS/M_A010H/A010H01",
+    "n": 13,
+    "last": "2026-02-01"
    }
   ],
   "cn_rate": [
@@ -653,410 +715,167 @@
     "nb": 1
    }
   ],
-  "ECB/HICP": [
+  "ECB/HICP M": [
    [
-    "A.U2.N.000000.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.000000.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.010000.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.000000.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011000.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.010000.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011100.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.010000.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011110.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011000.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011120.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011000.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011130.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011100.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011140.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011100.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011150.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011110.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011190.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011110.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011200.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011120.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011220.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011120.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011221.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011130.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011222.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011130.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011223.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011131.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011224.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011131.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011225.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011139.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011226.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011139.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011229.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011140.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011230.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011140.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011240.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011150.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011250.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011150.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011300.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011190.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011310.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011190.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011320.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011200.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011330.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011200.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011340.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011220.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011350.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011220.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011360.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011221.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011400.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011221.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011410.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011222.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011420.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011222.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011430.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011223.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011440.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011223.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011450.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011224.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011460.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011224.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011470.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011225.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011480.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011225.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011490.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011226.4D0.ANR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ],
    [
-    "A.U2.N.011500.4D0.AVR",
-    "Annual – Euro area (Member States and Institutions of the Euro Area) changing composition ",
-    "2026-10-12"
+    "M.U2.N.011226.4D0.CTR",
+    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
    ]
-  ],
-  "Eurostat/PRC_HICP_FP": [
-   [
-    "M.I05.CP00.FIN.EA",
-    "Monthly – Index, 2005=100 – All-items HICP – Final – Euro area (EA11-1999, EA12-2001, EA13",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP00.FIN.EA18",
-    "Monthly – Index, 2005=100 – All-items HICP – Final – Euro area - 18 countries (2014)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP00.FIN.EA19",
-    "Monthly – Index, 2005=100 – All-items HICP – Final – Euro area - 19 countries  (2015-2022)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP00.FIN.EA20",
-    "Monthly – Index, 2005=100 – All-items HICP – Final – Euro area – 20 countries (from 2023)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP01.FIN.EA",
-    "Monthly – Index, 2005=100 – Food and non-alcoholic beverages – Final – Euro area (EA11-199",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP01.FIN.EA18",
-    "Monthly – Index, 2005=100 – Food and non-alcoholic beverages – Final – Euro area - 18 coun",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP01.FIN.EA19",
-    "Monthly – Index, 2005=100 – Food and non-alcoholic beverages – Final – Euro area - 19 coun",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP01.FIN.EA20",
-    "Monthly – Index, 2005=100 – Food and non-alcoholic beverages – Final – Euro area – 20 coun",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP011.FIN.EA",
-    "Monthly – Index, 2005=100 – Food – Final – Euro area (EA11-1999, EA12-2001, EA13-2007, EA1",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP011.FIN.EA18",
-    "Monthly – Index, 2005=100 – Food – Final – Euro area - 18 countries (2014)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP011.FIN.EA19",
-    "Monthly – Index, 2005=100 – Food – Final – Euro area - 19 countries  (2015-2022)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP011.FIN.EA20",
-    "Monthly – Index, 2005=100 – Food – Final – Euro area – 20 countries (from 2023)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0111.FIN.EA",
-    "Monthly – Index, 2005=100 – Bread and cereals – Final – Euro area (EA11-1999, EA12-2001, E",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0111.FIN.EA18",
-    "Monthly – Index, 2005=100 – Bread and cereals – Final – Euro area - 18 countries (2014)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0111.FIN.EA19",
-    "Monthly – Index, 2005=100 – Bread and cereals – Final – Euro area - 19 countries  (2015-20",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0111.FIN.EA20",
-    "Monthly – Index, 2005=100 – Bread and cereals – Final – Euro area – 20 countries (from 202",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0112.FIN.EA",
-    "Monthly – Index, 2005=100 – Meat – Final – Euro area (EA11-1999, EA12-2001, EA13-2007, EA1",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0112.FIN.EA18",
-    "Monthly – Index, 2005=100 – Meat – Final – Euro area - 18 countries (2014)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0112.FIN.EA19",
-    "Monthly – Index, 2005=100 – Meat – Final – Euro area - 19 countries  (2015-2022)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0112.FIN.EA20",
-    "Monthly – Index, 2005=100 – Meat – Final – Euro area – 20 countries (from 2023)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0113.FIN.EA",
-    "Monthly – Index, 2005=100 – Fish and seafood – Final – Euro area (EA11-1999, EA12-2001, EA",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0113.FIN.EA18",
-    "Monthly – Index, 2005=100 – Fish and seafood – Final – Euro area - 18 countries (2014)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0113.FIN.EA19",
-    "Monthly – Index, 2005=100 – Fish and seafood – Final – Euro area - 19 countries  (2015-202",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0113.FIN.EA20",
-    "Monthly – Index, 2005=100 – Fish and seafood – Final – Euro area – 20 countries (from 2023",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0114.FIN.EA",
-    "Monthly – Index, 2005=100 – Milk, cheese and eggs – Final – Euro area (EA11-1999, EA12-200",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0114.FIN.EA18",
-    "Monthly – Index, 2005=100 – Milk, cheese and eggs – Final – Euro area - 18 countries (2014",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0114.FIN.EA19",
-    "Monthly – Index, 2005=100 – Milk, cheese and eggs – Final – Euro area - 19 countries  (201",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0114.FIN.EA20",
-    "Monthly – Index, 2005=100 – Milk, cheese and eggs – Final – Euro area – 20 countries (from",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0115.FIN.EA",
-    "Monthly – Index, 2005=100 – Oils and fats – Final – Euro area (EA11-1999, EA12-2001, EA13-",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0115.FIN.EA18",
-    "Monthly – Index, 2005=100 – Oils and fats – Final – Euro area - 18 countries (2014)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0115.FIN.EA19",
-    "Monthly – Index, 2005=100 – Oils and fats – Final – Euro area - 19 countries  (2015-2022)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0115.FIN.EA20",
-    "Monthly – Index, 2005=100 – Oils and fats – Final – Euro area – 20 countries (from 2023)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0116.FIN.EA",
-    "Monthly – Index, 2005=100 – Fruit – Final – Euro area (EA11-1999, EA12-2001, EA13-2007, EA",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0116.FIN.EA18",
-    "Monthly – Index, 2005=100 – Fruit – Final – Euro area - 18 countries (2014)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0116.FIN.EA19",
-    "Monthly – Index, 2005=100 – Fruit – Final – Euro area - 19 countries  (2015-2022)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0116.FIN.EA20",
-    "Monthly – Index, 2005=100 – Fruit – Final – Euro area – 20 countries (from 2023)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0117.FIN.EA",
-    "Monthly – Index, 2005=100 – Vegetables – Final – Euro area (EA11-1999, EA12-2001, EA13-200",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0117.FIN.EA18",
-    "Monthly – Index, 2005=100 – Vegetables – Final – Euro area - 18 countries (2014)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0117.FIN.EA19",
-    "Monthly – Index, 2005=100 – Vegetables – Final – Euro area - 19 countries  (2015-2022)",
-    "2025-03-24"
-   ],
-   [
-    "M.I05.CP0117.FIN.EA20",
-    "Monthly – Index, 2005=100 – Vegetables – Final – Euro area – 20 countries (from 2023)",
-    "2025-03-24"
-   ]
-  ],
-  "Eurostat/prc_hicp_fp": "HTTP Error 404: NOT FOUND"
+  ]
  }
 }
