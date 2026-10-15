@@ -408,7 +408,7 @@ function chCamel() {
 const gv = k => glast(k).v, gd = k => glast(k).d;
 const gback = (k, n) => gprev(k, n);
 const dir = (a, b, up = 'tăng', dn = 'giảm', eps = 0.05) => a == null || b == null ? '' : a - b > eps ? up : b - a > eps ? dn : 'đi ngang';
-const how = t => `<br><span class="howto"><b>Cách đọc:</b> ${t}</span>`;
+const how = t => `<br><span class="howto"><b>Hàm ý:</b> ${t}</span>`;
 const INS = {
   gUsCpi: () => { const h = gv('us_cpi_yoy'), c = gv('us_cpi_core_yoy'), sc = gv('us_cpi_supercore_yoy'), c3 = gv('us_cpi_core_m3');
     return `${mvn(gd('us_cpi_yoy'))}: CPI <b>${pc(h, 1)}</b>, lõi <b>${pc(c, 1)}</b>, supercore <b>${pc(sc, 1)}</b> YoY. Lõi 3 tháng quy năm ${pc(c3, 1)} — ${c3 > c + 0.2 ? '<b>cao hơn</b> YoY: lạm phát đang tăng tốc trở lại' : c3 < c - 0.2 ? 'thấp hơn YoY: đà tăng giá đang chậm lại' : 'xấp xỉ YoY: đà tăng giá ổn định'}. ${c > 3 ? 'Lõi còn xa mục tiêu 2% → Fed khó nới.' : ''}`
@@ -617,9 +617,24 @@ function gUSFlow() {
     ${kpi('Indirect ở đấu thầu coupon', pc(indAvg, 1), `TB 3 tháng · primary dealer phải nhận ${pc(pdAvg, 1)}`, pdAvg > 20 ? 'neg' : '')}
     ${kpi('Nước ngoài nắm UST', nf(H.h['Nước ngoài'][H.d.length - 1] / 1000, 2) + ' nghìn tỷ', `${pc(H.h['Nước ngoài'][H.d.length - 1] / H.total[H.d.length - 1] * 100, 1)} tổng · ${qLab(H.d[H.d.length - 1])}`)}
   </div>
+
+  <article class="card"><h3 class="sub">Các loại chứng khoán trong bảng cân đối Fed và trong nợ của Kho bạc</h3>
+    <p class="chart-sub">Kỳ hạn tính lúc phát hành · tín phiếu và trái phiếu do Kho bạc Mỹ phát hành; MBS do Fannie Mae, Freddie Mac, Ginnie Mae bảo lãnh</p>
+    <div class="tscroll"><table><thead><tr><th>Loại</th><th>Kỳ hạn</th><th>Trả lãi</th><th>Ai mua chủ yếu</th><th>Ý nghĩa khi Fed nắm nhiều hay ít</th></tr></thead><tbody>
+      <tr><td><b>Tín phiếu (T-bills)</b></td><td>4, 6, 8, 13, 17, 26, 52 tuần (≤ 1 năm)</td><td>Không có coupon: mua giá chiết khấu, đáo hạn nhận mệnh giá</td><td>Quỹ thị trường tiền tệ, ngân hàng, NHTW nước ngoài</td><td>Fed mua tín phiếu để giữ dự trữ ngân hàng ở mức đủ (quản lý dự trữ), gần như không tác động lợi suất dài hạn</td></tr>
+      <tr><td><b>Notes</b></td><td>2, 3, 5, 7, 10 năm</td><td>Coupon cố định, 6 tháng/lần</td><td>Nước ngoài, quỹ đầu tư, ngân hàng, quỹ hưu trí</td><td>Phần lớn tài sản Fed mua trong các đợt nới lỏng định lượng (QE); để đáo hạn không tái đầu tư (QT) thì thị trường phải hấp thụ thêm kỳ hạn dài</td></tr>
+      <tr><td><b>Bonds</b></td><td>20, 30 năm</td><td>Coupon cố định, 6 tháng/lần</td><td>Quỹ hưu trí, bảo hiểm (cần tài sản dài khớp nghĩa vụ trả)</td><td>Nhạy nhất với lạm phát và phần bù kỳ hạn; trên chart gộp chung với notes</td></tr>
+      <tr><td><b>TIPS</b></td><td>5, 10, 30 năm</td><td>Coupon trên gốc đã điều chỉnh theo CPI, 6 tháng/lần</td><td>Quỹ hưu trí, nhà đầu tư cần phòng vệ lạm phát</td><td>"Bù lạm phát" là phần gốc tăng thêm theo CPI — vì vậy TIPS của Fed tăng dần dù không mua thêm</td></tr>
+      <tr><td><b>FRN</b></td><td>2 năm</td><td>Lãi thả nổi theo lợi suất tín phiếu 13 tuần, trả hằng quý</td><td>Quỹ thị trường tiền tệ</td><td>Quy mô nhỏ; gần giống tín phiếu về rủi ro lãi suất</td></tr>
+      <tr><td><b>MBS</b> (chứng khoán bảo đảm bằng nợ thế chấp nhà)</td><td>Danh nghĩa 15–30 năm, thực tế ngắn hơn vì người vay trả trước</td><td>Gốc + lãi hằng tháng từ khoản vay mua nhà</td><td>Ngân hàng, quỹ, Fed (từ QE 2009)</td><td>Fed không bán MBS, chỉ để thu gốc dần — phần MBS trên chart giảm theo tốc độ người dân trả nợ nhà; tiền thu về hiện được chuyển sang mua tín phiếu</td></tr>
+      <tr><td><b>Cho vay</b></td><td>Qua đêm đến 1 năm</td><td>—</td><td>Ngân hàng vay Fed (cửa sổ chiết khấu, chương trình khẩn cấp)</td><td>Tăng vọt khi có sự cố (chương trình cho vay kỳ hạn ngân hàng BTFP năm 2023 sau vụ SVB)</td></tr>
+      <tr><td><b>Khác</b></td><td>—</td><td>—</td><td>—</td><td>Repo thường trực, hoán đổi USD với NHTW khác, phần chênh giá mua chưa phân bổ… (đỉnh 2020 là hoán đổi USD và các quỹ hỗ trợ thời Covid)</td></tr>
+    </tbody></table></div>
+    <p class="muted" style="margin-top:8px">Phân biệt theo kỳ hạn: <b>tín phiếu</b> = nợ ngắn hạn (≤ 1 năm, coi như "tiền mặt có lãi"); <b>notes và bonds</b> = nợ trung và dài hạn, rủi ro giá cao khi lãi suất biến động. Fed nắm nhiều nợ dài thì đang ép lợi suất dài xuống (QE); chuyển dần sang tín phiếu là trả rủi ro kỳ hạn lại cho thị trường.</p>
+    <div class="src">Nguồn: U.S. Treasury (TreasuryDirect, lịch đấu thầu); Federal Reserve H.4.1</div></article>
   <div class="grid g2 gap">
-    ${card({ id: 'gUsFedA', title: 'Bảng cân đối Fed: tài sản theo cấu phần', h: 'tall', sub: 'tỷ USD, theo tuần (H.4.1) · QT = notes/bonds và MBS đáo hạn không tái đầu tư; tín phiếu tăng = Fed mua quản lý dự trữ (RMP)',
-      insight: `Tổng tài sản ${nf(F.a['Tín phiếu (bills)'].map((_, i) => Object.values(F.a).reduce((a, v) => a + v[i], 0))[nF], 0)} tỷ USD (${dvn(F.d[nF])}). Trong 13 tuần: tín phiếu ${sg(fa('Tín phiếu (bills)') - F.a['Tín phiếu (bills)'][nF - 13], 0, ' tỷ')}, notes & bonds ${sg(fa('Trái phiếu notes & bonds') - F.a['Trái phiếu notes & bonds'][nF - 13], 0, ' tỷ')}, MBS ${sg(fa('MBS') - F.a['MBS'][nF - 13], 0, ' tỷ')}.`, src: gsrc(['us_walcl', 'fed_notes', 'fed_mbs']) })}
+    ${card({ id: 'gUsFedA', title: 'Bảng cân đối Fed: tài sản theo cấu phần', h: 'tall', sub: 'tỷ USD, theo tuần (H.4.1) · tín phiếu ≤ 1 năm; notes 2–10 năm & bonds 20–30 năm; TIPS chống lạm phát; MBS = nợ thế chấp nhà (xem bảng giải thích phía trên)',
+      insight: `Tổng tài sản ${nf(F.a['Tín phiếu (bills)'].map((_, i) => Object.values(F.a).reduce((a, v) => a + v[i], 0))[nF], 0)} tỷ USD (${dvn(F.d[nF])}). Trong 13 tuần: tín phiếu ${sg(fa('Tín phiếu (bills)') - F.a['Tín phiếu (bills)'][nF - 13], 0, ' tỷ')}, notes & bonds ${sg(fa('Trái phiếu notes & bonds') - F.a['Trái phiếu notes & bonds'][nF - 13], 0, ' tỷ')}, MBS ${sg(fa('MBS') - F.a['MBS'][nF - 13], 0, ' tỷ')}. Tín phiếu chiếm ${pc(fa('Tín phiếu (bills)') / Object.values(F.a).reduce((a, v) => a + v[nF], 0) * 100, 1)} tài sản Fed.` + how('Tín phiếu tăng trong khi MBS giảm = Fed đã dừng thu hẹp bảng cân đối (QT) và đang rút ngắn kỳ hạn danh mục: tiền MBS đáo hạn chuyển sang tín phiếu, cộng mua thêm tín phiếu để giữ dự trữ ngân hàng đủ. Việc này bơm thanh khoản ngắn hạn nhưng không ép lợi suất dài hạn như QE (mua notes, bonds, MBS).'), src: gsrc(['us_walcl', 'fed_notes', 'fed_mbs']) })}
     ${card({ id: 'gUsFedL', title: 'Bảng cân đối Fed: nguồn vốn theo cấu phần', h: 'tall', sub: 'tỷ USD, theo tuần · TGA tăng hoặc RRP tăng = hút dự trữ khỏi hệ thống ngân hàng',
       insight: `Dự trữ NH ${nf(fl('Dự trữ NH'), 0)} tỷ, TGA ${nf(fl('TGA (Kho bạc)'), 0)} tỷ, reverse repo ${nf(fl('Reverse repo'), 0)} tỷ. 13 tuần: TGA ${sg(fl('TGA (Kho bạc)') - F.l['TGA (Kho bạc)'][nF - 13], 0, ' tỷ')}, dự trữ ${sg(fl('Dự trữ NH') - F.l['Dự trữ NH'][nF - 13], 0, ' tỷ')}.`, src: gsrc(['us_reserves', 'us_tga', 'fed_rrp_all']) })}
     ${card({ id: 'gUsDebt', title: 'Kho bạc phát hành gì: cơ cấu nợ thị trường', h: 'tall', sub: 'nghìn tỷ USD, cuối tháng (MSPD) · cột = Tín phiếu, Notes, Bonds, TIPS, FRN · đường = tỷ trọng tín phiếu (trục phải, khuyến nghị TBAC ~20%)',
