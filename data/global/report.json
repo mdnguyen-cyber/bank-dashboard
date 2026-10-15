@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-15T07:52:46Z",
+ "fetched": "2026-10-15T09:10:11Z",
  "report": {
   "us_cpi": [
    {
@@ -340,6 +340,236 @@
     "last": "2026-10-06"
    }
   ],
+  "fed_notes": [
+   {
+    "id": "fred:WSHONBNL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_tips": [
+   {
+    "id": "fred:WSHONBIIL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_tips_ic": [
+   {
+    "id": "fred:WSHOICL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_ust": [
+   {
+    "id": "fred:WSHOTSL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_mbs": [
+   {
+    "id": "fred:WSHOMCB",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_loans": [
+   {
+    "id": "fred:WLCFLL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_currency": [
+   {
+    "id": "fred:WCURCIR",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_rrp_all": [
+   {
+    "id": "fred:WLRRAL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "fed_rrp_foreign": [
+   {
+    "id": "fred:WLRRAFOIAL",
+    "n": 875,
+    "last": "2026-10-07"
+   }
+  ],
+  "tsy_debt_total": [
+   {
+    "id": "fred:GFDEBTN",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "tsy_debt_public": [
+   {
+    "id": "fred:FYGFDPUN",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "tsy_deficit": [
+   {
+    "id": "fred:MTSDS133FMS",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "ust_total": [
+   {
+    "id": "fred:BOGZ1FL313161105Q",
+    "error": "HTTP Error 404: Not Found"
+   },
+   {
+    "id": "fred:BOGZ1FL313161100Q",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "ust_fed": [
+   {
+    "id": "fred:BOGZ1FL713061103Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL713061100Q",
+    "error": "HTTP Error 404: Not Found"
+   },
+   {
+    "id": "fred:FDHBFRBN",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "ust_row": [
+   {
+    "id": "fred:BOGZ1FL263061105Q",
+    "error": "HTTP Error 404: Not Found"
+   },
+   {
+    "id": "fred:BOGZ1FL263061100Q",
+    "error": "HTTP Error 404: Not Found"
+   },
+   {
+    "id": "fred:FDHBFIN",
+    "n": 65,
+    "last": "2026-01-01"
+   }
+  ],
+  "ust_row_official": [
+   {
+    "id": "fred:BOGZ1FL263061120Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:FDHBFIN",
+    "n": 65,
+    "last": "2026-01-01"
+   }
+  ],
+  "ust_banks": [
+   {
+    "id": "fred:BOGZ1FL763061100Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL763061105Q",
+    "error": "HTTP Error 404: Not Found"
+   },
+   {
+    "id": "fred:TLTSYSUS",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "ust_mmf": [
+   {
+    "id": "fred:BOGZ1FL633061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL633061100Q",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "ust_mf": [
+   {
+    "id": "fred:BOGZ1FL653061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL653061100Q",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "ust_hh": [
+   {
+    "id": "fred:BOGZ1FL153061105Q",
+    "error": "HTTP Error 404: Not Found"
+   },
+   {
+    "id": "fred:BOGZ1FL153061100Q",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "ust_ins": [
+   {
+    "id": "fred:BOGZ1FL513061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL543061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "ust_pension": [
+   {
+    "id": "fred:BOGZ1FL593061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL573061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   }
+  ],
+  "ust_slg": [
+   {
+    "id": "fred:BOGZ1FL213061105Q",
+    "error": "HTTP Error 404: Not Found"
+   },
+   {
+    "id": "fred:BOGZ1FL213061100Q",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "ust_broker": [
+   {
+    "id": "fred:BOGZ1FL663061105Q",
+    "n": 66,
+    "last": "2026-04-01"
+   },
+   {
+    "id": "fred:BOGZ1FL663061100Q",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
   "ea_hicp": [
    {
     "id": "ecb:HICP/M.U2.N.000000.4D0.ANR",
@@ -549,6 +779,20 @@
     "last": "2026-10-09"
    }
   ],
+  "jp_reserves": [
+   {
+    "id": "fred:TRESEGJPM052N",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "jp_m_base": [
+   {
+    "id": "fred:MABMM301JPM189S",
+    "n": 167,
+    "last": "2023-11-01"
+   }
+  ],
   "cn_cpi": [
    {
     "id": "oecd:CHN.M.N.CPI.PA._T.N.GY",
@@ -591,291 +835,6 @@
     "n": 4196,
     "last": "2026-10-09"
    }
-  ]
- },
- "probe": {
-  "HICP annual rate of change": [
-   {
-    "code": "Eurostat/PRC_HICP_FP",
-    "name": "HICP - first published data (monthly index and annual rate of change)",
-    "nb": 66078
-   },
-   {
-    "code": "ECB/HICP",
-    "name": "Indices of Consumer Prices",
-    "nb": 35878
-   },
-   {
-    "code": "Eurostat/prc_hicp_aind",
-    "name": "HICP - annual data (average index and rate of change)",
-    "nb": 35287
-   },
-   {
-    "code": "Eurostat/PRC_HICP_AIND",
-    "name": "HICP - annual data (average index and rate of change)",
-    "nb": 35235
-   },
-   {
-    "code": "ECB/ICP",
-    "name": "Indices of Consumer prices",
-    "nb": 27527
-   },
-   {
-    "code": "Eurostat/prc_hicp_manr",
-    "name": "HICP - monthly data (annual rate of change)",
-    "nb": 17731
-   },
-   {
-    "code": "Eurostat/PRC_HICP_MANR",
-    "name": "HICP - monthly data (annual rate of change)",
-    "nb": 17709
-   },
-   {
-    "code": "Eurostat/prc_hicp_cann",
-    "name": "HICP at constant tax rates - monthly data (annual rate of change)",
-    "nb": 15440
-   }
-  ],
-  "japan consumer price index": [
-   {
-    "code": "OECD/MEI",
-    "name": "Main Economic Indicators Publication",
-    "nb": 567
-   },
-   {
-    "code": "OECD/DSD_PRICES@DF_PRICES_ALL",
-    "name": "Consumer price indices (CPIs, HICPs), COICOP 1999",
-    "nb": 263
-   },
-   {
-    "code": "OECD/DSD_PRICES_COICOP2018@DF_PRICES_C2018_ALL",
-    "name": "Consumer price indices (CPIs,HICPs), COICOP 2018",
-    "nb": 193
-   },
-   {
-    "code": "OECD/DF_TEST_MEI",
-    "name": "TEST - Main Economic Indicators Publication",
-    "nb": 182
-   },
-   {
-    "code": "STATJP/CPIm",
-    "name": "Consumer Price Index - Monthly",
-    "nb": 83
-   },
-   {
-    "code": "STATJP/CPIa",
-    "name": "Consumer Price Index - Annual Average",
-    "nb": 78
-   },
-   {
-    "code": "IMF/CPI",
-    "name": "Consumer Price Index (CPI)",
-    "nb": 69
-   },
-   {
-    "code": "OECD/DSD_PRICES_EXC_C18@DF_PRICES_EXCHANGE_COICOP18",
-    "name": "Consumer price indices (CPIs), exchange, API only,COICOP 2018",
-    "nb": 69
-   }
-  ],
-  "consumer price index japan 2020=100": [
-   {
-    "code": "AMECO/ZCPIN",
-    "name": "National consumer price index (All-items)",
-    "nb": 1
-   },
-   {
-    "code": "Eurostat/ERT_EFF_IC_A",
-    "name": "Industrial countries' effective exchange rates - annual data",
-    "nb": 1
-   },
-   {
-    "code": "Eurostat/ERT_EFF_IC_M",
-    "name": "Industrial countries' effective exchange rates - monthly data",
-    "nb": 1
-   },
-   {
-    "code": "Eurostat/ERT_EFF_IC_Q",
-    "name": "Industrial countries' effective exchange rates - quarterly data",
-    "nb": 1
-   },
-   {
-    "code": "Eurostat/ert_eff_ic_a",
-    "name": "Industrial countries' effective exchange rates - annual data",
-    "nb": 1
-   },
-   {
-    "code": "Eurostat/ert_eff_ic_m",
-    "name": "Industrial countries' effective exchange rates - monthly data",
-    "nb": 1
-   },
-   {
-    "code": "Eurostat/ert_eff_ic_q",
-    "name": "Industrial countries' effective exchange rates - quarterly data",
-    "nb": 1
-   }
-  ],
-  "ECB/HICP M": [
-   [
-    "M.U2.N.000000.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.000000.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.010000.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.010000.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011000.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011000.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011100.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011100.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011110.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011110.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011120.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011120.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011130.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011130.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011131.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011131.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011139.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011139.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011140.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011140.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011150.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011150.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011190.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011190.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011200.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011200.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011220.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011220.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011221.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011221.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011222.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011222.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011223.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011223.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011224.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011224.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011225.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011225.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011226.4D0.ANR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ],
-   [
-    "M.U2.N.011226.4D0.CTR",
-    "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
-   ]
   ]
  }
 }
