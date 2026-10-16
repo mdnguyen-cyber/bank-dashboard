@@ -1,5 +1,5 @@
 """Dò nguồn công khai (chạy trên GitHub Actions) → data/probe/*.json: mẫu phản hồi, danh sách link, để chọn endpoint."""
-import json, os, re, sys, urllib.request
+import urllib.parse, json, os, re, sys, urllib.request
 from pathlib import Path
 
 OUT = Path(__file__).resolve().parents[1] / 'data/probe'
@@ -7,8 +7,9 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'tw_ebts_raw': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/ebts.html',
-    'tw_yield_raw': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/yield.html',
+    'tw_api1': ('https://www.tpex.org.tw/www/en-us/bond/govDaily', {'fileCode': 'BDdys100', 'response': 'json'}),
+    'tw_api2': ('https://www.tpex.org.tw/www/en-us/bond/govDaily', {'fileCode': 'BDdys100', 'date': '2026/10', 'response': 'json'}),
+    'tw_api3': ('https://www.tpex.org.tw/www/en-us/bond/govDaily2', {'response': 'json'}),
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -20,7 +21,10 @@ def main():
     rep = {}
     for k, u in URLS.items():
         try:
-            with urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=60) as r:
+            data = None
+            if isinstance(u, tuple):
+                u, data = u[0], urllib.parse.urlencode(u[1]).encode()
+            with urllib.request.urlopen(urllib.request.Request(u, data=data, headers={**UA, 'X-Requested-With': 'XMLHttpRequest', 'Referer': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/ebts.html'}), timeout=60) as r:
                 b = r.read(); ct = r.headers.get('Content-Type', '')
             txt = b.decode('utf-8', 'replace') if 'pdf' not in ct else ''
             info = {'url': u, 'status': 200, 'ct': ct, 'bytes': len(b)}
