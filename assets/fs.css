@@ -327,3 +327,4 @@ li.ed{list-style-position:inside}
 .cpi-heat td,.cpi-heat th{padding:5px 8px}.cpi-heat tr.grp td{background:#eef1fb;color:var(--navy);font-size:12px;letter-spacing:.04em}
 .fsn-cmsg{display:block;font-size:12px;margin-top:6px}
 .rng .ysel{display:inline-flex;gap:4px;align-items:center;margin-left:8px;padding-left:8px;border-left:1px solid var(--line)}.rng .yman input{width:70px;padding:2px 6px;font-size:12px;border:1px solid var(--line);border-radius:6px}.rng .yman{display:inline-flex;gap:4px}.rng .yman[hidden]{display:none}
+.fsk-sorting{touch-action:none;user-select:none}.fsk-drag{opacity:.75;transform:scale(1.06);box-shadow:0 4px 12px rgba(29,38,120,.25);cursor:grabbing!important;z-index:2;position:relative}

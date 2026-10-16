@@ -143,5 +143,33 @@
     canvas.addEventListener('dblclick', () => setWin(0, n - 1, 0), on);
   }
 
-  window.FSK = { prep, reorder, enhance, dates };
+
+  /* ---- 3) kéo đổi thứ tự nút tab: nhấn giữ ~0,35 giây rồi kéo; thứ tự lưu trên trình duyệt ---- */
+  function sortable(box, key, attr) {
+    if (!box || box._fskSort) return; box._fskSort = true;
+    const K = 'fsk-order:' + key, idOf = b => b.dataset[attr];
+    try { const ord = JSON.parse(localStorage.getItem(K) || 'null'); if (ord) ord.forEach(id => { const b = [...box.children].find(x => idOf(x) === id); if (b) box.appendChild(b); }); [...box.children].filter(x => x.tagName !== 'BUTTON').forEach(x => box.appendChild(x)); } catch (e) {}
+    let timer = null, drag = null, sx = 0, sy = 0, moved = false;
+    const save = () => { try { localStorage.setItem(K, JSON.stringify([...box.querySelectorAll(':scope > button')].map(idOf))); } catch (e) {} };
+    box.addEventListener('pointerdown', e => {
+      const b = e.target.closest('button'); if (!b || b.parentElement !== box || e.button > 0) return;
+      sx = e.clientX; sy = e.clientY; moved = false;
+      timer = setTimeout(() => { drag = b; b.classList.add('fsk-drag'); box.classList.add('fsk-sorting'); try { b.setPointerCapture(e.pointerId); } catch (er) {} if (navigator.vibrate) navigator.vibrate(15); }, 350);
+    });
+    box.addEventListener('pointermove', e => {
+      if (!drag) { if (timer && Math.hypot(e.clientX - sx, e.clientY - sy) > 8) { clearTimeout(timer); timer = null; } return; }
+      e.preventDefault(); moved = true;
+      const t = document.elementFromPoint(e.clientX, e.clientY), over = t && t.closest && t.closest('button');
+      if (!over || over === drag || over.parentElement !== box) return;
+      const r = over.getBoundingClientRect(), after = (e.clientX - r.left) > r.width / 2 || (e.clientY - r.top) > r.height * 0.9;
+      box.insertBefore(drag, after ? over.nextSibling : over);
+    });
+    const end = () => { clearTimeout(timer); timer = null; if (!drag) return; drag.classList.remove('fsk-drag'); box.classList.remove('fsk-sorting'); const d = drag; drag = null; if (moved) { save(); d._fskNoClick = true; setTimeout(() => { d._fskNoClick = false; }, 50); } };
+    box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
+    box.addEventListener('click', e => { const b = e.target.closest('button'); if (b && b._fskNoClick) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+    box.addEventListener('contextmenu', e => { if (drag || timer) e.preventDefault(); });
+    box.title = box.title || 'Nhấn giữ một nút rồi kéo để đổi thứ tự';
+  }
+
+  window.FSK = { prep, reorder, enhance, dates, sortable };
 })();

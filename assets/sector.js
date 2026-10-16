@@ -307,12 +307,13 @@ function panePicture() {
   <div class="sub" data-pp="bank">${subBank()}</div>
   <div class="sub" data-pp="camel">${subCamel()}</div>
   <div class="sub" data-pp="idx">${subIdx()}</div>`;
-  $$('#picture .subtabs button').forEach(b => b.onclick = () => openP(b.dataset.p));
+  $$('#picture > .subtabs button').forEach(b => b.onclick = () => openP(b.dataset.p));
   Object.keys(pDone).forEach(k => delete pDone[k]);
-  openP('intl');
+  FSK.sortable($('#picture > .subtabs'), 'picture', 'p');
+  openP($('#picture > .subtabs button').dataset.p);   // mở tab đứng đầu theo thứ tự người dùng xếp
 }
 function openP(k) {
-  $$('#picture .subtabs button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
+  $$('#picture > .subtabs button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
   $$('#picture [data-pp]').forEach(p => p.classList.toggle('on', p.dataset.pp === k));
   if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; }
 }
@@ -896,7 +897,8 @@ function drCN() {
 function chIntl() {
   $$('#picture .cty button').forEach(b => b.onclick = () => openC(b.dataset.c));
   Object.keys(gDone).forEach(k => delete gDone[k]);
-  openC('gl');
+  FSK.sortable($('#picture .cty'), 'intl-country', 'c');
+  openC($('#picture .cty button').dataset.c);
 }
 function chIntlOverview() {
   const labs = monthsFrom('2022-01', TODAY.slice(0, 7));
