@@ -7,13 +7,11 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'sg_py': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/pricesandyields?rows=3&sort=end_of_period%20desc',
-    'sg_pyc': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/pricesandyields_chart?rows=3&sort=end_of_period%20desc',
-    'sg_pyc_bond': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/pricesandyields_chart?rows=3&filters=product_type:N&sort=end_of_period%20desc',
-    'tw_tpex_bond_zh': 'https://www.tpex.org.tw/zh-tw/bond/info/statistics/benchmark.html',
-    'tw_tpex_bond_en': 'https://www.tpex.org.tw/en-us/bond/info/statistics/benchmark.html',
-    'tw_tpex_curve': 'https://www.tpex.org.tw/zh-tw/bond/info/statistics/yield-curve.html',
-    'tw_tpex_old': 'https://www.tpex.org.tw/web/bond/publish/govbond_yield/govbond_yield.php?l=en-us',
+    'tw_yield': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/yield.html',
+    'tw_ebts': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/ebts.html',
+    'tw_bench_idx': 'https://www.tpex.org.tw/web/bond_trading_info/gov_bond/benchmark_index/index.php?l=zh-tw',
+    'tw_govdaily': 'https://www.tpex.org.tw/web/bond/tradeinfo/govbond/GovBondDaily_02.php?l=zh-tw',
+    'sg_hist': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/pricesandyields_chart?rows=3&filters=product_type:B%20AND%20end_of_period:[2023-01-01%20TO%202023-01-10]&sort=end_of_period%20asc&fields=end_of_period,bid_2y_bond_yield,bid_10y_bond_yield',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -46,7 +44,8 @@ def main():
                     info['json'] = s[:60000]
             elif '<html' in txt[:2000].lower() or '<!doctype' in txt[:200].lower():
                 info['links'] = sorted(set(re.findall(r'href="([^"]+\.(?:csv|xlsx?|pdf|htm|html|txt|zip))"', txt)))[:400]
-                info['xls'] = sorted(set(re.findall(r'[\w/.:-]*(?:BDdys|Curve|govbond|benchmark)[\w/.?=&-]*', txt, re.I)))[:200]
+                info['xls'] = sorted(set(re.findall(r'[\w/.:-]*(?:BDdys|Curve|govbond|benchmark|/www/|\.xls|\.js|\.csv)[\w/.?=&-]*', txt, re.I)))[:200]
+                info['api'] = sorted(set(re.findall(r'''["'](/(?:www|api|openapi)/[^"'\s]+)["']''', txt)))[:100]
                 info['text'] = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', re.sub(r'(?s)<(script|style).*?</\1>', ' ', txt)))[:3000]
                 info['title'] = (re.search(r'<title>(.*?)</title>', txt, re.S) or [None, ''])[1].strip()[:200]
             else:

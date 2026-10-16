@@ -5,7 +5,7 @@
 - ECB: tỷ giá tham chiếu 16:00 CET (EUR/USD, EUR/JPY, EUR/CNY → USD/JPY, USD/CNY chéo).
 - Vietcombank: tỷ giá USD/VND mua, chuyển khoản, bán (ảnh chụp mỗi lần chạy, tích luỹ thành chuỗi).
 """
-import csv, io, json, re, sys, time, urllib.request
+import csv, io, json, re, sys, time, urllib.parse, urllib.request
 from datetime import date
 from pathlib import Path
 
@@ -152,6 +152,19 @@ def kr(old):
     return dict(sorted(out.items()))
 
 
+def sg():
+    """Lợi suất SGS (TPCP Singapore) 2, 10, 30 năm theo ngày — Cơ quan Tiền tệ Singapore (MAS, giá & lợi suất chuẩn)."""
+    base = 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/pricesandyields_chart'
+    out = {}
+    for y in range(int(FROM[:4]), date.today().year + 1):
+        flt = urllib.parse.quote(f'product_type:B AND end_of_period:[{y}-01-01 TO {y}-12-31]')
+        js = json.loads(get(f'{base}?rows=400&filters={flt}&sort=end_of_period%20asc'))
+        for r in (js.get('result') or {}).get('records', []):
+            out[r['end_of_period'][:10]] = {'2Y': r.get('bid_2y_bond_yield'), '10Y': r.get('bid_10y_bond_yield'), '30Y': r.get('bid_30y_bond_yield')}
+        time.sleep(0.5)
+    return dict(sorted(out.items()))
+
+
 def vcb(old):
     """Vietcombank công bố XML tỷ giá; mỗi lần chạy lưu 1 điểm (ngày giờ công bố)."""
     txt = get('https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx')
@@ -170,7 +183,7 @@ def vcb(old):
 def main():
     old = json.loads(P.read_text(encoding='utf-8')) if P.exists() else {}
     res, rep = {}, {}
-    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('kr', lambda: kr(old.get('kr'))), ('vcb', lambda: vcb(old.get('vcb')))]:
+    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('sg', sg), ('kr', lambda: kr(old.get('kr'))), ('vcb', lambda: vcb(old.get('vcb')))]:
         try:
             v = fn()
             if not v:

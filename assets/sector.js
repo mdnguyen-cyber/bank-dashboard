@@ -413,6 +413,12 @@ const INS = {
     const rows = Y10D.filter(([k]) => gs(k).v.length).map(([k, n]) => `${n} <b>${pc(glast(k).v, 2)}</b> (${sg(ch(k), 0, ' bps')} từ đầu năm, ${sg((glast(k).v - w(k)) * 100, 0, ' bps')} 1 tuần)`);
     return `${rows.join('; ')}. Lợi suất cả bốn thị trường đều cao hơn đầu năm — mặt bằng lãi suất dài hạn toàn cầu dịch lên do lạm phát vòng 2 (dầu, dịch vụ) và lượng phát hành nợ lớn.`
       + how('Nhìn "thay đổi từ đầu năm" để so sức ép giữa các nước. Nhật tăng nhanh nhất là dấu hiệu dòng vốn Nhật hồi hương (bán trái phiếu nước ngoài); Mỹ tăng kèm Đức, Nhật nghĩa là áp lực mang tính toàn cầu chứ không riêng Fed. Lợi suất 10 năm Mỹ cao hơn TPCP VN 10 năm là bất lợi cho VND.'); },
+  gGlAsia: () => { const ch = k => { const a = glast(k).v, b = yStart(k); return a != null && b != null ? (a - b) * 100 : null; }, w = k => gprev(k, 5);
+    const S = Y10A.filter(([k]) => gs(k).v.length); if (!S.length) return '';
+    const rows = S.map(([k, n]) => `${n} <b>${pc(glast(k).v, 2)}</b> (${sg(ch(k), 0, ' bps')} từ đầu năm, ${sg((glast(k).v - w(k)) * 100, 0, ' bps')} 1 tuần)`);
+    const cn = gs('cn_10y_d').v.length ? glast('cn_10y_d').v : null, us = glast('us_10y_d').v;
+    return `${rows.join('; ')}.${cn != null ? ` Chênh Mỹ − Trung Quốc 10 năm <b>${nf((us - cn) * 100, 0)} bps</b>.` : ''}`
+      + how('Trung Quốc đi ngược chiều thế giới: lợi suất thấp phản ánh giảm phát và PBoC nới lỏng, khiến chênh lệch với Mỹ rất rộng và CNY chịu sức ép giảm giá — kéo theo các đồng tiền châu Á, gồm VND. Hàn Quốc và Nhật tăng theo Mỹ cho thấy áp lực lãi suất dài hạn lan sang châu Á phát triển; chênh lệch Mỹ − châu Á càng rộng thì dòng vốn càng nghiêng về USD.'); },
   gGlY10m: () => { const s = Y10M.eu.filter(([k]) => gs(k).v.length); if (!s.length) return ''; const r = s.map(([k, n]) => [n, glast(k).v, gprev(k, 12)]);
     const sp = gs('y10_it_m').v.length && gs('y10_de_m').v.length ? (glast('y10_it_m').v - glast('y10_de_m').v) * 100 : null;
     return `${mvn(glast(s[0][0]).d)}: ${r.map(([n, v, p]) => `${n} ${pc(v, 2)} (${sg((v - p) * 100, 0, ' bps')} 12 tháng)`).join('; ')}.${sp != null ? ` Chênh Ý − Đức <b>${nf(sp, 0)} bps</b>.` : ''}`
@@ -567,6 +573,7 @@ function openC(k) {
 }
 /* -------- Toàn cầu: lợi suất trái phiếu chính phủ và lạm phát -------- */
 const Y10D = [['us_10y_d', 'Mỹ', C.navy], ['de_10y_d', 'Đức', C.gold], ['ea_all_10y_d', 'Khu vực euro (toàn bộ TPCP)', C.tealInk], ['jp_10y_d', 'Nhật Bản', C.red]];
+const Y10A = [['us_10y_d', 'Mỹ', C.navy], ['jp_10y_d', 'Nhật Bản', C.red], ['cn_10y_d', 'Trung Quốc', C.gold], ['kr_10y_d', 'Hàn Quốc', C.tealInk], ['tw_10y_d', 'Đài Loan', C.grey], ['sg_10y_d', 'Singapore', '#7a5bb5']];
 const Y10M = { eu: [['y10_de_m', 'Đức'], ['y10_fr_m', 'Pháp'], ['y10_it_m', 'Ý'], ['y10_es_m', 'Tây Ban Nha'], ['y10_nl_m', 'Hà Lan'], ['y10_gb_m', 'Anh']],
   ap: [['jp_10y_m', 'Nhật Bản'], ['y10_kr_m', 'Hàn Quốc'], ['y10_au_m', 'Úc'], ['y10_ca_m', 'Canada'], ['us_10y_m', 'Mỹ']] };
 const yStart = k => { const x = gs(k), y0 = (gd(k) || '').slice(0, 4); const i = x.d.findIndex(d => d >= y0 + '-01-01'); return i >= 0 ? x.v[i] : null; };
@@ -596,6 +603,7 @@ function gGL() {
   </div>
   <div class="grid g2 gap">
     ${card({ id: 'gGlY10', title: 'Lợi suất TPCP 10 năm theo ngày: Mỹ, Đức, khu vực euro, Nhật', h: 'tall', sub: 'chọn: mức lợi suất · chỉ số (phiên đầu năm = 1, như slide) · thay đổi từ đầu năm (bps)', body: tfPick('glY', [['chg', 'Thay đổi từ đầu năm (bps)'], ['idx', 'Chỉ số đầu năm = 1'], ['lvl', 'Mức %']]), src: 'U.S. Treasury; Deutsche Bundesbank; ECB (đường cong lợi suất khu vực euro); Bộ Tài chính Nhật Bản' })}
+    ${card({ id: 'gGlAsia', title: 'Lợi suất TPCP 10 năm châu Á theo ngày: Trung Quốc, Hàn Quốc, Singapore, Nhật (so với Mỹ)', h: 'tall', sub: 'chọn: thay đổi từ đầu năm (bps) · chỉ số đầu năm = 1 · mức %', body: tfPick('glA', [['chg', 'Thay đổi từ đầu năm (bps)'], ['idx', 'Chỉ số đầu năm = 1'], ['lvl', 'Mức %']]), src: 'ChinaBond (Trung Quốc); Ngân hàng Trung ương Hàn Quốc (ECOS); MAS (Singapore); Bộ Tài chính Nhật Bản; U.S. Treasury' })}
     ${card({ id: 'gGlY10m', title: 'Lợi suất 10 năm theo tháng: châu Âu và các nước phát triển khác', h: 'tall', sub: '%/năm, bình quân tháng · ECB (lãi suất dài hạn hội tụ) và OECD', body: tfPick('glM', [['eu', 'Châu Âu'], ['ap', 'Mỹ, Nhật, Hàn, Úc, Canada']]), src: 'ECB; OECD qua FRED' })}
     ${card({ id: 'gGlCurve', title: 'Đường cong lợi suất TPCP Mỹ', h: 'tall', sub: '%/năm theo kỳ hạn · hiện tại so với 1 tháng trước, đầu năm và 1 năm trước', src: 'U.S. Treasury (Daily Treasury Par Yield Curve)' })}
     ${card({ id: 'gGlOil', title: 'Giá dầu WTI và Brent theo ngày', h: 'tall', sub: 'USD/thùng · giá giao ngay', src: 'EIA qua FRED' })}
@@ -603,13 +611,15 @@ function gGL() {
   ${cpiTable()}`;
 }
 function drGL() {
-  wireTf('glY', k => {
-    const ks = Y10D.filter(([kk]) => gs(kk).v.length), from = '2025-10-01';
+  const drY = (id, list, from) => k => {
+    const ks = list.filter(([kk]) => gs(kk).v.length);
     const all = [...new Set(ks.flatMap(([kk]) => gs(kk).d))].sort().filter(d => d >= from);
     const ds = ks.map(([kk, n, c]) => { const x = gs(kk), m = {}; x.d.forEach((d, i) => m[d] = x.v[i]); const b = yStart(kk);
       return L(n, all.map(d => m[d] == null ? null : k === 'idx' ? +(m[d] / b).toFixed(4) : k === 'chg' ? +((m[d] - b) * 100).toFixed(1) : m[d]), c, { unit: k === 'chg' ? ' bps' : k === 'idx' ? '' : '%', dp: k === 'idx' ? 3 : k === 'chg' ? 0 : 3, spanGaps: true }); });
-    mk('gGlY10', { type: 'line', data: { labels: all.map(dvn), datasets: ds }, options: { plugins: { refLines: { lines: k === 'lvl' ? [] : [{ value: k === 'idx' ? 1 : 0, label: '' }] } }, scales: { y: k === 'lvl' ? pctAxis('') : numAxis(k === 'chg' ? 'bps' : '', { beginAtZero: false, ticks: { callback: v => nf(v, k === 'idx' ? 2 : 0) } }) } } });
-  });
+    mk(id, { type: 'line', data: { labels: all.map(dvn), datasets: ds }, options: { plugins: { refLines: { lines: k === 'lvl' ? [] : [{ value: k === 'idx' ? 1 : 0, label: '' }] } }, scales: { y: k === 'lvl' ? pctAxis('') : numAxis(k === 'chg' ? 'bps' : '', { beginAtZero: false, ticks: { callback: v => nf(v, k === 'idx' ? 2 : 0) } }) } } });
+  };
+  wireTf('glY', drY('gGlY10', Y10D, '2025-10-01'));
+  wireTf('glA', drY('gGlAsia', Y10A, '2025-10-01'));
   wireTf('glM', k => { const S = Y10M[k || 'eu'].filter(([kk]) => gs(kk).v.length); mk('gGlY10m', { type: 'line', data: gLines(S.map(x => x[0]), S.map(x => x[1]), PAL2, { from: '2022-01', dp: 2 }), options: { scales: { y: pctAxis('') } } }); });
   const UC = GD.ustCurve; if (UC) mk('gGlCurve', { type: 'line', data: { labels: UC.t, datasets: UC.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.tealInk, C.red, C.grey][i], { pointRadius: 3, borderWidth: i ? 1.6 : 2.6, borderDash: i === 3 ? [4, 3] : [], dp: 2 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
   mk('gGlOil', { type: 'line', data: gLines(['us_wti_d', 'us_brent_d'], ['WTI', 'Brent'], [C.navy, C.gold], { unit: ' USD', dp: 2, from: '2025-09-01' }), options: { scales: { y: numAxis('USD/thùng', { beginAtZero: false }) } } });

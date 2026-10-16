@@ -331,6 +331,10 @@ if DP.exists():
     yc = DY.get('ecbyc', {})
     put('ea_aaa_10y_d', {d: x['aaa'] for d, x in yc.items() if x.get('aaa') is not None and d >= '2023-01-01'}, 3)
     put('ea_all_10y_d', {d: x['all'] for d, x in yc.items() if x.get('all') is not None and d >= '2023-01-01'}, 3)
+    for t in ['2Y', '10Y', '30Y']:   # Trung Quốc: đường cong ChinaBond
+        put(f'cn_{t.lower()}_d', {d: float(x[t]) for d, x in DY.get('cn', {}).items() if x.get(t) is not None and d >= '2023-01-01'}, 4)
+    put('sg_10y_d', {d: x['10Y'] for d, x in DY.get('sg', {}).items() if x.get('10Y') is not None and d >= '2023-01-01'}, 3)
+    put('kr_10y_d', {d: v for d, v in DY.get('kr', {}).items() if v is not None and d >= '2023-01-01'}, 3)
     U = DY.get('ust', {})
     if U:
         TEN = ['1M', '2M', '3M', '4M', '6M', '1Y', '2Y', '3Y', '5Y', '7Y', '10Y', '20Y', '30Y']
