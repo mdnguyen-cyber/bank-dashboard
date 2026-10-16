@@ -7,26 +7,19 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'mof_feio_csv': 'https://www.mof.go.jp/english/policy/international_policy/reference/feio/foreign_exchange_intervention_operations.csv',
-    'mof_feio_data': 'https://www.mof.go.jp/policy/international_policy/reference/feio/data/index.html',
-    'mof_feio_monthly': 'https://www.mof.go.jp/english/policy/international_policy/reference/feio/monthly/20260930e.html',
-    'mof_reserves': 'https://www.mof.go.jp/english/policy/international_policy/reference/official_reserve_assets/index.htm',
-    'mof_reserves_jp': 'https://www.mof.go.jp/policy/international_policy/reference/official_reserve_assets/index.htm',
-    'mof_jgbstat': 'https://www.mof.go.jp/english/policy/jgbs/reference/jgbstat/index.htm',
-    'mof_gbb': 'https://www.mof.go.jp/english/policy/jgbs/reference/gbb/index.htm',
-    'tic_slt5': 'https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/slt_table5.txt',
-    'tic_mfh_csv': 'https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/mfh.csv',
-    'tic_page': 'https://home.treasury.gov/data/treasury-international-capital-tic-system/tic-forms-instructions/securities-b-portfolio-holdings-of-us-and-foreign-securities',
-    'tic_mfh_page': 'https://home.treasury.gov/data/treasury-international-capital-tic-system-home-page/tic-system-home-page/major-foreign-holders-of-treasury-securities',
-    'tsy_allot_page': 'https://home.treasury.gov/data/investor-class-auction-allotments',
-    'boj_meta_BS01': BOJ + '/getMetadata?format=json&lang=en&db=BS01',
-    'boj_meta_FF': BOJ + '/getMetadata?format=json&lang=en&db=FF',
-    'boj_meta_MD01': BOJ + '/getMetadata?format=json&lang=en&db=MD01',
-    'boj_meta_MD02': BOJ + '/getMetadata?format=json&lang=en&db=MD02',
-    'boj_meta_BP01': BOJ + '/getMetadata?format=json&lang=en&db=BP01',
-    'boj_meta_FM08': BOJ + '/getMetadata?format=json&lang=en&db=FM08',
-    'boj_meta_PS01': BOJ + '/getMetadata?format=json&lang=en&db=PS01',
+    'em_cn_us': 'https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPTA_WEB_TREASURYYIELD&columns=ALL&sortColumns=SOLAR_DATE&sortTypes=-1&pageSize=5&pageNumber=1',
+    'chinabond_page': 'https://yield.chinabond.com.cn/cbweb-czb-web/czb/moreInfo?locale=en_US&nameType=1',
+    'pboc': 'http://www.pbc.gov.cn/diaochatongjisi/116219/index.html',
+    'tw_cbc_rates': 'https://www.cbc.gov.tw/en/lp-700-2.html',
+    'tw_tpex_gov': 'https://www.tpex.org.tw/openapi/v1/tpex_gov_bond_yield',
+    'tw_tpex_api_list': 'https://www.tpex.org.tw/openapi/swagger.json',
+    'sg_datagov_search': 'https://api-production.data.gov.sg/v2/public/api/datasets?query=government%20securities%20yield',
+    'sg_mas_api': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/benchmarkyields?rows=5&sort=end_of_day%20desc',
+    'sg_mas_page': 'https://www.mas.gov.sg/bonds-and-bills/singapore-government-securities-prices-and-yields',
+    'kr_ecos_sample': 'https://ecos.bok.or.kr/api/StatisticSearch/sample/json/en/1/10/817Y002/D/20261001/20261016/010210000',
+    'kr_ecos_items': 'https://ecos.bok.or.kr/api/StatisticItemList/sample/json/en/1/40/817Y002',
 }
+KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|JGB|Treasury|reserve|Bank of Japan Accounts|current account|monetary base|intervention|ETF|loans', re.I)
 
 
