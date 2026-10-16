@@ -464,6 +464,12 @@ const INS = {
   gJpRate: () => { const r = gv('jp_rate_m'), y = gv('jp_10y_m'), y12 = gback('jp_10y_m', 12);
     return `Lãi suất qua đêm <b>${pc(r, 2)}</b>, JGB 10 năm <b>${pc(y, 2)}</b> (${sg((y - y12) * 100, 0, ' bps')} 12 tháng). Chênh UST 10Y − JGB 10Y ≈ ${nf((gv('us_10y_m') - y) * 100, 0)} bps.`
       + how('Chênh lãi suất Mỹ − Nhật là động lực chính của USD/JPY và của giao dịch carry (vay JPY rẻ đầu tư tài sản lãi cao). Chênh thu hẹp nhanh → JPY tăng giá, carry bị đóng → bán tháo tài sản rủi ro toàn cầu (như 08/2024).'); },
+  gJpJgb: () => { const t = k => glast(k), w = k => gprev(k, 5), y2 = t('jp_2y_d'), y10 = t('jp_10y_d'), y30 = t('jp_30y_d');
+    return `${dvn(y10.d)}: JGB 2 năm <b>${pc(y2.v, 3)}</b>, 10 năm <b>${pc(y10.v, 3)}</b> (${sg((y10.v - w('jp_10y_d')) * 100, 1, ' bps')} 1 tuần), 30 năm <b>${pc(y30.v, 3)}</b>. Chênh 30Y − 10Y ${sg((y30.v - y10.v) * 100, 0, ' bps')}.`
+      + how('JGB 2 năm phản ánh kỳ vọng BoJ tăng lãi suất; 30 năm phản ánh cung – cầu trái phiếu siêu dài (bảo hiểm nhân thọ giảm mua, BoJ thu hẹp). Lợi suất Nhật tăng kéo vốn của nhà đầu tư Nhật về nước — giảm cầu với UST và tài sản nước ngoài.'); },
+  gJpSpr: () => { const s_ = glast('us_jp_10y_d'), fx = glast('usdjpy_d');
+    return `Chênh UST − JGB 10 năm <b>${nf(s_.v, 0)} bps</b> (${sg(s_.v - gprev('us_jp_10y_d', 20), 0, ' bps')} 1 tháng); USD/JPY <b>${nf(fx.v, 2)}</b> (${dvn(fx.d)}).`
+      + how('USD/JPY thường đi cùng chiều chênh lãi suất Mỹ − Nhật. Khi hai đường tách nhau (chênh giảm mà USD/JPY vẫn tăng), JPY yếu do dòng vốn ra ngoài và carry trade chứ không do lãi suất — vùng MOF dễ can thiệp.'); },
   gJpBsL: () => { const B = GD.bojbs; if (!B) return ''; const n = B.d.length - 1, c = B.l['Tiền gửi NH (current account)'];
     return `Tiền gửi NH tại BoJ <b>${nf(c[n], 0)} nghìn tỷ JPY</b> (${sg(c[n] - c[n - 12], 0, ' nghìn tỷ')} 12 tháng), tiền giấy ${nf(B.l['Tiền giấy'][n], 0)} nghìn tỷ.`
       + how('Khi BoJ giảm mua JGB, tài sản co lại và tiền gửi của ngân hàng tại BoJ (thanh khoản dư thừa) giảm tương ứng — đây là "QT kiểu Nhật". Tiền giấy ổn định, nên thay đổi gần như dồn hết vào current account.'); },
@@ -485,6 +491,8 @@ const INS = {
   mmSpTs: () => { if (!VR.d.length) return ''; const n = VR.d.length - 1, sp = t => mmSp(t, n), sp0 = t => { for (let i = Math.max(0, n - 20); i <= n; i++) { const v = mmSp(t, i); if (v != null) return v; } return null; };
     return `Chênh VND − USD hôm nay: qua đêm ${sg(sp('ON'), 2, '')}, 1 tháng ${sg(sp('1M'), 2, '')}, 3 tháng <b>${sg(sp('3M'), 2, '')}</b>, 1 năm <b>${sg(sp('1Y'), 2, '')}</b> điểm %. So với khoảng 1 tháng trước, chênh 3 tháng ${dir(sp('3M'), sp0('3M'), 'nới rộng', 'thu hẹp', 0.1)}.`
       + how('Chênh dương và nới rộng = giữ VND ngày càng có lợi → hỗ trợ tỷ giá. Chênh qua đêm dao động mạnh theo thanh khoản ngắn hạn (cuối tháng, cuối quý, đợt NHNN hút/bơm), nên nhìn kỳ 3 tháng–1 năm cho xu hướng.'); },
+  mmFx: () => { const v = glast('usdvnd_vcb_sell'); if (v.v == null) return '';
+    return `USD/VND Vietcombank bán ra <b>${nf(v.v, 0)}</b> (${dvn(v.d)}), mua ${nf(glast('usdvnd_vcb_buy').v, 0)}.` + how('Giá NHTM bán ra so với trần biên độ (trung tâm +5%) cho biết NHNN còn dư địa bao nhiêu trước khi phải bán USD can thiệp. Chuỗi mới bắt đầu tích luỹ; xem lịch sử dài ở tab Nội địa.'); },
   mmLvTs: () => { if (!VR.d.length) return ''; const n = VR.d.length - 1, v = (c, t) => VR[c][t] ? VR[c][t][n] : null;
     return `VNIBOR VND: qua đêm ${pc(v('vnd', 'ON'), 2)}, 3 tháng <b>${pc(v('vnd', '3M'), 2)}</b>, 1 năm ${pc(v('vnd', '1Y'), 2)}; VNIBOR USD 3 tháng ${pc(v('usd', '3M'), 2)}, SOFR 3 tháng ${pc(v('sofr', '3M'), 2)}.`
       + how('VND qua đêm phản ánh thanh khoản hằng ngày (NHNN điều tiết qua OMO); 3 tháng–1 năm phản ánh chi phí vốn mà ngân hàng chấp nhận trả → đi trước lãi suất huy động và COF. VNIBOR USD bám SOFR; khi VNIBOR USD cao hơn SOFR là USD trong nước khan.'); },
@@ -741,7 +749,7 @@ function gJP() {
   const res = glast('jp_res_imf'), resPk = Math.max(...gs('jp_res_imf').v.filter(x => x != null));
   return `<div class="kpis">
     ${kpi('CPI Nhật', pc(glast('jp_cpi_main').v, 1), `trừ thực phẩm tươi sống ${pc(glast('jp_cpi_xff_idx_yoy').v, 1)} · ${mvn(glast('jp_cpi_main').d)}`)}
-    ${kpi('Lãi suất qua đêm', pc(glast('jp_rate_m').v, 2), `JGB 10 năm ${pc(glast('jp_10y_m').v, 2)}`)}
+    ${kpi('JGB 10 năm', pc((glast('jp_10y_d').v ?? glast('jp_10y_m').v), 3), `${glast('jp_10y_d').d ? dvn(glast('jp_10y_d').d) + ' · ' : ''}${sg(((glast('jp_10y_d').v ?? 0) - (gprev('jp_10y_d', 5) ?? glast('jp_10y_d').v ?? 0)) * 100, 1, ' bps')} 1 tuần · qua đêm ${pc(glast('jp_rate_m').v, 2)}`)}
     ${kpi('Tài sản BoJ', B ? nf(tB(nB), 0) + ' nghìn tỷ JPY' : '—', B ? `${sg((tB(nB) / tB(nB - 12) - 1) * 100, 1)} 12 tháng · ${mvn(B.d[nB])}` : '')}
     ${kpi('BoJ nắm JGB', bojSh == null ? '—' : pc(bojSh, 1), H ? `${sg(bojSh - bojSh4, 1, ' đ%')} 4 quý · ${qLab(H.d[nH])}` : '')}
     ${kpi('Dự trữ ngoại hối', nf(res.v, 0) + ' tỷ USD', `${mvn(res.d)} · ${sg((res.v / resPk - 1) * 100, 1)} so với đỉnh`)}
@@ -750,6 +758,8 @@ function gJP() {
   <div class="grid g2 gap">
     ${card({ id: 'gJpCpi', title: 'Lạm phát Nhật Bản', sub: '% YoY · tổng, trừ thực phẩm tươi sống (core, BOJ theo dõi), trừ thực phẩm tươi sống và năng lượng (core-core)', src: gsrc(['jp_cpi_idx']) })}
     ${card({ id: 'gJpRate', title: 'BOJ: lãi suất qua đêm và JGB 10 năm', sub: '%/năm, trung bình tháng', src: gsrc(['jp_rate', 'jp_10y']) })}
+    ${card({ id: 'gJpJgb', title: 'Lợi suất JGB theo ngày: 2, 10, 30 năm', h: 'tall', sub: '%/năm, theo ngày · MOF công bố cuối mỗi ngày giao dịch', src: 'Bộ Tài chính Nhật Bản (MOF) — JGB Interest Rate' })}
+    ${card({ id: 'gJpSpr', title: 'Chênh UST − JGB 10 năm và USD/JPY', h: 'tall', sub: 'bps (trục trái) · USD/JPY (trục phải) · chênh thu hẹp thường kéo JPY mạnh lên', src: 'U.S. Treasury; MOF Nhật Bản; ECB (tỷ giá tham chiếu, quy đổi chéo)' })}
     ${card({ id: 'gJpBsA', title: 'Bảng cân đối BoJ: tài sản theo cấu phần', h: 'tall', sub: 'nghìn tỷ JPY, cuối tháng · JGB giảm = BoJ thu hẹp mua (QT theo lộ trình giảm mua từ 08/2024)',
       insight: B ? `JGB BoJ nắm <b>${nf(B.a.JGB[nB], 0)} nghìn tỷ JPY</b>, ${sg(B.a.JGB[nB] - B.a.JGB[nB - 12], 0, ' nghìn tỷ')} trong 12 tháng; ETF ${nf(B.a['ETF + J-REIT'][nB], 0)} nghìn tỷ, cho vay ${nf(B.a['Cho vay'][nB], 0)} nghìn tỷ.` : '', src: 'Nguồn: Bank of Japan — BOJ Time-Series Data Search (Bank of Japan Accounts)' })}
     ${card({ id: 'gJpBsL', title: 'Bảng cân đối BoJ: nguồn vốn theo cấu phần', h: 'tall', sub: 'nghìn tỷ JPY, cuối tháng · tiền gửi NH tại BoJ (current account) là thanh khoản dư thừa của hệ thống', src: 'Nguồn: Bank of Japan — BOJ Time-Series Data Search' })}
@@ -767,6 +777,13 @@ function gJP() {
 function drJP() {
   mk('gJpCpi', { type: 'line', data: gLines(['jp_cpi_idx_yoy', 'jp_cpi_xff_idx_yoy', 'jp_cpi_xffe_idx_yoy'], ['CPI', 'Trừ thực phẩm tươi sống', 'Trừ thực phẩm tươi sống và năng lượng'], PAL, { from: '2018-01' }), options: { plugins: { refLines: { lines: [{ value: 2, label: 'Mục tiêu 2%' }] } }, scales: { y: pctAxis('') } } });
   mk('gJpRate', { type: 'line', data: gLines(['jp_rate_m', 'jp_10y_m'], ['Qua đêm', 'JGB 10 năm'], [C.navy, C.red], { from: '2018-01' }), options: { scales: { y: pctAxis('') } } });
+  if (gs('jp_10y_d').v.length) {
+    mk('gJpJgb', { type: 'line', data: gLines(['jp_2y_d', 'jp_10y_d', 'jp_30y_d'], ['2 năm', '10 năm', '30 năm'], [C.tealInk, C.navy, C.red], { from: '2024-01-01' }), options: { scales: { y: pctAxis('') } } });
+    const sp = gs('us_jp_10y_d'), fx = gs('usdjpy_d'), fm = {}; fx.d.forEach((d, i) => fm[d] = fx.v[i]);
+    const ds = sp.d.filter(d => d >= '2024-01-01');
+    mk('gJpSpr', { type: 'line', data: { labels: ds.map(dvn), datasets: [L('UST − JGB 10 năm', ds.map(d => sp.v[sp.d.indexOf(d)]), C.navy, { unit: ' bps', dp: 0, borderWidth: 2.2 }), L('USD/JPY', ds.map(d => fm[d] ?? null), C.red, { yAxisID: 'y1', unit: '', dp: 2, spanGaps: true })] },
+      options: { scales: { y: numAxis('bps'), y1: numAxis('USD/JPY', { position: 'right', grid: { display: false }, beginAtZero: false }) } } });
+  }
   const B = GD.bojbs, H = GD.jgbHold;
   if (B) { const f = B.d.findIndex(d => d >= '2016-01'), cut = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, v.slice(f)]));
     stk('gJpBsA', B.d.slice(f).map(mvn), cut(B.a), { type: 'line', unit: ' nghìn tỷ JPY' });
@@ -868,6 +885,7 @@ function subMM() {
       insight: mmSpreadIns(i, dep), src: 'Nguồn: VIRA Market Watch; tỷ giá NHTM bán ra (NHNN) · ' + mmLink() })}
     ${card({ id: 'mmSpTs', title: 'Chênh VND − USD theo thời gian', sub: `điểm %, theo phiên · qua đêm, 1 tháng, 3 tháng, 1 năm${many ? '' : ' · đang nạp lịch sử'}`, h: 'tall',
       src: 'Nguồn: VIRA Market Watch' })}
+    ${card({ id: 'mmFx', title: 'Tỷ giá USD/VND Vietcombank theo ngày', sub: 'VND · giá mua tiền mặt và bán ra · tích luỹ mỗi ngày làm việc từ 16/10/2026', src: 'Vietcombank (tỷ giá công bố)' })}
     ${card({ id: 'mmLvTs', title: 'VNIBOR VND, VNIBOR USD và SOFR theo thời gian', sub: '%/năm, theo phiên · VND qua đêm, 1M, 3M, 1Y; USD 3M; SOFR 3M', h: 'tall',
       src: 'Nguồn: VIRA Market Watch' })}
   </div>
@@ -906,6 +924,8 @@ function chMM() {
   mk('mmSpTs', { type: 'line', data: { labels: labs, datasets: [['ON', 'Qua đêm', C.grey], ['1M', '1 tháng', C.teal], ['3M', '3 tháng', C.navy], ['1Y', '1 năm', C.purple]].map(([t, n, c]) =>
     L(n, VR.d.map((_, k) => mmSp(t, k)), c, { unit: ' đ%', borderWidth: t === '3M' ? 2.6 : 1.8 })) },
     options: { plugins: { refLines: { lines: dep.y12 != null ? [{ value: dep.y12, label: 'USD/VND 12T', color: C.red }, { value: 0, label: '', color: C.grey }] : [] } }, scales: { y: { ticks: { callback: v => nf(v, 1) }, grid: { color: '#eef0f4' } } } } });
+  const vs = gs('usdvnd_vcb_sell'), vb = gs('usdvnd_vcb_buy'), bm = {}; vb.d.forEach((d, i) => bm[d] = vb.v[i]);
+  if (vs.d.length) mk('mmFx', { type: 'line', data: { labels: vs.d.map(dvn), datasets: [L('Bán ra', vs.v, C.red, { unit: '', dp: 0, pointRadius: 3 }), L('Mua', vs.d.map(d => bm[d] ?? null), C.navy, { unit: '', dp: 0, pointRadius: 3 })] }, options: { scales: { y: numAxis('', { beginAtZero: false }) } } });
   mk('mmLvTs', { type: 'line', data: { labels: labs, datasets: [
     L('VND qua đêm', VR.vnd.ON || [], C.grey), L('VND 1M', VR.vnd['1M'] || [], C.teal), L('VND 3M', VR.vnd['3M'] || [], C.navy, { borderWidth: 2.6 }), L('VND 1Y', VR.vnd['1Y'] || [], C.purple),
     L('USD 3M', VR.usd['3M'] || [], C.red, { borderWidth: 2.2 }), L('SOFR 3M', VR.sofr['3M'] || [], C.gold, { borderDash: [6, 3] })] }, options: { scales: { y: pctAxis('') } } });
