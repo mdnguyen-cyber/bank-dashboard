@@ -436,6 +436,12 @@ const INS = {
     const mx = it.reduce((a, b) => b[1] > a[1] ? b : a);
     return `Tăng mạnh nhất: <b>${mx[0]}</b> ${pc(mx[1], 1)} YoY. ${it.map(([n, v, p]) => `${n} ${pc(v, 1)} (${dir(v, p)} so với 3 tháng trước)`).join('; ')}.`
       + how('Nhà ở (chiếm ~1/3 CPI) đi chậm sau giá thuê thị trường 9–12 tháng; hàng hóa lõi phản ánh thuế quan, chuỗi cung ứng; năng lượng biến động theo dầu. Nếu lạm phát do dịch vụ và nhà ở thì dai dẳng; do năng lượng thì thường tự hạ.'); },
+  gUsPceC: () => { const P = (GD.pceC || {}).yoy, C2 = (GD.pceC || {}).super; if (!P) return '';
+    const r = P.v[P.v.length - 1], r12 = P.v[P.v.length - 13] || [], tot = r.reduce((a, x) => a + (x || 0), 0), nm = P.cols.map(c => PCEC_VN[c] || c);
+    const parts = nm.map((n, j) => `${n} <b>${nf(r[j], 2)}</b>${r12[j] != null ? ` (${sg(r[j] - r12[j], 2)} so với 12 tháng trước)` : ''}`);
+    const sr = C2 ? C2.v[C2.v.length - 1] : null, top = sr ? C2.cols.map((c, j) => [PCEC_VN[c] || c, sr[j]]).sort((a, b) => b[1] - a[1])[0] : null;
+    return `${mvn(P.d[P.d.length - 1])}: PCE tổng ${pc(tot, 2)} YoY, gồm ${parts.join('; ')} điểm %.${top ? ` Trong supercore, đóng góp lớn nhất là ${top[0]} (${nf(top[1], 2)} điểm %).` : ''}`
+      + how('Dịch vụ lõi trừ nhà ở (supercore) gắn với tiền lương nên giảm chậm nhất — đây là phần Fed theo dõi sát. Hàng hoá lõi đóng góp dương trở lại thường là dấu hiệu thuế quan, giá đầu vào truyền sang giá bán. Lương thực & năng lượng biến động mạnh, phản ánh giá dầu; nhà ở giảm dần theo giá thuê mới với độ trễ 12–18 tháng.'); },
   gUsPce: () => { const c = gv('us_pce_core_yoy'), sc = gv('us_pce_supercore_yoy'), t = gv('us_pce_trim');
     return `${mvn(gd('us_pce_core_yoy'))}: PCE lõi <b>${pc(c, 2)}</b>, supercore ${pc(sc, 2)}, trimmed mean ${pc(t, 2)}. ${c > 2.5 ? `Còn cao hơn mục tiêu 2% <b>${nf((c - 2) * 100, 0)} bps</b>.` : 'Đã gần mục tiêu 2%.'} ${t != null && Math.abs(t - c) > 0.3 ? (t > c ? 'Trimmed mean cao hơn lõi: tăng giá lan rộng chứ không do vài mặt hàng.' : 'Trimmed mean thấp hơn lõi: tăng giá tập trung ở vài mặt hàng.') : ''}`
       + how('PCE lõi là thước đo Fed dùng cho mục tiêu 2% (khác CPI ở trọng số: nhà ở nhẹ hơn, y tế nặng hơn). Trimmed mean bỏ các mặt hàng biến động cực đoan → cho biết lạm phát "nền".'); },
@@ -645,6 +651,7 @@ function gUS() {
     ${card({ id: 'gUsCpiC', title: 'CPI theo cấu phần', sub: 'YoY · nhà ở (shelter), hàng hóa lõi, dịch vụ trừ năng lượng, năng lượng, lương thực', body: tfPick('usCpiC', TF), src: gsrc(['us_cpi']) })}
     ${card({ id: 'gUsPce', title: 'PCE: tổng, lõi, supercore và trimmed mean', sub: 'thước đo lạm phát Fed theo dõi · supercore = dịch vụ trừ năng lượng và nhà ở (IA001260M) · trimmed mean của Dallas Fed chỉ có YoY', body: tfPick('usPce', TF), src: gsrc(['us_pce', 'us_pce_trim']) })}
     ${card({ id: 'gUsPpi', title: 'PPI: cầu cuối cùng, lõi, trung gian, thô', sub: 'chuỗi dẫn dắt của CPI hàng hóa · lõi = trừ thực phẩm, năng lượng, dịch vụ thương mại', body: tfPick('usPpi', TF), src: gsrc(['us_ppi_fd']) })}
+    ${GD.pceC ? card({ id: 'gUsPceC', title: 'Đóng góp vào lạm phát PCE: hàng hoá và dịch vụ', h: 'tall', sub: 'điểm % · cột chồng = đóng góp từng nhóm, đường = tổng · nhà ở, dịch vụ lõi trừ nhà ở, hàng hoá lõi, lương thực & năng lượng', body: tfPick('usPceC', [['yoy', 'PCE tổng · YoY'], ['mom', 'PCE tổng · theo tháng'], ['core', 'PCE lõi · YoY'], ['super', 'Supercore theo ngành · YoY']]), src: 'Fed San Francisco (tính từ số liệu chi tiết PCE của BEA)' }) : ''}
     ${card({ id: 'gUsTaylor', title: 'Quy tắc Taylor so với lãi suất Fed thực tế', h: 'tall', sub: `i* = r* + π + 0,5(π − 2) + 0,5 × độ lệch sản lượng · V1: lệch GDP (CBO) · V2: lệch thất nghiệp × (−2) (Okun) · r* = HLW (NY Fed)`, body: tfPick('usTay', [['core', 'π = PCE lõi'], ['trim', 'π = PCE trimmed mean']]), insight: '<span id="gTayIns"></span>', src: gsrc(['us_pce_core', 'us_rstar', 'us_gdp']) })}
     ${card({ id: 'gUsJobs', title: 'Thị trường lao động', h: 'tall', sub: 'cột = việc làm phi nông nghiệp tăng thêm (nghìn) · đường = tỷ lệ thất nghiệp (trục phải)', src: gsrc(['us_payems']) })}
     ${card({ id: 'gUsSpr', title: 'Áp lực thị trường repo', h: 'tall', sub: 'bps, theo ngày · SOFR, TGCR và SOFR phân vị 99 so với IORB · trên 0 = tiền qua đêm đắt hơn lãi Fed trả cho dự trữ', src: gsrc(['us_sofr', 'us_sofr99']) })}
@@ -659,6 +666,16 @@ function gUS() {
 /* ---- dùng chung: chart chồng (stacked), nhãn quý ---- */
 const PAL2 = ['#1D2678', '#c0392b', '#1f8a8d', '#d9a400', '#861C52', '#4f9bd1', '#7cc49b', '#ef9f76', '#8997D6', '#5b3a8c', '#b5651d', '#2e8b57', '#e377c2', '#6b6b00', '#17becf', '#9aa3b2'];
 const qLab = d => /Q\d$/.test(d) ? `Q${d.slice(-1)}/${d.slice(2, 4)}` : `Q${Math.ceil(+d.slice(5, 7) / 3)}/${d.slice(2, 4)}`;
+const PCEC_VN = { 'Housing': 'Nhà ở', 'Core Services exc. Housing': 'Dịch vụ lõi trừ nhà ở', 'Core Goods': 'Hàng hoá lõi', 'Food and Energy': 'Lương thực & năng lượng',
+  'Health Care': 'Y tế', 'Financial & Insurance': 'Tài chính & bảo hiểm', 'Food Svcs & Accommodations': 'Ăn uống & lưu trú', 'Transportation Services': 'Dịch vụ vận tải', 'Other Services': 'Dịch vụ khác' };
+function drPceC(k = 'yoy') {
+  const P = (GD.pceC || {})[k]; if (!P) return;
+  const i0 = P.d.findIndex(d => d >= '2022-01'), d = P.d.slice(i0), v = P.v.slice(i0), obj = {};
+  P.cols.forEach((c, j) => obj[PCEC_VN[c] || c] = v.map(r => r[j]));
+  const tot = v.map(r => r.some(x => x == null) ? null : +r.reduce((a, x) => a + x, 0).toFixed(2));
+  stk('gUsPceC', d.map(mvn), obj, { unit: ' điểm %', dp: 2, colors: [C.navy, C.tealInk, C.gold, C.red, C.grey], y: { beginAtZero: false, ticks: { callback: v => nf(v, k === 'mom' ? 2 : 1) } },
+    extra: [L(k === 'super' ? 'Supercore' : k === 'core' ? 'PCE lõi' : 'PCE tổng', tot, '#111', { type: 'line', unit: '%', dp: 2, borderWidth: 2, pointRadius: 0 })] });
+}
 function stk(id, labels, obj, o = {}) {   // obj = {tên: [giá trị]}; o.pct = quy về % tổng; o.type = 'bar' | 'line'
   const names = Object.keys(obj), n = labels.length;
   const tot = o.pct ? labels.map((_, i) => names.reduce((a, k) => a + Math.max(0, obj[k][i] || 0), 0)) : null;
@@ -770,6 +787,7 @@ function tfDraw(id, keys, names, k, o = {}) {
 function drUS() {
   wireTf('usCpi', k => tfDraw('gUsCpi', ['us_cpi', 'us_cpi_core', 'us_cpi_supercore'], ['CPI', 'CPI lõi', 'Supercore'], k));
   wireTf('usCpiC', k => tfDraw('gUsCpiC', ['us_cpi_shelter', 'us_cpi_coregoods', 'us_cpi_svc_ex_energy', 'us_cpi_energy', 'us_cpi_food'], ['Nhà ở', 'Hàng hóa lõi', 'Dịch vụ trừ năng lượng', 'Năng lượng', 'Lương thực'], k));
+  wireTf('usPceC', k => drPceC(k || 'yoy'));
   wireTf('usPce', k => tfDraw('gUsPce', ['us_pce', 'us_pce_core', 'us_pce_supercore', ...(k === 'yoy' || !k ? ['us_pce_trim!'] : [])], ['PCE', 'PCE lõi', 'Supercore', 'Trimmed mean'], k));
   wireTf('usPpi', k => tfDraw('gUsPpi', ['us_ppi_fd', 'us_ppi_core', 'us_ppi_inter', 'us_ppi_crude'], ['Cầu cuối cùng', 'Lõi', 'Trung gian', 'Thô'], k));
   const T = GD.taylor || {};
@@ -1029,9 +1047,8 @@ function subDom() {
     ${kpi('Dự trữ ngoại hối', nf(res.v / 1000, 1) + ' tỷ USD', mvn(res.d))}
   </div>
   <div class="grid g2 gap">
-    ${card({ id: 'chFx', title: 'Hành lang tỷ giá USD/VND', sub: 'VND · cuối tháng · NHTM bán ra, tự do, trung tâm, trần biên độ, giá NHNN bán can thiệp', ctl: true,
-      insight: `NHTM bán ra <b>${nf(lastv(dom.nhtmSell).v)}</b> còn cách trần <b>${nf(lastv(dom.ceiling).v - lastv(dom.nhtmSell).v)}đ</b>; trung tâm đã tăng ${sg((lastv(dom.central).v / byM(dom.central)['2025-12'] - 1) * 100, 1)} từ cuối 2025 — NHNN chủ động dời mức neo. Tỷ giá tự do ${nf(lastv(dom.free).v)}, ${fxGap >= 0 ? 'cao' : 'thấp'} hơn NHTM ${nf(Math.abs(fxGap))}đ, đã hạ nhiệt từ đỉnh chênh <b>+${nf(pk.g)}đ</b> (${mvn(pk.d)}).`,
-      src: 'WiData 82223, 82226, 82227, 82228, 82231' })}
+    ${card({ id: 'chFx', title: 'Hành lang tỷ giá USD/VND và chỉ số USD (DXY)', h: 'tall', sub: 'VND · theo ngày từ 2024 · trung tâm, trần/sàn ±5%, giá NHNN bán can thiệp, NHTM và tự do bán ra (cuối tháng), Vietcombank bán ra · trục phải = DXY', ctl: true,
+      insight: fxIns(), src: 'Ngân hàng Nhà nước (tỷ giá trung tâm, trần, sàn, giá bán của Sở Giao dịch NHNN); Vietcombank; DXY tính theo công thức ICE từ tỷ giá tham chiếu ECB; NHTM và tự do: số liệu tổng hợp cuối tháng' })}
     ${card({ id: 'chFxGap', title: 'Chênh lệch tỷ giá tự do − NHTM bán ra', sub: 'VND · cuối tháng · dương = USD ngoài hệ thống đắt hơn ngân hàng (deck DOM-03: kỳ vọng mất giá)',
       insight: `Chênh dương kéo dài 2024–Q1/2026 (cầu USD tiền mặt, vàng) và đổi dấu từ 07/2026 — áp lực ngoài hệ thống đã qua; áp lực còn lại nằm ở lãi suất (UST, Fed).`, src: 'WiData 82226, 82223' })}
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên 3 tháng · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
@@ -1057,12 +1074,34 @@ function subDom() {
     insight: `${mvn(lastF.d).replace(/^0?(\d+)\//, (m, a) => 'Q' + Math.ceil(a / 3) + '/')}: chi − thu <b>${nf(lastF.bal / 1000, 1)} nghìn tỷ</b> (cùng kỳ ${nf(lyF ? lyF.bal / 1000 : null, 1)}) — thu vượt chi, Kho bạc đang hút tiền. Chưa có số tiền gửi KBNN theo tháng (deck slide 58); thường quý IV đảo chiều mạnh khi giải ngân đầu tư công dồn cuối năm.`,
     src: 'WiData 82420, 75598' })}`;
 }
+function fxIns() {
+  const c = glast('vn_sbv_central_d'), ce = glast('vn_sbv_ceil_d'), se = glast('vn_sbv_sell_d'), x = glast('dxy_d'), ns = lastv(dom.nhtmSell), vs = glast('usdvnd_vcb_sell');
+  if (c.v == null) return '';
+  const c0 = yStart('vn_sbv_central_d'), x0 = yStart('dxy_d'), x1m = gprev('dxy_d', 21), mkt = vs.v != null && vs.d >= ns.d ? vs : ns;
+  return `${dvn(c.d)}: trung tâm <b>${nf(c.v)}</b> (${sg((c.v / c0 - 1) * 100, 1)}% từ đầu năm), trần ${nf(ce.v)}, NHNN bán can thiệp ${nf(se.v)}. ${vs.v != null && vs.d >= ns.d ? 'Vietcombank' : 'NHTM'} bán ra <b>${nf(mkt.v)}</b> — cách trần <b>${nf(ce.v - mkt.v)}đ</b> (${pc((ce.v - mkt.v) / ce.v * 100, 2)}). DXY <b>${nf(x.v, 1)}</b> (${dvn(x.d)}): ${sg((x.v / x0 - 1) * 100, 1)}% từ đầu năm, ${sg((x.v / x1m - 1) * 100, 1)}% 1 tháng.`
+    + how('Tỷ giá NHTM sát trần nghĩa là NHNN phải bán USD (giá bán can thiệp = trần − 50đ) để giữ biên độ, làm hút VND và đẩy lãi suất liên ngân hàng lên. DXY tăng là áp lực từ bên ngoài; khi DXY giảm mà USD/VND vẫn đi lên thì áp lực chủ yếu nằm trong nước (cầu ngoại tệ, chênh lãi suất VND − USD). NHNN nâng tỷ giá trung tâm là chủ động dời cả hành lang lên.');
+}
+function drFx() {
+  const from = '2024-01-01', cen = gs('vn_sbv_central_d');
+  const labs = cen.d.filter(d => d >= from); if (!labs.length) return;
+  const at = k => { const x = gs(k), m = {}; x.d.forEach((d, i) => m[d] = x.v[i]); return labs.map(d => m[d] ?? null); };
+  const eom = arr => { const m = byM(arr), out = labs.map(() => null); labs.forEach((d, i) => { if (i === labs.length - 1 || labs[i + 1].slice(0, 7) !== d.slice(0, 7)) out[i] = m[d.slice(0, 7)] ?? null; }); return out; };
+  const dx = gs('dxy_d'), dm = {}; dx.d.forEach((d, i) => dm[d] = dx.v[i]);
+  let lastDx = null; const dxa = labs.map(d => { if (dm[d] != null) lastDx = dm[d]; return dm[d] ?? lastDx; });
+  mk('chFx', { type: 'line', data: { labels: labs.map(dvn), datasets: [
+    L('Trung tâm', at('vn_sbv_central_d'), C.teal, { unit: '', dp: 0 }),
+    L('Trần biên độ (+5%)', at('vn_sbv_ceil_d'), C.red, { unit: '', dp: 0, borderDash: [5, 4], borderWidth: 1.5 }),
+    L('Sàn biên độ (−5%)', at('vn_sbv_floor_d'), C.grey, { unit: '', dp: 0, borderDash: [5, 4], borderWidth: 1.2, hidden: true }),
+    L('NHNN bán can thiệp', at('vn_sbv_sell_d'), C.purple, { unit: '', dp: 0, borderDash: [2, 3], borderWidth: 1.5 }),
+    L('NHTM bán ra (cuối tháng)', eom(dom.nhtmSell), C.navy, { unit: '', dp: 0, borderWidth: 2.4, pointRadius: 2 }),
+    L('Tự do bán ra (cuối tháng)', eom(dom.free), C.gold, { unit: '', dp: 0, pointRadius: 2 }),
+    L('Vietcombank bán ra', at('usdvnd_vcb_sell'), '#1f6f3f', { unit: '', dp: 0, pointRadius: 3, spanGaps: false }),
+    L('DXY (trục phải)', dxa, '#8a8f98', { unit: '', dp: 1, yAxisID: 'y1', borderWidth: 1.4 })] },
+    options: { scales: { y: numAxis('VND', { beginAtZero: false }), y1: numAxis('DXY', { position: 'right', beginAtZero: false, grid: { display: false }, ticks: { callback: v => nf(v, 0) } }) } } });
+}
 function chDom() {
   const labs = monthsFrom('2022-01', TODAY.slice(0, 7));
-  mk('chFx', { type: 'line', data: { labels: labs.map(mvn), datasets: [
-    L('NHTM bán ra', al(dom.nhtmSell, labs), C.navy, { unit: '', dp: 0, borderWidth: 2.4 }), L('Tự do bán ra', al(dom.free, labs), C.gold, { unit: '', dp: 0 }),
-    L('Trung tâm', al(dom.central, labs), C.teal, { unit: '', dp: 0 }), L('Trần biên độ', al(dom.ceiling, labs), C.red, { unit: '', dp: 0, borderDash: [5, 4], keep: true }),
-    L('NHNN bán can thiệp', al(dom.sbvSell, labs), C.purple, { unit: '', dp: 0, borderDash: [2, 3], keep: true })] }, options: { scales: { y: numAxis() } } }, { switch: 'line' });
+  drFx();
   const gap = labs.map(k => { const f = byM(dom.free)[k], n = byM(dom.nhtmSell)[k]; return f != null && n != null ? f - n : null; });
   mk('chFxGap', { type: 'bar', data: { labels: labs.map(mvn), datasets: [{ label: 'Tự do − NHTM', data: gap, backgroundColor: gap.map(v => v > 0 ? 'rgba(192,57,43,.7)' : 'rgba(31,138,141,.7)'), dp: 0, unit: 'đ' }] },
     options: { plugins: { legend: { display: false } }, scales: { y: numAxis('VND') } } });
