@@ -324,3 +324,4 @@ li.ed{list-style-position:inside}
 .pdf-body .qprint-img{display:block;max-width:100%;max-height:300px;width:auto;margin:0 auto}
 .pdf-body .kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 .pdf-body h2.sec{font-size:20px}
+.cpi-heat td,.cpi-heat th{padding:5px 8px}.cpi-heat tr.grp td{background:#eef1fb;color:var(--navy);font-size:12px;letter-spacing:.04em}

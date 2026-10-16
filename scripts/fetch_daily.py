@@ -101,7 +101,7 @@ def bund():
     txt = get(url)
     out = {}
     for line in txt.splitlines():
-        m = re.match(r'^"?(\d{4}-\d{2}-\d{2})"?[,;]"?(-?[\d.]+)"?', line.strip())
+        m = re.match(r'^"?(\d{4}-\d{2}-\d{2})"?[,;]"?(-?\d+(?:\.\d+)?)"?', line.strip())
         if m:
             out[m.group(1)] = float(m.group(2))
     return dict(sorted(out.items()))

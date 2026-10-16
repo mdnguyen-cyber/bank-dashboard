@@ -311,6 +311,39 @@ if DP.exists():
     G['dailyReport'] = DY.get('report')
     G['dailyFetched'] = DY.get('fetched')
 
+# ---------------- Toàn cầu: lợi suất 10 năm (tháng), CPI các nước, dầu theo ngày, đường cong UST
+for k in ['y10_de', 'y10_fr', 'y10_it', 'y10_es', 'y10_nl', 'y10_gb', 'y10_kr', 'y10_au', 'y10_ca']:
+    if k in SER:
+        put(k + '_m', {m: v for m, v in monthly(k, 'avg').items() if m >= '2019'}, 3)
+CPI_C = [('Châu Âu', [('cpi_de', 'Đức'), ('cpi_it', 'Ý'), ('cpi_es', 'Tây Ban Nha'), ('cpi_fr', 'Pháp'), ('cpi_nl', 'Hà Lan'), ('ea_hicp', 'Khu vực Euro')]),
+         ('Mỹ', [('us_cpi_yoy', 'Mỹ')]),
+         ('Châu Á phát triển', [('jp_cpi_main', 'Nhật Bản'), ('cpi_tw', 'Đài Loan'), ('cpi_sg', 'Singapore'), ('cpi_kr', 'Hàn Quốc')]),
+         ('Châu Á mới nổi', [('cn_cpi', 'Trung Quốc'), ('cpi_in', 'Ấn Độ'), ('vn', 'Việt Nam'), ('cpi_th', 'Thái Lan'), ('cpi_id', 'Indonesia'), ('cpi_my', 'Malaysia'), ('cpi_ph', 'Philippines')])]
+for k in ['cpi_de', 'cpi_it', 'cpi_es', 'cpi_fr', 'cpi_nl', 'cpi_tw', 'cpi_sg', 'cpi_kr', 'cpi_in', 'cpi_th', 'cpi_id', 'cpi_my', 'cpi_ph']:
+    if k in SER:
+        put(k, {m: v for m, v in monthly(k).items() if m >= '2019'}, 2)
+G['cpiTab'] = [[g, [[k, n] for k, n in cs]] for g, cs in CPI_C]
+for k in ['us_wti', 'us_brent']:
+    if k in SER:
+        put(k + '_d', {d: v for d, v in obs(k) if d >= '2025-01-01'}, 2)
+if DP.exists():
+    put('de_10y_d', {d: v for d, v in DY.get('bund', {}).items() if d >= '2023-01-01'}, 3)
+    yc = DY.get('ecbyc', {})
+    put('ea_aaa_10y_d', {d: x['aaa'] for d, x in yc.items() if x.get('aaa') is not None and d >= '2023-01-01'}, 3)
+    put('ea_all_10y_d', {d: x['all'] for d, x in yc.items() if x.get('all') is not None and d >= '2023-01-01'}, 3)
+    U = DY.get('ust', {})
+    if U:
+        TEN = ['1M', '2M', '3M', '4M', '6M', '1Y', '2Y', '3Y', '5Y', '7Y', '10Y', '20Y', '30Y']
+        ds = sorted(U)
+        def at(target):   # phiên gần nhất trước hoặc bằng mốc
+            c = [d for d in ds if d <= target]
+            return c[-1] if c else None
+        last = ds[-1]
+        from datetime import date as _d, timedelta as _t
+        ld = _d.fromisoformat(last)
+        snaps = [('Hiện tại', last), ('1 tháng trước', at((ld - _t(days=30)).isoformat())), ('Đầu năm', next((d for d in ds if d >= f'{ld.year}-01-01'), None)), ('1 năm trước', at((ld - _t(days=365)).isoformat()))]
+        G['ustCurve'] = {'t': TEN, 'c': [{'n': n, 'd': d, 'v': [U[d].get(t) for t in TEN]} for n, d in snaps if d]}
+
 js = 'window.GLOBAL_DATA = ' + json.dumps(G, ensure_ascii=False, separators=(',', ':')) + ';\n'
 (ROOT / 'data/global-data.js').write_text(js, encoding='utf-8')
 print(f'wrote data/global-data.js ({len(js) // 1024} KB), {len(G["s"])} chuỗi')

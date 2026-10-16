@@ -129,19 +129,19 @@ CAT = {
     'y10_au': ('Úc 10 năm', ['fred:IRLTLT01AUM156N']),
     'y10_ca': ('Canada 10 năm', ['fred:IRLTLT01CAM156N']),
     # ---------------- Toàn cầu: CPI % YoY theo tháng
-    'cpi_de': ('CPI Đức', ['dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.DE', 'oecd:DEU.M.N.CPI.PA._T.N.GY']),
-    'cpi_it': ('CPI Ý', ['dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.IT', 'oecd:ITA.M.N.CPI.PA._T.N.GY']),
-    'cpi_es': ('CPI Tây Ban Nha', ['dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.ES', 'oecd:ESP.M.N.CPI.PA._T.N.GY']),
-    'cpi_fr': ('CPI Pháp', ['dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.FR', 'oecd:FRA.M.N.CPI.PA._T.N.GY']),
-    'cpi_nl': ('CPI Hà Lan', ['dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.NL', 'oecd:NLD.M.N.CPI.PA._T.N.GY']),
-    'cpi_kr': ('CPI Hàn Quốc', ['oecd:KOR.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.KR.PCPI_PC_CP_A_PT']),
-    'cpi_in': ('CPI Ấn Độ', ['oecd:IND.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.IN.PCPI_PC_CP_A_PT']),
-    'cpi_id': ('CPI Indonesia', ['oecd:IDN.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.ID.PCPI_PC_CP_A_PT']),
-    'cpi_sg': ('CPI Singapore', ['dbn:IMF/CPI/M.SG.PCPI_PC_CP_A_PT', 'oecd:SGP.M.N.CPI.PA._T.N.GY']),
-    'cpi_th': ('CPI Thái Lan', ['dbn:IMF/CPI/M.TH.PCPI_PC_CP_A_PT', 'oecd:THA.M.N.CPI.PA._T.N.GY']),
-    'cpi_my': ('CPI Malaysia', ['dbn:IMF/CPI/M.MY.PCPI_PC_CP_A_PT', 'oecd:MYS.M.N.CPI.PA._T.N.GY']),
-    'cpi_ph': ('CPI Philippines', ['dbn:IMF/CPI/M.PH.PCPI_PC_CP_A_PT', 'oecd:PHL.M.N.CPI.PA._T.N.GY']),
-    'cpi_tw': ('CPI Đài Loan', ['oecd:TWN.M.N.CPI.PA._T.N.GY']),
+    'cpi_de': ('CPI Đức', ['ecb:HICP/M.DE.N.000000.4D0.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.DE', 'oecd:DEU.M.N.CPI.PA._T.N.GY']),
+    'cpi_it': ('CPI Ý', ['ecb:HICP/M.IT.N.000000.4D0.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.IT', 'oecd:ITA.M.N.CPI.PA._T.N.GY']),
+    'cpi_es': ('CPI Tây Ban Nha', ['ecb:HICP/M.ES.N.000000.4D0.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.ES', 'oecd:ESP.M.N.CPI.PA._T.N.GY']),
+    'cpi_fr': ('CPI Pháp', ['ecb:HICP/M.FR.N.000000.4D0.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.FR', 'oecd:FRA.M.N.CPI.PA._T.N.GY']),
+    'cpi_nl': ('CPI Hà Lan', ['ecb:HICP/M.NL.N.000000.4D0.ANR', 'dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.NL', 'oecd:NLD.M.N.CPI.PA._T.N.GY']),
+    'cpi_kr': ('CPI Hàn Quốc', ['bis:KR', 'oecd:KOR.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.KR.PCPI_PC_CP_A_PT']),
+    'cpi_in': ('CPI Ấn Độ', ['bis:IN', 'oecd:IND.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.IN.PCPI_PC_CP_A_PT']),
+    'cpi_id': ('CPI Indonesia', ['bis:ID', 'oecd:IDN.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.ID.PCPI_PC_CP_A_PT']),
+    'cpi_sg': ('CPI Singapore', ['bis:SG', 'dbn:IMF/CPI/M.SG.PCPI_PC_CP_A_PT', 'oecd:SGP.M.N.CPI.PA._T.N.GY']),
+    'cpi_th': ('CPI Thái Lan', ['bis:TH', 'dbn:IMF/CPI/M.TH.PCPI_PC_CP_A_PT', 'oecd:THA.M.N.CPI.PA._T.N.GY']),
+    'cpi_my': ('CPI Malaysia', ['bis:MY', 'dbn:IMF/CPI/M.MY.PCPI_PC_CP_A_PT', 'oecd:MYS.M.N.CPI.PA._T.N.GY']),
+    'cpi_ph': ('CPI Philippines', ['bis:PH', 'dbn:IMF/CPI/M.PH.PCPI_PC_CP_A_PT', 'oecd:PHL.M.N.CPI.PA._T.N.GY']),
+    'cpi_tw': ('CPI Đài Loan', ['bis:TW', 'oecd:TWN.M.N.CPI.PA._T.N.GY']),
     # ---------------- Trung Quốc
     'cn_cpi': ('CPI Trung Quốc (% YoY)', ['oecd:CHN.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.CN.PCPI_PC_CP_A_PT', 'fred:CPALTT01CNM659N']),
     'cn_ppi': ('PPI Trung Quốc (% YoY)', ['nbs:NBS/M_A010B/A010B01|NBS/M_A010H/A010H01']),
@@ -248,9 +248,15 @@ def nyfed_sofr99():
     return sorted(out)
 
 
+def bis(cc):   # BIS: CPI % YoY (WS_LONG_CPI, 771 = thay đổi so cùng kỳ)
+    txt = get(f'https://stats.bis.org/api/v1/data/WS_LONG_CPI/M.{cc}.771?format=csv&startPeriod={START[:7]}')
+    rows = list(csv.DictReader(io.StringIO(txt)))
+    return sorted([[r['TIME_PERIOD'] + '-01', round(float(r['OBS_VALUE']), 4)] for r in rows if r.get('OBS_VALUE') not in (None, '', 'NaN')])
+
+
 def fetch(c):
     src, sid = c.split(':', 1)
-    return {'fred': fred, 'dbn': dbn, 'ecb': ecb, 'oecd': oecd, 'nbs': nbs, 'hlw': hlw, 'nyfed': lambda _: nyfed_sofr99()}[src](sid)
+    return {'fred': fred, 'dbn': dbn, 'ecb': ecb, 'oecd': oecd, 'bis': bis, 'nbs': nbs, 'hlw': hlw, 'nyfed': lambda _: nyfed_sofr99()}[src](sid)
 
 
 def main():
