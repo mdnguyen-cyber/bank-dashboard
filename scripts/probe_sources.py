@@ -7,14 +7,8 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'sf1': 'https://www.frbsf.org/wp-content/uploads/chart1-yoy-headline-pce-contributions.csv',
-    'sf2': 'https://www.frbsf.org/wp-content/uploads/chart2-monthly-headline-pce-contributions.csv',
-    'sf3': 'https://www.frbsf.org/wp-content/uploads/chart3-yoy-core-pce-contributions.csv',
-    'sf4': 'https://www.frbsf.org/wp-content/uploads/chart4-yoy-supercore-pce-contributions.csv',
-    'sbv_tg': 'https://www.sbv.gov.vn/webcenter/portal/vi/menu/rm/tg',
-    'sbv_tgtt': 'https://www.sbv.gov.vn/TyGia/faces/TyGiaTrungTam.jspx',
-    'sbv_new': 'https://www.sbv.gov.vn/vi/ty-gia-trung-tam',
-    'dlkt': 'https://dulieukinhte.com/',
+    'dl_tbl_raw': 'https://dulieukinhte.com/du-lieu/ty-gia-usdvnd-cua-nhnn-427',
+    'dl_ser_raw': 'https://dulieukinhte.com/du-lieu-dong/ty-gia-trung-tam-usd-vnd-nhnn-33444',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -41,6 +35,10 @@ def main():
             if k.endswith('_raw'):
                 info['tail'] = txt[txt.find('modifyJson') - 200:][:5000] if 'modifyJson' in txt else txt[-5000:]
                 info['form'] = re.findall(r'<form[^>]*>', txt)[:5]
+                info['urls'] = sorted(set(re.findall(r'https?://[^"\'\s<>)]+', txt)))[:150]
+                info['paths'] = sorted(set(re.findall(r'["\'](/(?:api|_next/data|embed|nhung)[^"\'\s]*)', txt)))[:80]
+                info['scripts'] = [m[:1500] for m in re.findall(r'<script[^>]*>(.*?)</script>', txt, re.S) if len(m) > 200][:8]
+                info['size'] = len(txt)
             if k.startswith('tw'):
                 info['ctx'] = [txt[max(0, m.start() - 300):m.end() + 300] for m in re.finditer(r'BDdys100|Benchmark|storage/|/www/|ajax|fetch\(|\$\.(?:get|post)', txt)][:25]
             if k == 'tw_tpex_api_list':
