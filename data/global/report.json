@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-15T09:24:58Z",
+ "fetched": "2026-10-16T00:31:49Z",
  "report": {
   "us_cpi": [
    {
@@ -102,46 +102,46 @@
   "us_ppi_fd": [
    {
     "id": "fred:PPIFIS",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "fred:WPSFD49207",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "us_ppi_core": [
    {
     "id": "fred:PPICOR",
-    "n": 197,
-    "last": "2026-08-01"
+    "n": 198,
+    "last": "2026-09-01"
    },
    {
     "id": "fred:WPSFD4111",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "us_ppi_inter": [
    {
     "id": "fred:WPSID61",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "us_ppi_crude": [
    {
     "id": "fred:WPSID62",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "us_breakeven5": [
    {
     "id": "fred:T5YIE",
-    "n": 4198,
-    "last": "2026-10-14"
+    "n": 4199,
+    "last": "2026-10-15"
    }
   ],
   "us_unrate": [
@@ -168,8 +168,8 @@
   "us_claims": [
    {
     "id": "fred:ICSA",
-    "n": 875,
-    "last": "2026-10-03"
+    "n": 876,
+    "last": "2026-10-10"
    }
   ],
   "us_jolts": [
@@ -203,78 +203,78 @@
   "us_effr": [
    {
     "id": "fred:DFF",
-    "n": 6130,
-    "last": "2026-10-13"
+    "n": 6131,
+    "last": "2026-10-14"
    }
   ],
   "us_fedtgt_up": [
    {
     "id": "fred:DFEDTARU",
-    "n": 6131,
-    "last": "2026-10-14"
+    "n": 6132,
+    "last": "2026-10-15"
    }
   ],
   "us_fedtgt_lo": [
    {
     "id": "fred:DFEDTARL",
-    "n": 6131,
-    "last": "2026-10-14"
+    "n": 6132,
+    "last": "2026-10-15"
    }
   ],
   "us_iorb": [
    {
     "id": "fred:IORB",
-    "n": 1905,
-    "last": "2026-10-15"
+    "n": 1906,
+    "last": "2026-10-16"
    }
   ],
   "us_sofr": [
    {
     "id": "fred:SOFR",
-    "n": 2130,
-    "last": "2026-10-13"
+    "n": 2131,
+    "last": "2026-10-14"
    }
   ],
   "us_tgcr": [
    {
     "id": "fred:TGCRRATE",
-    "n": 2131,
-    "last": "2026-10-13"
+    "n": 2132,
+    "last": "2026-10-14"
    }
   ],
   "us_sofr99": [
    {
     "id": "nyfed:sofr99",
-    "n": 2129,
-    "last": "2026-10-13"
+    "n": 2130,
+    "last": "2026-10-14"
    }
   ],
   "us_2y": [
    {
     "id": "fred:DGS2",
-    "n": 4197,
-    "last": "2026-10-13"
+    "n": 4198,
+    "last": "2026-10-14"
    }
   ],
   "us_10y": [
    {
     "id": "fred:DGS10",
-    "n": 4197,
-    "last": "2026-10-13"
+    "n": 4198,
+    "last": "2026-10-14"
    }
   ],
   "us_walcl": [
    {
     "id": "fred:WALCL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "us_bills": [
    {
     "id": "fred:WSHOBL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "us_rstar": [
@@ -287,29 +287,29 @@
   "us_reserves": [
    {
     "id": "fred:WRESBAL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "us_tga": [
    {
     "id": "fred:WTREGEN",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "us_rrp": [
    {
     "id": "fred:RRPONTSYD",
-    "n": 3272,
-    "last": "2026-10-14"
+    "n": 3273,
+    "last": "2026-10-15"
    }
   ],
   "us_repo": [
    {
     "id": "fred:RPONTSYD",
-    "n": 1777,
-    "last": "2026-10-14"
+    "n": 1778,
+    "last": "2026-10-15"
    }
   ],
   "us_dxy": [
@@ -329,97 +329,97 @@
   "us_wti": [
    {
     "id": "fred:DCOILWTICO",
-    "n": 4150,
-    "last": "2026-10-06"
+    "n": 4156,
+    "last": "2026-10-14"
    }
   ],
   "us_brent": [
    {
     "id": "fred:DCOILBRENTEU",
-    "n": 4240,
-    "last": "2026-10-06"
+    "n": 4246,
+    "last": "2026-10-14"
    }
   ],
   "fed_notes": [
    {
     "id": "fred:WSHONBNL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_tips": [
    {
     "id": "fred:WSHONBIIL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_tips_ic": [
    {
     "id": "fred:WSHOICL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_ust": [
    {
     "id": "fred:WSHOTSL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_mbs": [
    {
     "id": "fred:WSHOMCB",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_loans": [
    {
     "id": "fred:WLCFLL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_currency": [
    {
     "id": "fred:WCURCIR",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_rrp_all": [
    {
     "id": "fred:WLRRAL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_res_wed": [
    {
     "id": "fred:WRBWFRBL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_tga_wed": [
    {
     "id": "fred:WDTGAL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "fed_currency_wed": [
    {
     "id": "fred:WLFN",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    },
    {
     "id": "fred:WCURCIR",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "ust_nfc": [
@@ -484,8 +484,8 @@
   "fed_rrp_foreign": [
    {
     "id": "fred:WLRRAFOIAL",
-    "n": 875,
-    "last": "2026-10-07"
+    "n": 876,
+    "last": "2026-10-14"
    }
   ],
   "tsy_debt_total": [
@@ -759,8 +759,8 @@
   "ea_dfr": [
    {
     "id": "fred:ECBDFR",
-    "n": 6131,
-    "last": "2026-10-14"
+    "n": 6132,
+    "last": "2026-10-15"
    }
   ],
   "ea_assets": [
@@ -785,8 +785,8 @@
   "de_10y": [
    {
     "id": "fred:IRLTLT01DEM156N",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "eurusd": [
@@ -854,13 +854,13 @@
   "jp_rate": [
    {
     "id": "fred:IRSTCI01JPM156N",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "fred:IR3TIB01JPM156N",
-    "n": 199,
-    "last": "2026-07-01"
+    "n": 200,
+    "last": "2026-08-01"
    }
   ],
   "jp_assets": [
@@ -873,8 +873,8 @@
   "jp_10y": [
    {
     "id": "fred:IRLTLT01JPM156N",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "usdjpy": [
@@ -918,8 +918,8 @@
   "cn_rate": [
    {
     "id": "fred:IR3TIB01CNM156N",
-    "n": 199,
-    "last": "2026-07-01"
+    "n": 200,
+    "last": "2026-08-01"
    },
    {
     "id": "fred:INTDSRCNM193N",
