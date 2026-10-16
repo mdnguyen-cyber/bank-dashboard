@@ -165,6 +165,34 @@ def sg():
     return dict(sorted(out.items()))
 
 
+def tw(old):
+    """Lợi suất TPCP Đài Loan chuẩn (benchmark) 2/5/10/20/30 năm theo ngày — Sở Giao dịch Đài Bắc (TPEx), file Daily Benchmarks Yield."""
+    import xlrd
+    from datetime import timedelta
+    out = dict(old or {})
+    d = date.fromisoformat(max(out)) + timedelta(days=1) if out else date(2025, 1, 2)
+    n = 0
+    while d <= date.today() and n < 400:
+        if d.weekday() < 5:
+            n += 1
+            url = f'https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/{d:%Y}/{d:%Y%m}/BDdys100.{d:%Y%m%d}-E.xls'
+            try:
+                with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
+                    sh = xlrd.open_workbook(file_contents=r.read()).sheet_by_index(0)
+                row = {}
+                for i in range(sh.nrows):
+                    c = [x.value for x in sh.row(i)]
+                    if isinstance(c[0], float) and fnum(c[2]) is not None:
+                        row[f'{int(c[0])}Y'] = fnum(c[2])
+                if row.get('10Y'):
+                    out[d.isoformat()] = row
+            except Exception:  # noqa: BLE001  (ngày nghỉ: không có file)
+                pass
+            time.sleep(0.2)
+        d += timedelta(days=1)
+    return dict(sorted(out.items()))
+
+
 def vcb(old):
     """Vietcombank công bố XML tỷ giá; mỗi lần chạy lưu 1 điểm (ngày giờ công bố)."""
     txt = get('https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx')
@@ -183,7 +211,7 @@ def vcb(old):
 def main():
     old = json.loads(P.read_text(encoding='utf-8')) if P.exists() else {}
     res, rep = {}, {}
-    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('sg', sg), ('kr', lambda: kr(old.get('kr'))), ('vcb', lambda: vcb(old.get('vcb')))]:
+    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('sg', sg), ('tw', lambda: tw(old.get('tw'))), ('kr', lambda: kr(old.get('kr'))), ('vcb', lambda: vcb(old.get('vcb')))]:
         try:
             v = fn()
             if not v:

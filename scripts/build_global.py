@@ -334,6 +334,7 @@ if DP.exists():
     for t in ['2Y', '10Y', '30Y']:   # Trung Quốc: đường cong ChinaBond
         put(f'cn_{t.lower()}_d', {d: float(x[t]) for d, x in DY.get('cn', {}).items() if x.get(t) is not None and d >= '2023-01-01'}, 4)
     put('sg_10y_d', {d: x['10Y'] for d, x in DY.get('sg', {}).items() if x.get('10Y') is not None and d >= '2023-01-01'}, 3)
+    put('tw_10y_d', {d: x['10Y'] for d, x in DY.get('tw', {}).items() if x.get('10Y') is not None and d >= '2023-01-01'}, 4)
     put('kr_10y_d', {d: v for d, v in DY.get('kr', {}).items() if v is not None and d >= '2023-01-01'}, 3)
     U = DY.get('ust', {})
     if U:

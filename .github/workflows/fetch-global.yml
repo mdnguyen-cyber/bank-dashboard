@@ -20,7 +20,7 @@ jobs:
           python-version: '3.12'
       - name: Tải chuỗi số liệu
         run: |
-          pip install -q openpyxl
+          pip install -q openpyxl xlrd
           python scripts/fetch_global.py
           python scripts/fetch_ust.py || echo "fetch_ust lỗi"
           python scripts/fetch_jp.py || echo "fetch_jp lỗi"
