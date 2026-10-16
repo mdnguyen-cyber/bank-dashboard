@@ -1,118 +1,478 @@
 {
- "tw_api1": {
-  "url": "https://www.tpex.org.tw/www/en-us/bond/govDaily",
+ "tw_xls": {
+  "url": "https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls",
   "status": 200,
-  "ct": "application/json;charset=UTF-8",
-  "bytes": 2110,
-  "ctx": [
-   "{\"date\":\"20261031\",\"tables\":[{\"title\":\"Government Bond & Corporate Bond EBTS Daily Trading Stats\",\"fields\":[\"Date\",\"Daily Benchmarks Yield Download (XLS)\",\"Daily Benchmarks Yield Download (ODS)\"],\"data\":[[\"2026/10/15\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/g",
-   "{\"date\":\"20261031\",\"tables\":[{\"title\":\"Government Bond & Corporate Bond EBTS Daily Trading Stats\",\"fields\":[\"Date\",\"Daily Benchmarks Yield Download (XLS)\",\"Daily Benchmarks Yield Download (ODS)\"],\"data\":[[\"2026/10/15\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.x",
-   "{\"date\":\"20261031\",\"tables\":[{\"title\":\"Government Bond & Corporate Bond EBTS Daily Trading Stats\",\"fields\":[\"Date\",\"Daily Benchmarks Yield Download (XLS)\",\"Daily Benchmarks Yield Download (ODS)\"],\"data\":[[\"2026/10/15\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbon",
-   "{\"date\":\"20261031\",\"tables\":[{\"title\":\"Government Bond & Corporate Bond EBTS Daily Trading Stats\",\"fields\":[\"Date\",\"Daily Benchmarks Yield Download (XLS)\",\"Daily Benchmarks Yield Download (ODS)\"],\"data\":[[\"2026/10/15\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/1",
-   "porate Bond EBTS Daily Trading Stats\",\"fields\":[\"Date\",\"Daily Benchmarks Yield Download (XLS)\",\"Daily Benchmarks Yield Download (ODS)\"],\"data\":[[\"2026/10/15\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/10/13\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api",
-   "lds\":[\"Date\",\"Daily Benchmarks Yield Download (XLS)\",\"Daily Benchmarks Yield Download (ODS)\"],\"data\":[[\"2026/10/15\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/10/13\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbon",
-   "LS)\",\"Daily Benchmarks Yield Download (ODS)\"],\"data\":[[\"2026/10/15\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/10/13\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/1",
-   "einfo/govbond/2026/202610/BDdys100.20261015-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/10/13\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/10/12\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api",
-   "5-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/10/13\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/10/12\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbon",
-   "adeinfo/govbond/2026/202610/BDdys100.20261015-E.xls\"],[\"2026/10/14\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/10/13\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/10/12\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/1",
-   "einfo/govbond/2026/202610/BDdys100.20261014-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/10/13\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/10/12\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/10/08\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api",
-   "4-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/10/13\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/10/12\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/10/08\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbon",
-   "adeinfo/govbond/2026/202610/BDdys100.20261014-E.xls\"],[\"2026/10/13\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/10/12\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/10/08\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/1",
-   "einfo/govbond/2026/202610/BDdys100.20261013-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/10/12\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/10/08\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/10/07\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api",
-   "3-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/10/12\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/10/08\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/10/07\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbon",
-   "adeinfo/govbond/2026/202610/BDdys100.20261013-E.xls\"],[\"2026/10/12\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/10/08\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/10/07\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/1",
-   "einfo/govbond/2026/202610/BDdys100.20261012-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/10/08\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/10/07\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/10/06\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\",\"/en-us/api",
-   "2-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/10/08\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/10/07\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/10/06\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbon",
-   "adeinfo/govbond/2026/202610/BDdys100.20261012-E.xls\"],[\"2026/10/08\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/10/07\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/10/06\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\"],[\"2026/1",
-   "einfo/govbond/2026/202610/BDdys100.20261008-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/10/07\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/10/06\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\"],[\"2026/10/05\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\",\"/en-us/api",
-   "8-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/10/07\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/10/06\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\"],[\"2026/10/05\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbon",
-   "adeinfo/govbond/2026/202610/BDdys100.20261008-E.xls\"],[\"2026/10/07\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/10/06\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\"],[\"2026/10/05\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\"],[\"2026/1",
-   "einfo/govbond/2026/202610/BDdys100.20261007-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/10/06\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\"],[\"2026/10/05\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\"],[\"2026/10/02\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261002-E.xls\",\"/en-us/api",
-   "7-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/10/06\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\"],[\"2026/10/05\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\"],[\"2026/10/02\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261002-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbon",
-   "adeinfo/govbond/2026/202610/BDdys100.20261007-E.xls\"],[\"2026/10/06\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls\"],[\"2026/10/05\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls\"],[\"2026/10/02\",\"/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261002-E.xls\",\"/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261002-E.xls\"],[\"2026/1"
-  ],
-  "json": {
-   "date": "20261031",
-   "tables": [
-    {
-     "title": "Government Bond & Corporate Bond EBTS Daily Trading Stats",
-     "fields": [
-      "Date",
-      "Daily Benchmarks Yield Download (XLS)",
-      "Daily Benchmarks Yield Download (ODS)"
-     ],
-     "data": [
-      [
-       "2026/10/15",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls"
-      ],
-      [
-       "2026/10/14",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261014-E.xls"
-      ],
-      [
-       "2026/10/13",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261013-E.xls"
-      ],
-      [
-       "2026/10/12",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261012-E.xls"
-      ],
-      [
-       "2026/10/08",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261008-E.xls"
-      ],
-      [
-       "2026/10/07",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261007-E.xls"
-      ],
-      [
-       "2026/10/06",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261006-E.xls"
-      ],
-      [
-       "2026/10/05",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261005-E.xls"
-      ],
-      [
-       "2026/10/02",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261002-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261002-E.xls"
-      ],
-      [
-       "2026/10/01",
-       "/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261001-E.xls",
-       "/en-us/api/convertToOds?f=bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261001-E.xls"
-      ]
-     ],
-     "notes": [
-      "The information provided above is available since 2007/01."
-     ]
-    }
-   ],
-   "stat": "ok"
+  "sheets": {
+   "BDdys100": [
+    [
+     "債券等殖成交系統指標利率行情表 \nDaily Benchmarks Yield (Electronic Bond Trading System)",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "日期 Date：2026/10/15",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "到期年限(年)",
+     "指標公債",
+     "平均殖利率(%)",
+     "平均百元價(元)",
+     "殖利率漲跌(bp)",
+     "百元價漲跌(元)",
+     "12點參考殖利率",
+     "時間",
+     "成交量(元)",
+     "最近成交日"
+    ],
+    [
+     "Year",
+     "Bond",
+     "Average Yield(%)",
+     "Average Price",
+     "Yield Change(bp)",
+     "Price Change",
+     "12:00 Reference Yield(%)",
+     "Time",
+     "Trading Value (NTD$)",
+     "Last Trading Date"
+    ],
+    [
+     "2.0",
+     "A15204",
+     "1.65",
+     "99.9512",
+     "0.0",
+     "0.0",
+     "1.65",
+     "*",
+     "0.0",
+     "2026/10/14"
+    ],
+    [
+     "5.0",
+     "A15108",
+     "1.88",
+     "99.3978",
+     "0.0",
+     "0.0008",
+     "1.79",
+     "*",
+     "0.0",
+     "2026/10/13"
+    ],
+    [
+     "10.0",
+     "A15109",
+     "2.0225",
+     "99.7981",
+     "-0.12",
+     "0.0107",
+     "2.0225",
+     "09:20",
+     "100000000.0",
+     "2026/10/15"
+    ],
+    [
+     "20.0",
+     "A15107",
+     "2.1159",
+     "100.1419",
+     "0.0",
+     "-0.0001",
+     "1.365",
+     "*",
+     "0.0",
+     "2026/09/30"
+    ],
+    [
+     "30.0",
+     "A15105",
+     "1.886",
+     "99.748",
+     "0.0",
+     "0.0",
+     "1.65",
+     "*",
+     "0.0",
+     "2026/05/28"
+    ],
+    [
+     "註：",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1.平均殖利率：所有於等殖系統(含比對系統)成交之成交量加權平均殖利率。",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "  Average Yield: The weighted average yield of all transactions in the Electronic Bond Trading System (including the Comparison System)",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "2.12點參考殖利率：採距中午12點最近的等殖公開報價成交之5分鐘平均殖利率。",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "  12:00 Reference Yield：5minutes average yield of Electronic Bond Trading System open quotation closest to 12:00.",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "3.時間：12點參考殖利率採用之當日5分鐘平均殖利率成交時間； * 表示採非當日等殖公開報價成交之平均殖利率。",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "   Time：12:00 Reference Yield is the 5minutes average yield of intraday. * indicates the average yield is not the open quotation of the day.",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "4.當指標公債為發行前交易債券時，成交量一欄以該期公債之成交面額揭示。",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "   If the benchmark bond is when-issued bond, the amount of benchmark bond is trading face value.",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "5.最近成交日：平均殖利率採用之最後交易日。Last Trading Date：The day of calculation of average yield ",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ]
   }
  },
- "tw_api2": {
-  "url": "https://www.tpex.org.tw/www/en-us/bond/govDaily",
+ "tw_xls_old": {
+  "url": "https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/2023/202301/BDdys100.20230103-E.xls",
   "status": 200,
-  "ct": "application/json;charset=UTF-8",
-  "bytes": 34,
-  "ctx": [],
-  "json": {
-   "stat": "Invalid Query Parameter"
+  "sheets": {
+   "BDdys100": [
+    [
+     "債券等殖成交系統指標利率行情表 \nDaily Benchmarks Yield (Electronic Bond Trading System)",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "日期 Date：2023/01/03",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "到期年限(年)",
+     "指標公債",
+     "平均殖利率(%)",
+     "平均百元價(元)",
+     "殖利率漲跌(bp)",
+     "百元價漲跌(元)",
+     "12點參考殖利率",
+     "時間",
+     "成交量(元)",
+     "最近成交日"
+    ],
+    [
+     "Year",
+     "Bond",
+     "Average Yield(%)",
+     "Average Price",
+     "Yield Change(bp)",
+     "Price Change",
+     "12:00 Reference Yield(%)",
+     "Time",
+     "Trading Value (NTD$)",
+     "Last Trading Date"
+    ],
+    [
+     "2.0",
+     "A11202",
+     "1.0",
+     "99.6945",
+     "0.0",
+     "0.0007",
+     "0.77",
+     "*",
+     "0.0",
+     "2022/12/08"
+    ],
+    [
+     "5.0",
+     "A11108",
+     "1.15",
+     "100.4549",
+     "0.0",
+     "-0.0003",
+     "1.15",
+     "*",
+     "0.0",
+     "2022/12/30"
+    ],
+    [
+     "10.0",
+     "A11110",
+     "1.2886",
+     "104.2127",
+     "0.74",
+     "-0.0704",
+     "1.28",
+     "*",
+     "937913548.0",
+     "2023/01/03"
+    ],
+    [
+     "20.0",
+     "A11109",
+     "1.4538",
+     "107.1784",
+     "0.0",
+     "-0.0009",
+     "1.45",
+     "*",
+     "0.0",
+     "2022/12/26"
+    ],
+    [
+     "30.0",
+     "A11111",
+     "1.6505",
+     "116.965",
+     "0.0",
+     "-0.0013",
+     "1.75",
+     "*",
+     "0.0",
+     "2022/12/14"
+    ],
+    [
+     "註：",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1.平均殖利率：所有於等殖系統(含比對系統)成交之成交量加權平均殖利率。",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "  Average Yield: The weighted average yield of all transactions in the Electronic Bond Trading System (including the Comparison System)",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "2.12點參考殖利率：採距中午12點最近的等殖公開報價成交之5分鐘平均殖利率。",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "  12:00 Reference Yield：5minutes average yield of Electronic Bond Trading System open quotation closest to 12:00.",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "3.時間：12點參考殖利率採用之當日5分鐘平均殖利率成交時間； * 表示採非當日等殖公開報價成交之平均殖利率。",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "   Time：12:00 Reference Yield is the 5minutes average yield of intraday. * indicates the average yield is not the open quotation of the day.",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "4.當指標公債為發行前交易債券時，成交量一欄以該期公債之成交面額揭示。",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "   If the benchmark bond is when-issued bond, the amount of benchmark bond is trading face value.",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "5.最近成交日：平均殖利率採用之最後交易日。Last Trading Date：The day of calculation of average yield ",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ]
   }
  },
- "tw_api3": {
-  "url": "https://www.tpex.org.tw/www/en-us/bond/govDaily2",
+ "tw_month": {
+  "url": "https://www.tpex.org.tw/www/en-us/bond/govDaily",
   "status": 200,
   "ct": "application/json;charset=UTF-8",
   "bytes": 34,
