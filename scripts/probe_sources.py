@@ -7,11 +7,10 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'tw_yield': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/yield.html',
-    'tw_ebts': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/ebts.html',
-    'tw_bench_idx': 'https://www.tpex.org.tw/web/bond_trading_info/gov_bond/benchmark_index/index.php?l=zh-tw',
-    'tw_govdaily': 'https://www.tpex.org.tw/web/bond/tradeinfo/govbond/GovBondDaily_02.php?l=zh-tw',
-    'sg_hist': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/pricesandyields_chart?rows=3&filters=product_type:B%20AND%20end_of_period:[2023-01-01%20TO%202023-01-10]&sort=end_of_period%20asc&fields=end_of_period,bid_2y_bond_yield,bid_10y_bond_yield',
+    'twjs_tables': 'https://www.tpex.org.tw/rsrc/js/tables.js',
+    'twjs_main': 'https://www.tpex.org.tw/rsrc/js/main.js',
+    'twjs_global': 'https://www.tpex.org.tw/rsrc/asset/js/global.js',
+    'tw_ebts_raw': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/ebts.html',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -27,6 +26,8 @@ def main():
                 b = r.read(); ct = r.headers.get('Content-Type', '')
             txt = b.decode('utf-8', 'replace') if 'pdf' not in ct else ''
             info = {'url': u, 'status': 200, 'ct': ct, 'bytes': len(b)}
+            if k.startswith('tw'):
+                info['ctx'] = [txt[max(0, m.start() - 300):m.end() + 300] for m in re.finditer(r'BDdys100|Benchmark|storage/|/www/|ajax|fetch\(|\$\.(?:get|post)', txt)][:25]
             if k == 'tw_tpex_api_list':
                 js = json.loads(txt); info['paths'] = {pth: (v.get('get') or {}).get('summary') for pth, v in js.get('paths', {}).items()}
             elif k.startswith('boj_meta'):

@@ -1511,6 +1511,7 @@ function paneQuick() {
         ${(m => (m.sub ? `<p class="chart-sub" hidden>${m.sub}</p>` : '') + (m.insight ? `<div class="insight">${m.insight}</div>` : '') + (m.src ? `<div class="src">${/^Nguồn/.test(m.src) ? '' : 'Nguồn: '}${m.src}</div>` : ''))(cardMeta(SPEC[g.id].el))}
         <div class="qfoot"><span>Chart book: <code>${g.id}</code>${g.last ? ` · ${g.last} điểm gần nhất` : ''}</span><button type="button" class="lnk" data-book="${g.id}">Mở trong Chart book →</button></div>
       </article>` : `<article class="card"><p class="muted">Chart <code>${esc(g.id)}</code> không còn trong dashboard.</p></article>`).join('')}</div>
+    ${(c.tables || []).map(t => t === 'cpi' ? cpiTable() : '').join('')}
   </section>`).join('')}
   ${u.watch && u.watch.length ? `<article class="card"><h3 class="sub">Theo dõi tiếp</h3><div class="tscroll"><table><thead><tr><th>Ngày</th><th>Sự kiện</th><th>Vì sao quan trọng</th></tr></thead><tbody>
     ${u.watch.map((w, k) => `<tr><td style="white-space:nowrap">${dvn(w.d)}</td><td><b>${esc(w.t)}</b></td><td>${f(`watch.${k}.why`, esc(w.why))}</td></tr>`).join('')}</tbody></table></div></article>` : ''}
