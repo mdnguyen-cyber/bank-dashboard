@@ -177,7 +177,7 @@ def tw(old):
             n += 1
             url = f'https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/{d:%Y}/{d:%Y%m}/BDdys100.{d:%Y%m%d}-E.xls'
             try:
-                with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
+                with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=20) as r:
                     sh = xlrd.open_workbook(file_contents=r.read()).sheet_by_index(0)
                 row = {}
                 for i in range(sh.nrows):
