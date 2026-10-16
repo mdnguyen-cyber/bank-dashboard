@@ -7,10 +7,8 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'twjs_tables': 'https://www.tpex.org.tw/rsrc/js/tables.js',
-    'twjs_main': 'https://www.tpex.org.tw/rsrc/js/main.js',
-    'twjs_global': 'https://www.tpex.org.tw/rsrc/asset/js/global.js',
     'tw_ebts_raw': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/ebts.html',
+    'tw_yield_raw': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/yield.html',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -26,6 +24,9 @@ def main():
                 b = r.read(); ct = r.headers.get('Content-Type', '')
             txt = b.decode('utf-8', 'replace') if 'pdf' not in ct else ''
             info = {'url': u, 'status': 200, 'ct': ct, 'bytes': len(b)}
+            if k.endswith('_raw'):
+                info['tail'] = txt[txt.find('modifyJson') - 200:][:5000] if 'modifyJson' in txt else txt[-5000:]
+                info['form'] = re.findall(r'<form[^>]*>', txt)[:5]
             if k.startswith('tw'):
                 info['ctx'] = [txt[max(0, m.start() - 300):m.end() + 300] for m in re.finditer(r'BDdys100|Benchmark|storage/|/www/|ajax|fetch\(|\$\.(?:get|post)', txt)][:25]
             if k == 'tw_tpex_api_list':
