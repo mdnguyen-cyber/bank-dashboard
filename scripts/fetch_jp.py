@@ -124,15 +124,20 @@ def reserves():
     4 = A. tổng dự trữ chính thức, 5 = (1) ngoại tệ, 6 = (a) chứng khoán, 8 = (b) tiền gửi, 14 = vị thế IMF, 15 = SDR, 16 = vàng."""
     b = get(MOF_RES, raw=True)
     rows = list(csv.reader(io.StringIO(b.decode('cp932', 'replace'))))
-    out, y = {}, None
+    out, y, pm = {}, None, None
     f = lambda r, i: float(r[i].replace(',', '')) if i < len(r) and re.fullmatch(r'-?[\d,]+(\.\d+)?', r[i].strip()) else None
     for r in rows:
         if len(r) < 8:
             continue
+        m = MONTHS.get(r[3].strip()[:3].lower())
+        if not m:
+            continue
         if re.fullmatch(r'\d{4}', r[2].strip()):
             y = int(r[2].strip())
-        m = MONTHS.get(r[3].strip()[:3].lower())
-        if not y or not m or f(r, 4) is None:
+        elif y and pm and m <= pm:          # năm chỉ ghi ở dòng đầu năm: tháng quay về → sang năm mới
+            y += 1
+        pm = m
+        if not y or f(r, 4) is None:
             continue
         out[f'{y:04d}-{m:02d}'] = {'total': f(r, 4), 'fx': f(r, 5), 'sec': f(r, 6), 'dep': f(r, 8), 'imf': f(r, 14), 'sdr': f(r, 15), 'gold': f(r, 16)}
     return dict(sorted(out.items())), rows[-3:]

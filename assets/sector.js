@@ -479,8 +479,11 @@ const INS = {
   gJpFx: () => { const x = gv('usdjpy_d'), ep = jpEpisodes(), le = ep[ep.length - 1];
     return `USD/JPY <b>${nf(x, 2)}</b> (${dvn(gd('usdjpy_d'))}). ${le ? `Đợt can thiệp gần nhất ${dvn(le.from)}–${dvn(le.to)}: ${le.amt > 0 ? 'bán USD' : 'mua USD'} <b>${nf(Math.abs(le.amt) / 10000, 2)} nghìn tỷ JPY</b>.` : ''} ${x > 155 ? 'Tỷ giá đang ở vùng MOF từng can thiệp (155–162) → rủi ro can thiệp cao.' : ''}`
       + how('MOF thường can thiệp khi JPY mất giá nhanh (vài yên trong vài ngày) quanh 150–162, thường sau phát biểu cảnh báo của Thứ trưởng Tài chính về tiền tệ. Số ngày/lượng can thiệp chỉ công bố cuối tháng (tổng) và cuối quý (từng ngày), nên cột đỏ có độ trễ.'); },
-  gJpRes: () => { const r = glast('jp_res_imf'), tj = (GD.tic || {}).Japan;
-    return `Dự trữ trừ vàng ${mvn(r.d)}: <b>${nf(r.v, 0)} tỷ USD</b> (${sg(r.v - gback('jp_res_imf', 12), 0, ' tỷ')} 12 tháng)${tj ? `; UST Nhật nắm ${nf(tj.v[tj.v.length - 1], 0)} tỷ (${mvn(tj.d[tj.d.length - 1])})` : ''}.`
+  gJpResC: () => { const R = GD.jpRes; if (!R) return ''; const n = R.d.length - 1, c = R.c, p12 = n - 12, ch = k => c[k][n] - c[k][p12];
+    return `${mvn(R.d[n])}: tổng <b>${nf(R.total[n], 1)} tỷ USD</b> (${sg(R.total[n] - R.total[p12], 1, ' tỷ')} 12 tháng). Chứng khoán ${nf(c['Chứng khoán ngoại tệ'][n], 0)} tỷ (${sg(ch('Chứng khoán ngoại tệ'), 0, ' tỷ')}), tiền gửi ${nf(c['Tiền gửi ngoại tệ'][n], 0)} tỷ (${sg(ch('Tiền gửi ngoại tệ'), 0, ' tỷ')}), vàng ${nf(c['Vàng'][n], 0)} tỷ (${sg(ch('Vàng'), 0, ' tỷ')}).`
+      + how('Khi can thiệp bán USD, Bộ Tài chính Nhật dùng tiền gửi ngoại tệ trước, rồi bán chứng khoán (chủ yếu UST). Tiền gửi giảm mạnh mà chứng khoán đứng yên là dấu hiệu đã can thiệp và còn dư địa; vàng tăng thường do giá vàng, không phải mua thêm.'); },
+  gJpRes: () => { const r = gs('jp_res_mof').v.length ? glast('jp_res_mof') : glast('jp_res_imf'), tj = (GD.tic || {}).Japan;
+    return `Dự trữ ${mvn(r.d)}: <b>${nf(r.v, 0)} tỷ USD</b> (${sg(r.v - gback(gs('jp_res_mof').v.length ? 'jp_res_mof' : 'jp_res_imf', 12), 0, ' tỷ')} 12 tháng)${tj ? `; UST Nhật nắm ${nf(tj.v[tj.v.length - 1], 0)} tỷ (${mvn(tj.d[tj.d.length - 1])})` : ''}.`
       + how('Để có USD bán ra khi can thiệp, MOF rút tiền gửi USD rồi bán UST trong dự trữ → dự trữ và lượng UST Nhật nắm giảm cùng lúc với cột can thiệp. Đây là kênh Nhật can thiệp tác động ngược lên lợi suất UST.'); },
   gCnPx: () => { const c = gv('cn_cpi'), p = gv('cn_ppi');
     return `CPI <b>${pc(c, 1)}</b> (${mvn(gd('cn_cpi'))}), PPI <b>${pc(p, 1)}</b> (${mvn(gd('cn_ppi'))}). ${p < 0 ? 'PPI âm = giảm phát giá xuất xưởng: Trung Quốc "xuất khẩu giảm phát" sang các nước nhập hàng (kể cả VN).' : 'PPI đã dương lại — giảm phát công nghiệp kết thúc.'}`
@@ -746,7 +749,7 @@ function gJP() {
   const B = GD.bojbs, H = GD.jgbHold, ep = jpEpisodes(), le = ep[ep.length - 1];
   const nB = B ? B.d.length - 1 : -1, tB = i => B ? Object.values(B.a).reduce((a, v) => a + (v[i] || 0), 0) : null;
   const nH = H ? H.d.length - 1 : -1, bojSh = H ? H.h.BoJ[nH] / H.total[nH] * 100 : null, bojSh4 = H ? H.h.BoJ[nH - 4] / H.total[nH - 4] * 100 : null;
-  const res = glast('jp_res_imf'), resPk = Math.max(...gs('jp_res_imf').v.filter(x => x != null));
+  const rk = gs('jp_res_mof').v.length ? 'jp_res_mof' : 'jp_res_imf', res = glast(rk), resPk = Math.max(...gs(rk).v.filter(x => x != null));
   return `<div class="kpis">
     ${kpi('CPI Nhật', pc(glast('jp_cpi_main').v, 1), `trừ thực phẩm tươi sống ${pc(glast('jp_cpi_xff_idx_yoy').v, 1)} · ${mvn(glast('jp_cpi_main').d)}`)}
     ${kpi('JGB 10 năm', pc((glast('jp_10y_d').v ?? glast('jp_10y_m').v), 3), `${glast('jp_10y_d').d ? dvn(glast('jp_10y_d').d) + ' · ' : ''}${sg(((glast('jp_10y_d').v ?? 0) - (gprev('jp_10y_d', 5) ?? glast('jp_10y_d').v ?? 0)) * 100, 1, ' bps')} 1 tuần · qua đêm ${pc(glast('jp_rate_m').v, 2)}`)}
@@ -766,7 +769,8 @@ function gJP() {
     ${card({ id: 'gJpHold', title: 'Ai nắm JGB (gồm tín phiếu)', h: 'tall', sub: '% tổng, theo quý (Flow of Funds) · BoJ rút bớt → ngân hàng, bảo hiểm, nước ngoài phải hấp thụ', src: 'Nguồn: Bank of Japan — Flow of Funds' })}
     ${card({ id: 'gJpAbs', title: 'Ai hấp thụ JGB 4 quý gần nhất', h: 'tall', sub: 'nghìn tỷ JPY · thay đổi lượng nắm giữ theo nhóm', insight: '<span id="gJpAbsIns"></span>', src: 'Nguồn: Bank of Japan — Flow of Funds' })}
     ${card({ id: 'gJpFx', title: 'USD/JPY và các lần MOF can thiệp', h: 'tall', sub: 'đường = USD/JPY theo ngày · cột = lượng can thiệp theo ngày, nghìn tỷ JPY (trục phải; dương = bán USD mua JPY)', src: gsrc(['usdjpy']) + ' · MOF Foreign Exchange Intervention Operations' })}
-    ${card({ id: 'gJpRes', title: 'Dự trữ ngoại hối và nắm giữ UST của Nhật', h: 'tall', sub: 'tỷ USD, cuối tháng · dự trữ trừ vàng (IMF) và UST do Nhật nắm (TIC) · cột = can thiệp trong tháng, nghìn tỷ JPY (trục phải)', src: gsrc(['jp_reserves']) + ' · U.S. Treasury TIC · MOF' })}
+    ${card({ id: 'gJpRes', title: 'Dự trữ ngoại hối và nắm giữ UST của Nhật', h: 'tall', sub: 'tỷ USD, cuối tháng · tổng dự trữ chính thức (MOF) và UST do Nhật nắm (TIC) · cột = can thiệp trong tháng, nghìn tỷ JPY (trục phải)', src: 'Bộ Tài chính Nhật Bản (International Reserves/Foreign Currency Liquidity); U.S. Treasury TIC' })}
+    ${card({ id: 'gJpResC', title: 'Dự trữ ngoại hối Nhật theo cấu phần', h: 'tall', sub: 'tỷ USD, cuối tháng · chứng khoán ngoại tệ (chủ yếu UST), tiền gửi ngoại tệ, vàng, vị thế IMF và SDR', src: 'Bộ Tài chính Nhật Bản (International Reserves/Foreign Currency Liquidity)' })}
   </div>
   <article class="card"><h3 class="sub">Các đợt can thiệp tỷ giá của MOF</h3><p class="chart-sub">gộp các lần can thiệp cùng chiều cách nhau không quá 45 ngày · số tiền nghìn tỷ JPY · MOF công bố cuối mỗi tháng (tổng) và theo quý (từng ngày)</p>
     <div class="tscroll"><table><thead><tr><th>Từ</th><th>Đến</th><th class="n">Số phiên</th><th>Chiều</th><th class="n">Tổng (nghìn tỷ JPY)</th><th class="n">USD/JPY trước</th><th class="n">USD/JPY 1 tháng sau</th></tr></thead><tbody>
@@ -798,11 +802,12 @@ function drJP() {
   mk('gJpFx', { type: 'bar', data: { labels: all.map(dvn), datasets: [L('USD/JPY', all.map(d => fm[d] ?? null), C.navy, { unit: '', dp: 2, spanGaps: true }),
     { type: 'bar', label: 'Can thiệp (nghìn tỷ JPY)', data: all.map(d => fe[d] ? +fe[d].toFixed(2) : null), backgroundColor: C.red, yAxisID: 'y1', barThickness: 4, unit: ' nghìn tỷ', dp: 2 }] },
     options: { scales: { y: numAxis('USD/JPY', { beginAtZero: false, ticks: { callback: v => nf(v, 0) } }), y1: numAxis('nghìn tỷ JPY', { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 1) } }) } } });
-  const r = gs('jp_res_imf'), tj = (GD.tic || {}).Japan || { d: [], v: [] }, rm = {}; r.d.forEach((d, i) => rm[d] = r.v[i]);
+  if (GD.jpRes) { const R = GD.jpRes; stk('gJpResC', R.d.map(mvn), R.c, { unit: ' tỷ USD', dp: 1, colors: [C.navy, C.tealInk, C.gold, C.purple, C.grey] }); }
+  const r = gs('jp_res_mof').v.length ? gs('jp_res_mof') : gs('jp_res_imf'), tj = (GD.tic || {}).Japan || { d: [], v: [] }, rm = {}; r.d.forEach((d, i) => rm[d] = r.v[i]);
   const tmj = {}; tj.d.forEach((d, i) => tmj[d] = tj.v[i]);
   const fem = {}; (GD.feio || []).forEach(x => { const m = x.d.slice(0, 7); fem[m] = (fem[m] || 0) + x.amt / 10000; });
   const md = [...new Set([...r.d, ...tj.d])].sort().filter(d => d >= '2018-01');
-  mk('gJpRes', { type: 'bar', data: { labels: md.map(mvn), datasets: [L('Dự trữ trừ vàng', md.map(d => rm[d] ?? null), C.navy, { unit: ' tỷ USD', dp: 0, borderWidth: 2.4 }), L('UST Nhật nắm (TIC)', md.map(d => tmj[d] ?? null), C.tealInk, { unit: ' tỷ USD', dp: 0 }),
+  mk('gJpRes', { type: 'bar', data: { labels: md.map(mvn), datasets: [L(gs('jp_res_mof').v.length ? 'Tổng dự trữ (MOF)' : 'Dự trữ trừ vàng', md.map(d => rm[d] ?? null), C.navy, { unit: ' tỷ USD', dp: 0, borderWidth: 2.4 }), L('UST Nhật nắm (TIC)', md.map(d => tmj[d] ?? null), C.tealInk, { unit: ' tỷ USD', dp: 0 }),
     { type: 'bar', label: 'Can thiệp trong tháng', data: md.map(d => fem[d] ? +fem[d].toFixed(2) : null), backgroundColor: 'rgba(192,57,43,.75)', yAxisID: 'y1', unit: ' nghìn tỷ JPY', dp: 2 }] },
     options: { scales: { y: numAxis('tỷ USD'), y1: numAxis('nghìn tỷ JPY', { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 1) } }) } } });
 }
