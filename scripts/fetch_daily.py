@@ -41,7 +41,8 @@ def ust():
         for r in csv.DictReader(io.StringIO(get(url))):
             m, d, yy = r['Date'].split('/')
             k = f'{yy}-{m}-{d}'
-            out[k] = {t: fnum(r.get(c)) for t, c in [('3M', '3 Mo'), ('2Y', '2 Yr'), ('5Y', '5 Yr'), ('10Y', '10 Yr'), ('30Y', '30 Yr')]}
+            out[k] = {t: fnum(r.get(c)) for t, c in [('1M', '1 Mo'), ('2M', '2 Mo'), ('3M', '3 Mo'), ('4M', '4 Mo'), ('6M', '6 Mo'), ('1Y', '1 Yr'), ('2Y', '2 Yr'),
+                                                     ('3Y', '3 Yr'), ('5Y', '5 Yr'), ('7Y', '7 Yr'), ('10Y', '10 Yr'), ('20Y', '20 Yr'), ('30Y', '30 Yr')]}
     return dict(sorted(out.items()))
 
 
@@ -94,6 +95,29 @@ def ecb():
     return dict(sorted(out.items()))
 
 
+def bund():
+    """Bundesbank: lợi suất trái phiếu Chính phủ Đức 10 năm, theo ngày."""
+    url = 'https://api.statistiken.bundesbank.de/rest/data/BBSIS/D.I.ZST.ZI.EUR.S1311.B.A604.R10XX.R.A.A._Z._Z.A?format=csv&lang=en&startPeriod=' + FROM
+    txt = get(url)
+    out = {}
+    for line in txt.splitlines():
+        m = re.match(r'^"?(\d{4}-\d{2}-\d{2})"?[,;]"?(-?[\d.]+)"?', line.strip())
+        if m:
+            out[m.group(1)] = float(m.group(2))
+    return dict(sorted(out.items()))
+
+
+def ecb_yc():
+    """ECB: đường cong lợi suất khu vực euro 10 năm — trái phiếu xếp hạng AAA và toàn bộ trái phiếu chính phủ."""
+    out = {}
+    for tag, k in [('aaa', 'G_N_A'), ('all', 'G_N_C')]:
+        txt = get(f'https://data-api.ecb.europa.eu/service/data/YC/B.U2.EUR.4F.{k}.SV_C_YM.SR_10Y?format=csvdata&startPeriod={FROM}')
+        for r in csv.DictReader(io.StringIO(txt)):
+            if r.get('OBS_VALUE'):
+                out.setdefault(r['TIME_PERIOD'], {})[tag] = round(float(r['OBS_VALUE']), 3)
+    return dict(sorted(out.items()))
+
+
 def vcb(old):
     """Vietcombank công bố XML tỷ giá; mỗi lần chạy lưu 1 điểm (ngày giờ công bố)."""
     txt = get('https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx')
@@ -112,7 +136,7 @@ def vcb(old):
 def main():
     old = json.loads(P.read_text(encoding='utf-8')) if P.exists() else {}
     res, rep = {}, {}
-    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('vcb', lambda: vcb(old.get('vcb')))]:
+    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('vcb', lambda: vcb(old.get('vcb')))]:
         try:
             v = fn()
             if not v:
