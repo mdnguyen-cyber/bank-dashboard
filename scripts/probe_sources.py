@@ -7,9 +7,14 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'tw_xls': 'https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls',
-    'tw_xls_old': 'https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/2023/202301/BDdys100.20230103-E.xls',
-    'tw_month': ('https://www.tpex.org.tw/www/en-us/bond/govDaily', {'fileCode': 'BDdys100', 'date': '20230131', 'response': 'json'}),
+    'sf1': 'https://www.frbsf.org/wp-content/uploads/chart1-yoy-headline-pce-contributions.csv',
+    'sf2': 'https://www.frbsf.org/wp-content/uploads/chart2-monthly-headline-pce-contributions.csv',
+    'sf3': 'https://www.frbsf.org/wp-content/uploads/chart3-yoy-core-pce-contributions.csv',
+    'sf4': 'https://www.frbsf.org/wp-content/uploads/chart4-yoy-supercore-pce-contributions.csv',
+    'sbv_tg': 'https://www.sbv.gov.vn/webcenter/portal/vi/menu/rm/tg',
+    'sbv_tgtt': 'https://www.sbv.gov.vn/TyGia/faces/TyGiaTrungTam.jspx',
+    'sbv_new': 'https://www.sbv.gov.vn/vi/ty-gia-trung-tam',
+    'dlkt': 'https://dulieukinhte.com/',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
