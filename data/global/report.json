@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-16T01:40:22Z",
+ "fetched": "2026-10-16T02:02:48Z",
  "report": {
   "us_cpi": [
    {
@@ -889,6 +889,240 @@
     "id": "fred:TRESEGJPM052N",
     "n": 200,
     "last": "2026-08-01"
+   }
+  ],
+  "y10_de": [
+   {
+    "id": "ecb:IRS/M.DE.L.L40.CI.0000.EUR.N.Z",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "fred:IRLTLT01DEM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "y10_fr": [
+   {
+    "id": "ecb:IRS/M.FR.L.L40.CI.0000.EUR.N.Z",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "fred:IRLTLT01FRM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "y10_it": [
+   {
+    "id": "ecb:IRS/M.IT.L.L40.CI.0000.EUR.N.Z",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "fred:IRLTLT01ITM156N",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "y10_es": [
+   {
+    "id": "ecb:IRS/M.ES.L.L40.CI.0000.EUR.N.Z",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "fred:IRLTLT01ESM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "y10_nl": [
+   {
+    "id": "ecb:IRS/M.NL.L.L40.CI.0000.EUR.N.Z",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "fred:IRLTLT01NLM156N",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "y10_gb": [
+   {
+    "id": "fred:IRLTLT01GBM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "y10_kr": [
+   {
+    "id": "fred:IRLTLT01KRM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "y10_au": [
+   {
+    "id": "fred:IRLTLT01AUM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "y10_ca": [
+   {
+    "id": "fred:IRLTLT01CAM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "cpi_de": [
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.DE",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "oecd:DEU.M.N.CPI.PA._T.N.GY",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "cpi_it": [
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.IT",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "oecd:ITA.M.N.CPI.PA._T.N.GY",
+    "n": 192,
+    "last": "2025-12-01"
+   }
+  ],
+  "cpi_es": [
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.ES",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "oecd:ESP.M.N.CPI.PA._T.N.GY",
+    "n": 192,
+    "last": "2025-12-01"
+   }
+  ],
+  "cpi_fr": [
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.FR",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "oecd:FRA.M.N.CPI.PA._T.N.GY",
+    "n": 192,
+    "last": "2025-12-01"
+   }
+  ],
+  "cpi_nl": [
+   {
+    "id": "dbn:Eurostat/prc_hicp_manr/M.RCH_A.CP00.NL",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "oecd:NLD.M.N.CPI.PA._T.N.GY",
+    "n": 192,
+    "last": "2025-12-01"
+   }
+  ],
+  "cpi_kr": [
+   {
+    "id": "oecd:KOR.M.N.CPI.PA._T.N.GY",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "dbn:IMF/CPI/M.KR.PCPI_PC_CP_A_PT",
+    "n": 187,
+    "last": "2025-07-01"
+   }
+  ],
+  "cpi_in": [
+   {
+    "id": "oecd:IND.M.N.CPI.PA._T.N.GY",
+    "n": 200,
+    "last": "2026-08-01"
+   },
+   {
+    "id": "dbn:IMF/CPI/M.IN.PCPI_PC_CP_A_PT",
+    "n": 187,
+    "last": "2025-07-01"
+   }
+  ],
+  "cpi_id": [
+   {
+    "id": "oecd:IDN.M.N.CPI.PA._T.N.GY",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "dbn:IMF/CPI/M.ID.PCPI_PC_CP_A_PT",
+    "n": 187,
+    "last": "2025-07-01"
+   }
+  ],
+  "cpi_sg": [
+   {
+    "id": "dbn:IMF/CPI/M.SG.PCPI_PC_CP_A_PT",
+    "n": 187,
+    "last": "2025-07-01"
+   },
+   {
+    "id": "oecd:SGP.M.N.CPI.PA._T.N.GY",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "cpi_th": [
+   {
+    "id": "dbn:IMF/CPI/M.TH.PCPI_PC_CP_A_PT",
+    "n": 171,
+    "last": "2025-03-01"
+   },
+   {
+    "id": "oecd:THA.M.N.CPI.PA._T.N.GY",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "cpi_my": [
+   {
+    "id": "dbn:IMF/CPI/M.MY.PCPI_PC_CP_A_PT",
+    "n": 187,
+    "last": "2025-07-01"
+   },
+   {
+    "id": "oecd:MYS.M.N.CPI.PA._T.N.GY",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "cpi_ph": [
+   {
+    "id": "dbn:IMF/CPI/M.PH.PCPI_PC_CP_A_PT",
+    "n": 173,
+    "last": "2025-05-01"
+   },
+   {
+    "id": "oecd:PHL.M.N.CPI.PA._T.N.GY",
+    "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "cpi_tw": [
+   {
+    "id": "oecd:TWN.M.N.CPI.PA._T.N.GY",
+    "error": "HTTP Error 404: Not Found"
    }
   ],
   "cn_cpi": [
