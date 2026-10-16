@@ -7,8 +7,8 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'dl_tbl_raw': 'https://dulieukinhte.com/du-lieu/ty-gia-usdvnd-cua-nhnn-427',
     'dl_ser_raw': 'https://dulieukinhte.com/du-lieu-dong/ty-gia-trung-tam-usd-vnd-nhnn-33444',
+    'dl_tbl_raw': 'https://dulieukinhte.com/du-lieu/ty-gia-usdvnd-cua-nhnn-427',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -39,6 +39,7 @@ def main():
                 info['paths'] = sorted(set(re.findall(r'["\'](/(?:api|_next/data|embed|nhung)[^"\'\s]*)', txt)))[:80]
                 info['scripts'] = [m[:1500] for m in re.findall(r'<script[^>]*>(.*?)</script>', txt, re.S) if len(m) > 200][:8]
                 info['size'] = len(txt)
+                info['ctx2'] = [txt[max(0, m.start() - 600):m.end() + 600] for m in re.finditer(r'25642|25\.642|2026-10-15|15-10-2026|2009-01-03', txt)][:6]
             if k.startswith('tw'):
                 info['ctx'] = [txt[max(0, m.start() - 300):m.end() + 300] for m in re.finditer(r'BDdys100|Benchmark|storage/|/www/|ajax|fetch\(|\$\.(?:get|post)', txt)][:25]
             if k == 'tw_tpex_api_list':
