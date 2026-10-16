@@ -116,35 +116,26 @@ def feio():
     return rows
 
 
+MONTHS = {m: i + 1 for i, m in enumerate(['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'])}
+
+
 def reserves():
-    """MOF historical.csv: tổng dự trữ ngoại hối (triệu USD) cuối tháng. Định dạng do MOF đặt — dò cột 'Total' / 'Official reserve assets'."""
+    """MOF historical.csv (triệu USD, cuối tháng). Cột: 2 = năm (chỉ ghi ở dòng đầu năm), 3 = tháng tiếng Anh,
+    4 = A. tổng dự trữ chính thức, 5 = (1) ngoại tệ, 6 = (a) chứng khoán, 8 = (b) tiền gửi, 14 = vị thế IMF, 15 = SDR, 16 = vàng."""
     b = get(MOF_RES, raw=True)
-    txt = b.decode('cp932', 'replace')
-    rows = list(csv.reader(io.StringIO(txt)))
-    head = rows[:14]
-    out, sample = {}, []
+    rows = list(csv.reader(io.StringIO(b.decode('cp932', 'replace'))))
+    out, y = {}, None
+    f = lambda r, i: float(r[i].replace(',', '')) if i < len(r) and re.fullmatch(r'-?[\d,]+(\.\d+)?', r[i].strip()) else None
     for r in rows:
-        if len(r) < 6:
+        if len(r) < 8:
             continue
-        lead = ' '.join(x.strip() for x in r[:4])
-        m = re.search(r'(\d{4})\D{1,3}(\d{1,2})(?!\d)', lead)
-        if not m:
+        if re.fullmatch(r'\d{4}', r[2].strip()):
+            y = int(r[2].strip())
+        m = MONTHS.get(r[3].strip()[:3].lower())
+        if not y or not m or f(r, 4) is None:
             continue
-        try:
-            tot = float(r[4].replace(',', ''))
-        except ValueError:
-            continue
-        fx = []
-        for x in r[5:20]:
-            try:
-                fx.append(float(x.replace(',', '')))
-            except ValueError:
-                fx.append(None)
-        out[f'{int(m.group(1)):04d}-{int(m.group(2)):02d}'] = {'total': tot, 'row': fx}
-        if len(sample) < 3:
-            sample.append(r[:22])
-    head = head[-2:] + sample
-    return dict(sorted(out.items())), head
+        out[f'{y:04d}-{m:02d}'] = {'total': f(r, 4), 'fx': f(r, 5), 'sec': f(r, 6), 'dep': f(r, 8), 'imf': f(r, 14), 'sdr': f(r, 15), 'gold': f(r, 16)}
+    return dict(sorted(out.items())), rows[-3:]
 
 
 def main():

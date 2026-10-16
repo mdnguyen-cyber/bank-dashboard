@@ -270,6 +270,12 @@ if JP.exists():
     rv = J.get('reserves', {})
     if rv:
         G['s']['jp_res_mof'] = pack({m: x['total'] / 1000 for m, x in rv.items() if m >= '2010'}, 1)
+        ms_ = sorted(m for m in rv if m >= '2018')
+        g = lambda k, m: round((rv[m].get(k) or 0) / 1000, 1)
+        G['jpRes'] = {'d': ms_, 'c': {'Chứng khoán ngoại tệ': [g('sec', m) for m in ms_], 'Tiền gửi ngoại tệ': [g('dep', m) for m in ms_],
+                                     'Vàng': [g('gold', m) for m in ms_], 'IMF + SDR': [round(g('imf', m) + g('sdr', m), 1) for m in ms_],
+                                     'Khác': [round(g('total', m) - g('sec', m) - g('dep', m) - g('gold', m) - g('imf', m) - g('sdr', m), 1) for m in ms_]},
+                      'total': [g('total', m) for m in ms_]}
     G['jpFetched'] = J.get('fetched')
 if 'jp_reserves' in SER:
     put('jp_res_imf', {m: v / 1000 for m, v in monthly('jp_reserves').items() if m >= '2010'}, 1)
