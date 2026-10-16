@@ -7,18 +7,13 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'em_cn_us': 'https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPTA_WEB_TREASURYYIELD&columns=ALL&sortColumns=SOLAR_DATE&sortTypes=-1&pageSize=5&pageNumber=1',
-    'chinabond_page': 'https://yield.chinabond.com.cn/cbweb-czb-web/czb/moreInfo?locale=en_US&nameType=1',
-    'pboc': 'http://www.pbc.gov.cn/diaochatongjisi/116219/index.html',
-    'tw_cbc_rates': 'https://www.cbc.gov.tw/en/lp-700-2.html',
-    'tw_tpex_gov': 'https://www.tpex.org.tw/openapi/v1/tpex_gov_bond_yield',
     'tw_tpex_api_list': 'https://www.tpex.org.tw/openapi/swagger.json',
-    'sg_datagov_search': 'https://api-production.data.gov.sg/v2/public/api/datasets?query=government%20securities%20yield',
-    'sg_mas_api': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/benchmarkyields?rows=5&sort=end_of_day%20desc',
-    'sg_mas_page': 'https://www.mas.gov.sg/bonds-and-bills/singapore-government-securities-prices-and-yields',
-    'kr_ecos_sample': 'https://ecos.bok.or.kr/api/StatisticSearch/sample/json/en/1/10/817Y002/D/20261001/20261016/010210000',
-    'kr_ecos_items': 'https://ecos.bok.or.kr/api/StatisticItemList/sample/json/en/1/40/817Y002',
+    'sg_singstat_search': 'https://tablebuilder.singstat.gov.sg/api/table/resourceid?keyword=government%20securities&searchOption=all',
+    'sg_singstat_search2': 'https://tablebuilder.singstat.gov.sg/api/table/resourceid?keyword=interest%20rates&searchOption=all',
+    'tw_cbc_key': 'https://www.cbc.gov.tw/en/np-442-2.html',
+    'tw_cbc_key2': 'https://www.cbc.gov.tw/en/np-443-2.html',
 }
+KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|JGB|Treasury|reserve|Bank of Japan Accounts|current account|monetary base|intervention|ETF|loans', re.I)
 
@@ -32,7 +27,9 @@ def main():
                 b = r.read(); ct = r.headers.get('Content-Type', '')
             txt = b.decode('utf-8', 'replace') if 'pdf' not in ct else ''
             info = {'url': u, 'status': 200, 'ct': ct, 'bytes': len(b)}
-            if k.startswith('boj_meta'):
+            if k == 'tw_tpex_api_list':
+                js = json.loads(txt); info['paths'] = {pth: (v.get('get') or {}).get('summary') for pth, v in js.get('paths', {}).items()}
+            elif k.startswith('boj_meta'):
                 js = json.loads(txt)
                 info['series'] = [[x['SERIES_CODE'], x['NAME_OF_TIME_SERIES'][:160], x['FREQUENCY'], x['END_OF_THE_TIME_SERIES'], x['UNIT']] for x in js.get('RESULTSET', [])
                                   if x['SERIES_CODE'] and '(Discontinued)' not in x['NAME_OF_TIME_SERIES'] and (k != 'boj_meta_FF' or KEEP.search(x['NAME_OF_TIME_SERIES']))][:1500]

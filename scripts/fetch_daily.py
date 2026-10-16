@@ -118,6 +118,40 @@ def ecb_yc():
     return dict(sorted(out.items()))
 
 
+def cn():
+    """Lợi suất TPCP Trung Quốc 2, 5, 10, 30 năm theo ngày (đường cong ChinaBond, qua cổng dữ liệu Eastmoney)."""
+    out, page = {}, 1
+    while page <= 6:
+        js = json.loads(get('https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPTA_WEB_TREASURYYIELD&columns=ALL'
+                            f'&sortColumns=SOLAR_DATE&sortTypes=-1&pageSize=500&pageNumber={page}'))
+        rows = (js.get('result') or {}).get('data') or []
+        for r in rows:
+            d = r['SOLAR_DATE'][:10]
+            if d < FROM:
+                return dict(sorted(out.items()))
+            out[d] = {'2Y': r.get('EMM00588704'), '5Y': r.get('EMM00166462'), '10Y': r.get('EMM00166466'), '30Y': r.get('EMM00166469')}
+        if not rows:
+            break
+        page += 1
+    return dict(sorted(out.items()))
+
+
+def kr(old):
+    """Lợi suất TPCP Hàn Quốc 10 năm theo ngày — Ngân hàng Trung ương Hàn Quốc (ECOS, khoá mẫu tối đa 10 dòng/lần → chia 12 ngày/lần)."""
+    from datetime import timedelta
+    out = dict(old or {})
+    start = date.fromisoformat(max(out) if out else '2024-01-01') - timedelta(days=14)
+    end = date.today()
+    while start <= end:
+        e = min(start + timedelta(days=11), end)
+        js = json.loads(get(f'https://ecos.bok.or.kr/api/StatisticSearch/sample/json/en/1/10/817Y002/D/{start:%Y%m%d}/{e:%Y%m%d}/010210000'))
+        for r in (js.get('StatisticSearch') or {}).get('row', []):
+            t = r['TIME']; out[f'{t[:4]}-{t[4:6]}-{t[6:]}'] = fnum(r['DATA_VALUE'])
+        start = e + timedelta(days=1)
+        time.sleep(0.3)
+    return dict(sorted(out.items()))
+
+
 def vcb(old):
     """Vietcombank công bố XML tỷ giá; mỗi lần chạy lưu 1 điểm (ngày giờ công bố)."""
     txt = get('https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx')
@@ -136,7 +170,7 @@ def vcb(old):
 def main():
     old = json.loads(P.read_text(encoding='utf-8')) if P.exists() else {}
     res, rep = {}, {}
-    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('vcb', lambda: vcb(old.get('vcb')))]:
+    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('kr', lambda: kr(old.get('kr'))), ('vcb', lambda: vcb(old.get('vcb')))]:
         try:
             v = fn()
             if not v:
