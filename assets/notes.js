@@ -138,12 +138,11 @@
         return;
       }
       el.innerHTML = `<div class="fsn-head"><h3 class="sub">${opt.title}</h3>
-          <span class="fsn-btns"><button type="button" class="btn ghost" data-a="hist">Lịch sử (${V.length})</button><button type="button" class="btn ghost" data-a="edit">✎ Chỉnh sửa</button></span></div>
+          <span class="fsn-btns">${nLocal ? `<button type="button" class="btn ghost" data-a="copy" title="${nLocal} bản mới chỉ nằm trên máy này — sao chép rồi dán vào chat với AI kèm câu &quot;đăng nhận định này&quot;">Sao chép để đăng</button>` : ''}<button type="button" class="btn ghost" data-a="hist">Lịch sử (${V.length})</button><button type="button" class="btn ghost" data-a="edit">✎ Chỉnh sửa</button></span></div>
         <div class="fsn-meta"><span>${dvn(cur.at)}${cur.at.length > 10 && cur.at.slice(11) !== '00:00' ? ' ' + cur.at.slice(11) : ''}</span><span>${esc(cur.author || '')}</span>${cur._local ? '<span class="pill watch" title="Mới lưu trên máy này — AI chưa đọc được">chưa đăng</span>' : '<span class="pill ok">đã đăng</span>'}</div>
         ${opt.meta ? `<div class="fsn-sum">${opt.meta(cur.f)}</div>` : ''}
         <div class="fsn-body">${cleanStr(cur.html) || '<span class="muted">(chưa có nội dung)</span>'}</div>
-        ${nLocal ? `<div class="fsn-pub"><span><b>${nLocal} bản mới chỉ nằm trên máy này.</b> Bấm "Sao chép để đăng" rồi dán vào chat với AI kèm câu "đăng nhận định này" — AI rà chính tả, Việt hoá thuật ngữ, rồi lưu vào lịch sử chung để lần sau đọc lại.</span>
-          <button type="button" class="btn" data-a="copy">Sao chép để đăng</button><span class="muted" data-a="cmsg"></span></div>` : ''}
+        <span class="muted fsn-cmsg" data-a="cmsg"></span>
         ${showHist ? `<div class="fsn-hist">${V.map((v, i) => `<details${i ? '' : ' open'}><summary><b>${dvn(v.at)}</b> ${v.at.length > 10 && v.at.slice(11) !== '00:00' ? v.at.slice(11) : ''} · ${esc(v.author || '')}${v._local ? ' <span class="pill watch">chưa đăng</span>' : ''}${opt.meta ? ` · <span class="muted">${esc(plain(opt.meta(v.f).replace(/<\/span>\s*<span/g, '</span> · <span')))}</span>` : ''}</summary><div class="fsn-body">${cleanStr(v.html)}</div></details>`).join('')}</div>` : ''}`;
       el.querySelector('[data-a="edit"]').onclick = () => { mode = 'edit'; render(); };
       el.querySelector('[data-a="hist"]').onclick = () => { showHist = !showHist; render(); };

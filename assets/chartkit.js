@@ -68,16 +68,47 @@
     bar.innerHTML = wins.map(([l, k, w]) => {
       const pts = w[1] - w[0] + 1, dis = k && (pts < 2 || pts >= n);
       return `<button type="button" data-k="${k}"${dis ? ' disabled' : ''}>${l}</button>`;
-    }).join('') + '<span class="rng-hint">kéo trên chart để zoom</span>';
+    }).join('') + '<span class="ysel"><button type="button" data-y="fit" title="Trục Y co theo dữ liệu đang hiện">Y vừa dữ liệu</button><button type="button" data-y="man" title="Tự đặt giá trị nhỏ nhất, lớn nhất của trục Y">Y tuỳ chỉnh</button><button type="button" data-y="def" title="Trục Y mặc định">Y mặc định</button><span class="yman" hidden><input type="number" step="any" placeholder="min" data-yi="min"><input type="number" step="any" placeholder="max" data-yi="max"></span></span><span class="rng-hint">kéo trên chart để zoom</span>';
     box.parentElement.insertBefore(bar, box);
+    // ---- trục Y: mặc định / co theo dữ liệu đang hiện / tự nhập min-max
+    const Y = () => { const co = ch.config.options; co.scales = co.scales || {}; return (co.scales.y = co.scales.y || {}); };   // Chart.js tạo lại object scales mỗi lần update → luôn lấy mới
+    const y00 = Y(), y0 = { min: y00.min, max: y00.max, beginAtZero: y00.beginAtZero };
+    let ymode = 'def';
+    const visRange = () => {
+      const x = ch.options.scales.x || {}, a = x.min ?? 0, b = x.max ?? n - 1, st = !!Y().stacked, vals = [];
+      const dsY = ch.data.datasets.filter((d, i) => (!d.yAxisID || d.yAxisID === 'y') && ch.isDatasetVisible(i));
+      for (let i = a; i <= b; i++) {
+        if (st) { let p = 0, q = 0; dsY.forEach(d => { const v = d.data[i]; if (v > 0) p += v; else if (v < 0) q += v; }); vals.push(p, q); }
+        else dsY.forEach(d => { const v = d.data[i]; if (v != null && !isNaN(v)) vals.push(+v); });
+      }
+      if (!vals.length) return null;
+      let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo || Math.abs(hi) || 1) * 0.06;
+      return [lo - pad, hi + pad];
+    };
+    const applyY = () => {
+      const y = Y();
+      if (ymode === 'def') { ['min', 'max', 'beginAtZero'].forEach(k => { if (y0[k] === undefined) delete y[k]; else y[k] = y0[k]; }); }
+      else if (ymode === 'fit') { const r = visRange(); if (r) { y.beginAtZero = false; y.min = r[0]; y.max = r[1]; } }
+      else { const mi = bar.querySelector('[data-yi="min"]').value, ma = bar.querySelector('[data-yi="max"]').value; y.beginAtZero = false; if (mi === '') delete y.min; else y.min = +mi; if (ma === '') delete y.max; else y.max = +ma; }
+      bar.querySelectorAll('[data-y]').forEach(b => b.classList.toggle('on', b.dataset.y === ymode));
+      bar.querySelector('.yman').hidden = ymode !== 'man';
+      ch.update();
+    };
+    bar.querySelectorAll('[data-y]').forEach(b => b.onclick = () => {
+      ymode = b.dataset.y;
+      if (ymode === 'man') { const sc = ch.scales.y; const [mi, ma] = bar.querySelectorAll('[data-yi]'); if (mi.value === '' && sc) mi.value = +sc.min.toPrecision(4); if (ma.value === '' && sc) ma.value = +sc.max.toPrecision(4); }
+      applyY();
+    });
+    bar.querySelectorAll('[data-yi]').forEach(i => i.oninput = () => { if (ymode === 'man') applyY(); });
     const sx = () => (ch.options.scales.x = ch.options.scales.x || {});
-    const mark = k => bar.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.k === String(k)));
+    const mark = k => bar.querySelectorAll('button[data-k]').forEach(b => b.classList.toggle('on', b.dataset.k === String(k)));
     const setWin = (i0, i1, k) => {
       const x = sx();
       if (i0 <= 0 && i1 >= n - 1) { delete x.min; delete x.max; } else { x.min = i0; x.max = i1; }
+      if (ymode === 'fit') { const r = visRange(), y = Y(); if (r) { y.min = r[0]; y.max = r[1]; } }
       ch.update('none'); mark(k);
     };
-    bar.querySelectorAll('button').forEach(b => b.onclick = () => { const k = b.dataset.k === '0' ? 0 : b.dataset.k === 'ytd' ? 'ytd' : +b.dataset.k; const w = windowFor(ds, k); setWin(w[0], w[1], k); });
+    bar.querySelectorAll('button[data-k]').forEach(b => b.onclick = () => { const k = b.dataset.k === '0' ? 0 : b.dataset.k === 'ytd' ? 'ytd' : +b.dataset.k; const w = windowFor(ds, k); setWin(w[0], w[1], k); });
     if (opt.last && opt.last < n) setWin(n - opt.last, n - 1, 'custom'); else mark(0);
 
     // kéo để zoom (chuột; trên điện thoại dùng nút khung thời gian)

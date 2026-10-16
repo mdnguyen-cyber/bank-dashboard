@@ -325,3 +325,5 @@ li.ed{list-style-position:inside}
 .pdf-body .kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 .pdf-body h2.sec{font-size:20px}
 .cpi-heat td,.cpi-heat th{padding:5px 8px}.cpi-heat tr.grp td{background:#eef1fb;color:var(--navy);font-size:12px;letter-spacing:.04em}
+.fsn-cmsg{display:block;font-size:12px;margin-top:6px}
+.rng .ysel{display:inline-flex;gap:4px;align-items:center;margin-left:8px;padding-left:8px;border-left:1px solid var(--line)}.rng .yman input{width:70px;padding:2px 6px;font-size:12px;border:1px solid var(--line);border-radius:6px}.rng .yman{display:inline-flex;gap:4px}.rng .yman[hidden]{display:none}

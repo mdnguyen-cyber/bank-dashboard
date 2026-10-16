@@ -1111,7 +1111,7 @@ function chBank() {
   mk('chNimDep', { type: 'line', data: { labels: BQ, datasets: [L('NIM ngành', AG.nim.all, C.navy, { borderWidth: 2.6, pointRadius: 2 }), L('COF ngành', AG.cof.all, C.red, { pointRadius: 2 }), L('YEA ngành', AG.yea.all, C.tealInk, { pointRadius: 2, borderDash: [4, 3] }), L('LS huy động 12T NN', depQ, C.gold, { pointRadius: 2, borderDash: [2, 3] })] },
     options: { scales: { y: pctAxis() } } });
   const sm = SV.monthly, mean = SV.pb.mean, sd = SV.pb.sd;
-  mk('chPbBand', { type: 'line', data: { labels: sm.map(p => mvn(p.d)), datasets: [L('P/B ngành', sm.map(p => p.pb), C.navy, { unit: 'x', borderWidth: 2.4 }),
+  mk('chPbBand', { type: 'line', data: { labels: sm.map((p, i) => i === sm.length - 1 && SV.now && p.d === SV.now.d ? dvn(p.d) + ' (mới nhất)' : mvn(p.d)), datasets: [L('P/B ngành', sm.map(p => p.pb), C.navy, { unit: 'x', borderWidth: 2.4 }),
     L('TB', sm.map(() => mean), C.grey, { unit: 'x', borderDash: [4, 3], keep: true }), L('+1σ', sm.map(() => mean + sd), C.red, { unit: 'x', borderDash: [2, 3], borderWidth: 1, keep: true }), L('−1σ', sm.map(() => mean - sd), C.tealInk, { unit: 'x', borderDash: [2, 3], borderWidth: 1, keep: true })] },
     options: { scales: { y: numAxis('', { ticks: { callback: v => nf(v, 2) + 'x' } }) } } }, { switch: 'line' });
   mk('chAQ', { type: 'bar', data: { labels: GROUPS, datasets: [
@@ -1444,7 +1444,7 @@ async function quPdf() {
   const cl = src.cloneNode(true); cl.removeAttribute('id'); cl.classList.add('pdf-body');
   $$('canvas', cl).forEach((c, i) => { if (pics[i]) { const im = new Image(); im.src = pics[i]; im.className = 'qprint-img'; c.replaceWith(im); } else c.remove(); });
   const h = $('.qprint-date', cl); if (h) h.textContent = ` Ngày ${dd}/${mm}/${yy}`;
-  $$('.qbtns, .qfoot, .qdraft, .qhint, .rng, .zsel, .rng-hint, [contenteditable]', cl).forEach(e => { if (e.matches('[contenteditable]')) e.removeAttribute('contenteditable'); else e.remove(); });
+  $$('.qbtns, .qfoot, .qdraft, .qhint, .rng, .zsel, .rng-hint, .ibar, button.info, .insight, .src, [contenteditable]', cl).forEach(e => { if (e.matches('[contenteditable]')) e.removeAttribute('contenteditable'); else e.remove(); });
   const hist = $$('article.card', cl).find(a => /Lịch sử cập nhật/.test(a.textContent)); if (hist) hist.remove();
   wrap.appendChild(cl);
   const host = document.createElement('div'); host.className = 'pdf-host'; host.appendChild(wrap); document.body.appendChild(host);
@@ -1495,6 +1495,7 @@ function paneQuick() {
       <article class="card qchart"><h3 class="sub">${esc(g.title || cardMeta(SPEC[g.id].el).title)}</h3>
         ${chartBox(g.id, `qu-${i}-${j}-${g.id}`, g.h || '')}
         ${g.caption || E ? f(`concerns.${i}.charts.${j}.caption`, g.caption || '', 'p', 'qcap') : ''}
+        ${(m => (m.sub ? `<p class="chart-sub" hidden>${m.sub}</p>` : '') + (m.insight ? `<div class="insight">${m.insight}</div>` : '') + (m.src ? `<div class="src">${/^Nguồn/.test(m.src) ? '' : 'Nguồn: '}${m.src}</div>` : ''))(cardMeta(SPEC[g.id].el))}
         <div class="qfoot"><span>Chart book: <code>${g.id}</code>${g.last ? ` · ${g.last} điểm gần nhất` : ''}</span><button type="button" class="lnk" data-book="${g.id}">Mở trong Chart book →</button></div>
       </article>` : `<article class="card"><p class="muted">Chart <code>${esc(g.id)}</code> không còn trong dashboard.</p></article>`).join('')}</div>
   </section>`).join('')}

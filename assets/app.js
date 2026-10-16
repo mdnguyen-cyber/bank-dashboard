@@ -713,7 +713,8 @@ function paneVal() {
   $('#logExp').onclick = () => { const blob = new Blob([JSON.stringify(store.get(), null, 1)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${M.ticker}-finsuccess-${TODAY}.json`; a.click(); };
   drawLog();
   // --- valuation chart
-  const vh = VB.history;
+  const vh = VB.history.slice();   // quý chưa có số: thêm điểm P/B, P/E hiện tại (cập nhật đến ngày gần nhất)
+  if (M.pb != null && M.pe != null) vh.push({ q: `Hiện tại ${dvn(M.updated)}`, pb: M.pb, pe: M.pe });
   mk('chVal', { type: 'line', data: { labels: vh.map(v => v.q), datasets: [
     { label: 'P/B', data: vh.map(v => v.pb), borderColor: C.navy, backgroundColor: C.navy, dp: 2, unit: 'x' },
     { label: 'P/E', data: vh.map(v => v.pe), borderColor: C.teal, backgroundColor: C.teal, yAxisID: 'y1', dp: 1, unit: 'x' },

@@ -14,6 +14,7 @@
    "headline": "Lợi suất Mỹ, Nhật hạ nhiệt trong tuần nhưng lãi suất liên ngân hàng VND kỳ hạn 3 tháng vọt lên 7,78%: vẫn giữ kịch bản \"thắt\", ưu tiên Big 4",
    "summary": [
     "Bên ngoài <b>dịu bớt nhưng chưa đổi hướng</b>: CPI Mỹ tháng 9 lên <b>3,72%</b> (lõi 2,57%) nhưng nhiều quan chức Fed thiên về chờ tới tháng 12 thay vì tăng tiếp ngày 28/10; UST 10Y giảm còn <b>5,10%</b> (−18 bps trong tuần, vẫn +10 bps so với 1 tháng trước).",
+    "Lợi suất TPCP 10 năm toàn cầu cao hơn đầu năm: Mỹ <b>+91 bps</b>, Nhật +84 bps, khu vực euro +76 bps — lạm phát vòng 2 (CPI khu vực euro 3,8%, Mỹ 3,7%) và giá dầu quanh 100 USD giữ mặt bằng lãi suất dài hạn cao.",
     "Fed <b>giữ nguyên quy mô</b> bảng cân đối (6.756 tỷ USD, 14/10) và chuyển dần sang tín phiếu (+60 tỷ USD trong 13 tuần); dự trữ ngân hàng 3.031 tỷ, thị trường repo bình thường — chưa có căng thẳng thanh khoản USD.",
     "Nhật: JGB 10 năm giảm còn <b>2,95%</b> (−16 bps trong tuần), USD/JPY <b>157,98</b> vẫn trong vùng Bộ Tài chính Nhật từng can thiệp (155–162).",
     "Trong nước, lãi suất qua đêm dịu (3,5% ngày 14/10) nhưng VNIBOR VND 3 tháng tăng từ 6,75% (7/10) lên <b>7,78%</b>: ngân hàng chấp nhận trả cao để giữ vốn dài trước cuối năm. Chênh VND − USD 3 tháng <b>+3,59 điểm %</b>, giữ VND vẫn có lợi.",
@@ -61,6 +62,23 @@
        "id": "chFx",
        "last": 18,
        "caption": "Tỷ giá trung tâm đi lên từ tháng 5 trong khi giá NHTM và tự do giảm từ giữa năm."
+      }
+     ]
+    },
+    {
+     "title": "Lợi suất trái phiếu chính phủ toàn cầu: tăng mạnh từ đầu năm, hạ nhiệt trong tuần",
+     "status": "tiếp diễn",
+     "note": "Từ đầu năm, lợi suất 10 năm tăng đồng loạt: Mỹ <b>+91 bps</b> lên 5,10%, Nhật <b>+84 bps</b> lên 2,95%, khu vực euro (toàn bộ TPCP) +76 bps lên 4,12%, Đức +49 bps lên 3,45%. Số bình quân tháng 9 cho thấy áp lực lan rộng: Pháp <b>4,44%</b> (+93 bps 12 tháng), Ý 4,36%, Tây Ban Nha 3,93%, Anh 5,24%, Úc 5,28%, Hàn Quốc 4,45% (+161 bps 12 tháng). Nguyên nhân chung là lạm phát vòng 2: CPI tháng 9 của khu vực euro 3,8%, Tây Ban Nha 5,0%, Ý 4,1%, Mỹ 3,7%, cùng giá dầu WTI quanh <b>100 USD/thùng</b>. Ở Mỹ, cả đường cong dịch lên so với đầu năm (2 năm +130 bps, 10 năm +91 bps) — thị trường định giá Fed tăng tiếp và phần bù kỳ hạn cao hơn. Ở Nhật, lợi suất JGB đủ cao để nhà đầu tư Nhật hồi hương vốn, cộng với Bộ Tài chính Nhật bán chứng khoán ngoại tệ khi can thiệp (dự trữ giảm 205 tỷ USD từ tháng 4) — thêm áp lực bán trái phiếu Mỹ. Trong tuần, lợi suất giảm lại 12–18 bps ở Mỹ, Đức, Nhật sau tín hiệu Fed chưa vội tăng tháng 10, nhưng chưa đủ để coi là đổi xu hướng khi lạm phát và giá dầu chưa hạ.",
+     "change": "Lợi suất 10 năm Mỹ, Đức, Nhật giảm 12–18 bps trong tuần nhưng vẫn cao hơn đầu năm 49–91 bps.",
+     "charts": [
+      {
+       "id": "gGlY10",
+       "last": 260,
+       "caption": "Thay đổi lợi suất 10 năm so với phiên đầu năm (bps): Mỹ và Nhật dẫn đầu; chọn \"Chỉ số đầu năm = 1\" để xem như slide."
+      },
+      {
+       "id": "gGlCurve",
+       "caption": "Đường cong lợi suất Mỹ dịch lên toàn bộ so với đầu năm, đầu 2 năm tăng mạnh nhất."
       }
      ]
     },
@@ -205,6 +223,7 @@
    ],
    "sources": [
     "Federal Reserve H.4.1, NY Fed (lãi suất repo)",
+    "Deutsche Bundesbank, ECB, OECD (lợi suất TPCP); Eurostat/ECB, BIS, OECD (CPI các nước); EIA (giá dầu)",
     "U.S. Treasury (lợi suất), BLS (CPI Mỹ)",
     "Bộ Tài chính Nhật Bản (JGB, can thiệp), U.S. Treasury TIC",
     "ECB (tỷ giá tham chiếu), Vietcombank (tỷ giá)",
