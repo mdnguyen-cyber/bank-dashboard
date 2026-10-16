@@ -68,7 +68,7 @@
     bar.innerHTML = wins.map(([l, k, w]) => {
       const pts = w[1] - w[0] + 1, dis = k && (pts < 2 || pts >= n);
       return `<button type="button" data-k="${k}"${dis ? ' disabled' : ''}>${l}</button>`;
-    }).join('') + '<span class="ysel"><button type="button" data-y="fit" title="Trục Y co theo dữ liệu đang hiện">Y vừa dữ liệu</button><button type="button" data-y="man" title="Tự đặt giá trị nhỏ nhất, lớn nhất của trục Y">Y tuỳ chỉnh</button><button type="button" data-y="def" title="Trục Y mặc định">Y mặc định</button><span class="yman" hidden><input type="number" step="any" placeholder="min" data-yi="min"><input type="number" step="any" placeholder="max" data-yi="max"></span></span><span class="rng-hint">kéo trên chart để zoom</span>';
+    }).join('') + '<span class="ysel"><button type="button" data-y="fit" title="Trục Y co theo dữ liệu đang hiện">Y vừa dữ liệu</button><button type="button" data-y="man" title="Tự đặt giá trị nhỏ nhất, lớn nhất của trục Y">Y tuỳ chỉnh</button><button type="button" data-y="def" title="Trục Y mặc định">Y mặc định</button><span class="yman" hidden><input type="number" step="any" placeholder="min" data-yi="min"><input type="number" step="any" placeholder="max" data-yi="max"></span></span><span class="rng-hint">kéo trên chart để zoom · kéo trên trục Y để chỉnh trục</span>';
     box.parentElement.insertBefore(bar, box);
     // ---- trục Y: mặc định / co theo dữ liệu đang hiện / tự nhập min-max
     const Y = () => { const co = ch.config.options; co.scales = co.scales || {}; return (co.scales.y = co.scales.y || {}); };   // Chart.js tạo lại object scales mỗi lần update → luôn lấy mới
@@ -100,6 +100,38 @@
       applyY();
     });
     bar.querySelectorAll('[data-yi]').forEach(i => i.oninput = () => { if (ymode === 'man') applyY(); });
+    // kéo trực tiếp trên trục Y: nửa dưới trục kéo giá trị nhỏ nhất (kéo lên = nâng đáy), nửa trên kéo giá trị lớn nhất (kéo xuống = hạ trần); nhấp đúp trên trục = mặc định
+    let yd = null;
+    const onAxis = e => { const r = canvas.getBoundingClientRect(), a = ch.chartArea, x = e.clientX - r.left, yy = e.clientY - r.top; return x < a.left && x > 0 && yy >= a.top && yy <= a.bottom ? yy : null; };
+    canvas.addEventListener('pointermove', e => { if (!yd && !sel) canvas.style.cursor = onAxis(e) != null ? 'ns-resize' : ''; }, on);
+    canvas.addEventListener('pointerdown', e => {
+      const yy = onAxis(e); if (yy == null || e.button > 0) return;
+      e.stopImmediatePropagation(); e.preventDefault();
+      const sc = ch.scales.y, a = ch.chartArea;
+      yd = { h: yy > (a.top + a.bottom) / 2 ? 'min' : 'max', y0: yy, min: sc.min, max: sc.max, top: a.top, bot: a.bottom };
+      canvas.setPointerCapture(e.pointerId);
+    }, { capture: true, signal: ac.signal });
+    canvas.addEventListener('pointermove', e => {
+      if (!yd) return;
+      const r = canvas.getBoundingClientRect(), span = yd.max - yd.min;
+      const dv = (yd.y0 - (e.clientY - r.top)) / (yd.bot - yd.top) * span;   // kéo lên = tăng, kéo xuống = giảm
+      const y = Y(); y.beginAtZero = false;
+      if (yd.h === 'min') { y.min = Math.min(yd.min + dv, yd.max - span * 0.05); y.max = yd.max; } else { y.min = yd.min; y.max = Math.max(yd.max + dv, yd.min + span * 0.05); }
+      ymode = 'man';
+      const [mi, ma] = bar.querySelectorAll('[data-yi]'); mi.value = +(+y.min).toPrecision(4); ma.value = +(+y.max).toPrecision(4);
+      bar.querySelectorAll('[data-y]').forEach(b => b.classList.toggle('on', b.dataset.y === 'man')); bar.querySelector('.yman').hidden = false;
+      ch.update('none');
+    }, on);
+    const yEnd = () => {   // thả tay: làm tròn min/max về bước đẹp
+      if (!yd) return; yd = null;
+      const y = Y(); if (y.min == null || y.max == null) return;
+      const st = Math.pow(10, Math.floor(Math.log10((y.max - y.min) / 20 || 1)));
+      y.min = Math.floor(y.min / st) * st; y.max = Math.ceil(y.max / st) * st;
+      const [mi, ma] = bar.querySelectorAll('[data-yi]'); mi.value = +y.min.toPrecision(6); ma.value = +y.max.toPrecision(6);
+      ch.update('none');
+    };
+    canvas.addEventListener('pointerup', yEnd, on); canvas.addEventListener('pointercancel', yEnd, on);
+    canvas.addEventListener('dblclick', e => { if (onAxis(e) != null) { e.stopImmediatePropagation(); ymode = 'def'; applyY(); } }, { capture: true, signal: ac.signal });
     const sx = () => (ch.options.scales.x = ch.options.scales.x || {});
     const mark = k => bar.querySelectorAll('button[data-k]').forEach(b => b.classList.toggle('on', b.dataset.k === String(k)));
     const setWin = (i0, i1, k) => {
