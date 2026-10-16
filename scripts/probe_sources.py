@@ -7,9 +7,9 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'tw_api1': ('https://www.tpex.org.tw/www/en-us/bond/govDaily', {'fileCode': 'BDdys100', 'response': 'json'}),
-    'tw_api2': ('https://www.tpex.org.tw/www/en-us/bond/govDaily', {'fileCode': 'BDdys100', 'date': '2026/10', 'response': 'json'}),
-    'tw_api3': ('https://www.tpex.org.tw/www/en-us/bond/govDaily2', {'response': 'json'}),
+    'tw_xls': 'https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/2026/202610/BDdys100.20261015-E.xls',
+    'tw_xls_old': 'https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/2023/202301/BDdys100.20230103-E.xls',
+    'tw_month': ('https://www.tpex.org.tw/www/en-us/bond/govDaily', {'fileCode': 'BDdys100', 'date': '20230131', 'response': 'json'}),
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -26,6 +26,11 @@ def main():
                 u, data = u[0], urllib.parse.urlencode(u[1]).encode()
             with urllib.request.urlopen(urllib.request.Request(u, data=data, headers={**UA, 'X-Requested-With': 'XMLHttpRequest', 'Referer': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/ebts.html'}), timeout=60) as r:
                 b = r.read(); ct = r.headers.get('Content-Type', '')
+            if u.endswith('.xls'):
+                import xlrd
+                wb = xlrd.open_workbook(file_contents=b)
+                rep[k] = {'url': u, 'status': 200, 'sheets': {sh.name: [[str(c.value) for c in sh.row(i)] for i in range(min(sh.nrows, 60))] for sh in wb.sheets()}}
+                continue
             txt = b.decode('utf-8', 'replace') if 'pdf' not in ct else ''
             info = {'url': u, 'status': 200, 'ct': ct, 'bytes': len(b)}
             if k.endswith('_raw'):
