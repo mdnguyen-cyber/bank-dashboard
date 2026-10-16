@@ -1,7 +1,8 @@
 name: Cập nhật số liệu quốc tế (FRED, NY Fed, DBnomics)
 on:
   schedule:
-    - cron: '17 23 * * *'   # 06:17 giờ Việt Nam mỗi ngày
+    - cron: '17 23 * * *'   # 06:17 giờ Việt Nam mỗi ngày (sau H.4.1 của Fed tối thứ Năm giờ Mỹ)
+    - cron: '47 9 * * 1-5'  # 16:47 giờ Việt Nam: tỷ giá ECB, Vietcombank, JGB trong ngày
   workflow_dispatch:
 permissions:
   contents: write
@@ -23,6 +24,7 @@ jobs:
           python scripts/fetch_global.py
           python scripts/fetch_ust.py || echo "fetch_ust lỗi"
           python scripts/fetch_jp.py || echo "fetch_jp lỗi"
+          python scripts/fetch_daily.py || echo "fetch_daily lỗi"
       - name: Dựng dữ liệu cho trang
         run: |
           if [ -f scripts/build_global.py ]; then python scripts/build_global.py; fi

@@ -275,6 +275,36 @@ if 'jp_reserves' in SER:
     put('jp_res_imf', {m: v / 1000 for m, v in monthly('jp_reserves').items() if m >= '2010'}, 1)
 put('ea_assets_w', {d: v / 1000 for d, v in obs('ea_assets') if d >= '2015'}, 0)
 
+# ---------------- số theo ngày từ nguồn gốc (Treasury, MOF, ECB, Vietcombank) — mới hơn FRED vài ngày
+DP = ROOT / 'data/global/daily.json'
+if DP.exists():
+    DY = json.loads(DP.read_text(encoding='utf-8'))
+    def merge_d(key, new, dg):   # ghép vào chuỗi _d có sẵn: số nguồn gốc ưu tiên
+        cur = G['s'].get(key, {'d': [], 'v': []})
+        m = dict(zip(cur['d'], cur['v']))
+        m.update({d: v for d, v in new.items() if v is not None and d >= DAILY_FROM[:4] + '-01-01'})
+        G['s'][key] = pack(m, dg)
+    u = DY.get('ust', {})
+    merge_d('us_2y_d', {d: x.get('2Y') for d, x in u.items()}, 3)
+    merge_d('us_10y_d', {d: x.get('10Y') for d, x in u.items()}, 3)
+    put('us_3m_d', {d: x['3M'] for d, x in u.items() if x.get('3M') is not None and d >= DAILY_FROM}, 3)
+    put('us_30y_d', {d: x['30Y'] for d, x in u.items() if x.get('30Y') is not None and d >= DAILY_FROM}, 3)
+    j = DY.get('jgb', {})
+    for t in ['2Y', '5Y', '10Y', '30Y']:
+        put(f'jp_{t.lower()}_d', {d: x[t] for d, x in j.items() if x.get(t) is not None and d >= '2023-01-01'}, 3)
+    e = DY.get('ecb', {})
+    merge_d('usdjpy_d', {d: x.get('usdjpy') for d, x in e.items()}, 3)
+    merge_d('eurusd_d', {d: x.get('eurusd') for d, x in e.items()}, 4)
+    merge_d('usdcny_d', {d: x.get('usdcny') for d, x in e.items()}, 4)
+    v = DY.get('vcb', {})
+    put('usdvnd_vcb_sell', {d: x['sell'] for d, x in v.items() if x.get('sell')}, 0)
+    put('usdvnd_vcb_buy', {d: x['buy'] for d, x in v.items() if x.get('buy')}, 0)
+    # chênh UST − JGB 10 năm theo ngày (bps)
+    a, b = dict(zip(G['s']['us_10y_d']['d'], G['s']['us_10y_d']['v'])), dict(zip(G['s'].get('jp_10y_d', {'d': []})['d'], G['s'].get('jp_10y_d', {'v': []})['v']))
+    put('us_jp_10y_d', {d: (a[d] - b[d]) * 100 for d in a if d in b and a[d] is not None and b[d] is not None}, 0)
+    G['dailyReport'] = DY.get('report')
+    G['dailyFetched'] = DY.get('fetched')
+
 js = 'window.GLOBAL_DATA = ' + json.dumps(G, ensure_ascii=False, separators=(',', ':')) + ';\n'
 (ROOT / 'data/global-data.js').write_text(js, encoding='utf-8')
 print(f'wrote data/global-data.js ({len(js) // 1024} KB), {len(G["s"])} chuỗi')
