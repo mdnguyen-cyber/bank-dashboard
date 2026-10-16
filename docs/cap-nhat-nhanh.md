@@ -26,7 +26,7 @@ Nút **⤓ Xuất PDF** trên tab Cập nhật nhanh tải thẳng file `FinSucc
 2. **Làm mới dữ liệu** (chạy lại các script build nếu có dữ liệu mới), rồi đọc số mới nhất trong `data/sector-data.json`, nhật ký `data/sbv-log.json`, tin tức gần nhất.
 3. **Xếp lại mối quan tâm.** Mỗi mối quan tâm cũ: còn nóng (`nóng lên` / `tiếp diễn`), hay `hạ nhiệt` — ghi lý do bằng số vào `change`. Thêm diễn biến mới (`mới`). Bỏ hẳn những mục đã hết liên quan (vẫn còn trong bản cũ). Thứ tự = mức độ quan trọng lúc này.
 4. **Chọn chart làm bằng chứng** từ Chart book: `python3 scripts/chart_ids.py` liệt kê mã chart. Mỗi mục 1–2 chart; dùng `last` để chỉ hiện giai đoạn gần đây. Chart chưa có mà cần thiết thì thêm chart vào dashboard trước (nó sẽ tự xuất hiện trong Chart book).
-5. **Viết bản mới**: `id` = `QU-YYYY-MM-DD-AI` (hoặc `-CV`), `follows` = id bản trước, `vsPrev` = 1 câu tóm tắt đã đổi gì. Mỗi nhận định phải có số; in đậm số quan trọng bằng `<b>`. Không ghi WiData làm nguồn — ghi cơ quan công bố gốc.
+5. **Viết bản mới** (`vsPrev`, `change` và mọi câu chữ hiện trên trang chỉ nói về **diễn biến thị trường, số liệu, quan điểm** — không nhắc việc làm dashboard như "thêm mục mới", "dữ liệu vừa đưa vào", "theo góp ý chuyên viên", "sửa bản trước"): `id` = `QU-YYYY-MM-DD-AI` (hoặc `-CV`), `follows` = id bản trước, `vsPrev` = 1 câu tóm tắt đã đổi gì. Mỗi nhận định phải có số; in đậm số quan trọng bằng `<b>`. Không ghi WiData làm nguồn — ghi cơ quan công bố gốc.
 6. **Kiểm tra và đăng**: `python3 scripts/build_sector_data.py && python3 tests/test_sector_data.py`, xem trang, rồi commit/push (GitHub Pages tự deploy).
 
 ## Cấu trúc một bản

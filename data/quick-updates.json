@@ -10,7 +10,7 @@
     "requestedBy": "Minh Đức"
    },
    "follows": "QU-2026-10-15-AI",
-   "vsPrev": "Lợi suất Mỹ và Nhật giảm mạnh trong tuần, Fed giữ quy mô bảng cân đối; thêm hai mục mới (thanh khoản USD theo bảng cân đối Fed, Nhật Bản – USD/JPY) và mục lãi suất VND kỳ hạn; sửa cách hiểu TT50: đổi công thức LDR chứ không phải nới trần.",
+   "vsPrev": "Lợi suất Mỹ và Nhật giảm mạnh trong tuần, Fed giữ nguyên quy mô bảng cân đối; áp lực tỷ giá từ bên ngoài dịu bớt nhưng lãi suất VND kỳ hạn 3 tháng tăng hơn 100 bps.",
    "headline": "Lợi suất Mỹ, Nhật hạ nhiệt trong tuần nhưng lãi suất liên ngân hàng VND kỳ hạn 3 tháng vọt lên 7,78%: vẫn giữ kịch bản \"thắt\", ưu tiên Big 4",
    "summary": [
     "Bên ngoài <b>dịu bớt nhưng chưa đổi hướng</b>: CPI Mỹ tháng 9 lên <b>3,72%</b> (lõi 2,57%) nhưng nhiều quan chức Fed thiên về chờ tới tháng 12 thay vì tăng tiếp ngày 28/10; UST 10Y giảm còn <b>5,10%</b> (−18 bps trong tuần, vẫn +10 bps so với 1 tháng trước).",
@@ -68,7 +68,7 @@
      "title": "Bảng cân đối Fed: dừng thu hẹp, chuyển sang tín phiếu",
      "status": "mới",
      "note": "Số liệu H.4.1 tuần kết thúc 14/10: tổng tài sản <b>6.756 tỷ USD</b> (+9 tỷ trong tuần, gần như đi ngang 3 tháng). Tín phiếu tăng lên <b>566 tỷ</b> (+60 tỷ trong 13 tuần) trong khi MBS giảm 50 tỷ và notes, bonds đi ngang — Fed tái đầu tư MBS đáo hạn vào tín phiếu và mua thêm để giữ dự trữ đủ. Dự trữ ngân hàng <b>3.031 tỷ</b> (−69 tỷ trong 13 tuần) vì TGA của Kho bạc tăng 90 tỷ lên 886 tỷ. Lãi suất repo bình thường: SOFR thấp hơn IORB 2 bps, phân vị 99 cao hơn 7 bps. Hàm ý: thanh khoản USD toàn cầu không còn bị rút như giai đoạn thu hẹp 2022–2025, giảm một nguồn áp lực lên tỷ giá các nước mới nổi.",
-     "change": "Mục mới: dữ liệu bảng cân đối Fed theo cấu phần vừa được đưa vào dashboard.",
+     "change": "Fed không còn thu hẹp bảng cân đối: tín phiếu +60 tỷ USD trong 13 tuần, tổng tài sản đi ngang quanh 6.750 tỷ.",
      "charts": [
       {
        "id": "gUsFedA",
@@ -86,7 +86,7 @@
      "title": "Nhật Bản: JGB hạ nhiệt, USD/JPY vẫn ở vùng can thiệp",
      "status": "mới",
      "note": "JGB 10 năm giảm từ 3,11% (8/10) còn <b>2,95%</b> (15/10), 2 năm 1,91%, 30 năm 4,02%. Chênh UST − JGB 10 năm <b>215 bps</b>, tăng 18 bps trong 1 tháng — USD/JPY <b>157,98</b>, vẫn trong vùng 155–162 nơi Bộ Tài chính Nhật bán USD 30/4–6/5/2026 (11,73 nghìn tỷ JPY). Nhật nắm <b>1.104 tỷ USD</b> UST (7/2026), giảm 52 tỷ trong 12 tháng. Hàm ý: nếu Nhật can thiệp tiếp, họ bán UST trong dự trữ, đẩy lợi suất Mỹ lên — kênh gián tiếp tác động tới chênh lệch lãi suất USD–VND.",
-     "change": "Mục mới: theo dõi lợi suất JGB theo ngày (MOF) và can thiệp tỷ giá.",
+     "change": "JGB 10 năm −16 bps trong tuần; chênh UST − JGB +18 bps trong 1 tháng giữ USD/JPY gần 158.",
      "charts": [
       {
        "id": "gJpSpr",
@@ -103,7 +103,7 @@
      "title": "Lãi suất liên ngân hàng VND: qua đêm dịu, kỳ hạn dài nóng lên",
      "status": "nóng lên",
      "note": "VNIBOR VND qua đêm dao động mạnh: 0,6% (7/10) → 4,8% (12–13/10) → <b>3,5%</b> (14/10). Kỳ hạn dài tăng đều: 1 tháng 5,3%, 3 tháng từ 6,75% lên <b>7,78%</b>, 6 tháng và 1 năm khoảng 7,85–7,90%. Đường cong VND rất dốc (1 năm − qua đêm khoảng +4,4 điểm %): ngân hàng chấp nhận trả cao để giữ vốn dài cho mùa tín dụng cuối năm. VNIBOR USD 3 tháng 4,19%, SOFR 3 tháng 4,06% → chênh VND − USD 3 tháng <b>+3,59 điểm %</b>; USD/VND NHTM giảm khoảng 1% trong 12 tháng, nên giữ VND vẫn có lợi hơn giữ USD.",
-     "change": "Thay mục \"thanh khoản liên ngân hàng\" (hạ nhiệt) bằng góc nhìn theo kỳ hạn từ VIRA: qua đêm dịu nhưng 3 tháng +103 bps trong 1 tuần.",
+     "change": "Qua đêm hạ nhiệt (4,8% → 3,5%) nhưng kỳ hạn 3 tháng +103 bps trong 1 tuần — áp lực chuyển sang vốn dài.",
      "charts": [
       {
        "id": "mmCurve",
@@ -120,7 +120,7 @@
      "title": "Chi phí vốn neo cao: bất lợi chung, lợi thế nghiêng về Big 4",
      "status": "tiếp diễn",
      "note": "Lãi suất huy động 12 tháng nhóm NHTM Nhà nước giữ <b>5,9%</b> từ tháng 3; COF bình quân 26 ngân hàng <b>4,21%</b> (Q2/2026, +62 bps YoY), NIM 3,08%. Với VNIBOR kỳ hạn dài tăng tiếp, lãi suất huy động khó giảm trong quý 4. Theo quan điểm chuyên viên, nhóm Big 4 có nền vốn rẻ và ổn định hơn nên giữ NIM tốt hơn; CTG thêm câu chuyện trích lập dự phòng bền vững, trong khi các ngân hàng Big 4 khác có định giá cao khó biện minh. KQKD Q3 (từ khoảng 20/10) sẽ kiểm chứng.",
-     "change": "Giữ trạng thái; bổ sung quan điểm ưu tiên Big 4 – CTG của chuyên viên và tín hiệu VNIBOR kỳ hạn tăng.",
+     "change": "VNIBOR kỳ hạn dài tăng tiếp khiến lãi suất huy động khó giảm trong quý 4; nhóm có vốn rẻ (Big 4) chịu tác động ít hơn.",
      "charts": [
       {
        "id": "chNimDep",
@@ -137,7 +137,7 @@
      "title": "Tín dụng nhanh hơn huy động; TT50 đổi công thức LDR",
      "status": "tiếp diễn",
      "note": "Tín dụng tăng <b>17,7%</b> YoY (7/2026), tiền gửi <b>12,7%</b> (6/2026); tín dụng đến 30/9 tăng <b>11,59%</b> so với đầu năm. LDR bình quân 26 ngân hàng 84,5% ở Q2/2026, sát giới hạn 85% theo cách tính của TT22. Lưu ý sửa so với bản trước: TT50 (hiệu lực 1/12/2026) <b>đổi cả tử số và mẫu số</b> của LDR — tiền gửi có kỳ hạn của Kho bạc chỉ tính 20%, liên ngân hàng tính theo vị thế ròng — và đặt giới hạn 95% theo cách tính mới. Vì vậy không thể so 95% với 85% như một lần nới trần; dư địa thực tế của từng ngân hàng phải tính lại theo công thức mới.",
-     "change": "Sửa cách diễn giải TT50 theo góp ý chuyên viên: đổi công thức, không phải nới trần.",
+     "change": "TT50 thay cả tử số và mẫu số của LDR (giới hạn 95% theo cách tính mới), không phải nâng trần từ 85%.",
      "charts": [
       {
        "id": "chMoney",
@@ -154,7 +154,7 @@
      "title": "Lạm phát trong nước vượt mục tiêu",
      "status": "tiếp diễn",
      "note": "Chưa có số mới: CPI tháng 9 <b>5,08%</b> YoY, bình quân 9 tháng <b>4,52%</b> đã vượt mục tiêu khoảng 4,5%; lạm phát cơ bản 4,45%. NHNN khó hạ lãi suất điều hành, tiếp tục điều tiết bằng OMO. CPI tháng 10 công bố ngày 6/11.",
-     "change": "Không có số mới trong tuần.",
+     "change": "Chưa có số CPI mới; CPI tháng 10 công bố 6/11.",
      "charts": [
       {
        "id": "chCpi",
@@ -167,7 +167,7 @@
      "title": "Định giá ngành ở vùng đáy 4 năm",
      "status": "tiếp diễn",
      "note": "P/B ngành <b>1,42x</b> (14/10), ngang các đáy 10/2022 và 4/2025, thấp hơn bình quân 1,58x khoảng 1,5σ. Lợi suất Mỹ hạ nhiệt trong tuần giảm bớt một phần rủi ro chiết khấu; yếu tố quyết định tiếp theo là KQKD Q3: NIM giữ được và nợ xấu không tăng thì mức giá này có biên an toàn.",
-     "change": "Giữ nguyên; chờ KQKD Q3.",
+     "change": "P/B đi ngang ở 1,42x; lợi suất Mỹ giảm trong tuần giảm bớt áp lực chiết khấu.",
      "charts": [
       {
        "id": "chPbBand",
