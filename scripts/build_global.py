@@ -302,6 +302,11 @@ if DP.exists():
     merge_d('usdjpy_d', {d: x.get('usdjpy') for d, x in e.items()}, 3)
     merge_d('eurusd_d', {d: x.get('eurusd') for d, x in e.items()}, 4)
     merge_d('usdcny_d', {d: x.get('usdcny') for d, x in e.items()}, 4)
+    put('dxy_d', {d: x['dxy'] for d, x in e.items() if x.get('dxy') and d >= '2022-01-01'}, 2)
+    for k in ['central', 'ceil', 'floor', 'buy', 'sell']:
+        put(f'vn_sbv_{k}_d', {d: x[k] for d, x in DY.get('sbv', {}).items() if x.get(k)}, 0)
+    if DY.get('sfpce'):
+        G['pceC'] = DY['sfpce']
     v = DY.get('vcb', {})
     put('usdvnd_vcb_sell', {d: x['sell'] for d, x in v.items() if x.get('sell')}, 0)
     put('usdvnd_vcb_buy', {d: x['buy'] for d, x in v.items() if x.get('buy')}, 0)

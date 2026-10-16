@@ -84,7 +84,7 @@ def jgb():
 
 def ecb():
     res = {}
-    for cur in ['USD', 'JPY', 'CNY']:
+    for cur in ['USD', 'JPY', 'CNY', 'GBP', 'CAD', 'SEK', 'CHF']:
         txt = get(f'https://data-api.ecb.europa.eu/service/data/EXR/D.{cur}.EUR.SP00.A?format=csvdata&startPeriod={FROM}')
         res[cur] = {r['TIME_PERIOD']: fnum(r['OBS_VALUE']) for r in csv.DictReader(io.StringIO(txt)) if r.get('OBS_VALUE')}
     out = {}
@@ -92,6 +92,10 @@ def ecb():
         if usd:
             out[d] = {'eurusd': usd, 'usdjpy': round(res['JPY'][d] / usd, 3) if res['JPY'].get(d) else None,
                       'usdcny': round(res['CNY'][d] / usd, 4) if res['CNY'].get(d) else None}
+            g = {c: res[c].get(d) for c in ['JPY', 'GBP', 'CAD', 'SEK', 'CHF']}
+            if all(g.values()):   # DXY theo công thức ICE: 50,14348112 × EURUSD^−0,576 × USDJPY^0,136 × GBPUSD^−0,119 × USDCAD^0,091 × USDSEK^0,042 × USDCHF^0,036
+                out[d]['dxy'] = round(50.14348112 * usd ** -0.576 * (g['JPY'] / usd) ** 0.136 * (usd / g['GBP']) ** -0.119 * (g['CAD'] / usd) ** 0.091
+                                      * (g['SEK'] / usd) ** 0.042 * (g['CHF'] / usd) ** 0.036, 3)
     return dict(sorted(out.items()))
 
 
@@ -193,6 +197,31 @@ def tw(old):
     return dict(sorted(out.items()))
 
 
+def sbv():
+    """NHNN: tỷ giá trung tâm, trần, sàn, giá mua/bán USD của Sở Giao dịch NHNN theo ngày (qua dulieukinhte.com)."""
+    from datetime import datetime, timedelta, timezone
+    ids = {'33444': 'central', '37551': 'ceil', '37552': 'floor', '37553': 'buy', '37554': 'sell'}
+    js = json.loads(get('https://dulieukinhte.com/api/internal/data/series?ids=' + ','.join(ids)))
+    out = {}
+    for ser in js:
+        k = ids.get(str(ser['id']))
+        for ts, v in ser.get('data', []):
+            d = datetime.fromtimestamp(ts / 1000, timezone(timedelta(hours=7))).date().isoformat()
+            if k and d >= '2022-01-01' and v is not None:
+                out.setdefault(d, {})[k] = v
+    return dict(sorted(out.items()))
+
+
+def sfpce():
+    """Fed San Francisco: đóng góp của hàng hoá, dịch vụ vào lạm phát PCE (tính từ số liệu chi tiết của BEA)."""
+    out = {}
+    for k, f in [('yoy', 'chart1-yoy-headline-pce-contributions'), ('mom', 'chart2-monthly-headline-pce-contributions'),
+                 ('core', 'chart3-yoy-core-pce-contributions'), ('super', 'chart4-yoy-supercore-pce-contributions')]:
+        rows = list(csv.reader(io.StringIO(get(f'https://www.frbsf.org/wp-content/uploads/{f}.csv'))))
+        out[k] = {'cols': rows[0][1:], 'd': [r[0][:7] for r in rows[1:] if r], 'v': [[fnum(x) if x != '' else None for x in r[1:]] for r in rows[1:] if r]}
+    return out
+
+
 def vcb(old):
     """Vietcombank công bố XML tỷ giá; mỗi lần chạy lưu 1 điểm (ngày giờ công bố)."""
     txt = get('https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx')
@@ -211,7 +240,7 @@ def vcb(old):
 def main():
     old = json.loads(P.read_text(encoding='utf-8')) if P.exists() else {}
     res, rep = {}, {}
-    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('sg', sg), ('tw', lambda: tw(old.get('tw'))), ('kr', lambda: kr(old.get('kr'))), ('vcb', lambda: vcb(old.get('vcb')))]:
+    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('sg', sg), ('tw', lambda: tw(old.get('tw'))), ('kr', lambda: kr(old.get('kr'))), ('sbv', sbv), ('sfpce', sfpce), ('vcb', lambda: vcb(old.get('vcb')))]:
         try:
             v = fn()
             if not v:
