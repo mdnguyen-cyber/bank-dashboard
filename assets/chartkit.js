@@ -183,24 +183,31 @@
     try { const ord = JSON.parse(localStorage.getItem(K) || 'null'); if (ord) ord.forEach(id => { const b = [...box.children].find(x => idOf(x) === id); if (b) box.appendChild(b); }); [...box.children].filter(x => x.tagName !== 'BUTTON').forEach(x => box.appendChild(x)); } catch (e) {}
     let timer = null, drag = null, sx = 0, sy = 0, moved = false;
     const save = () => { try { localStorage.setItem(K, JSON.stringify([...box.querySelectorAll(':scope > button')].map(idOf))); } catch (e) {} };
+    const start = (b, e) => { clearTimeout(timer); timer = null; drag = b; b.classList.add('fsk-drag'); box.classList.add('fsk-sorting'); try { b.setPointerCapture(e.pointerId); } catch (er) {} if (navigator.vibrate) navigator.vibrate(15); };
+    let cand = null, mouse = false;
     box.addEventListener('pointerdown', e => {
       const b = e.target.closest('button'); if (!b || b.parentElement !== box || e.button > 0) return;
-      sx = e.clientX; sy = e.clientY; moved = false;
-      timer = setTimeout(() => { drag = b; b.classList.add('fsk-drag'); box.classList.add('fsk-sorting'); try { b.setPointerCapture(e.pointerId); } catch (er) {} if (navigator.vibrate) navigator.vibrate(15); }, 350);
+      sx = e.clientX; sy = e.clientY; moved = false; cand = b; mouse = e.pointerType === 'mouse';
+      if (mouse) e.preventDefault();   // chặn bôi đen chữ khi kéo bằng chuột
+      else timer = setTimeout(() => start(b, e), 350);   // cảm ứng: nhấn giữ rồi kéo, để vuốt ngang vẫn cuộn được
     });
     box.addEventListener('pointermove', e => {
-      if (!drag) { if (timer && Math.hypot(e.clientX - sx, e.clientY - sy) > 8) { clearTimeout(timer); timer = null; } return; }
+      if (!drag) {
+        const d = Math.hypot(e.clientX - sx, e.clientY - sy);
+        if (mouse && cand && (e.buttons & 1) && d > 5) start(cand, e);          // chuột: bấm và kéo luôn
+        else { if (timer && d > 8) { clearTimeout(timer); timer = null; } return; }
+      }
       e.preventDefault(); moved = true;
       const t = document.elementFromPoint(e.clientX, e.clientY), over = t && t.closest && t.closest('button');
       if (!over || over === drag || over.parentElement !== box) return;
       const r = over.getBoundingClientRect(), after = (e.clientX - r.left) > r.width / 2 || (e.clientY - r.top) > r.height * 0.9;
       box.insertBefore(drag, after ? over.nextSibling : over);
     });
-    const end = () => { clearTimeout(timer); timer = null; if (!drag) return; drag.classList.remove('fsk-drag'); box.classList.remove('fsk-sorting'); const d = drag; drag = null; if (moved) { save(); d._fskNoClick = true; setTimeout(() => { d._fskNoClick = false; }, 50); } };
+    const end = () => { clearTimeout(timer); timer = null; cand = null; if (!drag) return; drag.classList.remove('fsk-drag'); box.classList.remove('fsk-sorting'); const d = drag; drag = null; if (moved) { save(); d._fskNoClick = true; setTimeout(() => { d._fskNoClick = false; }, 50); } };
     box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
     box.addEventListener('click', e => { const b = e.target.closest('button'); if (b && b._fskNoClick) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
     box.addEventListener('contextmenu', e => { if (drag || timer) e.preventDefault(); });
-    box.title = box.title || 'Nhấn giữ một nút rồi kéo để đổi thứ tự';
+    box.title = box.title || 'Kéo một nút để đổi thứ tự (điện thoại: nhấn giữ rồi kéo)';
   }
 
   window.FSK = { prep, reorder, enhance, dates, sortable };

@@ -7,11 +7,13 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'tw_tpex_api_list': 'https://www.tpex.org.tw/openapi/swagger.json',
-    'sg_singstat_search': 'https://tablebuilder.singstat.gov.sg/api/table/resourceid?keyword=government%20securities&searchOption=all',
-    'sg_singstat_search2': 'https://tablebuilder.singstat.gov.sg/api/table/resourceid?keyword=interest%20rates&searchOption=all',
-    'tw_cbc_key': 'https://www.cbc.gov.tw/en/np-442-2.html',
-    'tw_cbc_key2': 'https://www.cbc.gov.tw/en/np-443-2.html',
+    'sg_py': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/pricesandyields?rows=3&sort=end_of_period%20desc',
+    'sg_pyc': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/pricesandyields_chart?rows=3&sort=end_of_period%20desc',
+    'sg_pyc_bond': 'https://eservices.mas.gov.sg/statistics/api/v1/bondsandbills/m/pricesandyields_chart?rows=3&filters=product_type:N&sort=end_of_period%20desc',
+    'tw_tpex_bond_zh': 'https://www.tpex.org.tw/zh-tw/bond/info/statistics/benchmark.html',
+    'tw_tpex_bond_en': 'https://www.tpex.org.tw/en-us/bond/info/statistics/benchmark.html',
+    'tw_tpex_curve': 'https://www.tpex.org.tw/zh-tw/bond/info/statistics/yield-curve.html',
+    'tw_tpex_old': 'https://www.tpex.org.tw/web/bond/publish/govbond_yield/govbond_yield.php?l=en-us',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -44,6 +46,8 @@ def main():
                     info['json'] = s[:60000]
             elif '<html' in txt[:2000].lower() or '<!doctype' in txt[:200].lower():
                 info['links'] = sorted(set(re.findall(r'href="([^"]+\.(?:csv|xlsx?|pdf|htm|html|txt|zip))"', txt)))[:400]
+                info['xls'] = sorted(set(re.findall(r'[\w/.:-]*(?:BDdys|Curve|govbond|benchmark)[\w/.?=&-]*', txt, re.I)))[:200]
+                info['text'] = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', re.sub(r'(?s)<(script|style).*?</\1>', ' ', txt)))[:3000]
                 info['title'] = (re.search(r'<title>(.*?)</title>', txt, re.S) or [None, ''])[1].strip()[:200]
             else:
                 info['head'] = txt[:6000]

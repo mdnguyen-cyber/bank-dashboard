@@ -88,7 +88,7 @@ function cardMeta(el) {
   const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane'), cc = el.closest('[data-cc]');
   const h = c && c.querySelector(':scope > h3.sub'), one = sel => { const e = c && c.querySelector(':scope > ' + sel); return e ? e.innerHTML : ''; };
   return { title: h ? (h.childNodes[0] || {}).textContent || '' : el.id, sub: one('.chart-sub'), src: one('.src'), insight: one('.insight'),
-    group: cc && cc.dataset.cc !== 'ov' ? 'Quốc tế · ' + (GCOUNTRY.find(x => x[0] === cc.dataset.cc) || ['', ''])[1] : PANE_LBL[pp ? pp.dataset.pp : pane ? pane.id : ''] || 'Khác', pane: pane ? pane.id : '', sp: pp ? pp.dataset.pp : '', cc: cc ? cc.dataset.cc : '' };
+    group: cc && cc.dataset.cc !== 'ov' ? (cc && cc.dataset.cc === 'gl' ? 'Toàn cầu: lợi suất & lạm phát' : 'Quốc tế · ' + (GCOUNTRY.find(x => x[0] === cc.dataset.cc) || ['', ''])[1]) : PANE_LBL[pp ? pp.dataset.pp : pane ? pane.id : ''] || 'Khác', pane: pane ? pane.id : '', sp: pp ? pp.dataset.pp : '', cc: cc ? cc.dataset.cc : '' };
 }
 function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình chart
   Object.keys(builders).forEach(k => { if (!['quick', 'book'].includes(k) && !built[k]) { builders[k](); built[k] = true; } });
@@ -556,13 +556,13 @@ function wireTf(id, draw) { const box = document.querySelector(`[data-tf="${id}"
 const TF = [['yoy', 'YoY'], ['m3', '3 tháng quy năm'], ['mom', 'MoM']];
 
 function subIntl() {
-  return `<div class="subtabs cty" role="tablist">${GCOUNTRY.map(([k, l], i) => `<button type="button" data-c="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
+  return `<div class="subtabs cty" role="tablist">${GCOUNTRY.filter(([k]) => k !== 'gl').map(([k, l], i) => `<button type="button" data-c="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
   <p class="muted" style="margin:-4px 0 12px">Số liệu quốc tế lấy trực tiếp từ nguồn công bố (FRED, ECB, NY Fed, Cục Thống kê Nhật Bản, NBS, OECD) và tự cập nhật mỗi sáng · lần tải gần nhất ${dvn((GD.fetched || '').slice(0, 10))}${GD.stale && GD.stale.length ? ' · <b>' + GD.stale.length + ' chuỗi dùng bản cũ do lỗi tải</b>' : ''}</p>
-  ${GCOUNTRY.map(([k], i) => `<div class="csub${i ? '' : ' on'}" data-cc="${k}">${k === 'ov' ? subIntlOverview() : ({ gl: gGL, us: gUS, ea: gEA, jp: gJP, cn: gCN })[k]()}</div>`).join('')}`;
+  ${GCOUNTRY.map(([k], i) => `<div class="csub${i === 1 ? ' on' : ''}" data-cc="${k}"${k === 'gl' ? ' data-book="1"' : ''}>${k === 'ov' ? subIntlOverview() : ({ gl: gGL, us: gUS, ea: gEA, jp: gJP, cn: gCN })[k]()}</div>`).join('')}`;
 }
 function openC(k) {
   $$('#picture .cty button').forEach(b => b.classList.toggle('on', b.dataset.c === k));
-  $$('#picture [data-cc]').forEach(p => p.classList.toggle('on', p.dataset.cc === k));
+  $$('#picture .csub[data-cc]').forEach(p => p.classList.toggle('on', p.dataset.cc === k));
   if (!gDone[k]) { gDone[k] = true; ({ gl: drGL, us: drUS, ea: drEA, jp: drJP, cn: drCN, ov: chIntlOverview })[k](); }
 }
 /* -------- Toàn cầu: lợi suất trái phiếu chính phủ và lạm phát -------- */
@@ -898,6 +898,7 @@ function chIntl() {
   $$('#picture .cty button').forEach(b => b.onclick = () => openC(b.dataset.c));
   Object.keys(gDone).forEach(k => delete gDone[k]);
   FSK.sortable($('#picture .cty'), 'intl-country', 'c');
+  gDone.gl = true; drGL();          // lợi suất & lạm phát toàn cầu: chỉ vào Chart book và Cập nhật nhanh, không hiện tab
   openC($('#picture .cty button').dataset.c);
 }
 function chIntlOverview() {
@@ -1570,7 +1571,7 @@ function paneBook() {
       <h3 class="sub">${esc(m.title)}</h3>${m.sub ? `<p class="chart-sub">${m.sub}</p>` : ''}
       ${chartBox(id, 'cb-' + id)}
       ${m.insight ? `<div class="insight">${m.insight}</div>` : ''}${m.src ? `<div class="src">${m.src.startsWith('Nguồn') ? '' : 'Nguồn: '}${m.src}</div>` : ''}
-      <div class="qfoot"><span><code>${id}</code> · ${esc(m.group)}</span><button type="button" class="lnk" data-go="${m.pane}" data-sp="${m.sp}" data-cc="${m.cc || ''}">Xem ở tab gốc →</button></div>
+      <div class="qfoot"><span><code>${id}</code> · ${esc(m.group)}</span>${m.cc === 'gl' ? '' : `<button type="button" class="lnk" data-go="${m.pane}" data-sp="${m.sp}" data-cc="${m.cc || ''}">Xem ở tab gốc →</button>`}</div>
     </article>`; }).join('')}</div>`;
   const drawn = new Set();
   const draw = c => { const id = c.dataset.id; drawSpec(id, 'cb-' + id); drawn.add(id); };
