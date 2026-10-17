@@ -83,7 +83,7 @@ const charts = {};
 /* ---------- Chart book: mk() lưu cấu hình từng chart theo id để vẽ lại ở Chart book / Cập nhật nhanh ---------- */
 const SPEC = {};
 const cl = o => Array.isArray(o) ? o.map(cl) : (o && Object.getPrototypeOf(o) === Object.prototype) ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cl(v)])) : o;
-const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', mm: 'Tiền tệ VND vs USD', bank: 'Ngân hàng', idx: 'Kịch bản IDX' };
+const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', mm: 'Tiền tệ VND vs USD', bank: 'Ngân hàng', peer: 'So sánh ngân hàng', idx: 'Kịch bản IDX' };
 function cardMeta(el) {
   const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane'), cc = el.closest('[data-cc]');
   const h = c && c.querySelector(':scope > h3.sub'), one = sel => { const e = c && c.querySelector(':scope > ' + sel); return e ? e.innerHTML : ''; };
@@ -92,7 +92,7 @@ function cardMeta(el) {
 }
 function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình chart
   Object.keys(builders).forEach(k => { if (!['quick', 'book'].includes(k) && !built[k]) { builders[k](); built[k] = true; } });
-  ['intl', 'dom', 'mm', 'bank', 'camel', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; } });
+  ['intl', 'dom', 'mm', 'bank', 'peer', 'camel', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, peer: chPeer, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; } });
   GCOUNTRY.forEach(([k]) => { if (!gDone[k]) { gDone[k] = true; ({ gl: drGL, us: drUS, ea: drEA, jp: drJP, cn: drCN, ov: chIntlOverview })[k](); } });
 }
 function drawSpec(src, cid, last) {   // vẽ lại chart `src` vào canvas `cid`; last = mở sẵn khung N điểm cuối (vẫn kéo/chọn lại được)
@@ -171,16 +171,157 @@ function header() {
    TAB 1 · TỔNG QUAN NGÀNH
 ===================================================================== */
 function paneOverview() {
-  const v = view();
-  const nimY = AG.nim.all[QY], nimN = AG.nim.all[QI];
-  const pbZ = (SV.now.pb - SV.pb.mean) / SV.pb.sd;
-  const sigBy = id => D.signals.find(s => s.id === id);
   const qu = D.quick && D.quick.updates[0];
+  const tk = g => M.banks.filter(s => (D.meta.groups || {})[s] === g);
+  const box = (h, b, cls = '') => `<div class="vbox ${cls}"><b>${h}</b>${b ? `<span>${b}</span>` : ''}</div>`;
+  const go = (p, l) => `<button type="button" class="lnk" data-gop="${p}">${l} →</button>`;
+  const DRV = [
+    ['Lãi suất điều hành & thanh khoản', 'NHNN dùng lãi suất tái cấp vốn, tái chiết khấu (trần, sàn của lãi suất liên ngân hàng), nghiệp vụ thị trường mở OMO (bơm, hút tiền hằng ngày), tín phiếu NHNN, dự trữ bắt buộc và trần lãi suất tiền gửi kỳ hạn dưới 6 tháng.',
+      'NHNN bơm tiền → lãi suất liên ngân hàng giảm → chi phí vốn (COF) giảm sau vài tháng. NHNN hút tiền → điều ngược lại, ngân hàng phải tăng lãi suất huy động.', ['mm', 'Tiền tệ VND vs USD'], 'NIM · COF'],
+    ['Room tín dụng', 'Mỗi năm NHNN đặt chỉ tiêu tăng trưởng tín dụng toàn hệ thống rồi giao hạn mức (room) cho từng ngân hàng, dựa trên kết quả xếp hạng (TT 21/2025).',
+      'Room quyết định ngân hàng được lớn thêm bao nhiêu. Ngân hàng xếp hạng cao, nợ xấu thấp được room rộng hơn; room hẹp thì dù có khách hàng cũng không cho vay thêm được.', ['camel', 'Xếp hạng TT21 & room'], 'Tăng trưởng tín dụng'],
+    ['Tỷ giá USD/VND', 'NHNN công bố tỷ giá trung tâm mỗi ngày; ngân hàng chỉ được giao dịch trong biên độ ±5%. Khi USD mạnh lên (Fed tăng lãi suất, DXY tăng) hoặc cầu ngoại tệ trong nước tăng, NHNN bán USD từ dự trữ.',
+      'Bán USD = rút VND khỏi hệ thống → thanh khoản căng, lãi suất tăng. Áp lực tỷ giá cao khiến NHNN khó hạ lãi suất dù kinh tế cần vốn rẻ. Đây là kênh chính để Fed và USD ảnh hưởng tới ngân hàng Việt Nam.', ['dom', 'Nội địa'], 'COF · thanh khoản'],
+    ['Lạm phát', 'Quốc hội giao mục tiêu lạm phát hằng năm (quanh 4–4,5%). Giá xăng dầu, lương thực, dịch vụ công và tỷ giá là các nguồn chính.',
+      'Lạm phát vượt mục tiêu → NHNN ưu tiên giữ giá, không nới lãi suất; người gửi tiền đòi lãi suất cao hơn để bù trượt giá → COF tăng.', ['dom', 'Nội địa'], 'Lãi suất · COF'],
+    ['Tăng trưởng kinh tế & doanh nghiệp', 'Xuất khẩu, FDI, đầu tư công và tiêu dùng tạo nhu cầu vay vốn; dòng tiền của doanh nghiệp, hộ gia đình quyết định khả năng trả nợ.',
+      'Kinh tế tốt → tín dụng tăng, nợ xấu giảm. Kinh tế chậm lại → nợ quá hạn tăng, thường thể hiện trong nợ xấu sau 2–4 quý.', ['dom', 'Nội địa'], 'Tín dụng · NPL'],
+    ['Bất động sản', 'Bất động sản là tài sản bảo đảm phổ biến nhất của khoản vay; ngân hàng còn cho chủ đầu tư vay, cho người mua nhà vay và từng nắm trái phiếu doanh nghiệp BĐS.',
+      'Thị trường BĐS trầm lắng → khó bán tài sản bảo đảm, nợ xấu xử lý chậm, trích lập dự phòng tăng. NHNN giới hạn riêng room cho vay kinh doanh BĐS.', ['bank', 'Ngân hàng'], 'NPL · dự phòng'],
+    ['Tài khoá & Kho bạc', 'Kho bạc Nhà nước gửi tiền tại ngân hàng (chủ yếu nhóm Nhà nước), giải ngân đầu tư công và phát hành trái phiếu Chính phủ.',
+      'Tiền gửi Kho bạc là nguồn vốn rẻ, một phần được tính vào LDR. Giải ngân đầu tư công bơm tiền ra hệ thống; phát hành TPCP hút tiền vào. TPCP cũng là tài sản thanh khoản ngân hàng nắm giữ.', ['dom', 'Nội địa'], 'COF · LDR'],
+    ['Quy định an toàn', 'Hệ số an toàn vốn CAR (chuẩn Basel), giới hạn tỷ lệ cho vay/huy động (LDR, sang LCR/NSFR theo TT 50/2026), giới hạn cấp tín dụng một khách hàng, phân loại nợ và trích lập dự phòng.',
+      'Quy định chặt hơn buộc ngân hàng tăng vốn (phát hành, giữ lại lợi nhuận, hạn chế chia cổ tức tiền mặt), giữ nhiều tài sản thanh khoản hơn, tăng trưởng chậm lại.', ['policy', 'tab Chính sách'], 'CAR · LDR'],
+  ];
+  const CYC = [
+    ['Nới lỏng', 'NHNN hạ lãi suất, bơm tiền', 'Tăng dần khi room nới', 'Thường mở rộng: COF giảm nhanh hơn lãi suất cho vay', 'Giảm dần nhờ doanh nghiệp dễ vay đảo nợ', 'Thường tăng sớm nhất'],
+    ['Phục hồi', 'Lãi suất thấp, ổn định', 'Tăng nhanh', 'Hẹp lại khi cạnh tranh cho vay', 'Thấp', 'Theo tăng trưởng lợi nhuận'],
+    ['Thắt chặt', 'NHNN hút tiền, lãi suất liên NH tăng', 'Chậm lại', 'Bị ép: COF tăng trước, lãi suất cho vay tăng sau', 'Bắt đầu tăng sau 2–4 quý', 'Giảm, thường về vùng thấp'],
+    ['Xử lý nợ', 'Lãi suất cao rồi hạ dần', 'Thấp', 'Thấp', 'Cao, trích lập dự phòng lớn', 'Đáy chu kỳ, phục hồi trước lợi nhuận'],
+  ];
+  const GL = [
+    ['NIM', 'Biên lãi thuần', 'Thu nhập lãi thuần / tài sản sinh lãi bình quân', 'Cao = cho vay sinh lời tốt hoặc vốn rẻ'],
+    ['COF', 'Chi phí vốn', 'Chi phí lãi / nguồn vốn chịu lãi bình quân', 'Thấp = huy động rẻ (CASA cao, tiền gửi Kho bạc)'],
+    ['CASA', 'Tiền gửi không kỳ hạn', 'Tiền gửi thanh toán / tổng tiền gửi khách hàng', 'Cao = nguồn vốn gần như miễn phí, ít nhạy với lãi suất'],
+    ['LDR', 'Tỷ lệ cho vay / huy động', 'Dư nợ cho vay / tiền gửi (theo công thức NHNN)', 'Sát trần = khó tăng cho vay nếu không huy động thêm'],
+    ['CAR', 'Hệ số an toàn vốn', 'Vốn tự có / tài sản có rủi ro', 'Cao = đủ đệm vốn để tăng trưởng, chịu lỗ'],
+    ['NPL', 'Tỷ lệ nợ xấu', 'Nợ nhóm 3–5 / tổng dư nợ', 'Thấp; nhóm 2 (quá hạn 10–90 ngày) là chỉ báo sớm'],
+    ['LLR', 'Tỷ lệ bao phủ nợ xấu', 'Dự phòng rủi ro tín dụng / nợ xấu', 'Cao = đệm dày, lợi nhuận tương lai ít bị ăn mòn'],
+    ['CIR', 'Chi phí / thu nhập', 'Chi phí hoạt động / tổng thu nhập hoạt động', 'Thấp = vận hành hiệu quả'],
+    ['ROE', 'Lợi nhuận / vốn chủ', 'LNST / vốn chủ sở hữu bình quân', 'Cao bền vững = được định giá P/B cao hơn'],
+    ['P/B', 'Giá / giá trị sổ sách', 'Vốn hoá / vốn chủ sở hữu', 'Thước đo định giá chính của ngân hàng, đi cùng ROE'],
+  ];
   $('#overview').innerHTML = `
   ${qu ? `<button type="button" class="qbar" id="goQuick"><span class="qdate">Cập nhật nhanh ${dvn(qu.date)}</span><span class="who ${qu.author.type === 'AI' ? 'ai' : 'cv'}">${qu.author.type === 'AI' ? 'AI' : 'Chuyên viên'}</span><span class="qbar-t">${esc(qu.headline)}</span><span class="qbar-go">Xem →</span></button>` : ''}
-  <h2 class="sec">Tổng quan ngành ngân hàng</h2>
-  <p class="sec-sub">Ngân hàng là ngành "ăn theo" chính sách tiền tệ: tỷ giá quyết định NHNN được nới hay phải siết, lãi suất quyết định biên lãi, nợ xấu và định giá.</p>
-  <article class="card fsn" id="viewNote"></article>
+  <h2 class="sec">Tổng quan ngành ngân hàng Việt Nam</h2>
+  <p class="sec-sub">Phần nền tảng, ít thay đổi theo thời gian: ngân hàng đứng ở đâu trong nền kinh tế, kiếm tiền bằng cách nào và chịu tác động của những yếu tố nào. Diễn biến và số liệu mới nhất nằm ở Cập nhật nhanh và Bức tranh ngành.</p>
+  <nav class="ovnav">${[['ov1', '1 · Vai trò'], ['ov2', '2 · Chuỗi giá trị'], ['ov3', '3 · Kiếm tiền thế nào'], ['ov4', '4 · Cấu trúc ngành'], ['ov5', '5 · Yếu tố tác động'], ['ov6', '6 · Chu kỳ ngành'], ['ov7', '7 · Khung pháp lý'], ['ov8', '8 · Thuật ngữ']].map(([a, l]) => `<a href="#${a}" data-ov="${a}">${l}</a>`).join('')}</nav>
+
+  <h3 class="ovh" id="ov1">1 · Ngân hàng trong nền kinh tế Việt Nam</h3>
+  <div class="grid g3 gap ovrole">
+    <article class="card"><h4>Kênh dẫn vốn chính</h4><p>Doanh nghiệp và hộ gia đình Việt Nam vay vốn chủ yếu qua ngân hàng; thị trường cổ phiếu và trái phiếu doanh nghiệp còn nhỏ. Vì vậy dư nợ tín dụng ngân hàng lớn hơn cả quy mô GDP, và mọi chính sách muốn bơm hay rút vốn khỏi nền kinh tế đều đi qua ngân hàng.</p></article>
+    <article class="card"><h4>Ngành chịu quản lý chặt nhất</h4><p>Ngân hàng Nhà nước (NHNN) vừa điều hành chính sách tiền tệ, vừa cấp phép, thanh tra, giao hạn mức tăng trưởng tín dụng cho từng ngân hàng. Lợi nhuận ngân hàng vì thế phụ thuộc nhiều vào chính sách, không chỉ vào năng lực kinh doanh.</p></article>
+    <article class="card"><h4>Nhóm vốn hoá lớn nhất sàn chứng khoán</h4><p>Cổ phiếu ngân hàng chiếm tỷ trọng lớn nhất trong VN-Index. Định giá ngành thường đo bằng P/B (giá so với vốn chủ) vì tài sản và nợ của ngân hàng chủ yếu là tiền, ghi gần sát giá trị thật.</p></article>
+  </div>
+
+  <h3 class="ovh" id="ov2">2 · Chuỗi giá trị</h3>
+  <article class="card vcard">
+    <div class="vreg">${box('Ngân hàng Nhà nước (NHNN)', 'lãi suất điều hành · OMO · room tín dụng · tỷ giá trung tâm · dự trữ bắt buộc · tỷ lệ an toàn · thanh tra, giám sát', 'reg')}</div>
+    <div class="vflow">
+      <div class="vcol c1"><h4>Nguồn vốn</h4>
+        ${box('Tiền gửi dân cư & doanh nghiệp', 'không kỳ hạn (CASA) · có kỳ hạn')}
+        ${box('Tiền gửi Kho bạc Nhà nước', 'nguồn vốn rẻ, tập trung ở nhóm Nhà nước')}
+        ${box('Liên ngân hàng & NHNN', 'vay, gửi giữa các ngân hàng · OMO · tái cấp vốn')}
+        ${box('Giấy tờ có giá & vốn chủ', 'chứng chỉ tiền gửi · trái phiếu ngân hàng · vốn vay quốc tế · vốn cổ phần')}</div>
+      <div class="varr" aria-hidden="true"></div>
+      <div class="vcol c2"><h4>Ngân hàng</h4>
+        ${box('Chuyển hoá vốn', 'nhận vốn ngắn hạn, cho vay dài hơn · thẩm định và định giá rủi ro · thanh toán', 'core')}
+        ${GROUPS.map(g => box(g === 'Big 4' ? 'NHTM Nhà nước (Big 4)' : 'NHTM cổ phần ' + g.toLowerCase(), tk(g).join(' · ') + (g === 'Big 4' ? ' · Agribank (chưa niêm yết)' : ''))).join('')}</div>
+      <div class="varr" aria-hidden="true"></div>
+      <div class="vcol c3"><h4>Sử dụng vốn · khách hàng</h4>
+        ${box('Cho vay doanh nghiệp', 'vốn lưu động · dự án · kinh doanh bất động sản')}
+        ${box('Cho vay cá nhân', 'mua nhà · tiêu dùng · hộ kinh doanh')}
+        ${box('Đầu tư chứng khoán', 'trái phiếu Chính phủ · trái phiếu doanh nghiệp · tín phiếu NHNN')}
+        ${box('Liên ngân hàng & dự trữ', 'tiền gửi, cho vay ngân hàng khác · tiền gửi tại NHNN')}
+        ${box('Dịch vụ', 'thanh toán · thẻ · ngoại hối · bảo hiểm qua ngân hàng (bancassurance)')}</div>
+    </div>
+    <div class="vinfra"><b>Hạ tầng & bên liên quan:</b> NAPAS (chuyển mạch thanh toán) · CIC (thông tin tín dụng) · Bảo hiểm tiền gửi Việt Nam · VAMC và công ty quản lý nợ (xử lý nợ xấu) · công ty bảo hiểm (đối tác bancassurance) · công ty chứng khoán, quỹ (cạnh tranh dòng tiền gửi) · công ty tài chính tiêu dùng (nhiều công ty thuộc ngân hàng mẹ)</div>
+    <p class="vnote">Mũi tên: dòng vốn đi từ người gửi tiền, qua ngân hàng, tới người vay. Ô trên cùng là cơ quan điều tiết, tác động lên mọi khâu. Sơ đồ không biểu thị tỷ trọng.</p>
+  </article>
+  <div class="grid g3 gap">
+    <article class="card"><h4>Đầu vào: chi phí vốn</h4><p>Ngân hàng nào có nhiều tiền gửi không kỳ hạn (CASA) và tiền gửi Kho bạc thì vốn rẻ. Khi lãi suất thị trường tăng, ngân hàng phụ thuộc tiền gửi có kỳ hạn và vay liên ngân hàng chịu thiệt trước.</p></article>
+    <article class="card"><h4>Chuyển hoá: hai rủi ro cốt lõi</h4><p><b>Rủi ro kỳ hạn:</b> huy động ngắn, cho vay dài — lãi suất tăng nhanh thì chi phí vốn tăng trước thu nhập. <b>Rủi ro tín dụng:</b> người vay không trả được nợ, ngân hàng phải trích lập dự phòng, ăn vào lợi nhuận.</p></article>
+    <article class="card"><h4>Đầu ra: thu nhập</h4><p>Chênh lệch lãi suất cho vay và huy động là nguồn thu chính. Phí dịch vụ (thanh toán, thẻ, bảo hiểm), kinh doanh ngoại hối, chứng khoán và thu hồi nợ đã xử lý bổ sung, giúp lợi nhuận bớt phụ thuộc vào chu kỳ lãi suất.</p></article>
+  </div>
+
+  <h3 class="ovh" id="ov3">3 · Ngân hàng kiếm tiền thế nào</h3>
+  <div class="grid g2 gap">
+    <article class="card"><h3 class="sub">Bảng cân đối điển hình</h3><p class="chart-sub">Tài sản = nơi ngân hàng dùng tiền; nguồn vốn = nơi tiền đến. Vốn chủ thường chỉ khoảng 1/10 tổng tài sản — ngân hàng dùng đòn bẩy cao.</p>
+      <div class="tscroll"><table class="bsx"><thead><tr><th>Tài sản</th><th>Nguồn vốn</th></tr></thead><tbody>
+        <tr><td><b>Cho vay khách hàng</b> — khoản mục lớn nhất, sinh lãi cao nhất, rủi ro lớn nhất</td><td><b>Tiền gửi khách hàng</b> — nguồn lớn nhất; CASA rẻ nhất</td></tr>
+        <tr><td><b>Chứng khoán đầu tư</b> — chủ yếu TPCP, giữ để thanh khoản</td><td><b>Tiền gửi, vay các TCTD khác</b> — bổ sung khi thiếu vốn, nhạy với lãi suất liên ngân hàng</td></tr>
+        <tr><td><b>Tiền gửi, cho vay TCTD khác</b> — điều hoà thanh khoản</td><td><b>Giấy tờ có giá</b> — vốn dài hạn, chi phí cao hơn tiền gửi</td></tr>
+        <tr><td><b>Tiền mặt, tiền gửi tại NHNN</b> — dự trữ bắt buộc, thanh toán</td><td><b>Vốn chủ sở hữu</b> — đệm chịu lỗ, quyết định CAR</td></tr>
+      </tbody></table></div></article>
+    <article class="card"><h3 class="sub">Từ thu nhập tới lợi nhuận</h3><p class="chart-sub">Thứ tự các dòng trên báo cáo kết quả kinh doanh ngân hàng</p>
+      <ol class="pnl">
+        <li><b>Thu nhập lãi thuần (NII)</b> = lãi thu từ cho vay, đầu tư − lãi trả cho tiền gửi, vốn vay. Chiếm phần lớn thu nhập; quy mô × NIM.</li>
+        <li><b>+ Thu nhập ngoài lãi</b>: phí dịch vụ, bancassurance, ngoại hối, chứng khoán, thu hồi nợ đã xử lý.</li>
+        <li><b>= Tổng thu nhập hoạt động (TOI)</b></li>
+        <li><b>− Chi phí hoạt động</b>: nhân sự, mạng lưới, công nghệ. Đo bằng CIR.</li>
+        <li><b>= Lợi nhuận trước dự phòng</b> — sức khoẻ kinh doanh cốt lõi.</li>
+        <li><b>− Chi phí dự phòng rủi ro tín dụng</b>: trích theo nhóm nợ; biến động mạnh nhất qua chu kỳ.</li>
+        <li><b>= Lợi nhuận trước thuế</b> → thuế TNDN 20% → LNST → ROE = ROA × đòn bẩy (tài sản / vốn chủ).</li>
+      </ol></article>
+  </div>
+
+  <h3 class="ovh" id="ov4">4 · Cấu trúc ngành</h3>
+  <article class="card"><h3 class="sub">Các loại tổ chức tín dụng (Luật Các tổ chức tín dụng 2024)</h3>
+    <div class="tscroll"><table><thead><tr><th>Loại hình</th><th>Đại diện</th><th>Đặc điểm kinh doanh</th></tr></thead><tbody>
+      <tr><td><b>NHTM Nhà nước</b></td><td>Agribank (100% vốn Nhà nước); VCB, BID, CTG (Nhà nước nắm chi phối, niêm yết)</td><td>Mạng lưới lớn nhất, giữ tiền gửi Kho bạc và doanh nghiệp Nhà nước, cho vay dự án hạ tầng; thực hiện chủ trương của NHNN (giảm lãi suất, hỗ trợ ngành ưu tiên). Tăng vốn phụ thuộc phê duyệt của Nhà nước.</td></tr>
+      <tr><td><b>NHTM cổ phần</b></td><td>MBB, TCB, ACB, VPB, HDB và các ngân hàng tư nhân khác</td><td>Cạnh tranh bằng bán lẻ, số hoá, hệ sinh thái tập đoàn; quy mô và chất lượng chênh lệch lớn giữa các ngân hàng.</td></tr>
+      <tr><td><b>Ngân hàng được chuyển giao bắt buộc</b></td><td>Bốn ngân hàng yếu kém được chuyển giao cho VCB, MB, VPBank, HDBank (2024–2025)</td><td>Ngân hàng nhận chuyển giao được ưu đãi (room tín dụng, giãn lộ trình tuân thủ) đổi lại phải tái cơ cấu ngân hàng yếu.</td></tr>
+      <tr><td><b>Ngân hàng 100% vốn nước ngoài, chi nhánh ngân hàng nước ngoài</b></td><td>HSBC, Shinhan, Standard Chartered, UOB…</td><td>Phục vụ doanh nghiệp FDI, thanh toán quốc tế, ngoại hối; thị phần cho vay nhỏ.</td></tr>
+      <tr><td><b>Công ty tài chính tiêu dùng</b></td><td>Nhiều công ty là công ty con của ngân hàng</td><td>Cho vay tiêu dùng không bảo đảm, lãi suất và nợ xấu đều cao hơn ngân hàng.</td></tr>
+      <tr><td><b>Quỹ tín dụng nhân dân, tổ chức tài chính vi mô</b></td><td>—</td><td>Quy mô nhỏ, phục vụ nông thôn, hộ thu nhập thấp.</td></tr>
+    </tbody></table></div></article>
+  <h3 class="sub" style="margin:6px 0 10px">${M.banks.length} ngân hàng niêm yết dashboard theo dõi, chia theo nhóm</h3>
+  <div class="gcards gap">${GROUPS.map(g => `<div class="gcard" style="--gc:${GC[g]}"><h4>${g}</h4><small>${tk(g).join(' · ')}</small><p>${GDESC[g]}</p></div>`).join('')}</div>
+  <p class="muted">Số liệu so sánh từng ngân hàng (NIM, CASA, nợ xấu, ROE, P/B…) xem ở ${go('peer', 'Bức tranh ngành › So sánh ngân hàng')}</p>
+
+  <h3 class="ovh" id="ov5">5 · Các yếu tố tác động</h3>
+  <div class="banner chain">Fed, USD, giá dầu → Tỷ giá → NHNN điều hành → Lãi suất liên ngân hàng → Lãi suất huy động, cho vay → NIM, nợ xấu, tăng trưởng → Lợi nhuận → P/B ngân hàng</div>
+  <div class="drv gap">${DRV.map(([t, how, imp, [p, l], m], i) => `<article class="card dcard"><div class="dh"><span class="dn">${i + 1}</span><h4>${t}</h4><span class="pill">${m}</span></div>
+    <p><b>Cơ chế:</b> ${how}</p><p><b>Tác động đến ngân hàng:</b> ${imp}</p><p class="dgo">Theo dõi: ${go(p, l)}</p></article>`).join('')}</div>
+
+  <h3 class="ovh" id="ov6">6 · Chu kỳ ngành</h3>
+  <div class="grid g2 gap">
+    <article class="card"><h3 class="sub">Ngân hàng đi theo chu kỳ lãi suất và tín dụng</h3><p class="chart-sub">Mô tả xu hướng điển hình; mỗi chu kỳ có khác biệt về độ trễ</p>
+      <div class="tscroll"><table><thead><tr><th>Giai đoạn</th><th>Lãi suất</th><th>Tín dụng</th><th>NIM</th><th>Nợ xấu</th><th>P/B</th></tr></thead>
+      <tbody>${CYC.map(r => `<tr>${r.map((c, j) => `<td>${j ? c : `<b>${c}</b>`}</td>`).join('')}</tr>`).join('')}</tbody></table></div></article>
+    <article class="card"><h3 class="sub">Khung bốn kịch bản: áp lực tỷ giá × thanh khoản</h3>
+      <p class="chart-sub">Hai biến quyết định NHNN nới hay siết. Ô sáng là vị trí hiện tại; cách tính ở ${go('idx', 'Kịch bản IDX-FX × IDX-LIQ')}</p>
+      ${miniMatrix()}</article>
+  </div>
+
+  <h3 class="ovh" id="ov7">7 · Khung pháp lý chủ chốt</h3>
+  <article class="card"><div class="tscroll"><table><thead><tr><th>Quy định</th><th>Mức hiện hành</th><th>Văn bản</th><th>Lộ trình</th></tr></thead><tbody>
+    <tr><td><b>Phân loại nợ, trích lập dự phòng</b></td><td>5 nhóm nợ; nợ xấu = nhóm 3–5; dự phòng cụ thể 0% · 5% · 20% · 50% · 100% theo nhóm, cộng dự phòng chung 0,75%</td><td>TT 31/2024/TT-NHNN; NĐ 86/2024/NĐ-CP</td><td>—</td></tr>
+    ${(D.reg || []).map(r => `<tr><td><b>${esc(r.rule)}</b></td><td>${esc(r.level)}</td><td>${esc(r.doc)}</td><td>${esc(r.path || '')}</td></tr>`).join('')}
+  </tbody></table></div><div class="src">Nguồn: văn bản pháp luật của Quốc hội, Chính phủ, NHNN. Quy định cập nhật khi có văn bản mới; diễn giải chi tiết ở tab Chính sách.</div></article>
+
+  <h3 class="ovh" id="ov8">8 · Thuật ngữ & chỉ số cần biết</h3>
+  <article class="card"><div class="tscroll"><table><thead><tr><th>Viết tắt</th><th>Tên</th><th>Cách tính</th><th>Đọc thế nào</th></tr></thead>
+    <tbody>${GL.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div></article>`;
+
+  const gq = $('#goQuick'); if (gq) gq.onclick = () => { show('quick'); window.scrollTo({ top: 0 }); };
+  $$('#overview [data-gop]').forEach(b => b.onclick = () => { const p = b.dataset.gop; if (p === 'policy') { show('policy'); } else { show('picture'); openP(p); } window.scrollTo({ top: 0 }); });
+  $$('#overview [data-ov]').forEach(a => a.onclick = e => { e.preventDefault(); const t = document.getElementById(a.dataset.ov); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+}
+function subPeer() {
+  const nimY = AG.nim.all[QY], nimN = AG.nim.all[QI];
+  const pbZ = (SV.now.pb - SV.pb.mean) / SV.pb.sd;
+  return `
   <div class="kpis">
     ${kpi('P/B ngành', x(SV.now.pb), `TB từ ${mvn(SV.from)}: ${x(SV.pb.mean)} (${sg(pbZ, 1, 'σ')})`, pbZ < 0 ? 'pos' : '')}
     ${kpi('P/E ngành', x(SV.now.pe), `TB ${x(SV.pe.mean)} · LNST TTM ${nf(SV.profitTTM, 1)} nghìn tỷ`)}
@@ -189,23 +330,7 @@ function paneOverview() {
     ${kpi('Tín dụng so đầu năm', pc(ytdNow.v, 2), `${mvn(ytdNow.d)} · cùng kỳ ${pc(ytdLY && ytdLY.v, 2)}`, ytdLY && ytdNow.v < ytdLY.v ? 'neg' : '')}
     ${kpi('Huy động 12T NHTM NN', pc(lastv(dom.dep12State).v, 2), `${sg(lastv(dom.dep12State).v - (byM(dom.dep12State)['2025-12']), 2, ' điểm %')} từ đầu năm`, 'neg')}
   </div>
-  <div class="grid g2 gap">
-    <article class="card"><h3 class="sub">Kịch bản lãi suất hiện tại · ${mvn(NOW.m)}</h3>
-      <p class="chart-sub">Ô sáng = vị trí theo IDX-FX (áp lực tỷ giá) × IDX-LIQ (thanh khoản nội địa); ±1 là ngưỡng mạnh. Chi tiết ở tab Bức tranh ngành › Kịch bản IDX.</p>
-      ${miniMatrix()}
-      <div class="insight">IDX-FX <b>${sg(NOW.fx, 2, '')}</b>, IDX-LIQ <b>${sg(NOW.liq, 2, '')}</b> → ô <b>${SCN[NOW.q].t}</b> nhưng cả hai còn trong vùng ±1 (mức vừa). Áp lực tỷ giá đến chủ yếu từ <b>lợi suất UST 10Y ${pc(lastv(intl.ust10).v, 2)}</b> và <b>cán cân XNK + FDI 12 tháng thu hẹp</b>; phía nội địa, tín dụng vẫn tăng nhanh hơn tiền gửi.</div>
-    </article>
-    <article class="card"><h3 class="sub">Chuỗi truyền dẫn: Thế giới → NHNN → Ngân hàng</h3>
-      <p class="chart-sub">Đầu ra của khâu trước là đầu vào của khâu sau (deck slide 35). Trạng thái lấy từ quy tắc R-xx ở tab Catalyst · Risk.</p>
-      <div class="chain3">
-        <div class="st"><h4>1 · Quốc tế</h4><p>Fed tăng 25 bps (16/09) lên 3,75–4,00%</p><p>UST 10Y ${pc(lastv(intl.ust10).v, 2)}, DXY ${nf(lastv(intl.dxy).v, 1)}</p><p>Brent ${nf(lastv(intl.brent).v, 0)} USD (${sg(yoyAt(intl.brent, lastv(intl.brent).d), 0)} YoY)</p>${pill('risk')}</div>
-        <div class="st"><h4>2 · Nội địa</h4><p>USD/VND NHTM ${nf(lastv(dom.nhtmSell).v)}, tự do ${nf(lastv(dom.free).v)}</p><p>LNH qua đêm ${pc(lastv(dom.on).v, 2)} vs OMO ${pc(lastv(dom.omo).v, 1)}</p><p>CPI ${pc(lastv(dom.cpi).v, 2)} (mục tiêu ~4,5%)</p>${pill(sigBy('R-10').state)}</div>
-        <div class="st"><h4>3 · Ngân hàng</h4><p>COF ${pc(AG.cof.all[QI], 2)} (cùng kỳ ${pc(AG.cof.all[QY], 2)})</p><p>NIM ${pc(nimN, 2)}, NPL ${pc(AG.npl.all[QI], 2)}</p><p>Tín dụng YoY ${pc(lastv(dom.creditYoY).v, 1)} &gt; tiền gửi ${pc(lastv(dom.depYoY).v, 1)}</p>${pill(sigBy('R-13').state)}</div>
-      </div>
-      <div class="insight">Cú sốc đang đi từ ngoài vào: Fed đảo chiều tăng lãi suất cùng giá dầu cao khiến NHNN khó nới; trong nước, cuộc đua tiền gửi đẩy COF ngành tăng <b>${sg(AG.cof.all[QI] - AG.cof.all[QY], 2, ' điểm %')}</b> so với cùng kỳ, nhanh hơn mức NIM thu hẹp <b>${sg(nimN - nimY, 2, ' điểm %')}</b>.</div>
-    </article>
-  </div>
-  <h3 class="sub" style="margin:6px 0 10px">Doanh nghiệp kiếm tiền như thế nào? · trung vị theo nhóm, ${BQ[QI]}</h3>
+  <h3 class="sub" style="margin:6px 0 10px">Chỉ số theo nhóm · trung vị, ${BQ[QI]}</h3>
   <div class="gcards gap">${GROUPS.map(g => groupCard(g)).join('')}</div>
   ${card({ id: 'chCompare', title: 'So sánh tài chính & định giá', h: 'tall', sub: `Chọn chỉ tiêu và nhóm · ${BQ[QI]} (NIM, COF, CIR, ROE: TTM) · P/B, P/E theo giá ${dvn(D.latest.priceDate)}`,
     body: `<div class="picker" id="cmpMetric">${CMP.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div><div class="picker" id="cmpGroup">${['Tất cả', ...GROUPS].map(g => `<button type="button" data-g="${g}">${g}</button>`).join('')}</div>`,
@@ -216,9 +341,21 @@ function paneOverview() {
     <article class="card"><h3 class="sub">Bảng so sánh ${M.banks.length} ngân hàng</h3><p class="chart-sub">Bấm tiêu đề cột để sắp xếp · % · P/B, P/E: lần</p>
       <div class="tscroll" id="cmpTable"></div><div class="src">Nguồn: WiData</div></article>
   </div>`;
-
-  // form
-  FSN.mount($('#viewNote'), {
+}
+function chPeer() {
+  drawCompare('nim', 'Tất cả');
+  $$('#cmpMetric button').forEach(b => b.onclick = () => drawCompare(b.dataset.k, $('#cmpGroup button.on').dataset.g));
+  $$('#cmpGroup button').forEach(b => b.onclick = () => drawCompare($('#cmpMetric button.on').dataset.k, b.dataset.g));
+  mk('chRoePb', { type: 'scatter', data: { datasets: GROUPS.map(g => ({ label: g, data: Lr.filter(r => r.group === g && r.roe != null && r.pb != null && r.roe > 3).map(r => ({ x: r.roe, y: r.pb, s: r.s })), backgroundColor: GC[g], pointRadius: 5, pointHoverRadius: 7 })) },
+    options: { interaction: { mode: 'nearest', intersect: true }, plugins: { tooltip: { callbacks: { label: c => `${c.raw.s}: ROE ${pc(c.raw.x, 1)} · P/B ${x(c.raw.y)}` } }, refLines: { lines: [{ value: SV.now.pb, label: 'P/B ngành ' + x(SV.now.pb), color: C.grey }] } },
+      scales: { x: pctAxis('ROE TTM'), y: numAxis('P/B', { ticks: { callback: v => nf(v, 1) + 'x' } }) } },
+    plugins: [{ id: 'lbl', afterDatasetsDraw(ch) { const { ctx } = ch; ctx.save(); ctx.font = '600 10.5px Arial'; ctx.fillStyle = '#3f4656';
+      ch.data.datasets.forEach((ds, i) => ch.getDatasetMeta(i).data.forEach((p, j) => ctx.fillText(ds.data[j].s, p.x + 6, p.y - 4))); ctx.restore(); } }] });
+  drawTable('roe', -1);
+}
+function viewNoteMount() {
+  const v = view(); const el = $('#viewNote'); if (!el) return;
+  FSN.mount(el, {
     key: 'sector-view', title: '💎 Nhận định FinSuccess <span class="pill">analyst</span>', textLabel: 'Luận điểm', placeholder: 'Vì sao, điều kiện thay đổi quan điểm…',
     sub: 'Quan điểm do chuyên viên viết. Mỗi lần lưu là một bản mới theo ngày; bản đã đăng được AI đọc lại khi viết cập nhật nhanh. Số liệu bên dưới lấy từ nguồn công bố, lời đọc là AI viết theo số.',
     fields: f => `<div><label>Quan điểm ngành</label><select data-k="stance"><option value="">—</option>${['Tích cực', 'Trung lập', 'Tiêu cực'].map(o => `<option ${f.stance === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div>
@@ -231,16 +368,19 @@ function paneOverview() {
     seed: () => v.note || v.stance ? { id: 'sector-view-seed', at: (v.at || TODAY) + ' 00:00', author: 'Minh Đức', f: { stance: v.stance || '', scn: v.scn || '', group: v.group || '', picks: v.picks || '' }, html: FSN.textToHtml(v.note), text: v.note || '' } : null,
     onSave: x => { store.set({ view: Object.assign({}, x.f, { note: x.text, html: x.html, at: x.at.slice(0, 10) }) }); header(); },
   });
-  drawCompare('nim', 'Tất cả');
-  $$('#cmpMetric button').forEach(b => b.onclick = () => drawCompare(b.dataset.k, $('#cmpGroup button.on').dataset.g));
-  $$('#cmpGroup button').forEach(b => b.onclick = () => drawCompare($('#cmpMetric button.on').dataset.k, b.dataset.g));
-  const gq = $('#goQuick'); if (gq) gq.onclick = () => { show('quick'); window.scrollTo({ top: 0 }); };
-  mk('chRoePb', { type: 'scatter', data: { datasets: GROUPS.map(g => ({ label: g, data: Lr.filter(r => r.group === g && r.roe != null && r.pb != null && r.roe > 3).map(r => ({ x: r.roe, y: r.pb, s: r.s })), backgroundColor: GC[g], pointRadius: 5, pointHoverRadius: 7 })) },
-    options: { interaction: { mode: 'nearest', intersect: true }, plugins: { tooltip: { callbacks: { label: c => `${c.raw.s}: ROE ${pc(c.raw.x, 1)} · P/B ${x(c.raw.y)}` } }, refLines: { lines: [{ value: SV.now.pb, label: 'P/B ngành ' + x(SV.now.pb), color: C.grey }] } },
-      scales: { x: pctAxis('ROE TTM'), y: numAxis('P/B', { ticks: { callback: v => nf(v, 1) + 'x' } }) } },
-    plugins: [{ id: 'lbl', afterDatasetsDraw(ch) { const { ctx } = ch; ctx.save(); ctx.font = '600 10.5px Arial'; ctx.fillStyle = '#3f4656';
-      ch.data.datasets.forEach((ds, i) => ch.getDatasetMeta(i).data.forEach((p, j) => ctx.fillText(ds.data[j].s, p.x + 6, p.y - 4))); ctx.restore(); } }] });
-  drawTable('roe', -1);
+}
+function chainCard() {
+  const nimY = AG.nim.all[QY], nimN = AG.nim.all[QI];
+  const sigBy = id => D.signals.find(s => s.id === id);
+  return `    <article class="card"><h3 class="sub">Chuỗi truyền dẫn: Thế giới → NHNN → Ngân hàng</h3>
+      <p class="chart-sub">Đầu ra của khâu trước là đầu vào của khâu sau (deck slide 35). Trạng thái lấy từ quy tắc R-xx ở tab Catalyst · Risk.</p>
+      <div class="chain3">
+        <div class="st"><h4>1 · Quốc tế</h4><p>Fed tăng 25 bps (16/09) lên 3,75–4,00%</p><p>UST 10Y ${pc(lastv(intl.ust10).v, 2)}, DXY ${nf(lastv(intl.dxy).v, 1)}</p><p>Brent ${nf(lastv(intl.brent).v, 0)} USD (${sg(yoyAt(intl.brent, lastv(intl.brent).d), 0)} YoY)</p>${pill('risk')}</div>
+        <div class="st"><h4>2 · Nội địa</h4><p>USD/VND NHTM ${nf(lastv(dom.nhtmSell).v)}, tự do ${nf(lastv(dom.free).v)}</p><p>LNH qua đêm ${pc(lastv(dom.on).v, 2)} vs OMO ${pc(lastv(dom.omo).v, 1)}</p><p>CPI ${pc(lastv(dom.cpi).v, 2)} (mục tiêu ~4,5%)</p>${pill(sigBy('R-10').state)}</div>
+        <div class="st"><h4>3 · Ngân hàng</h4><p>COF ${pc(AG.cof.all[QI], 2)} (cùng kỳ ${pc(AG.cof.all[QY], 2)})</p><p>NIM ${pc(nimN, 2)}, NPL ${pc(AG.npl.all[QI], 2)}</p><p>Tín dụng YoY ${pc(lastv(dom.creditYoY).v, 1)} &gt; tiền gửi ${pc(lastv(dom.depYoY).v, 1)}</p>${pill(sigBy('R-13').state)}</div>
+      </div>
+      <div class="insight">Cú sốc đang đi từ ngoài vào: Fed đảo chiều tăng lãi suất cùng giá dầu cao khiến NHNN khó nới; trong nước, cuộc đua tiền gửi đẩy COF ngành tăng <b>${sg(AG.cof.all[QI] - AG.cof.all[QY], 2, ' điểm %')}</b> so với cùng kỳ, nhanh hơn mức NIM thu hẹp <b>${sg(nimN - nimY, 2, ' điểm %')}</b>.</div>
+    </article>`;
 }
 function miniMatrix() {
   const cell = k => `<div class="cell ${NOW.q === k ? 'on' : ''}"><b>${SCN[k].t}</b>${SCN[k].rate} → ${SCN[k].bank}${NOW.q === k ? '<br><span class="now">Hiện tại</span>' : ''}</div>`;
@@ -293,7 +433,7 @@ function drawTable(k, dir) {
 /* =====================================================================
    TAB 2 · BỨC TRANH NGÀNH (Quốc tế → Nội địa → Ngân hàng → Kịch bản IDX)
 ===================================================================== */
-const PSUB = [['intl', 'Quốc tế'], ['dom', 'Nội địa'], ['mm', 'Tiền tệ VND vs USD'], ['bank', 'Ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
+const PSUB = [['intl', 'Quốc tế'], ['dom', 'Nội địa'], ['mm', 'Tiền tệ VND vs USD'], ['bank', 'Ngân hàng'], ['peer', 'So sánh ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
 const pDone = {};
 function panePicture() {
   $('#picture').innerHTML = `
@@ -305,6 +445,7 @@ function panePicture() {
   <div class="sub" data-pp="dom">${subDom()}</div>
   <div class="sub" data-pp="mm">${subMM()}</div>
   <div class="sub" data-pp="bank">${subBank()}</div>
+  <div class="sub" data-pp="peer">${subPeer()}</div>
   <div class="sub" data-pp="camel">${subCamel()}</div>
   <div class="sub" data-pp="idx">${subIdx()}</div>`;
   $$('#picture > .subtabs button').forEach(b => b.onclick = () => openP(b.dataset.p));
@@ -315,7 +456,7 @@ function panePicture() {
 function openP(k) {
   $$('#picture > .subtabs button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
   $$('#picture [data-pp]').forEach(p => p.classList.toggle('on', p.dataset.pp === k));
-  if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; }
+  if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, peer: chPeer, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; }
 }
 
 /* ---- Xếp hạng TT21 & room (mô phỏng phần định lượng) ---- */
@@ -1187,7 +1328,7 @@ function subIdx() {
   const comp = (arr, name) => `<div class="tscroll"><table><thead><tr><th>ID</th><th>${name}: thành phần</th><th class="n">Giá trị</th><th class="n">z (36 tháng)</th><th class="n">Dấu</th><th class="n">Đóng góp</th></tr></thead><tbody>
     ${arr.map(c => `<tr><td style="white-space:nowrap">${c.id}</td><td>${esc(c.label)}</td><td class="n">${nf(c.raw, 2)}</td><td class="n">${c.z == null ? '—' : nf(c.z, 2)}</td><td class="n">${c.sign}</td><td class="n"><b>${c.contrib == null ? '—' : sg(c.contrib, 2, '')}</b></td></tr>`).join('')}</tbody></table></div>`;
   const s = SCN[NOW.q];
-  return `<div class="grid g2 gap">
+  return `${chainCard()}<div class="grid g2 gap">
     ${card({ id: 'chMatrix', title: `Ma trận kịch bản · ${mvn(NOW.m)}`, sub: 'Trục ngang IDX-FX (áp lực tỷ giá), trục dọc IDX-LIQ (thanh khoản) · nét đứt = ±1 · đường mờ = 12 tháng gần nhất', h: 'tall',
       insight: `Vị trí hiện tại: IDX-FX <b>${sg(NOW.fx, 2, '')}</b>, IDX-LIQ <b>${sg(NOW.liq, 2, '')}</b> → <b>${s.t}</b> (${s.rate} → ${s.bank}). Ô này bắt đầu từ 03/2026 sau gần 2 năm ở "Nới lỏng mạnh"; cả hai chỉ số chưa vượt ±1 nên đây là thắt chặt mức vừa.`, src: 'Tự tính từ WiData theo công thức deck slide 52' })}
     ${card({ id: 'chIdxHist', title: 'IDX-FX và IDX-LIQ theo thời gian', sub: 'z-score · tháng · nền màu = kịch bản; ±1 = ngưỡng mạnh', h: 'tall',
@@ -1496,7 +1637,7 @@ async function quPdf() {
   const cl = src.cloneNode(true); cl.removeAttribute('id'); cl.classList.add('pdf-body');
   $$('canvas', cl).forEach((c, i) => { if (pics[i]) { const im = new Image(); im.src = pics[i]; im.className = 'qprint-img'; c.replaceWith(im); } else c.remove(); });
   const h = $('.qprint-date', cl); if (h) h.textContent = ` Ngày ${dd}/${mm}/${yy}`;
-  $$('.qbtns, .qfoot, .qdraft, .qhint, .rng, .zsel, .rng-hint, .ibar, button.info, .insight, .src, [contenteditable]', cl).forEach(e => { if (e.matches('[contenteditable]')) e.removeAttribute('contenteditable'); else e.remove(); });
+  $$('#viewNote, .qbtns, .qfoot, .qdraft, .qhint, .rng, .zsel, .rng-hint, .ibar, button.info, .insight, .src, [contenteditable]', cl).forEach(e => { if (e.matches('[contenteditable]')) e.removeAttribute('contenteditable'); else e.remove(); });
   const hist = $$('article.card', cl).find(a => /Lịch sử cập nhật/.test(a.textContent)); if (hist) hist.remove();
   wrap.appendChild(cl);
   const host = document.createElement('div'); host.className = 'pdf-host'; host.appendChild(wrap); document.body.appendChild(host);
@@ -1515,6 +1656,7 @@ async function quPdf() {
     host.remove(); if (btn) { btn.disabled = false; btn.textContent = lbl; }
   }
 }
+const QSCOPE = { nganh: 'Ngành ngân hàng', noi: 'Kinh tế trong nước', qt: 'Quốc tế' };
 function paneQuick() {
   buildAll();
   const U = quList();
@@ -1526,6 +1668,7 @@ function paneQuick() {
   let who = 'Minh Đức'; try { who = localStorage.getItem('quWho') || who; } catch (e) {}
   $('#quick').innerHTML = `
   <h2 class="sec">Cập nhật nhanh<span class="qprint-date"></span></h2>
+  <article class="card fsn" id="viewNote"></article>
   ${u._draft ? `<div class="qdraft"><b>Bản nháp trên máy bạn — chưa đăng lên web.</b> Bấm "Sao chép để đăng" rồi dán vào chat với AI kèm câu "đăng bản cập nhật này".
     <span class="qbtns"><button type="button" class="btn" id="quCopy">Sao chép để đăng</button><button type="button" class="btn ghost" id="quDrop">Xoá nháp</button></span><textarea id="quJson" readonly hidden></textarea><span id="quMsg" class="muted"></span></div>` : ''}
   <div class="qhead card${E ? ' editing' : ''}">
@@ -1538,7 +1681,7 @@ function paneQuick() {
     <ul class="qsum">${u.summary.map((t, k) => f('summary.' + k, t, 'li')).join('')}</ul>
     ${u.kpis ? `<div class="kpis k4 qk">${u.kpis.map(k => kpi(esc(k.l), esc(k.v), esc(k.s || ''), k.cls || '')).join('')}</div>` : ''}
   </div>
-  ${u.concerns.map((c, i) => `
+  ${u.concerns.map((c, i) => `${c.scope && (i === 0 || u.concerns[i - 1].scope !== c.scope) ? `<h3 class="qscope">${QSCOPE[c.scope] || ''}</h3>` : ''}
   <section class="qc">
     <div class="qc-h"><span class="qn">${i + 1}</span>${f(`concerns.${i}.title`, esc(c.title), 'h3')}${E ? `<select data-st="${i}">${Object.entries(ST).map(([k, [, l]]) => `<option value="${k}"${k === c.status ? ' selected' : ''}>${l}</option>`).join('')}</select>` : stPill(c.status)}${ed.has(`concerns.${i}.status`) ? '<span class="pill watch" title="Chuyên viên đổi trạng thái">đã đổi</span>' : ''}</div>
     ${f(`concerns.${i}.note`, c.note, 'p', 'qnote')}
@@ -1562,6 +1705,7 @@ function paneQuick() {
     <p class="note keep">Cách cập nhật: (1) chuyên viên bấm <b>✎ Chỉnh sửa</b> để sửa vài đoạn của bản đang xem → lưu thành bản mới mang tên mình (đoạn đã sửa có vạch vàng); hoặc (2) nhắn AI <i>"Cập nhật nhanh ngành ngân hàng"</i> — AI đọc các bản trước, ưu tiên bản gần nhất của chuyên viên, rồi viết tiếp.</p>
   </article>`;
   u.concerns.forEach((c, i) => c.charts.forEach((g, j) => drawSpec(g.id, `qu-${i}-${j}-${g.id}`, g.last)));
+  viewNoteMount();
   $$('#quick [data-qv]').forEach(b => b.onclick = () => { quSel = +b.dataset.qv; quEdit = false; paneQuick(); window.scrollTo({ top: 0 }); });
   $$('#quick [data-book]').forEach(b => b.onclick = () => openBook(b.dataset.book));
   const on = (id, fn) => { const el = document.getElementById(id); if (el) el.onclick = fn; };
