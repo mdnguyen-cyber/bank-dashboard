@@ -369,3 +369,4 @@ li.ed{list-style-position:inside}
 .rs-d{font-size:11.5px;color:var(--muted);margin-top:3px}.rs-a{font-size:12px}
 tr.soon td{background:#fffbf0}
 .vlim{display:block;margin-top:4px;padding-top:4px;border-top:1px dashed #d9dde4;font-style:normal;font-size:11.5px;color:#8a5a00}
+.vmode{margin:0 0 12px}.vshort .vlim{display:none}

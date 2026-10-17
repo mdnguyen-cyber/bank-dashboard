@@ -229,7 +229,8 @@ function paneOverview() {
   </div>
 
   <h3 class="ovh" id="ov2">2 · Chuỗi giá trị</h3>
-  <article class="card vcard">
+  <article class="card vcard vshort" id="vcCard">
+    <div class="picker vmode"><button type="button" data-vm="short" class="on">Bản ngắn: hoạt động</button><button type="button" data-vm="long">Bản đầy đủ: kèm giới hạn tỷ lệ</button></div>
     <div class="vreg">${box('Ngân hàng Nhà nước (NHNN)', 'lãi suất điều hành · OMO · room tín dụng · tỷ giá trung tâm · dự trữ bắt buộc · tỷ lệ an toàn · thanh tra, giám sát', 'reg')}</div>
     <div class="vflow">
       <div class="vcol c1"><h4>Nguồn vốn</h4>
@@ -323,6 +324,9 @@ function paneOverview() {
     <tbody>${GL.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div></article>`;
 
   const gq = $('#goQuick'); if (gq) gq.onclick = () => { show('quick'); window.scrollTo({ top: 0 }); };
+  const vm = m => { $('#vcCard').classList.toggle('vshort', m !== 'long'); $$('#vcCard [data-vm]').forEach(b => b.classList.toggle('on', b.dataset.vm === m)); try { localStorage.setItem('fs-vc-mode', m); } catch (e) {} };
+  $$('#vcCard [data-vm]').forEach(b => b.onclick = () => vm(b.dataset.vm));
+  try { vm(localStorage.getItem('fs-vc-mode') || 'short'); } catch (e) { vm('short'); }
   $$('#overview [data-gop]').forEach(b => b.onclick = () => { const p = b.dataset.gop; if (p === 'policy') { show('policy'); } else { show('picture'); openP(p); } window.scrollTo({ top: 0 }); });
   $$('#overview [data-ov]').forEach(a => a.onclick = e => { e.preventDefault(); const t = document.getElementById(a.dataset.ov); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 }
