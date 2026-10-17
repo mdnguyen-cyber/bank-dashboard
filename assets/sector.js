@@ -170,6 +170,10 @@ function header() {
 /* =====================================================================
    TAB 1 · TỔNG QUAN NGÀNH
 ===================================================================== */
+const regSt = r => { const t = new Date().toISOString().slice(0, 10), f = d => d.split('-').reverse().join('/');
+  return r.eff && r.eff > t ? `<span class="pill rs-soon">Chưa hiệu lực</span><div class="rs-d">từ ${f(r.eff)}</div>`
+    : `<span class="pill rs-on">Đang hiệu lực</span>${r.until ? `<div class="rs-d">đến ${f(r.until)}</div>` : r.eff ? `<div class="rs-d">từ ${f(r.eff)}</div>` : ''}`; };
+const regDoc = (r, ref) => esc(r.doc) + (r.ref && ref ? `<div><a href="${ref.u}" target="_blank" rel="noopener" class="rs-a">Phân tích FinSuccess →</a></div>` : '');
 function paneOverview() {
   const qu = D.quick && D.quick.updates[0];
   const tk = g => M.banks.filter(s => (D.meta.groups || {})[s] === g);
@@ -305,9 +309,9 @@ function paneOverview() {
   </div>
 
   <h3 class="ovh" id="ov7">7 · Khung pháp lý chủ chốt</h3>
-  <article class="card"><div class="tscroll"><table><thead><tr><th>Quy định</th><th>Mức hiện hành</th><th>Văn bản</th><th>Lộ trình</th></tr></thead><tbody>
-    <tr><td><b>Phân loại nợ, trích lập dự phòng</b></td><td>5 nhóm nợ; nợ xấu = nhóm 3–5; dự phòng cụ thể 0% · 5% · 20% · 50% · 100% theo nhóm, cộng dự phòng chung 0,75%</td><td>TT 31/2024/TT-NHNN; NĐ 86/2024/NĐ-CP</td><td>—</td></tr>
-    ${(D.reg || []).map(r => `<tr><td><b>${esc(r.rule)}</b></td><td>${esc(r.level)}</td><td>${esc(r.doc)}</td><td>${esc(r.path || '')}</td></tr>`).join('')}
+  <article class="card"><p class="chart-sub">Văn bản mới nhất lên trước · nhãn <span class="pill rs-soon">Chưa hiệu lực</span> = đã ban hành nhưng chưa bắt buộc áp dụng${D.regRef ? ` · phân tích chi tiết Thông tư 50: <a href="${D.regRef.u}" target="_blank" rel="noopener">${esc(D.regRef.t)}</a>` : ''}</p>
+  <div class="tscroll"><table class="regt"><thead><tr><th>Trạng thái</th><th>Quy định</th><th>Mức</th><th>Văn bản</th><th>Lộ trình</th></tr></thead><tbody>
+    ${(D.reg || []).map(r => `<tr class="${r.eff > TODAY ? 'soon' : ''}"><td style="white-space:nowrap">${regSt(r)}</td><td><b>${esc(r.rule)}</b></td><td>${esc(r.level)}</td><td>${regDoc(r, D.regRef)}</td><td>${esc(r.path || '')}</td></tr>`).join('')}
   </tbody></table></div><div class="src">Nguồn: văn bản pháp luật của Quốc hội, Chính phủ, NHNN. Quy định cập nhật khi có văn bản mới; diễn giải chi tiết ở tab Chính sách.</div></article>
 
   <h3 class="ovh" id="ov8">8 · Thuật ngữ & chỉ số cần biết</h3>
@@ -1396,7 +1400,7 @@ function sbvBlock() {
   <div class="kpis pol">${tiles.map(c => kpi(lbl[c.k] || c.k, esc(val(c)), esc(sub(c)))).join('')}</div>
   ${card({ id: 'chSbvStance', title: 'Nhịp điều hành NHNN theo quý', h: 'tall',
     sub: 'số quyết định nới (trên 0) và thắt (dưới 0) mỗi quý, không tính dòng diễn biến thị trường · rê chuột xem tên quyết định · bấm vào cột để lọc bảng bên dưới',
-    insight: `Lãi suất điều hành <b>giữ nguyên từ 19/6/2023</b> (tái cấp vốn 4,5%, tái chiết khấu 3,0%). NHNN điều tiết bằng OMO (lần đổi gần nhất: ${esc(lastRate.t.toLowerCase())}, ${dvn(lastRate.d)}), room tín dụng và quy định an toàn. Từ đầu 2026 có <b>${n26} quyết định nới, ${t26} thắt</b>: nới chủ yếu ở room (loại trừ dự án trọng điểm, NOXH, KCN, du lịch) và LDR (KBNN 50%, trần 95% theo TT50); trong khi thanh khoản căng đẩy LNH qua đêm lên 11–12,5% (6/2026) và lãi suất huy động lên 6,38% (9/2026) bất chấp chỉ đạo giảm lãi suất.`,
+    insight: `Lãi suất điều hành <b>giữ nguyên từ 19/6/2023</b> (tái cấp vốn 4,5%, tái chiết khấu 3,0%). NHNN điều tiết bằng OMO (lần đổi gần nhất: ${esc(lastRate.t.toLowerCase())}, ${dvn(lastRate.d)}), room tín dụng và quy định an toàn. Từ đầu 2026 có <b>${n26} quyết định nới, ${t26} thắt</b>: nới chủ yếu ở room (loại trừ dự án trọng điểm, NOXH, KCN, du lịch) và LDR (KBNN 50%; trần 95% theo cách tính mới của TT50, bắt buộc từ 10/2028); trong khi thanh khoản căng đẩy LNH qua đêm lên 11–12,5% (6/2026) và lãi suất huy động lên 6,38% (9/2026) bất chấp chỉ đạo giảm lãi suất.`,
     src: 'NHNN (sbv.gov.vn), văn bản pháp luật và báo chính thống — link từng dòng ở bảng nhật ký' })}
   <article class="card"><h3 class="sub">Nhật ký điều hành NHNN</h3>
     <p class="chart-sub">${E.length} mốc từ 6/2023 đến ${dvn(E[0].d)} · mới nhất trên cùng · dòng "Thị trường" là diễn biến, không phải quyết định của NHNN</p>
@@ -1448,9 +1452,9 @@ function panePolicy() {
   <article class="card"><h3 class="sub">Độ nhạy LDR theo hệ số KBNN</h3><p class="chart-sub">${esc(S.formula)}</p>
     <div class="tscroll"><table><thead><tr><th>Ngân hàng</th><th>Nhóm</th><th class="n">Tiền gửi KBNN (tỷ)</th><th class="n">% tiền gửi KH</th><th class="n">LDR 0%</th><th class="n">LDR 20%</th><th class="n">LDR 50%</th><th class="n">Giảm khi 20%→50%</th></tr></thead><tbody>
     ${S.rows.map(r => `<tr><td><b>${r.s}</b></td><td style="white-space:nowrap">${gdot(r.group)}${r.group}</td><td class="n">${nf(r.kbnn)}</td><td class="n">${pc(r.kbnnPctDep, 1)}</td><td class="n">${pc(r.ldr0, 2)}</td><td class="n">${pc(r.ldr20, 2)}</td><td class="n">${pc(r.ldr50, 2)}</td><td class="n">${sg(r.ldr50 - r.ldr20, 2, ' đ%')}</td></tr>`).join('')}</tbody></table></div></article>
-  <article class="card"><h3 class="sub">Lịch quy định (REG)</h3><p class="chart-sub">Bảng REG của deck, cập nhật theo dữ liệu hiện hành — dòng tô vàng là chỗ lệch cần analyst xác nhận</p><div class="tscroll"><table>
-    <thead><tr><th>ID</th><th>Quy định</th><th>Mức hiện hành</th><th>Văn bản</th><th>Lộ trình</th></tr></thead><tbody>
-    ${D.reg.map(g => `<tr class="${g.flag ? 'hl' : ''}"><td style="white-space:nowrap">${g.id}</td><td>${esc(g.rule)}</td><td>${esc(g.level)}${g.flag ? `<div class="note keep">⚠ ${esc(g.flag)}</div>` : ''}</td><td>${esc(g.doc)}</td><td>${esc(g.path)}</td></tr>`).join('')}
+  <article class="card"><h3 class="sub">Lịch quy định (REG)</h3><p class="chart-sub">Văn bản mới nhất lên trước · nhãn Chưa hiệu lực = đã ban hành, chưa bắt buộc áp dụng</p><div class="tscroll"><table>
+    <thead><tr><th>Trạng thái</th><th>ID</th><th>Quy định</th><th>Mức</th><th>Văn bản</th><th>Lộ trình</th></tr></thead><tbody>
+    ${D.reg.map(g => `<tr class="${g.flag ? 'hl' : g.eff > TODAY ? 'soon' : ''}"><td style="white-space:nowrap">${regSt(g)}</td><td style="white-space:nowrap">${g.id}</td><td>${esc(g.rule)}</td><td>${esc(g.level)}${g.flag ? `<div class="note keep">⚠ ${esc(g.flag)}</div>` : ''}</td><td>${regDoc(g, D.regRef)}</td><td>${esc(g.path)}</td></tr>`).join('')}
     </tbody></table></div></article>`;
   const draw = k => {
     $$('#kbPick button').forEach(b => b.classList.toggle('on', b.dataset.k === k)); store.set({ kbnn: k });

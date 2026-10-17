@@ -431,8 +431,9 @@ def main():
                              banks, QL, BANKS, GROUP)
 
     # ------------------------------------------------ REG (dùng chung bảng của dashboard CTG)
-    ctg = json.loads((ROOT / 'data/ctg-data.json').read_text(encoding='utf-8'))
-    D['reg'] = ctg['reg']
+    R = json.loads((ROOT / 'data/regs.json').read_text(encoding='utf-8'))   # danh mục quy định biên tập tay (văn bản mới nhất lên trước)
+    D['reg'] = R['items']
+    D['regRef'] = R.get('analysis')
 
     # ------------------------------------------------ nhật ký điều hành NHNN (biên tập tay, nguồn gốc public: data/sbv-log.json)
     sbv = json.loads((ROOT / 'data/sbv-log.json').read_text(encoding='utf-8'))

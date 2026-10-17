@@ -10299,60 +10299,109 @@
  "thesisNote": "Trạng thái tính theo quy tắc từ số mới nhất (AI dựng khung theo deck), CHƯA phải nhận định analyst/FinSuccess.",
  "reg": [
   {
-   "id": "REG-01",
-   "rule": "Giới hạn tín dụng 1 KH / KH + người liên quan",
-   "level": "13% / 21% vốn tự có (2026)",
-   "doc": "Luật TCTD 2024, Điều 136",
-   "path": "12/19% (2027) → 11/17% (2028) → 10/15% (từ 2029)"
-  },
-  {
-   "id": "REG-02",
-   "rule": "Tỉ lệ vốn ngắn hạn cho vay trung dài hạn (SMLR)",
-   "level": "40%",
-   "doc": "TT25/2026/TT-NHNN · 1/7/2026",
-   "path": "Chuyển sang NSFR theo TT50 (1/12/2026)"
-  },
-  {
-   "id": "REG-03",
-   "rule": "Tiền gửi có kỳ hạn KBNN tính vào LDR",
-   "level": "50% (1/8/2026 – 31/7/2028)",
-   "doc": "QĐ 1743/QĐ-NHNN (căn cứ TT25/2026); trước đó TT08/2026: 20% từ 15/5/2026",
-   "path": "TT26/2022: 50% (2023), 40% (2024), 20% (2025), 0% (từ 1/1/2026) → 20% (15/5/2026) → 50% (1/8/2026); TT50 từ 1/12/2026 mặc định 20%, Thống đốc có thể điều chỉnh"
-  },
-  {
    "id": "REG-04",
-   "rule": "Giới hạn LDR (công thức mới)",
-   "level": "95% theo cách tính của TT50 từ 1/12/2026 (TT22: 85% theo cách tính cũ) — tử số, mẫu số đều thay đổi nên không phải nới trần đơn thuần",
-   "doc": "TT22/2019 → TT50/2026/TT-NHNN (ký 30/9/2026)",
-   "path": "Ngân hàng đạt đồng thời LCR và NSFR 100% không bị áp trần LDR"
+   "rule": "Giới hạn LDR theo cách tính mới",
+   "level": "Trần 95%. Tử số L và mẫu số D đều đổi: D cộng thêm vốn chủ (trừ tài sản cố định) và vay ròng liên ngân hàng; loại tiền gửi của TCTD khác, trái phiếu thường và chứng chỉ tiền gửi mua của ngân hàng khác; trừ đầu tư trái phiếu doanh nghiệp — không phải nới trần đơn thuần",
+   "doc": "TT 50/2026/TT-NHNN (công bố 30/9/2026, thay TT 22/2019)",
+   "eff": "2028-10-01",
+   "path": "Đăng ký sớm được dùng trần 95% trước hạn; đạt đồng thời LCR và NSFR 100% thì được miễn trần LDR (sớm nhất từ 01/01/2027)",
+   "ref": "analysis"
   },
   {
    "id": "REG-05",
-   "rule": "TT50/2026: LCR, NSFR (Basel III)",
-   "level": "Hiệu lực 1/12/2026",
-   "doc": "TT50/2026/TT-NHNN",
-   "path": "LCR ≥ 50% từ 1/10/2028, +10 điểm %/năm lên 100% (2033); NSFR 90% (2028) → 100% (1/10/2030); thay dần SMLR"
+   "rule": "Tỷ lệ bao phủ thanh khoản LCR (Basel III)",
+   "level": "≥ 50%, tăng 10 điểm % mỗi năm",
+   "doc": "TT 50/2026/TT-NHNN",
+   "eff": "2028-10-01",
+   "path": "Đạt 100% từ 01/10/2033; ngân hàng có thể đăng ký áp dụng sớm",
+   "ref": "analysis"
   },
   {
-   "id": "REG-06",
-   "rule": "Chỉ tiêu tín dụng 2026",
-   "level": "~15% toàn hệ thống",
-   "doc": "CV 11686/NHNN-CSTT · 31/12/2025",
-   "path": "Có thể điều chỉnh trong năm"
+   "id": "REG-08",
+   "rule": "Tỷ lệ nguồn vốn ổn định ròng NSFR (Basel III)",
+   "level": "≥ 90%",
+   "doc": "TT 50/2026/TT-NHNN",
+   "eff": "2028-10-01",
+   "path": "100% từ 01/10/2030; thay tỷ lệ vốn ngắn hạn cho vay trung, dài hạn",
+   "ref": "analysis"
+  },
+  {
+   "id": "REG-10",
+   "rule": "TT 50: các điểm áp dụng ngay khi văn bản có hiệu lực",
+   "level": "Tổng dư nợ cấp tín dụng tính thêm mua bán chứng từ L/C miễn truy đòi và bán khoản vay; công bố tỷ lệ thanh khoản tối thiểu 6 tháng/lần; tỷ lệ đòn bẩy (LEV) khi Thống đốc quyết định áp dụng",
+   "doc": "TT 50/2026/TT-NHNN",
+   "eff": "2026-12-01",
+   "path": "Tiền gửi có kỳ hạn của Kho bạc tính 20% vào mẫu số LDR mới; Thống đốc có thể quyết tỷ lệ khác",
+   "ref": "analysis"
   },
   {
    "id": "REG-07",
    "rule": "Loại trừ khỏi room tín dụng / room BĐS",
-   "level": "18 dự án trọng điểm (room chung); NOXH, KCN, KCX và du lịch, khách sạn (room BĐS)",
+   "level": "18 dự án trọng điểm (room chung); nhà ở xã hội, KCN, KCX và du lịch, khách sạn (room BĐS)",
    "doc": "CV 5386/NHNN-TD (6/2026); CV 4551/NHNN-CSTT (29/5/2026); CV 8509/NHNN-CSTT (16/9/2026)",
+   "eff": "2026-05-29",
+   "until": "2026-12-31",
    "path": "Áp dụng cho năm 2026"
   },
   {
+   "id": "REG-03",
+   "rule": "Tiền gửi có kỳ hạn của Kho bạc tính vào LDR (cách tính hiện hành)",
+   "level": "50%",
+   "doc": "QĐ 1743/QĐ-NHNN (căn cứ TT 25/2026); trước đó TT 08/2026: 20% từ 15/5/2026",
+   "eff": "2026-08-01",
+   "until": "2028-07-31",
+   "path": "TT 26/2022: 50% (2023), 40% (2024), 20% (2025), 0% (từ 1/1/2026) → 20% (15/5/2026) → 50% (1/8/2026)"
+  },
+  {
+   "id": "REG-02",
+   "rule": "Tỷ lệ vốn ngắn hạn cho vay trung, dài hạn",
+   "level": "Trần 40% (nới từ 30%)",
+   "doc": "TT 25/2026/TT-NHNN",
+   "eff": "2026-07-01",
+   "path": "Được thay bằng NSFR khi khung TT 50 bắt buộc (01/10/2028)"
+  },
+  {
+   "id": "REG-11",
+   "rule": "Giới hạn LDR hiện hành",
+   "level": "Trần 85% theo cách tính cũ",
+   "doc": "TT 22/2019/TT-NHNN (sửa đổi bởi TT 09/2024, TT 25/2026)",
+   "eff": "2020-01-01",
+   "until": "2028-09-30",
+   "path": "Ngân hàng không đăng ký sớm giữ trần 85% đến 30/09/2028, sau đó chuyển sang trần 95% của TT 50",
+   "ref": "analysis"
+  },
+  {
+   "id": "REG-06",
+   "rule": "Chỉ tiêu tăng trưởng tín dụng 2026",
+   "level": "~15% toàn hệ thống",
+   "doc": "CV 11686/NHNN-CSTT (31/12/2025)",
+   "eff": "2026-01-01",
+   "until": "2026-12-31",
+   "path": "Có thể điều chỉnh trong năm"
+  },
+  {
    "id": "REG-09",
-   "rule": "CAR tối thiểu",
+   "rule": "Hệ số an toàn vốn (CAR) tối thiểu",
    "level": "CAR 8%, CET1 4,5%, Tier 1 6% + đệm bảo toàn vốn",
-   "doc": "TT14/2025/TT-NHNN (hiệu lực 15/9/2025)",
+   "doc": "TT 14/2025/TT-NHNN",
+   "eff": "2025-09-15",
    "path": "Đệm bảo toàn vốn 0,625% → 2,5% sau 4 năm (CAR gồm đệm 10,5%)"
+  },
+  {
+   "id": "REG-12",
+   "rule": "Phân loại nợ, trích lập dự phòng",
+   "level": "5 nhóm nợ; nợ xấu = nhóm 3–5; dự phòng cụ thể 0% · 5% · 20% · 50% · 100% theo nhóm, cộng dự phòng chung 0,75%",
+   "doc": "TT 31/2024/TT-NHNN; NĐ 86/2024/NĐ-CP",
+   "eff": "2024-07-01",
+   "path": "—"
+  },
+  {
+   "id": "REG-01",
+   "rule": "Giới hạn cấp tín dụng 1 khách hàng / khách hàng và người liên quan",
+   "level": "13% / 21% vốn tự có (2026)",
+   "doc": "Luật Các TCTD 2024, Điều 136",
+   "eff": "2024-07-01",
+   "path": "12/19% (2027) → 11/17% (2028) → 10/15% (từ 2029)"
   }
  ],
  "sources": [
@@ -10372,5 +10421,9 @@
    "n": "Báo cáo \"Ngành Ngân hàng: Tác động Thông tư 50/2026\" (FinSuccess, 05/10/2026)",
    "u": "https://fisc.vn/xu-huong-dau-tu/thong-tu-50-huong-toi-tang-truong-quan-tri-rui-ro-thuc-chat-p37070.html"
   }
- ]
+ ],
+ "regRef": {
+  "t": "FinSuccess: Thông tư 50 — Hướng tới tăng trưởng & quản trị rủi ro thực chất",
+  "u": "https://fisc.vn/xu-huong-dau-tu/thong-tu-50-huong-toi-tang-truong-quan-tri-rui-ro-thuc-chat-p37070.html"
+ }
 }
