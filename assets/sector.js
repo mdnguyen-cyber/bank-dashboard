@@ -177,7 +177,7 @@ const regDoc = (r, ref) => esc(r.doc) + (r.ref && ref ? `<div><a href="${ref.u}"
 function paneOverview() {
   const qu = D.quick && D.quick.updates[0];
   const tk = g => M.banks.filter(s => (D.meta.groups || {})[s] === g);
-  const box = (h, b, cls = '') => `<div class="vbox ${cls}"><b>${h}</b>${b ? `<span>${b}</span>` : ''}</div>`;
+  const box = (h, b, cls = '', lim = '') => `<div class="vbox ${cls}"><b>${h}</b>${b ? `<span>${b}</span>` : ''}${lim ? `<em class="vlim">Giới hạn: ${lim}</em>` : ''}</div>`;
   const go = (p, l) => `<button type="button" class="lnk" data-gop="${p}">${l} →</button>`;
   const DRV = [
     ['Lãi suất điều hành & thanh khoản', 'NHNN dùng lãi suất tái cấp vốn, tái chiết khấu (trần, sàn của lãi suất liên ngân hàng), nghiệp vụ thị trường mở OMO (bơm, hút tiền hằng ngày), tín phiếu NHNN, dự trữ bắt buộc và trần lãi suất tiền gửi kỳ hạn dưới 6 tháng.',
@@ -239,8 +239,12 @@ function paneOverview() {
         ${box('Giấy tờ có giá & vốn chủ', 'chứng chỉ tiền gửi · trái phiếu ngân hàng · vốn vay quốc tế · vốn cổ phần')}</div>
       <div class="varr" aria-hidden="true"></div>
       <div class="vcol c2"><h4>Ngân hàng</h4>
-        ${box('Chuyển hoá vốn', 'nhận vốn ngắn hạn, cho vay dài hơn · thẩm định và định giá rủi ro · thanh toán', 'core')}
-        ${GROUPS.map(g => box(g === 'Big 4' ? 'NHTM Nhà nước (Big 4)' : 'NHTM cổ phần ' + g.toLowerCase(), tk(g).join(' · ') + (g === 'Big 4' ? ' · Agribank (chưa niêm yết)' : ''))).join('')}</div>
+        ${box('Chuyển hoá vốn', 'gom tiền nhàn rỗi, phần lớn ngắn hạn → cho vay, đầu tư dài hơn · thu chênh lệch lãi suất', 'core')}
+        ${box('Huy động & quản lý nguồn vốn', 'định giá lãi suất tiền gửi · cân đối kỳ hạn tài sản và nguồn vốn (ALM) · giữ chi phí vốn thấp', '', 'LDR ≤ 85% (TT 22; 95% theo cách tính mới TT 50 từ 10/2028) · vốn ngắn hạn cho vay trung, dài hạn ≤ 40% · trần lãi suất tiền gửi dưới 6 tháng · dự trữ bắt buộc')}
+        ${box('Thẩm định & cấp tín dụng', 'đánh giá khả năng trả nợ, tài sản bảo đảm · định giá khoản vay theo rủi ro · phân bổ room', '', 'room tín dụng NHNN giao theo xếp hạng · 1 khách hàng ≤ 13%, khách hàng và người liên quan ≤ 21% vốn tự có (2026, giảm dần tới 10% / 15%)')}
+        ${box('Quản trị rủi ro & tuân thủ', 'phân loại nợ, trích lập dự phòng · xử lý, thu hồi nợ xấu · giữ đủ vốn', '', 'CAR ≥ 8% cộng đệm bảo toàn vốn · dự phòng cụ thể 0–100% theo nhóm nợ + 0,75% dự phòng chung')}
+        ${box('Kinh doanh vốn & ngoại hối', 'điều hoà thanh khoản liên ngân hàng · đầu tư trái phiếu · mua bán ngoại tệ cho khách hàng', '', 'tỷ lệ dự trữ thanh khoản, khả năng chi trả 30 ngày (TT 22) → LCR ≥ 50%, NSFR ≥ 90% (TT 50, từ 10/2028) · tỷ giá trong biên độ ±5% quanh tỷ giá trung tâm')}
+        ${box('Thanh toán & dịch vụ', 'tài khoản, ngân hàng số, thẻ · thu phí, bán chéo bảo hiểm · tạo tiền gửi không kỳ hạn (CASA)')}</div>
       <div class="varr" aria-hidden="true"></div>
       <div class="vcol c3"><h4>Sử dụng vốn · khách hàng</h4>
         ${box('Cho vay doanh nghiệp', 'vốn lưu động · dự án · kinh doanh bất động sản')}
