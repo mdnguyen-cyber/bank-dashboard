@@ -309,7 +309,7 @@ function paneOverview() {
       <div class="tscroll"><table><thead><tr><th>Giai đoạn</th><th>Lãi suất</th><th>Tín dụng</th><th>NIM</th><th>Nợ xấu</th><th>P/B</th></tr></thead>
       <tbody>${CYC.map(r => `<tr>${r.map((c, j) => `<td>${j ? c : `<b>${c}</b>`}</td>`).join('')}</tr>`).join('')}</tbody></table></div></article>
     <article class="card"><h3 class="sub">Khung bốn kịch bản: áp lực tỷ giá × thanh khoản</h3>
-      <p class="chart-sub">Hai biến quyết định NHNN nới hay siết. Ô sáng là vị trí hiện tại; cách tính ở ${go('idx', 'Kịch bản IDX-FX × IDX-LIQ')}</p>
+      <p class="chart-sub">Hai biến quyết định NHNN nới hay siết. Ô sáng là vị trí hiện tại; bấm (i) ở góc bảng để xem từng biến đo gì. Cách tính chi tiết ở tab Bức tranh ngành › Kịch bản IDX-FX × IDX-LIQ.</p>
       ${miniMatrix()}</article>
   </div>
 
@@ -394,9 +394,22 @@ function chainCard() {
       <div class="insight">Cú sốc đang đi từ ngoài vào: Fed đảo chiều tăng lãi suất cùng giá dầu cao khiến NHNN khó nới; trong nước, cuộc đua tiền gửi đẩy COF ngành tăng <b>${sg(AG.cof.all[QI] - AG.cof.all[QY], 2, ' điểm %')}</b> so với cùng kỳ, nhanh hơn mức NIM thu hẹp <b>${sg(nimN - nimY, 2, ' điểm %')}</b>.</div>
     </article>`;
 }
+function idxTip(kind) {
+  const fx = kind === 'fx', C2 = fx ? I.fxComp : I.liqComp, v = fx ? NOW.fx : NOW.liq;
+  const row = c => `${esc(c.label)}: z ${nf(c.z, 2)} → đóng góp <b>${sg(c.contrib, 2, '')}</b>`;
+  const up = C2.filter(c => c.contrib > 0.2).sort((a, b) => b.contrib - a.contrib), dn = C2.filter(c => c.contrib < -0.2).sort((a, b) => a.contrib - b.contrib);
+  const fxNote = fx ? (C2.find(c => c.key === 'usdvnd3m') || {}).contrib < 0
+    ? `<p><b>Vì sao chỉ số chưa "cao" dù DXY cao và Fed tăng lãi suất:</b> các nguồn gây sức ép đều lớn, nhưng USD/VND 3 tháng gần như đứng yên do NHNN giữ tỷ giá (bán USD từ dự trữ, nâng dần tỷ giá trung tâm, hút VND) nên thành phần này kéo chỉ số xuống. Trong điều kiện thông thường — để tỷ giá tự điều chỉnh — áp lực sẽ cao hơn mức hiển thị; cái giá đang được trả bằng thanh khoản và lãi suất trong nước.</p>` : '' : '';
+  return `<h5>${fx ? 'Áp lực tỷ giá (IDX-FX)' : 'Thanh khoản trong nước (IDX-LIQ)'}</h5>
+  <p>${fx ? 'Đo sức ép khiến VND mất giá so với USD: USD mạnh lên (DXY), lợi suất Mỹ cao kéo vốn về USD, chênh lãi suất VND − USD hẹp, cán cân thương mại + FDI yếu, và mức tăng thực tế của USD/VND.'
+    : 'Đo độ dồi dào của tiền VND trong hệ thống ngân hàng: cung tiền M2, lãi suất liên ngân hàng qua đêm (cao = thiếu tiền), tiền gửi tăng nhanh hay chậm hơn tín dụng, và Kho bạc đang bơm (chi > thu) hay hút tiền.'}
+  Mỗi thành phần tính bằng độ lệch so với trung bình 36 tháng (z-score) rồi cộng trung bình. ${fx ? '&gt; 0 = áp lực cao hơn bình thường' : '&gt; 0 = dồi dào hơn bình thường, &lt; 0 = thiếu'}; vượt ±1 là mức mạnh.</p>
+  <p><b>Hiện tại ${sg(v, 2, '')}</b> (${mvn(NOW.m)}). ${up.length ? 'Đẩy lên: ' + up.map(row).join('; ') + '. ' : ''}${dn.length ? 'Kéo xuống: ' + dn.map(row).join('; ') + '.' : ''}</p>${fxNote}`;
+}
 function miniMatrix() {
   const cell = k => `<div class="cell ${NOW.q === k ? 'on' : ''}"><b>${SCN[k].t}</b>${SCN[k].rate} → ${SCN[k].bank}${NOW.q === k ? '<br><span class="now">Hiện tại</span>' : ''}</div>`;
-  return `<div class="matrix"><div></div><div class="ax">Áp lực tỷ giá THẤP</div><div class="ax">Áp lực tỷ giá CAO</div>
+  const ib = k => `<button type="button" class="info" data-k="txt" data-t="${esc(idxTip(k))}" aria-label="Giải thích">i</button>`;
+  return `<div class="mxhelp">Hai trục đo gì: <span>Áp lực tỷ giá ${ib('fx')}</span><span>Thanh khoản ${ib('liq')}</span></div><div class="matrix"><div></div><div class="ax">Áp lực tỷ giá THẤP</div><div class="ax">Áp lực tỷ giá CAO</div>
     <div class="ax">Thanh khoản DỒI DÀO</div>${cell('ease')}${cell('drain')}<div class="ax">Thanh khoản THIẾU</div>${cell('room')}${cell('tight')}</div>`;
 }
 const GDESC = {
@@ -1842,6 +1855,7 @@ function decorate() {
 const tip = document.createElement('div'); tip.className = 'tip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true; document.body.appendChild(tip);
 let tipFor = null;
 function tipHtml(b) {
+  if (b.dataset.k === 'txt') return b.dataset.t || '';
   const c = b.closest('.card'), k = b.dataset.k;
   const part = sel => [...c.querySelectorAll(':scope > ' + sel)].map(e => e.innerHTML);
   const title = esc((c.querySelector(':scope > h3.sub').childNodes[0] || {}).textContent || '');
