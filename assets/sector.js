@@ -174,6 +174,15 @@ const regSt = r => { const t = new Date().toISOString().slice(0, 10), f = d => d
   return r.eff && r.eff > t ? `<span class="pill rs-soon">Chưa hiệu lực</span><div class="rs-d">từ ${f(r.eff)}</div>`
     : `<span class="pill rs-on">Đang hiệu lực</span>${r.until ? `<div class="rs-d">đến ${f(r.until)}</div>` : r.eff ? `<div class="rs-d">từ ${f(r.eff)}</div>` : ''}`; };
 const regDoc = (r, ref) => esc(r.doc) + (r.ref && ref ? `<div><a href="${ref.u}" target="_blank" rel="noopener" class="rs-a">Phân tích FinSuccess →</a></div>` : '');
+const FUND = { y: ['2022', '2023', '2024', '2025', '2026F', '2027F', '2028F', '2029F', '2030F'],
+  s: [['Đầu tư công', [21.7, 25.8, 26, 32.5, 41.2, 49.2, 58.5, 69, 79]], ['Tín dụng ngân hàng', [28.5, 29.5, 34.5, 45.4, 43.4, 48, 53.3, 59.1, 65.6]], ['FDI', [22.2, 22.7, 24, 25.9, 26.8, 28, 29.3, 30.5, 31.8]],
+    ['M&A', [5.2, 8.5, 4.5, 7, 9.1, 9.1, 9.1, 9.1, 9.1]], ['Trái phiếu doanh nghiệp', [5.6, 6.8, 6.7, 7.9, 12.1, 15.5, 21.7, 29.1, 36.9]], ['Vay nước ngoài của doanh nghiệp', [13, -1.9, -3.3, -4, null, 1.9, 3.2, 4.8, 6.6]], ['Vốn cổ phần', [3.9, 1.8, 3.1, 4.9, 7.1, 8.6, 10.3, 12.2, 14.1]]],
+  tot: [100, 93.1, 95.6, 119.7, 139.8, 160.4, 185.5, 214, 243.2], inv: [136.7, 141.3, 145.4, 158.3, 171.7, 192.8, 216.5, 242, 263.3], gap: [-36.7, -48.1, -49.9, -38.7, -31.9, -32.4, -31, -28.1, -20.1] };
+function fundIns() {
+  const sh = (k, i) => FUND.s.find(x => x[0] === k)[1][i] / FUND.tot[i] * 100;
+  return `Năm 2025, tín dụng ngân hàng là kênh lớn nhất với <b>45,4 tỷ USD</b> (${pc(sh('Tín dụng ngân hàng', 3), 0)} tổng nguồn vốn trung, dài hạn); trái phiếu doanh nghiệp mới <b>7,9 tỷ USD</b> (${pc(sh('Trái phiếu doanh nghiệp', 3), 0)}). Dự phóng tới 2030, trái phiếu doanh nghiệp tăng lên <b>36,9 tỷ USD</b> (${pc(sh('Trái phiếu doanh nghiệp', 8), 0)}) trong khi tỷ trọng tín dụng ngân hàng giảm về ${pc(sh('Tín dụng ngân hàng', 8), 0)}; nguồn vốn vẫn thiếu so với nhu cầu đầu tư, khoảng thiếu hụt thu hẹp từ ${nf(FUND.gap[3], 1)} xuống <b>${nf(FUND.gap[8], 1)} tỷ USD</b>.`
+    + how('Ngân hàng đang gánh phần lớn vốn dài hạn bằng nguồn tiền gửi chủ yếu ngắn hạn — đây là lý do NHNN giới hạn tỷ lệ vốn ngắn hạn cho vay trung, dài hạn và chuyển sang NSFR. Thị trường trái phiếu lớn lên giúp chia bớt gánh nặng; ngân hàng vẫn hưởng lợi qua phí tư vấn, bảo lãnh, phân phối và đầu tư trái phiếu.');
+}
 function paneOverview() {
   const qu = D.quick && D.quick.updates[0];
   const tk = g => M.banks.filter(s => (D.meta.groups || {})[s] === g);
@@ -223,10 +232,14 @@ function paneOverview() {
 
   <h3 class="ovh" id="ov1">1 · Ngân hàng trong nền kinh tế Việt Nam</h3>
   <div class="grid g3 gap ovrole">
-    <article class="card"><h4>Kênh dẫn vốn chính</h4><p>Doanh nghiệp và hộ gia đình Việt Nam vay vốn chủ yếu qua ngân hàng; thị trường cổ phiếu và trái phiếu doanh nghiệp còn nhỏ. Vì vậy dư nợ tín dụng ngân hàng lớn hơn cả quy mô GDP, và mọi chính sách muốn bơm hay rút vốn khỏi nền kinh tế đều đi qua ngân hàng.</p></article>
+    <article class="card"><h4>Kênh dẫn vốn chính</h4><p>Doanh nghiệp và hộ gia đình Việt Nam vay vốn chủ yếu qua ngân hàng; thị trường cổ phiếu và trái phiếu doanh nghiệp còn nhỏ. Vì vậy dư nợ tín dụng ngân hàng lớn hơn cả quy mô GDP, và mọi chính sách muốn bơm hay rút vốn khỏi nền kinh tế đều đi qua ngân hàng.</p>
+      <p>Ngân hàng cũng có mặt ở kênh trái phiếu: tự phát hành trái phiếu để huy động vốn dài hạn, đầu tư vào trái phiếu doanh nghiệp, và qua công ty chứng khoán trong hệ sinh thái (như TCBS của Techcombank) tư vấn, bảo lãnh, phân phối trái phiếu cho doanh nghiệp — mảng vốn thuộc nghiệp vụ ngân hàng đầu tư.</p></article>
     <article class="card"><h4>Ngành chịu quản lý chặt nhất</h4><p>Ngân hàng Nhà nước (NHNN) vừa điều hành chính sách tiền tệ, vừa cấp phép, thanh tra, giao hạn mức tăng trưởng tín dụng cho từng ngân hàng. Lợi nhuận ngân hàng vì thế phụ thuộc nhiều vào chính sách, không chỉ vào năng lực kinh doanh.</p></article>
     <article class="card"><h4>Nhóm vốn hoá lớn nhất sàn chứng khoán</h4><p>Cổ phiếu ngân hàng chiếm tỷ trọng lớn nhất trong VN-Index. Định giá ngành thường đo bằng P/B (giá so với vốn chủ) vì tài sản và nợ của ngân hàng chủ yếu là tiền, ghi gần sát giá trị thật.</p></article>
   </div>
+
+  ${card({ id: 'ovFund', title: 'Nguồn vốn trung, dài hạn của nền kinh tế: ngân hàng, trái phiếu và các kênh khác', h: 'tall', sub: 'tỷ USD · cột chồng = nguồn vốn theo kênh, đường = tổng nhu cầu đầu tư và khoảng thiếu hụt · 2026–2030 là dự phóng (F)',
+    insight: fundIns(), src: 'FiinGroup' })}
 
   <h3 class="ovh" id="ov2">2 · Chuỗi giá trị</h3>
   <article class="card vcard vshort" id="vcCard">
@@ -324,6 +337,8 @@ function paneOverview() {
     <tbody>${GL.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div></article>`;
 
   const gq = $('#goQuick'); if (gq) gq.onclick = () => { show('quick'); window.scrollTo({ top: 0 }); };
+  stk('ovFund', FUND.y, Object.fromEntries(FUND.s), { unit: ' tỷ USD', dp: 1, colors: [C.navy, C.tealInk, C.gold, C.grey, C.red, '#9aa3b5', C.purple], y: { beginAtZero: false, ticks: { callback: v => nf(v, 0) } },
+    extra: [L('Tổng nhu cầu đầu tư', FUND.inv, '#111', { type: 'line', unit: ' tỷ USD', dp: 1, borderWidth: 2, pointRadius: 3 }), L('Thiếu hụt vốn', FUND.gap, C.red, { type: 'line', unit: ' tỷ USD', dp: 1, borderDash: [5, 4], pointRadius: 3 })] });
   const vm = m => { $('#vcCard').classList.toggle('vshort', m !== 'long'); $$('#vcCard [data-vm]').forEach(b => b.classList.toggle('on', b.dataset.vm === m)); try { localStorage.setItem('fs-vc-mode', m); } catch (e) {} };
   $$('#vcCard [data-vm]').forEach(b => b.onclick = () => vm(b.dataset.vm));
   try { vm(localStorage.getItem('fs-vc-mode') || 'short'); } catch (e) { vm('short'); }
