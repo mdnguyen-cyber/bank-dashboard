@@ -311,6 +311,28 @@ def main():
                        'nim': g('nim'), 'cof': g('cof'), 'yea': g('yea'), 'cir': g('cir'), 'casa': g('casa'),
                        'npl': g('npl'), 'g2': g('g2'), 'llr': g('llr'), 'ldr': g('ldr'), 'creditYoY': g('creditYoY'),
                        'roe': g('roe'), 'roa': g('roa'), 'npYoY': g('npYoY'), 'credit': g('credit')})
+    # ---- lợi nhuận trước dự phòng (PPOP = is130), chi phí dự phòng (is140), LNST (is190): TTM từng NH và toàn ngành
+    pq = {}
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'fs_bank' and d['request'].get('tag') == 'ppop':
+            for x in rows(d['response']):
+                pq.setdefault((x['year'], x['quarter']), {})[x['symbol']] = x
+    pqs = sorted(pq)
+    def pttm(i, k, sym=None):
+        return sum((pq[pqs[j]].get(s_, {}).get(k) or 0) for j in range(i - 3, i + 1) for s_ in ([sym] if sym else BANKS)) / 1e9
+    if len(pqs) >= 8:
+        li = len(pqs) - 1
+        for row in latest:
+            s_ = row['s']; p, p0, pv = pttm(li, 'is130', s_), pttm(li - 4, 'is130', s_), -pttm(li, 'is140', s_)
+            row['ppop'] = r(p, 0)
+            row['pppop'] = r(row['mcap'] / p) if p > 0 and row.get('mcap') else None
+            row['provRatio'] = r(pv / p * 100, 1) if p > 0 else None
+            row['ppopYoY'] = r((p / p0 - 1) * 100, 1) if p0 > 0 else None
+        D['ppopSector'] = {'q': [f'Q{q}/{y}' for y, q in pqs[3:]], 'end': [f'{y}-{q * 3:02d}' for y, q in pqs[3:]],
+                           'ppop': [r(pttm(i, 'is130') / 1e3, 1) for i in range(3, len(pqs))],
+                           'prov': [r(-pttm(i, 'is140') / 1e3, 1) for i in range(3, len(pqs))],
+                           'npat': [r(pttm(i, 'is190') / 1e3, 1) for i in range(3, len(pqs))],
+                           'src': 'BCTC hợp nhất 26 ngân hàng niêm yết, cộng 4 quý gần nhất'}
     D['latest'] = {'quarter': QL[-1], 'priceDate': lastday, 'rows': latest}
 
     # tổng hợp ngành: trung vị theo nhóm + bình quân gia quyền theo dư nợ cho NPL, LDR, CASA (xấp xỉ)
@@ -347,11 +369,21 @@ def main():
     for x in sec:
         mon[ym(x['trading_date'])] = x
     secm = [{'d': v['trading_date'], 'pb': r(v['pb']), 'pe': r(v['pe']), 'mcap': r(v['market_cap'] / 1e12, 0)} for _, v in sorted(mon.items())]
+    if D.get('ppopSector'):   # P/PPOP ngành theo tháng: vốn hoá / PPOP 4 quý đã công bố (quý kết thúc + 30 ngày)
+        import datetime as _dt
+        PS = D['ppopSector']
+        def _avail(e):
+            y, m = int(e[:4]), int(e[5:]); n = _dt.date(y + (m == 12), m % 12 + 1, 1)
+            return (n + _dt.timedelta(days=29)).isoformat()
+        for x in secm:
+            ks = [i for i, e in enumerate(PS['end']) if _avail(e) <= x['d']]
+            x['pppop'] = r(x['mcap'] / PS['ppop'][ks[-1]]) if ks else None
     pbs = [x['pb'] for x in secm]
     pes = [x['pe'] for x in secm]
     D['secVal'] = {'monthly': secm, 'from': secm[0]['d'], 'now': secm[-1],
                    'pb': {'mean': r(statistics.mean(pbs)), 'sd': r(statistics.pstdev(pbs))},
                    'pe': {'mean': r(statistics.mean(pes)), 'sd': r(statistics.pstdev(pes))},
+                   'pppop': ({'mean': r(statistics.mean(v)), 'sd': r(statistics.pstdev(v))} if (v := [x['pppop'] for x in secm if x.get('pppop')]) else None),
                    'profitTTM': r(sec[-1]['profit'] / 1e12, 1)}
 
     # ------------------------------------------------ consensus theo ngân hàng (báo cáo ≤ 92 ngày, mỗi CTCK lấy bản mới nhất)
