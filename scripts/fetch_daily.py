@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 P = ROOT / 'data/global/daily.json'
 UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdnguyen-cyber/bank-dashboard)'}
-FROM = '2023-01-01'
+FROM = '2021-01-01'   # giữ tối thiểu 5 năm số liệu ngày
 
 
 def get(url, enc='utf-8', tries=3):
@@ -144,15 +144,19 @@ def kr(old):
     """Lợi suất TPCP Hàn Quốc 10 năm theo ngày — Ngân hàng Trung ương Hàn Quốc (ECOS, khoá mẫu tối đa 10 dòng/lần → chia 12 ngày/lần)."""
     from datetime import timedelta
     out = dict(old or {})
-    start = date.fromisoformat(max(out) if out else '2024-01-01') - timedelta(days=14)
-    end = date.today()
-    while start <= end:
-        e = min(start + timedelta(days=11), end)
-        js = json.loads(get(f'https://ecos.bok.or.kr/api/StatisticSearch/sample/json/en/1/10/817Y002/D/{start:%Y%m%d}/{e:%Y%m%d}/010210000'))
-        for r in (js.get('StatisticSearch') or {}).get('row', []):
-            t = r['TIME']; out[f'{t[:4]}-{t[4:6]}-{t[6:]}'] = fnum(r['DATA_VALUE'])
-        start = e + timedelta(days=1)
-        time.sleep(0.3)
+    spans = []
+    if not out or min(out) > FROM:   # điền ngược cho đủ 5 năm
+        spans.append((date.fromisoformat(FROM), date.fromisoformat(min(out)) if out else date.today()))
+    if out:
+        spans.append((date.fromisoformat(max(out)) - timedelta(days=14), date.today()))
+    for start, end in spans:
+        while start <= end:
+            e = min(start + timedelta(days=11), end)
+            js = json.loads(get(f'https://ecos.bok.or.kr/api/StatisticSearch/sample/json/en/1/10/817Y002/D/{start:%Y%m%d}/{e:%Y%m%d}/010210000'))
+            for r in (js.get('StatisticSearch') or {}).get('row', []):
+                t = r['TIME']; out[f'{t[:4]}-{t[4:6]}-{t[6:]}'] = fnum(r['DATA_VALUE'])
+            start = e + timedelta(days=1)
+            time.sleep(0.3)
     return dict(sorted(out.items()))
 
 
@@ -170,31 +174,45 @@ def sg():
 
 
 def tw(old):
-    """Lợi suất TPCP Đài Loan chuẩn (benchmark) 2/5/10/20/30 năm theo ngày — Sở Giao dịch Đài Bắc (TPEx), file Daily Benchmarks Yield."""
+    """Lợi suất TPCP Đài Loan chuẩn (benchmark) 2/5/10/20/30 năm theo ngày — Sở Giao dịch Đài Bắc (TPEx), file Daily Benchmarks Yield.
+    Mỗi lần chạy: nối tiếp tới hôm nay, rồi điền ngược về FROM tối đa 300 ngày làm việc (đủ 5 năm sau vài lần chạy)."""
     import xlrd
     from datetime import timedelta
     out = dict(old or {})
+    tried = set(out.pop('_none', []))   # ngày đã thử mà không có file (nghỉ lễ)
+
+    def one(d):
+        url = f'https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/{d:%Y}/{d:%Y%m}/BDdys100.{d:%Y%m%d}-E.xls'
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=20) as r:
+                sh = xlrd.open_workbook(file_contents=r.read()).sheet_by_index(0)
+            row = {}
+            for i in range(sh.nrows):
+                c = [x.value for x in sh.row(i)]
+                if isinstance(c[0], float) and fnum(c[2]) is not None:
+                    row[f'{int(c[0])}Y'] = fnum(c[2])
+            if row.get('10Y'):
+                out[d.isoformat()] = row
+                return
+        except Exception:  # noqa: BLE001  (ngày nghỉ: không có file)
+            pass
+        tried.add(d.isoformat())
+        time.sleep(0.2)
+
     d = date.fromisoformat(max(out)) + timedelta(days=1) if out else date(2025, 1, 2)
-    n = 0
-    while d <= date.today() and n < 400:
+    while d <= date.today():
         if d.weekday() < 5:
-            n += 1
-            url = f'https://www.tpex.org.tw/storage/bond_zone/tradeinfo/govbond/{d:%Y}/{d:%Y%m}/BDdys100.{d:%Y%m%d}-E.xls'
-            try:
-                with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=20) as r:
-                    sh = xlrd.open_workbook(file_contents=r.read()).sheet_by_index(0)
-                row = {}
-                for i in range(sh.nrows):
-                    c = [x.value for x in sh.row(i)]
-                    if isinstance(c[0], float) and fnum(c[2]) is not None:
-                        row[f'{int(c[0])}Y'] = fnum(c[2])
-                if row.get('10Y'):
-                    out[d.isoformat()] = row
-            except Exception:  # noqa: BLE001  (ngày nghỉ: không có file)
-                pass
-            time.sleep(0.2)
+            one(d)
         d += timedelta(days=1)
-    return dict(sorted(out.items()))
+    d, n, lo = (date.fromisoformat(min(out)) if out else date.today()) - timedelta(days=1), 0, date.fromisoformat(FROM)
+    while d >= lo and n < 300:
+        if d.weekday() < 5 and d.isoformat() not in tried:
+            n += 1
+            one(d)
+        d -= timedelta(days=1)
+    res = dict(sorted(out.items()))
+    res['_none'] = sorted(t for t in tried if t >= FROM)
+    return res
 
 
 def sbv():
@@ -207,7 +225,7 @@ def sbv():
         k = ids.get(str(ser['id']))
         for ts, v in ser.get('data', []):
             d = datetime.fromtimestamp(ts / 1000, timezone(timedelta(hours=7))).date().isoformat()
-            if k and d >= '2022-01-01' and v is not None:
+            if k and d >= FROM and v is not None:
                 out.setdefault(d, {})[k] = v
     return dict(sorted(out.items()))
 

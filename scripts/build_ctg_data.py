@@ -61,6 +61,9 @@ def flt(req):
         return {}
 
 
+ROOT = __import__('pathlib').Path(__file__).resolve().parent.parent
+
+
 def ty(v):
     return None if v is None else round(v / 1e9, 1)
 
@@ -92,7 +95,7 @@ def build(raw):
     peers_rbt = rows(find(raw, 'wi_data_companies', 'ratio_bank_ttm', lambda q: ',' in flt(q).get('symbol', ''))['response'])
     peers_rb = rows(find(raw, 'wi_data_companies', 'ratio_bank', lambda q: ',' in flt(q).get('symbol', ''))['response'])
     peers_rc = rows(find(raw, 'wi_data_companies', 'ratio_common_ttm', lambda q: ',' in flt(q).get('symbol', ''))['response'])
-    car = rows(find(raw, 'wi_data_companies', 'bank_car_tt41')['response'])
+    car = rows(find(raw, 'wi_data_companies', 'bank_car_tt41', lambda q: flt(q).get('symbol') == TICKER)['response'])
     plans = rows(find(raw, 'wi_data_companies', 'co_plans')['response'])
     ryear = sorted(rows(find(raw, 'wi_data_companies', 'ratio_common_year')['response']), key=lambda r: r['year'])
     holders = rows(find(raw, 'wi_data_companies', 'co_holders')['response'])

@@ -76,7 +76,9 @@ def main():
         if d['tool'] == 'wi_data_commodity':
             for s in d['response'].get('data', []):
                 for v in s['values']:
-                    series[s['indicator_id']][ym(v['date'])] = (4, v['date'], v['value'])
+                    o = series[s['indicator_id']].get(ym(v['date']))
+                    if v['value'] is not None and (o is None or v['date'] >= o[1]):
+                        series[s['indicator_id']][ym(v['date'])] = (4, v['date'], v['value'])
 
     def S(iid):
         return {k: v[2] for k, v in sorted(series[iid].items())}
@@ -228,14 +230,14 @@ def main():
 
     # ------------------------------------------------ chuỗi vĩ mô cho tab Bức tranh
     D['intl'] = {
-        'dxy': lst(235028), 'effr': lst(7079), 'ust10': lst(234521, '2023-08'), 'vn10': lst(234526, '2023-08'),
-        'cny': lst(235032), 'brent': lst(203084, '2024-07'),
+        'dxy': lst(235028), 'effr': lst(7079), 'ust10': lst(234521, '2021-01'), 'vn10': lst(234526, '2021-01'),
+        'cny': lst(235032, '2021-01'), 'brent': lst(203084, '2021-01'),
     }
     D['dom'] = {
         'nhtmSell': lst(82223), 'nhtmBuy': lst(82224), 'free': lst(82226), 'central': lst(82227),
         'ceiling': lst(82228), 'sbvSell': lst(82231),
-        'on': lst(82237), 'omo': lst(81522), 'net': lst(82268, '2022-01'),
-        'dep12State': lst(202886), 'dep12Large': lst(202874, '2022-01'), 'dep12Other': lst(202880, '2022-01'),
+        'on': lst(82237), 'omo': lst(81522), 'net': lst(82268, '2021-01'),
+        'dep12State': lst(202886), 'dep12Large': lst(202874, '2021-01'), 'dep12Other': lst(202880, '2021-01'),
         'm2': lst(265954), 'depYoY': lst(265963), 'creditYoY': lst(75847), 'creditYtd': lst(241732),
         'depHH': lst(265981), 'depCorp': lst(265972),
         'cpi': lst(75701), 'cpiCore': lst(202889), 'cpiAvg': lst(75804),

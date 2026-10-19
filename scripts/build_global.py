@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 S = json.loads((ROOT / 'data/global/series.json').read_text(encoding='utf-8'))
 SER = S['series']
-DAILY_FROM = '2023-07-01'
+DAILY_FROM = '2021-01-01'   # chuỗi ngày giữ tối thiểu 5 năm
 
 
 def obs(k):
@@ -99,7 +99,7 @@ put('us_jolts', {m: v / 1000 for m, v in monthly('us_jolts').items() if m >= '20
 # ---------------- lãi suất (ngày, từ 2021) và tháng (dài)
 for k in ['us_effr', 'us_fedtgt_up', 'us_fedtgt_lo', 'us_iorb', 'us_sofr', 'us_tgcr', 'us_sofr99', 'us_2y', 'us_10y', 'ea_dfr', 'eurusd', 'usdjpy', 'usdcny', 'us_dxy', 'us_rrp', 'us_repo']:
     if k in SER:
-        put(k + '_d', {d: v for d, v in obs(k) if d >= ('2022-01-01' if k == 'usdjpy' else DAILY_FROM)}, 4 if k.startswith('usd') or k == 'eurusd' else 3)
+        put(k + '_d', {d: v for d, v in obs(k) if d >= DAILY_FROM}, 4 if k.startswith('usd') or k == 'eurusd' else 3)
 for k in ['us_effr', 'us_2y', 'us_10y', 'ea_dfr', 'de_10y', 'jp_10y', 'jp_rate', 'cn_rate', 'us_wti', 'us_brent', 'usdjpy', 'eurusd', 'usdcny']:
     if k in SER:
         put(k + '_m', monthly(k, 'avg'), 3)
@@ -297,12 +297,12 @@ if DP.exists():
     put('us_30y_d', {d: x['30Y'] for d, x in u.items() if x.get('30Y') is not None and d >= DAILY_FROM}, 3)
     j = DY.get('jgb', {})
     for t in ['2Y', '5Y', '10Y', '30Y']:
-        put(f'jp_{t.lower()}_d', {d: x[t] for d, x in j.items() if x.get(t) is not None and d >= '2023-01-01'}, 3)
+        put(f'jp_{t.lower()}_d', {d: x[t] for d, x in j.items() if x.get(t) is not None and d >= DAILY_FROM}, 3)
     e = DY.get('ecb', {})
     merge_d('usdjpy_d', {d: x.get('usdjpy') for d, x in e.items()}, 3)
     merge_d('eurusd_d', {d: x.get('eurusd') for d, x in e.items()}, 4)
     merge_d('usdcny_d', {d: x.get('usdcny') for d, x in e.items()}, 4)
-    put('dxy_d', {d: x['dxy'] for d, x in e.items() if x.get('dxy') and d >= '2022-01-01'}, 2)
+    put('dxy_d', {d: x['dxy'] for d, x in e.items() if x.get('dxy') and d >= DAILY_FROM}, 2)
     for k in ['central', 'ceil', 'floor', 'buy', 'sell']:
         put(f'vn_sbv_{k}_d', {d: x[k] for d, x in DY.get('sbv', {}).items() if x.get(k)}, 0)
     if DY.get('sfpce'):
@@ -330,17 +330,17 @@ for k in ['cpi_de', 'cpi_it', 'cpi_es', 'cpi_fr', 'cpi_nl', 'cpi_tw', 'cpi_sg', 
 G['cpiTab'] = [[g, [[k, n] for k, n in cs]] for g, cs in CPI_C]
 for k in ['us_wti', 'us_brent']:
     if k in SER:
-        put(k + '_d', {d: v for d, v in obs(k) if d >= '2025-01-01'}, 2)
+        put(k + '_d', {d: v for d, v in obs(k) if d >= DAILY_FROM}, 2)
 if DP.exists():
-    put('de_10y_d', {d: v for d, v in DY.get('bund', {}).items() if d >= '2023-01-01'}, 3)
+    put('de_10y_d', {d: v for d, v in DY.get('bund', {}).items() if d >= DAILY_FROM}, 3)
     yc = DY.get('ecbyc', {})
-    put('ea_aaa_10y_d', {d: x['aaa'] for d, x in yc.items() if x.get('aaa') is not None and d >= '2023-01-01'}, 3)
-    put('ea_all_10y_d', {d: x['all'] for d, x in yc.items() if x.get('all') is not None and d >= '2023-01-01'}, 3)
+    put('ea_aaa_10y_d', {d: x['aaa'] for d, x in yc.items() if x.get('aaa') is not None and d >= DAILY_FROM}, 3)
+    put('ea_all_10y_d', {d: x['all'] for d, x in yc.items() if x.get('all') is not None and d >= DAILY_FROM}, 3)
     for t in ['2Y', '10Y', '30Y']:   # Trung Quốc: đường cong ChinaBond
-        put(f'cn_{t.lower()}_d', {d: float(x[t]) for d, x in DY.get('cn', {}).items() if x.get(t) is not None and d >= '2023-01-01'}, 4)
-    put('sg_10y_d', {d: x['10Y'] for d, x in DY.get('sg', {}).items() if x.get('10Y') is not None and d >= '2023-01-01'}, 3)
-    put('tw_10y_d', {d: x['10Y'] for d, x in DY.get('tw', {}).items() if x.get('10Y') is not None and d >= '2023-01-01'}, 4)
-    put('kr_10y_d', {d: v for d, v in DY.get('kr', {}).items() if v is not None and d >= '2023-01-01'}, 3)
+        put(f'cn_{t.lower()}_d', {d: float(x[t]) for d, x in DY.get('cn', {}).items() if x.get(t) is not None and d >= DAILY_FROM}, 4)
+    put('sg_10y_d', {d: x['10Y'] for d, x in DY.get('sg', {}).items() if x.get('10Y') is not None and d >= DAILY_FROM}, 3)
+    put('tw_10y_d', {d: x['10Y'] for d, x in DY.get('tw', {}).items() if isinstance(x, dict) and x.get('10Y') is not None and d >= DAILY_FROM}, 4)
+    put('kr_10y_d', {d: v for d, v in DY.get('kr', {}).items() if v is not None and d >= DAILY_FROM}, 3)
     U = DY.get('ust', {})
     if U:
         TEN = ['1M', '2M', '3M', '4M', '6M', '1Y', '2Y', '3Y', '5Y', '7Y', '10Y', '20Y', '30Y']
