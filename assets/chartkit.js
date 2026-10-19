@@ -94,6 +94,31 @@
       bar.querySelector('.yman').hidden = ymode !== 'man';
       ch.update();
     };
+    // ---- chart chồng (stacked): chuyển qua lại giá trị ↔ tỷ trọng 100%
+    const stk = () => ch.data.datasets.filter(d => (!d.yAxisID || d.yAxisID === 'y') && (d.stack != null || (d.fill && d.fill !== false)));
+    if (Y().stacked && stk().length > 1) {
+      const pb = document.createElement('button'); pb.type = 'button'; pb.dataset.pct = '1'; pb.textContent = '100% tỷ trọng'; pb.title = 'Chuyển sang tỷ trọng từng cấu phần trên tổng (%)';
+      bar.querySelector('.ysel').prepend(pb);
+      let saved = null;
+      pb.onclick = () => {
+        const S = stk(), y = Y();
+        if (!saved) {
+          saved = { data: S.map(d => d.data.slice()), unit: S.map(d => d.unit), dp: S.map(d => d.dp), hid: [], y: { min: y.min, max: y.max, beginAtZero: y.beginAtZero, cb: y.ticks && y.ticks.callback } };
+          const len = Math.max(...S.map(d => d.data.length)), tot = Array.from({ length: len }, (_, i) => S.reduce((a, d) => a + Math.max(0, +d.data[i] || 0), 0));
+          S.forEach(d => { d.data = d.data.map((v, i) => v == null || !tot[i] ? null : +(Math.max(0, v) / tot[i] * 100).toFixed(2)); d.unit = '%'; d.dp = 1; });
+          ch.data.datasets.forEach((d, i) => { if (!S.includes(d) && ch.isDatasetVisible(i)) { saved.hid.push(i); ch.setDatasetVisibility(i, false); } });
+          y.min = 0; y.max = 100; y.beginAtZero = true; y.ticks = Object.assign({}, y.ticks, { callback: v => v + '%' });
+          pb.classList.add('on'); pb.textContent = 'Giá trị gốc';
+        } else {
+          S.forEach((d, j) => { d.data = saved.data[j]; d.unit = saved.unit[j]; d.dp = saved.dp[j]; });
+          saved.hid.forEach(i => ch.setDatasetVisibility(i, true));
+          ['min', 'max', 'beginAtZero'].forEach(k => { if (saved.y[k] === undefined) delete y[k]; else y[k] = saved.y[k]; });
+          y.ticks = Object.assign({}, y.ticks); if (saved.y.cb) y.ticks.callback = saved.y.cb; else delete y.ticks.callback;
+          saved = null; pb.classList.remove('on'); pb.textContent = '100% tỷ trọng';
+        }
+        ch.update();
+      };
+    }
     bar.querySelectorAll('[data-y]').forEach(b => b.onclick = () => {
       ymode = b.dataset.y;
       if (ymode === 'man') { const sc = ch.scales.y; const [mi, ma] = bar.querySelectorAll('[data-yi]'); if (mi.value === '' && sc) mi.value = +sc.min.toPrecision(4); if (ma.value === '' && sc) ma.value = +sc.max.toPrecision(4); }
