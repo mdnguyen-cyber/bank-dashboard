@@ -249,3 +249,13 @@
   if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
   window.addEventListener('scroll', upd, { passive: true });
 })();
+
+/* Nút mở Trợ lý AI (artifact riêng tư trên claude.ai — chỉ tài khoản FinSuccess được chia sẻ mới mở được) */
+(function () {
+  const a = document.createElement('a');
+  a.className = 'aibot'; a.href = 'https://claude.ai/artifact/NPnjNWbkz5DUjxRdnQ9Qmi'; a.target = '_blank'; a.rel = 'noopener';
+  a.title = 'Hỏi số liệu, thử giả định, yêu cầu cập nhật (cần đăng nhập Claude)';
+  a.innerHTML = '<span aria-hidden="true">✦</span> Trợ lý AI';
+  const add = () => document.body.appendChild(a);
+  if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
+})();
