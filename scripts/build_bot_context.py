@@ -20,7 +20,8 @@ def load_js(p):
 G = load_js('data/global-data.js')
 V = load_js('data/vira-data.js')
 
-M_LAST, D_LAST = 36, 120
+M_LAST, D_LAST = 72, 120
+FROM5 = '2021-01-01'   # tối thiểu 5 năm cho mọi chuỗi
 series = {}
 
 
@@ -28,7 +29,17 @@ def add(key, label, unit, freq, src, pts):
     pts = [p for p in pts if p[1] is not None]
     if not pts:
         return
-    pts = pts[-(D_LAST if freq == 'ngày' else M_LAST):]
+    if freq == 'ngày':   # 120 phiên gần nhất theo ngày; trước đó lấy phiên cuối mỗi tuần, về tới FROM5
+        recent = pts[-D_LAST:]
+        cut = recent[0][0] if recent else ''
+        wk = {}
+        for d, v in pts:
+            if FROM5 <= d < cut:
+                y, w, _ = datetime.date.fromisoformat(d[:10]).isocalendar()
+                wk[(y, w)] = (d, v)
+        pts = sorted(wk.values()) + recent
+    else:
+        pts = [p for p in pts if p[0][:7] >= FROM5[:7]] or pts[-M_LAST:]
     series[key] = {'label': label, 'unit': unit, 'freq': freq, 'src': src,
                    'last': pts[-1], 'pts': [[d, round(v, 4) if isinstance(v, float) else v] for d, v in pts]}
 

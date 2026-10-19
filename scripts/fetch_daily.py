@@ -264,7 +264,7 @@ def main():
             if not v:
                 raise ValueError('rỗng')
             res[name] = v
-            rep[name] = f'ok {len(v)} → {max(v)}'
+            rep[name] = f'ok {len(v)} → {max(k for k in v if not str(k).startswith("_"))}'
         except Exception as e:  # noqa: BLE001
             rep[name] = 'LỖI ' + str(e)[:200]
             if name in old:

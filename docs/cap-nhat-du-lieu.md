@@ -18,7 +18,7 @@ gh api -X POST repos/mdnguyen-cyber/bank-dashboard/actions/workflows/fetch-vira.
 Chạy song song với bước 2; chờ xong (`gh api repos/mdnguyen-cyber/bank-dashboard/actions/runs?per_page=5`), rồi `git pull --rebase`.
 
 ## 2. Dữ liệu trong nước qua WiData (connector WiMCP)
-Gọi đúng các truy vấn tăng dần dưới đây (cửa sổ ngắn để kết quả trả thẳng trong phiên). Thay `<from>` = 10 ngày trước, `<to>` = hôm nay.
+Gọi đúng các truy vấn tăng dần dưới đây (cửa sổ ngắn để kết quả trả thẳng trong phiên). Dữ liệu giữ tối thiểu 5 năm (từ 2021). Thay `<from>` = 10 ngày trước, `<to>` = hôm nay.
 
 | Mục | Lệnh |
 |---|---|
@@ -37,7 +37,7 @@ Không chép tay số liệu.
 
 ## 3. Build và kiểm tra
 ```
-python3 scripts/build_sector_data.py && python3 scripts/build_ctg_data.py && python3 scripts/build_bot_context.py
+python3 scripts/build_sector_data.py && python3 scripts/build_ctg_data.py && python3 scripts/build_bot_context.py && python3 scripts/build_artifact.py
 python3 tests/test_sector_data.py
 ```
 Test định giá chốt cứng (pb, pe) sai vì số mới → cập nhật số trong test cho khớp số mới (không sửa logic).
@@ -46,8 +46,8 @@ Xem nhanh bằng Playwright (`/opt/pw-browsers/chromium`, route Chart.js từ no
 ## 4. Đẩy lên
 - Repo chính: commit "Cập nhật dữ liệu <dd/mm/yyyy>" kèm dòng attribution, push, dispatch `pages.yml`.
 - Repo raw: commit + push các file mới trong `data/raw`.
-- Trợ lý AI: `Artifact` publish `url=<URL trong docs/tro-ly-ai.md>` với `file_path=bot/assistant.html` và
-  `files={"context.json": "data/bot-context.json"}` (đọc artifact trước bằng `action: read` theo quy định của công cụ).
+- Bản dashboard có Trợ lý AI trên claude.ai: `Artifact` publish `url=<URL trong docs/tro-ly-ai.md>` với `file_path=bot/assistant.html` và
+  `files` theo FILES của `scripts/build_artifact.py` (đọc artifact trước bằng `action: read` theo quy định của công cụ).
 
 ## 5. Báo lại
 Tin nhắn cuối: số mới đáng chú ý (tín dụng, tỷ giá, LNH, P/B ngành…) kèm ngày dữ liệu, mục nào không cập nhật được và vì sao.
