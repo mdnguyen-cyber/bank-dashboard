@@ -238,3 +238,14 @@
 
   window.FSK = { prep, reorder, enhance, dates, sortable };
 })();
+
+/* Nút lên đầu trang: hiện khi cuộn quá 1 màn hình */
+(function () {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'totop'; b.title = 'Lên đầu trang'; b.setAttribute('aria-label', 'Lên đầu trang'); b.textContent = '↑';
+  b.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const upd = () => b.classList.toggle('on', window.scrollY > window.innerHeight * 0.8);
+  const add = () => { document.body.appendChild(b); upd(); };
+  if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
+  window.addEventListener('scroll', upd, { passive: true });
+})();

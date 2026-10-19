@@ -499,10 +499,12 @@ const pDone = {};
 function panePicture() {
   $('#picture').innerHTML = `
   <h2 class="sec">Bức tranh ngành</h2>
+  <h3 class="ovh" id="pic1">1 · Nhận định FinSuccess</h3>
   <article class="card fsn" id="viewNote"></article>
+  <h3 class="ovh" id="pic2">2 · Diễn biến chi tiết: từ áp lực bên ngoài tới định giá ngân hàng</h3>
   <p class="sec-sub">Ba lớp nối thành một chuỗi theo deck: áp lực bên ngoài → phản ứng của NHNN và thanh khoản trong nước → lợi nhuận, rủi ro và định giá ngân hàng. Hai chỉ số tổng hợp ở mục cuối quyết định kịch bản.</p>
   <div class="banner chain">Fed, USD, dầu → Tỷ giá → NHNN (OMO, tỷ giá trung tâm, tỷ lệ an toàn) → Lãi suất TT2 → TT1 → COF, NIM, nợ xấu → P/B ngân hàng</div>
-  <div class="subtabs" role="tablist">${PSUB.map(([k, l], i) => `<button type="button" data-p="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
+  <div class="subtabs" id="pSub" role="tablist">${PSUB.map(([k, l], i) => `<button type="button" data-p="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
   <div class="sub on" data-pp="intl">${subIntl()}</div>
   <div class="sub" data-pp="dom">${subDom()}</div>
   <div class="sub" data-pp="mm">${subMM()}</div>
@@ -511,13 +513,15 @@ function panePicture() {
   <div class="sub" data-pp="camel">${subCamel()}</div>
   <div class="sub" data-pp="idx">${subIdx()}</div>`;
   viewNoteMount();
-  $$('#picture > .subtabs button').forEach(b => b.onclick = () => openP(b.dataset.p));
+  collapsify($('#picture'), 'pic', ['pic1', 'pic2']);
+  $$('#pSub button').forEach(b => b.onclick = () => openP(b.dataset.p));
   Object.keys(pDone).forEach(k => delete pDone[k]);
-  FSK.sortable($('#picture > .subtabs'), 'picture', 'p');
-  openP($('#picture > .subtabs button').dataset.p);   // mở tab đứng đầu theo thứ tự người dùng xếp
+  FSK.sortable($('#pSub'), 'picture', 'p');
+  openP($('#pSub button').dataset.p, false);   // mở tab đứng đầu theo thứ tự người dùng xếp
 }
-function openP(k) {
-  $$('#picture > .subtabs button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
+function openP(k, reveal = true) {
+  const h2 = $('#pic2'); if (reveal && h2 && h2.classList.contains('shut')) h2.click();   // đi tới một mục con thì mở phần chi tiết nếu đang thu gọn
+  $$('#pSub button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
   $$('#picture [data-pp]').forEach(p => p.classList.toggle('on', p.dataset.pp === k));
   if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, peer: chPeer, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; }
 }
