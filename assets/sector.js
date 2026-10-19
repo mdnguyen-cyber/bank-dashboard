@@ -799,17 +799,19 @@ const Y10M = { eu: [['y10_de_m', 'Đức'], ['y10_fr_m', 'Pháp'], ['y10_it_m', 
   ap: [['jp_10y_m', 'Nhật Bản'], ['y10_kr_m', 'Hàn Quốc'], ['y10_au_m', 'Úc'], ['y10_ca_m', 'Canada'], ['us_10y_m', 'Mỹ']] };
 const yStart = k => { const x = gs(k), y0 = (gd(k) || '').slice(0, 4); const i = x.d.findIndex(d => d >= y0 + '-01-01'); return i >= 0 ? x.v[i] : null; };
 const cpiSer = k => k === 'vn' ? { d: (dom.cpi || []).map(p => p.d.slice(0, 7)), v: (dom.cpi || []).map(p => p.v) } : (() => { const x = gs(k); return { d: x.d.map(d => d.slice(0, 7)), v: x.v }; })();
-function cpiTable() {
+function cpiTable(o = {}) {
+  const N = o.n || 12;
   const T = GD.cpiTab || [], last = T.flatMap(([, cs]) => cs.map(([k]) => { const x = cpiSer(k); return x.d[x.d.length - 1]; })).filter(Boolean).sort();
   if (!last.length) return '';
-  const end = last[Math.floor(last.length / 2)], months = []; for (let i = 7; i >= 0; i--) { let y = +end.slice(0, 4), m = +end.slice(5) - i; while (m <= 0) { m += 12; y--; } months.push(`${y}-${String(m).padStart(2, '0')}`); }
+  const end = last[Math.floor(last.length / 2)], months = []; for (let i = N - 1; i >= 0; i--) { let y = +end.slice(0, 4), m = +end.slice(5) - i; while (m <= 0) { m += 12; y--; } months.push(`${y}-${String(m).padStart(2, '0')}`); }
   const col = v => v == null ? '' : v >= 5 ? 'background:#c0392b;color:#fff' : v >= 4 ? 'background:#e8836f' : v >= 3 ? 'background:#f4c1b3' : v >= 2 ? 'background:#fbe7e1' : v >= 1 ? 'background:#e3ecfa' : v >= 0 ? 'background:#b9cdf0' : 'background:#6f93d6;color:#fff';
   const spark = vs => { const v = vs.filter(x => x != null); if (v.length < 2) return ''; const mn = Math.min(...v), mx = Math.max(...v), r = mx - mn || 1; const pts = vs.map((x, i) => x == null ? null : `${(i / (vs.length - 1) * 70).toFixed(1)},${(18 - (x - mn) / r * 16).toFixed(1)}`).filter(Boolean).join(' ');
     return `<svg width="72" height="20" viewBox="0 0 72 20" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="#1D2678" stroke-width="1.4"/></svg>`; };
-  return `<article class="card"><h3 class="sub">Lạm phát CPI so cùng kỳ theo nước</h3><p class="chart-sub">% YoY · 8 tháng gần nhất · ô đậm = cao · Việt Nam theo Cục Thống kê; châu Âu theo Eurostat (HICP)</p>
-    <div class="tscroll"><table class="cpi-heat"><thead><tr><th></th>${months.map(m => `<th class="n">T${+m.slice(5)}/${m.slice(2, 4)}</th>`).join('')}<th>Xu hướng</th></tr></thead><tbody>
-    ${T.map(([g, cs]) => `<tr class="grp"><td colspan="${months.length + 2}"><b>${esc(g.toUpperCase())}</b></td></tr>` + cs.map(([k, n]) => { const x = cpiSer(k), mp = {}; x.d.forEach((d, i) => mp[d] = x.v[i]); const vs = months.map(m => mp[m] ?? null);
-      return `<tr><td><b>${esc(n)}</b></td>${vs.map(v => `<td class="n" style="${col(v)}">${v == null ? '—' : nf(v, 1)}</td>`).join('')}<td>${spark(vs)}</td></tr>`; }).join('')).join('')}
+  const rowsOf = cs => cs.map(([k, n]) => { const x = cpiSer(k), mp = {}; x.d.forEach((d, i) => mp[d] = x.v[i]); return [n, months.map(m => mp[m] ?? null)]; }).filter(([, vs]) => vs.some(v => v != null));
+  return `<article class="card"${o.id ? ` id="${o.id}"` : ''}><h3 class="sub">Lạm phát CPI so cùng kỳ theo nước</h3><p class="chart-sub">% YoY · 12 tháng gần nhất · ô đậm = cao · Việt Nam theo Cục Thống kê; châu Âu theo Eurostat (HICP)</p>
+    <div class="tscroll"><table class="cpi-heat cpi-c"><thead><tr><th></th>${months.map((m, i) => `<th class="n">${i === 0 || m.slice(5) === '01' ? `T${+m.slice(5)}/${m.slice(2, 4)}` : 'T' + (+m.slice(5))}</th>`).join('')}<th></th></tr></thead><tbody>
+    ${T.map(([g, cs]) => { const R = rowsOf(cs); return R.length ? `<tr class="grp"><td colspan="${months.length + 2}"><b>${esc(g.toUpperCase())}</b></td></tr>` + R.map(([n, vs]) =>
+      `<tr><td><b>${esc(n)}</b></td>${vs.map(v => `<td class="n" style="${col(v)}">${v == null ? '—' : nf(v, 1)}</td>`).join('')}<td>${spark(vs)}</td></tr>`).join('') : ''; }).join('')}
     </tbody></table></div><div class="src">Nguồn: Eurostat, BLS, OECD, IMF, Cục Thống kê Nhật Bản, NBS Trung Quốc, Cục Thống kê Việt Nam</div></article>`;
 }
 function gGL() {
@@ -1832,9 +1834,9 @@ function paneBook() {
   $('#book').innerHTML = `
   <h2 class="sec">Chart book</h2>
   <p class="sec-sub">${ids.length} chart của dashboard ở một chỗ, luôn theo dữ liệu mới nhất. Mã chart (vd. <code>chOn</code>) dùng để gọi trong Cập nhật nhanh hoặc nhắn AI.</p>
-  <div class="picker" id="bkG"><button type="button" data-k="">Tất cả <small>${ids.length}</small></button>${groups.map(g => `<button type="button" data-k="${g}">${g} <small>${ids.filter(id => M[id].group === g).length}</small></button>`).join('')}</div>
+  <div class="picker" id="bkG"><button type="button" data-k="">Tất cả <small>${ids.length}</small></button>${groups.map(g => `<button type="button" data-k="${g}">${g} <small>${ids.filter(id => M[id].group === g).length}</small></button>`).join('')}<button type="button" data-k="Bảng số liệu">Bảng số liệu <small>1</small></button></div>
   <div class="bk-bar"><input id="bkQ" type="search" placeholder="Tìm chart: tỷ giá, LNH, NIM, P/B…" aria-label="Tìm chart"><span class="muted">Mỗi chart có nút 1M…5Y và kéo chuột để zoom; nhấp đúp để về toàn bộ.</span></div>
-  <div class="grid g2 gap" id="bkGrid">${ids.map(id => { const m = M[id]; return `
+  <div class="grid g2 gap" id="bkGrid">${(() => { const t = cpiTable(); return t ? t.replace('<article class="card"', '<article class="card bk bk-tb" data-tb="1" data-id="tbCpi" data-g="Bảng số liệu" data-s="lạm phát cpi theo nước bảng số liệu"') : ''; })()}${ids.map(id => { const m = M[id]; return `
     <article class="card bk" data-id="${id}" data-g="${esc(m.group)}" data-s="${esc((m.title + ' ' + id + ' ' + m.group + ' ' + m.sub.replace(/<[^>]+>/g, '')).toLowerCase())}">
       <h3 class="sub">${esc(m.title)}</h3>${m.sub ? `<p class="chart-sub">${m.sub}</p>` : ''}
       ${chartBox(id, 'cb-' + id)}
@@ -1849,7 +1851,7 @@ function paneBook() {
     $$('#bkG button').forEach(b => b.classList.toggle('on', b.dataset.k === bookF.g));
     $$('#bkGrid .bk').forEach(c => { c.hidden = !((!bookF.g || c.dataset.g === bookF.g) && (!bookF.q || c.dataset.s.includes(bookF.q))); });
   };
-  $$('#bkGrid .bk').forEach(c => bookObs ? bookObs.observe(c) : draw(c));
+  $$('#bkGrid .bk:not([data-tb])').forEach(c => bookObs ? bookObs.observe(c) : draw(c));
   $$('#bkG button').forEach(b => b.onclick = () => { bookF.g = b.dataset.k; apply(); });
   $('#bkQ').oninput = e => { bookF.q = e.target.value.trim().toLowerCase(); apply(); };
   $$('#bkGrid [data-go]').forEach(b => b.onclick = () => { show(b.dataset.go); if (b.dataset.sp) openP(b.dataset.sp); if (b.dataset.cc) openC(b.dataset.cc); const t = SPEC[b.closest('.bk').dataset.id].el; setTimeout(() => t.scrollIntoView({ block: 'center' }), 60); });
