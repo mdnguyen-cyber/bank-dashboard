@@ -1,7 +1,7 @@
 {
  "meta": {
   "title": "CSTT & Ngành Ngân hàng",
-  "updated": "2026-10-14",
+  "updated": "2026-10-19",
   "banks": [
    "VCB",
    "BID",
@@ -19819,7 +19819,7 @@
  },
  "consensus": {
   "from": "2026-07-14",
-  "to": "2026-10-14",
+  "to": "2026-10-19",
   "rows": [
    {
     "s": "VCB",

@@ -174,6 +174,22 @@ const regSt = r => { const t = new Date().toISOString().slice(0, 10), f = d => d
   return r.eff && r.eff > t ? `<span class="pill rs-soon">Chưa hiệu lực</span><div class="rs-d">từ ${f(r.eff)}</div>`
     : `<span class="pill rs-on">Đang hiệu lực</span>${r.until ? `<div class="rs-d">đến ${f(r.until)}</div>` : r.eff ? `<div class="rs-d">từ ${f(r.eff)}</div>` : ''}`; };
 const regDoc = (r, ref) => esc(r.doc) + (r.ref && ref ? `<div><a href="${ref.u}" target="_blank" rel="noopener" class="rs-a">Phân tích FinSuccess →</a></div>` : '');
+function collapsify(root, key, openIds = []) {   // mỗi tiêu đề h3.ovh thành nút thu gọn/mở phần nội dung phía sau nó (tới tiêu đề kế tiếp)
+  let st = {}; try { st = JSON.parse(localStorage.getItem('fs-col:' + key) || '{}'); } catch (e) {}
+  $$('h3.ovh', root).forEach(h => {
+    const body = document.createElement('div'); body.className = 'ovbody';
+    while (h.nextElementSibling && !h.nextElementSibling.matches('h3.ovh')) body.appendChild(h.nextElementSibling);
+    h.after(body); h.classList.add('coll'); h.setAttribute('role', 'button'); h.tabIndex = 0;
+    const set = open => { h.classList.toggle('shut', !open); body.hidden = !open; h.setAttribute('aria-expanded', open); if (open) body.querySelectorAll('canvas').forEach(c => { const ch = Chart.getChart(c); if (ch) ch.resize(); }); };
+    set(st[h.id] != null ? st[h.id] : openIds.includes(h.id));
+    const tog = () => { const open = h.classList.contains('shut'); set(open); st[h.id] = open; try { localStorage.setItem('fs-col:' + key, JSON.stringify(st)); } catch (e) {} };
+    h.onclick = tog; h.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tog(); } };
+  });
+  const bar = document.createElement('div'); bar.className = 'colbar';
+  bar.innerHTML = '<button type="button" class="lnk" data-c="1">Mở tất cả</button> · <button type="button" class="lnk" data-c="0">Thu gọn tất cả</button>';
+  const first = $('h3.ovh', root); if (first) first.before(bar);
+  bar.onclick = e => { const b = e.target.closest('[data-c]'); if (!b) return; $$('h3.ovh', root).forEach(h => { if (h.classList.contains('shut') === (b.dataset.c === '1')) h.click(); }); };
+}
 function paneOverview() {
   const qu = D.quick && D.quick.updates[0];
   const tk = g => M.banks.filter(s => (D.meta.groups || {})[s] === g);
@@ -216,15 +232,15 @@ function paneOverview() {
     ['P/B', 'Giá / giá trị sổ sách', 'Vốn hoá / vốn chủ sở hữu', 'Thước đo định giá chính của ngân hàng, đi cùng ROE'],
   ];
   $('#overview').innerHTML = `
-  ${qu ? `<button type="button" class="qbar" id="goQuick"><span class="qdate">Cập nhật nhanh ${dvn(qu.date)}</span><span class="who ${qu.author.type === 'AI' ? 'ai' : 'cv'}">${qu.author.type === 'AI' ? 'AI' : 'Chuyên viên'}</span><span class="qbar-t">${esc(qu.headline)}</span><span class="qbar-go">Xem →</span></button>` : ''}
+  ${qu ? `<button type="button" class="qbar" id="goQuick"><span class="qdate">Báo cáo vĩ mô ${dvn(qu.date)}</span><span class="who ${qu.author.type === 'AI' ? 'ai' : 'cv'}">${qu.author.type === 'AI' ? 'AI' : 'Chuyên viên'}</span><span class="qbar-t">${esc(qu.headline)}</span><span class="qbar-go">Xem →</span></button>` : ''}
   <h2 class="sec">Tổng quan ngành ngân hàng Việt Nam</h2>
-  <p class="sec-sub">Phần nền tảng, ít thay đổi theo thời gian: ngân hàng đứng ở đâu trong nền kinh tế, kiếm tiền bằng cách nào và chịu tác động của những yếu tố nào. Diễn biến và số liệu mới nhất nằm ở Cập nhật nhanh và Bức tranh ngành.</p>
+  <p class="sec-sub">Phần nền tảng, ít thay đổi theo thời gian: ngân hàng đứng ở đâu trong nền kinh tế, kiếm tiền bằng cách nào và chịu tác động của những yếu tố nào. Diễn biến và số liệu mới nhất nằm ở Bức tranh ngành và Báo cáo vĩ mô.</p>
   <nav class="ovnav">${[['ov1', '1 · Vai trò'], ['ov2', '2 · Chuỗi giá trị'], ['ov3', '3 · Kiếm tiền thế nào'], ['ov4', '4 · Cấu trúc ngành'], ['ov5', '5 · Yếu tố tác động'], ['ov6', '6 · Chu kỳ ngành'], ['ov7', '7 · Khung pháp lý'], ['ov8', '8 · Thuật ngữ']].map(([a, l]) => `<a href="#${a}" data-ov="${a}">${l}</a>`).join('')}</nav>
 
   <h3 class="ovh" id="ov1">1 · Ngân hàng trong nền kinh tế Việt Nam</h3>
   <div class="grid g3 gap ovrole">
-    <article class="card"><h4>Kênh dẫn vốn chính</h4><p>Doanh nghiệp và hộ gia đình Việt Nam vay vốn chủ yếu qua ngân hàng; thị trường cổ phiếu và trái phiếu doanh nghiệp còn nhỏ. Vì vậy dư nợ tín dụng ngân hàng lớn hơn cả quy mô GDP, và mọi chính sách muốn bơm hay rút vốn khỏi nền kinh tế đều đi qua ngân hàng. Năm 2025, tín dụng ngân hàng cung cấp khoảng <b>45 tỷ USD</b> vốn trung, dài hạn — gần <b>38%</b> tổng nguồn vốn này, trong khi trái phiếu doanh nghiệp mới khoảng 8 tỷ USD (7%) <span class="muted">(FiinGroup)</span>.</p>
-      <p>Ngân hàng cũng có mặt ở kênh trái phiếu: tự phát hành trái phiếu để huy động vốn dài hạn, đầu tư vào trái phiếu doanh nghiệp, và qua công ty chứng khoán trong hệ sinh thái (như TCBS của Techcombank) tư vấn, bảo lãnh, phân phối trái phiếu cho doanh nghiệp — mảng vốn thuộc nghiệp vụ ngân hàng đầu tư. FiinGroup dự phóng trái phiếu doanh nghiệp tăng lên khoảng <b>37 tỷ USD</b> năm 2030 (15% nguồn vốn trung, dài hạn), chia bớt gánh nặng cho vay dài hạn của ngân hàng.</p></article>
+    <article class="card"><h4>Kênh dẫn vốn chính</h4><p>Doanh nghiệp và hộ gia đình vay vốn chủ yếu qua ngân hàng; dư nợ tín dụng lớn hơn cả GDP. Năm 2025, tín dụng ngân hàng cung cấp <b>~45 tỷ USD</b> vốn trung, dài hạn (<b>38%</b>), trái phiếu doanh nghiệp ~8 tỷ USD (7%).</p>
+      <p>Ngân hàng cũng tham gia kênh trái phiếu: tự phát hành, đầu tư và qua công ty chứng khoán trong hệ sinh thái (như TCBS) tư vấn, phân phối. Trái phiếu doanh nghiệp dự phóng lên <b>~37 tỷ USD</b> năm 2030 (15%), chia bớt gánh nặng vốn dài hạn của ngân hàng. <span class="muted">Nguồn: FiinGroup</span></p></article>
     <article class="card"><h4>Ngành chịu quản lý chặt nhất</h4><p>Ngân hàng Nhà nước (NHNN) vừa điều hành chính sách tiền tệ, vừa cấp phép, thanh tra, giao hạn mức tăng trưởng tín dụng cho từng ngân hàng. Lợi nhuận ngân hàng vì thế phụ thuộc nhiều vào chính sách, không chỉ vào năng lực kinh doanh.</p></article>
     <article class="card"><h4>Nhóm vốn hoá lớn nhất sàn chứng khoán</h4><p>Cổ phiếu ngân hàng chiếm tỷ trọng lớn nhất trong VN-Index. Định giá ngành thường đo bằng P/B (giá so với vốn chủ) vì tài sản và nợ của ngân hàng chủ yếu là tiền, ghi gần sát giá trị thật.</p>
       <p>P/E (giá so với lợi nhuận) bổ sung một góc nhìn khác: thị trường đang trả bao nhiêu cho mỗi đồng lợi nhuận hiện tại. Lợi nhuận ngân hàng biến động theo chu kỳ — chi phí dự phòng có thể làm lợi nhuận giảm mạnh ở đáy và tăng vọt khi hoàn nhập — nên P/E cần đọc cùng vị trí trong chu kỳ: P/E thấp ở đỉnh lợi nhuận chưa chắc là rẻ, P/E cao ở đáy chưa chắc là đắt. Vì vậy với ngân hàng, cách đọc sát hơn là định giá trên <b>lợi nhuận trước dự phòng</b> (P/PPOP): phần lợi nhuận từ hoạt động kinh doanh cốt lõi, chưa bị chi phí dự phòng làm méo theo chu kỳ, cho thấy năng lực tạo lợi nhuận bền vững. P/E thông thường vẫn hữu ích khi so với chính lịch sử của ngân hàng qua cả chu kỳ, như cách thị trường vẫn dùng P/E cho các ngành chu kỳ khác (thép, chứng khoán).</p></article>
@@ -232,7 +248,7 @@ function paneOverview() {
 
   <h3 class="ovh" id="ov2">2 · Chuỗi giá trị</h3>
   <article class="card vcard vshort" id="vcCard">
-    <div class="picker vmode"><button type="button" data-vm="short" class="on">Bản ngắn: hoạt động</button><button type="button" data-vm="long">Bản đầy đủ: kèm giới hạn tỷ lệ</button></div>
+    <label class="vswitch"><input type="checkbox" id="vmSw"><span class="vtrack"><span class="vknob"></span></span><span>Hiện giới hạn tỷ lệ theo quy định</span></label>
     <div class="vreg">${box('Ngân hàng Nhà nước (NHNN)', 'lãi suất điều hành · OMO · room tín dụng · tỷ giá trung tâm · dự trữ bắt buộc · tỷ lệ an toàn · thanh tra, giám sát', 'reg')}</div>
     <div class="vflow">
       <div class="vcol c1"><h4>Nguồn vốn</h4>
@@ -293,8 +309,7 @@ function paneOverview() {
       <tr><td><b>NHTM cổ phần</b></td><td>MBB, TCB, ACB, VPB, HDB và các ngân hàng tư nhân khác</td><td>Cạnh tranh bằng bán lẻ, số hoá, hệ sinh thái tập đoàn; quy mô và chất lượng chênh lệch lớn giữa các ngân hàng.</td></tr>
       <tr><td><b>Ngân hàng được chuyển giao bắt buộc</b></td><td>Bốn ngân hàng yếu kém được chuyển giao cho VCB, MB, VPBank, HDBank (2024–2025)</td><td>Ngân hàng nhận chuyển giao được ưu đãi (room tín dụng, giãn lộ trình tuân thủ) đổi lại phải tái cơ cấu ngân hàng yếu.</td></tr>
       <tr><td><b>Ngân hàng 100% vốn nước ngoài, chi nhánh ngân hàng nước ngoài</b></td><td>HSBC, Shinhan, Standard Chartered, UOB…</td><td>Phục vụ doanh nghiệp FDI, thanh toán quốc tế, ngoại hối; thị phần cho vay nhỏ.</td></tr>
-      <tr><td><b>Công ty tài chính tiêu dùng</b></td><td>Nhiều công ty là công ty con của ngân hàng</td><td>Cho vay tiêu dùng không bảo đảm, lãi suất và nợ xấu đều cao hơn ngân hàng.</td></tr>
-      <tr><td><b>Quỹ tín dụng nhân dân, tổ chức tài chính vi mô</b></td><td>—</td><td>Quy mô nhỏ, phục vụ nông thôn, hộ thu nhập thấp.</td></tr>
+      <tr><td><b>Công ty tài chính, quỹ tín dụng nhân dân</b></td><td>—</td><td>Quy mô nhỏ: cho vay tiêu dùng lãi cao, rủi ro cao; tín dụng vi mô ở nông thôn.</td></tr>
     </tbody></table></div></article>
   <h3 class="sub" style="margin:6px 0 10px">${M.banks.length} ngân hàng niêm yết dashboard theo dõi, chia theo nhóm</h3>
   <div class="gcards gap">${GROUPS.map(g => `<div class="gcard" style="--gc:${GC[g]}"><h4>${g}</h4><small>${tk(g).join(' · ')}</small><p>${GDESC[g]}</p></div>`).join('')}</div>
@@ -326,11 +341,12 @@ function paneOverview() {
     <tbody>${GL.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div></article>`;
 
   const gq = $('#goQuick'); if (gq) gq.onclick = () => { show('quick'); window.scrollTo({ top: 0 }); };
-  const vm = m => { $('#vcCard').classList.toggle('vshort', m !== 'long'); $$('#vcCard [data-vm]').forEach(b => b.classList.toggle('on', b.dataset.vm === m)); try { localStorage.setItem('fs-vc-mode', m); } catch (e) {} };
-  $$('#vcCard [data-vm]').forEach(b => b.onclick = () => vm(b.dataset.vm));
+  const vm = m => { $('#vcCard').classList.toggle('vshort', m !== 'long'); $('#vmSw').checked = m === 'long'; try { localStorage.setItem('fs-vc-mode', m); } catch (e) {} };
+  $('#vmSw').onchange = e => vm(e.target.checked ? 'long' : 'short');
   try { vm(localStorage.getItem('fs-vc-mode') || 'short'); } catch (e) { vm('short'); }
   $$('#overview [data-gop]').forEach(b => b.onclick = () => { const p = b.dataset.gop; if (p === 'policy') { show('policy'); } else { show('picture'); openP(p); } window.scrollTo({ top: 0 }); });
-  $$('#overview [data-ov]').forEach(a => a.onclick = e => { e.preventDefault(); const t = document.getElementById(a.dataset.ov); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  collapsify($('#overview'), 'ov', ['ov1', 'ov2']);
+  $$('#overview [data-ov]').forEach(a => a.onclick = e => { e.preventDefault(); const t = document.getElementById(a.dataset.ov); if (t) { if (t.classList.contains('shut')) t.click(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
 }
 function ppopValIns() {
   const z = (v, m) => sg((v - m.mean) / m.sd, 1, 'σ'), n = SV.now;
@@ -512,6 +528,7 @@ const pDone = {};
 function panePicture() {
   $('#picture').innerHTML = `
   <h2 class="sec">Bức tranh ngành</h2>
+  <article class="card fsn" id="viewNote"></article>
   <p class="sec-sub">Ba lớp nối thành một chuỗi theo deck: áp lực bên ngoài → phản ứng của NHNN và thanh khoản trong nước → lợi nhuận, rủi ro và định giá ngân hàng. Hai chỉ số tổng hợp ở mục cuối quyết định kịch bản.</p>
   <div class="banner chain">Fed, USD, dầu → Tỷ giá → NHNN (OMO, tỷ giá trung tâm, tỷ lệ an toàn) → Lãi suất TT2 → TT1 → COF, NIM, nợ xấu → P/B ngân hàng</div>
   <div class="subtabs" role="tablist">${PSUB.map(([k, l], i) => `<button type="button" data-p="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
@@ -522,6 +539,7 @@ function panePicture() {
   <div class="sub" data-pp="peer">${subPeer()}</div>
   <div class="sub" data-pp="camel">${subCamel()}</div>
   <div class="sub" data-pp="idx">${subIdx()}</div>`;
+  viewNoteMount();
   $$('#picture > .subtabs button').forEach(b => b.onclick = () => openP(b.dataset.p));
   Object.keys(pDone).forEach(k => delete pDone[k]);
   FSK.sortable($('#picture > .subtabs'), 'picture', 'p');
@@ -1736,15 +1754,14 @@ const QSCOPE = { nganh: 'Ngành ngân hàng', noi: 'Kinh tế trong nước', qt
 function paneQuick() {
   buildAll();
   const U = quList();
-  if (!U.length) { $('#quick').innerHTML = '<h2 class="sec">Cập nhật nhanh</h2><p class="sec-sub">Chưa có bản cập nhật nào.</p>'; return; }
+  if (!U.length) { $('#quick').innerHTML = '<h2 class="sec">Báo cáo vĩ mô</h2><p class="sec-sub">Chưa có bản báo cáo nào.</p>'; return; }
   if (quSel >= U.length) quSel = 0;
   const u = U[quSel], prev = u.follows ? U.find(x => x.id === u.follows) : null;
   const ed = new Set(u.edited || []), E = quEdit;
   const f = (key, html, tag = 'span', cls = '') => `<${tag} class="${cls}${ed.has(key) ? ' ed' : ''}" data-f="${key}"${E ? ' contenteditable="true"' : ''}${ed.has(key) ? ' title="Chuyên viên đã sửa"' : ''}>${html}</${tag}>`;
   let who = 'Minh Đức'; try { who = localStorage.getItem('quWho') || who; } catch (e) {}
   $('#quick').innerHTML = `
-  <h2 class="sec">Cập nhật nhanh<span class="qprint-date"></span></h2>
-  <article class="card fsn" id="viewNote"></article>
+  <h2 class="sec">Báo cáo vĩ mô<span class="qprint-date"></span></h2>
   ${u._draft ? `<div class="qdraft"><b>Bản nháp trên máy bạn — chưa đăng lên web.</b> Bấm "Sao chép để đăng" rồi dán vào chat với AI kèm câu "đăng bản cập nhật này".
     <span class="qbtns"><button type="button" class="btn" id="quCopy">Sao chép để đăng</button><button type="button" class="btn ghost" id="quDrop">Xoá nháp</button></span><textarea id="quJson" readonly hidden></textarea><span id="quMsg" class="muted"></span></div>` : ''}
   <div class="qhead card${E ? ' editing' : ''}">
@@ -1781,7 +1798,7 @@ function paneQuick() {
     <p class="note keep">Cách cập nhật: (1) chuyên viên bấm <b>✎ Chỉnh sửa</b> để sửa vài đoạn của bản đang xem → lưu thành bản mới mang tên mình (đoạn đã sửa có vạch vàng); hoặc (2) nhắn AI <i>"Cập nhật nhanh ngành ngân hàng"</i> — AI đọc các bản trước, ưu tiên bản gần nhất của chuyên viên, rồi viết tiếp.</p>
   </article>`;
   u.concerns.forEach((c, i) => c.charts.forEach((g, j) => drawSpec(g.id, `qu-${i}-${j}-${g.id}`, g.last)));
-  viewNoteMount();
+  if (!E) $$('#quick section.qc > .qc-h').forEach(h => { h.classList.add('coll'); h.title = 'Bấm để thu gọn / mở'; h.onclick = e => { if (e.target.closest('select,[contenteditable]')) return; h.parentElement.classList.toggle('qshut'); }; });
   $$('#quick [data-qv]').forEach(b => b.onclick = () => { quSel = +b.dataset.qv; quEdit = false; paneQuick(); window.scrollTo({ top: 0 }); });
   $$('#quick [data-book]').forEach(b => b.onclick = () => openBook(b.dataset.book));
   const on = (id, fn) => { const el = document.getElementById(id); if (el) el.onclick = fn; };
@@ -1833,7 +1850,7 @@ function paneBook() {
   const groups = [...new Set(ids.map(id => M[id].group))];
   $('#book').innerHTML = `
   <h2 class="sec">Chart book</h2>
-  <p class="sec-sub">${ids.length} chart của dashboard ở một chỗ, luôn theo dữ liệu mới nhất. Mã chart (vd. <code>chOn</code>) dùng để gọi trong Cập nhật nhanh hoặc nhắn AI.</p>
+  <p class="sec-sub">${ids.length} chart của dashboard ở một chỗ, luôn theo dữ liệu mới nhất. Mã chart (vd. <code>chOn</code>) dùng để gọi trong Báo cáo vĩ mô hoặc nhắn AI.</p>
   <div class="picker" id="bkG"><button type="button" data-k="">Tất cả <small>${ids.length}</small></button>${groups.map(g => `<button type="button" data-k="${g}">${g} <small>${ids.filter(id => M[id].group === g).length}</small></button>`).join('')}<button type="button" data-k="Bảng số liệu">Bảng số liệu <small>1</small></button></div>
   <div class="bk-bar"><input id="bkQ" type="search" placeholder="Tìm chart: tỷ giá, LNH, NIM, P/B…" aria-label="Tìm chart"><span class="muted">Mỗi chart có nút 1M…5Y và kéo chuột để zoom; nhấp đúp để về toàn bộ.</span></div>
   <div class="grid g2 gap" id="bkGrid">${(() => { const t = cpiTable(); return t ? t.replace('<article class="card"', '<article class="card bk bk-tb" data-tb="1" data-id="tbCpi" data-g="Bảng số liệu" data-s="lạm phát cpi theo nước bảng số liệu"') : ''; })()}${ids.map(id => { const m = M[id]; return `

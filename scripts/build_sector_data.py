@@ -16,7 +16,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from build_ctg_data import load_raw, rows, flt  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-TODAY = '2026-10-14'
+TODAY = __import__('datetime').date.today().isoformat()   # ngày dựng dữ liệu
 BANKS = ['VCB', 'BID', 'CTG', 'MBB', 'TCB', 'ACB', 'VPB', 'HDB', 'LPB', 'SHB', 'STB', 'VIB', 'TPB', 'MSB',
          'SSB', 'OCB', 'EIB', 'NAB', 'ABB', 'KLB', 'VAB', 'BVB', 'BAB', 'PGB', 'SGB', 'NVB']
 GROUP = {'VCB': 'Big 4', 'BID': 'Big 4', 'CTG': 'Big 4'}
