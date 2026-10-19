@@ -243,7 +243,7 @@ function paneOverview() {
       <p>Ngân hàng cũng tham gia kênh trái phiếu: tự phát hành, đầu tư và qua công ty chứng khoán trong hệ sinh thái (như TCBS) tư vấn, phân phối. Trái phiếu doanh nghiệp dự phóng lên <b>~37 tỷ USD</b> năm 2030 (15%), chia bớt gánh nặng vốn dài hạn của ngân hàng. <span class="muted">Nguồn: FiinGroup</span></p></article>
     <article class="card"><h4>Ngành chịu quản lý chặt nhất</h4><p>Ngân hàng Nhà nước (NHNN) vừa điều hành chính sách tiền tệ, vừa cấp phép, thanh tra, giao hạn mức tăng trưởng tín dụng cho từng ngân hàng. Lợi nhuận ngân hàng vì thế phụ thuộc nhiều vào chính sách, không chỉ vào năng lực kinh doanh.</p></article>
     <article class="card"><h4>Nhóm vốn hoá lớn nhất sàn chứng khoán</h4><p>Cổ phiếu ngân hàng chiếm tỷ trọng lớn nhất trong VN-Index. Định giá ngành thường đo bằng P/B (giá so với vốn chủ) vì tài sản và nợ của ngân hàng chủ yếu là tiền, ghi gần sát giá trị thật.</p>
-      <p>P/E (giá so với lợi nhuận) bổ sung một góc nhìn khác: thị trường đang trả bao nhiêu cho mỗi đồng lợi nhuận hiện tại. Lợi nhuận ngân hàng biến động theo chu kỳ — chi phí dự phòng có thể làm lợi nhuận giảm mạnh ở đáy và tăng vọt khi hoàn nhập — nên P/E cần đọc cùng vị trí trong chu kỳ: P/E thấp ở đỉnh lợi nhuận chưa chắc là rẻ, P/E cao ở đáy chưa chắc là đắt. Vì vậy với ngân hàng, cách đọc sát hơn là định giá trên <b>lợi nhuận trước dự phòng</b> (P/PPOP): phần lợi nhuận từ hoạt động kinh doanh cốt lõi, chưa bị chi phí dự phòng làm méo theo chu kỳ, cho thấy năng lực tạo lợi nhuận bền vững. P/E thông thường vẫn hữu ích khi so với chính lịch sử của ngân hàng qua cả chu kỳ, như cách thị trường vẫn dùng P/E cho các ngành chu kỳ khác (thép, chứng khoán).</p></article>
+      <p>P/E (giá so với lợi nhuận) bổ sung một góc nhìn khác: thị trường đang trả bao nhiêu cho mỗi đồng lợi nhuận hiện tại. Lợi nhuận ngân hàng biến động theo chu kỳ — chi phí dự phòng có thể làm lợi nhuận giảm mạnh ở đáy và tăng vọt khi hoàn nhập — nên P/E cần đọc cùng vị trí trong chu kỳ: P/E thấp ở đỉnh lợi nhuận chưa chắc là rẻ, P/E cao ở đáy chưa chắc là đắt. Vì vậy với ngân hàng, cách đọc sát hơn là định giá trên <b>lợi nhuận trước dự phòng</b>: phần lợi nhuận từ hoạt động kinh doanh cốt lõi, chưa bị chi phí dự phòng làm méo theo chu kỳ, cho thấy năng lực tạo lợi nhuận bền vững. P/E thông thường vẫn hữu ích khi so với chính lịch sử của ngân hàng qua cả chu kỳ, như cách thị trường vẫn dùng P/E cho các ngành chu kỳ khác (thép, chứng khoán).</p></article>
   </div>
 
   <h3 class="ovh" id="ov2">2 · Chuỗi giá trị</h3>
@@ -348,30 +348,13 @@ function paneOverview() {
   collapsify($('#overview'), 'ov', ['ov1', 'ov2']);
   $$('#overview [data-ov]').forEach(a => a.onclick = e => { e.preventDefault(); const t = document.getElementById(a.dataset.ov); if (t) { if (t.classList.contains('shut')) t.click(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
 }
-function ppopValIns() {
-  const z = (v, m) => sg((v - m.mean) / m.sd, 1, 'σ'), n = SV.now;
-  return `Hiện P/E ngành <b>${x(n.pe)}</b> (trung bình ${x(SV.pe.mean)}, ${z(n.pe, SV.pe)}), P/PPOP <b>${x(n.pppop)}</b> (trung bình ${x(SV.pppop.mean)}, ${z(n.pppop, SV.pppop)}). Đo trên lợi nhuận trước dự phòng, mức chiết khấu so với lịch sử nhỏ hơn đo trên P/E — một phần "rẻ" của P/E đến từ việc lợi nhuận được hỗ trợ bởi tỷ lệ dự phòng thấp hơn trước.`
-    + how('P/PPOP loại bỏ chi phí dự phòng — khoản biến động mạnh nhất theo chu kỳ nợ xấu — nên phản ánh năng lực tạo lợi nhuận cốt lõi. Khi P/E giảm nhanh hơn P/PPOP, thị trường đang định giá rủi ro dự phòng tăng trở lại; khi P/E cao hơn bình thường nhưng P/PPOP vẫn thấp, lợi nhuận đang bị dự phòng kìm và có dư địa phục hồi.');
-}
 function ppopBurdenIns() {
   const P = D.ppopSector, n = P.ppop.length - 1, rt = i => P.prov[i] / P.ppop[i] * 100, i0 = P.end.indexOf('2022-12');
   return `${P.q[n]}: lợi nhuận trước dự phòng 4 quý <b>${nf(P.ppop[n], 1)} nghìn tỷ</b> (${sg((P.ppop[n] / P.ppop[n - 4] - 1) * 100, 1, '%')} so với cùng kỳ), chi phí dự phòng ${nf(P.prov[n], 1)} nghìn tỷ (${sg((P.prov[n] / P.prov[n - 4] - 1) * 100, 1, '%')}), LNST ${nf(P.npat[n], 1)} nghìn tỷ. Dự phòng chiếm <b>${pc(rt(n), 1)}</b> lợi nhuận trước dự phòng, thấp hơn mức ~${pc(rt(0), 0)} giai đoạn 2018–2021${i0 >= 0 ? ` và ${pc(rt(i0), 1)} cuối 2022` : ''}.`
     + how('Tỷ lệ dự phòng / lợi nhuận trước dự phòng giảm là nguồn tăng LNST nhanh hơn hoạt động cốt lõi. Nếu nợ xấu tăng và tỷ lệ này quay về vùng 35–40%, LNST sẽ tăng chậm hơn PPOP dù kinh doanh cốt lõi vẫn tốt — đây là rủi ro chính khi đọc P/E ở giai đoạn hiện tại.');
 }
-function peVsPpopIns() {
-  const ok = Lr.filter(r => r.pppop && r.pe && r.pe > 0 && r.pe <= 30);
-  const heavy = ok.filter(r => r.provRatio >= 35).sort((a, b) => b.provRatio - a.provRatio).slice(0, 4).map(r => `${r.s} (P/E ${x(r.pe)}, P/PPOP ${x(r.pppop)}, dự phòng ${pc(r.provRatio, 0)})`);
-  const clean = ok.filter(r => r.provRatio < 15).map(r => `${r.s} (${pc(r.provRatio, 0)})`);
-  const cheap = ok.filter(r => r.pppop < 3.5).sort((a, b) => a.pppop - b.pppop).map(r => `${r.s} ${x(r.pppop)}`);
-  const big = Lr.filter(r => r.pe > 30 && r.pppop && r.pppop < 15).map(r => `${r.s} (P/E ${x(r.pe)} nhưng P/PPOP ${x(r.pppop)}, dự phòng ${pc(r.provRatio, 0)})`);
-  return `Dự phòng ăn nhiều lợi nhuận nhất: <b>${heavy.join('; ')}</b> — đo trên lợi nhuận cốt lõi, nhóm này rẻ hơn nhiều so với P/E thể hiện. Lợi nhuận "sạch" (dự phòng dưới 15%): ${clean.join(', ')} — P/E gần sát P/PPOP. P/PPOP thấp nhất: ${cheap.join(', ')}.${big.length ? ` Ngoài khung: ${big.join('; ')}.` : ''}`
-    + how('So P/E và P/PPOP cùng lúc để biết mức định giá đến từ đâu: P/E cao do lợi nhuận đang gánh dự phòng lớn (xử lý nợ cũ) khác với P/E cao do thị trường trả giá cao cho tăng trưởng. Ngân hàng có P/PPOP thấp và dự phòng cao sẽ hưởng lợi nhiều nhất khi chi phí tín dụng bình thường hoá — với điều kiện chất lượng tài sản không xấu thêm.');
-}
 function drPpop() {
   if (!D.ppopSector) return;
-  const m = SV.monthly.filter(r => r.pppop);
-  mk('chPpopVal', { type: 'line', data: { labels: m.map(r => mvn(r.d)), datasets: [L('P/E', m.map(r => r.pe), C.navy, { unit: 'x', dp: 2 }), L('P/PPOP', m.map(r => r.pppop), C.tealInk, { unit: 'x', dp: 2 })] },
-    options: { plugins: { refLines: { lines: [{ value: SV.pe.mean, label: 'TB P/E ' + x(SV.pe.mean), color: C.navy }, { value: SV.pppop.mean, label: 'TB P/PPOP ' + x(SV.pppop.mean), color: C.tealInk }] } }, scales: { y: numAxis('lần', { beginAtZero: false, ticks: { callback: v => nf(v, 1) + 'x' } }) } } });
   const P = D.ppopSector;
   mk('chPpopBurden', { type: 'bar', data: { labels: P.q, datasets: [
     { type: 'bar', label: 'Lợi nhuận trước dự phòng', data: P.ppop, backgroundColor: 'rgba(31,138,141,.75)', unit: ' nghìn tỷ', dp: 1 },
@@ -379,14 +362,7 @@ function drPpop() {
     { type: 'bar', label: 'LNST', data: P.npat, backgroundColor: 'rgba(29,38,120,.8)', unit: ' nghìn tỷ', dp: 1 },
     L('Dự phòng / LN trước dự phòng', P.ppop.map((v, i) => +(P.prov[i] / v * 100).toFixed(1)), C.gold, { yAxisID: 'y1', dp: 1, borderWidth: 2.4 })] },
     options: { scales: { y: numAxis('nghìn tỷ đồng'), y1: pctAxis('', { position: 'right', grid: { display: false }, min: 0, max: 50 }) } } });
-  const ok = Lr.filter(r => r.pppop && r.pe && r.pe > 0 && r.pe <= 30), mx = Math.ceil(Math.max(...ok.map(r => r.pppop)) * 1.15);
-  mk('chPeVsPpop', { type: 'scatter', data: { datasets: [...GROUPS.map(g => ({ label: g, data: ok.filter(r => r.group === g).map(r => ({ x: r.pppop, y: r.pe, s: r.s, pr: r.provRatio })), backgroundColor: GC[g], pointRadius: 5, pointHoverRadius: 7 })),
-      { type: 'line', label: 'Không trích dự phòng', data: [{ x: 0, y: 0 }, { x: mx, y: mx / 0.8 }], borderColor: '#b9c1cf', borderDash: [4, 4], borderWidth: 1, pointRadius: 0 },
-      { type: 'line', label: 'Dự phòng 30% lợi nhuận trước dự phòng', data: [{ x: 0, y: 0 }, { x: mx, y: mx / 0.7 / 0.8 }], borderColor: '#e2b0a8', borderDash: [2, 4], borderWidth: 1, pointRadius: 0 }] },
-    options: { interaction: { mode: 'nearest', intersect: true }, plugins: { tooltip: { callbacks: { label: c => c.raw.s ? `${c.raw.s}: P/E ${x(c.raw.y)} · P/PPOP ${x(c.raw.x)} · dự phòng ${pc(c.raw.pr, 0)} lợi nhuận trước dự phòng` : '' } } },
-      scales: { x: numAxis('P/PPOP (lần)', { min: 0, max: mx, ticks: { callback: v => nf(v, 0) + 'x' } }), y: numAxis('P/E (lần)', { min: 0, max: Math.min(30, Math.ceil(Math.max(...ok.map(r => r.pe)) * 1.15 / 5) * 5), ticks: { callback: v => nf(v, 0) + 'x' } }) } },
-    plugins: [{ id: 'lbl2', afterDatasetsDraw(ch) { const { ctx } = ch; ctx.save(); ctx.font = '600 10.5px Arial'; ctx.fillStyle = '#3f4656';
-      ch.data.datasets.forEach((ds, i) => { if (ds.type === 'line') return; ch.getDatasetMeta(i).data.forEach((p, j) => ctx.fillText(ds.data[j].s, p.x + 6, p.y - 4)); }); ctx.restore(); } }] });
+
 }
 function subPeer() {
   const nimY = AG.nim.all[QY], nimN = AG.nim.all[QI];
@@ -395,7 +371,6 @@ function subPeer() {
   <div class="kpis">
     ${kpi('P/B ngành', x(SV.now.pb), `TB từ ${mvn(SV.from)}: ${x(SV.pb.mean)} (${sg(pbZ, 1, 'σ')})`, pbZ < 0 ? 'pos' : '')}
     ${kpi('P/E ngành', x(SV.now.pe), `TB ${x(SV.pe.mean)} · LNST TTM ${nf(SV.profitTTM, 1)} nghìn tỷ`)}
-    ${SV.pppop ? kpi('P/PPOP ngành', x(SV.now.pppop), `TB ${x(SV.pppop.mean)} (${sg((SV.now.pppop - SV.pppop.mean) / SV.pppop.sd, 1, 'σ')}) · giá / lợi nhuận trước dự phòng`, SV.now.pppop < SV.pppop.mean ? 'pos' : '') : ''}
     ${kpi('NIM ngành ' + BQ[QI], pc(nimN, 2), `cùng kỳ ${pc(nimY, 2)}`, nimN < nimY ? 'neg' : 'pos')}
     ${kpi('NPL ngành', pc(AG.npl.all[QI], 2), `cùng kỳ ${pc(AG.npl.all[QY], 2)} · nhóm 2 ${pc(AG.g2.all[QI], 2)}`)}
     ${kpi('Tín dụng so đầu năm', pc(ytdNow.v, 2), `${mvn(ytdNow.d)} · cùng kỳ ${pc(ytdLY && ytdLY.v, 2)}`, ytdLY && ytdNow.v < ytdLY.v ? 'neg' : '')}
@@ -406,11 +381,7 @@ function subPeer() {
   ${card({ id: 'chCompare', title: 'So sánh tài chính & định giá', h: 'tall', sub: `Chọn chỉ tiêu và nhóm · ${BQ[QI]} (NIM, COF, CIR, ROE: TTM) · P/B, P/E theo giá ${dvn(D.latest.priceDate)}`,
     body: `<div class="picker" id="cmpMetric">${CMP.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div><div class="picker" id="cmpGroup">${['Tất cả', ...GROUPS].map(g => `<button type="button" data-g="${g}">${g}</button>`).join('')}</div>`,
     insight: '<span id="cmpIns"></span>', src: 'WiData ratio_bank, ratio_bank_ttm, ratio_common_ttm, ratio_daily' })}
-  ${D.ppopSector ? `<div class="grid g2 gap">
-    ${card({ id: 'chPpopVal', title: 'P/E và P/PPOP ngành: định giá trên lợi nhuận và trên lợi nhuận trước dự phòng', h: 'tall', sub: 'lần · cuối tháng · P/PPOP = vốn hoá / lợi nhuận trước dự phòng 4 quý đã công bố · nét đứt = trung bình giai đoạn', insight: ppopValIns(), src: 'Giá: HOSE, HNX, UPCoM; lợi nhuận: BCTC hợp nhất 26 ngân hàng niêm yết · tự tính' })}
-    ${card({ id: 'chPpopBurden', title: 'Lợi nhuận trước dự phòng, chi phí dự phòng và LNST toàn ngành', h: 'tall', sub: 'nghìn tỷ đồng, cộng 4 quý · đường = chi phí dự phòng / lợi nhuận trước dự phòng (%, trục phải)', insight: ppopBurdenIns(), src: 'BCTC hợp nhất 26 ngân hàng niêm yết · tự tính' })}
-  </div>
-  ${card({ id: 'chPeVsPpop', title: 'P/E so với P/PPOP từng ngân hàng: lợi nhuận đang bị dự phòng "ăn" bao nhiêu', h: 'tall', sub: `P/PPOP (trục ngang) · P/E (trục dọc) theo giá ${dvn(D.latest.priceDate)}, lợi nhuận 4 quý tới ${BQ[QI]} · đường nét đứt = mức P/E nếu không trích dự phòng và nếu dự phòng 30% (sau thuế 20%); càng nằm cao, dự phòng càng ăn nhiều lợi nhuận · ẩn mã P/E > 30 lần`, insight: peVsPpopIns(), src: 'Giá: HOSE, HNX, UPCoM; BCTC hợp nhất · tự tính' })}` : ''}
+  ${D.ppopSector ? `${card({ id: 'chPpopBurden', title: 'Lợi nhuận trước dự phòng, chi phí dự phòng và LNST toàn ngành', h: 'tall', sub: 'nghìn tỷ đồng, cộng 4 quý · đường = chi phí dự phòng / lợi nhuận trước dự phòng (%, trục phải)', insight: ppopBurdenIns(), src: 'BCTC hợp nhất 26 ngân hàng niêm yết · tự tính' })}` : ''}
   <div class="grid g2 gap">
     ${card({ id: 'chRoePb', title: 'ROE và P/B: ai đang được định giá cao/thấp so với khả năng sinh lời', sub: `ROE TTM ${BQ[QI]} (trục ngang) · P/B ${dvn(D.latest.priceDate)} (trục dọc) · màu theo nhóm`, h: 'tall',
       insight: roePbInsight(), src: 'WiData ratio_common_ttm, ratio_daily' })}
@@ -490,13 +461,13 @@ function groupCard(g) {
     <dl>${row('NIM', 'nim')}${row('COF', 'cof')}${row('CASA', 'casa', 1)}${row('NPL', 'npl')}${row('Bao phủ nợ xấu', 'llr', 0)}${row('ROE', 'roe', 1)}${row('P/B', 'pb', 2, x)}</dl>
     <p>${GDESC[g]}</p></div>`;
 }
-const CMP = [['nim', 'NIM'], ['cof', 'COF'], ['casa', 'CASA'], ['npl', 'NPL'], ['g2', 'Nợ nhóm 2'], ['llr', 'Bao phủ nợ xấu'], ['ldr', 'LDR'], ['creditYoY', 'Tín dụng YoY'], ['roe', 'ROE'], ['cir', 'CIR'], ['pb', 'P/B'], ['pe', 'P/E'], ['pppop', 'P/PPOP'], ['provRatio', 'Dự phòng / LN trước DP']];
+const CMP = [['nim', 'NIM'], ['cof', 'COF'], ['casa', 'CASA'], ['npl', 'NPL'], ['g2', 'Nợ nhóm 2'], ['llr', 'Bao phủ nợ xấu'], ['ldr', 'LDR'], ['creditYoY', 'Tín dụng YoY'], ['roe', 'ROE'], ['cir', 'CIR'], ['pb', 'P/B'], ['pe', 'P/E'], ['provRatio', 'Dự phòng / LN trước DP']];
 function drawCompare(k, g) {
   $$('#cmpMetric button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
   $$('#cmpGroup button').forEach(b => b.classList.toggle('on', b.dataset.g === g));
-  const lab = Object.fromEntries(CMP)[k], isX = k === 'pb' || k === 'pe' || k === 'pppop';
-  const rows = Lr.filter(r => (g === 'Tất cả' || r.group === g) && r[k] != null && !(k === 'pe' && r[k] > 60) && !(k === 'pppop' && r[k] > 20)).sort((a, b) => b[k] - a[k]);
-  const sector = k === 'pb' ? SV.now.pb : k === 'pe' ? SV.now.pe : k === 'pppop' ? SV.now.pppop : k === 'provRatio' && D.ppopSector ? D.ppopSector.prov.at(-1) / D.ppopSector.ppop.at(-1) * 100 : (AG[k] ? AG[k].all[QI] : null);
+  const lab = Object.fromEntries(CMP)[k], isX = k === 'pb' || k === 'pe';
+  const rows = Lr.filter(r => (g === 'Tất cả' || r.group === g) && r[k] != null && !(k === 'pe' && r[k] > 60)).sort((a, b) => b[k] - a[k]);
+  const sector = k === 'pb' ? SV.now.pb : k === 'pe' ? SV.now.pe : k === 'provRatio' && D.ppopSector ? D.ppopSector.prov.at(-1) / D.ppopSector.ppop.at(-1) * 100 : (AG[k] ? AG[k].all[QI] : null);
   mk('chCompare', { type: 'bar', data: { labels: rows.map(r => r.s), datasets: [{ label: lab, data: rows.map(r => r[k]), backgroundColor: rows.map(r => GC[r.group]), dp: 2, unit: isX ? 'x' : '%' }] },
     options: { plugins: { legend: { display: false }, refLines: sector != null ? { lines: [{ value: sector, label: 'Ngành ' + (isX ? x(sector) : pc(sector, 2)), color: C.red }] } : {} },
       scales: { y: isX ? numAxis('', { ticks: { callback: v => nf(v, 1) + 'x' } }) : pctAxis(), x: { ticks: { autoSkip: false, maxRotation: 60 } } } } });
@@ -511,10 +482,10 @@ function roePbInsight() {
   const rich = ok.filter(r => r.pb >= 1.9).map(r => `${r.s} ${x(r.pb)}`);
   return `Vùng "ROE cao, P/B thấp" (ROE ≥ 18%, P/B ≤ 1,3x): <b>${cheap.join(', ') || '—'}</b>. P/B cao vượt trội: ${rich.join(', ')} — VCB do chất lượng tài sản, LPB, STB, NVB vì kỳ vọng tái cơ cấu/sáp nhập chứ không vì ROE hiện tại.`;
 }
-const TCOLS = [['s', 'Mã'], ['group', 'Nhóm'], ['nim', 'NIM'], ['cof', 'COF'], ['casa', 'CASA'], ['npl', 'NPL'], ['g2', 'Nhóm 2'], ['llr', 'Bao phủ'], ['ldr', 'LDR'], ['creditYoY', 'TD YoY'], ['roe', 'ROE'], ['cir', 'CIR'], ['pb', 'P/B'], ['pe', 'P/E'], ['pppop', 'P/PPOP'], ['provRatio', 'DP/PPOP'], ['mcap', 'Vốn hóa (tỷ)']];
+const TCOLS = [['s', 'Mã'], ['group', 'Nhóm'], ['nim', 'NIM'], ['cof', 'COF'], ['casa', 'CASA'], ['npl', 'NPL'], ['g2', 'Nhóm 2'], ['llr', 'Bao phủ'], ['ldr', 'LDR'], ['creditYoY', 'TD YoY'], ['roe', 'ROE'], ['cir', 'CIR'], ['pb', 'P/B'], ['pe', 'P/E'], ['provRatio', 'DP/LN trước DP'], ['mcap', 'Vốn hóa (tỷ)']];
 function drawTable(k, dir) {
   const rows = [...Lr].sort((a, b) => { const A = a[k], B = b[k]; if (A == null) return 1; if (B == null) return -1; return typeof A === 'string' ? dir * A.localeCompare(B) : dir * (A - B); });
-  const fmt = (c, v) => c === 's' ? `<b>${v}</b>` : c === 'group' ? gdot(v) + v : c === 'pb' || c === 'pe' || c === 'pppop' ? x(v) : c === 'provRatio' ? pc(v, 0) : c === 'mcap' ? nf(v) : c === 'llr' ? pc(v, 0) : pc(v, 2);
+  const fmt = (c, v) => c === 's' ? `<b>${v}</b>` : c === 'group' ? gdot(v) + v : c === 'pb' || c === 'pe' ? x(v) : c === 'provRatio' ? pc(v, 0) : c === 'mcap' ? nf(v) : c === 'llr' ? pc(v, 0) : pc(v, 2);
   $('#cmpTable').innerHTML = `<table><thead><tr>${TCOLS.map(([c, l]) => `<th class="sortable ${c === 's' || c === 'group' ? '' : 'n'}" data-c="${c}">${l}${c === k ? (dir < 0 ? ' ↓' : ' ↑') : ''}</th>`).join('')}</tr></thead>
     <tbody>${rows.map(r => `<tr>${TCOLS.map(([c]) => `<td class="${c === 's' || c === 'group' ? '' : 'n'}" style="${c === 'group' ? 'white-space:nowrap' : ''}">${fmt(c, r[c])}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
   $$('#cmpTable th').forEach(th => th.onclick = () => drawTable(th.dataset.c, th.dataset.c === k ? -dir : -1));
