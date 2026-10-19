@@ -545,7 +545,27 @@ function subCamel() {
       sub: 'trục ngang = điểm ước tính × 2,6% · trục dọc = tăng trưởng tín dụng (TTM Q2/2026: từ đầu năm, so với nửa room; năm 2025: cả năm) · trên đường đỏ = chạy nhanh hơn room theo công thức (thường là NH được ưu tiên hoặc được nới)',
       insight: '<span id="cmIns"></span>', src: 'tự tính từ bảng điểm bên cạnh và tín dụng (cho vay + trái phiếu DN) theo BCTC' })}
     <article class="card" id="cmDet"></article>
-  </div>`;
+  </div>
+  ${cmMethod()}`;
+}
+function cmMethod() {
+  const wq = CK.map(k => `${k} ${nf(CM.crit[k].wq, 0)}%`).join(' · '), wl = CK.map(k => `${k} ${nf(CM.crit[k].wl, 0)}%`).join(' · ');
+  const px = CM.ind.filter(I => I.note), ms = CM.ind.filter(I => I.missing);
+  return `<article class="card cm-method"><h3 class="sub">Phương pháp luận và nguồn</h3>
+    <ol class="mlist">
+      <li><b>Khung chấm điểm.</b> Thông tư 21/2025/TT-NHNN quy định xếp hạng tổ chức tín dụng theo 6 tiêu chí C·A·M·E·L·S: Vốn (C), Chất lượng tài sản (A), Quản trị điều hành (M), Kết quả kinh doanh (E), Thanh khoản (L), Mức độ nhạy cảm với rủi ro thị trường (S). Mỗi tiêu chí gồm phần định lượng (tổng 70%) và định tính (tổng 30%).</li>
+      <li><b>Chấm từng chỉ tiêu.</b> Mỗi chỉ tiêu định lượng được chấm 1–5 điểm theo ngưỡng tại Điều 14; ngưỡng khác nhau giữa nhóm ngân hàng quy mô lớn (tổng tài sản bình quân &gt; 300 nghìn tỷ đồng) và nhóm quy mô nhỏ. Điểm tiêu chí = bình quân gia quyền điểm các chỉ tiêu theo trọng số Điều 15.</li>
+      <li><b>Tổng điểm.</b> Trọng số định lượng (Điều 19): ${wq}. Trọng số định tính: ${wl}. Phần định tính không có số công khai nên dùng một điểm chung cho cả 6 tiêu chí, mặc định ${nf(CM.qualDefault, 1)}, chỉnh được trên bảng. Tổng điểm = phần định lượng + 30% × điểm định tính.</li>
+      <li><b>Hạng (Điều 21).</b> A: từ 4,5 điểm · B: 3,5 đến dưới 4,5 · C: 2,5 đến dưới 3,5 · D: 1,5 đến dưới 2,5 · E: dưới 1,5.</li>
+      <li><b>Room ngụ ý.</b> Tổng điểm × ${nf(CM.roomCoef, 1)}%, theo cách giao chỉ tiêu tăng trưởng tín dụng năm 2026 (điểm xếp hạng × 2,6%). Ngân hàng đánh dấu ★ nhận chuyển giao bắt buộc ngân hàng yếu kém, thường được giao room cao hơn công thức.</li>
+      <li><b>Kỳ số liệu.</b> TTM Q2/2026: số dư bình quân 4 quý Q3/2025–Q2/2026, thu nhập và chi phí cộng 4 quý. Năm 2025: 4 quý năm 2025. Tỷ lệ an toàn vốn lấy từ báo cáo CAR gần nhất (H1/2026 hoặc năm 2025). Cả hai kỳ chấm theo ngưỡng TT 21/2025 để so sánh được với nhau.</li>
+      <li><b>Chỉ tiêu không công bố</b> (${ms.map(I => esc(I.name.split(' (')[0])).join('; ')}): tính điểm giữa 3 và để khoảng điểm 1–5; dấu * trên bảng cho biết tiêu chí có chỉ tiêu thiếu số. Thanh dưới tổng điểm thể hiện khoảng điểm này.</li>
+      <li><b>Ghi chú từng chỉ tiêu</b> (số gần đúng khi BCTC không tách đúng định nghĩa của thông tư):<ul>${px.map(I => `<li>${I.id} · ${esc(I.name)}: ${esc(I.note.replace(/^proxy: /, 'gần đúng — '))}</li>`).join('')}</ul></li>
+      <li><b>Tín dụng YTD</b> = cho vay khách hàng + trái phiếu doanh nghiệp nắm giữ, so với cuối năm trước.</li>
+    </ol>
+    <p class="cm-lim"><b>Giới hạn.</b> Kết quả xếp hạng chính thức của NHNN được bảo mật (Điều 24), nên bảng này là ước tính từ số liệu công khai. Điểm định lượng dựa trên lợi nhuận và chi phí của 4 quý gần nhất, nên các khoản thu nhập bất thường (thu hồi nợ đã xử lý, lãi chứng khoán) có thể nâng điểm E và M. Chỉ tiêu nợ xấu chưa gồm nợ bán VAMC và nợ cơ cấu, nên điểm A có thể cao hơn thực tế. Chênh lệch tổng điểm dưới 0,1 giữa các ngân hàng nằm trong sai số của phương pháp.</p>
+    <p class="cm-src"><b>Nguồn:</b> Thông tư 21/2025/TT-NHNN quy định xếp hạng tổ chức tín dụng, chi nhánh ngân hàng nước ngoài (Điều 14, 15, 19, 21, 24); Thông tư 41/2016/TT-NHNN về tỷ lệ an toàn vốn; Thông tư 22/2019/TT-NHNN về tỷ lệ cho vay so với tiền gửi; công văn giao chỉ tiêu tăng trưởng tín dụng năm 2026 của NHNN; báo cáo tài chính hợp nhất, thuyết minh (phân loại nợ, dự phòng, cho vay theo ngành, rủi ro lãi suất) và công bố tỷ lệ an toàn vốn của 26 ngân hàng niêm yết. Tính toán: FinSuccess.</p>
+  </article>`;
 }
 function cmLever(r) {   // chỉ tiêu nào nhích lên 1 điểm thì được thêm bao nhiêu room
   const out = [];

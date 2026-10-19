@@ -390,3 +390,8 @@ h3.ovh.coll:hover{color:var(--blue)}
 .vswitch input:checked + .vtrack .vknob{left:19px}
 .vswitch input:focus-visible + .vtrack{outline:2px solid var(--teal);outline-offset:2px}
 .qc-h.coll{cursor:pointer}.qc-h.coll::after{content:'▾';margin-left:auto;color:var(--muted)}.qc.qshut>.qc-h::after{transform:rotate(-90deg)}.qc.qshut>:not(.qc-h){display:none}
+
+.cm-method .mlist{margin:6px 0 10px;padding-left:20px;display:grid;gap:6px;font-size:13.5px;line-height:1.55}
+.cm-method .mlist ul{margin:4px 0 0;padding-left:18px;display:grid;gap:3px;font-size:12.5px;color:var(--muted,#5b6270)}
+.cm-method .cm-lim{font-size:13px;line-height:1.55;margin:8px 0}
+.cm-method .cm-src{font-size:12px;line-height:1.5;color:var(--muted,#6b7280);margin:6px 0 0}
