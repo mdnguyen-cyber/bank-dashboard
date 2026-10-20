@@ -402,3 +402,6 @@ h3.ovh.coll:hover{color:var(--blue)}
 .aibot{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:61;display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 16px;border-radius:22px;background:var(--teal);color:var(--navy);font:700 14px Arial,sans-serif;text-decoration:none;box-shadow:0 4px 14px rgba(20,30,60,.25)}
 .aibot:hover{filter:brightness(1.05)}.aibot span{font-size:15px}
 @media print{.aibot{display:none}}
+.aibot-soon{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:62;max-width:min(320px,calc(100vw - 36px));background:#fff;color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;padding:10px 14px;box-shadow:0 6px 20px rgba(20,30,60,.18);display:flex;flex-direction:column;gap:2px;font-size:13px;opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .2s}
+.aibot-soon.on{opacity:1;transform:none}.aibot-soon b{color:var(--navy)}
+.aibot-soon.on~.totop{opacity:0}

@@ -2,6 +2,268 @@
  "note": "Mỗi bản cập nhật là một phần tử trong updates. Bản mới thêm vào, không sửa bản cũ. author.type = 'AI' hoặc 'Chuyên viên'. follows = id bản trước mà bản này viết tiếp. concerns[].status: mới | nóng lên | tiếp diễn | hạ nhiệt. charts[].id = mã chart trong Chart book (python3 scripts/chart_ids.py), last = chỉ hiện N điểm gần nhất. Quy trình: docs/cap-nhat-nhanh.md",
  "updates": [
   {
+   "id": "QU-2026-10-20-AI",
+   "date": "2026-10-20",
+   "author": {
+    "type": "AI",
+    "name": "Claude",
+    "requestedBy": "Minh Đức"
+   },
+   "follows": "QU-2026-10-16-AI",
+   "vsPrev": "Chính sách đổi hướng: NHNN yêu cầu giảm lãi suất tiền gửi tối thiểu 0,5% và lãi suất cho vay 1,5–2% (công văn 9608 ngày 18/10); tín dụng lùi về 11,44% so với đầu năm; VNIBOR 3 tháng hạ từ 7,78% xuống 7,60%.",
+   "headline": "Ngành chịu sức ép giảm lãi suất: NHNN yêu cầu hạ lãi suất tiền gửi tối thiểu 0,5% và cho vay 1,5–2%, Big 4 đi đầu; NIM bị ép ngắn hạn trong khi tín dụng chững ở 11,44%",
+   "summary": [
+    "Quan điểm chuyên viên (Minh Đức, 15/10): ngành <b>trung lập</b>, kịch bản <b>thắt chặt kéo dài</b>, ưu tiên <b>Big 4 – CTG</b> với giả định lãi suất huy động khó giảm và NIM Big 4 hưởng lợi. Diễn biến mới đặt lại giả định này: lãi suất huy động bị yêu cầu giảm bằng chỉ đạo, còn lãi suất cho vay giảm nhiều hơn — chuyên viên cần xem lại.",
+    "Công văn <b>9608/NHNN-CSTT</b> (18/10): giảm lãi suất tiền gửi niêm yết tối thiểu <b>0,5%/năm</b> cho kỳ hạn từ 6 tháng, giảm lãi suất cho vay <b>1,5–2%/năm</b> cho sản xuất kinh doanh và lĩnh vực ưu tiên, cấm chạy đua lãi suất huy động; ngân hàng vi phạm có thể bị giảm chỉ tiêu tín dụng 2026 và giao chỉ tiêu thấp năm 2027.",
+    "Big 4 đi đầu: VietinBank hạ lãi suất tiền gửi 12 tháng từ 5,9% xuống <b>5,4%</b> (20/10); BIDV tung gói 100.000 tỷ đồng lãi suất 6–7%, ước giảm thu nhập khoảng 500 tỷ đồng; Agribank cho vay thấp hơn 2–2,5 điểm %, ước giảm thu nhập khoảng <b>6.000 tỷ đồng</b>.",
+    "Tín dụng toàn hệ thống đến 14/10 tăng <b>11,44%</b> so với đầu năm, thấp hơn mức 11,59% cuối tháng 9 — dư nợ giảm khoảng 0,13% trong hai tuần đầu tháng 10.",
+    "Trong nước: VNIBOR VND 3 tháng hạ từ 7,78% (14/10) xuống <b>7,60%</b> (16/10), 1 năm vẫn 7,90%; NHNN hút ròng nhẹ qua OMO (−1.277 tỷ đồng ngày 19/10). USD/VND Vietcombank bán ra <b>26.080</b> (20/10), ổn định.",
+    "Bên ngoài: UST 10 năm tăng lại lên <b>5,15%</b> (19/10, +96 bps từ đầu năm), DXY 101,8; FOMC 27–28/10 là mốc tiếp theo."
+   ],
+   "kpis": [
+    {
+     "l": "P/B ngành",
+     "v": "1,41x",
+     "s": "19/10 · bình quân 1,58x",
+     "cls": "pos"
+    },
+    {
+     "l": "Tín dụng so với đầu năm",
+     "v": "11,44%",
+     "s": "14/10 · 30/9: 11,59%",
+     "cls": "neg"
+    },
+    {
+     "l": "LS tiền gửi 12T VietinBank",
+     "v": "5,4%",
+     "s": "20/10 · −50 bps",
+     "cls": "pos"
+    },
+    {
+     "l": "VNIBOR VND 3 tháng",
+     "v": "7,60%",
+     "s": "16/10 · −18 bps so với 14/10",
+     "cls": ""
+    }
+   ],
+   "concerns": [
+    {
+     "title": "NHNN yêu cầu giảm lãi suất: NIM bị ép từ phía cho vay",
+     "scope": "nganh",
+     "status": "mới",
+     "note": "Sau cuộc họp Chính phủ ngày 16/10, NHNN ban hành công văn <b>9608/NHNN-CSTT</b> (18/10) và họp với lãnh đạo 46 ngân hàng (19/10). Nội dung chính: (1) giảm lãi suất tiền gửi niêm yết tối thiểu <b>0,5%/năm</b> cho kỳ hạn từ 6 tháng; (2) giảm lãi suất cho vay <b>1,5–2%/năm</b> cho sản xuất kinh doanh và lĩnh vực ưu tiên, không cào bằng; (3) không chạy đua tăng lãi suất huy động; (4) kiểm soát tín dụng nhóm khách hàng dư nợ lớn; (5) ngân hàng vi phạm có thể bị giảm chỉ tiêu tín dụng 2026 và giao chỉ tiêu thấp năm 2027. Thống đốc yêu cầu ngân hàng tiết giảm chi phí và <b>chia sẻ lợi nhuận</b>. Big 4 phản ứng ngay: VietinBank hạ lãi suất 12 tháng 5,9% → <b>5,4%</b>; BIDV gói 100.000 tỷ đồng lãi suất 6–7% (giảm thu nhập khoảng 500 tỷ); Agribank ước giảm thu nhập lãi khoảng 6.000 tỷ đồng. <b>Nhận định:</b> mức giảm cho vay (1,5–2 điểm %) lớn hơn mức giảm tiền gửi (≥0,5 điểm %), và tiền gửi chỉ định giá lại dần khi đáo hạn, nên NIM bị thu hẹp trong 1–2 quý tới; mức độ phụ thuộc tỷ trọng dư nợ sản xuất kinh doanh được giảm lãi suất và tốc độ hạ chi phí vốn. <b>Hàm ý:</b> Big 4 chịu phần chia sẻ lợi nhuận lớn nhất vì là kênh thực thi chính sách; lợi thế vốn rẻ của Big 4 vẫn còn nhưng phần chênh lệch có thể bị chuyển cho khách hàng thay vì giữ lại thành NIM.",
+     "change": "Chính sách đổi từ để lãi suất huy động neo cao sang yêu cầu giảm cả lãi suất huy động và cho vay; cho vay giảm nhiều hơn huy động.",
+     "charts": [
+      {
+       "id": "chNimDep",
+       "caption": "COF tăng từ Q2/2025 trong khi NIM đi ngang–giảm; giảm lãi suất cho vay sẽ ép NIM thêm trước khi COF kịp hạ."
+      },
+      {
+       "id": "chDep",
+       "last": 24,
+       "caption": "Lãi suất huy động 12 tháng theo nhóm: VietinBank hạ 50 bps ngày 20/10."
+      }
+     ]
+    },
+    {
+     "title": "Tín dụng chững lại, kiểm soát nhóm khách hàng dư nợ lớn; TT50 đổi công thức LDR",
+     "scope": "nganh",
+     "status": "hạ nhiệt",
+     "note": "Tín dụng toàn hệ thống đến 14/10 tăng <b>11,44%</b> so với đầu năm, thấp hơn 11,59% cuối tháng 9 — dư nợ giảm khoảng <b>0,13%</b> trong hai tuần. Tín dụng tháng 8 tăng 17,4% YoY, tiền gửi 13,6% YoY; LDR bình quân 26 ngân hàng 84,5% (Q2/2026). Công văn 9608 yêu cầu rà soát nhóm khách hàng có chung người quản lý hoặc cổ đông trên 5%, siết tín dụng tập trung. TT50 (hiệu lực 1/12/2026) đổi cả tử số và mẫu số của LDR, giới hạn 95% theo cách tính mới — dư địa từng ngân hàng phải tính lại. <b>Hàm ý:</b> lãi suất cho vay thấp hơn sẽ kích cầu tín dụng phần cuối năm, nhưng kiểm soát dư nợ lớn và chỉ tiêu tín dụng gắn với chấp hành chỉ đạo làm tăng trưởng phân hoá giữa các ngân hàng.",
+     "change": "Tín dụng đi lùi nửa đầu tháng 10 (11,59% → 11,44% so với đầu năm), thêm yêu cầu kiểm soát nhóm khách hàng dư nợ lớn.",
+     "charts": [
+      {
+       "id": "chCredit",
+       "caption": "Tín dụng so với đầu năm theo tháng: nhịp 2026 nhanh hơn các năm trước tới tháng 9."
+      },
+      {
+       "id": "chMoney",
+       "last": 36,
+       "caption": "Tín dụng tăng nhanh hơn tiền gửi 4–6 điểm % từ giữa 2024."
+      }
+     ]
+    },
+    {
+     "title": "Định giá ngành ở vùng đáy 4 năm, mùa KQKD Q3 bắt đầu",
+     "scope": "nganh",
+     "status": "tiếp diễn",
+     "note": "P/B ngành <b>1,41x</b>, P/E 8,44x (19/10), ngang các đáy 10/2022 và 4/2025, thấp hơn bình quân 1,58x. VPBank mở màn mùa KQKD Q3: LNST công ty mẹ Q3 <b>8.644 tỷ đồng</b> (+18,8% YoY), 9 tháng 23.227 tỷ (+44,9%), hoàn thành 70,3% kế hoạch năm. <b>Hàm ý:</b> yêu cầu chia sẻ lợi nhuận làm thị trường chiết khấu thêm lợi nhuận Q4/2026 – 2027, nhất là Big 4; KQKD Q3 phản ánh giai đoạn trước chỉ đạo nên chưa cho thấy tác động lên NIM.",
+     "change": "P/B giảm nhẹ 1,42x → 1,41x; rủi ro mới là lợi nhuận bị chia sẻ theo chỉ đạo giảm lãi suất.",
+     "charts": [
+      {
+       "id": "chPbBand",
+       "caption": "P/B ngành so với bình quân và dải ±1σ."
+      }
+     ]
+    },
+    {
+     "title": "Lãi suất liên ngân hàng VND: kỳ hạn 3 tháng hạ nhiệt, đường cong vẫn dốc",
+     "scope": "noi",
+     "status": "hạ nhiệt",
+     "note": "VNIBOR VND qua đêm <b>4,50%</b> (16/10), 1 tháng 5,5%, 3 tháng hạ từ 7,78% (14/10) xuống <b>7,60%</b>, 6 tháng – 1 năm 7,85–7,90%. Đường cong vẫn dốc (1 năm − qua đêm khoảng +3,4 điểm %). NHNN hút ròng nhẹ qua OMO: −5.142 tỷ đồng (16/10) và −1.277 tỷ (19/10), lãi suất OMO giữ 4,5%. Chênh VND − USD 3 tháng <b>+3,40 điểm %</b> (VNIBOR USD 3 tháng 4,20%). <b>Nhận định:</b> giảm lãi suất tiền gửi trong khi vốn liên ngân hàng kỳ hạn dài còn gần 8% tạo khe hở — Chính phủ đã giao NHNN bảo đảm thanh khoản cho ngân hàng thương mại, nên cần theo dõi NHNN có chuyển sang bơm ròng hay không.",
+     "change": "VNIBOR 3 tháng −18 bps sau 1 tuần tăng mạnh; OMO vẫn hút ròng nhẹ.",
+     "charts": [
+      {
+       "id": "mmCurve",
+       "caption": "Đường cong VNIBOR VND, VNIBOR USD và SOFR theo kỳ hạn, so với 1 tuần và 1 tháng trước."
+      },
+      {
+       "id": "chOn",
+       "last": 24,
+       "caption": "Lãi suất qua đêm và OMO: NHNN giữ 4,5%, bơm/hút ròng theo tháng."
+      }
+     ]
+    },
+    {
+     "title": "Lạm phát trong nước vượt mục tiêu",
+     "status": "tiếp diễn",
+     "note": "Chưa có số mới: CPI tháng 9 <b>5,08%</b> YoY, bình quân 9 tháng <b>4,52%</b> đã vượt mục tiêu khoảng 4,5%; lạm phát cơ bản 4,45%. NHNN khó hạ lãi suất điều hành, tiếp tục điều tiết bằng OMO. CPI tháng 10 công bố ngày 6/11.",
+     "change": "Chưa có số CPI mới; CPI tháng 10 công bố 6/11. Lạm phát vượt mục tiêu là một lý do NHNN chọn giảm lãi suất bằng chỉ đạo hành chính thay vì hạ lãi suất điều hành.",
+     "charts": [
+      {
+       "id": "chCpi",
+       "last": 24,
+       "caption": "CPI bình quân từ đầu năm đã chạm mục tiêu."
+      }
+     ],
+     "scope": "noi"
+    },
+    {
+     "title": "Áp lực tỷ giá từ bên ngoài: ổn định, chờ FOMC",
+     "scope": "qt",
+     "status": "tiếp diễn",
+     "note": "UST 10 năm tăng lại lên <b>5,15%</b> (19/10) sau mức 5,09% ngày 16/10; 2 năm 4,77%. DXY 101,8, gần như không đổi trong tuần; USD/CNY 6,681 (CNY tiếp tục mạnh lên). Tỷ giá trung tâm 25.639 (20/10); Vietcombank bán USD <b>26.080</b>, ổn định quanh 26.060–26.100 trong tuần. CPI Mỹ tháng 9 3,72% YoY; thị trường ngày 9/10 đặt khả năng thấp cho lần tăng ngày 28/10 nhưng cao cho lần tăng trước cuối năm. <b>Hàm ý:</b> tỷ giá ổn định là điều kiện để NHNN chọn giảm lãi suất; một lần tăng bất ngờ của Fed sẽ thu hẹp dư địa này.",
+     "change": "Không đổi xu hướng: UST 10 năm +6 bps, tỷ giá trong nước đi ngang.",
+     "charts": [
+      {
+       "id": "gUsRates",
+       "last": 130,
+       "caption": "UST 2 năm và 10 năm theo ngày."
+      },
+      {
+       "id": "chFx",
+       "last": 18,
+       "caption": "Hành lang tỷ giá USD/VND và DXY."
+      }
+     ]
+    },
+    {
+     "title": "Lợi suất trái phiếu chính phủ toàn cầu và châu Á: cao hơn đầu năm, đi ngang trong tuần",
+     "status": "tiếp diễn",
+     "note": "Từ đầu năm, lợi suất 10 năm tăng đồng loạt: Mỹ <b>+96 bps</b> lên 5,15% (19/10), Nhật <b>+82 bps</b> lên 2,94%, khu vực euro (toàn bộ TPCP) +76 bps lên 4,12%, Đức +53 bps lên 3,49%. Số bình quân tháng 9 cho thấy áp lực lan rộng: Pháp <b>4,44%</b> (+93 bps 12 tháng), Ý 4,36%, Tây Ban Nha 3,93%, Anh 5,24%, Úc 5,28%, Hàn Quốc 4,45% (+161 bps 12 tháng). Nguyên nhân chung là lạm phát vòng 2: CPI tháng 9 của khu vực euro 3,8%, Tây Ban Nha 5,0%, Ý 4,1%, Mỹ 3,7%, cùng giá dầu WTI quanh <b>100 USD/thùng</b>. Ở Mỹ, cả đường cong dịch lên so với đầu năm (2 năm +130 bps, 10 năm +91 bps) — thị trường định giá Fed tăng tiếp và phần bù kỳ hạn cao hơn. Ở Nhật, lợi suất JGB đủ cao để nhà đầu tư Nhật hồi hương vốn, cộng với Bộ Tài chính Nhật bán chứng khoán ngoại tệ khi can thiệp (dự trữ giảm 205 tỷ USD từ tháng 4) — thêm áp lực bán trái phiếu Mỹ. Sau nhịp giảm 12–18 bps tuần trước, lợi suất Mỹ tăng lại 6 bps phiên 19/10 (5,09% → 5,15%) — chưa có dấu hiệu đổi xu hướng khi lạm phát và giá dầu chưa hạ. Ở châu Á, Hàn Quốc 10 năm <b>4,21%</b> (+82 bps từ đầu năm) và Đài Loan 2,02% (+62 bps) đi cùng chiều Mỹ, Nhật; Singapore 2,33% chỉ +11 bps. Trung Quốc là ngoại lệ: lợi suất 10 năm <b>1,65%</b>, thấp hơn đầu năm 19 bps do giảm phát và PBoC nới lỏng, đẩy chênh lệch Mỹ − Trung Quốc lên <b>350 bps</b> — sức ép giảm giá lên CNY và các đồng tiền trong khu vực, gồm VND.",
+     "change": "UST 10 năm tăng lại lên 5,15% (+6 bps phiên 19/10, +96 bps từ đầu năm); chênh Mỹ − Trung Quốc 350 bps.",
+     "charts": [
+      {
+       "id": "gGlY10",
+       "last": 260,
+       "caption": "Thay đổi lợi suất 10 năm so với phiên đầu năm (bps): Mỹ và Nhật dẫn đầu; chọn \"Chỉ số đầu năm = 1\" để xem như slide."
+      },
+      {
+       "id": "gGlAsia",
+       "last": 260,
+       "caption": "Châu Á: Hàn Quốc, Đài Loan tăng theo Mỹ; Trung Quốc đi ngược chiều, thấp hơn đầu năm."
+      },
+      {
+       "id": "gGlY10m",
+       "caption": "Bình quân tháng: châu Âu (Pháp, Ý, Tây Ban Nha) và nhóm phát triển khác cùng tăng trong 12 tháng."
+      },
+      {
+       "id": "gGlCurve",
+       "caption": "Đường cong lợi suất Mỹ dịch lên toàn bộ so với đầu năm, đầu 2 năm tăng mạnh nhất."
+      },
+      {
+       "id": "gGlOil",
+       "caption": "Giá dầu neo cao giữ lạm phát vòng 2 và lợi suất dài hạn khó giảm."
+      }
+     ],
+     "tables": [
+      "cpi"
+     ],
+     "scope": "qt"
+    },
+    {
+     "title": "Bảng cân đối Fed: dừng thu hẹp, chuyển sang tín phiếu",
+     "status": "tiếp diễn",
+     "note": "Số liệu H.4.1 tuần kết thúc 14/10: tổng tài sản <b>6.756 tỷ USD</b> (+9 tỷ trong tuần, gần như đi ngang 3 tháng). Tín phiếu tăng lên <b>566 tỷ</b> (+60 tỷ trong 13 tuần) trong khi MBS giảm 50 tỷ và notes, bonds đi ngang — Fed tái đầu tư MBS đáo hạn vào tín phiếu và mua thêm để giữ dự trữ đủ. Dự trữ ngân hàng <b>3.031 tỷ</b> (−69 tỷ trong 13 tuần) vì TGA của Kho bạc tăng 90 tỷ lên 886 tỷ. Lãi suất repo bình thường: SOFR thấp hơn IORB 2 bps, phân vị 99 cao hơn 7 bps. Hàm ý: thanh khoản USD toàn cầu không còn bị rút như giai đoạn thu hẹp 2022–2025, giảm một nguồn áp lực lên tỷ giá các nước mới nổi.",
+     "change": "Chưa có số H.4.1 mới (công bố 22/10); không đổi đánh giá.",
+     "charts": [
+      {
+       "id": "gUsFedA",
+       "last": 60,
+       "caption": "Tài sản Fed theo cấu phần: dải tín phiếu (đáy) dày lên, MBS mỏng dần."
+      },
+      {
+       "id": "gUsSpr",
+       "last": 130,
+       "caption": "Chênh SOFR, TGCR với IORB quanh 0 — không có dấu hiệu khát tiền mặt."
+      }
+     ],
+     "scope": "qt"
+    },
+    {
+     "title": "Nhật Bản: JGB đi ngang, USD/JPY vẫn ở vùng can thiệp",
+     "status": "tiếp diễn",
+     "note": "JGB 10 năm <b>2,94%</b> (19/10), gần như không đổi so với 15/10 (2,95%) và thấp hơn đỉnh 3,11% ngày 8/10. USD/JPY <b>158,25</b>, vẫn trong vùng 155–162 nơi Bộ Tài chính Nhật bán USD 30/4–6/5/2026 (11,73 nghìn tỷ JPY). Chênh UST − JGB 10 năm khoảng <b>222 bps</b>. Hàm ý: nếu Nhật can thiệp tiếp, họ bán UST trong dự trữ, đẩy lợi suất Mỹ lên — kênh gián tiếp tác động tới chênh lệch lãi suất USD–VND.",
+     "change": "JGB 10 năm đi ngang (2,94%); chênh UST − JGB nới thêm khoảng 7 bps do UST tăng lại.",
+     "charts": [
+      {
+       "id": "gJpSpr",
+       "last": 130,
+       "caption": "Chênh UST − JGB 10 năm và USD/JPY theo ngày."
+      },
+      {
+       "id": "gJpFx",
+       "caption": "USD/JPY và các ngày Bộ Tài chính Nhật can thiệp (cột đỏ)."
+      }
+     ],
+     "scope": "qt"
+    }
+   ],
+   "watch": [
+    {
+     "d": "2026-10-22",
+     "t": "Ngân hàng công bố KQKD Q3/2026 (tiếp tục)",
+     "why": "Đo NIM, COF, dự phòng trước khi chỉ đạo giảm lãi suất có hiệu lực."
+    },
+    {
+     "d": "2026-10-22",
+     "t": "Fed công bố H.4.1 (tuần đến 21/10)",
+     "why": "Dự trữ ngân hàng và TGA."
+    },
+    {
+     "d": "2026-10-28",
+     "t": "FOMC 27–28/10",
+     "why": "Bất ngờ tăng sẽ đẩy lại lợi suất và USD, thu hẹp dư địa giảm lãi suất trong nước."
+    },
+    {
+     "d": "2026-10-31",
+     "t": "Biểu lãi suất tiền gửi, cho vay cuối tháng 10 của các ngân hàng",
+     "why": "Kiểm tra mức giảm thực tế so với yêu cầu 0,5% (tiền gửi) và 1,5–2% (cho vay)."
+    },
+    {
+     "d": "2026-11-06",
+     "t": "CPI tháng 10 (Cục Thống kê)",
+     "why": "Bình quân năm vượt rõ 4,5% thì khả năng hạ lãi suất điều hành gần như không còn."
+    },
+    {
+     "d": "2026-12-01",
+     "t": "TT50/2026 có hiệu lực (LDR công thức mới, LCR, NSFR)",
+     "why": "Tính lại LDR từng ngân hàng theo công thức mới."
+    }
+   ],
+   "sources": [
+    "NHNN (công văn 9608/NHNN-CSTT ngày 18/10/2026; họp với các ngân hàng 19/10/2026), Hiệp hội Ngân hàng Việt Nam",
+    "Báo Nhà Đầu Tư 19/10/2026 (tín dụng đến 14/10), vneconomy 17–18/10/2026",
+    "BCTC Q3/2026 VPBank",
+    "NHNN, Cục Thống kê, BCTC ngân hàng niêm yết",
+    "VIRA Market Watch (VNIBOR, SOFR)",
+    "U.S. Treasury (lợi suất), BLS (CPI Mỹ), Federal Reserve H.4.1",
+    "ECB (tỷ giá tham chiếu), Vietcombank (tỷ giá)",
+    "Bộ Tài chính Nhật Bản (JGB, can thiệp)",
+    "Deutsche Bundesbank, ECB, OECD, ChinaBond, Ngân hàng Trung ương Hàn Quốc, TPEx, MAS (lợi suất TPCP)"
+   ]
+  },
+  {
    "id": "QU-2026-10-16-AI",
    "date": "2026-10-16",
    "author": {

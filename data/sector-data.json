@@ -1,7 +1,7 @@
 {
  "meta": {
   "title": "CSTT & Ngành Ngân hàng",
-  "updated": "2026-10-19",
+  "updated": "2026-10-20",
   "banks": [
    "VCB",
    "BID",
@@ -63,7 +63,7 @@
  "idx": {
   "now": {
    "m": "2026-10",
-   "fx": 0.82,
+   "fx": 0.83,
    "liq": 0.28,
    "q": "drain"
   },
@@ -412,7 +412,7 @@
    },
    {
     "m": "2026-10",
-    "fx": 0.82,
+    "fx": 0.83,
     "liq": 0.28,
     "q": "drain"
    }
@@ -423,9 +423,9 @@
     "key": "dxy3m",
     "label": "DXY, % 3 tháng",
     "sign": "+",
-    "raw": 1.84,
-    "z": 0.64,
-    "contrib": 0.64
+    "raw": 1.94,
+    "z": 0.67,
+    "contrib": 0.67
    },
    {
     "id": "DOM-02",
@@ -450,7 +450,7 @@
     "key": "spread",
     "label": "LNH qua đêm (TB 3 tháng) − EFFR, điểm %",
     "sign": "−",
-    "raw": 0.33,
+    "raw": 0.32,
     "z": 0.32,
     "contrib": -0.32
    },
@@ -479,9 +479,9 @@
     "key": "on3",
     "label": "LNH qua đêm TB 3 tháng, %",
     "sign": "−",
-    "raw": 4.21,
-    "z": 0.12,
-    "contrib": -0.12
+    "raw": 4.2,
+    "z": 0.11,
+    "contrib": -0.11
    },
    {
     "id": "DOM-11/10",
@@ -1383,8 +1383,8 @@
     "v": 101.191
    },
    {
-    "d": "2026-10-19",
-    "v": 101.63
+    "d": "2026-10-20",
+    "v": 101.727
    }
   ],
   "effr": [
@@ -1749,7 +1749,7 @@
     "v": 3.88
    },
    {
-    "d": "2026-10-15",
+    "d": "2026-10-16",
     "v": 3.88
    }
   ],
@@ -2596,7 +2596,7 @@
    },
    {
     "d": "2026-10-19",
-    "v": 6.6863
+    "v": 6.6811
    }
   ],
   "brent": [
@@ -3257,7 +3257,7 @@
     "v": 26160
    },
    {
-    "d": "2026-10-19",
+    "d": "2026-10-20",
     "v": 26080
    }
   ],
@@ -3539,7 +3539,7 @@
     "v": 25780
    },
    {
-    "d": "2026-10-19",
+    "d": "2026-10-20",
     "v": 25700
    }
   ],
@@ -3821,8 +3821,8 @@
     "v": 25950
    },
    {
-    "d": "2026-10-19",
-    "v": 26000
+    "d": "2026-10-20",
+    "v": 26050
    }
   ],
   "central": [
@@ -4103,8 +4103,8 @@
     "v": 25627
    },
    {
-    "d": "2026-10-19",
-    "v": 25633
+    "d": "2026-10-20",
+    "v": 25639
    }
   ],
   "ceiling": [
@@ -4385,8 +4385,8 @@
     "v": 26908.35
    },
    {
-    "d": "2026-10-19",
-    "v": 26914.65
+    "d": "2026-10-20",
+    "v": 26920.95
    }
   ],
   "sbvSell": [
@@ -4667,8 +4667,8 @@
     "v": 26858
    },
    {
-    "d": "2026-10-16",
-    "v": 26868
+    "d": "2026-10-20",
+    "v": 26870
    }
   ],
   "on": [
@@ -5046,7 +5046,7 @@
    },
    {
     "d": "2026-10-16",
-    "v": 4.5
+    "v": 4.45
    }
   ],
   "omo": [
@@ -5339,7 +5339,7 @@
     "v": 4.5
    },
    {
-    "d": "2026-10-16",
+    "d": "2026-10-19",
     "v": 4.5
    }
   ],
@@ -5581,8 +5581,8 @@
     "v": 10038
    },
    {
-    "d": "2026-10-16",
-    "v": -5141.87
+    "d": "2026-10-19",
+    "v": -1276.84
    }
   ],
   "dep12State": [
@@ -6242,7 +6242,7 @@
    },
    {
     "d": "2026-10-19",
-    "v": 5.9125
+    "v": 6.1375
    }
   ],
   "dep12Other": [
@@ -6524,7 +6524,7 @@
    },
    {
     "d": "2026-10-19",
-    "v": 5.9889
+    "v": 5.9444
    }
   ],
   "m2": [
@@ -11254,11 +11254,11 @@
    },
    {
     "d": "2026-10-15",
-    "v": 3.1
+    "v": 3.14
    },
    {
     "d": "2026-10-16",
-    "v": 4.5
+    "v": 4.45
    }
   ],
   "netDaily": [
@@ -11285,6 +11285,10 @@
    {
     "d": "2026-10-16",
     "v": -5141.87
+   },
+   {
+    "d": "2026-10-19",
+    "v": -1276.84
    }
   ]
  },
@@ -18633,10 +18637,10 @@
    {
     "s": "VCB",
     "group": "Big 4",
-    "price": 56899.0,
-    "pb": 1.97,
-    "pe": 11.42,
-    "mcap": 475438.0,
+    "price": 56201.0,
+    "pb": 1.95,
+    "pe": 11.28,
+    "mcap": 469589.0,
     "bvps": 28824,
     "nim": 2.81,
     "cof": 2.6,
@@ -18653,17 +18657,17 @@
     "npYoY": 20.16,
     "credit": 1765527.0,
     "ppop": 55974.0,
-    "pppop": 8.49,
+    "pppop": 8.39,
     "provRatio": 8.3,
     "ppopYoY": 24.0
    },
    {
     "s": "BID",
     "group": "Big 4",
-    "price": 33951.0,
-    "pb": 1.41,
-    "pe": 8.19,
-    "mcap": 264071.0,
+    "price": 33649.0,
+    "pb": 1.4,
+    "pe": 8.11,
+    "mcap": 261737.0,
     "bvps": 24106.0,
     "nim": 2.15,
     "cof": 3.6,
@@ -18680,17 +18684,17 @@
     "npYoY": 26.21,
     "credit": 2508616.0,
     "ppop": 64294.0,
-    "pppop": 4.11,
+    "pppop": 4.07,
     "provRatio": 36.8,
     "ppopYoY": 17.9
    },
    {
     "s": "CTG",
     "group": "Big 4",
-    "price": 30601.0,
+    "price": 30501.0,
     "pb": 1.22,
-    "pe": 5.92,
-    "mcap": 237669.0,
+    "pe": 5.9,
+    "mcap": 236892.0,
     "bvps": 25071.0,
     "nim": 2.75,
     "cof": 3.49,
@@ -18707,17 +18711,17 @@
     "npYoY": 33.41,
     "credit": 2094806.0,
     "ppop": 69607.0,
-    "pppop": 3.41,
+    "pppop": 3.4,
     "provRatio": 27.6,
     "ppopYoY": 15.0
    },
    {
     "s": "MBB",
     "group": "Tư nhân lớn",
-    "price": 19850.0,
-    "pb": 1.35,
-    "pe": 6.64,
-    "mcap": 199865.0,
+    "price": 19699.0,
+    "pb": 1.34,
+    "pe": 6.59,
+    "mcap": 198354.0,
     "bvps": 14652.0,
     "nim": 4.03,
     "cof": 3.99,
@@ -18734,17 +18738,17 @@
     "npYoY": 22.67,
     "credit": 1253927.0,
     "ppop": 52240.0,
-    "pppop": 3.83,
+    "pppop": 3.8,
     "provRatio": 26.2,
     "ppopYoY": 18.9
    },
    {
     "s": "TCB",
     "group": "Tư nhân lớn",
-    "price": 33200.0,
+    "price": 33251.0,
     "pb": 1.36,
-    "pe": 8.68,
-    "mcap": 235263.0,
+    "pe": 8.69,
+    "mcap": 235617.0,
     "bvps": 24417.0,
     "nim": 3.73,
     "cof": 4.03,
@@ -18761,17 +18765,17 @@
     "npYoY": 27.28,
     "credit": 949414.0,
     "ppop": 39847.0,
-    "pppop": 5.9,
+    "pppop": 5.91,
     "provRatio": 9.8,
     "ppopYoY": 31.2
    },
    {
     "s": "ACB",
     "group": "Tư nhân lớn",
-    "price": 20601.0,
-    "pb": 1.23,
-    "pe": 7.63,
-    "mcap": 119571.0,
+    "price": 20250.0,
+    "pb": 1.21,
+    "pe": 7.5,
+    "mcap": 117540.0,
     "bvps": 16716.0,
     "nim": 2.92,
     "cof": 4.5,
@@ -18788,18 +18792,18 @@
     "npYoY": -7.64,
     "credit": 747530.0,
     "ppop": 23576.0,
-    "pppop": 5.07,
+    "pppop": 4.99,
     "provRatio": 16.9,
     "ppopYoY": 3.4
    },
    {
     "s": "VPB",
     "group": "Tư nhân lớn",
-    "price": 24500.0,
-    "pb": 1.38,
-    "pe": 8.22,
-    "mcap": 245000.0,
-    "bvps": 17780.0,
+    "price": 24000.0,
+    "pb": 1.29,
+    "pe": 7.7,
+    "mcap": 240000.0,
+    "bvps": 18557.0,
     "nim": 5.23,
     "cof": 5.24,
     "yea": 9.68,
@@ -18815,17 +18819,17 @@
     "npYoY": 71.33,
     "credit": 1183027.0,
     "ppop": 66661.0,
-    "pppop": 3.68,
+    "pppop": 3.6,
     "provRatio": 42.6,
     "ppopYoY": 36.1
    },
    {
     "s": "HDB",
     "group": "Tư nhân lớn",
-    "price": 22800.0,
-    "pb": 1.75,
-    "pe": 7.77,
-    "mcap": 148356.0,
+    "price": 22750.0,
+    "pb": 1.74,
+    "pe": 7.75,
+    "mcap": 148031.0,
     "bvps": 13058.0,
     "nim": 4.21,
     "cof": 5.38,
@@ -18842,17 +18846,17 @@
     "npYoY": 33.66,
     "credit": 686836.0,
     "ppop": 32577.0,
-    "pppop": 4.55,
+    "pppop": 4.54,
     "provRatio": 24.9,
     "ppopYoY": 20.5
    },
    {
     "s": "LPB",
     "group": "Tư nhân lớn",
-    "price": 37999.0,
-    "pb": 2.72,
-    "pe": 10.05,
-    "mcap": 113517.0,
+    "price": 38450.0,
+    "pb": 2.76,
+    "pe": 10.17,
+    "mcap": 114861.0,
     "bvps": 13953.0,
     "nim": 3.02,
     "cof": 5.37,
@@ -18869,17 +18873,17 @@
     "npYoY": 13.72,
     "credit": 429465.0,
     "ppop": 16392.0,
-    "pppop": 6.93,
+    "pppop": 7.01,
     "provRatio": 14.1,
     "ppopYoY": 15.0
    },
    {
     "s": "SHB",
     "group": "Tư nhân vừa",
-    "price": 10651.0,
-    "pb": 0.81,
-    "pe": 4.69,
-    "mcap": 56910.0,
+    "price": 10550.0,
+    "pb": 0.8,
+    "pe": 4.64,
+    "mcap": 56376.0,
     "bvps": 13214.0,
     "nim": 2.16,
     "cof": 5.7,
@@ -18896,17 +18900,17 @@
     "npYoY": 10.71,
     "credit": 664280.0,
     "ppop": 23388.0,
-    "pppop": 2.43,
+    "pppop": 2.41,
     "provRatio": 34.9,
     "ppopYoY": -0.9
    },
    {
     "s": "STB",
     "group": "Tư nhân vừa",
-    "price": 62799.0,
-    "pb": 1.98,
-    "pe": 38.44,
-    "mcap": 118392.0,
+    "price": 61799.0,
+    "pb": 1.95,
+    "pe": 37.83,
+    "mcap": 116506.0,
     "bvps": 31760.0,
     "nim": 3.06,
     "cof": 4.7,
@@ -18923,17 +18927,17 @@
     "npYoY": -73.43,
     "credit": 636029.0,
     "ppop": 21828.0,
-    "pppop": 5.42,
+    "pppop": 5.34,
     "provRatio": 79.7,
     "ppopYoY": 31.1
    },
    {
     "s": "VIB",
     "group": "Tư nhân vừa",
-    "price": 13850.0,
-    "pb": 1.09,
-    "pe": 6.97,
-    "mcap": 51735.0,
+    "price": 13750.0,
+    "pb": 1.08,
+    "pe": 6.92,
+    "mcap": 51362.0,
     "bvps": 12683.0,
     "nim": 3.06,
     "cof": 4.89,
@@ -18950,17 +18954,17 @@
     "npYoY": -1.52,
     "credit": 397083.0,
     "ppop": 14170.0,
-    "pppop": 3.65,
+    "pppop": 3.62,
     "provRatio": 34.6,
     "ppopYoY": 11.1
    },
    {
     "s": "TPB",
     "group": "Tư nhân vừa",
-    "price": 12000.0,
+    "price": 11950.0,
     "pb": 0.85,
-    "pe": 5.05,
-    "mcap": 38282.0,
+    "pe": 5.03,
+    "mcap": 38122.0,
     "bvps": 14080.0,
     "nim": 3.0,
     "cof": 5.2,
@@ -18977,7 +18981,7 @@
     "npYoY": 18.37,
     "credit": 343282.0,
     "ppop": 12765.0,
-    "pppop": 3.0,
+    "pppop": 2.99,
     "provRatio": 25.0,
     "ppopYoY": 12.4
    },
@@ -19011,10 +19015,10 @@
    {
     "s": "SSB",
     "group": "Tư nhân vừa",
-    "price": 16150.0,
-    "pb": 1.36,
-    "pe": 18.77,
-    "mcap": 56021.0,
+    "price": 15950.0,
+    "pb": 1.34,
+    "pe": 18.53,
+    "mcap": 55327.0,
     "bvps": 11888.0,
     "nim": 2.4,
     "cof": 5.07,
@@ -19031,7 +19035,7 @@
     "npYoY": -56.47,
     "credit": 266678.0,
     "ppop": 6480.0,
-    "pppop": 8.65,
+    "pppop": 8.54,
     "provRatio": 42.7,
     "ppopYoY": -38.7
    },
@@ -19065,10 +19069,10 @@
    {
     "s": "EIB",
     "group": "Tư nhân vừa",
-    "price": 16350.0,
-    "pb": 1.28,
-    "pe": 61.92,
-    "mcap": 30455.0,
+    "price": 16250.0,
+    "pb": 1.27,
+    "pe": 61.54,
+    "mcap": 30269.0,
     "bvps": 12775.0,
     "nim": 2.39,
     "cof": 4.74,
@@ -19085,17 +19089,17 @@
     "npYoY": -85.19,
     "credit": 191030.0,
     "ppop": 2698.0,
-    "pppop": 11.29,
+    "pppop": 11.22,
     "provRatio": 74.0,
     "ppopYoY": -46.0
    },
    {
     "s": "NAB",
     "group": "Tư nhân nhỏ",
-    "price": 12101.0,
-    "pb": 1.03,
-    "pe": 5.57,
-    "mcap": 26122.0,
+    "price": 12000.0,
+    "pb": 1.02,
+    "pe": 5.52,
+    "mcap": 25906.0,
     "bvps": 11712.0,
     "nim": 2.37,
     "cof": 5.3,
@@ -19112,17 +19116,17 @@
     "npYoY": 21.94,
     "credit": 218790.0,
     "ppop": 7406.0,
-    "pppop": 3.53,
+    "pppop": 3.5,
     "provRatio": 20.4,
     "ppopYoY": 26.1
    },
    {
     "s": "ABB",
     "group": "Tư nhân nhỏ",
-    "price": 17700.0,
-    "pb": 1.29,
-    "pe": 6.99,
-    "mcap": 28440.0,
+    "price": 17599.0,
+    "pb": 1.28,
+    "pe": 6.95,
+    "mcap": 28279.0,
     "bvps": 13741.0,
     "nim": 2.43,
     "cof": 5.31,
@@ -19139,17 +19143,17 @@
     "npYoY": 208.94,
     "credit": 136196.0,
     "ppop": 7381.0,
-    "pppop": 3.85,
+    "pppop": 3.83,
     "provRatio": 30.7,
     "ppopYoY": 123.7
    },
    {
     "s": "KLB",
     "group": "Tư nhân nhỏ",
-    "price": 11000.0,
-    "pb": 0.96,
-    "pe": 4.0,
-    "mcap": 8239.0,
+    "price": 11150.0,
+    "pb": 0.97,
+    "pe": 4.05,
+    "mcap": 8351.0,
     "bvps": 11445.0,
     "nim": 4.05,
     "cof": 5.49,
@@ -19166,7 +19170,7 @@
     "npYoY": 73.99,
     "credit": 77618.0,
     "ppop": 3224.0,
-    "pppop": 2.56,
+    "pppop": 2.59,
     "provRatio": 20.1,
     "ppopYoY": 30.2
    },
@@ -19200,10 +19204,10 @@
    {
     "s": "BVB",
     "group": "Tư nhân nhỏ",
-    "price": 10450.0,
-    "pb": 1.45,
-    "pe": 12.89,
-    "mcap": 10045.0,
+    "price": 10300.0,
+    "pb": 1.43,
+    "pe": 12.7,
+    "mcap": 9901.0,
     "bvps": 7217.0,
     "nim": 2.67,
     "cof": 5.75,
@@ -19220,7 +19224,7 @@
     "npYoY": 195.04,
     "credit": 83385.0,
     "ppop": 1702.0,
-    "pppop": 5.9,
+    "pppop": 5.82,
     "provRatio": 42.7,
     "ppopYoY": 77.1
    },
@@ -19254,10 +19258,10 @@
    {
     "s": "PGB",
     "group": "Tư nhân nhỏ",
-    "price": 9400.0,
-    "pb": 0.84,
-    "pe": 9.56,
-    "mcap": 6887.0,
+    "price": 9500.0,
+    "pb": 0.85,
+    "pe": 9.66,
+    "mcap": 6961.0,
     "bvps": 11142.0,
     "nim": 2.37,
     "cof": 4.4,
@@ -19274,7 +19278,7 @@
     "npYoY": 88.35,
     "credit": 49349.0,
     "ppop": 1453.0,
-    "pppop": 4.74,
+    "pppop": 4.79,
     "provRatio": 38.0,
     "ppopYoY": 44.8
    },
@@ -19308,10 +19312,10 @@
    {
     "s": "NVB",
     "group": "Tư nhân nhỏ",
-    "price": 13900.0,
-    "pb": 2.96,
-    "pe": 153.66,
-    "mcap": 40652.0,
+    "price": 13300.0,
+    "pb": 2.83,
+    "pe": 147.03,
+    "mcap": 38898.0,
     "bvps": 4702.0,
     "nim": 2.33,
     "cof": 5.45,
@@ -19328,7 +19332,7 @@
     "npYoY": null,
     "credit": 133527.0,
     "ppop": 1188.0,
-    "pppop": 34.22,
+    "pppop": 32.74,
     "provRatio": 77.6,
     "ppopYoY": null
    }
@@ -20574,26 +20578,26 @@
    },
    {
     "d": "2026-09-30",
-    "pb": 1.46,
-    "pe": 8.7,
+    "pb": 1.45,
+    "pe": 8.66,
     "mcap": 2693.0,
     "pppop": 4.92
    },
    {
-    "d": "2026-10-16",
-    "pb": 1.43,
-    "pe": 8.54,
-    "mcap": 2645.0,
-    "pppop": 4.83
+    "d": "2026-10-19",
+    "pb": 1.41,
+    "pe": 8.44,
+    "mcap": 2623.0,
+    "pppop": 4.79
    }
   ],
   "from": "2022-10-31",
   "now": {
-   "d": "2026-10-16",
-   "pb": 1.43,
-   "pe": 8.54,
-   "mcap": 2645.0,
-   "pppop": 4.83
+   "d": "2026-10-19",
+   "pb": 1.41,
+   "pe": 8.44,
+   "mcap": 2623.0,
+   "pppop": 4.79
   },
   "pb": {
    "mean": 1.58,
@@ -20607,11 +20611,11 @@
    "mean": 5.19,
    "sd": 0.56
   },
-  "profitTTM": 309.5
+  "profitTTM": 310.9
  },
  "consensus": {
   "from": "2026-07-14",
-  "to": "2026-10-19",
+  "to": "2026-10-20",
   "rows": [
    {
     "s": "VCB",
@@ -20624,9 +20628,9 @@
     "tpMed": 75000,
     "tpMin": 65000,
     "tpMax": 81400,
-    "upside": 31.8,
+    "upside": 33.4,
     "np26": 42828,
-    "peFwd": 11.1,
+    "peFwd": 10.96,
     "pbTP": 2.6,
     "latest": "2026-09-28",
     "reports": [
@@ -20778,9 +20782,9 @@
     "tpMed": 44000,
     "tpMin": 38839.0,
     "tpMax": 45500,
-    "upside": 29.6,
+    "upside": 30.8,
     "np26": 32006,
-    "peFwd": 8.25,
+    "peFwd": 8.18,
     "pbTP": 1.83,
     "latest": "2026-10-05",
     "reports": [
@@ -20878,9 +20882,9 @@
     "tpMed": 41400.0,
     "tpMin": 36950,
     "tpMax": 48800,
-    "upside": 35.3,
+    "upside": 35.7,
     "np26": 42625,
-    "peFwd": 5.58,
+    "peFwd": 5.56,
     "pbTP": 1.65,
     "latest": "2026-09-22",
     "reports": [
@@ -21023,9 +21027,9 @@
     "tpMed": 25300.0,
     "tpMin": 19575.0,
     "tpMax": 33200,
-    "upside": 27.5,
+    "upside": 28.4,
     "np26": 31673.0,
-    "peFwd": 6.31,
+    "peFwd": 6.26,
     "pbTP": 1.73,
     "latest": "2026-10-12",
     "reports": [
@@ -21231,9 +21235,9 @@
     "tpMed": 40650.0,
     "tpMin": 33000,
     "tpMax": 48500,
-    "upside": 22.4,
+    "upside": 22.3,
     "np26": 29514.0,
-    "peFwd": 7.97,
+    "peFwd": 7.98,
     "pbTP": 1.66,
     "latest": "2026-09-28",
     "reports": [
@@ -21430,9 +21434,9 @@
     "tpMed": 27000,
     "tpMin": 25000,
     "tpMax": 28300,
-    "upside": 31.1,
+    "upside": 33.3,
     "np26": 17776,
-    "peFwd": 6.73,
+    "peFwd": 6.61,
     "pbTP": 1.62,
     "latest": "2026-10-12",
     "reports": [
@@ -21575,10 +21579,10 @@
     "tpMed": 27968.0,
     "tpMin": 23808.0,
     "tpMax": 33953.0,
-    "upside": 14.2,
+    "upside": 16.5,
     "np26": 32832,
-    "peFwd": 7.46,
-    "pbTP": 1.57,
+    "peFwd": 7.31,
+    "pbTP": 1.51,
     "latest": "2026-10-02",
     "reports": [
      {
@@ -21738,9 +21742,9 @@
     "tpMed": 33000,
     "tpMin": 30600,
     "tpMax": 38350,
-    "upside": 44.7,
+    "upside": 45.1,
     "np26": 21804,
-    "peFwd": 6.8,
+    "peFwd": 6.79,
     "pbTP": 2.53,
     "latest": "2026-09-03",
     "reports": [
@@ -21849,7 +21853,7 @@
     "tpMax": null,
     "upside": null,
     "np26": 12058.0,
-    "peFwd": 9.41,
+    "peFwd": 9.53,
     "pbTP": null,
     "latest": "2026-08-04",
     "reports": [
@@ -21895,7 +21899,7 @@
     "tpMax": null,
     "upside": null,
     "np26": 15154,
-    "peFwd": 3.76,
+    "peFwd": 3.72,
     "pbTP": null,
     "latest": "2026-08-13",
     "reports": [
@@ -21921,9 +21925,9 @@
     "tpMed": 52800,
     "tpMin": 52800,
     "tpMax": 52800,
-    "upside": -15.9,
+    "upside": -14.6,
     "np26": 6528.0,
-    "peFwd": 18.13,
+    "peFwd": 17.85,
     "pbTP": 1.66,
     "latest": "2026-09-08",
     "reports": [
@@ -21985,9 +21989,9 @@
     "tpMed": 15428.0,
     "tpMin": 12968.0,
     "tpMax": 16801.0,
-    "upside": 11.4,
+    "upside": 12.2,
     "np26": 8444.0,
-    "peFwd": 6.13,
+    "peFwd": 6.08,
     "pbTP": 1.22,
     "latest": "2026-09-29",
     "reports": [
@@ -22085,9 +22089,9 @@
     "tpMed": 16795.0,
     "tpMin": 16600,
     "tpMax": 17046.0,
-    "upside": 40.0,
+    "upside": 40.5,
     "np26": 8338,
-    "peFwd": 4.59,
+    "peFwd": 4.57,
     "pbTP": 1.19,
     "latest": "2026-10-05",
     "reports": [
@@ -22261,7 +22265,7 @@
     "tpMax": null,
     "upside": null,
     "np26": 1355,
-    "peFwd": 22.48,
+    "peFwd": 22.34,
     "pbTP": null,
     "latest": "2026-08-18",
     "reports": [
@@ -22289,7 +22293,7 @@
     "tpMax": null,
     "upside": null,
     "np26": 3972,
-    "peFwd": 7.16,
+    "peFwd": 7.12,
     "pbTP": null,
     "latest": "2026-07-21",
     "reports": [
@@ -32007,6 +32011,268 @@
   "note": "Mỗi bản cập nhật là một phần tử trong updates. Bản mới thêm vào, không sửa bản cũ. author.type = 'AI' hoặc 'Chuyên viên'. follows = id bản trước mà bản này viết tiếp. concerns[].status: mới | nóng lên | tiếp diễn | hạ nhiệt. charts[].id = mã chart trong Chart book (python3 scripts/chart_ids.py), last = chỉ hiện N điểm gần nhất. Quy trình: docs/cap-nhat-nhanh.md",
   "updates": [
    {
+    "id": "QU-2026-10-20-AI",
+    "date": "2026-10-20",
+    "author": {
+     "type": "AI",
+     "name": "Claude",
+     "requestedBy": "Minh Đức"
+    },
+    "follows": "QU-2026-10-16-AI",
+    "vsPrev": "Chính sách đổi hướng: NHNN yêu cầu giảm lãi suất tiền gửi tối thiểu 0,5% và lãi suất cho vay 1,5–2% (công văn 9608 ngày 18/10); tín dụng lùi về 11,44% so với đầu năm; VNIBOR 3 tháng hạ từ 7,78% xuống 7,60%.",
+    "headline": "Ngành chịu sức ép giảm lãi suất: NHNN yêu cầu hạ lãi suất tiền gửi tối thiểu 0,5% và cho vay 1,5–2%, Big 4 đi đầu; NIM bị ép ngắn hạn trong khi tín dụng chững ở 11,44%",
+    "summary": [
+     "Quan điểm chuyên viên (Minh Đức, 15/10): ngành <b>trung lập</b>, kịch bản <b>thắt chặt kéo dài</b>, ưu tiên <b>Big 4 – CTG</b> với giả định lãi suất huy động khó giảm và NIM Big 4 hưởng lợi. Diễn biến mới đặt lại giả định này: lãi suất huy động bị yêu cầu giảm bằng chỉ đạo, còn lãi suất cho vay giảm nhiều hơn — chuyên viên cần xem lại.",
+     "Công văn <b>9608/NHNN-CSTT</b> (18/10): giảm lãi suất tiền gửi niêm yết tối thiểu <b>0,5%/năm</b> cho kỳ hạn từ 6 tháng, giảm lãi suất cho vay <b>1,5–2%/năm</b> cho sản xuất kinh doanh và lĩnh vực ưu tiên, cấm chạy đua lãi suất huy động; ngân hàng vi phạm có thể bị giảm chỉ tiêu tín dụng 2026 và giao chỉ tiêu thấp năm 2027.",
+     "Big 4 đi đầu: VietinBank hạ lãi suất tiền gửi 12 tháng từ 5,9% xuống <b>5,4%</b> (20/10); BIDV tung gói 100.000 tỷ đồng lãi suất 6–7%, ước giảm thu nhập khoảng 500 tỷ đồng; Agribank cho vay thấp hơn 2–2,5 điểm %, ước giảm thu nhập khoảng <b>6.000 tỷ đồng</b>.",
+     "Tín dụng toàn hệ thống đến 14/10 tăng <b>11,44%</b> so với đầu năm, thấp hơn mức 11,59% cuối tháng 9 — dư nợ giảm khoảng 0,13% trong hai tuần đầu tháng 10.",
+     "Trong nước: VNIBOR VND 3 tháng hạ từ 7,78% (14/10) xuống <b>7,60%</b> (16/10), 1 năm vẫn 7,90%; NHNN hút ròng nhẹ qua OMO (−1.277 tỷ đồng ngày 19/10). USD/VND Vietcombank bán ra <b>26.080</b> (20/10), ổn định.",
+     "Bên ngoài: UST 10 năm tăng lại lên <b>5,15%</b> (19/10, +96 bps từ đầu năm), DXY 101,8; FOMC 27–28/10 là mốc tiếp theo."
+    ],
+    "kpis": [
+     {
+      "l": "P/B ngành",
+      "v": "1,41x",
+      "s": "19/10 · bình quân 1,58x",
+      "cls": "pos"
+     },
+     {
+      "l": "Tín dụng so với đầu năm",
+      "v": "11,44%",
+      "s": "14/10 · 30/9: 11,59%",
+      "cls": "neg"
+     },
+     {
+      "l": "LS tiền gửi 12T VietinBank",
+      "v": "5,4%",
+      "s": "20/10 · −50 bps",
+      "cls": "pos"
+     },
+     {
+      "l": "VNIBOR VND 3 tháng",
+      "v": "7,60%",
+      "s": "16/10 · −18 bps so với 14/10",
+      "cls": ""
+     }
+    ],
+    "concerns": [
+     {
+      "title": "NHNN yêu cầu giảm lãi suất: NIM bị ép từ phía cho vay",
+      "scope": "nganh",
+      "status": "mới",
+      "note": "Sau cuộc họp Chính phủ ngày 16/10, NHNN ban hành công văn <b>9608/NHNN-CSTT</b> (18/10) và họp với lãnh đạo 46 ngân hàng (19/10). Nội dung chính: (1) giảm lãi suất tiền gửi niêm yết tối thiểu <b>0,5%/năm</b> cho kỳ hạn từ 6 tháng; (2) giảm lãi suất cho vay <b>1,5–2%/năm</b> cho sản xuất kinh doanh và lĩnh vực ưu tiên, không cào bằng; (3) không chạy đua tăng lãi suất huy động; (4) kiểm soát tín dụng nhóm khách hàng dư nợ lớn; (5) ngân hàng vi phạm có thể bị giảm chỉ tiêu tín dụng 2026 và giao chỉ tiêu thấp năm 2027. Thống đốc yêu cầu ngân hàng tiết giảm chi phí và <b>chia sẻ lợi nhuận</b>. Big 4 phản ứng ngay: VietinBank hạ lãi suất 12 tháng 5,9% → <b>5,4%</b>; BIDV gói 100.000 tỷ đồng lãi suất 6–7% (giảm thu nhập khoảng 500 tỷ); Agribank ước giảm thu nhập lãi khoảng 6.000 tỷ đồng. <b>Nhận định:</b> mức giảm cho vay (1,5–2 điểm %) lớn hơn mức giảm tiền gửi (≥0,5 điểm %), và tiền gửi chỉ định giá lại dần khi đáo hạn, nên NIM bị thu hẹp trong 1–2 quý tới; mức độ phụ thuộc tỷ trọng dư nợ sản xuất kinh doanh được giảm lãi suất và tốc độ hạ chi phí vốn. <b>Hàm ý:</b> Big 4 chịu phần chia sẻ lợi nhuận lớn nhất vì là kênh thực thi chính sách; lợi thế vốn rẻ của Big 4 vẫn còn nhưng phần chênh lệch có thể bị chuyển cho khách hàng thay vì giữ lại thành NIM.",
+      "change": "Chính sách đổi từ để lãi suất huy động neo cao sang yêu cầu giảm cả lãi suất huy động và cho vay; cho vay giảm nhiều hơn huy động.",
+      "charts": [
+       {
+        "id": "chNimDep",
+        "caption": "COF tăng từ Q2/2025 trong khi NIM đi ngang–giảm; giảm lãi suất cho vay sẽ ép NIM thêm trước khi COF kịp hạ."
+       },
+       {
+        "id": "chDep",
+        "last": 24,
+        "caption": "Lãi suất huy động 12 tháng theo nhóm: VietinBank hạ 50 bps ngày 20/10."
+       }
+      ]
+     },
+     {
+      "title": "Tín dụng chững lại, kiểm soát nhóm khách hàng dư nợ lớn; TT50 đổi công thức LDR",
+      "scope": "nganh",
+      "status": "hạ nhiệt",
+      "note": "Tín dụng toàn hệ thống đến 14/10 tăng <b>11,44%</b> so với đầu năm, thấp hơn 11,59% cuối tháng 9 — dư nợ giảm khoảng <b>0,13%</b> trong hai tuần. Tín dụng tháng 8 tăng 17,4% YoY, tiền gửi 13,6% YoY; LDR bình quân 26 ngân hàng 84,5% (Q2/2026). Công văn 9608 yêu cầu rà soát nhóm khách hàng có chung người quản lý hoặc cổ đông trên 5%, siết tín dụng tập trung. TT50 (hiệu lực 1/12/2026) đổi cả tử số và mẫu số của LDR, giới hạn 95% theo cách tính mới — dư địa từng ngân hàng phải tính lại. <b>Hàm ý:</b> lãi suất cho vay thấp hơn sẽ kích cầu tín dụng phần cuối năm, nhưng kiểm soát dư nợ lớn và chỉ tiêu tín dụng gắn với chấp hành chỉ đạo làm tăng trưởng phân hoá giữa các ngân hàng.",
+      "change": "Tín dụng đi lùi nửa đầu tháng 10 (11,59% → 11,44% so với đầu năm), thêm yêu cầu kiểm soát nhóm khách hàng dư nợ lớn.",
+      "charts": [
+       {
+        "id": "chCredit",
+        "caption": "Tín dụng so với đầu năm theo tháng: nhịp 2026 nhanh hơn các năm trước tới tháng 9."
+       },
+       {
+        "id": "chMoney",
+        "last": 36,
+        "caption": "Tín dụng tăng nhanh hơn tiền gửi 4–6 điểm % từ giữa 2024."
+       }
+      ]
+     },
+     {
+      "title": "Định giá ngành ở vùng đáy 4 năm, mùa KQKD Q3 bắt đầu",
+      "scope": "nganh",
+      "status": "tiếp diễn",
+      "note": "P/B ngành <b>1,41x</b>, P/E 8,44x (19/10), ngang các đáy 10/2022 và 4/2025, thấp hơn bình quân 1,58x. VPBank mở màn mùa KQKD Q3: LNST công ty mẹ Q3 <b>8.644 tỷ đồng</b> (+18,8% YoY), 9 tháng 23.227 tỷ (+44,9%), hoàn thành 70,3% kế hoạch năm. <b>Hàm ý:</b> yêu cầu chia sẻ lợi nhuận làm thị trường chiết khấu thêm lợi nhuận Q4/2026 – 2027, nhất là Big 4; KQKD Q3 phản ánh giai đoạn trước chỉ đạo nên chưa cho thấy tác động lên NIM.",
+      "change": "P/B giảm nhẹ 1,42x → 1,41x; rủi ro mới là lợi nhuận bị chia sẻ theo chỉ đạo giảm lãi suất.",
+      "charts": [
+       {
+        "id": "chPbBand",
+        "caption": "P/B ngành so với bình quân và dải ±1σ."
+       }
+      ]
+     },
+     {
+      "title": "Lãi suất liên ngân hàng VND: kỳ hạn 3 tháng hạ nhiệt, đường cong vẫn dốc",
+      "scope": "noi",
+      "status": "hạ nhiệt",
+      "note": "VNIBOR VND qua đêm <b>4,50%</b> (16/10), 1 tháng 5,5%, 3 tháng hạ từ 7,78% (14/10) xuống <b>7,60%</b>, 6 tháng – 1 năm 7,85–7,90%. Đường cong vẫn dốc (1 năm − qua đêm khoảng +3,4 điểm %). NHNN hút ròng nhẹ qua OMO: −5.142 tỷ đồng (16/10) và −1.277 tỷ (19/10), lãi suất OMO giữ 4,5%. Chênh VND − USD 3 tháng <b>+3,40 điểm %</b> (VNIBOR USD 3 tháng 4,20%). <b>Nhận định:</b> giảm lãi suất tiền gửi trong khi vốn liên ngân hàng kỳ hạn dài còn gần 8% tạo khe hở — Chính phủ đã giao NHNN bảo đảm thanh khoản cho ngân hàng thương mại, nên cần theo dõi NHNN có chuyển sang bơm ròng hay không.",
+      "change": "VNIBOR 3 tháng −18 bps sau 1 tuần tăng mạnh; OMO vẫn hút ròng nhẹ.",
+      "charts": [
+       {
+        "id": "mmCurve",
+        "caption": "Đường cong VNIBOR VND, VNIBOR USD và SOFR theo kỳ hạn, so với 1 tuần và 1 tháng trước."
+       },
+       {
+        "id": "chOn",
+        "last": 24,
+        "caption": "Lãi suất qua đêm và OMO: NHNN giữ 4,5%, bơm/hút ròng theo tháng."
+       }
+      ]
+     },
+     {
+      "title": "Lạm phát trong nước vượt mục tiêu",
+      "status": "tiếp diễn",
+      "note": "Chưa có số mới: CPI tháng 9 <b>5,08%</b> YoY, bình quân 9 tháng <b>4,52%</b> đã vượt mục tiêu khoảng 4,5%; lạm phát cơ bản 4,45%. NHNN khó hạ lãi suất điều hành, tiếp tục điều tiết bằng OMO. CPI tháng 10 công bố ngày 6/11.",
+      "change": "Chưa có số CPI mới; CPI tháng 10 công bố 6/11. Lạm phát vượt mục tiêu là một lý do NHNN chọn giảm lãi suất bằng chỉ đạo hành chính thay vì hạ lãi suất điều hành.",
+      "charts": [
+       {
+        "id": "chCpi",
+        "last": 24,
+        "caption": "CPI bình quân từ đầu năm đã chạm mục tiêu."
+       }
+      ],
+      "scope": "noi"
+     },
+     {
+      "title": "Áp lực tỷ giá từ bên ngoài: ổn định, chờ FOMC",
+      "scope": "qt",
+      "status": "tiếp diễn",
+      "note": "UST 10 năm tăng lại lên <b>5,15%</b> (19/10) sau mức 5,09% ngày 16/10; 2 năm 4,77%. DXY 101,8, gần như không đổi trong tuần; USD/CNY 6,681 (CNY tiếp tục mạnh lên). Tỷ giá trung tâm 25.639 (20/10); Vietcombank bán USD <b>26.080</b>, ổn định quanh 26.060–26.100 trong tuần. CPI Mỹ tháng 9 3,72% YoY; thị trường ngày 9/10 đặt khả năng thấp cho lần tăng ngày 28/10 nhưng cao cho lần tăng trước cuối năm. <b>Hàm ý:</b> tỷ giá ổn định là điều kiện để NHNN chọn giảm lãi suất; một lần tăng bất ngờ của Fed sẽ thu hẹp dư địa này.",
+      "change": "Không đổi xu hướng: UST 10 năm +6 bps, tỷ giá trong nước đi ngang.",
+      "charts": [
+       {
+        "id": "gUsRates",
+        "last": 130,
+        "caption": "UST 2 năm và 10 năm theo ngày."
+       },
+       {
+        "id": "chFx",
+        "last": 18,
+        "caption": "Hành lang tỷ giá USD/VND và DXY."
+       }
+      ]
+     },
+     {
+      "title": "Lợi suất trái phiếu chính phủ toàn cầu và châu Á: cao hơn đầu năm, đi ngang trong tuần",
+      "status": "tiếp diễn",
+      "note": "Từ đầu năm, lợi suất 10 năm tăng đồng loạt: Mỹ <b>+96 bps</b> lên 5,15% (19/10), Nhật <b>+82 bps</b> lên 2,94%, khu vực euro (toàn bộ TPCP) +76 bps lên 4,12%, Đức +53 bps lên 3,49%. Số bình quân tháng 9 cho thấy áp lực lan rộng: Pháp <b>4,44%</b> (+93 bps 12 tháng), Ý 4,36%, Tây Ban Nha 3,93%, Anh 5,24%, Úc 5,28%, Hàn Quốc 4,45% (+161 bps 12 tháng). Nguyên nhân chung là lạm phát vòng 2: CPI tháng 9 của khu vực euro 3,8%, Tây Ban Nha 5,0%, Ý 4,1%, Mỹ 3,7%, cùng giá dầu WTI quanh <b>100 USD/thùng</b>. Ở Mỹ, cả đường cong dịch lên so với đầu năm (2 năm +130 bps, 10 năm +91 bps) — thị trường định giá Fed tăng tiếp và phần bù kỳ hạn cao hơn. Ở Nhật, lợi suất JGB đủ cao để nhà đầu tư Nhật hồi hương vốn, cộng với Bộ Tài chính Nhật bán chứng khoán ngoại tệ khi can thiệp (dự trữ giảm 205 tỷ USD từ tháng 4) — thêm áp lực bán trái phiếu Mỹ. Sau nhịp giảm 12–18 bps tuần trước, lợi suất Mỹ tăng lại 6 bps phiên 19/10 (5,09% → 5,15%) — chưa có dấu hiệu đổi xu hướng khi lạm phát và giá dầu chưa hạ. Ở châu Á, Hàn Quốc 10 năm <b>4,21%</b> (+82 bps từ đầu năm) và Đài Loan 2,02% (+62 bps) đi cùng chiều Mỹ, Nhật; Singapore 2,33% chỉ +11 bps. Trung Quốc là ngoại lệ: lợi suất 10 năm <b>1,65%</b>, thấp hơn đầu năm 19 bps do giảm phát và PBoC nới lỏng, đẩy chênh lệch Mỹ − Trung Quốc lên <b>350 bps</b> — sức ép giảm giá lên CNY và các đồng tiền trong khu vực, gồm VND.",
+      "change": "UST 10 năm tăng lại lên 5,15% (+6 bps phiên 19/10, +96 bps từ đầu năm); chênh Mỹ − Trung Quốc 350 bps.",
+      "charts": [
+       {
+        "id": "gGlY10",
+        "last": 260,
+        "caption": "Thay đổi lợi suất 10 năm so với phiên đầu năm (bps): Mỹ và Nhật dẫn đầu; chọn \"Chỉ số đầu năm = 1\" để xem như slide."
+       },
+       {
+        "id": "gGlAsia",
+        "last": 260,
+        "caption": "Châu Á: Hàn Quốc, Đài Loan tăng theo Mỹ; Trung Quốc đi ngược chiều, thấp hơn đầu năm."
+       },
+       {
+        "id": "gGlY10m",
+        "caption": "Bình quân tháng: châu Âu (Pháp, Ý, Tây Ban Nha) và nhóm phát triển khác cùng tăng trong 12 tháng."
+       },
+       {
+        "id": "gGlCurve",
+        "caption": "Đường cong lợi suất Mỹ dịch lên toàn bộ so với đầu năm, đầu 2 năm tăng mạnh nhất."
+       },
+       {
+        "id": "gGlOil",
+        "caption": "Giá dầu neo cao giữ lạm phát vòng 2 và lợi suất dài hạn khó giảm."
+       }
+      ],
+      "tables": [
+       "cpi"
+      ],
+      "scope": "qt"
+     },
+     {
+      "title": "Bảng cân đối Fed: dừng thu hẹp, chuyển sang tín phiếu",
+      "status": "tiếp diễn",
+      "note": "Số liệu H.4.1 tuần kết thúc 14/10: tổng tài sản <b>6.756 tỷ USD</b> (+9 tỷ trong tuần, gần như đi ngang 3 tháng). Tín phiếu tăng lên <b>566 tỷ</b> (+60 tỷ trong 13 tuần) trong khi MBS giảm 50 tỷ và notes, bonds đi ngang — Fed tái đầu tư MBS đáo hạn vào tín phiếu và mua thêm để giữ dự trữ đủ. Dự trữ ngân hàng <b>3.031 tỷ</b> (−69 tỷ trong 13 tuần) vì TGA của Kho bạc tăng 90 tỷ lên 886 tỷ. Lãi suất repo bình thường: SOFR thấp hơn IORB 2 bps, phân vị 99 cao hơn 7 bps. Hàm ý: thanh khoản USD toàn cầu không còn bị rút như giai đoạn thu hẹp 2022–2025, giảm một nguồn áp lực lên tỷ giá các nước mới nổi.",
+      "change": "Chưa có số H.4.1 mới (công bố 22/10); không đổi đánh giá.",
+      "charts": [
+       {
+        "id": "gUsFedA",
+        "last": 60,
+        "caption": "Tài sản Fed theo cấu phần: dải tín phiếu (đáy) dày lên, MBS mỏng dần."
+       },
+       {
+        "id": "gUsSpr",
+        "last": 130,
+        "caption": "Chênh SOFR, TGCR với IORB quanh 0 — không có dấu hiệu khát tiền mặt."
+       }
+      ],
+      "scope": "qt"
+     },
+     {
+      "title": "Nhật Bản: JGB đi ngang, USD/JPY vẫn ở vùng can thiệp",
+      "status": "tiếp diễn",
+      "note": "JGB 10 năm <b>2,94%</b> (19/10), gần như không đổi so với 15/10 (2,95%) và thấp hơn đỉnh 3,11% ngày 8/10. USD/JPY <b>158,25</b>, vẫn trong vùng 155–162 nơi Bộ Tài chính Nhật bán USD 30/4–6/5/2026 (11,73 nghìn tỷ JPY). Chênh UST − JGB 10 năm khoảng <b>222 bps</b>. Hàm ý: nếu Nhật can thiệp tiếp, họ bán UST trong dự trữ, đẩy lợi suất Mỹ lên — kênh gián tiếp tác động tới chênh lệch lãi suất USD–VND.",
+      "change": "JGB 10 năm đi ngang (2,94%); chênh UST − JGB nới thêm khoảng 7 bps do UST tăng lại.",
+      "charts": [
+       {
+        "id": "gJpSpr",
+        "last": 130,
+        "caption": "Chênh UST − JGB 10 năm và USD/JPY theo ngày."
+       },
+       {
+        "id": "gJpFx",
+        "caption": "USD/JPY và các ngày Bộ Tài chính Nhật can thiệp (cột đỏ)."
+       }
+      ],
+      "scope": "qt"
+     }
+    ],
+    "watch": [
+     {
+      "d": "2026-10-22",
+      "t": "Ngân hàng công bố KQKD Q3/2026 (tiếp tục)",
+      "why": "Đo NIM, COF, dự phòng trước khi chỉ đạo giảm lãi suất có hiệu lực."
+     },
+     {
+      "d": "2026-10-22",
+      "t": "Fed công bố H.4.1 (tuần đến 21/10)",
+      "why": "Dự trữ ngân hàng và TGA."
+     },
+     {
+      "d": "2026-10-28",
+      "t": "FOMC 27–28/10",
+      "why": "Bất ngờ tăng sẽ đẩy lại lợi suất và USD, thu hẹp dư địa giảm lãi suất trong nước."
+     },
+     {
+      "d": "2026-10-31",
+      "t": "Biểu lãi suất tiền gửi, cho vay cuối tháng 10 của các ngân hàng",
+      "why": "Kiểm tra mức giảm thực tế so với yêu cầu 0,5% (tiền gửi) và 1,5–2% (cho vay)."
+     },
+     {
+      "d": "2026-11-06",
+      "t": "CPI tháng 10 (Cục Thống kê)",
+      "why": "Bình quân năm vượt rõ 4,5% thì khả năng hạ lãi suất điều hành gần như không còn."
+     },
+     {
+      "d": "2026-12-01",
+      "t": "TT50/2026 có hiệu lực (LDR công thức mới, LCR, NSFR)",
+      "why": "Tính lại LDR từng ngân hàng theo công thức mới."
+     }
+    ],
+    "sources": [
+     "NHNN (công văn 9608/NHNN-CSTT ngày 18/10/2026; họp với các ngân hàng 19/10/2026), Hiệp hội Ngân hàng Việt Nam",
+     "Báo Nhà Đầu Tư 19/10/2026 (tín dụng đến 14/10), vneconomy 17–18/10/2026",
+     "BCTC Q3/2026 VPBank",
+     "NHNN, Cục Thống kê, BCTC ngân hàng niêm yết",
+     "VIRA Market Watch (VNIBOR, SOFR)",
+     "U.S. Treasury (lợi suất), BLS (CPI Mỹ), Federal Reserve H.4.1",
+     "ECB (tỷ giá tham chiếu), Vietcombank (tỷ giá)",
+     "Bộ Tài chính Nhật Bản (JGB, can thiệp)",
+     "Deutsche Bundesbank, ECB, OECD, ChinaBond, Ngân hàng Trung ương Hàn Quốc, TPEx, MAS (lợi suất TPCP)"
+    ]
+   },
+   {
     "id": "QU-2026-10-16-AI",
     "date": "2026-10-16",
     "author": {
@@ -32448,7 +32714,7 @@
    "id": "R-01",
    "layer": "Quốc tế",
    "rule": "DXY tăng > 1σ trong tháng",
-   "now": "DXY 101,6 · +0,4% 1 tháng (z +0,3)",
+   "now": "DXY 101,7 · +0,5% 1 tháng (z +0,3)",
    "state": "watch",
    "impact": "Áp lực USD/VND, NHNN ưu tiên ổn định tỷ giá"
   },
@@ -32480,7 +32746,7 @@
    "id": "R-08",
    "layer": "Quốc tế",
    "rule": "USD/CNY tăng > 1σ",
-   "now": "USD/CNY 6,686 · -1,0% 3 tháng (CNY mạnh lên)",
+   "now": "USD/CNY 6,681 · -1,0% 3 tháng (CNY mạnh lên)",
    "state": "ok",
    "impact": "CNY mạnh lên giảm sức ép cạnh tranh lên VND"
   },
@@ -32496,7 +32762,7 @@
    "id": "R-10",
    "layer": "Nội địa → NH",
    "rule": "OMO bơm ròng kéo dài mà LNH > OMO",
-   "now": "LNH qua đêm 4,50% vs OMO 4,5%; OMO lưu hành 110,9 nghìn tỷ (14/10), giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9",
+   "now": "LNH qua đêm 4,45% vs OMO 4,5%; OMO lưu hành 110,9 nghìn tỷ (14/10), giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9",
    "state": "ok",
    "impact": "TT2 thiếu vốn nhưng OMO không giúp tuân thủ LDR"
   },
@@ -32544,7 +32810,7 @@
    "id": "R-16",
    "layer": "Ngân hàng",
    "rule": "Lãi suất thị trường giảm",
-   "now": "P/B ngành 1,43x vs TB 1,58x từ 10/2022; LS chưa giảm",
+   "now": "P/B ngành 1,41x vs TB 1,58x từ 10/2022; LS chưa giảm",
    "state": "watch",
    "impact": "Chiết khấu giảm khi LS hạ → P/B mở rộng; hiện chưa có điều kiện"
   }
