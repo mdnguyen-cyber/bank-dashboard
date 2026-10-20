@@ -167,7 +167,9 @@
       ch.update('none'); mark(k);
     };
     bar.querySelectorAll('button[data-k]').forEach(b => b.onclick = () => { const k = b.dataset.k === '0' ? 0 : b.dataset.k === 'ytd' ? 'ytd' : +b.dataset.k; const w = windowFor(ds, k); setWin(w[0], w[1], k); });
-    if (opt.last && opt.last < n) setWin(n - opt.last, n - 1, 'custom'); else mark(0);
+    if (opt.last && opt.last < n) setWin(n - opt.last, n - 1, 'custom');
+    else if (opt.win) { const w = windowFor(ds, opt.win); if (w[0] > 0) setWin(w[0], w[1], opt.win); else mark(0); }
+    else mark(0);
 
     // kéo để zoom (chuột; trên điện thoại dùng nút khung thời gian)
     if (box.style.position !== 'relative') box.style.position = 'relative';

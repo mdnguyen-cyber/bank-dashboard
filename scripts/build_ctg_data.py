@@ -137,7 +137,7 @@ def build(raw):
     for d in raw:
         if d['tool'] == 'wi_data_macro':
             for s in d['response']['data']:
-                key = (s['indicator_id'], s['time_type'])
+                key = (s['indicator_id'], s.get('time_type'))
                 macro[key] = sorted(s['values'], key=lambda v: v['date'])
 
     # ------------------------------------------------ meta
@@ -422,13 +422,25 @@ def build(raw):
     D['events'] = sorted(ev, key=lambda e: e['d'], reverse=True)
 
     # ------------------------------------------------ macro (tab Vĩ mô & Tỉ lệ an toàn)
-    def ser(iid, tt='monthly'):
-        return [{'d': v['date'], 'v': v['value']} for v in macro.get((iid, tt), [])]
+    def ser(iid, tt='monthly'):   # gộp mọi lần kéo theo tháng (từ 2019); trùng tháng lấy ngày muộn nhất
+        bym = {}
+        for d in raw:
+            if d['tool'] != 'wi_data_macro':
+                continue
+            for s in (d['response'].get('data') or []):
+                if s.get('indicator_id') == iid and (s.get('time_type') == tt or (tt == 'monthly' and s.get('time_type') == 'weekly')):
+                    for v in s['values']:
+                        if v.get('value') is None:
+                            continue
+                        k = v['date'][:7]
+                        if k not in bym or v['date'] >= bym[k]['d']:
+                            bym[k] = {'d': v['date'], 'v': v['value']}
+        return [bym[k] for k in sorted(bym)]
     M = {
         'fx': {'nhtmSell': ser(82223), 'central': ser(82227), 'ceiling': ser(82228), 'sbvSell': ser(82231), 'free': ser(82226), 'dxy': ser(235028),
                'note': 'Cuối tháng (Wi nén chuỗi ngày về tháng). Tỷ giá NHTM bán ra, trung tâm, trần biên độ, giá NHNN bán can thiệp, tỷ giá tự do bán ra.'},
         'rates': {'onMonthEnd': ser(82237), 'omo': ser(81522), 'dep12State': ser(202886), 'dep12Other': ser(202880), 'dep12CTG': ser(202862), 'effr': ser(7079)},
-        'onDaily': ser(82237, 'daily'), 'omoNetDaily': ser(82268, 'daily'), 'omoRateDaily': ser(81522, 'daily'),
+        'onDaily': daily_merged(raw, 82237), 'omoNetDaily': daily_merged(raw, 82268), 'omoRateDaily': daily_merged(raw, 81522),
         'credit': {'ytd': ser(241732), 'yoy': ser(75847), 'depositsYoY': ser(265963)},
         'src': 'WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202862, 7079, 241732, 75847, 265963',
     }
@@ -550,6 +562,21 @@ def build(raw):
     ]
     return D
 
+
+
+def daily_merged(raw, iid):
+    """Gộp chuỗi ngày (và tuần do Wi nén) của một chỉ tiêu vĩ mô từ mọi lần kéo; trùng ngày lấy file sau."""
+    out = {}
+    for d in raw:
+        if d['tool'] != 'wi_data_macro':
+            continue
+        for s in (d['response'].get('data') or []):
+            if s.get('indicator_id') != iid or s.get('time_type') in ('monthly', 'quarterly', 'yearly'):
+                continue
+            for v in s.get('values', []):
+                if v.get('value') is not None:
+                    out[v['date']] = v['value']
+    return [{'d': k, 'v': out[k]} for k in sorted(out)]
 
 def main():
     ap = argparse.ArgumentParser()

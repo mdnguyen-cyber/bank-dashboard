@@ -111,7 +111,7 @@ function mk(id, cfg, opt = {}) {
   FSK.prep(cfg);
   if (!id.startsWith('cb-') && !id.startsWith('qu-')) SPEC[id] = { cfg: cl(cfg), el };
   charts[id] = new Chart(el, cfg);
-  FSK.enhance(charts[id], { today: new Date(TODAY), last: opt.last });
+  FSK.enhance(charts[id], { today: new Date(TODAY), last: opt.last, win: opt.win });
   if (opt.switch) {
     const box = document.querySelector(`[data-ctl="${id}"]`);
     if (box) {
@@ -769,7 +769,7 @@ function subIntlOverview() {
       insight: `Sau chu kỳ hạ 2024–2025 (EFFR về 3,63%), Fed đảo chiều tăng 25 bps tháng 9/2026. UST 10Y lên <b>${pc(lastv(intl.ust10).v, 2)}</b> — cao nhất trong chuỗi từ 08/2023 — trong khi TPCP VN 10Y chỉ <b>${pc(lastv(intl.vn10).v, 2)}</b>: chênh âm <b>${sg((lastv(intl.vn10).v - lastv(intl.ust10).v) * 100, 0, ' bps')}</b>, giữ USD hấp dẫn hơn VND (R-02).`,
       src: 'WiData 7079, bonds_gov_yield_curve 234521, 234526' })}
     ${card({ id: 'chUsd', title: 'Đồng USD: DXY và USD/CNY', sub: 'Điểm · cuối tháng · trục phải USD/CNY (tăng = CNY mất giá)',
-      insight: `DXY ${nf(lastv(intl.dxy).v, 1)} tăng lại từ đáy 96,4 (01/2026) nhưng vẫn thấp hơn đỉnh 108 cuối 2024. CNY mạnh lên liên tục (USD/CNY ${nf(lastv(intl.cny).v, 3)}, thấp nhất chuỗi từ 2022) — kênh Trung Quốc đang <b>đỡ</b> cho VND (R-08), áp lực đến từ lãi suất Mỹ chứ không từ đồng USD mạnh toàn diện.`,
+      insight: `DXY ${nf(lastv(intl.dxy).v, 1)} tăng lại từ đáy 96,4 (01/2026) nhưng vẫn thấp hơn đỉnh 108 cuối 2024. CNY mạnh lên liên tục (USD/CNY ${nf(lastv(intl.cny).v, 3)}, thấp nhất kể từ ${(p => p ? mvn(p.d.slice(0, 7)) : 'đầu chuỗi')([...intl.cny].reverse().slice(1).find(p => p.v <= lastv(intl.cny).v))}) — kênh Trung Quốc đang <b>đỡ</b> cho VND (R-08), áp lực đến từ lãi suất Mỹ chứ không từ đồng USD mạnh toàn diện.`,
       src: 'WiData 235028, 235032' })}
   </div>
   ${card({ id: 'chBrent', title: 'Giá dầu Brent', sub: 'USD/thùng · cuối tháng · đường đỏ = ngưỡng +20% YoY của R-06 so với cùng kỳ',
@@ -791,6 +791,7 @@ const GCOUNTRY = [['gl', 'Toàn cầu: lợi suất & lạm phát'], ['us', 'M�
 const gDone = {};
 const PAL = ['#1D2678', '#c0392b', '#1f8a8d', '#d9a400', '#861C52', '#4f9bd1', '#7a8291'];
 const gsrc = keys => 'Nguồn: ' + [...new Set(keys.map(k => (GD.src[k.replace(/_(yoy|m3|mom|d|m)$/, '')] || '').split(':')[0]).filter(Boolean))].map(x => ({ fred: 'FRED (BLS, BEA, Fed, CBO, Kho bạc Mỹ)', ecb: 'ECB Data Portal', dbn: 'DBnomics (Eurostat, Cục Thống kê Nhật Bản, NBS)', oecd: 'OECD', nbs: 'NBS Trung Quốc qua DBnomics', nyfed: 'NY Fed Markets', hlw: 'NY Fed (Holston–Laubach–Williams)' }[x] || x)).join(' · ') + ` · tự động cập nhật ${dvn((GD.fetched || '').slice(0, 10))}`;
+function on3(arr) { const end = arr[arr.length - 1].d, from = new Date(new Date(end).getTime() - 92 * 864e5).toISOString().slice(0, 10); return arr.filter(p => p.d >= from).map(p => p.v); }
 function tfPick(id, opts) { return `<div class="picker tf" data-tf="${id}">${opts.map(([k, l], i) => `<button type="button" data-k="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>`; }
 function wireTf(id, draw) { const box = document.querySelector(`[data-tf="${id}"]`); if (!box) { draw(); return; } const btns = [...box.querySelectorAll('button')]; btns.forEach(b => b.onclick = () => { btns.forEach(x => x.classList.toggle('on', x === b)); draw(b.dataset.k); }); draw(btns[0].dataset.k); }
 const TF = [['yoy', 'YoY'], ['m3', '3 tháng quy năm'], ['mom', 'MoM']];
@@ -854,8 +855,8 @@ function drGL() {
       return L(n, all.map(d => m[d] == null ? null : k === 'idx' ? +(m[d] / b).toFixed(4) : k === 'chg' ? +((m[d] - b) * 100).toFixed(1) : m[d]), c, { unit: k === 'chg' ? ' bps' : k === 'idx' ? '' : '%', dp: k === 'idx' ? 3 : k === 'chg' ? 0 : 3, spanGaps: true }); });
     mk(id, { type: 'line', data: { labels: all.map(dvn), datasets: ds }, options: { plugins: { refLines: { lines: k === 'lvl' ? [] : [{ value: k === 'idx' ? 1 : 0, label: '' }] } }, scales: { y: k === 'lvl' ? pctAxis('') : numAxis(k === 'chg' ? 'bps' : '', { beginAtZero: false, ticks: { callback: v => nf(v, k === 'idx' ? 2 : 0) } }) } } });
   };
-  wireTf('glY', drY('gGlY10', Y10D, '2025-10-01'));
-  wireTf('glA', drY('gGlAsia', Y10A, '2025-10-01'));
+  wireTf('glY', drY('gGlY10', Y10D, '2021-01-01'));
+  wireTf('glA', drY('gGlAsia', Y10A, '2021-01-01'));
   wireTf('glM', k => { const S = Y10M[k || 'eu'].filter(([kk]) => gs(kk).v.length); mk('gGlY10m', { type: 'line', data: gLines(S.map(x => x[0]), S.map(x => x[1]), PAL2, { from: '2021-01', dp: 2 }), options: { scales: { y: pctAxis('') } } }); });
   const UC = GD.ustCurve; if (UC) mk('gGlCurve', { type: 'line', data: { labels: UC.t, datasets: UC.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.tealInk, C.red, C.grey][i], { pointRadius: 3, borderWidth: i ? 1.6 : 2.6, borderDash: i === 3 ? [4, 3] : [], dp: 2 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
   mk('gGlOil', { type: 'line', data: gLines(['us_wti_d', 'us_brent_d'], ['WTI', 'Brent'], [C.navy, C.gold], { unit: ' USD', dp: 2, from: '2021-01-01' }), options: { scales: { y: numAxis('USD/thùng', { beginAtZero: false }) } } });
@@ -900,7 +901,7 @@ const PCEC_VN = { 'Housing': 'Nhà ở', 'Core Services exc. Housing': 'Dịch v
   'Health Care': 'Y tế', 'Financial & Insurance': 'Tài chính & bảo hiểm', 'Food Svcs & Accommodations': 'Ăn uống & lưu trú', 'Transportation Services': 'Dịch vụ vận tải', 'Other Services': 'Dịch vụ khác' };
 function drPceC(k = 'yoy') {
   const P = (GD.pceC || {})[k]; if (!P) return;
-  const i0 = P.d.findIndex(d => d >= '2022-01'), d = P.d.slice(i0), v = P.v.slice(i0), obj = {};
+  const i0 = P.d.findIndex(d => d >= '2021-01'), d = P.d.slice(i0), v = P.v.slice(i0), obj = {};
   P.cols.forEach((c, j) => obj[PCEC_VN[c] || c] = v.map(r => r[j]));
   const tot = v.map(r => r.some(x => x == null) ? null : +r.reduce((a, x) => a + x, 0).toFixed(2));
   stk('gUsPceC', d.map(mvn), obj, { unit: ' điểm %', dp: 2, colors: [C.navy, C.tealInk, C.gold, C.red, C.grey], y: { beginAtZero: false, ticks: { callback: v => nf(v, k === 'mom' ? 2 : 1) } },
@@ -997,7 +998,7 @@ function drUSFlow() {
   const rows = deltaBars('gUsAbs', H.d.map(qLab), H.h, 4, { unit: ' tỷ USD', skip: ['Khác'] });
   const totCh = H.total[H.total.length - 1] - H.total[H.total.length - 5];
   $('#gUsAbsIns').innerHTML = `${qLab(H.d[H.d.length - 5])} → ${qLab(H.d[H.d.length - 1])}: tổng UST tăng <b>${nf(totCh, 0)} tỷ USD</b>. Hấp thụ nhiều nhất: ${rows.slice(0, 3).map(r => `<b>${esc(r[0])}</b> ${sg(r[1], 0, ' tỷ')} (${pc(r[1] / totCh * 100, 0)})`).join(', ')}. ${rows.filter(r => r[1] < 0).length ? 'Giảm nắm giữ: ' + rows.filter(r => r[1] < 0).map(r => `${esc(r[0])} ${sg(r[1], 0, ' tỷ')}`).join(', ') + '.' : ''} Khi Fed và NHTW nước ngoài rút lui, lượng phát hành phải đổ vào nhà đầu tư nhạy giá (quỹ, hộ gia đình, quỹ phòng hộ) → đòi kỳ hạn bù (term premium) cao hơn.`;
-  wireTf('usAuct', k => { const g = A[k || 'coupons'], a0 = A.d.findIndex(d => d >= '2022-01');
+  wireTf('usAuct', k => { const g = A[k || 'coupons'], a0 = A.d.findIndex(d => d >= '2021-01');
     const obj = Object.fromEntries(Object.entries(g).filter(([n]) => n !== 'amt').map(([n, v]) => [n, v.slice(a0)]));
     stk('gUsAuct', A.d.slice(a0).map(mvn), obj, { pct: true, colors: [C.purple, C.tealInk, C.navy, C.gold, C.grey] }); });
   const tic = GD.tic || {}, tk = ['Japan', 'China', 'United Kingdom', 'Belgium', 'Luxembourg', 'Cayman Islands'].filter(k => tic[k]);
@@ -1106,7 +1107,7 @@ function drJP() {
   if (gs('jp_10y_d').v.length) {
     mk('gJpJgb', { type: 'line', data: gLines(['jp_2y_d', 'jp_10y_d', 'jp_30y_d'], ['2 năm', '10 năm', '30 năm'], [C.tealInk, C.navy, C.red], { from: '2021-01-01' }), options: { scales: { y: pctAxis('') } } });
     const sp = gs('us_jp_10y_d'), fx = gs('usdjpy_d'), fm = {}; fx.d.forEach((d, i) => fm[d] = fx.v[i]);
-    const ds = sp.d.filter(d => d >= '2024-01-01');
+    const ds = sp.d.filter(d => d >= '2021-01-01');
     mk('gJpSpr', { type: 'line', data: { labels: ds.map(dvn), datasets: [L('UST − JGB 10 năm', ds.map(d => sp.v[sp.d.indexOf(d)]), C.navy, { unit: ' bps', dp: 0, borderWidth: 2.2 }), L('USD/JPY', ds.map(d => fm[d] ?? null), C.red, { yAxisID: 'y1', unit: '', dp: 2, spanGaps: true })] },
       options: { scales: { y: numAxis('bps'), y1: numAxis('USD/JPY', { position: 'right', grid: { display: false }, beginAtZero: false }) } } });
   }
@@ -1118,8 +1119,8 @@ function drJP() {
     const rows = deltaBars('gJpAbs', H.d.map(qLab), H.h, 4, { unit: ' nghìn tỷ JPY', dp: 1, skip: ['Khác'] }), n = H.total.length - 1, tc = H.total[n] - H.total[n - 4];
     $('#gJpAbsIns').innerHTML = `${qLab(H.d[n - 4])} → ${qLab(H.d[n])}: tổng JGB + tín phiếu ${sg(tc, 1, ' nghìn tỷ JPY')}. ${rows.filter(r => r[1] > 0).slice(0, 3).map(r => `<b>${esc(r[0])}</b> ${sg(r[1], 1, '')}`).join(', ')} tăng nắm giữ; ${rows.filter(r => r[1] < 0).map(r => `<b>${esc(r[0])}</b> ${sg(r[1], 1, '')}`).join(', ') || 'không nhóm nào giảm'}. BoJ rút khỏi thị trường JGB → lợi suất dài hạn Nhật phải đủ cao để nhà đầu tư trong nước (và tổ chức Nhật đang nắm UST) chuyển vốn về.`; }
   const fx = gs('usdjpy_d'), fe = {}; (GD.feio || []).forEach(x => { fe[x.d] = (fe[x.d] || 0) + x.amt / 10000; });
-  const fd = fx.d.filter(d => d >= '2022-01-01');
-  const extraDays = Object.keys(fe).filter(d => d >= '2022-01-01' && !fx.d.includes(d));
+  const fd = fx.d.filter(d => d >= '2021-01-01');
+  const extraDays = Object.keys(fe).filter(d => d >= '2021-01-01' && !fx.d.includes(d));
   const all = [...new Set([...fd, ...extraDays])].sort(), fm = {}; fx.d.forEach((d, i) => fm[d] = fx.v[i]);
   mk('gJpFx', { type: 'bar', data: { labels: all.map(dvn), datasets: [L('USD/JPY', all.map(d => fm[d] ?? null), C.navy, { unit: '', dp: 2, spanGaps: true }),
     { type: 'bar', label: 'Can thiệp (nghìn tỷ JPY)', data: all.map(d => fe[d] ? +fe[d].toFixed(2) : null), backgroundColor: C.red, yAxisID: 'y1', barThickness: 4, unit: ' nghìn tỷ', dp: 2 }] },
@@ -1160,7 +1161,7 @@ function chIntl() {
   openC($('#picture .cty button').dataset.c);
 }
 function chIntlOverview() {
-  const labs = monthsFrom('2022-01', TODAY.slice(0, 7));
+  const labs = monthsFrom('2021-01', TODAY.slice(0, 7));
   mk('chRates', { type: 'line', data: { labels: labs.map(mvn), datasets: [L('EFFR', al(intl.effr, labs), C.navy, { borderWidth: 2.4 }), L('UST 10Y', al(intl.ust10, labs), C.red), L('TPCP VN 10Y', al(intl.vn10, labs), C.tealInk, { borderDash: [5, 4] })] },
     options: { scales: { y: pctAxis() } } }, { switch: 'line' });
   mk('chUsd', { type: 'line', data: { labels: labs.map(mvn), datasets: [L('DXY', al(intl.dxy, labs), C.navy, { unit: '', dp: 1 }), L('USD/CNY', al(intl.cny, labs), C.purple, { unit: '', dp: 3, yAxisID: 'y1' })] },
@@ -1261,7 +1262,7 @@ function chMM() {
 }
 function subDom() {
   const fxGap = lastv(dom.free).v - lastv(dom.nhtmSell).v;
-  const gaps = dom.nhtmSell.filter(p => p.d >= '2022').map(p => { const f = byM(dom.free)[p.d.slice(0, 7)]; return f ? { d: p.d, g: f - p.v } : null; }).filter(Boolean);
+  const gaps = dom.nhtmSell.filter(p => p.d >= '2021').map(p => { const f = byM(dom.free)[p.d.slice(0, 7)]; return f ? { d: p.d, g: f - p.v } : null; }).filter(Boolean);
   const pk = gaps.reduce((a, b) => b.g > a.g ? b : a);
   const cr = lastv(dom.creditYoY), dp = lastv(dom.depYoY), m2 = lastv(dom.m2);
   const res = lastv(dom.reserves);
@@ -1277,12 +1278,12 @@ function subDom() {
     ${kpi('Dự trữ ngoại hối', nf(res.v / 1000, 1) + ' tỷ USD', mvn(res.d))}
   </div>
   <div class="grid g2 gap">
-    ${card({ id: 'chFx', title: 'Hành lang tỷ giá USD/VND và chỉ số USD (DXY)', h: 'tall', sub: 'VND · theo ngày từ 2024 · trung tâm, trần/sàn ±5%, giá NHNN bán can thiệp, NHTM và tự do bán ra (cuối tháng), Vietcombank bán ra · trục phải = DXY', ctl: true,
+    ${card({ id: 'chFx', title: 'Hành lang tỷ giá USD/VND và chỉ số USD (DXY)', h: 'tall', sub: 'VND · theo ngày từ 2021 · trung tâm, trần/sàn ±5%, giá NHNN bán can thiệp, NHTM và tự do bán ra (cuối tháng), Vietcombank bán ra · trục phải = DXY', ctl: true,
       insight: fxIns(), src: 'Ngân hàng Nhà nước (tỷ giá trung tâm, trần, sàn, giá bán của Sở Giao dịch NHNN); Vietcombank; DXY tính theo công thức ICE từ tỷ giá tham chiếu ECB; NHTM và tự do: số liệu tổng hợp cuối tháng' })}
     ${card({ id: 'chFxGap', title: 'Chênh lệch tỷ giá tự do − NHTM bán ra', sub: 'VND · cuối tháng · dương = USD ngoài hệ thống đắt hơn ngân hàng (deck DOM-03: kỳ vọng mất giá)',
       insight: `Chênh dương kéo dài 2024–Q1/2026 (cầu USD tiền mặt, vàng) và đổi dấu từ 07/2026 — áp lực ngoài hệ thống đã qua; áp lực còn lại nằm ở lãi suất (UST, Fed).`, src: 'WiData 82226, 82223' })}
-    ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên 3 tháng · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
-      insight: `LNH qua đêm dao động <b>${nf(Math.min(...dom.onDaily.map(p => p.v)), 2)}–${nf(Math.max(...dom.onDaily.map(p => p.v)), 2)}%</b> trong 3 tháng, đỉnh rơi vào cuối tháng. OMO lưu hành giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9 xuống 110,9 nghìn tỷ (14/10) — NHNN rút bớt tiền khi áp lực tỷ giá tăng. R-10: OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR.`,
+    ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
+      insight: `LNH qua đêm dao động <b>${nf(Math.min(...on3(dom.onDaily)), 2)}–${nf(Math.max(...on3(dom.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...dom.onDaily.map(p => p.v)), 2)}% ngày ${dvn(dom.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh rơi vào cuối tháng. OMO lưu hành giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9 xuống 110,9 nghìn tỷ (14/10) — NHNN rút bớt tiền khi áp lực tỷ giá tăng. R-10: OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR.`,
       src: 'WiData 82237, 81522, 82268; ai_news 14/10/2026' })}
     ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · cuối tháng · NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác', ctl: true,
       insight: `Mặt bằng 12T tăng mạnh từ 12/2025: NHTM Nhà nước 4,68% → <b>${pc(lastv(dom.dep12State).v, 2)}</b>, NHTM lớn → ${pc(lastv(dom.dep12Large).v, 2)}, khác ${pc(lastv(dom.dep12Other).v, 2)}. Khoảng cách giữa nhóm nhỏ và Big 4 thu hẹp về ~0,1 điểm % — Big 4 phải tăng mạnh nhất để giữ tiền gửi (R-13 → COF Big 4 tăng sau 1–3 quý).`,
@@ -1312,7 +1313,7 @@ function fxIns() {
     + how('Tỷ giá NHTM sát trần nghĩa là NHNN phải bán USD (giá bán can thiệp = trần − 50đ) để giữ biên độ, làm hút VND và đẩy lãi suất liên ngân hàng lên. DXY tăng là áp lực từ bên ngoài; khi DXY giảm mà USD/VND vẫn đi lên thì áp lực chủ yếu nằm trong nước (cầu ngoại tệ, chênh lãi suất VND − USD). NHNN nâng tỷ giá trung tâm là chủ động dời cả hành lang lên.');
 }
 function drFx() {
-  const from = '2024-01-01', cen = gs('vn_sbv_central_d');
+  const from = '2021-01-01', cen = gs('vn_sbv_central_d');
   const labs = cen.d.filter(d => d >= from); if (!labs.length) return;
   const at = k => { const x = gs(k), m = {}; x.d.forEach((d, i) => m[d] = x.v[i]); return labs.map(d => m[d] ?? null); };
   const eom = arr => { const m = byM(arr), out = labs.map(() => null); labs.forEach((d, i) => { if (i === labs.length - 1 || labs[i + 1].slice(0, 7) !== d.slice(0, 7)) out[i] = m[d.slice(0, 7)] ?? null; }); return out; };
@@ -1330,16 +1331,18 @@ function drFx() {
     options: { scales: { y: numAxis('VND', { beginAtZero: false }), y1: numAxis('DXY', { position: 'right', beginAtZero: false, grid: { display: false }, ticks: { callback: v => nf(v, 0) } }) } } });
 }
 function chDom() {
-  const labs = monthsFrom('2022-01', TODAY.slice(0, 7));
+  const labs = monthsFrom('2021-01', TODAY.slice(0, 7));
   drFx();
   const gap = labs.map(k => { const f = byM(dom.free)[k], n = byM(dom.nhtmSell)[k]; return f != null && n != null ? f - n : null; });
   mk('chFxGap', { type: 'bar', data: { labels: labs.map(mvn), datasets: [{ label: 'Tự do − NHTM', data: gap, backgroundColor: gap.map(v => v > 0 ? 'rgba(192,57,43,.7)' : 'rgba(31,138,141,.7)'), dp: 0, unit: 'đ' }] },
     options: { plugins: { legend: { display: false } }, scales: { y: numAxis('VND') } } });
-  const dl = dom.onDaily.map(p => p.d), omoD = dl.map(() => lastv(dom.omo).v);
-  mk('chOn', { type: 'bar', data: { labels: dl.map(d => dvn(d).slice(0, 5)), datasets: [
+  const dl = dom.onDaily.map(p => p.d), netM = Object.fromEntries(dom.netDaily.map(p => [p.d, p.v])), omoM = Object.fromEntries((dom.omoDaily || []).map(p => [p.d, p.v]));
+  let omoLast = null; const omoD = dl.map(d => (omoLast = omoM[d] ?? omoLast));   // lãi suất OMO giữ mức phiên gần nhất có giao dịch
+  const netD = dl.map(d => netM[d] ?? null);
+  mk('chOn', { type: 'bar', data: { labels: dl.map(d => dvn(d)), datasets: [
     L('LNH qua đêm', dom.onDaily.map(p => p.v), C.navy, { yAxisID: 'y' }), L('Lãi suất OMO', omoD, C.teal, { borderDash: [5, 4], yAxisID: 'y' }),
-    { label: 'Bơm/hút ròng (tỷ)', data: dl.map(d => (dom.netDaily.find(p => p.d === d) || {}).v ?? null), backgroundColor: dl.map(d => ((dom.netDaily.find(p => p.d === d) || {}).v ?? 0) >= 0 ? 'rgba(41,56,168,.35)' : 'rgba(192,57,43,.35)'), yAxisID: 'y1', dp: 0, unit: '' }] },
-    options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis('%'), y1: numAxis('tỷ đồng', { position: 'right', grid: { display: false } }) } } });
+    { label: 'Bơm/hút ròng (tỷ)', data: netD, backgroundColor: netD.map(v => (v ?? 0) >= 0 ? 'rgba(41,56,168,.35)' : 'rgba(192,57,43,.35)'), yAxisID: 'y1', dp: 0, unit: '' }] },
+    options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis('%'), y1: numAxis('tỷ đồng', { position: 'right', grid: { display: false } }) } } }, { win: 3 });
   mk('chDep', { type: 'line', data: { labels: labs.map(mvn), datasets: [L('NHTM Nhà nước', al(dom.dep12State, labs), C.navy, { borderWidth: 2.4 }), L('NHTM lớn', al(dom.dep12Large, labs), C.tealInk), L('NHTM khác', al(dom.dep12Other, labs), C.purple)] },
     options: { scales: { y: pctAxis() } } }, { switch: 'line' });
   const l19 = monthsFrom('2019-01', TODAY.slice(0, 7));
@@ -1357,7 +1360,7 @@ function chDom() {
     { label: 'Cán cân XNK (tháng)', data: al(dom.trade, labs).map(v => v == null ? null : v / 1000), backgroundColor: al(dom.trade, labs).map(v => (v ?? 0) >= 0 ? 'rgba(31,138,141,.7)' : 'rgba(192,57,43,.7)'), dp: 2, unit: ' tỷ USD' },
     L('FDI giải ngân 12 tháng', fdi12, C.navy, { unit: ' tỷ USD', dp: 1 }), L('Dự trữ ngoại hối', al(dom.reserves, labs).map(v => v == null ? null : v / 1000), C.purple, { unit: ' tỷ USD', dp: 1, yAxisID: 'y1', borderDash: [4, 3] })] },
     options: { scales: { y: numAxis('tỷ USD'), y1: numAxis('Dự trữ', { position: 'right', grid: { display: false } }) } } });
-  const fq = dom.revQ.map((p, i) => ({ d: p.d, bal: dom.expQ[i] ? (dom.expQ[i].v - p.v) / 1000 : null })).filter(f => f.d >= '2022');
+  const fq = dom.revQ.map((p, i) => ({ d: p.d, bal: dom.expQ[i] ? (dom.expQ[i].v - p.v) / 1000 : null })).filter(f => f.d >= '2021');
   mk('chFiscal', { type: 'bar', data: { labels: fq.map(f => 'Q' + Math.ceil(+f.d.slice(5, 7) / 3) + '/' + f.d.slice(2, 4)), datasets: [{ label: 'Chi − thu', data: fq.map(f => f.bal), backgroundColor: fq.map(f => f.bal >= 0 ? 'rgba(41,56,168,.7)' : 'rgba(192,57,43,.7)'), dp: 1, unit: ' nghìn tỷ' }] },
     options: { plugins: { legend: { display: false } }, scales: { y: numAxis('nghìn tỷ') } } });
 }

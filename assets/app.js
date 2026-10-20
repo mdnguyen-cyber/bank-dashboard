@@ -61,7 +61,7 @@ function mk(id, cfg, opt = {}) {
   cfg.options.interaction = cfg.options.interaction || { mode: 'index', intersect: false, axis: cfg.options.indexAxis === 'y' ? 'y' : 'x' };
   FSK.prep(cfg);
   charts[id] = new Chart(el, cfg);
-  FSK.enhance(charts[id], { today: new Date(TODAY), last: opt.last });
+  FSK.enhance(charts[id], { today: new Date(TODAY), last: opt.last, win: opt.win ?? (el.closest('#fin') ? 60 : undefined) });
   charts[id]._base = JSON.parse(JSON.stringify(cfg.data.datasets.map(d => d.type || cfg.type)));
   if (opt.switch) {
     const box = document.querySelector(`[data-ctl="${id}"]`);
@@ -80,11 +80,11 @@ function mk(id, cfg, opt = {}) {
 }
 const pctAxis = (title, extra = {}) => Object.assign({ ticks: { callback: v => nf(v, 1) + '%' }, title: title ? { display: true, text: title } : undefined, grid: { color: '#eef0f4' } }, extra);
 const numAxis = (title, extra = {}) => Object.assign({ ticks: { callback: v => nf(v, 0) }, title: title ? { display: true, text: title } : undefined, grid: { color: '#eef0f4' } }, extra);
+const on3 = arr => { const end = arr[arr.length - 1].d, from = new Date(new Date(end).getTime() - 92 * 864e5).toISOString().slice(0, 10); return arr.filter(p => p.d >= from).map(p => p.v); };
 const lastN = (arr, n) => arr.slice(Math.max(0, arr.length - n));
-let FIN_RANGE = 'def';   // khung thời gian tab Tài chính: def = gần đây · 5y = 5 năm · all = toàn bộ lịch sử
-const Y5 = () => QL.year - 5;
-const win = (arr, n) => FIN_RANGE === 'all' ? arr : FIN_RANGE === '5y' ? arr.filter(q => q.year >= Y5()) : lastN(arr, n);
-const yok = (q, y) => FIN_RANGE === 'all' ? true : q.year >= (FIN_RANGE === '5y' ? Math.min(y, Y5()) : y);
+// tab Tài chính: chart quý nhận toàn bộ lịch sử; khung mặc định 5 năm, đổi bằng nút khung thời gian của từng chart
+const win = arr => arr;
+const yok = () => true;
 
 /* ---------- card templates ---------- */
 
@@ -229,7 +229,6 @@ function paneOverview() {
     <div class="src">Nguồn: ${esc(M.src)}; CAR từ báo cáo TT41 (bán niên/năm). LDR theo công thức WiData (tiền gửi KBNN tính theo hệ số TT26/TT08).</div>
   </article>
   ${card({ id: 'chPrice', title: 'Giá cổ phiếu', sub: `đ/CP · giá đóng cửa đã điều chỉnh · lịch sử từ ${dvn(D.price.series[0].d)} · đường ngang là đỉnh và đáy 52 tuần`, h: 'short',
-    body: `<div class="picker tf" data-pxr>${[['1', '1 năm'], ['5', '5 năm'], ['all', 'Toàn bộ']].map(([k, l], i) => `<button type="button" data-k="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>`,
     insight: `Giá hiện tại <b>${nf(M.price)}đ</b> thấp hơn đỉnh 52 tuần <b>${nf(D.price.high52.c)}đ</b> (${dvn(D.price.high52.d)}) <b>${sg((M.price / D.price.high52.c - 1) * 100)}</b> và cao hơn đáy <b>${nf(D.price.low52.c)}đ</b> (${dvn(D.price.low52.d)}) <b>${sg((M.price / D.price.low52.c - 1) * 100)}</b>. Đỉnh đầu năm đi cùng kỳ vọng tăng trưởng; giá điều chỉnh trong khi LNTT 6T vẫn tăng ${sg(P.pbtYTDyoy)} — chênh lệch giữa lợi nhuận và giá là lý do P/B đang dưới trung bình 5 năm.`,
     src: D.price.src })}
   <article class="card"><h3 class="sub">Trạng thái 5 trụ luận điểm <span class="pill ai">AI · theo quy tắc</span></h3>
@@ -258,16 +257,10 @@ function paneOverview() {
   <article class="card"><h3 class="sub">Giao dịch cổ đông lớn &amp; người nội bộ</h3><div class="tscroll"><table><thead><tr><th>Người giao dịch</th><th>Chức vụ</th><th>Mua/bán</th><th class="n">KL thực hiện</th><th>Đến ngày</th></tr></thead><tbody>
     ${D.governance.trades.slice(0, 8).map(t => `<tr><td>${esc(t.name)}</td><td>${esc(t.role || '—')}</td><td>${esc(t.side)}</td><td class="n">${nf(t.executed)}</td><td>${dvn(t.to)}</td></tr>`).join('')}
     </tbody></table></div><div class="note">Giao dịch nội bộ ở CTG thưa và nhỏ so với 7,77 tỷ CP lưu hành — không phải tín hiệu định giá đáng kể.</div><div class="src">Nguồn: WiData co_insider</div></article>`;
-  const PS = D.price.series, lastD = PS[PS.length - 1].d;
-  const drawPx = k => {
-    const y1 = k === 'all' ? PS : PS.filter(p => p.d >= lastD.replace(/^(\d{4})/, (m) => +m - (+k || 1)));
-    mk('chPrice', { type: 'line', data: { labels: y1.map(p => dvn(p.d)), datasets: [{ label: 'Giá đóng cửa', data: y1.map(p => p.c), borderColor: C.navy, pointRadius: 0, borderWidth: k === '1' ? 1.8 : 1.2, dp: 0, unit: 'đ' }] },
-      options: { scales: { x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } }, y: numAxis() }, plugins: { legend: { display: false },
-        refLines: { lines: [{ value: D.price.high52.c, label: '52W High ' + nf(D.price.high52.c), color: C.teal }, { value: D.price.low52.c, label: '52W Low ' + nf(D.price.low52.c), color: C.red }] } } } });
-  };
-  const pxBox = document.querySelector('[data-pxr]');
-  if (pxBox) { const bs = [...pxBox.querySelectorAll('button')]; bs.forEach(b => b.onclick = () => { bs.forEach(x => x.classList.toggle('on', x === b)); drawPx(b.dataset.k); }); }
-  drawPx('1');
+  const PS = D.price.series;
+  mk('chPrice', { type: 'line', data: { labels: PS.map(p => dvn(p.d)), datasets: [{ label: 'Giá đóng cửa', data: PS.map(p => p.c), borderColor: C.navy, pointRadius: 0, borderWidth: 1.4, dp: 0, unit: 'đ' }] },
+    options: { scales: { x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } }, y: numAxis() }, plugins: { legend: { display: false },
+      refLines: { lines: [{ value: D.price.high52.c, label: '52W High ' + nf(D.price.high52.c), color: C.teal }, { value: D.price.low52.c, label: '52W Low ' + nf(D.price.low52.c), color: C.red }] } } } }, { win: 12 });
 }
 function checklist() {
   const t = Object.assign({ pb: VB.pbBand.lo, llr: 130, npl: 1.5, form: 1.5, car: 10 }, (store.get().check || {}));
@@ -329,8 +322,8 @@ function paneMacro() {
     ${card({ id: 'chFx', title: 'Hành lang tỷ giá USD/VND', sub: 'VND/USD · cuối tháng · tỷ giá NHTM bán ra và tự do bán ra so với trung tâm, trần biên độ, giá NHNN bán can thiệp. Chênh tự do − NHTM nới rộng = cầu USD ngoài hệ thống ngân hàng tăng (USD khan, hoặc vàng trong nước cao hơn thế giới kéo cầu USD tiền mặt).', ctl: true,
       insight: `Tỷ giá NHTM bán ra <b>${nf(lastv(fx.nhtmSell).v)}</b> còn cách trần <b>${nf(lastv(fx.ceiling).v - lastv(fx.nhtmSell).v)}đ</b>; trung tâm đã tăng <b>${sg((lastv(fx.central).v / fx.central.find(v => v.d.startsWith('2025-12')).v - 1) * 100)}</b> từ cuối 2025 — NHNN chủ động cho VND yếu dần trong khi giá thị trường chưa áp trần. DXY ${nf(lastv(fx.dxy).v, 1)} tăng lại từ ${nf(fx.dxy.find(v => v.d.startsWith('2026-01')).v, 1)} (01/2026): áp lực bên ngoài nhích lên, chưa tới mức buộc NHNN bán USD liên tục. Tỷ giá tự do <b>${nf(lastv(fx.free).v)}</b>, ${fxGap >= 0 ? 'cao hơn' : 'thấp hơn'} NHTM <b>${nf(Math.abs(fxGap))}đ</b>, đã thu hẹp mạnh từ đỉnh chênh <b>+${nf(fxPk.g)}đ</b> (${fxPk.d}) — áp lực USD ngoài hệ thống đã hạ nhiệt.`,
       src: 'WiData macro 82223, 82226, 82227, 82228, 82231, 235028' })}
-    ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · ngày · LNH qua đêm so với lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
-      insight: `LNH qua đêm dao động mạnh <b>${nf(Math.min(...MA.onDaily.map(v => v.v)), 2)}–${nf(Math.max(...MA.onDaily.map(v => v.v)), 2)}%</b> trong 3 tháng, đỉnh thường rơi vào cuối tháng (căng mùa vụ) và NHNN bơm OMO đúng các phiên đó. Theo deck (R-10), OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR — nên TT2 hạ không tự kéo lãi suất huy động TT1 xuống.`,
+    ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm so với lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
+      insight: `LNH qua đêm dao động mạnh <b>${nf(Math.min(...on3(MA.onDaily)), 2)}–${nf(Math.max(...on3(MA.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...MA.onDaily.map(v => v.v)), 2)}% ngày ${dvn(MA.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh thường rơi vào cuối tháng (căng mùa vụ) và NHNN bơm OMO đúng các phiên đó. Theo deck (R-10), OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR — nên TT2 hạ không tự kéo lãi suất huy động TT1 xuống.`,
       src: 'WiData macro 82237, 81522, 82268' })}
     ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng (TT1)', sub: '%/năm · cuối tháng · CTG niêm yết vs bình quân NHTM Nhà nước vs NHTM khác', ctl: true,
       insight: `Lãi suất 12T của CTG <b>${pc(lastv(r.dep12CTG).v, 1)}</b> bằng nhóm Nhà nước, thấp hơn NHTM khác <b>${nf(lastv(r.dep12Other).v - lastv(r.dep12CTG).v, 2)} điểm %</b>. Mặt bằng đã tăng ${nf(lastv(r.dep12State).v - r.dep12State[0].v, 2)} điểm % từ ${dvn(r.dep12State[0].d).slice(3)}; theo R-13, COF thực tế đi sau 1–3 quý — xem COF ở tab Tài chính › Biên lãi.`,
@@ -375,11 +368,13 @@ function paneMacro() {
     { label: 'Tự do bán ra', data: alignM(fx.free, fx.nhtmSell), borderColor: '#d9a400', backgroundColor: '#d9a400', borderWidth: 2.2, dp: 0 },
     { label: 'NHNN bán can thiệp', data: alignM(fx.sbvSell, fx.nhtmSell), borderColor: C.purple, backgroundColor: C.purple, borderDash: [2, 3], dp: 0, keep: true },
   ] }, options: { scales: { y: numAxis() } } }, { switch: 'line' });
-  mk('chOn', { type: 'bar', data: { labels: MA.onDaily.map(v => dvn(v.d).slice(0, 5)), datasets: [
+  const onL = MA.onDaily.map(v => v.d), netM = Object.fromEntries(MA.omoNetDaily.map(v => [v.d, v.v])), omoM = Object.fromEntries(MA.omoRateDaily.map(v => [v.d, v.v]));
+  let omoLast = null; const omoD = onL.map(d => (omoLast = omoM[d] ?? omoLast)), netD = onL.map(d => netM[d] ?? null);
+  mk('chOn', { type: 'bar', data: { labels: onL.map(d => dvn(d)), datasets: [
     { type: 'line', label: 'LNH qua đêm', data: MA.onDaily.map(v => v.v), borderColor: C.navy, backgroundColor: C.navy, yAxisID: 'y', pointRadius: 0, borderWidth: 2, dp: 2, unit: '%' },
-    { type: 'line', label: 'Lãi suất OMO', data: alignD(MA.omoRateDaily, MA.onDaily), borderColor: C.teal, borderDash: [5, 4], yAxisID: 'y', pointRadius: 0, dp: 2, unit: '%' },
-    { label: 'Bơm/hút ròng (tỷ)', data: alignD(MA.omoNetDaily, MA.onDaily), backgroundColor: alignD(MA.omoNetDaily, MA.onDaily).map(v => v >= 0 ? 'rgba(41,56,168,.35)' : 'rgba(192,57,43,.35)'), yAxisID: 'y1', dp: 0 },
-  ] }, options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis('%'), y1: numAxis('tỷ đồng', { position: 'right', grid: { display: false } }) } } });
+    { type: 'line', label: 'Lãi suất OMO', data: omoD, borderColor: C.teal, borderDash: [5, 4], yAxisID: 'y', pointRadius: 0, dp: 2, unit: '%' },
+    { label: 'Bơm/hút ròng (tỷ)', data: netD, backgroundColor: netD.map(v => (v ?? 0) >= 0 ? 'rgba(41,56,168,.35)' : 'rgba(192,57,43,.35)'), yAxisID: 'y1', dp: 0 },
+  ] }, options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis('%'), y1: numAxis('tỷ đồng', { position: 'right', grid: { display: false } }) } } }, { win: 3 });
   mk('chDep', { type: 'line', data: { labels: r.dep12State.map(v => v.d.slice(0, 7)), datasets: [
     { label: 'CTG 12T', data: alignM(r.dep12CTG, r.dep12State), borderColor: C.navy, backgroundColor: C.navy, borderWidth: 2.4, dp: 2, unit: '%' },
     { label: 'NHTM Nhà nước 12T', data: r.dep12State.map(v => v.v), borderColor: C.teal, backgroundColor: C.teal, borderDash: [4, 3], dp: 2, unit: '%' },
@@ -394,7 +389,7 @@ function paneMacro() {
     { label: 'Tín dụng YoY', data: MA.credit.yoy.map(v => v.v), borderColor: C.navy, backgroundColor: C.navy, dp: 1, unit: '%' },
     { label: 'Tổng tiền gửi YoY', data: alignM(MA.credit.depositsYoY, MA.credit.yoy), borderColor: C.teal, backgroundColor: C.teal, dp: 1, unit: '%' },
   ] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' });
-  const q16 = lastN(Q, 16);
+  const q16 = Q.filter(q => q.ldr != null);
   mk('chLdr', { type: 'line', data: { labels: q16.map(q => q.q), datasets: [
     { label: 'LDR', data: q16.map(q => q.ldr), borderColor: C.navy, backgroundColor: C.navy, dp: 1, unit: '%' },
     { label: 'CASA', data: q16.map(q => q.casa), borderColor: C.teal, backgroundColor: C.teal, yAxisID: 'y1', dp: 1, unit: '%' },
@@ -421,7 +416,6 @@ function paneFin() {
   const prevY = A[A.length - 1];
   $('#fin').innerHTML = `<h2 class="sec">Tài chính</h2><p class="sec-sub">Khung 8 bước: nguồn vốn → tài sản sinh lời → chất lượng tài sản → biên lãi → thu nhập ngoài lãi → hiệu quả & vốn. Tỷ đồng, BCTC hợp nhất; số mới nhất ${QL.q}.</p>
   <div class="subtabs" role="tablist">${subs.map(([k, l], i) => `<button type="button" data-sub="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
-  <div class="picker tf fin-range" data-finr><span class="muted">Khung thời gian biểu đồ quý:</span>${[['def', 'Gần đây'], ['5y', '5 năm'], ['all', `Toàn bộ (từ ${Q[0].q})`]].map(([k, l]) => `<button type="button" data-k="${k}" class="${k === FIN_RANGE ? 'on' : ''}">${l}</button>`).join('')}</div>
   <div class="sub on" data-subp="bs">
     <div class="grid g2 gap">
       ${card({ id: 'chWfA', title: `Cơ cấu tài sản ${QL.q}`, sub: 'tỷ đồng · cộng dồn tới tổng tài sản', h: 'tall',
@@ -512,10 +506,6 @@ function paneFin() {
     $$('#fin .subtabs button').forEach(x => x.classList.toggle('on', x === b));
     $$('#fin .sub').forEach(p => p.classList.toggle('on', p.dataset.subp === b.dataset.sub));
     finCharts(b.dataset.sub);
-  });
-  $$('#fin [data-finr] button').forEach(b => b.onclick = () => {
-    const cur = ($('#fin .subtabs button.on') || {}).dataset; FIN_RANGE = b.dataset.k;
-    rerender('fin'); const t = cur && $(`#fin .subtabs [data-sub="${cur.sub}"]`); if (t) t.click();
   });
   finCharts('bs');
 }

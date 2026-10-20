@@ -45,6 +45,21 @@ def months(a, b):
     return out
 
 
+
+def daily_merged(raw, iid):
+    """Gộp chuỗi ngày (và tuần do Wi nén) của một chỉ tiêu vĩ mô từ mọi lần kéo; trùng ngày lấy file sau."""
+    out = {}
+    for d in raw:
+        if d['tool'] != 'wi_data_macro':
+            continue
+        for s in (d['response'].get('data') or []):
+            if s.get('indicator_id') != iid or s.get('time_type') in ('monthly', 'quarterly', 'yearly'):
+                continue
+            for v in s.get('values', []):
+                if v.get('value') is not None:
+                    out[v['date']] = v['value']
+    return [{'d': k, 'v': out[k]} for k in sorted(out)]
+
 def main():
     raw = load_raw(ROOT / 'data/raw/wi')
 
@@ -55,7 +70,7 @@ def main():
         if d['tool'] != 'wi_data_macro':
             continue
         for s in d['response'].get('data', []):
-            p = pref.get(s['time_type'], 0)
+            p = pref.get(s.get('time_type'), 0)
             for v in s['values']:
                 k = ym(v['date'])
                 old = series[s['indicator_id']].get(k)
@@ -179,7 +194,7 @@ def main():
 
     zfx, IFX = build_idx(FXC, fx_raw)
     zlq, ILQ = build_idx(LQC, liq_raw)
-    common = [k for k in M if k in IFX and k in ILQ and k >= '2022-01']
+    common = [k for k in M if k in IFX and k in ILQ and k >= '2021-01']
 
     def quad(fx, lq):
         hi, rich = fx >= 0, lq >= 0
@@ -244,14 +259,10 @@ def main():
         'reserves': lst(76885), 'trade': lst(255693), 'fdi': lst(76951),
         'revQ': lst(82420), 'expQ': lst(75598),
     }
-    # bơm/hút OMO theo phiên gần nhất (raw CTG đã có chuỗi ngày 3 tháng)
-    for d in raw:
-        if d['tool'] == 'wi_data_macro':
-            for s in d['response'].get('data', []):
-                if s['indicator_id'] == 82268 and s['time_type'] == 'daily':
-                    D['dom']['netDaily'] = sorted([{'d': v['date'], 'v': v['value']} for v in s['values']], key=lambda x: x['d'])
-                if s['indicator_id'] == 82237 and s['time_type'] == 'daily':
-                    D['dom']['onDaily'] = sorted([{'d': v['date'], 'v': v['value']} for v in s['values']], key=lambda x: x['d'])
+    # bơm/hút OMO và LNH qua đêm theo phiên (gộp các lần kéo theo quý, từ 2021)
+    D['dom']['netDaily'] = daily_merged(raw, 82268)
+    D['dom']['onDaily'] = daily_merged(raw, 82237)
+    D['dom']['omoDaily'] = daily_merged(raw, 81522)
 
     # ------------------------------------------------ ngân hàng
     def bank_rows(endpoint, cols):

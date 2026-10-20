@@ -30,6 +30,8 @@ Gọi đúng các truy vấn tăng dần dưới đây (cửa sổ ngắn để 
 Lịch sử: chuỗi ngành (26 NH theo quý) giữ từ Q1/2021, định giá ngành theo phiên từ 01/2021; riêng mã có trang riêng (CTG) giữ toàn bộ lịch sử
 (BCTC quý từ Q1/2010, BCTC năm từ 2007, giá điều chỉnh từ 03/2012). Các build script GỘP mọi file cùng loại (kỳ trùng lấy file sau),
 nên chỉ cần kéo phần mới — không xoá file cũ trong `data/raw/wi/`.
+Chuỗi theo phiên (LNH qua đêm 82237, bơm/hút OMO 82268, lãi suất OMO 81522) có từ 01/2021. Wi nén khoảng > 3 tháng thành tuần,
+nên khi cần bù lịch sử thì kéo theo từng quý (from/to ≤ 3 tháng, limit 120). PPI Trung Quốc bù ở `data/backfill/cn_ppi.json`.
 
 Khi có BCTC quý mới (mùa báo cáo: tháng 1, 4, 7, 10), kéo lại các truy vấn `fs_bank`, `fs_bank_notes`, `ratio_bank`, `ratio_bank_ttm`,
 `ratio_common_ttm`, `bank_car_tt41` với cùng tham số như file cũ trong `data/raw/wi/` (đọc `request` của file cũ, thêm năm/quý mới).

@@ -84,6 +84,15 @@ for k in IDX:
 for k in ['us_pce_trim', 'ea_hicp', 'ea_hicp_core', 'ea_hicp_serv', 'jp_cpi', 'cn_cpi', 'cn_ppi', 'us_unrate', 'ea_unrate', 'us_breakeven5']:
     if k in SER:
         put(k, monthly(k, 'avg' if k == 'us_breakeven5' else 'last'))
+# PPI Trung Quốc: bù các tháng nguồn tự động thiếu bằng file bù (data/backfill/cn_ppi.json)
+_bf = ROOT / 'data/backfill/cn_ppi.json' if 'ROOT' in globals() else None
+if _bf and _bf.exists():
+    _b = json.loads(_bf.read_text(encoding='utf-8'))['cn_ppi']
+    _cur = dict(zip(G['s'].get('cn_ppi', {}).get('d', []), G['s'].get('cn_ppi', {}).get('v', [])))
+    for _k, _v in _b.items():
+        if _cur.get(_k) is None:
+            _cur[_k] = _v
+    put('cn_ppi', {k: v for k, v in _cur.items() if v is not None})
 # CPI Nhật: ưu tiên chuỗi Cục Thống kê (chỉ số) nếu mới hơn
 if 'jp_cpi_idx_yoy' in G['s']:
     G['s']['jp_cpi_main'] = G['s']['jp_cpi_idx_yoy']
@@ -93,7 +102,7 @@ elif 'jp_cpi' in G['s']:
 # ---------------- lao động
 pay = monthly('us_payems')
 put('us_payems_chg', {m: v - pay[shift(m, -1)] for m, v in pay.items() if shift(m, -1) in pay and m >= '2015'}, 0)
-put('us_claims', {d: v / 1000 for d, v in obs('us_claims') if d >= '2022'}, 0)
+put('us_claims', {d: v / 1000 for d, v in obs('us_claims') if d >= DAILY_FROM[:4]}, 0)
 put('us_jolts', {m: v / 1000 for m, v in monthly('us_jolts').items() if m >= '2015'}, 2)
 
 # ---------------- lãi suất (ngày, từ 2021) và tháng (dài)
