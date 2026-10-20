@@ -7,17 +7,21 @@
 - Ngưỡng tín hiệu là GIẢ ĐỊNH THEO DÕI theo deck "Hướng dẫn xây dựng dashboard ngân hàng"
   (quy tắc R-xx), không phải ngưỡng thống kê đã kiểm định.
 
-Dùng: python3 scripts/build_ctg_data.py [--raw data/raw/wi] [--out data/ctg-data.js]
+Dùng: python3 scripts/build_ctg_data.py [--ticker CTG|VCB|BID] [--raw data/raw/wi] [--out data/<mã>-data.js]
+Hồ sơ, mã chỉ tiêu lãi suất niêm yết và phần lời bình theo ngân hàng: data/banks.json.
 """
 import argparse, glob, json, math, re, statistics, sys
 sys.path.insert(0, __import__('os').path.dirname(__file__))
 from datetime import date, datetime, timedelta
 
-TICKER = 'CTG'
+TICKER = 'CTG'   # đổi bằng --ticker
+BANK = {}
 BIG4 = ['VCB', 'BID', 'CTG']
-PEER_GROUPS = {'VCB': 'Big 4', 'BID': 'Big 4', 'CTG': 'Big 4',
-               'MBB': 'Tư nhân lớn', 'TCB': 'Tư nhân lớn', 'ACB': 'Tư nhân lớn', 'VPB': 'Tư nhân lớn',
-               'HDB': 'Tư nhân vừa', 'VIB': 'Tư nhân vừa', 'TPB': 'Tư nhân vừa', 'SHB': 'Tư nhân vừa', 'STB': 'Tư nhân vừa'}
+PEER_GROUPS = {   # cùng cách nhóm với dashboard ngành (build_sector_data.py)
+    'VCB': 'Big 4', 'BID': 'Big 4', 'CTG': 'Big 4',
+    'MBB': 'Tư nhân lớn', 'TCB': 'Tư nhân lớn', 'ACB': 'Tư nhân lớn', 'VPB': 'Tư nhân lớn', 'HDB': 'Tư nhân lớn', 'LPB': 'Tư nhân lớn',
+    'SHB': 'Tư nhân vừa', 'STB': 'Tư nhân vừa', 'VIB': 'Tư nhân vừa', 'TPB': 'Tư nhân vừa', 'MSB': 'Tư nhân vừa', 'SSB': 'Tư nhân vừa', 'OCB': 'Tư nhân vừa', 'EIB': 'Tư nhân vừa',
+    'NAB': 'Tư nhân nhỏ', 'ABB': 'Tư nhân nhỏ', 'KLB': 'Tư nhân nhỏ', 'VAB': 'Tư nhân nhỏ', 'BVB': 'Tư nhân nhỏ', 'BAB': 'Tư nhân nhỏ', 'PGB': 'Tư nhân nhỏ', 'SGB': 'Tư nhân nhỏ', 'NVB': 'Tư nhân nhỏ'}
 
 
 # ---------------------------------------------------------------- raw helpers
@@ -78,6 +82,24 @@ def flt(req):
         return {}
 
 
+def syms(req):
+    f = flt(req)
+    return [s.strip() for s in str(f.get('symbol') or req.get('symbol') or req.get('codetag') or '').split(',') if s.strip()]
+
+
+def own(req):
+    """Lần kéo riêng cho mã này (1–3 mã/lần), không phải bảng toàn ngành."""
+    s = syms(req)
+    return TICKER in s and len(s) <= 3
+
+
+def mine(rs):
+    def sym(r):
+        s = r.get('symbol', TICKER)
+        return s[0] if isinstance(s, list) and s else s
+    return [r for r in rs if sym(r) == TICKER]
+
+
 ROOT = __import__('pathlib').Path(__file__).resolve().parent.parent
 
 
@@ -106,33 +128,42 @@ def build(raw):
     D = {}
     asof = date.today().isoformat()
 
-    snap = find(raw, 'wi_data_companies', 'snapshot')['response']
-    fsq = sort_q(merged(raw, 'wi_data_companies', 'fs_bank', lambda q: flt(q).get('symbol') == TICKER and flt(q).get('quarter') == '1,2,3,4', TICKER))
-    fsy = sorted(merged(raw, 'wi_data_companies', 'fs_bank', lambda q: flt(q).get('symbol') == TICKER and flt(q).get('quarter') == '0', TICKER), key=lambda r: r['year'])
-    rbt = sort_q(merged(raw, 'wi_data_companies', 'ratio_bank_ttm', lambda q: flt(q).get('symbol') == TICKER, TICKER))
-    rb = sort_q(merged(raw, 'wi_data_companies', 'ratio_bank', lambda q: flt(q).get('symbol') == TICKER and flt(q).get('quarter') == '1,2,3,4', TICKER))
-    rbmix = sort_q(rows(find(raw, 'wi_data_companies', 'ratio_bank', lambda q: flt(q).get('quarter') == '2,4')['response']))
-    rct = sort_q(merged(raw, 'wi_data_companies', 'ratio_common_ttm', lambda q: flt(q).get('symbol') == TICKER, TICKER))
-    peers_rbt = rows(find(raw, 'wi_data_companies', 'ratio_bank_ttm', lambda q: ',' in flt(q).get('symbol', ''))['response'])
-    peers_rb = rows(find(raw, 'wi_data_companies', 'ratio_bank', lambda q: ',' in flt(q).get('symbol', ''))['response'])
-    peers_rc = rows(find(raw, 'wi_data_companies', 'ratio_common_ttm', lambda q: ',' in flt(q).get('symbol', ''))['response'])
-    car = rows(find(raw, 'wi_data_companies', 'bank_car_tt41', lambda q: flt(q).get('symbol') == TICKER)['response'])
-    plans = rows(find(raw, 'wi_data_companies', 'co_plans')['response'])
-    ryear = sorted(rows(find(raw, 'wi_data_companies', 'ratio_common_year')['response']), key=lambda r: r['year'])
-    holders = rows(find(raw, 'wi_data_companies', 'co_holders')['response'])
-    leaders = rows(find(raw, 'wi_data_companies', 'co_leaders')['response'])
-    insider = rows(find(raw, 'wi_data_companies', 'co_insider')['response'])
-    events = rows(find(raw, 'wi_data_companies', 'co_events')['response'])
-    reports = rows(find(raw, 'wi_data_companies', 'co_reports')['response'])
-    ainews = rows(find(raw, 'wi_data_news', 'ai_news')['response'])
-    exnews = rows(find(raw, 'wi_data_news', 'exchange_news')['response'])
-    pxd = {}   # gộp mọi lần kéo giá (lịch sử giá điều chỉnh có từ 03/2012)
+    q1234 = lambda q: flt(q).get('quarter') == '1,2,3,4'
+    fsq = sort_q(merged(raw, 'wi_data_companies', 'fs_bank', lambda q: own(q) and q1234(q), TICKER))
+    fsy = sorted(merged(raw, 'wi_data_companies', 'fs_bank', lambda q: own(q) and flt(q).get('quarter') == '0', TICKER), key=lambda r: r['year'])
+    rbt = sort_q(merged(raw, 'wi_data_companies', 'ratio_bank_ttm', own, TICKER))
+    rb = sort_q(merged(raw, 'wi_data_companies', 'ratio_bank', lambda q: own(q) and q1234(q), TICKER))
+    rbmix = sort_q(mine(rows(find(raw, 'wi_data_companies', 'ratio_bank', lambda q: own(q) and flt(q).get('quarter') == '2,4' and 'pct_loans' in q.get('columns', ''))['response'])))
+    rct = sort_q(merged(raw, 'wi_data_companies', 'ratio_common_ttm', own, TICKER))
+    def peer_rows(ep):   # mọi lần kéo toàn ngành có Q2/2026 (bảng 26 NH theo quý + bảng 12 NH kỳ Q2/2026), gộp theo mã
+        pq = lambda q: len(syms(q)) >= 10 and '2026' in str(flt(q).get('year', '')) and '2' in str(flt(q).get('quarter', '')).split(',')
+        return [r for r in merged(raw, 'wi_data_companies', ep, pq) if r['year'] == PEER_Y and r['quarter'] == PEER_Q]
+    PEER_Y, PEER_Q = 2026, 2
+    peers_rbt, peers_rb, peers_rc = peer_rows('ratio_bank_ttm'), peer_rows('ratio_bank'), peer_rows('ratio_common_ttm')
+    car = mine(rows(find(raw, 'wi_data_companies', 'bank_car_tt41', own)['response']))
+    car_all = rows(find(raw, 'wi_data_companies', 'bank_car_tt41', lambda q: len(syms(q)) >= 10)['response'])
+    plans = mine(rows(find(raw, 'wi_data_companies', 'co_plans', own)['response']))
+    ryear = sorted(mine(rows(find(raw, 'wi_data_companies', 'ratio_common_year', own)['response'])), key=lambda r: r['year'])
+    holders = mine(rows(find(raw, 'wi_data_companies', 'co_holders', own)['response']))
+    leaders = mine(rows(find(raw, 'wi_data_companies', 'co_leaders', own)['response']))
+    insider = mine(rows(find(raw, 'wi_data_companies', 'co_insider', own)['response']))
+    events = mine(rows(find(raw, 'wi_data_companies', 'co_events', own)['response']))
+    reports = mine(rows(find(raw, 'wi_data_companies', 'co_reports', own)['response']))
+    ainews = rows(find(raw, 'wi_data_news', 'ai_news', lambda q: q.get('codetag') == TICKER)['response'])
+    exnews = mine(rows(find(raw, 'wi_data_news', 'exchange_news', lambda q: q.get('symbol') == TICKER)['response']))
+    pxd = {}   # gộp mọi lần kéo giá điều chỉnh của mã này
     for d in raw:
-        if d['tool'] == 'wi_data_stock' and d['request'].get('endpoint_name') == 'eod_adjust':
+        if d['tool'] == 'wi_data_stock' and d['request'].get('endpoint_name') == 'eod_adjust' and syms(d['request']) == [TICKER]:
             for r in rows(d['response']):
-                if r.get('symbol', TICKER) == TICKER:
-                    pxd[r['trading_date']] = r
+                pxd[r['trading_date']] = r
     prices = [pxd[k] for k in sorted(pxd)]
+    rd = {}   # định giá theo phiên (ratio_daily) — lấy giá trị mới nhất có số cho từng trường
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily':
+            for r in mine(rows(d['response'])):
+                for k, v in r.items():
+                    if v is not None and (k not in rd or r['trading_date'] >= rd[k][0]):
+                        rd[k] = (r['trading_date'], v)
     macro = {}
     for d in raw:
         if d['tool'] == 'wi_data_macro':
@@ -141,23 +172,25 @@ def build(raw):
                 macro[key] = sorted(s['values'], key=lambda v: v['date'])
 
     # ------------------------------------------------ meta
-    gia, dg, ho = snap['gia'], snap['dinh_gia'], snap['ho_so']
-    shares_m = ho['so_cp_luu_hanh'] / 1e6
+    last_px = prices[-1]
+    v_ = lambda k: rd.get(k, (None, None))[1]
+    price = last_px['close']
+    px_mc = next(p['close'] for p in reversed(prices) if p['trading_date'] <= rd['market_cap'][0])   # giá đóng cửa ngày của số vốn hóa
+    shares_m = v_('market_cap') / px_mc / 1e6
+    mcap_ty = round(price * shares_m / 1e3)   # vốn hóa theo giá đóng cửa mới nhất × CP lưu hành (tỷ đồng)
     last_q = fsq[-1]
     lq = qlabel(last_q['year'], last_q['quarter'])
+    bvps, eps = v_('bvps'), v_('eps')
     D['meta'] = {
-        'ticker': TICKER, 'name': ho['ten'], 'exchange': ho['san'], 'sector': 'bank', 'peerGroup': 'Big 4',
-        'updated': asof, 'price': gia['gia_dong_cua_vnd'], 'priceDate': gia['ngay'],
-        'mcap': dg['von_hoa_ty_vnd'], 'pb': dg['pb_lan'], 'pe': dg['pe_lan'], 'bvps': dg['bvps_vnd'], 'eps': dg['eps_vnd'],
+        'ticker': TICKER, 'name': BANK['name'], 'short': BANK.get('short'), 'exchange': BANK.get('exchange', 'HOSE'), 'sector': 'bank', 'peerGroup': 'Big 4',
+        'updated': asof, 'price': price, 'priceDate': last_px['trading_date'],
+        'mcap': mcap_ty, 'pb': round(price / bvps, 2) if bvps else None, 'pe': round(price / eps, 2) if eps else None,
+        'bvps': round(bvps) if bvps else None, 'eps': round(eps) if eps else None,
         'sharesOut': round(shares_m, 1), 'latestQuarter': lq,
         'view': None,  # analyst nhập ở tab FinSuccess; không tự gán
-        'irUrl': 'https://investor.vietinbank.vn/',
-        'src': f"WiData snapshot {gia['ngay']} (giá, P/B, P/E); BCTC hợp nhất {lq}",
+        'irUrl': BANK.get('irUrl'), 'strategic': BANK.get('strategic'),
+        'src': f"WiData eod_adjust {last_px['trading_date']} (giá), ratio_daily {rd['bvps'][0]} (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất {lq}",
     }
-    sl = snap['sinh_loi']
-    D['meta'].update({'roe': sl['roe_pct'], 'roa': sl['roa_pct'], 'nim': sl['nim_pct'], 'cir': sl['cir_pct'],
-                      'casa': sl['casa_pct'], 'npl': sl['ty_le_no_xau_pct'], 'llr': sl['bao_phu_no_xau_pct'],
-                      'ratioPeriod': f"TTM {snap['meta']['ky_bao_cao']}"})
 
     # ------------------------------------------------ quarterly financial block (tỷ VND)
     Q = []
@@ -224,6 +257,9 @@ def build(raw):
         if row['nplAmt']:
             row['llrInclAccrued'] = round(-row['llp'] / (row['nplAmt'] + row['accrued']) * 100, 1)
     D['quarterly'] = Q
+    qn_ = Q[-1]
+    D['meta'].update({'roe': qn_['roe'], 'roa': qn_['roa'], 'nim': qn_['nim'], 'cir': qn_['cir'], 'casa': qn_['casa'],
+                      'npl': qn_['npl'], 'llr': qn_['llr'], 'ratioPeriod': f"TTM {qn_['q']}"})
     D['quarterlyNote'] = ('BCTC hợp nhất từ WiData (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). '
                           'NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, '
                           'NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).')
@@ -233,7 +269,7 @@ def build(raw):
         'nplFormationRate': 'Hình thành nợ xấu quý / dư nợ bình quân đầu-cuối quý × 4 (quy năm)',
         'nimAdj': 'NIM × (1 − chi phí dự phòng TTM / thu nhập lãi thuần TTM) ≈ (NII − dự phòng) / TS sinh lời (BNK-07)',
         'llrInclAccrued': 'Dự phòng cho vay KH / (nợ xấu + lãi, phí phải thu) — stress test coi lãi dự thu là nợ xấu (BNK-14)',
-        'pbFwd': 'Giá × CP lưu hành / VCSH 2026F; VCSH 2026F = VCSH Q2/2026 + (LNST dự phóng 2026 − LNST 6T/2026) − cổ tức tiền mặt 450đ/CP trả 27/08/2026',
+        'pbFwd': 'Giá × CP lưu hành / VCSH năm dự phóng; VCSH dự phóng = VCSH quý mới nhất + (LNST dự phóng cả năm − LNST lũy kế) − cổ tức tiền mặt đã trả sau ngày khóa sổ quý',
     }
 
     # ------------------------------------------------ annual block
@@ -254,6 +290,14 @@ def build(raw):
 
     # Kế hoạch & YTD năm hiện tại
     cur_year = last_q['year']
+    agm = next((e for e in events if e.get('event_type') == 'Họp ĐHCĐ thường niên' and str(e.get('execution_date') or '').startswith(str(cur_year))), None)
+    agm_d = '/'.join(reversed(agm['execution_date'][:10].split('-'))) if agm else str(cur_year)
+    q_end = f"{last_q['year']}-{last_q['quarter'] * 3:02d}-{30 if last_q['quarter'] in (2, 3) else 31}"
+    div_ev = [e for e in events if (e.get('cash_dividend') or 0) > 0 and e.get('execution_date') and q_end < e['execution_date'] <= asof]
+    div_cash = sum(e['cash_dividend'] for e in div_ev)   # cổ tức tiền mặt đã trả sau ngày khóa sổ quý mới nhất (giảm VCSH dự phóng)
+    stock_ev = sorted([e for e in events if (e.get('stock_dividend_ratio') or 0) > 0 and e.get('ex_date')], key=lambda e: e['ex_date'])
+    D['lastStockDiv'] = ({'t': stock_ev[-1]['event_title'], 'ratio': round(stock_ev[-1]['stock_dividend_ratio'] * 100, 2), 'ex': stock_ev[-1]['ex_date']} if stock_ev else None)
+    D['divPaidAfterQ'] = [{'d': e['execution_date'], 'v': e['cash_dividend'], 't': e['event_title']} for e in div_ev]
     plan = next((p for p in plans if p.get('year') == cur_year and p.get('planned_profit_before_tax')), None)
     ytd = [q for q in Q if q['year'] == cur_year]
     D['plan'] = None
@@ -261,7 +305,7 @@ def build(raw):
         D['plan'] = {'year': cur_year, 'pbt': plan['planned_profit_before_tax'], 'npat': plan.get('planned_profit_after_tax'),
                      'ytdQuarters': len(ytd), 'ytdLabel': f"{len(ytd) * 3}T/{cur_year}",
                      'pbtYTD': round(sum(q['pbt'] for q in ytd), 1), 'npatYTD': round(sum(q['npat'] for q in ytd), 1),
-                     'src': 'WiData co_plans (ĐHĐCĐ 24/04/2026); YTD cộng từ BCTC quý'}
+                     'src': f"WiData co_plans (ĐHĐCĐ {agm_d}); YTD cộng từ BCTC quý"}
         D['plan']['pbtDone'] = round(D['plan']['pbtYTD'] / plan['planned_profit_before_tax'] * 100, 1)
         if plan.get('planned_profit_after_tax'):
             D['plan']['npatDone'] = round(D['plan']['npatYTD'] / plan['planned_profit_after_tax'] * 100, 1)
@@ -284,28 +328,39 @@ def build(raw):
     D['car'] = [{'period': (f"6T/{r['year']}" if r['quarter'] == 2 else f"{r['year']}"), 'y': r['year'], 'h': r['quarter'],
                  'car': pct(r['tt41_10']), 'tier1': pct(r['tt41_09']), 'ownFunds': ty(r['tt41_01']), 'rwaCredit': ty(r['tt41_05'])}
                 for r in sorted(car, key=lambda r: (r['year'], r['quarter'] == 0))]
+    lc = max(((r['year'], r['quarter'] == 0, r['quarter']) for r in car_all if r.get('tt41_10')))
+    D['carPeers'] = {'period': (f"6T/{lc[0]}" if lc[2] == 2 else str(lc[0])),
+                     'rows': sorted([{'s': r['symbol'], 'group': PEER_GROUPS.get(r['symbol'], 'Khác'), 'car': pct(r['tt41_10']), 'tier1': pct(r.get('tt41_09'))}
+                                     for r in car_all if r['year'] == lc[0] and r['quarter'] == lc[2] and r.get('tt41_10')], key=lambda r: -r['car'])}
 
     # ------------------------------------------------ peers (Q2/2026)
     P = {}
     for r in peers_rbt:
-        P.setdefault(r['symbol'], {}).update({'nim': pct(r['nim']), 'cof': pct(r['cof']), 'yea': pct(r['yea']), 'cir': pct(r['cir']),
-                                              'toiYoY': pct(r['total_operating_income_growth_yoy'], 1)})
+        P.setdefault(r['symbol'], {}).update({'nim': pct(r.get('nim')), 'cof': pct(r.get('cof')), 'yea': pct(r.get('yea')), 'cir': pct(r.get('cir')),
+                                              'toiYoY': pct(r.get('total_operating_income_growth_yoy'), 1)})
     for r in peers_rb:
-        P.setdefault(r['symbol'], {}).update({'casa': pct(r['casa_ratio'], 1), 'npl': pct(r['npl_ratio']), 'g2': pct(r['group2_loan_ratio']),
-                                              'llr': pct(r['npl_coverage_ratio'], 0), 'ldr': pct(r['ldr'], 1), 'creditYoY': pct(r['credit_growth_yoy'], 1),
-                                              'accruedToTA': pct(r['accrued_interest_to_total_assets'])})
+        P.setdefault(r['symbol'], {}).update({'casa': pct(r.get('casa_ratio'), 1), 'npl': pct(r.get('npl_ratio')), 'g2': pct(r.get('group2_loan_ratio')),
+                                              'llr': pct(r.get('npl_coverage_ratio'), 0), 'ldr': pct(r.get('ldr'), 1), 'creditYoY': pct(r.get('credit_growth_yoy'), 1),
+                                              'accruedToTA': pct(r.get('accrued_interest_to_total_assets'))})
     for r in peers_rc:
-        P.setdefault(r['symbol'], {}).update({'roe': pct(r['roe'], 1), 'roa': pct(r['roa']), 'npatYoY': pct(r['profit_parent_yoy'], 1)})
+        P.setdefault(r['symbol'], {}).update({'roe': pct(r.get('roe'), 1), 'roa': pct(r.get('roa')), 'npatYoY': pct(r.get('profit_parent_yoy'), 1)})
     D['peers'] = {'period': 'Q2/2026 (NIM, COF, YEA, CIR, ROE, ROA: TTM)',
                   'rows': [dict(symbol=s, group=PEER_GROUPS.get(s, 'Khác'), **v) for s, v in sorted(P.items(), key=lambda kv: (list(PEER_GROUPS).index(kv[0]) if kv[0] in PEER_GROUPS else 99))]}
 
     # ------------------------------------------------ governance
+    hs = BANK.get('holderSwap')
+    if hs:   # nguồn ghi đảo tỷ lệ giữa hai cổ đông — hoán đổi theo CBTT giao dịch (xem note)
+        ha = next((h for h in holders if h['name'] == hs['a']), None); hb = next((h for h in holders if h['name'] == hs['b']), None)
+        if ha and hb and hb['ownership_ratio'] > ha['ownership_ratio']:
+            for k in ('ownership_ratio', 'shares_held'):
+                ha[k], hb[k] = hb[k], ha[k]
     D['governance'] = {
         'shareholders': [{'name': h['name'], 'shares': h['shares_held'], 'percent': round(h['ownership_ratio'], 3), 'asOf': h['last_update']}
                          for h in sorted(holders, key=lambda h: -h['ownership_ratio']) if h['ownership_ratio'] >= 0.5],
+        'holderNote': hs['note'] if hs else None,
         'leadership': [], 'trades': [], 'src': 'WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)'}
     seen = set()
-    order = ['Chủ tịch HĐQT', 'Tổng Giám đốc', 'Thành viên HĐQT', 'Thành viên HĐQT độc lập', 'Trưởng Ban kiểm soát', 'Phó Tổng giám đốc', 'Kế toán trưởng']
+    order = ['Chủ tịch HĐQT', 'Tổng Giám đốc', 'Thành viên HĐQT', 'Thành viên HĐQT độc lập', 'Thành viên HĐQT không điều hành', 'Trưởng Ban kiểm soát', 'Phó Tổng giám đốc', 'Kế toán trưởng']
     for l in leaders:
         key = (l['name'], l['position'])
         if key in seen or l['position'] not in order:
@@ -359,7 +414,7 @@ def build(raw):
     nps = [c['npF'] for c in cons + fc_only if c.get('npF') and not c['stale']]
     eq_q2 = Q[-1]['equity']
     npat_h1 = D['plan']['npatYTD'] if D['plan'] else None
-    div_paid = round(450 * shares_m / 1e3, 1)  # tỷ VND: 450đ × triệu CP / 1000
+    div_paid = round(div_cash * shares_m / 1e3, 1)  # tỷ VND: đ/CP × triệu CP / 1000
     np_med = statistics.median(nps) if nps else None
     bv26 = eq_q2 + (np_med - npat_h1) - div_paid if np_med else None
     D['consensus'] = {
@@ -381,7 +436,7 @@ def build(raw):
     summ = {}
     for n in ainews:
         if n.get('category_name') == 'Báo cáo phân tích':
-            summ[n['title'].replace('CTG: ', '').strip()] = n['ai_summary']
+            summ[n['title'].replace(f'{TICKER}: ', '').strip()] = n['ai_summary']
     for c in cons + fc_only:
         c['summary'] = summ.get((c['thesis'] or '').strip())
 
@@ -389,11 +444,13 @@ def build(raw):
     ev = []
     for e in events:
         if e['ex_date'] and e['ex_date'] >= '2024-01-01':
-            ev.append({'d': e.get('execution_date') or e['ex_date'], 'type': 'Nghị quyết/CBTT' if 'ĐHCĐ' in e['event_title'] else 'Cổ tức',
+            ev.append({'d': e.get('execution_date') or e['ex_date'], 'type': 'Cổ tức' if re.search(r'cổ tức|cổ phiếu', e.get('event_type') or e['event_title'], re.I) else 'Nghị quyết/CBTT',
                        't': e['event_title'], 'impact': '0', 'status': 'done' if (e.get('execution_date') or e['ex_date']) <= asof else 'pending',
                        'src': 'WiData co_events'})
-    kw = [('trái phiếu', 'Vốn & huy động'), ('PHP', 'Thoái vốn'), ('Nhân sự', 'Nhân sự'), ('nhân sự', 'Nhân sự'),
-          ('Phó TGĐ', 'Nhân sự'), ('MUFG', 'Cổ đông chiến lược'), ('kiểm toán', 'BCTC'), ('quản trị', 'Quản trị')]
+    kw = [('trái phiếu', 'Vốn & huy động'), ('Trái phiếu', 'Vốn & huy động'), ('tăng vốn', 'Vốn & huy động'), ('vốn điều lệ', 'Vốn & huy động'),
+          ('PHP', 'Thoái vốn'), ('Nhân sự', 'Nhân sự'), ('nhân sự', 'Nhân sự'), ('Phó TGĐ', 'Nhân sự'), ('nghỉ hưu', 'Nhân sự'),
+          ('MUFG', 'Cổ đông chiến lược'), ('Mizuho', 'Cổ đông chiến lược'), ('Hana', 'Cổ đông chiến lược'),
+          ('kiểm toán', 'BCTC'), ('quản trị', 'Quản trị')]
     for n in exnews:
         t = n['title']
         typ = next((v for k, v in kw if k in t), None)
@@ -402,23 +459,18 @@ def build(raw):
         ev.append({'d': n['publish_time'][:10], 'type': typ, 't': t, 'impact': '0', 'status': 'done', 'src': 'HOSE CBTT qua WiData'})
     for n in ainews:
         if n.get('category_name') == 'Kết quả kinh doanh':
-            ev.append({'d': n['publish_date'][:10], 'type': 'KQKD', 't': n['title'].replace('CTG: ', ''), 'detail': n['ai_summary'],
+            ev.append({'d': n['publish_date'][:10], 'type': 'KQKD', 't': n['title'].replace(f'{TICKER}: ', ''), 'detail': n['ai_summary'],
                        'impact': '+', 'status': 'done', 'src': 'WiData ai_news'})
     # Mốc sắp tới: chỉ những mốc có nguồn (quy định / CBTT / báo cáo CTCK trên WiData)
     ev += [
         {'d': '2026-10-20', 'type': 'KQKD', 't': 'Hạn công bố BCTC hợp nhất Q3/2026 (≤ 20 ngày sau quý, TT96/2020)', 'impact': '?', 'status': 'pending',
-         'src': 'Quy định CBTT; ngày công bố thực tế theo CTG'},
-        {'d': '2026-10-31', 'type': 'Vốn & huy động', 't': 'Chào bán trái phiếu ra công chúng (đã có Giấy chứng nhận 08/10, Bản cáo bạch 12/10)', 'impact': '+', 'status': 'pending',
-         'detail': 'GTCG ổn định vì không rút trước hạn; theo TT50, GTCG do TCTD khác nắm giữ bị loại khỏi LDR.', 'src': 'HOSE CBTT qua WiData'},
+         'src': f'Quy định CBTT; ngày công bố thực tế theo {TICKER}'},
         {'d': '2026-12-01', 'type': 'Luật/Chính sách', 't': 'TT50/2026/TT-NHNN có hiệu lực: LDR mới, LCR, NSFR thay SMLR', 'impact': '?', 'status': 'pending',
          'detail': 'Tiền gửi KBNN mặc định 20% trong LDR theo TT50 (Thống đốc có thể điều chỉnh); liên ngân hàng chỉ tính vị thế ròng.', 'src': 'Deck slide 21, 53; báo cáo TT50 FinSuccess'},
-        {'d': '2026-12-31', 'type': 'Doanh nghiệp', 't': 'Chuyển nhượng dự án VietinBank Tower (Ciputra) — các CTCK kỳ vọng ghi nhận lợi nhuận một lần', 'impact': '+', 'status': 'pending',
-         'detail': 'Ước tính khác nhau giữa CTCK: ~800 tỷ (VDS), ~1.000 tỷ (VDS 06/2026), 2.000–3.000 tỷ (KAFI); thời điểm từng được kỳ vọng Q2, rồi 08/2026, chưa xác nhận hoàn tất.', 'src': 'WiData ai_news — báo cáo CTCK 05–09/2026'},
-        {'d': '2026-12-31', 'type': 'Vốn & huy động', 't': 'Phương án tăng vốn điều lệ và nâng sở hữu Nhà nước lên ≥ 65%', 'impact': '+', 'status': 'pending',
-         'detail': 'Vốn điều lệ 77.669 tỷ (Q2/2026); Agriseco nêu kế hoạch lên hơn 105.000 tỷ. CAR 2025 9,89% là ràng buộc chính của tăng trưởng.', 'src': 'WiData ai_news; BCTC Q2/2026'},
         {'d': '2026-08-01', 'type': 'Luật/Chính sách', 't': 'Hệ số tiền gửi KBNN tính vào LDR nâng lên 50% (từ Q3/2026)', 'impact': '+', 'status': 'done',
-         'detail': 'Big 4 hưởng lợi nhiều nhất do giữ nhiều tiền gửi KBNN; NHSV ước dư địa cho vay thêm ~55.000 tỷ cho CTG.', 'src': 'Công thức LDR WiData; WiData ai_news (NHSV 05/08/2026)'},
-    ]
+         'detail': 'Big 4 hưởng lợi nhiều nhất do giữ nhiều tiền gửi KBNN. ' + BANK.get('kbnnNote', ''), 'src': 'Công thức LDR WiData; WiData ai_news'},
+    ] + [dict(e) for e in BANK.get('events', [])]
+    # mốc 'pending' đã qua ngày cập nhật mà chưa xác nhận → giữ là mốc theo dõi (không tự đổi trạng thái)
     D['events'] = sorted(ev, key=lambda e: e['d'], reverse=True)
 
     # ------------------------------------------------ macro (tab Vĩ mô & Tỉ lệ an toàn)
@@ -439,10 +491,10 @@ def build(raw):
     M = {
         'fx': {'nhtmSell': ser(82223), 'central': ser(82227), 'ceiling': ser(82228), 'sbvSell': ser(82231), 'free': ser(82226), 'dxy': ser(235028),
                'note': 'Cuối tháng (Wi nén chuỗi ngày về tháng). Tỷ giá NHTM bán ra, trung tâm, trần biên độ, giá NHNN bán can thiệp, tỷ giá tự do bán ra.'},
-        'rates': {'onMonthEnd': ser(82237), 'omo': ser(81522), 'dep12State': ser(202886), 'dep12Other': ser(202880), 'dep12CTG': ser(202862), 'effr': ser(7079)},
+        'rates': {'onMonthEnd': ser(82237), 'omo': ser(81522), 'dep12State': ser(202886), 'dep12Other': ser(202880), 'dep12Bank': ser(BANK['dep12']), 'dep12Id': BANK['dep12'], 'effr': ser(7079)},
         'onDaily': daily_merged(raw, 82237), 'omoNetDaily': daily_merged(raw, 82268), 'omoRateDaily': daily_merged(raw, 81522),
         'credit': {'ytd': ser(241732), 'yoy': ser(75847), 'depositsYoY': ser(265963)},
-        'src': 'WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202862, 7079, 241732, 75847, 265963',
+        'src': f"WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, {BANK['dep12']}, 7079, 241732, 75847, 265963",
     }
     D['macro'] = M
 
@@ -469,7 +521,7 @@ def build(raw):
         {'id': 'R-09', 'label': 'Tín dụng − tiền gửi (YoY)', 'value': round(cy['v'] - dy['v'], 1), 'unit': 'điểm %',
          'asOf': f"tín dụng {cy['d'][:7]}, tiền gửi {dy['d'][:7]}", 'rule': 'Tín dụng tăng nhanh hơn huy động → LDR căng, cạnh tranh tiền gửi',
          'threshold': '> +3 điểm % (giả định)', 'state': 'risk' if cy['v'] - dy['v'] > 3 else 'watch' if cy['v'] > dy['v'] else 'ok',
-         'impact': 'LS huy động TT1 → COF CTG (1–2 quý)'},
+         'impact': f'LS huy động TT1 → COF {TICKER} (1–2 quý)'},
         {'id': 'R-10', 'label': 'LNH qua đêm TB 20 phiên vs OMO', 'value': round(statistics.mean(on20) - M['omoRateDaily'][-1]['v'], 2), 'unit': 'điểm %',
          'asOf': M['onDaily'][-1]['d'], 'rule': f"OMO bơm ròng 20 phiên {round(net20):,} tỷ; LNH > OMO kéo dài → TT2 thiếu vốn".replace(',', '.'),
          'threshold': '> 0 kéo dài (giả định)', 'state': 'watch' if statistics.mean(on20) > M['omoRateDaily'][-1]['v'] else 'ok',
@@ -555,8 +607,8 @@ def build(raw):
     D['reg'] = _R['items']
     D['regRef'] = _R.get('analysis')
     D['sources'] = [
-        {'n': 'WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô', 'u': 'https://widata.vn/CTG'},
-        {'n': 'VietinBank — Quan hệ nhà đầu tư', 'u': 'https://investor.vietinbank.vn/'},
+        {'n': 'WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô', 'u': f'https://widata.vn/{TICKER}'},
+        {'n': f"{BANK.get('short', TICKER)} — Quan hệ nhà đầu tư", 'u': BANK.get('irUrl', '')},
         {'n': 'Deck "Hướng dẫn xây dựng dashboard ngân hàng" (FinSuccess, 10/2026) — khung 8 bước, BNK/DOM/R/REG', 'u': ''},
         {'n': 'Báo cáo "Ngành Ngân hàng: Tác động Thông tư 50/2026" (FinSuccess, 05/10/2026)', 'u': 'https://fisc.vn/xu-huong-dau-tu/thong-tu-50-huong-toi-tang-truong-quan-tri-rui-ro-thuc-chat-p37070.html'},
     ]
@@ -579,11 +631,18 @@ def daily_merged(raw, iid):
     return [{'d': k, 'v': out[k]} for k in sorted(out)]
 
 def main():
+    global TICKER, BANK
     ap = argparse.ArgumentParser()
+    ap.add_argument('--ticker', default='CTG')
     ap.add_argument('--raw', default='data/raw/wi')
-    ap.add_argument('--out', default='data/ctg-data.js')
+    ap.add_argument('--out', default=None)
     a = ap.parse_args()
+    TICKER = a.ticker.upper()
+    BANK = json.loads((ROOT / 'data/banks.json').read_text(encoding='utf-8'))[TICKER]
+    a.out = a.out or f'data/{TICKER.lower()}-data.js'
     D = build(load_raw(a.raw))
+    D['narr'] = BANK.get('narr', {})
+    D['pages'] = {k: v['page'] for k, v in json.loads((ROOT / 'data/banks.json').read_text(encoding='utf-8')).items() if not k.startswith('_')}
     js = ('// Sinh tự động bởi scripts/build_ctg_data.py từ data/raw/wi — KHÔNG sửa tay.\n'
           'window.PVS_DATA = ' + json.dumps(D, ensure_ascii=False, separators=(',', ':')) + ';\n')
     open(a.out, 'w', encoding='utf-8').write(js)

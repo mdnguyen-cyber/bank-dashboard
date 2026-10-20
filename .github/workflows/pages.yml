@@ -30,7 +30,7 @@ jobs:
           # Gắn mã commit vào đường dẫn script để trình duyệt không dùng bản cache cũ sau mỗi lần deploy
           V=${GITHUB_SHA::7}
           for f in _site/*.html; do
-            sed -i -E "s#(data/[a-z-]+\.js|assets/[a-z-]+\.js|assets/fs\.css)\"#\1?v=$V\"#g" "$f"
+            sed -i -E "s#(data/[a-z0-9-]+\.js|assets/[a-z0-9-]+\.js|assets/fs\.css)\"#\1?v=$V\"#g" "$f"
           done
           grep -c "?v=" _site/*.html
       - uses: actions/configure-pages@v5

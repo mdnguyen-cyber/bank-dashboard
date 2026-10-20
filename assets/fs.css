@@ -410,3 +410,8 @@ h3.ovh.coll:hover{color:var(--blue)}
 article.card.flash{box-shadow:0 0 0 3px var(--teal);transition:box-shadow .3s}
 
 .drag-h{cursor:grab}.drag-h .grip{display:inline-block;color:var(--muted,#8a90a0);font-size:14px;margin-right:6px;opacity:.55;cursor:grab;user-select:none;vertical-align:1px}.drag-h:hover .grip{opacity:1}.card-drag{opacity:.6;outline:2px dashed var(--navy,#1d2678);outline-offset:2px;cursor:grabbing}.cards-sorting,.cards-sorting *{cursor:grabbing!important}.fsk-nosel{user-select:none;-webkit-user-select:none}
+/* So sánh nhóm nhiều kỳ */
+.psel{display:inline-flex;align-items:center;gap:6px;font:12.5px Arial;color:var(--ink);margin-left:4px}
+.psel select{border:1px solid var(--line);border-radius:8px;padding:3px 6px;font:12.5px Arial;background:#fff}
+.pdl{font-size:10.5px;color:#8a90a0;line-height:1.1}
+.pdl-u{color:#1e8f5a}.pdl-d{color:#c0392b}
