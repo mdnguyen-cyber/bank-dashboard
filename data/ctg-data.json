@@ -6639,76 +6639,249 @@
     "name": "Mai Xuân Hiền",
     "role": null,
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -130200,
+    "regFrom": null,
+    "regTo": null,
     "executed": -20200,
+    "from": "2025-09-22",
     "to": "2025-10-21",
-    "after": 0.002048
+    "volAfter": 110000,
+    "after": 0.002048,
+    "ret": {
+     "m1": -2.76,
+     "m3": 15.12
+    }
    },
    {
     "name": "Đỗ Thị Thanh Thúy",
     "role": null,
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": null,
+    "regFrom": null,
+    "regTo": null,
     "executed": 5000,
+    "from": "2025-09-15",
     "to": "2025-09-15",
-    "after": 9.311e-05
+    "volAfter": 5000,
+    "after": 9.311e-05,
+    "ret": {
+     "m1": 5.25,
+     "m3": -4.96,
+     "y1": -12.72
+    }
    },
    {
     "name": "Phạm Thị Minh Tú",
     "role": null,
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": null,
+    "regFrom": "2021-08-01",
+    "regTo": "2021-09-30",
     "executed": 9000,
+    "from": "2021-08-01",
     "to": "2021-09-30",
-    "after": 0.000278
+    "volAfter": 12500,
+    "after": 0.000278,
+    "ret": {
+     "m1": 8.26,
+     "m3": 17.61,
+     "y1": -24.22
+    }
    },
    {
     "name": "Trần Thu Huyền",
     "role": "Thành viên HĐQT",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 50000,
+    "regFrom": "2021-08-19",
+    "regTo": "2021-09-17",
     "executed": 50000,
+    "from": "2021-08-25",
     "to": "2021-08-25",
-    "after": 0
+    "volAfter": 51844,
+    "after": 0,
+    "ret": {
+     "m1": -0.81,
+     "m3": 12.6,
+     "y1": -6.68
+    }
    },
    {
     "name": "Trần Tiến Duy",
     "role": "Giám đốc",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": null,
+    "regFrom": "2021-03-18",
+    "regTo": "2021-03-18",
     "executed": 12000,
+    "from": "2021-03-18",
     "to": "2021-03-18",
-    "after": 0
+    "volAfter": 12898,
+    "after": 0,
+    "ret": {
+     "m1": 5.02,
+     "m3": 24.31,
+     "y1": 7.24
+    }
    },
    {
     "name": "International Finance Corporation",
     "role": null,
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": null,
+    "regFrom": "2020-01-09",
+    "regTo": "2020-01-09",
     "executed": 55711914,
+    "from": "2020-01-09",
     "to": "2020-01-09",
-    "after": 4.99
+    "volAfter": 297221717,
+    "after": 4.99,
+    "ret": {
+     "m1": 12.81,
+     "m3": -16.01,
+     "y1": 65.82
+    }
    },
    {
     "name": "IFC Capitalization ( Equity ) Fund L.P",
     "role": null,
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": null,
+    "regFrom": "2019-11-14",
+    "regTo": "2019-11-14",
     "executed": -57372184,
+    "from": "2019-11-14",
     "to": "2019-11-14",
-    "after": 6.49
+    "volAfter": 241509803,
+    "after": 6.49,
+    "ret": {
+     "m1": -6.54,
+     "m3": 23.9,
+     "y1": 49.74
+    }
    },
    {
     "name": "Nguyễn Hoàng Dũng",
     "role": "Phó Giám đốc",
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -42000,
+    "regFrom": "2018-05-14",
+    "regTo": "2018-06-12",
     "executed": -42000,
+    "from": "2018-05-14",
     "to": "2018-06-10",
-    "after": 0
+    "volAfter": 1024,
+    "after": 0,
+    "ret": {
+     "m1": -20.38,
+     "m3": -5.61,
+     "y1": -27.73
+    }
    },
    {
     "name": "Trần Công Quỳnh Lân",
     "role": "Phó Tổng giám đốc",
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -31920,
+    "regFrom": "2018-01-15",
+    "regTo": "2018-02-14",
     "executed": -31920,
+    "from": "2018-01-16",
     "to": "2018-01-24",
-    "after": 0
+    "volAfter": 0,
+    "after": 0,
+    "ret": {
+     "m1": 22.22,
+     "m3": 6.55,
+     "y1": -22.39
+    }
    }
   ],
-  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)"
+  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
+  "subs": [
+   {
+    "name": "CTCP Chứng khoán Ngân hàng Công thương Việt Nam",
+    "kind": "Công ty con",
+    "pct": 75.64,
+    "capital": 1487.0,
+    "ticker": "CTS",
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Ngân hàng TNHH Công Thương Việt Nam tại Lào",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 1150.0,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty Cho Thuê Tài Chính TNHH MTV Ngân Hàng TMCP Công Thương Việt Nam",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 1000.0,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Tổng CTCP Bảo Hiểm Ngân hàng TMCP Công thương Việt Nam",
+    "kind": "Công ty con",
+    "pct": 73.37,
+    "capital": 666.0,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty TNHH MTV Quản lý quỹ Ngân hàng TMCP Công thương Việt Nam",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 300.0,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty TNHH MTV Vàng bạc đá quý Ngân hàng TMCP Công thương Việt Nam",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 200.0,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty TNHH MTV Quản lý nợ và Khai thác tài sản Ngân hàng TMCP Công thương Việt Nam",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 120.0,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty TNHH MTV Chuyển tiền Toàn cầu - Ngân hàng TMCP Công thương Việt Nam",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 50.0,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Ngân hàng TNHH Indovina",
+    "kind": "Công ty liên doanh, liên kết",
+    "pct": 50,
+    "capital": 4439.0,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   }
+  ],
+  "other": 13.59
  },
  "price": {
   "series": [

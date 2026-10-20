@@ -146,7 +146,10 @@ def build(raw):
     ryear = sorted(mine(rows(find(raw, 'wi_data_companies', 'ratio_common_year', own)['response'])), key=lambda r: r['year'])
     holders = mine(rows(find(raw, 'wi_data_companies', 'co_holders', own)['response']))
     leaders = mine(rows(find(raw, 'wi_data_companies', 'co_leaders', own)['response']))
-    insider = mine(rows(find(raw, 'wi_data_companies', 'co_insider', own)['response']))
+    insider = list({r['id']: r for d in raw if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'co_insider' and own(d['request'])
+                    for r in mine(rows(d['response']))}.values())   # gộp mọi lần kéo theo id
+    subs = [r for d in raw if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'co_subsidiaries' and own(d['request'])
+            for r in mine(rows(d['response']))]
     events = mine(rows(find(raw, 'wi_data_companies', 'co_events', own)['response']))
     reports = mine(rows(find(raw, 'wi_data_companies', 'co_reports', own)['response']))
     ainews = rows(find(raw, 'wi_data_news', 'ai_news', lambda q: q.get('codetag') == TICKER)['response'])
@@ -369,8 +372,23 @@ def build(raw):
         D['governance']['leadership'].append({'name': l['name'], 'role': l['position'], 'since': l.get('appointment_date')})
     D['governance']['leadership'].sort(key=lambda l: (order.index(l['role']), l['since'] or ''))
     for t in sorted(insider, key=lambda t: t.get('executed_to_date') or '', reverse=True):
-        D['governance']['trades'].append({'name': t['insider_name'], 'role': t.get('insider_position'), 'side': t['transaction_type'],
-                                          'executed': t.get('executed_volume'), 'to': t.get('executed_to_date'), 'after': t.get('ratio_after')})
+        d_to = t.get('executed_to_date')
+        ret = {}
+        if d_to and t.get('report_type') == 'Kết quả':   # lợi suất giá từ phiên đầu sau ngày kết thúc giao dịch (không hàm ý GD gây biến động)
+            i0 = next((i for i, p in enumerate(prices) if p['trading_date'] > d_to), None)
+            if i0 is not None:
+                for k, n in (('m1', 21), ('m3', 63), ('y1', 252)):
+                    if i0 + n < len(prices):
+                        ret[k] = round((prices[i0 + n]['close'] / prices[i0]['close'] - 1) * 100, 2)
+        D['governance']['trades'].append({'name': t['insider_name'], 'role': t.get('insider_position'), 'side': t['transaction_type'], 'type': t.get('report_type'),
+                                          'reg': t.get('registered_volume'), 'regFrom': t.get('registered_from_date'), 'regTo': t.get('registered_to_date'),
+                                          'executed': t.get('executed_volume'), 'from': t.get('executed_from_date'), 'to': d_to,
+                                          'volAfter': t.get('volume_after'), 'after': t.get('ratio_after'), 'ret': ret})
+    D['governance']['subs'] = [{'name': r['subcompany_name'], 'kind': 'Công ty con' if r.get('subcompany_type') == 1 else 'Công ty liên doanh, liên kết',
+                                'pct': r.get('benefit_ratio'), 'capital': ty(r.get('charter_capital')), 'ticker': r.get('ma_ck'), 'asOf': r.get('last_update')}
+                               for r in sorted(subs, key=lambda r: (r.get('subcompany_type', 9), -(r.get('charter_capital') or 0)))]
+    tot = sum(h['ownership_ratio'] for h in holders if h['ownership_ratio'] >= 0.5)
+    D['governance']['other'] = round(100 - tot, 2)
 
     # ------------------------------------------------ price & valuation history
     px = [{'d': p['trading_date'], 'c': p['close']} for p in prices]

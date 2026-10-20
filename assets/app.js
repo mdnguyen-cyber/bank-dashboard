@@ -280,23 +280,88 @@ function paneOverview() {
       <table><tbody>${recent.slice(0, 10).map(e => `<tr><td style="white-space:nowrap">${dvn(e.d)}</td><td>${impact(e.impact)}</td><td>${esc(e.t)}${e.status === 'pending' ? ' <span class="pill pending">Chờ</span>' : ''}</td></tr>`).join('')}</tbody></table>
       <div class="note keep"><a href="#events" data-go="events">Xem toàn bộ Catalyst &amp; Sự kiện →</a></div></article>
   </div>
-  <h2 class="sec">Quản trị &amp; sở hữu</h2><p class="sec-sub">Ngân hàng do Nhà nước sở hữu chi phối${M.strategic ? `; ${esc(M.strategic)} là cổ đông chiến lược nước ngoài` : ''}.</p>
-  <div class="grid g2 gap">
-    <article class="card"><h3 class="sub">Cơ cấu cổ đông</h3><div class="tscroll"><table><thead><tr><th>Cổ đông</th><th class="n">Số CP</th><th class="n">Tỷ lệ</th><th>Ngày chốt</th></tr></thead><tbody>
-      ${D.governance.shareholders.map(h => `<tr><td>${esc(h.name)}</td><td class="n">${nf(h.shares)}</td><td class="n">${nf(h.percent, 2)}%</td><td>${dvn(h.asOf)}</td></tr>`).join('')}
-      </tbody></table></div>${D.governance.holderNote ? `<div class="note keep">⚠ ${esc(D.governance.holderNote)}</div>` : ''}<div class="note">Các NHTM có vốn Nhà nước chi phối phải giữ sở hữu Nhà nước ≥ 65% khi tăng vốn — đây là ràng buộc của phương án tăng vốn (xem Catalyst).</div>
-      <div class="src">Nguồn: WiData co_holders</div></article>
-    <article class="card"><h3 class="sub">Cơ cấu quản trị</h3><div class="tscroll"><table><thead><tr><th>Họ tên</th><th>Vai trò</th><th>Bổ nhiệm</th></tr></thead><tbody>
-      ${D.governance.leadership.slice(0, 14).map(l => `<tr><td>${esc(l.name)}</td><td>${esc(l.role)}</td><td>${dvn(l.since)}</td></tr>`).join('')}
-      </tbody></table></div><div class="src">Nguồn: WiData co_leaders (chỉ người đương nhiệm)</div></article>
-  </div>
-  <article class="card"><h3 class="sub">Giao dịch cổ đông lớn &amp; người nội bộ</h3><div class="tscroll"><table><thead><tr><th>Người giao dịch</th><th>Chức vụ</th><th>Mua/bán</th><th class="n">KL thực hiện</th><th>Đến ngày</th></tr></thead><tbody>
-    ${D.governance.trades.slice(0, 8).map(t => `<tr><td>${esc(t.name)}</td><td>${esc(t.role || '—')}</td><td>${esc(t.side)}</td><td class="n">${nf(t.executed)}</td><td>${dvn(t.to)}</td></tr>`).join('')}
-    </tbody></table></div><div class="note">Giao dịch nội bộ ở ${T} thưa và nhỏ so với ${nf(M.sharesOut / 1000, 2)} tỷ CP lưu hành — không phải tín hiệu định giá đáng kể.</div><div class="src">Nguồn: WiData co_insider</div></article>`;
+  ${govSection()}`;
+  drawGov();
   const PS = D.price.series;
   mk('chPrice', { type: 'line', data: { labels: PS.map(p => dvn(p.d)), datasets: [{ label: 'Giá đóng cửa', data: PS.map(p => p.c), borderColor: C.navy, pointRadius: 0, borderWidth: 1.4, dp: 0, unit: 'đ' }] },
     options: { scales: { x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } }, y: numAxis() }, plugins: { legend: { display: false },
       refLines: { lines: [{ value: D.price.high52.c, label: '52W High ' + nf(D.price.high52.c), color: C.teal }, { value: D.price.low52.c, label: '52W Low ' + nf(D.price.low52.c), color: C.red }] } } } }, { win: 12 });
+}
+/* ---------- Quản trị & sở hữu (theo mẫu MWG Tracker) ---------- */
+const GT = { win: 60, side: 'all', q: '', n: 20 };
+function govSection() {
+  const G = D.governance, sh = G.shareholders, big = sh.filter(h => h.percent >= 5);
+  const top = sh[0];
+  return `<h2 class="sec">Quản trị &amp; sở hữu</h2><p class="sec-sub">Ngân hàng do Nhà nước sở hữu chi phối${M.strategic ? `; ${esc(M.strategic)} là cổ đông chiến lược nước ngoài` : ''}.</p>
+  <div class="grid g2 gap">
+    ${card({ id: 'chOwn', title: 'Cơ cấu cổ đông', sub: `% vốn · cổ đông ≥ 0,5% và phần còn lại · ngày chốt gần nhất ${dvn(sh.map(h => h.asOf).sort().pop())}`, h: 'short',
+      body: `<div class="tscroll"><table><thead><tr><th>Cổ đông</th><th class="n">Số CP</th><th class="n">Tỷ lệ</th><th>Ngày chốt</th></tr></thead><tbody>
+        ${sh.map(h => `<tr><td>${esc(h.name)}</td><td class="n">${nf(h.shares)}</td><td class="n">${nf(h.percent, 2)}%</td><td>${dvn(h.asOf)}</td></tr>`).join('')}
+        <tr><td>Cổ đông khác (tự do chuyển nhượng, tổ chức và cá nhân &lt; 0,5%)</td><td class="n">—</td><td class="n">${nf(G.other, 2)}%</td><td></td></tr></tbody></table></div>
+        ${G.holderNote ? `<div class="note keep">⚠ ${esc(G.holderNote)}</div>` : ''}`,
+      insight: `${esc(top.name)} nắm <b>${nf(top.percent, 1)}%</b>; nhóm cổ đông lớn (≥ 5%) <b>${nf(big.reduce((a, h) => a + h.percent, 0), 1)}%</b>, phần lưu hành tự do còn khoảng <b>${nf(G.other, 1)}%</b>. Các NHTM có vốn Nhà nước chi phối phải giữ sở hữu Nhà nước ≥ 65% khi tăng vốn — ràng buộc của mọi phương án phát hành (xem Catalyst); room ngoại tối đa 30% với ngân hàng.`,
+      src: 'WiData co_holders' })}
+    <article class="card"><h3 class="sub">Cơ cấu quản trị</h3><p class="chart-sub">HĐQT, Ban điều hành, Ban kiểm soát · người đương nhiệm</p><div class="tscroll"><table><thead><tr><th>Họ tên</th><th>Vai trò</th><th>Bổ nhiệm</th></tr></thead><tbody>
+      ${G.leadership.map(l => `<tr><td>${esc(l.name)}</td><td>${esc(l.role)}</td><td>${dvn(l.since)}</td></tr>`).join('')}
+      </tbody></table></div><div class="src">Nguồn: WiData co_leaders (chỉ tên, chức vụ, ngày bổ nhiệm)</div></article>
+  </div>
+  <article class="card"><h3 class="sub">Công ty con · liên doanh, liên kết</h3><p class="chart-sub">tỷ lệ lợi ích của ngân hàng · vốn điều lệ tỷ đồng</p>
+    ${G.subs.length ? `<div class="tscroll"><table><thead><tr><th>Đơn vị</th><th>Loại</th><th class="n">Sở hữu</th><th class="n">Vốn điều lệ</th><th>Mã CK</th><th>Ngày chốt</th></tr></thead><tbody>
+      ${G.subs.map(r => `<tr><td>${esc(r.name)}</td><td>${r.kind}</td><td class="n">${r.pct == null ? '—' : nf(r.pct, 2) + '%'}</td><td class="n">${r.capital == null ? '—' : nf(r.capital)}</td><td>${r.ticker || '—'}</td><td>${dvn(r.asOf)}</td></tr>`).join('')}
+      </tbody></table></div><div class="src">Nguồn: WiData co_subsidiaries (theo BCTC năm gần nhất)</div>` : '<div class="note keep">Chưa có danh sách công ty con trong dữ liệu đã lấy — xem thuyết minh BCTC hợp nhất.</div>'}</article>
+  <article class="card"><h3 class="sub">Giao dịch cổ đông lớn &amp; người nội bộ</h3>
+    <div class="grid g2 gap gov2">
+      <div><p class="chart-sub"><b>Giá ${T} và giao dịch đã thực hiện</b></p><div class="cbox"><canvas id="chGovPx" role="img" aria-label="Giá và giao dịch nội bộ"></canvas></div></div>
+      <div><p class="chart-sub"><b>Mua / bán lũy kế theo khoảng thời gian</b> · nghìn CP</p><div class="cbox"><canvas id="chGovCum" role="img" aria-label="Mua bán lũy kế"></canvas></div></div>
+    </div>
+    <div class="note keep">Chấm xanh: mua; cam: bán. Chấm đặt ở ngày kết thúc giao dịch; giao dịch nhiều ngày không có giá từng lệnh. Khối lượng 0 không tính vào mua/bán lũy kế.</div>
+    <h4 class="gov-h">Danh sách giao dịch</h4>
+    <div class="picker" id="govSide">${[['all', 'Tất cả'], ['Mua', 'Mua'], ['Bán', 'Bán']].map(([k, l]) => `<button type="button" data-k="${k}" class="${k === GT.side ? 'on' : ''}">${l}</button>`).join('')}<input id="govQ" class="gov-q" placeholder="Tìm cổ đông / người nội bộ" aria-label="Tìm giao dịch"></div>
+    <div id="govTbl"></div>
+    <div class="insight" id="govIns"></div>
+    <div class="src">Nguồn: WiData co_insider; giá đóng cửa điều chỉnh (eod_adjust). Lợi suất tính từ phiên đầu sau ngày kết thúc giao dịch tới mốc 1/3/12 tháng, không hàm ý giao dịch gây ra biến động giá.</div></article>`;
+}
+function drawGov() {
+  const G = D.governance, PS = D.price.series, TR = G.trades.filter(t => t.type !== 'Đăng ký' || t.executed);
+  const sh = G.shareholders;
+  mk('chOwn', { type: 'bar', data: { labels: [''], datasets: sh.map((h, i) => ({ label: h.name, data: [h.percent], backgroundColor: [C.navy, C.teal, C.purple, C.gold, C.blue][i % 5], stack: 's', dp: 2, unit: '%' }))
+      .concat([{ label: 'Cổ đông khác', data: [G.other], backgroundColor: '#d9dee8', stack: 's', dp: 2, unit: '%' }]) },
+    options: { indexAxis: 'y', scales: { x: { stacked: true, max: 100, ticks: { callback: v => v + '%' } }, y: { stacked: true, grid: { display: false } } } } });
+  const draw = () => {
+    const from = PS[0].d;
+    const ps = PS.filter(p => p.d >= from), idx = Object.fromEntries(ps.map((p, i) => [p.d, i]));
+    const at = d => { if (!d) return null; let i = idx[d]; if (i == null) { const k = ps.findIndex(p => p.d >= d); i = k < 0 ? null : k; } return i; };
+    const buy = ps.map(() => null), sell = ps.map(() => null);
+    TR.filter(t => t.to && t.to >= from && t.executed).forEach(t => { const i = at(t.to); if (i == null) return; (t.side === 'Mua' ? buy : sell)[i] = ps[i].c; });
+    mk('chGovPx', { type: 'line', data: { labels: ps.map(p => dvn(p.d)), datasets: [
+      { label: 'Giá điều chỉnh', data: ps.map(p => p.c), borderColor: C.blue, backgroundColor: 'rgba(41,56,168,.08)', pointRadius: 0, borderWidth: 1.3, dp: 0, unit: 'đ' },
+      { label: 'Mua', data: buy, borderColor: '#2bbfa4', backgroundColor: '#2bbfa4', showLine: false, pointRadius: 6, dp: 0, unit: 'đ' },
+      { label: 'Bán', data: sell, borderColor: '#ef7a4a', backgroundColor: '#ef7a4a', showLine: false, pointRadius: 6, dp: 0, unit: 'đ' }] },
+      options: { scales: { x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } }, y: numAxis('', { beginAtZero: true }) } } }, { win: 60 });
+    const end = PS[PS.length - 1].d, per = [[1, '1 tháng'], [3, '3 tháng'], [6, '6 tháng'], [12, '12 tháng'], [24, '24 tháng']];
+    const sum = (m, side) => { const f = new Date(new Date(end).getTime() - m * 30.44 * 864e5).toISOString().slice(0, 10); return TR.filter(t => t.side === side && t.to && t.to > f && t.executed).reduce((a, t) => a + Math.abs(t.executed), 0) / 1e3; };
+    mk('chGovCum', { type: 'bar', data: { labels: per.map(p => p[1]), datasets: [
+      { label: 'Mua (nghìn CP)', data: per.map(([m]) => sum(m, 'Mua')), backgroundColor: '#2bbfa4', dp: 0 },
+      { label: 'Bán (nghìn CP)', data: per.map(([m]) => sum(m, 'Bán')), backgroundColor: '#ef7a4a', dp: 0 }] },
+      options: { indexAxis: 'y', scales: { x: numAxis('', { suggestedMax: 10, ticks: { callback: v => nf(v, 0) } }), y: { grid: { display: false } } },
+        plugins: { title: { display: !per.some(([m]) => sum(m, 'Mua') + sum(m, 'Bán') > 0), text: 'Không có giao dịch thực hiện trong 24 tháng gần nhất', color: '#8a90a0', font: { size: 12, weight: 'normal' } } } } });
+    const last = TR.filter(t => t.to).sort((a, b) => b.to.localeCompare(a.to))[0];
+    const b12 = sum(12, 'Mua'), s12 = sum(12, 'Bán');
+    $('#govIns').innerHTML = `12 tháng gần nhất: mua <b>${nf(b12)}</b> nghìn CP, bán <b>${nf(s12)}</b> nghìn CP — ${nf((b12 + s12) / 1e3 / M.sharesOut * 100, 4)}% số CP lưu hành (${nf(M.sharesOut / 1000, 2)} tỷ CP). ${last ? `Giao dịch gần nhất: ${esc(last.name)}${last.role ? ' (' + esc(last.role) + ')' : ''} ${last.side.toLowerCase()} ${nf(Math.abs(last.executed))} CP, ${dvn(last.to)}.` : ''} Giao dịch nội bộ ở ngân hàng Nhà nước chi phối thưa và nhỏ — không phải tín hiệu định giá đáng kể; đáng chú ý chủ yếu là giao dịch của cổ đông tổ chức lớn.`;
+  };
+  const table = () => {
+    const q = GT.q.trim().toLowerCase();
+    const rows = G.trades.filter(t => (GT.side === 'all' || t.side === GT.side) && (!q || (t.name + ' ' + (t.role || '')).toLowerCase().includes(q))).sort((a, b) => (b.to || b.regTo || '').localeCompare(a.to || a.regTo || ''));
+    const rg = (a, b) => a || b ? `${a || '—'}${b && b !== a ? ' → ' + b : ''}` : '—';
+    const rt = r => ['m1', 'm3', 'y1'].map(k => r.ret && r.ret[k] != null ? `<span class="${r.ret[k] >= 0 ? 'pdl-u' : 'pdl-d'}">${sg(r.ret[k], 2)}</span>` : '—').join(' · ');
+    $('#govTbl').innerHTML = `<p class="chart-sub">Hiển thị ${Math.min(GT.n, rows.length)} / ${rows.length} bản ghi</p><div class="tscroll"><table><thead><tr><th>Loại tin</th><th>Người giao dịch / quan hệ</th><th>Mua / bán</th><th class="n">Đăng ký (CP)</th><th class="n">Thực hiện (CP)</th><th>Thời gian đăng ký</th><th>Ngày thực hiện</th><th class="n">Sở hữu sau GD</th><th class="n">Sau hoàn tất 1M · 3M · 1Y</th></tr></thead><tbody>
+      ${rows.slice(0, GT.n).map(t => `<tr><td>${esc(t.type || '—')}</td><td>${esc(t.name)}${t.role ? `<div class="src">${esc(t.role)}</div>` : ''}</td><td><b class="${t.side === 'Mua' ? 'pdl-u' : 'pdl-d'}">${esc(t.side)}</b></td><td class="n">${t.reg ? nf(Math.abs(t.reg)) : '—'}</td><td class="n">${t.executed ? nf(Math.abs(t.executed)) : '—'}</td><td>${rg(t.regFrom, t.regTo)}</td><td>${rg(t.from, t.to)}</td><td class="n">${t.volAfter != null ? nf(t.volAfter) + ' CP' : '—'}${t.after ? `<div class="src">${nf(t.after, t.after < 0.01 ? 4 : 2)}%</div>` : ''}</td><td class="n">${rt(t)}</td></tr>`).join('')}</tbody></table></div>
+      ${rows.length > GT.n ? '<button type="button" class="btn ghost" id="govMore">Hiện thêm</button>' : ''}`;
+    const mb = $('#govMore'); if (mb) mb.onclick = () => { GT.n += 20; table(); };
+  };
+  $$('#govSide button').forEach(b => b.onclick = () => { GT.side = b.dataset.k; GT.n = 20; $$('#govSide button').forEach(x => x.classList.toggle('on', x === b)); table(); });
+  const qi = $('#govQ'); if (qi) { qi.value = GT.q; qi.oninput = () => { GT.q = qi.value; GT.n = 20; table(); }; }
+  draw(); table();
 }
 function checklist() {
   const t = Object.assign({ pb: VB.pbBand.lo, llr: 130, npl: 1.5, form: 1.5, car: 10 }, (store.get().check || {}));

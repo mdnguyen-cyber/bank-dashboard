@@ -415,3 +415,7 @@ article.card.flash{box-shadow:0 0 0 3px var(--teal);transition:box-shadow .3s}
 .psel select{border:1px solid var(--line);border-radius:8px;padding:3px 6px;font:12.5px Arial;background:#fff}
 .pdl{font-size:10.5px;color:#8a90a0;line-height:1.1}
 .pdl-u{color:#1e8f5a}.pdl-d{color:#c0392b}
+/* Quản trị & sở hữu */
+.gov-h{margin:14px 0 8px;color:var(--navy);font-size:15px}
+.gov-q{border:1px solid var(--line);border-radius:99px;padding:4px 12px;font:12.5px Arial;min-width:220px;max-width:100%}
+.gov2 .cbox{height:280px}

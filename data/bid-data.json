@@ -6042,76 +6042,177 @@
     "name": "Quách Hùng Hiệp",
     "role": "Phó Tổng giám đốc",
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -49610,
+    "regFrom": "2024-01-15",
+    "regTo": "2024-01-15",
     "executed": -49610,
+    "from": "2024-01-15",
     "to": "2024-01-15",
-    "after": 1.86e-06
+    "volAfter": 106,
+    "after": 1.86e-06,
+    "ret": {
+     "m1": 6.12,
+     "m3": 6.82,
+     "y1": 2.96
+    }
    },
    {
     "name": "Hoàng Thị Giang Hà",
     "role": null,
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 23000,
+    "regFrom": "2020-03-03",
+    "regTo": "2020-03-30",
     "executed": 0,
+    "from": "2020-03-03",
     "to": "2020-03-30",
-    "after": 0
+    "volAfter": 0,
+    "after": 0,
+    "ret": {
+     "m1": 14.4,
+     "m3": 27.0,
+     "y1": 44.82
+    }
    },
    {
     "name": "KEB Hana Bank, Co Ltd",
     "role": null,
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": null,
+    "regFrom": "2019-11-05",
+    "regTo": "2019-11-05",
     "executed": 603302706,
+    "from": "2019-11-05",
     "to": "2019-11-05",
-    "after": 15
+    "volAfter": 603302706,
+    "after": 15,
+    "ret": {
+     "m1": -1.93,
+     "m3": 24.57,
+     "y1": -4.27
+    }
    },
    {
     "name": "Bùi Thị Tuấn Phương",
     "role": null,
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": null,
+    "regFrom": "2018-06-18",
+    "regTo": "2018-07-01",
     "executed": 1000,
+    "from": "2018-06-18",
     "to": "2018-07-01",
-    "after": 0
+    "volAfter": 1003,
+    "after": 0,
+    "ret": {
+     "m1": 6.24,
+     "m3": 42.19,
+     "y1": 32.59
+    }
    },
    {
     "name": "Đoàn Ánh Sáng",
     "role": "Phó Tổng giám đốc",
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -250000,
+    "regFrom": "2018-03-06",
+    "regTo": "2018-04-04",
     "executed": -250000,
+    "from": "2018-03-06",
     "to": "2018-04-06",
-    "after": 0
+    "volAfter": 19573,
+    "after": 0,
+    "ret": {
+     "m1": -23.43,
+     "m3": -46.76,
+     "y1": -20.79
+    }
    },
    {
     "name": "Công đoàn BIDV",
     "role": null,
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 10000,
+    "regFrom": "2018-03-06",
+    "regTo": "2018-04-04",
     "executed": 10000,
+    "from": "2018-03-07",
     "to": "2018-03-07",
-    "after": 0
+    "volAfter": 9397614,
+    "after": 0,
+    "ret": {
+     "m1": 18.27,
+     "m3": -15.34,
+     "y1": -4.58
+    }
    },
    {
     "name": "Công đoàn BIDV",
     "role": null,
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -89400,
+    "regFrom": "2018-01-24",
+    "regTo": "2018-02-24",
     "executed": -49400,
+    "from": "2018-01-24",
     "to": "2018-02-24",
-    "after": 0
+    "volAfter": 9392614,
+    "after": 0,
+    "ret": {
+     "m1": 15.7,
+     "m3": -27.56,
+     "y1": -14.66
+    }
    },
    {
     "name": "Phan Đức Tài",
     "role": null,
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": null,
+    "regFrom": "2018-02-01",
+    "regTo": "2018-02-01",
     "executed": -5040,
+    "from": "2018-02-01",
     "to": "2018-02-01",
-    "after": 0
+    "volAfter": 0,
+    "after": 0,
+    "ret": {
+     "m1": 14.51,
+     "m3": 1.76,
+     "y1": -3.58
+    }
    },
    {
     "name": "Trần Anh Hải",
     "role": null,
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": null,
+    "regFrom": "2018-01-04",
+    "regTo": "2018-01-04",
     "executed": -6110,
+    "from": "2018-01-04",
     "to": "2018-01-04",
-    "after": 0
+    "volAfter": 0,
+    "after": 0,
+    "ret": {
+     "m1": 13.97,
+     "m3": 53.47,
+     "y1": 16.57
+    }
    }
   ],
-  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)"
+  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
+  "subs": [],
+  "other": 9.06
  },
  "price": {
   "series": [

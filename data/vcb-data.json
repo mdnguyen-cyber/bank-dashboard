@@ -6990,124 +6990,378 @@
     "name": "Nguyễn Tuấn Anh",
     "role": "Thành viên HĐQT không điều hành",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 18000,
+    "regFrom": null,
+    "regTo": null,
     "executed": 18000,
+    "from": "2026-02-26",
     "to": "2026-02-26",
-    "after": 0.00022
+    "volAfter": 18000,
+    "after": 0.00022,
+    "ret": {
+     "m1": -10.63,
+     "m3": -4.15
+    }
    },
    {
     "name": "Phùng Nguyễn Hải Yến",
     "role": "Phó Tổng giám đốc",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 10000,
+    "regFrom": null,
+    "regTo": null,
     "executed": 10000,
+    "from": "2026-02-23",
     "to": "2026-02-23",
-    "after": 0.0006264
+    "volAfter": 52339,
+    "after": 0.0006264,
+    "ret": {
+     "m1": -10.15,
+     "m3": -1.23
+    }
    },
    {
     "name": "Ngân hàng Thương mại TNHH MTV Ngoại thương Công nghệ số",
     "role": null,
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -58757,
+    "regFrom": null,
+    "regTo": null,
     "executed": -58757,
+    "from": "2025-08-28",
     "to": "2025-08-29",
-    "after": 0
+    "volAfter": 0,
+    "after": 0,
+    "ret": {
+     "m1": -7.31,
+     "m3": -13.54,
+     "y1": -11.01
+    }
    },
    {
     "name": "Phùng Nguyễn Hải Yến",
     "role": "Phó Tổng giám đốc",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 20000,
+    "regFrom": "2025-04-17",
+    "regTo": "2025-05-14",
     "executed": 20000,
+    "from": "2025-05-14",
     "to": "2025-05-14",
-    "after": 0.0005067
+    "volAfter": 42339,
+    "after": 0.0005067,
+    "ret": {
+     "m1": -4.26,
+     "m3": 7.32,
+     "y1": 10.87
+    }
    },
    {
     "name": "Phùng Nguyễn Hải Yến",
     "role": "Phó Tổng giám đốc",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 10000,
+    "regFrom": "2025-02-19",
+    "regTo": "2025-02-19",
     "executed": 10000,
+    "from": "2025-02-19",
     "to": "2025-02-19",
-    "after": 0.0002674
+    "volAfter": 14943,
+    "after": 0.0002674,
+    "ret": {
+     "m1": 7.58,
+     "m3": -7.09,
+     "y1": 7.38
+    }
    },
    {
     "name": "Nguyễn Thị Kim Oanh",
     "role": "Thành viên HĐQT",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 10000,
+    "regFrom": "2023-11-30",
+    "regTo": "2023-12-20",
     "executed": 5000,
+    "from": "2023-12-20",
     "to": "2023-12-20",
-    "after": 8.946e-05
+    "volAfter": 5000,
+    "after": 8.946e-05,
+    "ret": {
+     "m1": 13.72,
+     "m3": 18.41,
+     "y1": 14.21
+    }
    },
    {
     "name": "Nguyễn Thị Minh Tâm",
     "role": null,
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -2523,
+    "regFrom": "2020-12-17",
+    "regTo": "2021-01-14",
     "executed": -2523,
+    "from": "2020-12-27",
     "to": "2020-12-28",
-    "after": 0
+    "volAfter": 0,
+    "after": 0,
+    "ret": {
+     "m1": -8.66,
+     "m3": 2.82,
+     "y1": 2.57
+    }
    },
    {
     "name": "Lê Hoàng Tùng",
     "role": "Kế toán trưởng",
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -10000,
+    "regFrom": "2020-12-16",
+    "regTo": "2021-01-13",
     "executed": -15000,
+    "from": "2020-12-17",
     "to": "2020-12-17",
-    "after": 0
+    "volAfter": 5000,
+    "after": 0,
+    "ret": {
+     "m1": 0.9,
+     "m3": -3.07,
+     "y1": 1.16
+    }
    },
    {
     "name": "Lê Hoàng Tùng",
     "role": "Kế toán trưởng",
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -10000,
+    "regFrom": "2019-11-07",
+    "regTo": "2019-11-29",
     "executed": -10000,
+    "from": "2019-11-26",
     "to": "2019-11-28",
-    "after": 0
+    "volAfter": 10000,
+    "after": 0,
+    "ret": {
+     "m1": 7.65,
+     "m3": -1.71,
+     "y1": 8.81
+    }
    },
    {
     "name": "Nguyễn Thị Phương",
     "role": null,
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -21000,
+    "regFrom": "2019-07-21",
+    "regTo": "2019-07-30",
     "executed": -21000,
+    "from": "2019-07-21",
     "to": "2019-07-23",
-    "after": 0
+    "volAfter": 68,
+    "after": 0,
+    "ret": {
+     "m1": 4.04,
+     "m3": 11.06,
+     "y1": 6.25
+    }
    },
    {
     "name": "Phạm Mạnh Thắng",
     "role": "Phó Tổng giám đốc",
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -37000,
+    "regFrom": "2019-07-17",
+    "regTo": "2019-07-30",
     "executed": -37000,
+    "from": "2019-07-17",
     "to": "2019-07-18",
-    "after": 0
+    "volAfter": 197,
+    "after": 0,
+    "ret": {
+     "m1": -2.77,
+     "m3": 7.84,
+     "y1": 5.4
+    }
    },
    {
     "name": "Nghiêm Xuân Thành",
     "role": "Chủ tịch HĐQT",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 10000,
+    "regFrom": "2019-01-07",
+    "regTo": "2019-01-31",
     "executed": 10000,
+    "from": "2019-01-07",
     "to": "2019-01-07",
-    "after": 0
+    "volAfter": 59025,
+    "after": 0,
+    "ret": {
+     "m1": 8.69,
+     "m3": 23.59,
+     "y1": 64.13
+    }
    },
    {
     "name": "Phạm Mạnh Thắng",
     "role": "Phó Tổng giám đốc",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 10000,
+    "regFrom": "2018-10-31",
+    "regTo": "2018-11-29",
     "executed": 10000,
+    "from": "2018-11-04",
     "to": "2018-11-29",
-    "after": 0
+    "volAfter": 37197,
+    "after": 0,
+    "ret": {
+     "m1": -3.23,
+     "m3": 13.35,
+     "y1": 53.1
+    }
    },
    {
     "name": "Nguyễn Thị Kim Oanh",
     "role": "Phó Tổng giám đốc",
     "side": "Bán",
+    "type": "Kết quả",
+    "reg": -2829,
+    "regFrom": "2018-01-17",
+    "regTo": "2018-02-15",
     "executed": -2829,
+    "from": "2018-01-17",
     "to": "2018-01-23",
-    "after": 0
+    "volAfter": 0,
+    "after": 0,
+    "ret": {
+     "m1": 6.1,
+     "m3": -12.86,
+     "y1": -15.19
+    }
    },
    {
     "name": "Nghiêm Xuân Thành",
     "role": "Chủ tịch HĐQT",
     "side": "Mua",
+    "type": "Kết quả",
+    "reg": 10000,
+    "regFrom": "2018-01-04",
+    "regTo": "2018-02-02",
     "executed": 10000,
+    "from": "2018-01-04",
     "to": "2018-01-04",
-    "after": 0
+    "volAfter": 49025,
+    "after": 0,
+    "ret": {
+     "m1": 17.58,
+     "m3": 25.71,
+     "y1": 3.53
+    }
    }
   ],
-  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)"
+  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
+  "subs": [
+   {
+    "name": "Công ty TNHH Tài chính Việt Nam tại Hồng kông - Vinafico",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 1820.4,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty TNHH Chứng khoán Vietcombank",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 1734.8,
+    "ticker": "VCBS",
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty TNHH MTV Cho thuê tài chính Vietcombank",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 500.0,
+    "ticker": "VCBL",
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Ngân hàng TNHH MTV Ngoại thương Việt Nam tại Lào",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 235.2,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty Chuyển Tiền Vietcombank",
+    "kind": "Công ty con",
+    "pct": 87.5,
+    "capital": 234.3,
+    "ticker": "VCBM",
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty TNHH Cao ốc Vietcombank 198",
+    "kind": "Công ty con",
+    "pct": 70,
+    "capital": 100.0,
+    "ticker": "VCBT",
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty TNHH MTV Kiều hối Vietcombank",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": 30.0,
+    "ticker": "VCBR",
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "NHTM TNHH MTV Ngoại thương Công nghệ số",
+    "kind": "Công ty con",
+    "pct": 100,
+    "capital": null,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty Liên doanh TNHH Vietcombank - Bonday - Bến Thành",
+    "kind": "Công ty liên doanh, liên kết",
+    "pct": 52,
+    "capital": 789.2,
+    "ticker": null,
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty Liên doanh Quản lý Quỹ đầu tư chứng khoán Vietcombank",
+    "kind": "Công ty liên doanh, liên kết",
+    "pct": 51,
+    "capital": 265.0,
+    "ticker": "VCBF",
+    "asOf": "2024-12-31"
+   },
+   {
+    "name": "Công ty Liên doanh Hữu Hạn Vietcombank - Bonday",
+    "kind": "Công ty liên doanh, liên kết",
+    "pct": 16,
+    "capital": 69.4,
+    "ticker": "VCBB",
+    "asOf": "2024-12-31"
+   }
+  ],
+  "other": 8.53
  },
  "price": {
   "series": [
