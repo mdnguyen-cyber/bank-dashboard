@@ -1,7 +1,7 @@
 # Cập nhật dữ liệu dashboard (chạy trong phiên Claude mới)
 
-Quy trình cho tác vụ đã lên lịch "Cập nhật dashboard ngân hàng" (17:30 các ngày làm việc, hoặc khi Minh Đức bấm từ Trợ lý AI).
-Mục tiêu: kéo số mới nhất, build lại `data/*.js|json`, kiểm tra, đẩy lên GitHub Pages và làm mới dữ liệu của Trợ lý AI.
+Quy trình cho tác vụ đã lên lịch "Cập nhật dashboard ngân hàng" (17:20 các ngày làm việc).
+Mục tiêu: kéo số mới nhất, build lại `data/*.js|json`, kiểm tra và đẩy lên GitHub Pages.
 
 ## 0. Chuẩn bị
 1. Repo chính `mdnguyen-cyber/bank-dashboard` (public): nếu chưa có trong máy, gọi `add_repo` (access `push`) rồi clone vào `~/bank-dashboard`.
@@ -37,7 +37,7 @@ Không chép tay số liệu.
 
 ## 3. Build và kiểm tra
 ```
-python3 scripts/build_sector_data.py && python3 scripts/build_ctg_data.py && python3 scripts/build_bot_context.py && python3 scripts/build_artifact.py
+python3 scripts/build_sector_data.py && python3 scripts/build_ctg_data.py && python3 scripts/build_bot_context.py
 python3 tests/test_sector_data.py
 ```
 Test định giá chốt cứng (pb, pe) sai vì số mới → cập nhật số trong test cho khớp số mới (không sửa logic).
@@ -46,10 +46,9 @@ Xem nhanh bằng Playwright (`/opt/pw-browsers/chromium`, route Chart.js từ no
 ## 4. Đẩy lên
 - Repo chính: commit "Cập nhật dữ liệu <dd/mm/yyyy>" kèm dòng attribution, push, dispatch `pages.yml`.
 - Repo raw: commit + push các file mới trong `data/raw`.
-- Bản dashboard có Trợ lý AI trên claude.ai: `Artifact` publish `url=<URL trong docs/tro-ly-ai.md>` với `file_path=bot/assistant.html` và
-  `files` theo FILES của `scripts/build_artifact.py` (đọc artifact trước bằng `action: read` theo quy định của công cụ).
+- Không publish lại bản dashboard trên claude.ai (artifact) — tạm dừng theo yêu cầu của Minh Đức.
 
 ## 5. Báo lại
 Tin nhắn cuối: số mới đáng chú ý (tín dụng, tỷ giá, LNH, P/B ngành…) kèm ngày dữ liệu, mục nào không cập nhật được và vì sao.
-Nếu lời nhắn kèm theo (từ Trợ lý AI) có yêu cầu thêm — ví dụ "viết bản cập nhật nhanh" — làm theo `docs/cap-nhat-nhanh.md`.
+Nếu lời nhắn kèm theo có yêu cầu thêm — ví dụ "viết bản cập nhật nhanh" — làm theo `docs/cap-nhat-nhanh.md`.
 Không ghi "WiData" ở bất cứ nội dung hiển thị nào; ghi cơ quan công bố gốc.
