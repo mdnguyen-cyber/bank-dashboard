@@ -118,7 +118,9 @@ function nimPeerIns() {
 }
 function gapIns() {
   const g = QL.irGap; if (g == null) return 'Chưa có số khe hở lãi suất.';
-  return `Khe hở ≤ 12 tháng <b>${nf(g / 1000, 1)} nghìn tỷ</b> (${pc(g / QL.ta * 100)} tổng tài sản, ${QL.q}). ${g < 0 ? 'Âm: nợ định giá lại nhanh hơn tài sản — lãi suất huy động giảm thì chi phí vốn giảm trước, nhưng chỉ đạo giảm lãi suất cho vay tác động thẳng vào phía tài sản.' : 'Dương: tài sản định giá lại nhanh hơn nợ — giảm lãi suất cho vay ăn vào NIM ngay.'}`;
+  const qs = Q.filter(q => q.irGap != null), r = q => q.irGap / q.ta * 100, now = r(QL), avg = qs.reduce((a, q) => a + r(q), 0) / qs.length;
+  const lo = qs.reduce((m, q) => r(q) < r(m) ? q : m, qs[0]);
+  return `Khe hở ≤ 12 tháng <b>${pc(now)} tổng tài sản</b> (${sg(g / 1000, 1, ' nghìn tỷ')}, ${QL.q}), so với bình quân ${pc(avg)} từ ${qs[0].q} và mức âm sâu nhất ${pc(r(lo))} (${lo.q}). ${g < 0 ? 'Âm: nợ định giá lại nhanh hơn tài sản — lãi suất huy động giảm thì chi phí vốn giảm trước, nhưng chỉ đạo giảm lãi suất cho vay tác động thẳng vào phía tài sản.' : 'Dương: tài sản định giá lại nhanh hơn nợ — giảm lãi suất cho vay ăn vào NIM ngay.'}`;
 }
 function accrIns() {
   const a = yoyQ('accrued'), l = yoyQ('loansGross');
@@ -449,7 +451,7 @@ function paneFin() {
     <div class="grid g2 gap">
       ${X ? card({ id: 'chNimPeer', title: 'NIM và chi phí vốn: CTG so với Big 4 và ngành', sub: '% · TTM theo quý · Big 4 và ngành = bình quân gia quyền theo dư nợ của các ngân hàng niêm yết', ctl: true,
         insight: nimPeerIns(), src: 'BCTC các ngân hàng niêm yết · tự tổng hợp' }) : ''}
-      ${card({ id: 'chGap', title: 'Khe hở tài sản − nợ nhạy cảm lãi suất ≤ 12 tháng', sub: 'tỷ đồng · quý · âm = nợ định giá lại nhanh hơn tài sản (thuyết minh rủi ro lãi suất)',
+      ${card({ id: 'chGap', title: 'Khe hở tài sản − nợ nhạy cảm lãi suất ≤ 12 tháng', sub: '% tổng tài sản · quý · âm = nợ định giá lại nhanh hơn tài sản (thuyết minh rủi ro lãi suất)',
         insight: gapIns(), src: 'Thuyết minh rủi ro lãi suất, BCTC hợp nhất' })}
       ${card({ id: 'chNim', title: 'NIM, YEA và COF', sub: '% · TTM theo quý (BNK-05, 06, 07)', ctl: true,
         insight: `NIM TTM <b>${pc(QL.nim, 2)}</b> phục hồi từ đáy <b>${pc(Math.min(...lastN(Q, 8).map(q => q.nim)), 2)}</b>: YEA tăng lên <b>${pc(QL.yea, 2)}</b> nhanh hơn COF (<b>${pc(QL.cof, 2)}</b>). Theo deck, Big 4 có repricing gap ngắn nên NIM có thể nở khi lãi suất tăng — dữ liệu ${Q[Q.length - 3].q}–${QL.q} khớp với nhận định này.`, src: 'WiData ratio_bank_ttm' })}
@@ -571,8 +573,8 @@ function finCharts(k) {
         { label: 'COF CTG', data: cq.map(q => q && q.cof), borderColor: C.purple, backgroundColor: C.purple, dp: 2, unit: '%' },
         { label: 'COF ngành', data: X.agg.cof.all, borderColor: C.red, backgroundColor: C.red, dp: 2, unit: '%', borderDash: [5, 4] }] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' }); }
     const qg = Q.filter(q => q.irGap != null && yok(q, 2022));
-    mk('chGap', { type: 'bar', data: { labels: qg.map(q => q.q), datasets: [{ label: 'Khe hở ≤ 12 tháng (nghìn tỷ)', data: qg.map(q => q.irGap / 1000), backgroundColor: qg.map(q => q.irGap < 0 ? C.purple : C.teal), dp: 1 }] },
-      options: { plugins: { legend: { display: false } }, scales: { y: numAxis('nghìn tỷ đồng') } } });
+    mk('chGap', { type: 'bar', data: { labels: qg.map(q => q.q), datasets: [{ label: 'Khe hở ≤ 12 tháng / tổng tài sản', data: qg.map(q => q.irGap / q.ta * 100), backgroundColor: qg.map(q => q.irGap < 0 ? C.purple : C.teal), dp: 1, unit: '%' }] },
+      options: { plugins: { legend: { display: false } }, scales: { y: pctAxis() } } });
   }
   if (k === 'nfi') {
     stack('chNfiQ', q12, [['Dịch vụ', 'nfi'], ['Ngoại hối', 'fx'], ['Chứng khoán', 'secInc'], ['Góp vốn', 'equityInc'], ['Khác (thu hồi nợ…)', 'otherInc']]);
