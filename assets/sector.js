@@ -116,7 +116,7 @@ function mk(id, cfg, opt = {}) {
     const box = document.querySelector(`[data-ctl="${id}"]`);
     if (box) {
       box.innerHTML = [['bar', 'Cột'], ['line', 'Đường']].map(([t, l]) => `<button type="button" data-t="${t}">${l}</button>`).join('');
-      const set = t => { const ch = charts[id]; ch.data.datasets.forEach(d => { if (!d.keep) { d.type = t; d.fill = false; d.pointRadius = t === 'line' ? 2 : 0; } }); FSK.reorder(ch); ch.update(); $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === t)); };
+      const set = t => { const ch = charts[id]; ch.data.datasets.forEach(d => { if (!d.keep) { d.type = t; d.fill = false; d.pointRadius = t === 'line' ? 2 : 0; } }); (ch.options.scales.x = ch.options.scales.x || {}).offset = ch.data.datasets.some(d => (d.type || ch.config.type) === 'bar'); const bz = ch.$bz0 || (ch.$bz0 = Object.fromEntries(Object.entries(ch.config.options.scales || {}).map(([k, sc]) => [k, !!sc.beginAtZero]))); Object.keys(bz).forEach(k => { const sc = ch.config.options.scales[k]; if (k[0] === 'y' && !sc.stacked) sc.beginAtZero = t === 'bar' ? true : bz[k]; }); FSK.reorder(ch); ch.update(); $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === t)); };
       $$('button', box).forEach(b => b.onclick = () => set(b.dataset.t));
       $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === opt.switch));
     }

@@ -70,7 +70,7 @@ function mk(id, cfg, opt = {}) {
       const set = t => {
         const ch = charts[id];
         ch.data.datasets.forEach((d, i) => { if (!d.keep) { d.type = t; d.fill = false; d.pointRadius = t === 'line' ? 2 : 0; } });
-        FSK.reorder(ch); ch.update(); $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === t));
+        (ch.options.scales.x = ch.options.scales.x || {}).offset = ch.data.datasets.some(d => (d.type || ch.config.type) === 'bar'); const bz = ch.$bz0 || (ch.$bz0 = Object.fromEntries(Object.entries(ch.config.options.scales || {}).map(([k, sc]) => [k, !!sc.beginAtZero]))); Object.keys(bz).forEach(k => { const sc = ch.config.options.scales[k]; if (k[0] === 'y' && !sc.stacked) sc.beginAtZero = t === 'bar' ? true : bz[k]; }); FSK.reorder(ch); ch.update(); $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === t));
       };
       $$('button', box).forEach(b => b.onclick = () => set(b.dataset.t));
       $$('button', box).forEach(b => b.classList.toggle('on', b.dataset.t === opt.switch));
@@ -491,11 +491,13 @@ function paneFin() {
         insight: (() => { const h = A.filter(a => a.planDone); return `Giai đoạn ${h[0].y}–${h[h.length - 1].y}, CTG hoàn thành trung bình <b>${pc(h.reduce((x, a) => x + a.planDone, 0) / h.length, 0)}</b> kế hoạch, chỉ hụt năm ${h.filter(a => a.planDone < 100).map(a => a.y).join(', ') || '—'} — kế hoạch thường đặt thận trọng. ${P ? `${esc(P.ytdLabel)} đã đạt <b>${pc(P.pbtDone)}</b> kế hoạch ${P.year}.` : ''} Nguồn chưa có số kế hoạch 2024–2025.`; })(),
         src: 'Nghị quyết ĐHĐCĐ (kế hoạch), BCTC (thực hiện)' })}
       ${card({ id: 'chDiv', title: 'Cổ tức', sub: 'cột xanh đậm = cổ tức tiền mặt (đ/CP, trục trái) · cột xanh ngọc = cổ tức cổ phiếu (%), điểm vàng = tỷ lệ chi trả tiền mặt (%) — trục phải',
-        insight: 'Cổ tức tiền mặt thấp (tỷ lệ chi trả ~10%) đi cùng cổ tức cổ phiếu lớn (44,6% năm 2025): CAR mỏng buộc giữ lại lợi nhuận để tăng vốn.', src: 'Nghị quyết ĐHĐCĐ, công bố chi trả cổ tức' })}
+        body: `<div class="note"><b>Các năm trống — lợi nhuận được giữ lại để tăng vốn, không phải do lỗ hay Covid:</b><br>
+          <b>2017–2018:</b> giữ lại lợi nhuận, cùng phần còn lại năm 2019 dùng cho phương án cổ tức cổ phiếu 28,8% (chờ cơ quan Nhà nước phê duyệt đến 2021).<br>
+          <b>2021–2022:</b> NHNN và Bộ Tài chính đồng ý giữ lại toàn bộ lợi nhuận (riêng 2022: 11.678 tỷ) để trả cổ tức bằng cổ phiếu — thực hiện ở đợt phát hành 44,6% cuối 2025 (nguồn lợi nhuận 2021, 2022 và 2009–2016).<br>
+          <b>2023:</b> toàn bộ lợi nhuận sau trích quỹ (13.927 tỷ) dành cho chia cổ tức và tăng vốn điều lệ (ĐHĐCĐ 04/2024).<br>
+          Bối cảnh: là NHTM Nhà nước, mức và hình thức cổ tức phải được NHNN, Bộ Tài chính phê duyệt; sở hữu Nhà nước phải giữ ≥ 65% nên CTG khó phát hành cổ phiếu ra ngoài — giữ lại lợi nhuận là kênh chính để nâng CAR. Năm 2015 cũng không chia cổ tức với lý do đảm bảo an toàn vốn theo Basel II.</div>`,
+        insight: 'Cổ tức tiền mặt thấp (tỷ lệ chi trả ~10%) đi cùng cổ tức cổ phiếu lớn (44,6%): CAR mỏng buộc giữ lại lợi nhuận để tăng vốn, nên những năm không chi tiền mặt là lựa chọn giữ vốn chứ không phải tín hiệu kinh doanh xấu.', src: 'Nghị quyết ĐHĐCĐ, công bố chi trả cổ tức của VietinBank; báo Đấu thầu (06/2016), Tạp chí Công Thương (04/2024), Doanh nhân (12/2025)' })}
     </div>
-    <article class="card"><h3 class="sub">Cổ tức và hoàn thành kế hoạch</h3><div class="tscroll"><table><thead><tr><th>Năm</th><th class="n">LNTT (tỷ)</th><th class="n">ROE</th><th class="n">Cổ tức tiền (đ/CP)</th><th class="n">Cổ tức CP</th><th class="n">Tỷ lệ chi trả tiền</th><th class="n">Hoàn thành KH</th></tr></thead><tbody>
-      ${A.slice(-8).map(a => `<tr><td>${a.y}</td><td class="n">${nf(a.pbt)}</td><td class="n">${pc(a.roe)}</td><td class="n">${a.cashDiv ? nf(a.cashDiv) : '—'}</td><td class="n">${a.stockDiv ? pc(a.stockDiv) : '—'}</td><td class="n">${a.payout ? pc(a.payout) : '—'}</td><td class="n">${a.planDone ? pc(a.planDone, 0) : '—'}</td></tr>`).join('')}
-    </tbody></table></div><div class="insight" hidden>Cổ tức tiền mặt thấp (tỷ lệ chi trả ~10%) đi cùng cổ tức cổ phiếu lớn (44,6% năm 2025) — đúng logic deck: CAR mỏng buộc giữ lại lợi nhuận để tăng vốn.</div><div class="src">Nguồn: WiData ratio_common_year, co_events</div></article>
   </div>
   <div class="sub" data-subp="peer">
     <article class="card"><h3 class="sub">So sánh nhóm ${esc(D.peers.period)}</h3><p class="chart-sub">Nhóm: Big 4 (niêm yết: VCB, BID, CTG) · Tư nhân lớn · Tư nhân vừa. Chọn chỉ tiêu để vẽ.</p>
@@ -655,7 +657,9 @@ function finCharts(k) {
       { label: 'Cổ tức tiền (đ/CP)', data: Ad.map(a => a.cashDiv || 0), backgroundColor: C.navy, dp: 0, unit: 'đ', order: 2 },
       { label: 'Cổ tức cổ phiếu (%)', data: Ad.map(a => a.stockDiv || null), backgroundColor: C.teal, yAxisID: 'y1', dp: 1, unit: '%', order: 2 },
       { type: 'line', label: 'Tỷ lệ chi trả tiền mặt (%)', data: Ad.map(a => a.payout ?? null), borderColor: C.gold, backgroundColor: C.gold, yAxisID: 'y1', dp: 1, unit: '%', order: 1, keep: true, showLine: false, pointRadius: 5, pointStyle: 'rectRot' }] },
-      options: { scales: { y: numAxis('đ/CP', { min: 0 }), y1: pctAxis('%', { position: 'right', grid: { display: false }, min: 0 }) } } });
+      options: { scales: { y: numAxis('đ/CP', { min: 0 }), y1: pctAxis('%', { position: 'right', grid: { display: false }, min: 0 }) } },
+      plugins: [{ id: 'retain', afterDatasetsDraw(ch) { const { ctx, scales: { x, y } } = ch; ctx.save(); ctx.font = '600 10.5px Arial'; ctx.fillStyle = '#8a90a0'; ctx.textAlign = 'center';
+        Ad.forEach((a, i) => { if (!a.cashDiv && !a.stockDiv) { const px = x.getPixelForValue(i); ctx.save(); ctx.translate(px, y.bottom - 8); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'left'; ctx.fillText('Giữ lại LN tăng vốn', 0, 4); ctx.restore(); } }); ctx.restore(); } }] });
     mk('chRoe', { type: 'line', data: { labels: qq.map(q => q.q), datasets: [
       { label: 'ROE', data: qq.map(q => q.roe), borderColor: C.navy, backgroundColor: C.navy, dp: 1, unit: '%' },
       { label: 'ROA', data: qq.map(q => q.roa), borderColor: C.teal, backgroundColor: C.teal, yAxisID: 'y1', dp: 2, unit: '%' }] },
