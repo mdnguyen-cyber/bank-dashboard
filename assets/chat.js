@@ -1,8 +1,11 @@
-/* Khung chat Trợ lý AI — chỉ chạy trong bản dashboard trên claude.ai (window.FS_ARTIFACT), dùng quyền "hỏi Claude" và connector của người xem. */
+/* Khung chat Trợ lý AI.
+   - Bản trên claude.ai (window.FS_ARTIFACT): hỏi Claude bằng tài khoản người xem, lấy số trực tiếp qua connector, chạy tác vụ cập nhật.
+   - Bản web (window.FS_CHAT.url): gọi Claude qua server trung gian (Cloudflare Worker giữ API key, có mật khẩu); công cụ dữ liệu chạy ngay trong trang. */
 (function () {
-if (!window.FS_ARTIFACT) return;
+const MODE = window.FS_ARTIFACT ? 'claude' : (window.FS_CHAT && window.FS_CHAT.url ? 'api' : null);
+if (!MODE) return;
 const CSS_TXT = `
-#ai_panel{position:fixed;top:0;right:0;bottom:0;width:min(460px,100vw);z-index:80;background:var(--card,#fff);border-left:1px solid var(--line,#d9dde4);box-shadow:-8px 0 30px rgba(20,30,60,.18);display:flex;flex-direction:column;transform:translateX(105%);transition:transform .2s ease;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#ai_panel{color-scheme:light;color:var(--ink,#303540);position:fixed;top:0;right:0;bottom:0;width:min(460px,100vw);z-index:80;background:var(--card,#fff);border-left:1px solid var(--line,#d9dde4);box-shadow:-8px 0 30px rgba(20,30,60,.18);display:flex;flex-direction:column;transform:translateX(105%);transition:transform .2s ease;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 #ai_panel.open{transform:none}
 #ai_panel .ai-h{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line2,#e9ecf2)}
 #ai_panel .ai-h .t{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -43,7 +46,7 @@ const CSS_TXT = `
 #ai_panel .confirm b{color:var(--navy)}#ai_panel .confirm .row{display:flex;gap:8px}
 #ai_panel .ai-f{border-top:1px solid var(--line2);padding:10px 14px;display:flex;flex-direction:column;gap:6px}
 #ai_form{display:flex;gap:8px;align-items:flex-end}
-#ai_q{flex:1;min-width:0;resize:none;font:13.5px/1.5 Arial,sans-serif;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;max-height:160px}
+#ai_q{flex:1;min-width:0;resize:none;font:13.5px/1.5 Arial,sans-serif;color:var(--ink,#303540);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;max-height:160px}
 #ai_panel .opts{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:11.5px;color:var(--ink2)}
 #ai_panel .opts label{display:inline-flex;gap:4px;align-items:center;cursor:pointer}
 #ai_panel .lnk{background:none;border:0;color:var(--blue);font:inherit;cursor:pointer;padding:0;text-decoration:underline}
@@ -87,7 +90,50 @@ fetch('data/bot-context.json').then(r => r.json()).then(j => {
 }).catch(() => { $('#ai_asof').textContent = 'Không tải được dữ liệu dashboard — trợ lý chỉ dùng được nguồn trực tiếp.'; });
 const fd = d => d ? d.split('-').reverse().join('/') : '—';
 
+/* ---------- bản web: gọi Claude qua Worker, công cụ chạy trong trang ---------- */
+const PWK = 'fs-ai-key';
+const getPw = () => { try { return localStorage.getItem(PWK) || ''; } catch (e) { return ''; } };
+function askPw(msg) {
+  const box = document.createElement('div'); box.className = 'confirm';
+  box.innerHTML = `<b>Nhập mật khẩu Trợ lý AI</b><span class="note">${msg || 'Chỉ cần nhập một lần trên trình duyệt này.'}</span>
+    <div class="row"><input type="password" id="ai_pw" aria-label="Mật khẩu" style="flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff;color:var(--ink)"><button class="btn pri" type="button">Lưu</button></div>`;
+  $('#ai_log').appendChild(box); scrollEnd();
+  box.querySelector('button').onclick = () => { const v = box.querySelector('input').value.trim(); if (!v) return; try { localStorage.setItem(PWK, v); } catch (e) {} box.remove(); setStatus('Đã lưu mật khẩu.'); };
+}
+async function post(path, body, signal) {
+  const r = await fetch(window.FS_CHAT.url.replace(/\/$/, '') + path, { method: 'POST', signal, headers: { 'content-type': 'application/json', 'x-fs-key': getPw() }, body: JSON.stringify(body) });
+  if (r.status === 401) { const e = { code: 'bad_password' }; throw e; }
+  if (r.status === 429) { const e = { code: 'rate_limited' }; throw e; }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) { const e = { code: 'upstream_error', message: (j.error && (j.error.message || j.error)) || ('HTTP ' + r.status) }; throw e; }
+  return j;
+}
+async function apiSample(input, o = {}) {
+  const system = input[0].content; let msgs = input.slice(1).map(t => ({ role: t.role, content: t.content }));
+  while (msgs.length && msgs[0].role !== 'user') msgs.shift();
+  const tools = (o.tools || []).map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema || { type: 'object', properties: {} } }));
+  const byName = Object.fromEntries((o.tools || []).map(t => [t.name, t]));
+  let text = '';
+  for (let round = 0; round < 8; round++) {
+    let j;
+    try { j = await post('/chat', { system, messages: msgs, tools, deep: o.modelTier === 'complex' }, o.signal); }
+    catch (e) { if (e.name === 'AbortError') { throw { code: 'cancelled', text }; } e.text = text; throw e; }
+    const blocks = j.content || [];
+    const t = blocks.filter(b => b.type === 'text').map(b => b.text).join('');
+    if (t) { text += (text ? '\n\n' : '') + t; o.onText && o.onText({ text, delta: t }); }
+    if (j.stop_reason !== 'tool_use') return { text: text || '(không có nội dung)', truncated: j.stop_reason === 'max_tokens' };
+    msgs.push({ role: 'assistant', content: blocks });
+    const results = await Promise.all(blocks.filter(b => b.type === 'tool_use').map(async b => {
+      try { const out = await byName[b.name].execute(b.input || {}, { signal: o.signal }); return { type: 'tool_result', tool_use_id: b.id, content: typeof out === 'string' ? out : JSON.stringify(out) }; }
+      catch (err) { return { type: 'tool_result', tool_use_id: b.id, content: 'Error: ' + (err.message || err), is_error: true }; }
+    }));
+    msgs.push({ role: 'user', content: results });
+  }
+  return { text: text + '\n\n(Dừng sau nhiều bước gọi dữ liệu — hỏi hẹp hơn.)', truncated: true };
+}
+
 (async () => {
+  if (MODE === 'api') { sample = apiSample; mcp = null; if (!getPw()) askPw(); return; }
   if (!window.claude) { setStatus('Trang cần mở trong Claude để dùng trợ lý.'); disableAll(); return; }
   sample = await claude.use('sample');
   mcp = await claude.use('mcp');
@@ -118,7 +164,8 @@ function mcpMsg(e) {
   return ({ server_not_connected: 'Chưa kết nối connector WiMCP trong claude.ai (Settings → Connectors)', needs_reauth: 'Connector WiMCP cần đăng nhập lại (Settings → Connectors)',
     not_in_manifest: 'Trang chưa được phép dùng connector này', approval_required: 'Cần bạn cho phép trang dùng connector', tool_error: 'Nguồn trả lỗi: ' + (e.message || '') })[e.code] || ('Lỗi nguồn dữ liệu (' + (e.code || 'không rõ') + ')');
 }
-const TOOLS = (step, signal) => [
+const TOOLS = (step, signal) => ALL_TOOLS(step, signal).filter(t => MODE === 'claude' || !t.name.startsWith('source_'));
+const ALL_TOOLS = (step, signal) => [
   { name: 'get_series', description: 'Lấy chuỗi thời gian từ dữ liệu dashboard theo mã (xem danh mục trong hướng dẫn). Trả {key:{label,unit,freq,src,pts:[[ngày,giá trị]]}}.',
     inputSchema: { type: 'object', properties: { keys: { type: 'array', items: { type: 'string' } }, from: { type: 'string', description: 'YYYY-MM hoặc YYYY-MM-DD, tuỳ chọn' }, last: { type: 'number', description: 'số điểm cuối, tuỳ chọn' } }, required: ['keys'] },
     execute: ({ keys, from, last }) => { needCtx(); step('Đọc chuỗi ' + [].concat(keys).join(', ')); const o = {};
@@ -175,6 +222,7 @@ DANH MỤC CHUỖI (mã | tên | tần suất | đơn vị | điểm mới nhấ
 ${cat}
 
 NGÂN HÀNG: ${c ? Object.entries(c.sections.meta.groups).map(([s, g]) => s + ' (' + g + ')').join(', ') : ''}. Quý có số: ${c ? c.banks.quarters.slice(-6).join(', ') : ''}.
+${MODE === 'api' ? 'Phiên này KHÔNG có công cụ source_*: chỉ dùng dữ liệu dashboard; số chưa có thì nói rõ chưa có trong dashboard.' : ''}
 MÃ CHỈ TIÊU NGUỒN TRỰC TIẾP (source_macro): tín dụng YTD 241732, YoY 75847; tiền gửi YoY 265963; M2 265954; CPI 75701; lạm phát cơ bản 202889; USD/VND NHTM bán 82223, tự do 82226, trung tâm 82227; LNH qua đêm 82237; OMO 81522; bơm/hút ròng 82268; LS huy động 12T Big 4 202886; DXY 235028; EFFR 7079.`;
 }
 
@@ -237,7 +285,7 @@ const $$ = s => Array.from(panel.querySelectorAll(s));
 renderHistory();
 
 /* ---------- hỏi ---------- */
-const ERR = { not_granted: 'Bạn chưa cho phép trang dùng Claude. Mở lại trang để được hỏi lại.', rate_limited: 'Đã chạm giới hạn sử dụng, thử lại sau ít phút.',
+const ERR = { bad_password: 'Sai mật khẩu Trợ lý AI — nhập lại bên dưới.', not_granted: 'Bạn chưa cho phép trang dùng Claude. Mở lại trang để được hỏi lại.', rate_limited: 'Đã chạm giới hạn sử dụng, thử lại sau ít phút.',
   session_expired: 'Phiên đăng nhập hết hạn, đăng nhập lại claude.ai.', prompt_too_large: 'Hội thoại quá dài — bấm "Xoá hội thoại" rồi hỏi lại.',
   sampling_disabled: 'Tài khoản này chưa bật Claude cho trang.', tools_unavailable: 'Chế độ xem này không chạy được công cụ của trang.', refused: 'Claude không trả lời yêu cầu này; thử diễn đạt khác.' };
 async function ask(text) {
@@ -260,7 +308,8 @@ async function ask(text) {
     if (r.truncated) bub.insertAdjacentHTML('beforeend', '<p class="note">Câu trả lời bị cắt — hỏi hẹp hơn.</p>');
   } catch (e) {
     if (e.code === 'cancelled') { bub.innerHTML = e.text ? md(e.text, charts) + '<p class="note">Đã dừng.</p>' : '<p class="note">Đã dừng.</p>'; }
-    else { bub.innerHTML = (e.text ? md(e.text, charts) : '') + `<p class="err">${esc(ERR[e.code] || 'Có lỗi kết nối, bấm Gửi lại để thử.')}</p>`; }
+    else { if (e.code === 'bad_password') { try { localStorage.removeItem(PWK); } catch (x) {} setTimeout(() => askPw('Mật khẩu chưa đúng.'), 0); }
+      bub.innerHTML = (e.text ? md(e.text, charts) : '') + `<p class="err">${esc(ERR[e.code] || 'Có lỗi kết nối, bấm Gửi lại để thử.')}</p>`; }
     turns.pop(); save();
   } finally { busy = null; toggle(false); if (pendingUpdate != null) showConfirm(pendingUpdate); }
 }
@@ -274,7 +323,7 @@ $('#ai_clear').onclick = () => { turns = []; save(); $$('#ai_log .msg').forEach(
 /* ---------- cập nhật dữ liệu (tác vụ đã lên lịch) ---------- */
 function showConfirm(note) {
   const m = addMsg('a'); m.firstChild.outerHTML = `<div class="confirm"><b>Chạy cập nhật dữ liệu dashboard?</b>
-    <span class="note">Một phiên Claude sẽ kéo số mới (NHNN, VIRA, Fed, Treasury…), build lại dashboard và trợ lý, rồi đẩy lên web. Thường mất 20–40 phút.${note ? ' Yêu cầu thêm: ' + esc(note) : ''}</span>
+    <span class="note">${MODE === 'api' ? 'Kéo số mới từ Fed, U.S. Treasury, ECB, BOJ, NHNN (tỷ giá), VIRA rồi build lại trang. Khoảng 15 phút.' : 'Một phiên Claude sẽ kéo số mới (NHNN, VIRA, Fed, Treasury…), build lại dashboard và trợ lý, rồi đẩy lên web. Thường mất 20–40 phút.'}${note ? ' Yêu cầu thêm: ' + esc(note) : ''}</span>
     <div class="row"><button class="btn pri" type="button" data-go>Chạy cập nhật</button><button class="btn" type="button" data-no>Không</button></div><span class="note" data-st></span></div>`;
   const box = m.querySelector('.confirm');
   box.querySelector('[data-no]').onclick = () => { box.querySelector('.row').remove(); box.querySelector('[data-st]').textContent = 'Đã bỏ qua.'; };
@@ -282,6 +331,12 @@ function showConfirm(note) {
 }
 async function fire(note, box) {
   const st = box.querySelector('[data-st]'), row = box.querySelector('.row');
+  if (MODE === 'api') {
+    row.querySelectorAll('button').forEach(b => b.disabled = true); st.textContent = 'Đang gửi yêu cầu…';
+    try { await post('/update', { note }); row.remove(); st.textContent = 'Đã chạy cập nhật số liệu quốc tế, tỷ giá NHNN và lãi suất liên ngân hàng (khoảng 15 phút). Số trong nước và BCTC ngân hàng cập nhật tự động lúc 17:20 các ngày làm việc. Tải lại trang sau khi xong.'; }
+    catch (e) { row.querySelectorAll('button').forEach(b => b.disabled = false); st.textContent = e.code === 'bad_password' ? 'Sai mật khẩu.' : 'Chưa gửi được (' + (e.message || e.code) + ').'; }
+    return;
+  }
   if (!mcp) { st.textContent = 'Chế độ xem này không gọi được tác vụ cập nhật.'; return; }
   row.querySelectorAll('button').forEach(b => b.disabled = true); st.textContent = 'Đang gửi yêu cầu…';
   try {

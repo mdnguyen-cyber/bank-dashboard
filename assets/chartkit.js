@@ -255,7 +255,7 @@
   const a = document.createElement('a');
   a.className = 'aibot'; a.href = 'https://claude.ai/artifact/NPnjNWbkz5DUjxRdnQ9Qmi'; a.target = '_blank'; a.rel = 'noopener';
   a.title = 'Hỏi số liệu, thử giả định, yêu cầu cập nhật (cần đăng nhập Claude)';
-  if (window.FS_ARTIFACT) { a.href = '#'; a.removeAttribute('target'); a.title = 'Mở khung chat Trợ lý AI'; }
+  if (window.FS_ARTIFACT || (window.FS_CHAT && window.FS_CHAT.url)) { a.href = '#'; a.removeAttribute('target'); a.title = 'Mở khung chat Trợ lý AI'; }
   a.innerHTML = '<span aria-hidden="true">✦</span> Trợ lý AI';
   const add = () => document.body.appendChild(a);
   if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
