@@ -405,3 +405,6 @@ h3.ovh.coll:hover{color:var(--blue)}
 .aibot-soon{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:62;max-width:min(320px,calc(100vw - 36px));background:#fff;color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;padding:10px 14px;box-shadow:0 6px 20px rgba(20,30,60,.18);display:flex;flex-direction:column;gap:2px;font-size:13px;opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .2s}
 .aibot-soon.on{opacity:1;transform:none}.aibot-soon b{color:var(--navy)}
 .aibot-soon.on~.totop{opacity:0}
+.pillar{display:flex;flex-direction:column}.pillar .pgo{margin-top:auto;align-self:flex-start;border:1px solid var(--line);background:#fff;color:var(--blue);font:600 12px Arial,sans-serif;border-radius:8px;padding:5px 10px;cursor:pointer}
+.pillar .pgo:hover{border-color:var(--blue);background:var(--soft)}
+article.card.flash{box-shadow:0 0 0 3px var(--teal);transition:box-shadow .3s}

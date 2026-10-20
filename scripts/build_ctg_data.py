@@ -473,6 +473,15 @@ def build(raw):
         _bigNim = _S['agg']['series']['nim']['Big 4'][-1]
     except Exception:  # noqa: BLE001
         _ls = _cm = _bigNim = None
+    try:   # bối cảnh ngành cho các tab Tài chính (từ dashboard ngành)
+        _ag = _S['agg']['series']; _bq = _S['banks']['quarters']
+        D['ctx'] = {'quarters': _bq, 'ldrSens': _ls,
+                    'camel': {k: _cm.get(k) for k in ('room', 'creditYtd', 'grade', 'total')} if _cm else None,
+                    'roomCoef': _S['camel']['roomCoef'],
+                    'agg': {m: {g: _ag[m][g] for g in ('Big 4', 'all') if g in _ag[m]} for m in ('nim', 'cof', 'yea', 'npl', 'g2', 'llr', 'ldr', 'casa', 'cir', 'roe') if m in _ag},
+                    'peerLdr': [{'s': r['s'], 'group': r['group'], 'ldr20': r['ldr20'], 'ldr0': r['ldr0'], 'ldr50': r['ldr50'], 'kbnnPctDep': r['kbnnPctDep']} for r in _S['ldrSens']['rows'] if r['group'] == 'Big 4']}
+    except Exception:  # noqa: BLE001
+        pass
     nfi_ttm = sum(q['nfi'] for q in Q[-4:]); nfi_ttm0 = sum(q['nfi'] for q in Q[-8:-4]) if len(Q) >= 8 else None
     toi_ttm = sum(q['toi'] for q in Q[-4:])
     fee_t = D.get('fee', {}).get('table')
@@ -484,22 +493,22 @@ def build(raw):
                    for r in sorted(rws, key=lambda r: -(r['share'] or 0))[:3]) + f"; tăng nhanh nhất: {top['name'].split(' (')[0].lower()}")
     room_ok = (qn['ldr'] or 99) < 85 - 1 and car_last['car'] >= 9.5
     D['thesisPillars'] = [
-        {'id': 'p1', 'step': 'Bước 2–3, 7 · Nguồn vốn, an toàn vốn', 't': 'Room tăng trưởng: LDR và an toàn vốn',
+        {'id': 'p1', 'go': {'sub': 'room', 'card': 'chLdrQ'}, 'step': 'Bước 2–3, 7 · Nguồn vốn, an toàn vốn', 't': 'Room tăng trưởng: LDR và an toàn vốn',
          'evidence': (f"LDR {qn['ldr']}% ({qn['q']}, trần 85% theo TT22)" + (f"; theo TT50 (TGKB tính 20%) {_ls['ldr20']}%" if _ls else '')
                       + f"; CAR {car_last['car']}%, vốn cấp 1 {car_last['tier1']}% ({car_last['period']}); tín dụng YoY {qn['creditYoY']}% vs huy động {qn['fundingYoY']}%"
                       + (f"; room ngụ ý theo xếp hạng TT21 {_cm['room']}%" if _cm else '')),
          'status': 'holding' if room_ok and qn['fundingYoY'] >= qn['creditYoY'] - 3 else 'watch'},
-        {'id': 'p2', 'step': 'Bước 5 · Biên lãi', 't': 'NIM giữ được trước áp lực giảm lãi suất',
+        {'id': 'p2', 'go': {'sub': 'nim', 'card': 'chNimPeer'}, 'step': 'Bước 5 · Biên lãi', 't': 'NIM giữ được trước áp lực giảm lãi suất',
          'evidence': f"NIM TTM {qn['nim']}% ({qn['q']}) so với đáy 8 quý {nim_min}%" + (f", bình quân Big 4 {_bigNim}%" if _bigNim else '') + f"; YEA {qn['yea']}%, COF {qn['cof']}%; CASA {qn['casa']}% (quý trước {qp['casa']}%)",
          'status': 'holding' if qn['nim'] > nim_min + 0.05 and qn['casa'] >= qp['casa'] - 0.5 else 'watch'},
-        {'id': 'p3', 'step': 'Bước 4 · Chất lượng tài sản', 't': 'Nợ xấu: nhóm 2, nhóm 3–5 và lãi phải thu',
+        {'id': 'p3', 'go': {'sub': 'aq', 'card': 'chAccr'}, 'step': 'Bước 4 · Chất lượng tài sản', 't': 'Nợ xấu: nhóm 2, nhóm 3–5 và lãi phải thu',
          'evidence': (f"Nợ nhóm 2 {qn['g2']}%, nợ xấu nhóm 3–5 {qn['npl']}% dư nợ (quý trước {qp['npl']}%); LLR {qn['llr']}%, tính cả lãi phải thu {qn.get('llrInclAccrued')}%"
                       + f"; lãi phải thu (tài sản Có khác) {nf(qn['accrued'] / 1000, 1)} nghìn tỷ = {acc_loan}% dư nợ, {acc_yoy:+.1f}% YoY so với cho vay {loan_yoy:+.1f}%"),
          'status': 'watch' if (qn['npl'] > qp['npl'] or qn['llr'] < qp['llr'] or (acc_yoy or 0) > (loan_yoy or 0) + 5) else 'holding'},
-        {'id': 'p4', 'step': 'Bước 6 · Thu nhập ngoài lãi', 't': 'Thu nhập phí (NFI) bù đắp NIM',
+        {'id': 'p4', 'go': {'sub': 'nfi', 'card': 'chFee'}, 'step': 'Bước 6 · Thu nhập ngoài lãi', 't': 'Thu nhập phí (NFI) bù đắp NIM',
          'evidence': (f"NFI TTM {nf(nfi_ttm / 1000, 1)} nghìn tỷ = {round(nfi_ttm / toi_ttm * 100, 1)}% TOI" + (f", {yoy(nfi_ttm, nfi_ttm0):+.1f}% YoY" if nfi_ttm0 else '') + fee_txt),
          'status': 'holding' if nfi_ttm0 and nfi_ttm > nfi_ttm0 else 'watch'},
-        {'id': 'p5', 'step': 'Bước 8 · Định giá', 't': 'Định giá chưa phản ánh ROE',
+        {'id': 'p5', 'go': {'sub': 'val', 'card': 'chVal'}, 'step': 'Bước 8 · Định giá', 't': 'Định giá chưa phản ánh ROE',
          'evidence': f"P/B {D['meta']['pb']}x ({D['meta']['priceDate']}) vs trung bình 5 năm {pb['mean']}x (±1σ {pb['lo']}–{pb['hi']}x); ROE TTM {qn['roe']}%",
          'status': 'holding' if D['meta']['pb'] < pb['mean'] else 'watch'},
     ]
