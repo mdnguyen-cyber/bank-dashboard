@@ -366,3 +366,7 @@ if DP.exists():
 js = 'window.GLOBAL_DATA = ' + json.dumps(G, ensure_ascii=False, separators=(',', ':')) + ';\n'
 (ROOT / 'data/global-data.js').write_text(js, encoding='utf-8')
 print(f'wrote data/global-data.js ({len(js) // 1024} KB), {len(G["s"])} chuỗi')
+# tập con tỷ giá theo ngày dùng chung cho chart hành lang tỷ giá ở trang ngành và trang từng ngân hàng
+FXK = ['vn_sbv_central_d', 'vn_sbv_ceil_d', 'vn_sbv_floor_d', 'vn_sbv_sell_d', 'dxy_d', 'usdvnd_vcb_sell']
+FX = {'fetched': G.get('fetched'), 's': {k: G['s'][k] for k in FXK if k in G['s']}}
+(ROOT / 'data/fx-daily.js').write_text('window.FX_DAILY = ' + json.dumps(FX, ensure_ascii=False, separators=(',', ':')) + ';\n', encoding='utf-8')

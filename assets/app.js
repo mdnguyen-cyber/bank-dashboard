@@ -342,9 +342,7 @@ function paneMacro() {
     </article>
   </div>
   <div class="grid g2 gap">
-    ${card({ id: 'chFx', title: 'Hành lang tỷ giá USD/VND', sub: 'VND/USD · cuối tháng · tỷ giá NHTM bán ra và tự do bán ra so với trung tâm, trần biên độ, giá NHNN bán can thiệp. Chênh tự do − NHTM nới rộng = cầu USD ngoài hệ thống ngân hàng tăng (USD khan, hoặc vàng trong nước cao hơn thế giới kéo cầu USD tiền mặt).', ctl: true,
-      insight: `Tỷ giá NHTM bán ra <b>${nf(lastv(fx.nhtmSell).v)}</b> còn cách trần <b>${nf(lastv(fx.ceiling).v - lastv(fx.nhtmSell).v)}đ</b>; trung tâm đã tăng <b>${sg((lastv(fx.central).v / fx.central.find(v => v.d.startsWith('2025-12')).v - 1) * 100)}</b> từ cuối 2025 — NHNN chủ động cho VND yếu dần trong khi giá thị trường chưa áp trần. DXY ${nf(lastv(fx.dxy).v, 1)} tăng lại từ ${nf(fx.dxy.find(v => v.d.startsWith('2026-01')).v, 1)} (01/2026): áp lực bên ngoài nhích lên, chưa tới mức buộc NHNN bán USD liên tục. Tỷ giá tự do <b>${nf(lastv(fx.free).v)}</b>, ${fxGap >= 0 ? 'cao hơn' : 'thấp hơn'} NHTM <b>${nf(Math.abs(fxGap))}đ</b>, đã thu hẹp mạnh từ đỉnh chênh <b>+${nf(fxPk.g)}đ</b> (${fxPk.d}) — áp lực USD ngoài hệ thống đã hạ nhiệt.`,
-      src: 'WiData macro 82223, 82226, 82227, 82228, 82231, 235028' })}
+    ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: fx.nhtmSell, free: fx.free }), src: FSFX.SRC })}
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động mạnh <b>${nf(Math.min(...on3(MA.onDaily)), 2)}–${nf(Math.max(...on3(MA.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...MA.onDaily.map(v => v.v)), 2)}% ngày ${dvn(MA.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh thường rơi vào cuối tháng (căng mùa vụ) và NHNN bơm OMO đúng các phiên đó. Theo deck (R-10), OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR — nên TT2 hạ không tự kéo lãi suất huy động TT1 xuống.`,
       src: 'WiData macro 82237, 81522, 82268' })}
@@ -380,13 +378,7 @@ function paneMacro() {
       return `<tr class="${g.flag ? 'hl' : soon ? 'soon' : ''}"><td style="white-space:nowrap">${g.id}${soon ? `<div><span class="pill rs-soon">Chưa hiệu lực</span></div><div class="rs-d">từ ${f(g.eff)}</div>` : ''}</td><td>${esc(g.rule)}</td><td>${esc(g.level)}${g.flag ? `<div class="note keep">⚠ ${esc(g.flag)}</div>` : ''}</td><td>${esc(g.doc)}${g.ref && D.regRef ? `<div><a href="${D.regRef.u}" target="_blank" rel="noopener" class="rs-a">Phân tích FinSuccess →</a></div>` : ''}</td><td>${esc(g.path)}</td></tr>`; }).join('')}
     </tbody></table></div></article>`;
 
-  mk('chFx', { type: 'line', data: { labels: fx.nhtmSell.map(v => v.d.slice(0, 7)), datasets: [
-    { label: 'NHTM bán ra', data: fx.nhtmSell.map(v => v.v), borderColor: C.navy, backgroundColor: C.navy, borderWidth: 2.2, dp: 0 },
-    { label: 'Trung tâm', data: alignM(fx.central, fx.nhtmSell), borderColor: C.teal, backgroundColor: C.teal, dp: 0 },
-    { label: 'Trần biên độ', data: alignM(fx.ceiling, fx.nhtmSell), borderColor: C.red, backgroundColor: C.red, borderDash: [5, 4], dp: 0, keep: true },
-    { label: 'Tự do bán ra', data: alignM(fx.free, fx.nhtmSell), borderColor: '#d9a400', backgroundColor: '#d9a400', borderWidth: 2.2, dp: 0 },
-    { label: 'NHNN bán can thiệp', data: alignM(fx.sbvSell, fx.nhtmSell), borderColor: C.purple, backgroundColor: C.purple, borderDash: [2, 3], dp: 0, keep: true },
-  ] }, options: { scales: { y: numAxis() } } }, { switch: 'line' });
+  { const cfg = FSFX.config({ nhtmSell: fx.nhtmSell, free: fx.free }, { numAxis }); if (cfg) mk('chFx', cfg); }
   const onL = MA.onDaily.map(v => v.d), netM = Object.fromEntries(MA.omoNetDaily.map(v => [v.d, v.v])), omoM = Object.fromEntries(MA.omoRateDaily.map(v => [v.d, v.v]));
   let omoLast = null; const omoD = onL.map(d => (omoLast = omoM[d] ?? omoLast)), netD = onL.map(d => netM[d] ?? null);
   mk('chOn', { type: 'bar', data: { labels: onL.map(d => dvn(d)), datasets: [

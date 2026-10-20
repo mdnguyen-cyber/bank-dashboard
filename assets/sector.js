@@ -1278,8 +1278,7 @@ function subDom() {
     ${kpi('Dự trữ ngoại hối', nf(res.v / 1000, 1) + ' tỷ USD', mvn(res.d))}
   </div>
   <div class="grid g2 gap">
-    ${card({ id: 'chFx', title: 'Hành lang tỷ giá USD/VND và chỉ số USD (DXY)', h: 'tall', sub: 'VND · theo ngày từ 2021 · trung tâm, trần/sàn ±5%, giá NHNN bán can thiệp, NHTM và tự do bán ra (cuối tháng), Vietcombank bán ra · trục phải = DXY', ctl: true,
-      insight: fxIns(), src: 'Ngân hàng Nhà nước (tỷ giá trung tâm, trần, sàn, giá bán của Sở Giao dịch NHNN); Vietcombank; DXY tính theo công thức ICE từ tỷ giá tham chiếu ECB; NHTM và tự do: số liệu tổng hợp cuối tháng' })}
+    ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: dom.nhtmSell, free: dom.free }), src: FSFX.SRC })}
     ${card({ id: 'chFxGap', title: 'Chênh lệch tỷ giá tự do − NHTM bán ra', sub: 'VND · cuối tháng · dương = USD ngoài hệ thống đắt hơn ngân hàng (deck DOM-03: kỳ vọng mất giá)',
       insight: `Chênh dương kéo dài 2024–Q1/2026 (cầu USD tiền mặt, vàng) và đổi dấu từ 07/2026 — áp lực ngoài hệ thống đã qua; áp lực còn lại nằm ở lãi suất (UST, Fed).`, src: 'WiData 82226, 82223' })}
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
@@ -1312,24 +1311,7 @@ function fxIns() {
   return `${dvn(c.d)}: trung tâm <b>${nf(c.v)}</b> (${sg((c.v / c0 - 1) * 100, 1)}% từ đầu năm), trần ${nf(ce.v)}, NHNN bán can thiệp ${nf(se.v)}. ${vs.v != null && vs.d >= ns.d ? 'Vietcombank' : 'NHTM'} bán ra <b>${nf(mkt.v)}</b> — cách trần <b>${nf(ce.v - mkt.v)}đ</b> (${pc((ce.v - mkt.v) / ce.v * 100, 2)}). DXY <b>${nf(x.v, 1)}</b> (${dvn(x.d)}): ${sg((x.v / x0 - 1) * 100, 1)}% từ đầu năm, ${sg((x.v / x1m - 1) * 100, 1)}% 1 tháng.`
     + how('Tỷ giá NHTM sát trần nghĩa là NHNN phải bán USD (giá bán can thiệp = trần − 50đ) để giữ biên độ, làm hút VND và đẩy lãi suất liên ngân hàng lên. DXY tăng là áp lực từ bên ngoài; khi DXY giảm mà USD/VND vẫn đi lên thì áp lực chủ yếu nằm trong nước (cầu ngoại tệ, chênh lãi suất VND − USD). NHNN nâng tỷ giá trung tâm là chủ động dời cả hành lang lên.');
 }
-function drFx() {
-  const from = '2021-01-01', cen = gs('vn_sbv_central_d');
-  const labs = cen.d.filter(d => d >= from); if (!labs.length) return;
-  const at = k => { const x = gs(k), m = {}; x.d.forEach((d, i) => m[d] = x.v[i]); return labs.map(d => m[d] ?? null); };
-  const eom = arr => { const m = byM(arr), out = labs.map(() => null); labs.forEach((d, i) => { if (i === labs.length - 1 || labs[i + 1].slice(0, 7) !== d.slice(0, 7)) out[i] = m[d.slice(0, 7)] ?? null; }); return out; };
-  const dx = gs('dxy_d'), dm = {}; dx.d.forEach((d, i) => dm[d] = dx.v[i]);
-  let lastDx = null; const dxa = labs.map(d => { if (dm[d] != null) lastDx = dm[d]; return dm[d] ?? lastDx; });
-  mk('chFx', { type: 'line', data: { labels: labs.map(dvn), datasets: [
-    L('Trung tâm', at('vn_sbv_central_d'), C.teal, { unit: '', dp: 0 }),
-    L('Trần biên độ (+5%)', at('vn_sbv_ceil_d'), C.red, { unit: '', dp: 0, borderDash: [5, 4], borderWidth: 1.5 }),
-    L('Sàn biên độ (−5%)', at('vn_sbv_floor_d'), C.grey, { unit: '', dp: 0, borderDash: [5, 4], borderWidth: 1.2, hidden: true }),
-    L('NHNN bán can thiệp', at('vn_sbv_sell_d'), C.purple, { unit: '', dp: 0, borderDash: [2, 3], borderWidth: 1.5 }),
-    L('NHTM bán ra (cuối tháng)', eom(dom.nhtmSell), C.navy, { unit: '', dp: 0, borderWidth: 2.4, pointRadius: 2 }),
-    L('Tự do bán ra (cuối tháng)', eom(dom.free), C.gold, { unit: '', dp: 0, pointRadius: 2 }),
-    L('Vietcombank bán ra', at('usdvnd_vcb_sell'), '#1f6f3f', { unit: '', dp: 0, pointRadius: 3, spanGaps: false }),
-    L('DXY (trục phải)', dxa, '#8a8f98', { unit: '', dp: 1, yAxisID: 'y1', borderWidth: 1.4 })] },
-    options: { scales: { y: numAxis('VND', { beginAtZero: false }), y1: numAxis('DXY', { position: 'right', beginAtZero: false, grid: { display: false }, ticks: { callback: v => nf(v, 0) } }) } } });
-}
+function drFx() { const cfg = FSFX.config({ nhtmSell: dom.nhtmSell, free: dom.free }, { numAxis }); if (cfg) mk('chFx', cfg); }
 function chDom() {
   const labs = monthsFrom('2021-01', TODAY.slice(0, 7));
   drFx();
