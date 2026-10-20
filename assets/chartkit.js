@@ -238,7 +238,70 @@
     box.title = box.title || 'Kéo một nút để đổi thứ tự (điện thoại: nhấn giữ rồi kéo)';
   }
 
-  window.FSK = { prep, reorder, enhance, dates, sortable };
+
+  /* ---- 4) kéo thả đổi vị trí chart: nắm vào TIÊU ĐỀ card (biểu tượng ⠿) rồi kéo; vùng vẽ chart vẫn dành cho kéo chọn khung thời gian ---- */
+  const cardId = c => { const cv = c.querySelector('canvas[id]'); return c.dataset.card || (cv ? cv.id : ((c.querySelector('h3') || {}).textContent || '').replace('⠿', '').trim().slice(0, 40)); };
+  function gridKey(g) {
+    const host = g.closest('[data-subp],[data-pp],[data-cc],[data-p],.pane'); const tag = host ? (host.dataset.subp || host.dataset.pp || host.dataset.cc || host.dataset.p || host.id) : 'root';
+    const sibs = host ? [...host.querySelectorAll('.grid')].filter(x => x.closest('[data-subp],[data-pp],[data-cc],[data-p],.pane') === host) : [g];
+    return 'fsk-cards:' + location.pathname.split('/').pop() + ':' + tag + ':' + sibs.indexOf(g);
+  }
+  function cardSort(g) {
+    if (g._fskCards) return;
+    const cards = () => [...g.children].filter(x => x.matches('article.card'));
+    if (cards().length < 2) return;
+    g._fskCards = true;
+    const K = gridKey(g);
+    try { const ord = JSON.parse(localStorage.getItem(K) || 'null'); if (ord) { const cs = cards(); ord.forEach(id => { const c = cs.find(x => cardId(x) === id); if (c) g.appendChild(c); }); [...g.children].filter(x => !x.matches('article.card')).forEach(x => g.appendChild(x)); } } catch (e) {}
+    cards().forEach(c => { const h = c.querySelector(':scope > h3.sub'); if (h && !h.querySelector('.grip')) { h.insertAdjacentHTML('afterbegin', '<span class="grip" title="Kéo để đổi vị trí chart (điện thoại: nhấn giữ rồi kéo)">⠿</span>'); h.classList.add('drag-h'); } });
+    let drag = null, cand = null, sx = 0, sy = 0, timer = null, mouse = false, moved = false;
+    const save = () => { try { localStorage.setItem(K, JSON.stringify(cards().map(cardId))); } catch (e) {} };
+    const start = () => { if (!cand) return; drag = cand; drag.classList.add('card-drag'); g.classList.add('cards-sorting'); document.body.classList.add('fsk-nosel'); if (navigator.vibrate) navigator.vibrate(15); };
+    g.addEventListener('pointerdown', e => {
+      const h = e.target.closest('h3.drag-h'); if (!h || e.button > 0 || h.parentElement.parentElement !== g) return;
+      if (e.target.closest('button,a,input,select,.ctl,.info,.i')) return;   // nút trong tiêu đề (Cột/Đường, i) vẫn bấm bình thường
+      cand = h.parentElement; sx = e.clientX; sy = e.clientY; moved = false; mouse = e.pointerType === 'mouse';
+      try { h.setPointerCapture(e.pointerId); } catch (er) {}
+      if (mouse) e.preventDefault(); else timer = setTimeout(start, 350);
+    });
+    document.addEventListener('pointermove', e => {
+      if (!cand) return;
+      if (!drag) { const d = Math.hypot(e.clientX - sx, e.clientY - sy); if (mouse && (e.buttons & 1) && d > 6) start(); else { if (timer && d > 8) { clearTimeout(timer); timer = null; cand = null; } return; } }
+      e.preventDefault(); moved = true;
+      drag.style.pointerEvents = 'none'; const t = document.elementFromPoint(e.clientX, e.clientY); drag.style.pointerEvents = '';
+      const over = t && t.closest && t.closest('article.card');
+      if (!over || over === drag || over.parentElement !== g) return;
+      const cs = cards(), after = cs.indexOf(drag) < cs.indexOf(over);   // kéo xuống: đặt sau thẻ đích; kéo lên: đặt trước
+      g.insertBefore(drag, after ? over.nextSibling : over);
+    });
+    const end = () => { clearTimeout(timer); timer = null; const d = drag; cand = null; drag = null; document.body.classList.remove('fsk-nosel'); g.classList.remove('cards-sorting'); if (!d) return; d.classList.remove('card-drag'); if (moved) save(); };
+    document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
+    g.addEventListener('contextmenu', e => { if (drag || timer) e.preventDefault(); });
+  }
+  function cardSortAll(root) { (root || document).querySelectorAll('.grid').forEach(cardSort); }
+  let _cst = null;
+  new MutationObserver(() => { clearTimeout(_cst); _cst = setTimeout(() => cardSortAll(), 120); }).observe(document.documentElement, { childList: true, subtree: true });
+  document.addEventListener('DOMContentLoaded', () => cardSortAll());
+
+  /* ---- 5) thu phí theo mảng: đổi giữa lãi thuần (cột chồng), tăng trưởng thu/lãi thuần YoY và biên lợi nhuận (đường) ---- */
+  const FEE_MODES = [['net', 'Lãi thuần'], ['iyoy', 'Tăng trưởng thu YoY'], ['nyoy', 'Tăng trưởng lãi thuần YoY'], ['margin', 'Biên lợi nhuận']];
+  function feePicker(id) { return `<div class="picker tf" data-feem="${id}">${FEE_MODES.map(([k, l], i) => `<button type="button" data-k="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>`; }
+  function feeCfg(S, years, lines, mode, opt = {}) {   // S[year][line] = {inc, exp, net}; opt.scale chia đơn vị (vd 1000 → nghìn tỷ)
+    const sc = opt.scale || 1, col = opt.colors || {}, ys = years.map(String);
+    if (mode === 'net') return { type: 'bar', data: { labels: ys, datasets: lines.filter(l => ys.some(y => S[y][l.k] && S[y][l.k].net)).map(l => ({ label: l.name, data: ys.map(y => S[y][l.k].net / sc), backgroundColor: col[l.k], stack: 's', dp: sc > 1 ? 1 : 0, unit: opt.unit || '' })) },
+      options: { scales: { x: { stacked: true }, y: { stacked: true } } } };
+    const val = (y, k, i) => { const a = S[y] && S[y][k]; if (!a) return null;
+      if (mode === 'margin') return a.inc > 0 && !(opt.noMargin || []).includes(k) ? a.net / a.inc * 100 : null;
+      const py = ys[i - 1], b = py && S[py] && S[py][k]; if (!b) return null;
+      const f = mode === 'iyoy' ? 'inc' : 'net'; return a[f] !== 0 && b[f] > 0 && Math.abs(b[f]) >= (opt.minBase || 30) ? (a[f] / b[f] - 1) * 100 : null; };
+    const L = lines.concat([{ k: '_tot', name: 'Tổng' }]).filter(l => ys.some((y, i) => val(y, l.k, i) != null));
+    return { type: 'line', data: { labels: ys, datasets: L.map(l => ({ label: l.name, data: ys.map((y, i) => { const v = val(y, l.k, i); return v == null ? null : Math.round(v * 10) / 10; }),
+        borderColor: l.k === '_tot' ? '#1b1f2a' : col[l.k], backgroundColor: l.k === '_tot' ? '#1b1f2a' : col[l.k], borderWidth: l.k === '_tot' ? 3 : 1.8, dp: 1, unit: '%', spanGaps: true })) },
+      options: { scales: { y: { ticks: { callback: v => v + '%' } } }, plugins: { refLines: mode === 'margin' ? undefined : { lines: [{ value: 0, label: '' }] } } } };
+  }
+  function wireFee(id, draw) { const box = document.querySelector(`[data-feem="${id}"]`); const bs = box ? [...box.querySelectorAll('button')] : []; bs.forEach(b => b.onclick = () => { bs.forEach(x => x.classList.toggle('on', x === b)); draw(b.dataset.k); }); draw('net'); }
+
+  window.FSK = { prep, reorder, enhance, dates, sortable, cardSortAll, feePicker, feeCfg, wireFee };
 })();
 
 /* Nút lên đầu trang: hiện khi cuộn quá 1 màn hình */

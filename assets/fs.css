@@ -408,3 +408,5 @@ h3.ovh.coll:hover{color:var(--blue)}
 .pillar{display:flex;flex-direction:column}.pillar .pgo{margin-top:auto;align-self:flex-start;border:1px solid var(--line);background:#fff;color:var(--blue);font:600 12px Arial,sans-serif;border-radius:8px;padding:5px 10px;cursor:pointer}
 .pillar .pgo:hover{border-color:var(--blue);background:var(--soft)}
 article.card.flash{box-shadow:0 0 0 3px var(--teal);transition:box-shadow .3s}
+
+.drag-h{cursor:grab}.drag-h .grip{display:inline-block;color:var(--muted,#8a90a0);font-size:14px;margin-right:6px;opacity:.55;cursor:grab;user-select:none;vertical-align:1px}.drag-h:hover .grip{opacity:1}.card-drag{opacity:.6;outline:2px dashed var(--navy,#1d2678);outline-offset:2px;cursor:grabbing}.cards-sorting,.cards-sorting *{cursor:grabbing!important}.fsk-nosel{user-select:none;-webkit-user-select:none}

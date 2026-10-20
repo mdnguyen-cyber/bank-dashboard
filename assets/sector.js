@@ -1387,7 +1387,7 @@ function feeSecCards() {
   const g = k => R.find(r => r.k === k) || {};
   const sg2 = v => v == null ? '—' : (v > 0 ? '+' : '') + nf(v, 1) + '%';
   const B = [...F.banks].sort((a, b) => (b.incYoY ?? -1e9) - (a.incYoY ?? -1e9));
-  return `${card({ id: 'chFeeSec', title: 'Lãi thuần dịch vụ toàn ngành theo mảng', sub: `nghìn tỷ đồng · năm · cộng ${F.n} ngân hàng niêm yết · ròng = thu − chi từng mảng`, ctl: true,
+  return `${card({ id: 'chFeeSec', title: 'Lãi thuần dịch vụ toàn ngành theo mảng', sub: `nghìn tỷ đồng · năm · cộng ${F.n} ngân hàng niêm yết · ròng = thu − chi từng mảng · đổi sang tăng trưởng hoặc biên lợi nhuận bằng nút dưới chart`, body: FSK.feePicker('chFeeSec'),
       insight: `Năm ${T.year}, lãi thuần dịch vụ toàn ngành <b>${nf(tot.net / 1000, 1)} nghìn tỷ</b> (${sg2(tot.netYoY)}), biên <b>${pc(tot.margin, 0)}</b>. <b>Thanh toán</b> vẫn lớn nhất (${pc(g('pay').share, 0)}) nhưng gần như không tăng (thu ${sg2(g('pay').incYoY)}, ròng ${sg2(g('pay').netYoY)}) trong bối cảnh chuyển khoản trực tuyến phần lớn đã miễn phí. <b>Bảo hiểm</b> thu ${sg2(g('ins').incYoY)} nhưng ròng ${sg2(g('ins').netYoY)} — chi cho hoạt động bảo hiểm tăng nhanh hơn thu. Động lực tăng là nhóm <b>khác (thẻ, bảo lãnh…)</b>: ròng ${sg2(g('oth').netYoY)}, cùng chứng khoán ${sg2(g('sec').incYoY)} và tư vấn ${sg2(g('adv').incYoY)} (quy mô nhỏ).`,
       src: 'Thuyết minh BCTC hợp nhất năm của 26 ngân hàng niêm yết (thu, chi hoạt động dịch vụ theo loại) · tự tổng hợp' })}
     <article class="card"><h3 class="sub">Thu phí theo mảng · toàn ngành năm ${T.year}</h3><p class="chart-sub">tỷ đồng · biên = lãi thuần / thu · tỷ trọng trên lãi thuần dịch vụ</p>
@@ -1400,9 +1400,8 @@ function feeSecCards() {
       <div class="src">Chi viễn thông và chi môi giới không tách được theo mảng, gộp vào "Khác"; chứng khoán chỉ có phía thu.</div></article>`;
 }
 function drawFeeSec() {
-  const F = D.fee, ys = F.years.map(String);
-  mk('chFeeSec', { type: 'bar', data: { labels: ys, datasets: F.lines.filter(l => ys.some(y => F.sector[y][l.k].net)).map(l => ({ label: l.name, data: ys.map(y => F.sector[y][l.k].net / 1000), backgroundColor: FEE_COL[l.k], stack: 's' })) },
-    options: { plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ${nf(c.parsed.y, 1)} nghìn tỷ` } } }, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => nf(v, 0) } } } } });
+  const F = D.fee;
+  FSK.wireFee('chFeeSec', m => mk('chFeeSec', FSK.feeCfg(F.sector, F.years, F.lines, m, { noMargin: ['sec'], colors: FEE_COL, scale: m === 'net' ? 1000 : 1, unit: ' nghìn tỷ', minBase: 300 })));
 }
 function nimDepInsight() {
   const d0 = AG.cof.all[QI - 2], d1 = AG.cof.all[QI];
