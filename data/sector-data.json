@@ -22681,6 +22681,1323 @@
    "sym": []
   }
  ],
+ "fee": {
+  "lines": [
+   {
+    "k": "pay",
+    "name": "Thanh toán"
+   },
+   {
+    "k": "ins",
+    "name": "Bảo hiểm (bancassurance)"
+   },
+   {
+    "k": "trust",
+    "name": "Ủy thác, đại lý"
+   },
+   {
+    "k": "sec",
+    "name": "Chứng khoán"
+   },
+   {
+    "k": "adv",
+    "name": "Tư vấn"
+   },
+   {
+    "k": "cash",
+    "name": "Ngân quỹ, quản lý quỹ"
+   },
+   {
+    "k": "oth",
+    "name": "Khác (thẻ, bảo lãnh…)"
+   }
+  ],
+  "years": [
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "sector": {
+   "2022": {
+    "pay": {
+     "inc": 36950.6,
+     "exp": 15789.9,
+     "net": 21160.8
+    },
+    "ins": {
+     "inc": 28123.3,
+     "exp": 10022.7,
+     "net": 18100.6
+    },
+    "trust": {
+     "inc": 7068.8,
+     "exp": 547.2,
+     "net": 6521.4
+    },
+    "sec": {
+     "inc": 2434.8,
+     "exp": 0.0,
+     "net": 2434.8
+    },
+    "adv": {
+     "inc": 1063.9,
+     "exp": 217.5,
+     "net": 846.5
+    },
+    "cash": {
+     "inc": 1153.5,
+     "exp": 1261.7,
+     "net": -108.4
+    },
+    "oth": {
+     "inc": 29384.0,
+     "exp": 15354.8,
+     "net": 14029.2
+    },
+    "_tot": {
+     "inc": 106178.4,
+     "exp": 43193.8,
+     "net": 62984.6
+    }
+   },
+   "2023": {
+    "pay": {
+     "inc": 44591.6,
+     "exp": 21989.1,
+     "net": 22602.2
+    },
+    "ins": {
+     "inc": 22456.5,
+     "exp": 8818.4,
+     "net": 13638.1
+    },
+    "trust": {
+     "inc": 6774.7,
+     "exp": 259.5,
+     "net": 6515.2
+    },
+    "sec": {
+     "inc": 1725.4,
+     "exp": 0.0,
+     "net": 1725.4
+    },
+    "adv": {
+     "inc": 674.3,
+     "exp": 101.7,
+     "net": 572.6
+    },
+    "cash": {
+     "inc": 597.9,
+     "exp": 692.3,
+     "net": -94.3
+    },
+    "oth": {
+     "inc": 32475.3,
+     "exp": 15142.2,
+     "net": 17333.5
+    },
+    "_tot": {
+     "inc": 109295.8,
+     "exp": 47003.1,
+     "net": 62292.7
+    }
+   },
+   "2024": {
+    "pay": {
+     "inc": 48309.3,
+     "exp": 26108.2,
+     "net": 22201.3
+    },
+    "ins": {
+     "inc": 24847.6,
+     "exp": 9172.9,
+     "net": 15674.8
+    },
+    "trust": {
+     "inc": 3942.0,
+     "exp": 305.5,
+     "net": 3636.5
+    },
+    "sec": {
+     "inc": 2120.1,
+     "exp": 0.0,
+     "net": 2120.1
+    },
+    "adv": {
+     "inc": 1001.0,
+     "exp": 154.1,
+     "net": 847.1
+    },
+    "cash": {
+     "inc": 616.0,
+     "exp": 656.9,
+     "net": -40.8
+    },
+    "oth": {
+     "inc": 34153.9,
+     "exp": 17475.9,
+     "net": 16678.3
+    },
+    "_tot": {
+     "inc": 114990.4,
+     "exp": 53873.0,
+     "net": 61117.4
+    }
+   },
+   "2025": {
+    "pay": {
+     "inc": 48702.6,
+     "exp": 26943.4,
+     "net": 21759.4
+    },
+    "ins": {
+     "inc": 28756.3,
+     "exp": 13309.0,
+     "net": 15447.3
+    },
+    "trust": {
+     "inc": 4544.2,
+     "exp": 422.6,
+     "net": 4121.5
+    },
+    "sec": {
+     "inc": 3042.6,
+     "exp": 0.0,
+     "net": 3042.6
+    },
+    "adv": {
+     "inc": 2491.1,
+     "exp": 137.1,
+     "net": 2354.0
+    },
+    "cash": {
+     "inc": 741.1,
+     "exp": 803.4,
+     "net": -62.4
+    },
+    "oth": {
+     "inc": 38851.8,
+     "exp": 16878.8,
+     "net": 21973.1
+    },
+    "_tot": {
+     "inc": 127130.0,
+     "exp": 58494.7,
+     "net": 68635.3
+    }
+   }
+  },
+  "group": {
+   "Big 4": {
+    "2022": {
+     "pay": {
+      "inc": 13705.5,
+      "exp": 7561.2,
+      "net": 6144.3
+     },
+     "ins": {
+      "inc": 5750.0,
+      "exp": 3633.6,
+      "net": 2116.5
+     },
+     "trust": {
+      "inc": 566.3,
+      "exp": 284.4,
+      "net": 281.8
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 339.6,
+      "exp": 62.3,
+      "net": 277.4
+     },
+     "cash": {
+      "inc": 235.6,
+      "exp": 729.6,
+      "net": -494.1
+     },
+     "oth": {
+      "inc": 13721.4,
+      "exp": 3698.1,
+      "net": 10023.2
+     },
+     "_tot": {
+      "inc": 34318.3,
+      "exp": 15969.1,
+      "net": 18349.2
+     }
+    },
+    "2023": {
+     "pay": {
+      "inc": 14792.0,
+      "exp": 9003.6,
+      "net": 5788.3
+     },
+     "ins": {
+      "inc": 6499.6,
+      "exp": 3335.2,
+      "net": 3164.5
+     },
+     "trust": {
+      "inc": 1005.0,
+      "exp": 204.0,
+      "net": 800.9
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "cash": {
+      "inc": 178.1,
+      "exp": 418.6,
+      "net": -240.5
+     },
+     "oth": {
+      "inc": 14436.3,
+      "exp": 4486.2,
+      "net": 9950.2
+     },
+     "_tot": {
+      "inc": 36910.9,
+      "exp": 17447.6,
+      "net": 19463.3
+     }
+    },
+    "2024": {
+     "pay": {
+      "inc": 16090.1,
+      "exp": 10346.0,
+      "net": 5744.2
+     },
+     "ins": {
+      "inc": 7680.9,
+      "exp": 1433.1,
+      "net": 6247.8
+     },
+     "trust": {
+      "inc": 1060.2,
+      "exp": 218.0,
+      "net": 842.3
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "cash": {
+      "inc": 198.4,
+      "exp": 372.7,
+      "net": -174.2
+     },
+     "oth": {
+      "inc": 13811.4,
+      "exp": 7564.5,
+      "net": 6247.0
+     },
+     "_tot": {
+      "inc": 38841.1,
+      "exp": 19934.1,
+      "net": 18907.0
+     }
+    },
+    "2025": {
+     "pay": {
+      "inc": 15812.8,
+      "exp": 9633.0,
+      "net": 6179.8
+     },
+     "ins": {
+      "inc": 8406.3,
+      "exp": 4534.9,
+      "net": 3871.4
+     },
+     "trust": {
+      "inc": 1125.7,
+      "exp": 311.1,
+      "net": 814.5
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "cash": {
+      "inc": 259.8,
+      "exp": 427.0,
+      "net": -167.2
+     },
+     "oth": {
+      "inc": 11752.5,
+      "exp": 5728.0,
+      "net": 6024.5
+     },
+     "_tot": {
+      "inc": 37357.1,
+      "exp": 20634.1,
+      "net": 16723.0
+     }
+    }
+   },
+   "Tư nhân lớn": {
+    "2022": {
+     "pay": {
+      "inc": 13965.3,
+      "exp": 3557.8,
+      "net": 10407.7
+     },
+     "ins": {
+      "inc": 17322.8,
+      "exp": 5998.0,
+      "net": 11324.8
+     },
+     "trust": {
+      "inc": 2375.1,
+      "exp": 15.0,
+      "net": 2360.1
+     },
+     "sec": {
+      "inc": 2434.8,
+      "exp": 0.0,
+      "net": 2434.8
+     },
+     "adv": {
+      "inc": 510.9,
+      "exp": 4.2,
+      "net": 506.7
+     },
+     "cash": {
+      "inc": 551.1,
+      "exp": 286.0,
+      "net": 265.0
+     },
+     "oth": {
+      "inc": 8842.3,
+      "exp": 8895.4,
+      "net": -53.4
+     },
+     "_tot": {
+      "inc": 46002.3,
+      "exp": 18756.4,
+      "net": 27245.9
+     }
+    },
+    "2023": {
+     "pay": {
+      "inc": 18821.1,
+      "exp": 6397.4,
+      "net": 12423.6
+     },
+     "ins": {
+      "inc": 13229.9,
+      "exp": 5444.6,
+      "net": 7785.3
+     },
+     "trust": {
+      "inc": 3296.2,
+      "exp": 15.1,
+      "net": 3281.1
+     },
+     "sec": {
+      "inc": 1725.4,
+      "exp": 0.0,
+      "net": 1725.4
+     },
+     "adv": {
+      "inc": 358.6,
+      "exp": 27.8,
+      "net": 330.8
+     },
+     "cash": {
+      "inc": 165.6,
+      "exp": 97.0,
+      "net": 68.7
+     },
+     "oth": {
+      "inc": 10908.5,
+      "exp": 7835.7,
+      "net": 3072.9
+     },
+     "_tot": {
+      "inc": 48505.5,
+      "exp": 19817.7,
+      "net": 28687.8
+     }
+    },
+    "2024": {
+     "pay": {
+      "inc": 21156.2,
+      "exp": 9854.3,
+      "net": 11302.1
+     },
+     "ins": {
+      "inc": 14282.7,
+      "exp": 7683.1,
+      "net": 6599.6
+     },
+     "trust": {
+      "inc": 1209.7,
+      "exp": 18.1,
+      "net": 1191.6
+     },
+     "sec": {
+      "inc": 2120.1,
+      "exp": 0.0,
+      "net": 2120.1
+     },
+     "adv": {
+      "inc": 582.6,
+      "exp": 1.4,
+      "net": 581.3
+     },
+     "cash": {
+      "inc": 183.5,
+      "exp": 100.0,
+      "net": 83.5
+     },
+     "oth": {
+      "inc": 11585.7,
+      "exp": 7060.6,
+      "net": 4525.2
+     },
+     "_tot": {
+      "inc": 51120.6,
+      "exp": 24717.4,
+      "net": 26403.2
+     }
+    },
+    "2025": {
+     "pay": {
+      "inc": 18573.2,
+      "exp": 10077.2,
+      "net": 8496.1
+     },
+     "ins": {
+      "inc": 17950.1,
+      "exp": 8633.6,
+      "net": 9316.5
+     },
+     "trust": {
+      "inc": 1499.1,
+      "exp": 22.9,
+      "net": 1476.2
+     },
+     "sec": {
+      "inc": 3042.6,
+      "exp": 0.0,
+      "net": 3042.6
+     },
+     "adv": {
+      "inc": 2276.9,
+      "exp": 6.6,
+      "net": 2270.3
+     },
+     "cash": {
+      "inc": 274.0,
+      "exp": 154.1,
+      "net": 119.9
+     },
+     "oth": {
+      "inc": 16408.8,
+      "exp": 7926.5,
+      "net": 8482.2
+     },
+     "_tot": {
+      "inc": 60024.6,
+      "exp": 26821.0,
+      "net": 33203.6
+     }
+    }
+   },
+   "Tư nhân nhỏ": {
+    "2022": {
+     "pay": {
+      "inc": 1510.3,
+      "exp": 532.2,
+      "net": 978.1
+     },
+     "ins": {
+      "inc": 140.0,
+      "exp": 240.4,
+      "net": -100.5
+     },
+     "trust": {
+      "inc": 85.6,
+      "exp": 22.0,
+      "net": 63.5
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 40.2,
+      "exp": 21.5,
+      "net": 18.7
+     },
+     "cash": {
+      "inc": 51.6,
+      "exp": 60.8,
+      "net": -9.2
+     },
+     "oth": {
+      "inc": 841.6,
+      "exp": 375.4,
+      "net": 466.4
+     },
+     "_tot": {
+      "inc": 2669.3,
+      "exp": 1252.6,
+      "net": 1416.7
+     }
+    },
+    "2023": {
+     "pay": {
+      "inc": 2711.8,
+      "exp": 1453.0,
+      "net": 1258.7
+     },
+     "ins": {
+      "inc": 209.8,
+      "exp": 0.0,
+      "net": 209.8
+     },
+     "trust": {
+      "inc": 76.6,
+      "exp": 24.7,
+      "net": 52.0
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 74.7,
+      "exp": 25.5,
+      "net": 49.2
+     },
+     "cash": {
+      "inc": 41.7,
+      "exp": 51.2,
+      "net": -9.5
+     },
+     "oth": {
+      "inc": 983.4,
+      "exp": 348.9,
+      "net": 634.6
+     },
+     "_tot": {
+      "inc": 4097.9,
+      "exp": 1903.1,
+      "net": 2194.8
+     }
+    },
+    "2024": {
+     "pay": {
+      "inc": 1977.6,
+      "exp": 840.0,
+      "net": 1137.6
+     },
+     "ins": {
+      "inc": 177.5,
+      "exp": 0.0,
+      "net": 177.5
+     },
+     "trust": {
+      "inc": 54.8,
+      "exp": 18.1,
+      "net": 36.6
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 45.3,
+      "exp": 29.2,
+      "net": 16.2
+     },
+     "cash": {
+      "inc": 43.7,
+      "exp": 54.5,
+      "net": -10.8
+     },
+     "oth": {
+      "inc": 1026.3,
+      "exp": 444.1,
+      "net": 582.0
+     },
+     "_tot": {
+      "inc": 3325.3,
+      "exp": 1386.0,
+      "net": 1939.3
+     }
+    },
+    "2025": {
+     "pay": {
+      "inc": 2613.8,
+      "exp": 804.6,
+      "net": 1809.3
+     },
+     "ins": {
+      "inc": 50.7,
+      "exp": 0.0,
+      "net": 50.7
+     },
+     "trust": {
+      "inc": 80.5,
+      "exp": 15.7,
+      "net": 64.8
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 33.6,
+      "exp": 29.4,
+      "net": 4.2
+     },
+     "cash": {
+      "inc": 69.0,
+      "exp": 70.1,
+      "net": -1.2
+     },
+     "oth": {
+      "inc": 944.2,
+      "exp": 440.4,
+      "net": 504.0
+     },
+     "_tot": {
+      "inc": 3792.4,
+      "exp": 1360.2,
+      "net": 2432.2
+     }
+    }
+   },
+   "Tư nhân vừa": {
+    "2022": {
+     "pay": {
+      "inc": 7769.5,
+      "exp": 4138.7,
+      "net": 3630.7
+     },
+     "ins": {
+      "inc": 4910.5,
+      "exp": 150.7,
+      "net": 4759.8
+     },
+     "trust": {
+      "inc": 4041.8,
+      "exp": 225.8,
+      "net": 3816.0
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 173.2,
+      "exp": 129.5,
+      "net": 43.7
+     },
+     "cash": {
+      "inc": 315.2,
+      "exp": 185.3,
+      "net": 129.9
+     },
+     "oth": {
+      "inc": 5978.7,
+      "exp": 2385.9,
+      "net": 3593.0
+     },
+     "_tot": {
+      "inc": 23188.5,
+      "exp": 7215.7,
+      "net": 15972.8
+     }
+    },
+    "2023": {
+     "pay": {
+      "inc": 8266.7,
+      "exp": 5135.1,
+      "net": 3131.6
+     },
+     "ins": {
+      "inc": 2517.2,
+      "exp": 38.6,
+      "net": 2478.5
+     },
+     "trust": {
+      "inc": 2396.9,
+      "exp": 15.7,
+      "net": 2381.2
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 241.0,
+      "exp": 48.4,
+      "net": 192.6
+     },
+     "cash": {
+      "inc": 212.5,
+      "exp": 125.5,
+      "net": 87.0
+     },
+     "oth": {
+      "inc": 6147.1,
+      "exp": 2471.4,
+      "net": 3675.8
+     },
+     "_tot": {
+      "inc": 19781.5,
+      "exp": 7834.7,
+      "net": 11946.8
+     }
+    },
+    "2024": {
+     "pay": {
+      "inc": 9085.4,
+      "exp": 5067.9,
+      "net": 4017.4
+     },
+     "ins": {
+      "inc": 2706.5,
+      "exp": 56.7,
+      "net": 2649.9
+     },
+     "trust": {
+      "inc": 1617.3,
+      "exp": 51.3,
+      "net": 1566.0
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 373.1,
+      "exp": 123.5,
+      "net": 249.6
+     },
+     "cash": {
+      "inc": 190.4,
+      "exp": 129.7,
+      "net": 60.7
+     },
+     "oth": {
+      "inc": 7730.5,
+      "exp": 2406.7,
+      "net": 5324.1
+     },
+     "_tot": {
+      "inc": 21703.4,
+      "exp": 7835.5,
+      "net": 13867.9
+     }
+    },
+    "2025": {
+     "pay": {
+      "inc": 11702.8,
+      "exp": 6428.6,
+      "net": 5274.2
+     },
+     "ins": {
+      "inc": 2349.2,
+      "exp": 140.5,
+      "net": 2208.7
+     },
+     "trust": {
+      "inc": 1838.9,
+      "exp": 72.9,
+      "net": 1766.0
+     },
+     "sec": {
+      "inc": 0.0,
+      "exp": 0.0,
+      "net": 0.0
+     },
+     "adv": {
+      "inc": 180.6,
+      "exp": 101.1,
+      "net": 79.5
+     },
+     "cash": {
+      "inc": 138.3,
+      "exp": 152.2,
+      "net": -13.9
+     },
+     "oth": {
+      "inc": 9746.3,
+      "exp": 2783.9,
+      "net": 6962.4
+     },
+     "_tot": {
+      "inc": 25955.9,
+      "exp": 9679.4,
+      "net": 16276.5
+     }
+    }
+   }
+  },
+  "table": {
+   "year": 2025,
+   "prev": 2024,
+   "rows": [
+    {
+     "k": "pay",
+     "name": "Thanh toán",
+     "inc": 48702.6,
+     "net": 21759.4,
+     "margin": 44.7,
+     "incYoY": 0.8,
+     "netYoY": -2.0,
+     "share": 31.7
+    },
+    {
+     "k": "ins",
+     "name": "Bảo hiểm (bancassurance)",
+     "inc": 28756.3,
+     "net": 15447.3,
+     "margin": 53.7,
+     "incYoY": 15.7,
+     "netYoY": -1.5,
+     "share": 22.5
+    },
+    {
+     "k": "trust",
+     "name": "Ủy thác, đại lý",
+     "inc": 4544.2,
+     "net": 4121.5,
+     "margin": 90.7,
+     "incYoY": 15.3,
+     "netYoY": 13.3,
+     "share": 6.0
+    },
+    {
+     "k": "sec",
+     "name": "Chứng khoán",
+     "inc": 3042.6,
+     "net": 3042.6,
+     "margin": null,
+     "incYoY": 43.5,
+     "netYoY": 43.5,
+     "share": 4.4
+    },
+    {
+     "k": "adv",
+     "name": "Tư vấn",
+     "inc": 2491.1,
+     "net": 2354.0,
+     "margin": 94.5,
+     "incYoY": 148.9,
+     "netYoY": 177.9,
+     "share": 3.4
+    },
+    {
+     "k": "cash",
+     "name": "Ngân quỹ, quản lý quỹ",
+     "inc": 741.1,
+     "net": -62.4,
+     "margin": -8.4,
+     "incYoY": 20.3,
+     "netYoY": null,
+     "share": -0.1
+    },
+    {
+     "k": "oth",
+     "name": "Khác (thẻ, bảo lãnh…)",
+     "inc": 38851.8,
+     "net": 21973.1,
+     "margin": 56.6,
+     "incYoY": 13.8,
+     "netYoY": 31.7,
+     "share": 32.0
+    },
+    {
+     "k": "_tot",
+     "name": "Tổng",
+     "inc": 127130.0,
+     "net": 68635.3,
+     "margin": 54.0,
+     "incYoY": 10.6,
+     "netYoY": 12.3,
+     "share": 100.0
+    }
+   ]
+  },
+  "banks": [
+   {
+    "s": "VCB",
+    "group": "Big 4",
+    "inc": 11854.5,
+    "net": 3469.8,
+    "margin": 29.3,
+    "incYoY": -9.8,
+    "netYoY": -32.4,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 51.4,
+    "fast": "Thanh toán",
+    "fastYoY": 2.4
+   },
+   {
+    "s": "BID",
+    "group": "Big 4",
+    "inc": 13151.5,
+    "net": 6924.2,
+    "margin": 52.6,
+    "incYoY": -2.3,
+    "netYoY": -2.1,
+    "big": "Thanh toán",
+    "bigShare": 43.6,
+    "fast": "Bảo hiểm (bancassurance)",
+    "fastYoY": 3.1
+   },
+   {
+    "s": "CTG",
+    "group": "Big 4",
+    "inc": 12351.1,
+    "net": 6329.0,
+    "margin": 51.2,
+    "incYoY": 1.0,
+    "netYoY": -5.5,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 35.2,
+    "fast": "Bảo hiểm (bancassurance)",
+    "fastYoY": 17.6
+   },
+   {
+    "s": "MBB",
+    "group": "Tư nhân lớn",
+    "inc": 18062.2,
+    "net": 6578.6,
+    "margin": 36.4,
+    "incYoY": 23.7,
+    "netYoY": 50.6,
+    "big": "Bảo hiểm (bancassurance)",
+    "bigShare": 46.4,
+    "fast": "Tư vấn",
+    "fastYoY": 256.8
+   },
+   {
+    "s": "TCB",
+    "group": "Tư nhân lớn",
+    "inc": 12527.0,
+    "net": 8772.0,
+    "margin": 70.0,
+    "incYoY": 14.3,
+    "netYoY": 9.1,
+    "big": "Thanh toán",
+    "bigShare": 41.8,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": 482.4
+   },
+   {
+    "s": "ACB",
+    "group": "Tư nhân lớn",
+    "inc": 5196.1,
+    "net": 3146.7,
+    "margin": 60.6,
+    "incYoY": -4.9,
+    "netYoY": -2.8,
+    "big": "Thanh toán",
+    "bigShare": 48.7,
+    "fast": "Chứng khoán",
+    "fastYoY": 18.3
+   },
+   {
+    "s": "VPB",
+    "group": "Tư nhân lớn",
+    "inc": 15030.4,
+    "net": 7381.6,
+    "margin": 49.1,
+    "incYoY": 13.9,
+    "netYoY": 20.5,
+    "big": "Bảo hiểm (bancassurance)",
+    "bigShare": 51.2,
+    "fast": "Tư vấn",
+    "fastYoY": 601.0
+   },
+   {
+    "s": "HDB",
+    "group": "Tư nhân lớn",
+    "inc": 5697.9,
+    "net": 4126.1,
+    "margin": 72.4,
+    "incYoY": 72.9,
+    "netYoY": 191.3,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 53.5,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": 632.2
+   },
+   {
+    "s": "LPB",
+    "group": "Tư nhân lớn",
+    "inc": 3511.0,
+    "net": 3198.6,
+    "margin": 91.1,
+    "incYoY": -2.3,
+    "netYoY": -0.4,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 81.3,
+    "fast": "Thanh toán",
+    "fastYoY": 4.3
+   },
+   {
+    "s": "SHB",
+    "group": "Tư nhân vừa",
+    "inc": 3427.9,
+    "net": 3205.6,
+    "margin": 93.5,
+    "incYoY": 118.4,
+    "netYoY": 149.8,
+    "big": "Thanh toán",
+    "bigShare": 91.3,
+    "fast": "Thanh toán",
+    "fastYoY": 159.7
+   },
+   {
+    "s": "STB",
+    "group": "Tư nhân vừa",
+    "inc": 6331.5,
+    "net": 3078.5,
+    "margin": 48.6,
+    "incYoY": 3.4,
+    "netYoY": 3.4,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 64.9,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": 12.4
+   },
+   {
+    "s": "VIB",
+    "group": "Tư nhân vừa",
+    "inc": 4200.8,
+    "net": 2105.4,
+    "margin": 50.1,
+    "incYoY": 31.2,
+    "netYoY": 19.3,
+    "big": "Thanh toán",
+    "bigShare": 64.7,
+    "fast": "Bảo hiểm (bancassurance)",
+    "fastYoY": 122.2
+   },
+   {
+    "s": "TPB",
+    "group": "Tư nhân vừa",
+    "inc": 5518.9,
+    "net": 4157.7,
+    "margin": 75.3,
+    "incYoY": 25.8,
+    "netYoY": 23.6,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 73.2,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": 52.3
+   },
+   {
+    "s": "MSB",
+    "group": "Tư nhân vừa",
+    "inc": 2377.4,
+    "net": 1752.9,
+    "margin": 73.7,
+    "incYoY": 29.6,
+    "netYoY": 29.5,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 62.4,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": 51.1
+   },
+   {
+    "s": "SSB",
+    "group": "Tư nhân vừa",
+    "inc": 1060.1,
+    "net": 725.3,
+    "margin": 68.4,
+    "incYoY": -21.4,
+    "netYoY": -34.8,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 46.9,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": -14.4
+   },
+   {
+    "s": "OCB",
+    "group": "Tư nhân vừa",
+    "inc": 1235.7,
+    "net": 1010.6,
+    "margin": 81.8,
+    "incYoY": 15.1,
+    "netYoY": 8.5,
+    "big": "Bảo hiểm (bancassurance)",
+    "bigShare": 44.0,
+    "fast": "Bảo hiểm (bancassurance)",
+    "fastYoY": 129.5
+   },
+   {
+    "s": "EIB",
+    "group": "Tư nhân vừa",
+    "inc": 1803.6,
+    "net": 240.5,
+    "margin": 13.3,
+    "incYoY": -16.7,
+    "netYoY": -77.7,
+    "big": "Thanh toán",
+    "bigShare": 87.4,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": 24.8
+   },
+   {
+    "s": "NAB",
+    "group": "Tư nhân nhỏ",
+    "inc": 730.1,
+    "net": 588.2,
+    "margin": 80.6,
+    "incYoY": -23.3,
+    "netYoY": 4.8,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 58.8,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": 13.5
+   },
+   {
+    "s": "ABB",
+    "group": "Tư nhân nhỏ",
+    "inc": 698.1,
+    "net": 260.5,
+    "margin": 37.3,
+    "incYoY": -20.6,
+    "netYoY": -47.9,
+    "big": "Thanh toán",
+    "bigShare": 88.2,
+    "fast": "Thanh toán",
+    "fastYoY": 71.8
+   },
+   {
+    "s": "KLB",
+    "group": "Tư nhân nhỏ",
+    "inc": 952.2,
+    "net": 877.8,
+    "margin": 92.2,
+    "incYoY": 65.7,
+    "netYoY": 82.7,
+    "big": "Thanh toán",
+    "bigShare": 95.3,
+    "fast": "Thanh toán",
+    "fastYoY": 80.1
+   },
+   {
+    "s": "VAB",
+    "group": "Tư nhân nhỏ",
+    "inc": 192.0,
+    "net": 163.6,
+    "margin": 85.2,
+    "incYoY": 17.6,
+    "netYoY": 27.2,
+    "big": "Thanh toán",
+    "bigShare": 82.9,
+    "fast": "Thanh toán",
+    "fastYoY": 33.9
+   },
+   {
+    "s": "BVB",
+    "group": "Tư nhân nhỏ",
+    "inc": 346.3,
+    "net": 1.7,
+    "margin": 0.5,
+    "incYoY": 25.6,
+    "netYoY": -95.5,
+    "big": "Thanh toán",
+    "bigShare": 5041.2,
+    "fast": "Thanh toán",
+    "fastYoY": 28.2
+   },
+   {
+    "s": "BAB",
+    "group": "Tư nhân nhỏ",
+    "inc": 240.0,
+    "net": 181.2,
+    "margin": 75.5,
+    "incYoY": 60.0,
+    "netYoY": 71.6,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 40.7,
+    "fast": "Tư vấn",
+    "fastYoY": 585.7
+   },
+   {
+    "s": "PGB",
+    "group": "Tư nhân nhỏ",
+    "inc": 201.1,
+    "net": 132.8,
+    "margin": 66.0,
+    "incYoY": 100.9,
+    "netYoY": 641.9,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 64.9,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": 179.6
+   },
+   {
+    "s": "SGB",
+    "group": "Tư nhân nhỏ",
+    "inc": 69.2,
+    "net": 37.6,
+    "margin": 54.3,
+    "incYoY": 6.3,
+    "netYoY": 12.2,
+    "big": "Khác (thẻ, bảo lãnh…)",
+    "bigShare": 61.4,
+    "fast": "Khác (thẻ, bảo lãnh…)",
+    "fastYoY": 11.4
+   },
+   {
+    "s": "NVB",
+    "group": "Tư nhân nhỏ",
+    "inc": 363.4,
+    "net": 188.8,
+    "margin": 52.0,
+    "incYoY": 119.7,
+    "netYoY": 152.1,
+    "big": "Thanh toán",
+    "bigShare": 117.7,
+    "fast": "Thanh toán",
+    "fastYoY": 153.2
+   }
+  ],
+  "n": 26
+ },
  "ldrSens": {
   "quarter": "Q2/2026",
   "rows": [

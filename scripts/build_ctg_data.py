@@ -9,7 +9,8 @@
 
 Dùng: python3 scripts/build_ctg_data.py [--raw data/raw/wi] [--out data/ctg-data.js]
 """
-import argparse, glob, json, math, statistics, sys
+import argparse, glob, json, math, re, statistics, sys
+sys.path.insert(0, __import__('os').path.dirname(__file__))
 from datetime import date, datetime, timedelta
 
 TICKER = 'CTG'
@@ -62,6 +63,10 @@ def flt(req):
 
 
 ROOT = __import__('pathlib').Path(__file__).resolve().parent.parent
+
+
+def nf(v, d=0):
+    return '—' if v is None else f'{v:,.{d}f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
 
 
 def ty(v):
@@ -445,27 +450,61 @@ def build(raw):
     ]
     D['signals'] = sig
 
-    # ------------------------------------------------ thesis pillars (theo khung 8 bước) — trạng thái theo quy tắc
+    # ------------------------------------------------ thu nhập dịch vụ theo mảng (thuyết minh năm)
+    import fee_lines as FL
+    _A = FL.annual_rows(raw)
+    _ser = {y: FL.lines_of(r) for (sym, y), r in _A.items() if sym == TICKER}
+    if _ser:
+        D['fee'] = {'lines': [{'k': k, 'name': n} for k, n, *_ in FL.LINES], 'series': {str(y): v for y, v in sorted(_ser.items())},
+                    'table': FL.table(_ser), 'src': 'Thuyết minh BCTC hợp nhất năm — thu, chi hoạt động dịch vụ theo loại'}
+
+    # ------------------------------------------------ thesis pillars — tối thiểu: Room & an toàn, NIM, nợ xấu, thu nhập phí (+ định giá)
     nim_min = min(q['nim'] for q in Q[-8:] if q['nim'])
     car_last = D['car'][-1]
     pb = D['valuation']['pbBand']
+    q4 = Q[-5] if len(Q) >= 5 else Q[0]
+    yoy = lambda a, b: round((a / b - 1) * 100, 1) if a and b else None
+    acc_yoy, loan_yoy = yoy(qn['accrued'], q4['accrued']), yoy(qn['loansGross'], q4['loansGross'])
+    acc_loan = round(qn['accrued'] / qn['loansGross'] * 100, 2) if qn['loansGross'] else None
+    try:
+        _S = json.loads((ROOT / 'data/sector-data.json').read_text(encoding='utf-8'))
+        _ls = next((r for r in _S['ldrSens']['rows'] if r['s'] == TICKER), None)
+        _cm = next((r for r in _S['camel']['periods']['TTM2Q26']['rows'] if r['s'] == TICKER), None)
+        _bigNim = _S['agg']['series']['nim']['Big 4'][-1]
+    except Exception:  # noqa: BLE001
+        _ls = _cm = _bigNim = None
+    nfi_ttm = sum(q['nfi'] for q in Q[-4:]); nfi_ttm0 = sum(q['nfi'] for q in Q[-8:-4]) if len(Q) >= 8 else None
+    toi_ttm = sum(q['toi'] for q in Q[-4:])
+    fee_t = D.get('fee', {}).get('table')
+    fee_txt = ''
+    if fee_t:
+        rws = [r for r in fee_t['rows'] if r['k'] != '_tot' and r['inc'] > 0]
+        top = max(rws, key=lambda r: r['incYoY'] if r['incYoY'] is not None else -1e9)
+        fee_txt = (f"; năm {fee_t['year']}: " + ', '.join(f"{r['name'].split(' (')[0].lower()} {r['share']:.0f}% (biên {r['margin']:.0f}%, thu {r['incYoY']:+.1f}%)"
+                   for r in sorted(rws, key=lambda r: -(r['share'] or 0))[:3]) + f"; tăng nhanh nhất: {top['name'].split(' (')[0].lower()}")
+    room_ok = (qn['ldr'] or 99) < 85 - 1 and car_last['car'] >= 9.5
     D['thesisPillars'] = [
-        {'id': 'p1', 'step': 'Bước 5 · Biên lãi', 't': 'NIM phục hồi từ đáy',
-         'evidence': f"NIM TTM {qn['nim']}% ({qn['q']}) so với đáy 8 quý {nim_min}%; YEA {qn['yea']}%, COF {qn['cof']}%",
-         'status': 'holding' if qn['nim'] > nim_min + 0.05 else 'watch'},
-        {'id': 'p2', 'step': 'Bước 4 · Chất lượng tài sản', 't': 'Nợ xấu trong tầm kiểm soát, bộ đệm dự phòng đủ',
-         'evidence': f"NPL {qn['npl']}% (Q trước {qp['npl']}%), nhóm 2 {qn['g2']}%, LLR {qn['llr']}% (Q trước {qp['llr']}%); hình thành nợ xấu quy năm {qn.get('nplFormationRate')}%",
-         'status': 'watch' if qn['llr'] < qp['llr'] or qn['npl'] > qp['npl'] else 'holding'},
-        {'id': 'p3', 'step': 'Bước 2–3 · Nguồn vốn & tăng trưởng', 't': 'Dư địa tăng tín dụng (LDR, room)',
-         'evidence': f"LDR (công thức Wi, KBNN tính theo hệ số TT26/TT08) {qn['ldr']}%; tín dụng YoY {qn['creditYoY']}%, huy động YoY {qn['fundingYoY']}%; CASA {qn['casa']}%",
-         'status': 'watch' if qn['casa'] < qp['casa'] else 'holding'},
-        {'id': 'p4', 'step': 'Bước 7 · Vốn', 't': 'CAR đủ để tăng trưởng và chia cổ tức',
-         'evidence': f"CAR {car_last['car']}% ({car_last['period']}, TT41), Tier 1 {car_last['tier1']}%; cổ tức tiền mặt 450đ/CP",
-         'status': 'watch' if car_last['car'] < 10.5 else 'holding'},
+        {'id': 'p1', 'step': 'Bước 2–3, 7 · Nguồn vốn, an toàn vốn', 't': 'Room tăng trưởng: LDR và an toàn vốn',
+         'evidence': (f"LDR {qn['ldr']}% ({qn['q']}, trần 85% theo TT22)" + (f"; theo TT50 (TGKB tính 20%) {_ls['ldr20']}%" if _ls else '')
+                      + f"; CAR {car_last['car']}%, vốn cấp 1 {car_last['tier1']}% ({car_last['period']}); tín dụng YoY {qn['creditYoY']}% vs huy động {qn['fundingYoY']}%"
+                      + (f"; room ngụ ý theo xếp hạng TT21 {_cm['room']}%" if _cm else '')),
+         'status': 'holding' if room_ok and qn['fundingYoY'] >= qn['creditYoY'] - 3 else 'watch'},
+        {'id': 'p2', 'step': 'Bước 5 · Biên lãi', 't': 'NIM giữ được trước áp lực giảm lãi suất',
+         'evidence': f"NIM TTM {qn['nim']}% ({qn['q']}) so với đáy 8 quý {nim_min}%" + (f", bình quân Big 4 {_bigNim}%" if _bigNim else '') + f"; YEA {qn['yea']}%, COF {qn['cof']}%; CASA {qn['casa']}% (quý trước {qp['casa']}%)",
+         'status': 'holding' if qn['nim'] > nim_min + 0.05 and qn['casa'] >= qp['casa'] - 0.5 else 'watch'},
+        {'id': 'p3', 'step': 'Bước 4 · Chất lượng tài sản', 't': 'Nợ xấu: nhóm 2, nhóm 3–5 và lãi phải thu',
+         'evidence': (f"Nợ nhóm 2 {qn['g2']}%, nợ xấu nhóm 3–5 {qn['npl']}% dư nợ (quý trước {qp['npl']}%); LLR {qn['llr']}%, tính cả lãi phải thu {qn.get('llrInclAccrued')}%"
+                      + f"; lãi phải thu (tài sản Có khác) {nf(qn['accrued'] / 1000, 1)} nghìn tỷ = {acc_loan}% dư nợ, {acc_yoy:+.1f}% YoY so với cho vay {loan_yoy:+.1f}%"),
+         'status': 'watch' if (qn['npl'] > qp['npl'] or qn['llr'] < qp['llr'] or (acc_yoy or 0) > (loan_yoy or 0) + 5) else 'holding'},
+        {'id': 'p4', 'step': 'Bước 6 · Thu nhập ngoài lãi', 't': 'Thu nhập phí (NFI) bù đắp NIM',
+         'evidence': (f"NFI TTM {nf(nfi_ttm / 1000, 1)} nghìn tỷ = {round(nfi_ttm / toi_ttm * 100, 1)}% TOI" + (f", {yoy(nfi_ttm, nfi_ttm0):+.1f}% YoY" if nfi_ttm0 else '') + fee_txt),
+         'status': 'holding' if nfi_ttm0 and nfi_ttm > nfi_ttm0 else 'watch'},
         {'id': 'p5', 'step': 'Bước 8 · Định giá', 't': 'Định giá chưa phản ánh ROE',
          'evidence': f"P/B {D['meta']['pb']}x ({D['meta']['priceDate']}) vs trung bình 5 năm {pb['mean']}x (±1σ {pb['lo']}–{pb['hi']}x); ROE TTM {qn['roe']}%",
          'status': 'holding' if D['meta']['pb'] < pb['mean'] else 'watch'},
     ]
+    for _p in D['thesisPillars']:
+        _p['evidence'] = re.sub(r'(\d)\.(\d)', r'\1,\2', _p['evidence'])
     D['thesisNote'] = 'Trạng thái tính theo quy tắc từ số mới nhất (AI dựng khung theo deck), CHƯA phải nhận định analyst/FinSuccess.'
 
     # ------------------------------------------------ quy định REG (deck slide 53, đã đối chiếu)

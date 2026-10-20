@@ -455,6 +455,37 @@ def main():
             row['ldr%d' % int(c * 100)] = r(L / (D20 + (c - 0.2) * K) * 100, 2)
         sens.append(row)
     sens.sort(key=lambda x: -x['kbnn'])
+    # ------------------------------------------------ thu nhập dịch vụ theo mảng: cộng 26 ngân hàng = đại diện ngành
+    import fee_lines as FL
+    _A = FL.annual_rows(raw)
+    keys = [k for k, *_ in FL.LINES] + ['_tot']
+    def _sum(items):
+        o = {k: {'inc': 0.0, 'exp': 0.0, 'net': 0.0} for k in keys}
+        for L in items:
+            for k in keys:
+                for z in ('inc', 'exp', 'net'):
+                    o[k][z] += L[k][z]
+        return {k: {z: round(v, 1) for z, v in d.items()} for k, d in o.items()}
+    yrs = sorted({y for (_, y) in _A})
+    full = [y for y in yrs if sum(1 for (s_, y_) in _A if y_ == y) >= len(BANKS) - 2]
+    sec = {y: _sum([FL.lines_of(r) for (s_, y_), r in _A.items() if y_ == y and s_ in BANKS]) for y in full}
+    grp = {g: {y: _sum([FL.lines_of(r) for (s_, y_), r in _A.items() if y_ == y and GROUP.get(s_) == g]) for y in full} for g in sorted(set(GROUP.values()))}
+    per = []
+    for s_ in BANKS:
+        ser = {y: FL.lines_of(_A[(s_, y)]) for y in full if (s_, y) in _A}
+        if len(ser) < 2:
+            continue
+        t = FL.table(ser)
+        lr = [r for r in t['rows'] if r['k'] != '_tot' and r['inc'] > 0]
+        tot = next(r for r in t['rows'] if r['k'] == '_tot')
+        big = max(lr, key=lambda r: r['share'] or -1e9) if lr else None
+        fast = max((r for r in lr if r['incYoY'] is not None and r['inc'] >= 0.05 * tot['inc']), key=lambda r: r['incYoY'], default=None)
+        per.append({'s': s_, 'group': GROUP[s_], 'inc': tot['inc'], 'net': tot['net'], 'margin': tot['margin'], 'incYoY': tot['incYoY'], 'netYoY': tot['netYoY'],
+                    'big': big and big['name'], 'bigShare': big and big['share'], 'fast': fast and fast['name'], 'fastYoY': fast and fast['incYoY']})
+    D['fee'] = {'lines': [{'k': k, 'name': n} for k, n, *_ in FL.LINES], 'years': full, 'sector': {str(y): v for y, v in sec.items()},
+                'group': {g: {str(y): v for y, v in d.items()} for g, d in grp.items()}, 'table': FL.table(sec), 'banks': per,
+                'n': len(BANKS)}
+
     D['ldrSens'] = {'quarter': QL[-1], 'rows': sens,
                     'formula': 'LDR(c) = Cho vay KH / (Mẫu số LDR Wi ở hệ số 20% + (c − 20%) × Tiền gửi KBNN). Wi tính Q2/2026 với hệ số 20%; tiền gửi KBNN lấy tổng (fnx107) chứ không riêng có kỳ hạn → mức nhạy là cận trên.'}
 

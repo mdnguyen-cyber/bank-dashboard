@@ -83,6 +83,27 @@ const numAxis = (title, extra = {}) => Object.assign({ ticks: { callback: v => n
 const lastN = (arr, n) => arr.slice(Math.max(0, arr.length - n));
 
 /* ---------- card templates ---------- */
+/* Thu nhập dịch vụ theo mảng (thuyết minh năm) */
+const FEE_COL = { pay: '#1D2678', ins: '#59C5C8', trust: '#861C52', sec: '#9a7400', adv: '#2938A8', cash: '#9aa3b2', oth: '#FFD45D' };
+function feeCard() {
+  const F = D.fee, T = F.table, rows = T.rows.filter(r => r.k === '_tot' || r.inc > 0);
+  const top = rows.filter(r => r.k !== '_tot' && r.incYoY != null).sort((a, b) => b.incYoY - a.incYoY)[0];
+  const big = rows.filter(r => r.k !== '_tot').sort((a, b) => (b.share || 0) - (a.share || 0))[0];
+  const tot = rows.find(r => r.k === '_tot');
+  const sg2 = v => v == null ? '—' : (v > 0 ? '+' : '') + nf(v, 1) + '%';
+  return `<div class="grid g2 gap">${card({ id: 'chFee', title: 'Lãi thuần dịch vụ theo mảng', sub: 'tỷ đồng · năm · ròng = thu − chi của từng mảng (thuyết minh BCTC hợp nhất)', ctl: true,
+      insight: `Năm ${T.year}: lãi thuần dịch vụ <b>${nf(tot.net)}</b> tỷ (${sg2(tot.netYoY)}), biên chung <b>${pc(tot.margin)}</b>. Mảng đóng góp lớn nhất là <b>${big.name}</b> (${pc(big.share, 0)} lãi thuần, biên ${pc(big.margin, 0)}); thu tăng nhanh nhất ở <b>${top.name}</b> (${sg2(top.incYoY)}).`,
+      src: 'BCTC hợp nhất năm của ngân hàng (thuyết minh thu nhập, chi phí hoạt động dịch vụ)' })}
+    <article class="card"><h3 class="sub">Thu phí theo mảng · năm ${T.year}</h3><p class="chart-sub">tỷ đồng · biên = lãi thuần / thu · tỷ trọng tính trên lãi thuần dịch vụ</p>
+      <div class="tscroll"><table><thead><tr><th>Mảng</th><th class="n">Thu</th><th class="n">Thu YoY</th><th class="n">Lãi thuần</th><th class="n">Lãi thuần YoY</th><th class="n">Biên</th><th class="n">Tỷ trọng</th></tr></thead><tbody>
+      ${rows.map(r => `<tr${r.k === '_tot' ? ' style="font-weight:700"' : ''}><td>${esc(r.name)}</td><td class="n">${nf(r.inc)}</td><td class="n">${sg2(r.incYoY)}</td><td class="n">${nf(r.net)}</td><td class="n">${sg2(r.netYoY)}</td><td class="n">${r.margin == null ? '—' : pc(r.margin, 0)}</td><td class="n">${r.share == null ? '—' : pc(r.share, 0)}</td></tr>`).join('')}
+      </tbody></table></div><div class="src">Chi viễn thông và chi môi giới không tách được theo mảng, gộp vào "Khác".</div></article></div>`;
+}
+function drawFee() {
+  const F = D.fee, ys = Object.keys(F.series);
+  mk('chFee', { type: 'bar', data: { labels: ys, datasets: F.lines.filter(l => ys.some(y => F.series[y][l.k].net)).map(l => ({ label: l.name, data: ys.map(y => F.series[y][l.k].net), backgroundColor: FEE_COL[l.k], stack: 's', unit: ' tỷ' })) },
+    options: { scales: { x: { stacked: true }, y: { stacked: true } } } });
+}
 function card({ id, title, sub, insight, src, h = '', ctl = false, body = '', cls = '' }) {
   return `<article class="card ${cls}">
     <h3 class="sub">${title}${ctl ? `<span class="ctl" data-ctl="${id}"></span>` : ''}</h3>
@@ -367,7 +388,8 @@ function paneFin() {
         insight: `COF thực tế <b>${pc(QL.cof, 2)}</b> thấp hơn lãi suất 12T niêm yết vì CASA ~${pc(QL.casa, 0)} và tiền gửi KBNN. Lãi suất niêm yết tăng từ đầu 2026 sẽ vào COF với độ trễ (R-13).`, src: 'WiData ratio_bank_ttm; macro 202862' })}
       ${card({ id: 'chCasa', title: 'CASA và tỷ trọng thu phí', sub: '% · quý · CASA = (không kỳ hạn + ký quỹ)/tiền gửi KH', ctl: true,
         insight: `CASA <b>${pc(QL.casa)}</b>; NFI/TOI TTM <b>${pc(QL.nfiShare)}</b>. Cả hai là nguồn đỡ NIM khi lãi suất biến động — CTG thấp hơn TCB, MBB, VCB về CASA (xem So sánh nhóm).`, src: 'WiData ratio_bank, ratio_bank_ttm' })}
-    </div></div>
+    </div>
+    ${D.fee ? feeCard() : ''}</div>
   <div class="sub" data-subp="aq">
     <div class="grid g2 gap">
       ${card({ id: 'chNpl', title: 'Nợ xấu và nợ nhóm 2', sub: '% dư nợ · quý (BNK-10)', ctl: true,
@@ -455,6 +477,7 @@ function finCharts(k) {
     mk('chCasa', { type: 'line', data: { labels: q16.map(q => q.q), datasets: [
       { label: 'CASA', data: q16.map(q => q.casa), borderColor: C.navy, backgroundColor: C.navy, dp: 1, unit: '%' },
       { label: 'NFI/TOI (TTM)', data: q16.map(q => q.nfiShare), borderColor: C.teal, backgroundColor: C.teal, dp: 1, unit: '%' }] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' });
+    if (D.fee) drawFee();
   }
   if (k === 'aq') {
     mk('chNpl', { type: 'line', data: { labels: q16.map(q => q.q), datasets: [

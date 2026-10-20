@@ -8543,40 +8543,329 @@
    "impact": "Chi phí tín dụng tăng sau lãi suất cao 2–4 quý"
   }
  ],
+ "fee": {
+  "lines": [
+   {
+    "k": "pay",
+    "name": "Thanh toán"
+   },
+   {
+    "k": "ins",
+    "name": "Bảo hiểm (bancassurance)"
+   },
+   {
+    "k": "trust",
+    "name": "Ủy thác, đại lý"
+   },
+   {
+    "k": "sec",
+    "name": "Chứng khoán"
+   },
+   {
+    "k": "adv",
+    "name": "Tư vấn"
+   },
+   {
+    "k": "cash",
+    "name": "Ngân quỹ, quản lý quỹ"
+   },
+   {
+    "k": "oth",
+    "name": "Khác (thẻ, bảo lãnh…)"
+   }
+  ],
+  "series": {
+   "2022": {
+    "pay": {
+     "inc": 3835.9,
+     "exp": 2700.1,
+     "net": 1135.8
+    },
+    "ins": {
+     "inc": 3213.7,
+     "exp": 2005.9,
+     "net": 1207.9
+    },
+    "trust": {
+     "inc": 413.9,
+     "exp": 262.4,
+     "net": 151.4
+    },
+    "sec": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "adv": {
+     "inc": 339.6,
+     "exp": 62.3,
+     "net": 277.4
+    },
+    "cash": {
+     "inc": 0.0,
+     "exp": 299.9,
+     "net": -299.9
+    },
+    "oth": {
+     "inc": 3746.0,
+     "exp": 356.6,
+     "net": 3389.4
+    },
+    "_tot": {
+     "inc": 11549.1,
+     "exp": 5687.1,
+     "net": 5862.0
+    }
+   },
+   "2023": {
+    "pay": {
+     "inc": 4023.9,
+     "exp": 2951.8,
+     "net": 1072.1
+    },
+    "ins": {
+     "inc": 2834.3,
+     "exp": 1400.1,
+     "net": 1434.3
+    },
+    "trust": {
+     "inc": 920.3,
+     "exp": 193.4,
+     "net": 726.8
+    },
+    "sec": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "adv": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "cash": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "oth": {
+     "inc": 4606.3,
+     "exp": 725.8,
+     "net": 3880.5
+    },
+    "_tot": {
+     "inc": 12384.8,
+     "exp": 5271.1,
+     "net": 7113.7
+    }
+   },
+   "2024": {
+    "pay": {
+     "inc": 4308.9,
+     "exp": 3097.0,
+     "net": 1212.0
+    },
+    "ins": {
+     "inc": 3373.0,
+     "exp": 1433.1,
+     "net": 1939.9
+    },
+    "trust": {
+     "inc": 961.4,
+     "exp": 195.2,
+     "net": 766.3
+    },
+    "sec": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "adv": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "cash": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "oth": {
+     "inc": 3589.5,
+     "exp": 811.6,
+     "net": 2777.9
+    },
+    "_tot": {
+     "inc": 12232.8,
+     "exp": 5536.8,
+     "net": 6696.0
+    }
+   },
+   "2025": {
+    "pay": {
+     "inc": 4385.5,
+     "exp": 2945.1,
+     "net": 1440.4
+    },
+    "ins": {
+     "inc": 3966.5,
+     "exp": 1961.0,
+     "net": 2005.5
+    },
+    "trust": {
+     "inc": 965.4,
+     "exp": 309.8,
+     "net": 655.6
+    },
+    "sec": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "adv": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "cash": {
+     "inc": 0.0,
+     "exp": -0.0,
+     "net": 0.0
+    },
+    "oth": {
+     "inc": 3033.6,
+     "exp": 806.2,
+     "net": 2227.4
+    },
+    "_tot": {
+     "inc": 12351.1,
+     "exp": 6022.1,
+     "net": 6329.0
+    }
+   }
+  },
+  "table": {
+   "year": 2025,
+   "prev": 2024,
+   "rows": [
+    {
+     "k": "pay",
+     "name": "Thanh toán",
+     "inc": 4385.5,
+     "net": 1440.4,
+     "margin": 32.8,
+     "incYoY": 1.8,
+     "netYoY": 18.8,
+     "share": 22.8
+    },
+    {
+     "k": "ins",
+     "name": "Bảo hiểm (bancassurance)",
+     "inc": 3966.5,
+     "net": 2005.5,
+     "margin": 50.6,
+     "incYoY": 17.6,
+     "netYoY": 3.4,
+     "share": 31.7
+    },
+    {
+     "k": "trust",
+     "name": "Ủy thác, đại lý",
+     "inc": 965.4,
+     "net": 655.6,
+     "margin": 67.9,
+     "incYoY": 0.4,
+     "netYoY": -14.4,
+     "share": 10.4
+    },
+    {
+     "k": "sec",
+     "name": "Chứng khoán",
+     "inc": 0.0,
+     "net": 0.0,
+     "margin": null,
+     "incYoY": null,
+     "netYoY": null,
+     "share": 0.0
+    },
+    {
+     "k": "adv",
+     "name": "Tư vấn",
+     "inc": 0.0,
+     "net": 0.0,
+     "margin": null,
+     "incYoY": null,
+     "netYoY": null,
+     "share": 0.0
+    },
+    {
+     "k": "cash",
+     "name": "Ngân quỹ, quản lý quỹ",
+     "inc": 0.0,
+     "net": 0.0,
+     "margin": null,
+     "incYoY": null,
+     "netYoY": null,
+     "share": 0.0
+    },
+    {
+     "k": "oth",
+     "name": "Khác (thẻ, bảo lãnh…)",
+     "inc": 3033.6,
+     "net": 2227.4,
+     "margin": 73.4,
+     "incYoY": -15.5,
+     "netYoY": -19.8,
+     "share": 35.2
+    },
+    {
+     "k": "_tot",
+     "name": "Tổng",
+     "inc": 12351.1,
+     "net": 6329.0,
+     "margin": 51.2,
+     "incYoY": 1.0,
+     "netYoY": -5.5,
+     "share": 100.0
+    }
+   ]
+  },
+  "src": "Thuyết minh BCTC hợp nhất năm — thu, chi hoạt động dịch vụ theo loại"
+ },
  "thesisPillars": [
   {
    "id": "p1",
-   "step": "Bước 5 · Biên lãi",
-   "t": "NIM phục hồi từ đáy",
-   "evidence": "NIM TTM 2.75% (Q2/2026) so với đáy 8 quý 2.62%; YEA 6.0%, COF 3.49%",
-   "status": "holding"
+   "step": "Bước 2–3, 7 · Nguồn vốn, an toàn vốn",
+   "t": "Room tăng trưởng: LDR và an toàn vốn",
+   "evidence": "LDR 83,4% (Q2/2026, trần 85% theo TT22); theo TT50 (TGKB tính 20%) 83,44%; CAR 9,89%, vốn cấp 1 7,38% (2025); tín dụng YoY 10,1% vs huy động 4,3%; room ngụ ý theo xếp hạng TT21 10,8%",
+   "status": "watch"
   },
   {
    "id": "p2",
-   "step": "Bước 4 · Chất lượng tài sản",
-   "t": "Nợ xấu trong tầm kiểm soát, bộ đệm dự phòng đủ",
-   "evidence": "NPL 1.2% (Q trước 1.01%), nhóm 2 0.93%, LLR 133.9% (Q trước 167.2%); hình thành nợ xấu quy năm 2.06%",
+   "step": "Bước 5 · Biên lãi",
+   "t": "NIM giữ được trước áp lực giảm lãi suất",
+   "evidence": "NIM TTM 2,75% (Q2/2026) so với đáy 8 quý 2,62%, bình quân Big 4 2,53%; YEA 6,0%, COF 3,49%; CASA 23,17% (quý trước 24,49%)",
    "status": "watch"
   },
   {
    "id": "p3",
-   "step": "Bước 2–3 · Nguồn vốn & tăng trưởng",
-   "t": "Dư địa tăng tín dụng (LDR, room)",
-   "evidence": "LDR (công thức Wi, KBNN tính theo hệ số TT26/TT08) 83.4%; tín dụng YoY 10.1%, huy động YoY 4.3%; CASA 23.17%",
+   "step": "Bước 4 · Chất lượng tài sản",
+   "t": "Nợ xấu: nhóm 2, nhóm 3–5 và lãi phải thu",
+   "evidence": "Nợ nhóm 2 0,93%, nợ xấu nhóm 3–5 1,2% dư nợ (quý trước 1,01%); LLR 133,9%, tính cả lãi phải thu 75,5%; lãi phải thu (tài sản Có khác) 19,4 nghìn tỷ = 0,93% dư nợ, +23,2% YoY so với cho vay +10,2%",
    "status": "watch"
   },
   {
    "id": "p4",
-   "step": "Bước 7 · Vốn",
-   "t": "CAR đủ để tăng trưởng và chia cổ tức",
-   "evidence": "CAR 9.89% (2025, TT41), Tier 1 7.38%; cổ tức tiền mặt 450đ/CP",
-   "status": "watch"
+   "step": "Bước 6 · Thu nhập ngoài lãi",
+   "t": "Thu nhập phí (NFI) bù đắp NIM",
+   "evidence": "NFI TTM 7,4 nghìn tỷ = 7,6% TOI, +21,8% YoY; năm 2025: khác 35% (biên 73%, thu -15,5%), bảo hiểm 32% (biên 51%, thu +17,6%), thanh toán 23% (biên 33%, thu +1,8%); tăng nhanh nhất: bảo hiểm",
+   "status": "holding"
   },
   {
    "id": "p5",
    "step": "Bước 8 · Định giá",
    "t": "Định giá chưa phản ánh ROE",
-   "evidence": "P/B 1.18x (2026-10-14) vs trung bình 5 năm 1.42x (±1σ 1.24–1.6x); ROE TTM 22.2%",
+   "evidence": "P/B 1,18x (2026-10-14) vs trung bình 5 năm 1,42x (±1σ 1,24–1,6x); ROE TTM 22,2%",
    "status": "holding"
   }
  ],

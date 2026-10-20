@@ -1373,9 +1373,33 @@ function subBank() {
     ${card({ id: 'chPbBand', title: 'Định giá ngành: P/B và dải ±1σ', sub: `Lần · cuối tháng từ ${mvn(SV.from)} · ngành Ngân hàng (GICS 107, toàn bộ NH niêm yết)`, ctl: true,
       insight: `P/B ngành <b>${x(SV.now.pb)}</b> thấp hơn trung bình ${x(SV.pb.mean)} (${sg((SV.now.pb - SV.pb.mean) / SV.pb.sd, 1, 'σ')}) dù ROE ngành ~17–18%. Thị trường đang chiết khấu rủi ro lãi suất tăng (R-16 chưa thỏa); P/E ${x(SV.now.pe)} so với TB ${x(SV.pe.mean)}.`,
       src: 'WiData sector_ratio_daily (sector 107)' })}
+    ${D.fee ? feeSecCards() : ''}
     ${card({ id: 'chAQ', title: 'Chất lượng tài sản theo nhóm', sub: `% · ${BQ[QI]} · NPL, nợ nhóm 2 (cột) và bao phủ nợ xấu (đường, trục phải)`,
       insight: aqInsight(), src: 'WiData ratio_bank' })}
   </div>`;
+}
+const FEE_COL = { pay: '#1D2678', ins: '#59C5C8', trust: '#861C52', sec: '#9a7400', adv: '#2938A8', cash: '#9aa3b2', oth: '#FFD45D' };
+function feeSecCards() {
+  const F = D.fee, T = F.table, R = T.rows.filter(r => r.k === '_tot' || r.inc > 0), tot = R.find(r => r.k === '_tot');
+  const g = k => R.find(r => r.k === k) || {};
+  const sg2 = v => v == null ? '—' : (v > 0 ? '+' : '') + nf(v, 1) + '%';
+  const B = [...F.banks].sort((a, b) => (b.incYoY ?? -1e9) - (a.incYoY ?? -1e9));
+  return `${card({ id: 'chFeeSec', title: 'Lãi thuần dịch vụ toàn ngành theo mảng', sub: `nghìn tỷ đồng · năm · cộng ${F.n} ngân hàng niêm yết · ròng = thu − chi từng mảng`, ctl: true,
+      insight: `Năm ${T.year}, lãi thuần dịch vụ toàn ngành <b>${nf(tot.net / 1000, 1)} nghìn tỷ</b> (${sg2(tot.netYoY)}), biên <b>${pc(tot.margin, 0)}</b>. <b>Thanh toán</b> vẫn lớn nhất (${pc(g('pay').share, 0)}) nhưng gần như không tăng (thu ${sg2(g('pay').incYoY)}, ròng ${sg2(g('pay').netYoY)}) trong bối cảnh chuyển khoản trực tuyến phần lớn đã miễn phí. <b>Bảo hiểm</b> thu ${sg2(g('ins').incYoY)} nhưng ròng ${sg2(g('ins').netYoY)} — chi cho hoạt động bảo hiểm tăng nhanh hơn thu. Động lực tăng là nhóm <b>khác (thẻ, bảo lãnh…)</b>: ròng ${sg2(g('oth').netYoY)}, cùng chứng khoán ${sg2(g('sec').incYoY)} và tư vấn ${sg2(g('adv').incYoY)} (quy mô nhỏ).`,
+      src: 'Thuyết minh BCTC hợp nhất năm của 26 ngân hàng niêm yết (thu, chi hoạt động dịch vụ theo loại) · tự tổng hợp' })}
+    <article class="card"><h3 class="sub">Thu phí theo mảng · toàn ngành năm ${T.year}</h3><p class="chart-sub">tỷ đồng · biên = lãi thuần / thu · tỷ trọng trên lãi thuần dịch vụ</p>
+      <div class="tscroll"><table><thead><tr><th>Mảng</th><th class="n">Thu</th><th class="n">Thu YoY</th><th class="n">Lãi thuần</th><th class="n">Lãi thuần YoY</th><th class="n">Biên</th><th class="n">Tỷ trọng</th></tr></thead><tbody>
+      ${R.map(r => `<tr${r.k === '_tot' ? ' style="font-weight:700"' : ''}><td>${esc(r.name)}</td><td class="n">${nf(r.inc)}</td><td class="n">${sg2(r.incYoY)}</td><td class="n">${nf(r.net)}</td><td class="n">${sg2(r.netYoY)}</td><td class="n">${r.margin == null ? '—' : pc(r.margin, 0)}</td><td class="n">${r.share == null ? '—' : pc(r.share, 0)}</td></tr>`).join('')}
+      </tbody></table></div>
+      <details class="more"><summary>Từng ngân hàng: thu phí, biên, mảng lớn nhất và tăng nhanh nhất</summary><div class="tscroll"><table><thead><tr><th>NH</th><th class="n">Thu ${T.year}</th><th class="n">YoY</th><th class="n">Biên</th><th>Mảng lớn nhất</th><th>Tăng nhanh nhất (≥5% thu)</th></tr></thead><tbody>
+      ${B.map(b => `<tr><td><b>${b.s}</b></td><td class="n">${nf(b.inc)}</td><td class="n">${sg2(b.incYoY)}</td><td class="n">${b.margin == null ? '—' : pc(b.margin, 0)}</td><td>${esc(b.big || '—')} ${b.bigShare != null ? `<span class="muted">${pc(b.bigShare, 0)}</span>` : ''}</td><td>${esc(b.fast || '—')} ${b.fastYoY != null ? `<span class="muted">${sg2(b.fastYoY)}</span>` : ''}</td></tr>`).join('')}
+      </tbody></table></div></details>
+      <div class="src">Chi viễn thông và chi môi giới không tách được theo mảng, gộp vào "Khác"; chứng khoán chỉ có phía thu.</div></article>`;
+}
+function drawFeeSec() {
+  const F = D.fee, ys = F.years.map(String);
+  mk('chFeeSec', { type: 'bar', data: { labels: ys, datasets: F.lines.filter(l => ys.some(y => F.sector[y][l.k].net)).map(l => ({ label: l.name, data: ys.map(y => F.sector[y][l.k].net / 1000), backgroundColor: FEE_COL[l.k], stack: 's' })) },
+    options: { plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ${nf(c.parsed.y, 1)} nghìn tỷ` } } }, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => nf(v, 0) } } } } });
 }
 function nimDepInsight() {
   const d0 = AG.cof.all[QI - 2], d1 = AG.cof.all[QI];
@@ -1387,6 +1411,7 @@ function aqInsight() {
 }
 function chBank() {
   drawGrp('nim');
+  if (D.fee) drawFeeSec();
   $$('#grpMetric button').forEach(b => b.onclick = () => drawGrp(b.dataset.k));
   const qEnd = { 1: '03', 2: '06', 3: '09', 4: '12' };
   const depQ = BQ.map(q => byM(dom.dep12State)[`${q.slice(3)}-${qEnd[q[1]]}`] ?? null);
