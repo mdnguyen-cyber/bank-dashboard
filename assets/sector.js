@@ -856,9 +856,9 @@ function drGL() {
   };
   wireTf('glY', drY('gGlY10', Y10D, '2025-10-01'));
   wireTf('glA', drY('gGlAsia', Y10A, '2025-10-01'));
-  wireTf('glM', k => { const S = Y10M[k || 'eu'].filter(([kk]) => gs(kk).v.length); mk('gGlY10m', { type: 'line', data: gLines(S.map(x => x[0]), S.map(x => x[1]), PAL2, { from: '2022-01', dp: 2 }), options: { scales: { y: pctAxis('') } } }); });
+  wireTf('glM', k => { const S = Y10M[k || 'eu'].filter(([kk]) => gs(kk).v.length); mk('gGlY10m', { type: 'line', data: gLines(S.map(x => x[0]), S.map(x => x[1]), PAL2, { from: '2021-01', dp: 2 }), options: { scales: { y: pctAxis('') } } }); });
   const UC = GD.ustCurve; if (UC) mk('gGlCurve', { type: 'line', data: { labels: UC.t, datasets: UC.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.tealInk, C.red, C.grey][i], { pointRadius: 3, borderWidth: i ? 1.6 : 2.6, borderDash: i === 3 ? [4, 3] : [], dp: 2 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
-  mk('gGlOil', { type: 'line', data: gLines(['us_wti_d', 'us_brent_d'], ['WTI', 'Brent'], [C.navy, C.gold], { unit: ' USD', dp: 2, from: '2025-09-01' }), options: { scales: { y: numAxis('USD/thùng', { beginAtZero: false }) } } });
+  mk('gGlOil', { type: 'line', data: gLines(['us_wti_d', 'us_brent_d'], ['WTI', 'Brent'], [C.navy, C.gold], { unit: ' USD', dp: 2, from: '2021-01-01' }), options: { scales: { y: numAxis('USD/thùng', { beginAtZero: false }) } } });
 }
 /* -------- Mỹ -------- */
 function gUS() {
@@ -1035,7 +1035,7 @@ function drUS() {
   mk('gUsJobs', { type: 'bar', data: { labels: pd.map(mvn), datasets: [{ label: 'Việc làm tăng thêm (nghìn)', data: pv, backgroundColor: pv.map(v => v < 0 ? 'rgba(192,57,43,.7)' : 'rgba(41,56,168,.55)'), dp: 0, unit: '' }, L('Thất nghiệp', pd.map(d => um[d] ?? null), C.red, { yAxisID: 'y1', dp: 1 })] },
     options: { scales: { y: numAxis('nghìn'), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
   mk('gUsSpr', { type: 'line', data: gLines(['sofr_iorb', 'tgcr_iorb', 'sofr99_iorb'], ['SOFR − IORB', 'TGCR − IORB', 'SOFR p99 − IORB'], [C.navy, C.tealInk, C.red], { unit: ' bps', dp: 0 }), options: { plugins: { refLines: { lines: [{ value: 0, label: '' }] } }, scales: { y: numAxis('bps') } } });
-  mk('gUsRates', { type: 'line', data: gLines(['us_effr_d', 'us_2y_d', 'us_10y_d'], ['EFFR', '2 năm', '10 năm'], [C.navy, C.gold, C.red], { from: '2023-07-01' }), options: { scales: { y: pctAxis('') } } });
+  mk('gUsRates', { type: 'line', data: gLines(['us_effr_d', 'us_2y_d', 'us_10y_d'], ['EFFR', '2 năm', '10 năm'], [C.navy, C.gold, C.red], { from: '2021-01-01' }), options: { scales: { y: pctAxis('') } } });
   drUSFlow();
 }
 /* -------- Euro -------- */
@@ -1104,7 +1104,7 @@ function drJP() {
   mk('gJpCpi', { type: 'line', data: gLines(['jp_cpi_idx_yoy', 'jp_cpi_xff_idx_yoy', 'jp_cpi_xffe_idx_yoy'], ['CPI', 'Trừ thực phẩm tươi sống', 'Trừ thực phẩm tươi sống và năng lượng'], PAL, { from: '2018-01' }), options: { plugins: { refLines: { lines: [{ value: 2, label: 'Mục tiêu 2%' }] } }, scales: { y: pctAxis('') } } });
   mk('gJpRate', { type: 'line', data: gLines(['jp_rate_m', 'jp_10y_m'], ['Qua đêm', 'JGB 10 năm'], [C.navy, C.red], { from: '2018-01' }), options: { scales: { y: pctAxis('') } } });
   if (gs('jp_10y_d').v.length) {
-    mk('gJpJgb', { type: 'line', data: gLines(['jp_2y_d', 'jp_10y_d', 'jp_30y_d'], ['2 năm', '10 năm', '30 năm'], [C.tealInk, C.navy, C.red], { from: '2024-01-01' }), options: { scales: { y: pctAxis('') } } });
+    mk('gJpJgb', { type: 'line', data: gLines(['jp_2y_d', 'jp_10y_d', 'jp_30y_d'], ['2 năm', '10 năm', '30 năm'], [C.tealInk, C.navy, C.red], { from: '2021-01-01' }), options: { scales: { y: pctAxis('') } } });
     const sp = gs('us_jp_10y_d'), fx = gs('usdjpy_d'), fm = {}; fx.d.forEach((d, i) => fm[d] = fx.v[i]);
     const ds = sp.d.filter(d => d >= '2024-01-01');
     mk('gJpSpr', { type: 'line', data: { labels: ds.map(dvn), datasets: [L('UST − JGB 10 năm', ds.map(d => sp.v[sp.d.indexOf(d)]), C.navy, { unit: ' bps', dp: 0, borderWidth: 2.2 }), L('USD/JPY', ds.map(d => fm[d] ?? null), C.red, { yAxisID: 'y1', unit: '', dp: 2, spanGaps: true })] },

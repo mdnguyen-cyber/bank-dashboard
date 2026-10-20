@@ -81,6 +81,10 @@ function mk(id, cfg, opt = {}) {
 const pctAxis = (title, extra = {}) => Object.assign({ ticks: { callback: v => nf(v, 1) + '%' }, title: title ? { display: true, text: title } : undefined, grid: { color: '#eef0f4' } }, extra);
 const numAxis = (title, extra = {}) => Object.assign({ ticks: { callback: v => nf(v, 0) }, title: title ? { display: true, text: title } : undefined, grid: { color: '#eef0f4' } }, extra);
 const lastN = (arr, n) => arr.slice(Math.max(0, arr.length - n));
+let FIN_RANGE = 'def';   // khung thời gian tab Tài chính: def = gần đây · 5y = 5 năm · all = toàn bộ lịch sử
+const Y5 = () => QL.year - 5;
+const win = (arr, n) => FIN_RANGE === 'all' ? arr : FIN_RANGE === '5y' ? arr.filter(q => q.year >= Y5()) : lastN(arr, n);
+const yok = (q, y) => FIN_RANGE === 'all' ? true : q.year >= (FIN_RANGE === '5y' ? Math.min(y, Y5()) : y);
 
 /* ---------- card templates ---------- */
 
@@ -222,7 +226,8 @@ function paneOverview() {
     </div>
     <div class="src">Nguồn: ${esc(M.src)}; CAR từ báo cáo TT41 (bán niên/năm). LDR theo công thức WiData (tiền gửi KBNN tính theo hệ số TT26/TT08).</div>
   </article>
-  ${card({ id: 'chPrice', title: 'Giá cổ phiếu 1 năm', sub: 'đ/CP · giá đóng cửa đã điều chỉnh · đánh dấu đỉnh và đáy 52 tuần', h: 'short',
+  ${card({ id: 'chPrice', title: 'Giá cổ phiếu', sub: `đ/CP · giá đóng cửa đã điều chỉnh · lịch sử từ ${dvn(D.price.series[0].d)} · đường ngang là đỉnh và đáy 52 tuần`, h: 'short',
+    body: `<div class="picker tf" data-pxr>${[['1', '1 năm'], ['5', '5 năm'], ['all', 'Toàn bộ']].map(([k, l], i) => `<button type="button" data-k="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>`,
     insight: `Giá hiện tại <b>${nf(M.price)}đ</b> thấp hơn đỉnh 52 tuần <b>${nf(D.price.high52.c)}đ</b> (${dvn(D.price.high52.d)}) <b>${sg((M.price / D.price.high52.c - 1) * 100)}</b> và cao hơn đáy <b>${nf(D.price.low52.c)}đ</b> (${dvn(D.price.low52.d)}) <b>${sg((M.price / D.price.low52.c - 1) * 100)}</b>. Đỉnh đầu năm đi cùng kỳ vọng tăng trưởng; giá điều chỉnh trong khi LNTT 6T vẫn tăng ${sg(P.pbtYTDyoy)} — chênh lệch giữa lợi nhuận và giá là lý do P/B đang dưới trung bình 5 năm.`,
     src: D.price.src })}
   <article class="card"><h3 class="sub">Trạng thái 5 trụ luận điểm <span class="pill ai">AI · theo quy tắc</span></h3>
@@ -251,10 +256,16 @@ function paneOverview() {
   <article class="card"><h3 class="sub">Giao dịch cổ đông lớn &amp; người nội bộ</h3><div class="tscroll"><table><thead><tr><th>Người giao dịch</th><th>Chức vụ</th><th>Mua/bán</th><th class="n">KL thực hiện</th><th>Đến ngày</th></tr></thead><tbody>
     ${D.governance.trades.slice(0, 8).map(t => `<tr><td>${esc(t.name)}</td><td>${esc(t.role || '—')}</td><td>${esc(t.side)}</td><td class="n">${nf(t.executed)}</td><td>${dvn(t.to)}</td></tr>`).join('')}
     </tbody></table></div><div class="note">Giao dịch nội bộ ở CTG thưa và nhỏ so với 7,77 tỷ CP lưu hành — không phải tín hiệu định giá đáng kể.</div><div class="src">Nguồn: WiData co_insider</div></article>`;
-  const y1 = D.price.series.filter(p => p.d >= D.price.series[D.price.series.length - 1].d.replace(/^(\d{4})/, (m) => +m - 1));
-  mk('chPrice', { type: 'line', data: { labels: y1.map(p => dvn(p.d)), datasets: [{ label: 'Giá đóng cửa', data: y1.map(p => p.c), borderColor: C.navy, pointRadius: 0, borderWidth: 1.8, dp: 0, unit: 'đ' }] },
-    options: { scales: { x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } }, y: numAxis() }, plugins: { legend: { display: false },
-      refLines: { lines: [{ value: D.price.high52.c, label: '52W High ' + nf(D.price.high52.c), color: C.teal }, { value: D.price.low52.c, label: '52W Low ' + nf(D.price.low52.c), color: C.red }] } } } });
+  const PS = D.price.series, lastD = PS[PS.length - 1].d;
+  const drawPx = k => {
+    const y1 = k === 'all' ? PS : PS.filter(p => p.d >= lastD.replace(/^(\d{4})/, (m) => +m - (+k || 1)));
+    mk('chPrice', { type: 'line', data: { labels: y1.map(p => dvn(p.d)), datasets: [{ label: 'Giá đóng cửa', data: y1.map(p => p.c), borderColor: C.navy, pointRadius: 0, borderWidth: k === '1' ? 1.8 : 1.2, dp: 0, unit: 'đ' }] },
+      options: { scales: { x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } }, y: numAxis() }, plugins: { legend: { display: false },
+        refLines: { lines: [{ value: D.price.high52.c, label: '52W High ' + nf(D.price.high52.c), color: C.teal }, { value: D.price.low52.c, label: '52W Low ' + nf(D.price.low52.c), color: C.red }] } } } });
+  };
+  const pxBox = document.querySelector('[data-pxr]');
+  if (pxBox) { const bs = [...pxBox.querySelectorAll('button')]; bs.forEach(b => b.onclick = () => { bs.forEach(x => x.classList.toggle('on', x === b)); drawPx(b.dataset.k); }); }
+  drawPx('1');
 }
 function checklist() {
   const t = Object.assign({ pb: VB.pbBand.lo, llr: 130, npl: 1.5, form: 1.5, car: 10 }, (store.get().check || {}));
@@ -408,6 +419,7 @@ function paneFin() {
   const prevY = A[A.length - 1];
   $('#fin').innerHTML = `<h2 class="sec">Tài chính</h2><p class="sec-sub">Khung 8 bước: nguồn vốn → tài sản sinh lời → chất lượng tài sản → biên lãi → thu nhập ngoài lãi → hiệu quả & vốn. Tỷ đồng, BCTC hợp nhất; số mới nhất ${QL.q}.</p>
   <div class="subtabs" role="tablist">${subs.map(([k, l], i) => `<button type="button" data-sub="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
+  <div class="picker tf fin-range" data-finr><span class="muted">Khung thời gian biểu đồ quý:</span>${[['def', 'Gần đây'], ['5y', '5 năm'], ['all', `Toàn bộ (từ ${Q[0].q})`]].map(([k, l]) => `<button type="button" data-k="${k}" class="${k === FIN_RANGE ? 'on' : ''}">${l}</button>`).join('')}</div>
   <div class="sub on" data-subp="bs">
     <div class="grid g2 gap">
       ${card({ id: 'chWfA', title: `Cơ cấu tài sản ${QL.q}`, sub: 'tỷ đồng · cộng dồn tới tổng tài sản', h: 'tall',
@@ -499,12 +511,16 @@ function paneFin() {
     $$('#fin .sub').forEach(p => p.classList.toggle('on', p.dataset.subp === b.dataset.sub));
     finCharts(b.dataset.sub);
   });
+  $$('#fin [data-finr] button').forEach(b => b.onclick = () => {
+    const cur = ($('#fin .subtabs button.on') || {}).dataset; FIN_RANGE = b.dataset.k;
+    rerender('fin'); const t = cur && $(`#fin .subtabs [data-sub="${cur.sub}"]`); if (t) t.click();
+  });
   finCharts('bs');
 }
 const finDone = {};
 function finCharts(k) {
   if (finDone[k]) return; finDone[k] = true;
-  const q12 = lastN(Q, 12), q16 = lastN(Q, 16), A = D.annual, P = D.plan;
+  const q12 = win(Q, 12), q16 = win(Q, 16), A = D.annual, P = D.plan;
   if (k === 'bs') {
     wf('chWfA', [['Tiền mặt & NHNN', QL.cash], ['TCTD', QL.interbankA], ['Chứng khoán', QL.secs], ['Cho vay KH ròng', QL.loansNet], ['Góp vốn, TSCĐ, khác', QL.ta - QL.cash - QL.interbankA - QL.secs - QL.loansNet]], 'Tổng tài sản', QL.ta);
     wf('chWfL', [['Tiền gửi KH', QL.deposits], ['Tiền gửi & vay TCTD', QL.interbankL], ['GTCG', QL.papers], ['Nợ CP & NHNN', QL.govSbv], ['Nợ khác', QL.otherL], ['VCSH', QL.equity]], 'Tổng nguồn vốn', QL.ta);
@@ -539,7 +555,7 @@ function finCharts(k) {
       { label: 'NIM', data: qa.map(q => q.nim), borderColor: C.navy, backgroundColor: C.navy, dp: 2, unit: '%' },
       { label: 'NIM sau dự phòng', data: qa.map(q => q.nimAdj), borderColor: C.teal, backgroundColor: C.teal, dp: 2, unit: '%' }] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' });
     const dep = D.macro.rates.dep12CTG;
-    const qc = Q.filter(q => q.year >= 2025);
+    const qc = Q.filter(q => yok(q, 2025));
     mk('chCof', { type: 'line', data: { labels: qc.map(q => q.q), datasets: [
       { label: 'COF TTM', data: qc.map(q => q.cof), borderColor: C.purple, backgroundColor: C.purple, dp: 2, unit: '%' },
       { label: 'LS 12T CTG cuối quý', data: qc.map(q => { const m = String(q.quarter * 3).padStart(2, '0'); const f = dep.find(v => v.d.startsWith(`${q.year}-${m}`)); return f ? f.v : null; }), borderColor: C.navy, backgroundColor: C.navy, borderDash: [5, 4], dp: 2, unit: '%' }] },
@@ -554,13 +570,13 @@ function finCharts(k) {
         { label: 'NIM ngành', data: X.agg.nim.all, borderColor: C.grey, backgroundColor: C.grey, dp: 2, unit: '%', borderDash: [5, 4] },
         { label: 'COF CTG', data: cq.map(q => q && q.cof), borderColor: C.purple, backgroundColor: C.purple, dp: 2, unit: '%' },
         { label: 'COF ngành', data: X.agg.cof.all, borderColor: C.red, backgroundColor: C.red, dp: 2, unit: '%', borderDash: [5, 4] }] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' }); }
-    const qg = Q.filter(q => q.irGap != null && q.year >= 2022);
+    const qg = Q.filter(q => q.irGap != null && yok(q, 2022));
     mk('chGap', { type: 'bar', data: { labels: qg.map(q => q.q), datasets: [{ label: 'Khe hở ≤ 12 tháng (nghìn tỷ)', data: qg.map(q => q.irGap / 1000), backgroundColor: qg.map(q => q.irGap < 0 ? C.purple : C.teal), dp: 1 }] },
       options: { plugins: { legend: { display: false } }, scales: { y: numAxis('nghìn tỷ đồng') } } });
   }
   if (k === 'nfi') {
     stack('chNfiQ', q12, [['Dịch vụ', 'nfi'], ['Ngoại hối', 'fx'], ['Chứng khoán', 'secInc'], ['Góp vốn', 'equityInc'], ['Khác (thu hồi nợ…)', 'otherInc']]);
-    const qs = Q.filter(q => q.year >= 2021).map((q, i, arr) => { const j = Q.indexOf(q); if (j < 3) return null; const t = Q.slice(j - 3, j + 1), toi = t.reduce((a, x) => a + x.toi, 0);
+    const qs = Q.filter(q => yok(q, 2021)).map((q, i, arr) => { const j = Q.indexOf(q); if (j < 3) return null; const t = Q.slice(j - 3, j + 1), toi = t.reduce((a, x) => a + x.toi, 0);
       return { q: q.q, fee: t.reduce((a, x) => a + x.nfi, 0) / toi * 100, vol: t.reduce((a, x) => a + x.fx + x.secInc + x.otherInc + (x.equityInc || 0), 0) / toi * 100 }; }).filter(Boolean);
     mk('chNfiShare', { type: 'line', data: { labels: qs.map(x => x.q), datasets: [
       { label: 'Phí dịch vụ / TOI', data: qs.map(x => x.fee), borderColor: C.navy, backgroundColor: C.navy, dp: 1, unit: '%' },
@@ -568,13 +584,13 @@ function finCharts(k) {
     if (D.fee) drawFee();
   }
   if (k === 'room') {
-    const qr = Q.filter(q => q.ldr && q.year >= 2021), X = D.ctx;
+    const qr = Q.filter(q => q.ldr && yok(q, 2021)), X = D.ctx;
     mk('chLdrQ', { type: 'line', data: { labels: qr.map(q => q.q), datasets: [
       { label: 'LDR CTG', data: qr.map(q => q.ldr), borderColor: C.navy, backgroundColor: C.navy, dp: 1, unit: '%', borderWidth: 2.5 },
       ...(X ? [{ label: 'LDR Big 4', data: qr.map(q => AQ(q.q)('ldr', 'Big 4')), borderColor: C.teal, backgroundColor: C.teal, dp: 1, unit: '%', spanGaps: true },
         { label: 'LDR ngành', data: qr.map(q => AQ(q.q)('ldr', 'all')), borderColor: C.grey, backgroundColor: C.grey, borderDash: [5, 4], dp: 1, unit: '%', spanGaps: true }] : [])] },
       options: { scales: { y: pctAxis() }, plugins: { refLines: { lines: [{ value: 85, label: 'Trần 85% (TT22)', color: C.red }] } } } }, { switch: 'line' });
-    const qq = Q.filter(q => q.creditYoY != null && q.year >= 2021);
+    const qq = Q.filter(q => q.creditYoY != null && yok(q, 2021));
     mk('chGrow', { type: 'line', data: { labels: qq.map(q => q.q), datasets: [
       { label: 'Tín dụng YoY', data: qq.map(q => q.creditYoY), borderColor: C.navy, backgroundColor: C.navy, dp: 1, unit: '%' },
       { label: 'Huy động YoY', data: qq.map(q => q.fundingYoY), borderColor: C.teal, backgroundColor: C.teal, dp: 1, unit: '%' }] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' });
@@ -584,7 +600,7 @@ function finCharts(k) {
       options: { scales: { y: pctAxis('', { min: 0 }) }, plugins: { refLines: { lines: [{ value: 8, label: 'CAR tối thiểu 8%', color: C.red }, { value: 6, label: 'Vốn cấp 1 tối thiểu 6%', color: C.gold }] } } } });
   }
   if (k === 'aq') {
-    const qa = Q.filter((q, i) => i >= 4 && q.year >= 2021).map(q => { const i = Q.indexOf(q); return { q: q.q, a: yoyQ('accrued', i), l: yoyQ('loansGross', i), r: q.accrued / q.loansGross * 100 }; });
+    const qa = Q.filter((q, i) => i >= 4 && yok(q, 2021)).map(q => { const i = Q.indexOf(q); return { q: q.q, a: yoyQ('accrued', i), l: yoyQ('loansGross', i), r: q.accrued / q.loansGross * 100 }; });
     mk('chAccr', { type: 'bar', data: { labels: qa.map(x => x.q), datasets: [
       { label: 'Lãi phải thu YoY', data: qa.map(x => x.a), backgroundColor: C.purple, dp: 1, unit: '%' },
       { label: 'Cho vay YoY', data: qa.map(x => x.l), backgroundColor: C.navy, dp: 1, unit: '%' },
@@ -600,7 +616,7 @@ function finCharts(k) {
     mk('chNpl', { type: 'line', data: { labels: q16.map(q => q.q), datasets: [
       { label: 'NPL', data: q16.map(q => q.npl), borderColor: C.red, backgroundColor: C.red, dp: 2, unit: '%' },
       { label: 'Nhóm 2', data: q16.map(q => q.g2), borderColor: C.gold, backgroundColor: C.gold, dp: 2, unit: '%' }] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' });
-    const qf = Q.filter(q => q.nplFormation != null && q.year >= 2022);
+    const qf = Q.filter(q => q.nplFormation != null && yok(q, 2022));
     mk('chForm', { type: 'bar', data: { labels: qf.map(q => q.q), datasets: [
       { label: 'Hình thành nợ xấu (tỷ)', data: qf.map(q => q.nplFormation), backgroundColor: C.blue, yAxisID: 'y', dp: 0 },
       { type: 'line', label: '% dư nợ quy năm', data: qf.map(q => q.nplFormationRate), borderColor: C.red, backgroundColor: C.red, yAxisID: 'y1', dp: 2, unit: '%' }] },
@@ -609,7 +625,7 @@ function finCharts(k) {
       { label: 'LLR', data: q16.map(q => q.llr), borderColor: C.navy, backgroundColor: C.navy, dp: 0, unit: '%' },
       { label: 'LLR gồm lãi dự thu', data: q16.map(q => q.llrInclAccrued), borderColor: C.purple, backgroundColor: C.purple, borderDash: [5, 4], dp: 0, unit: '%' }] },
       options: { scales: { y: pctAxis() }, plugins: { refLines: { lines: [{ value: 150, label: 'Mục tiêu 150%', color: C.teal }] } } } }, { switch: 'line' });
-    const qc = Q.filter(q => q.creditCost != null && q.year >= 2022);
+    const qc = Q.filter(q => q.creditCost != null && yok(q, 2022));
     mk('chCc', { type: 'bar', data: { labels: qc.map(q => q.q), datasets: [
       { label: 'Thu hồi nợ đã xử lý (tỷ/quý)', data: qc.map(q => q.recoveries), backgroundColor: C.teal, yAxisID: 'y1', dp: 0 },
       { type: 'line', label: 'Chi phí tín dụng TTM', data: qc.map(q => q.creditCost), borderColor: C.red, backgroundColor: C.red, yAxisID: 'y', dp: 2, unit: '%' }] },

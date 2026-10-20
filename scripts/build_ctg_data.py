@@ -39,6 +39,22 @@ def rows(resp):
     return []
 
 
+def merged(raw, tool, endpoint, pred, sym=None):
+    """Gộp mọi lần kéo khớp điều kiện (vd 2010–17 + 2018–26) theo (mã, năm, quý); file sau ghi đè kỳ trùng."""
+    out = {}
+    for d in raw:
+        req = d['request']
+        if d['tool'] != tool or req.get('endpoint_name') != endpoint or not pred(req):
+            continue
+        for r in rows(d['response']):
+            if sym and r.get('symbol') != sym:
+                continue
+            out.setdefault((r.get('symbol'), r['year'], r['quarter']), {}).update({k: v for k, v in r.items() if v is not None})
+    if not out:
+        raise SystemExit(f'thiếu raw: {tool} {endpoint}')
+    return list(out.values())
+
+
 def find(raw, tool, endpoint=None, pred=None):
     hits = []
     for d in raw:
@@ -91,12 +107,12 @@ def build(raw):
     asof = date.today().isoformat()
 
     snap = find(raw, 'wi_data_companies', 'snapshot')['response']
-    fsq = sort_q([r for r in rows(find(raw, 'wi_data_companies', 'fs_bank', lambda q: flt(q).get('quarter') == '1,2,3,4')['response']) if r['symbol'] == TICKER])
-    fsy = sorted(rows(find(raw, 'wi_data_companies', 'fs_bank', lambda q: flt(q).get('quarter') == '0')['response']), key=lambda r: r['year'])
-    rbt = sort_q([r for r in rows(find(raw, 'wi_data_companies', 'ratio_bank_ttm', lambda q: flt(q).get('symbol') == TICKER)['response'])])
-    rb = sort_q(rows(find(raw, 'wi_data_companies', 'ratio_bank', lambda q: flt(q).get('symbol') == TICKER and flt(q).get('quarter') == '1,2,3,4')['response']))
+    fsq = sort_q(merged(raw, 'wi_data_companies', 'fs_bank', lambda q: flt(q).get('symbol') == TICKER and flt(q).get('quarter') == '1,2,3,4', TICKER))
+    fsy = sorted(merged(raw, 'wi_data_companies', 'fs_bank', lambda q: flt(q).get('symbol') == TICKER and flt(q).get('quarter') == '0', TICKER), key=lambda r: r['year'])
+    rbt = sort_q(merged(raw, 'wi_data_companies', 'ratio_bank_ttm', lambda q: flt(q).get('symbol') == TICKER, TICKER))
+    rb = sort_q(merged(raw, 'wi_data_companies', 'ratio_bank', lambda q: flt(q).get('symbol') == TICKER and flt(q).get('quarter') == '1,2,3,4', TICKER))
     rbmix = sort_q(rows(find(raw, 'wi_data_companies', 'ratio_bank', lambda q: flt(q).get('quarter') == '2,4')['response']))
-    rct = sort_q(rows(find(raw, 'wi_data_companies', 'ratio_common_ttm', lambda q: flt(q).get('symbol') == TICKER)['response']))
+    rct = sort_q(merged(raw, 'wi_data_companies', 'ratio_common_ttm', lambda q: flt(q).get('symbol') == TICKER, TICKER))
     peers_rbt = rows(find(raw, 'wi_data_companies', 'ratio_bank_ttm', lambda q: ',' in flt(q).get('symbol', ''))['response'])
     peers_rb = rows(find(raw, 'wi_data_companies', 'ratio_bank', lambda q: ',' in flt(q).get('symbol', ''))['response'])
     peers_rc = rows(find(raw, 'wi_data_companies', 'ratio_common_ttm', lambda q: ',' in flt(q).get('symbol', ''))['response'])
@@ -110,7 +126,13 @@ def build(raw):
     reports = rows(find(raw, 'wi_data_companies', 'co_reports')['response'])
     ainews = rows(find(raw, 'wi_data_news', 'ai_news')['response'])
     exnews = rows(find(raw, 'wi_data_news', 'exchange_news')['response'])
-    prices = sorted(rows(find(raw, 'wi_data_stock', 'eod_adjust')['response']), key=lambda r: r['trading_date'])
+    pxd = {}   # gộp mọi lần kéo giá (lịch sử giá điều chỉnh có từ 03/2012)
+    for d in raw:
+        if d['tool'] == 'wi_data_stock' and d['request'].get('endpoint_name') == 'eod_adjust':
+            for r in rows(d['response']):
+                if r.get('symbol', TICKER) == TICKER:
+                    pxd[r['trading_date']] = r
+    prices = [pxd[k] for k in sorted(pxd)]
     macro = {}
     for d in raw:
         if d['tool'] == 'wi_data_macro':

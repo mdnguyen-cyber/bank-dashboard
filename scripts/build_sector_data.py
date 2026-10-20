@@ -255,13 +255,13 @@ def main():
 
     # ------------------------------------------------ ngân hàng
     def bank_rows(endpoint, cols):
-        best = None
+        out = []   # gộp mọi file 26 NH theo quý (2021–22 + 2023–26); file sau ghi đè kỳ trùng
         for d in raw:
             if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == endpoint:
                 f = flt(d['request'])
                 if f.get('symbol', '').count(',') >= 20 and f.get('quarter') == '1,2,3,4':
-                    best = d
-        return rows(best['response'])
+                    out += rows(d['response'])
+        return out
 
     panel = defaultdict(dict)
     for ep in ['ratio_bank_ttm', 'ratio_bank', 'ratio_common_ttm']:
@@ -363,10 +363,12 @@ def main():
                 'series': agg}
 
     # định giá ngành theo ngày (sector_id 107) → cuối tháng + dải ±1σ
-    sec = None
+    secd = {}   # gộp mọi lần kéo (2021→nay), phiên trùng lấy file sau
     for d in raw:
         if d['tool'] == 'wi_data_sector' and d['request'].get('endpoint_name') == 'sector_ratio_daily':
-            sec = sorted(rows(d['response']), key=lambda x: x['trading_date'])
+            for x in rows(d['response']):
+                secd[x['trading_date']] = x
+    sec = [secd[k] for k in sorted(secd)]
     mon = {}
     for x in sec:
         mon[ym(x['trading_date'])] = x
@@ -590,7 +592,7 @@ def main():
         ['Tiền tệ, tín dụng', 'M2 YoY 265954 · tổng tiền gửi YoY 265963 · dân cư 265981 · TCKT 265972 · tín dụng YoY 75847 · YTD 241732'],
         ['Giá cả, tài khóa', 'CPI 75701 · lạm phát cơ bản 202889 · CPI bình quân 75804 · thu NSNN 82420 · chi NSNN 75598 · TPCP 10Y 234526'],
         ['Đối ngoại', 'Dự trữ ngoại hối 76885 · cán cân XNK 255693 · FDI giải ngân 76951'],
-        ['Ngân hàng', 'ratio_bank, ratio_bank_ttm, ratio_common_ttm (26 NH, Q1/2023–Q2/2026) · ratio_daily · sector_ratio_daily (ngành 107) · co_reports'],
+        ['Ngân hàng', 'ratio_bank, ratio_bank_ttm, ratio_common_ttm (26 NH, Q1/2021–Q2/2026) · ratio_daily · sector_ratio_daily (ngành 107) · co_reports'],
         ['Tin tức', 'wi_data_news news_feed (Ngân hàng) · ai_news (Vĩ mô VN, Mỹ)'],
         ['Lịch Fed', 'fedratecalc.com/fomc-meeting-schedule (FOMC 27–28/10, 8–9/12/2026; tăng 25 bps ngày 16/09/2026)'],
     ]

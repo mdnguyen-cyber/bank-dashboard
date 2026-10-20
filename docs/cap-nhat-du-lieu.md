@@ -27,6 +27,10 @@ Gọi đúng các truy vấn tăng dần dưới đây (cửa sổ ngắn để 
 | Định giá ngành theo phiên | `wi_data_sector get_data endpoint_name=sector_ratio_daily filters={"sector_id":"405"} from_time=2022-09-01 to_time=<to>` |
 | Định giá từng mã | `wi_data_companies get_data endpoint_name=ratio_daily filters={"symbol":"<26 mã>"} columns=symbol,trading_date,pe,pb,bvps,market_cap` (giống file `ratio_daily_zz_*` cũ) |
 
+Lịch sử: chuỗi ngành (26 NH theo quý) giữ từ Q1/2021, định giá ngành theo phiên từ 01/2021; riêng mã có trang riêng (CTG) giữ toàn bộ lịch sử
+(BCTC quý từ Q1/2010, BCTC năm từ 2007, giá điều chỉnh từ 03/2012). Các build script GỘP mọi file cùng loại (kỳ trùng lấy file sau),
+nên chỉ cần kéo phần mới — không xoá file cũ trong `data/raw/wi/`.
+
 Khi có BCTC quý mới (mùa báo cáo: tháng 1, 4, 7, 10), kéo lại các truy vấn `fs_bank`, `fs_bank_notes`, `ratio_bank`, `ratio_bank_ttm`,
 `ratio_common_ttm`, `bank_car_tt41` với cùng tham số như file cũ trong `data/raw/wi/` (đọc `request` của file cũ, thêm năm/quý mới).
 
