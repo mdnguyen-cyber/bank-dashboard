@@ -94,6 +94,81 @@ def kalshi():
     return out
 
 
+def polymarket():
+    """Thị trường dự đoán Polymarket: sự kiện 'Fed decision in <tháng>' — xác suất Yes của từng kết cục."""
+    try:
+        js = json.loads(get('https://gamma-api.polymarket.com/public-search?q=fed%20decision&events_status=active&limit_per_type=30'))
+    except Exception as e:  # noqa: BLE001
+        print('polymarket lỗi', e, file=sys.stderr); return {}
+    out = {}
+    for ev in js.get('events', []):
+        if not str(ev.get('slug', '')).startswith('fed-decision-in-') or ev.get('closed'):
+            continue
+        end = ev.get('endDate') or ''
+        try:
+            d = (dt.datetime.fromisoformat(end.replace('Z', '+00:00')) - dt.timedelta(hours=6)).date().isoformat()
+        except ValueError:
+            continue
+        mk = {}
+        for m in ev.get('markets', []):
+            q = (m.get('question') or m.get('groupItemTitle') or '').lower()
+            try:
+                p = float(json.loads(m.get('outcomePrices') or '[]')[0])
+            except (ValueError, IndexError, TypeError):
+                continue
+            big = re.search(r'50\+?|75|100', q)
+            lab = ('No change' if 'no change' in q else
+                   ('Cut 50+ bps' if big else 'Cut 25bps') if ('decrease' in q or 'cut' in q) else
+                   ('Hike 50+ bps' if big else 'Hike 25bps') if ('increase' in q or 'hike' in q) else None)
+            if lab:
+                mk[lab] = round(mk.get(lab, 0) + p * 100, 1)
+        if mk:
+            out[d] = {'slug': ev.get('slug'), 'p': mk, 'volume': round(float(ev.get('volume') or 0))}
+    return out
+
+
+def atl_mpt():
+    """Atlanta Fed Market Probability Tracker (quyền chọn SOFR 3 tháng): phân phối lãi suất SOFR bình quân theo cửa sổ 3 tháng."""
+    try:
+        import io, openpyxl
+        with urllib.request.urlopen(urllib.request.Request('https://www.atlantafed.org/-/media/Project/Atlanta/FRBA/Documents/research-and-data/data/market-probability-tracker/mpt_histdata.xlsx', headers=UA), timeout=90) as r:
+            wb = openpyxl.load_workbook(io.BytesIO(r.read()), read_only=True, data_only=True)
+        ws = wb['DATA']; ws.reset_dimensions()
+        rows = list(ws.iter_rows(values_only=True))
+    except Exception as e:  # noqa: BLE001
+        print('atlanta mpt lỗi', e, file=sys.stderr); return None
+    last = max(str(r[0])[:10] for r in rows[1:] if r and r[0])
+    W = {}
+    for r in rows[1:]:
+        if not r or str(r[0])[:10] != last:
+            continue
+        st = str(r[1])[:10]; f = str(r[3]).strip()
+        try:
+            v = float(str(r[4]).strip())
+        except ValueError:
+            continue
+        w = W.setdefault(st, {'start': st, 'target': str(r[2]).strip(), 'probs': {}})
+        key = {'Rate: mean': 'mean', 'Rate: mode': 'mode', 'Rate: 25th percentile': 'p25', 'Rate: 75th percentile': 'p75', 'Prob: cut': 'cut', 'Prob: hike': 'hike'}.get(f)
+        if key:
+            w[key] = round(v / 100, 3) if key in ('mean', 'mode', 'p25', 'p75') else round(v, 1)
+        elif f.startswith('Prob: '):
+            w['probs'][f[6:]] = round(v, 1)
+    return {'date': last, 'windows': [W[k] for k in sorted(W)]}
+
+
+def fed_dots():
+    """Trung vị dự báo lãi suất quỹ liên bang cuối năm của FOMC (dot plot, SEP) qua FRED."""
+    out = {}
+    for sid in ('FEDTARMD', 'FEDTARMDLR'):
+        try:
+            txt = get(f'https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}')
+            vals = [l.split(',') for l in txt.strip().splitlines()[1:]]
+            out[sid] = {d[:4] if sid == 'FEDTARMD' else d: float(v) for d, v in vals if v not in ('', '.')}
+        except Exception as e:  # noqa: BLE001
+            print('fred dot lỗi', sid, e, file=sys.stderr)
+    return out
+
+
 def main():
     today = dt.date.today()
     meets = [d for d in fomc_dates() if d >= today.isoformat()][:10]
@@ -138,13 +213,15 @@ def main():
         dist = nd
         r['probs'] = {f'{lo + s * 0.25:.2f}-{up + s * 0.25:.2f}': round(p * 100, 1) for s, p in sorted(dist.items()) if p > 0.0005}
         r['exp_rate'] = round(sum(((lo + up) / 2 + s * 0.25) * p for s, p in dist.items()), 3)   # điểm giữa khoảng, bình quân theo xác suất
-    K = kalshi()
+    K, PM = kalshi(), polymarket()
     for r in res:
         if r['date'] in K:
             r['kalshi'] = K[r['date']]
+        if r['date'] in PM:
+            r['poly'] = PM[r['date']]
     asof = max((v[2] for v in px.values() if v[2]), default=None)
     out = {'asOf': asof, 'fetched': dt.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC'), 'target': [lo, up], 'effr': effr,
-           'meetings': res, 'zq': {f'{y}-{m:02d}': {'ticker': v[0], 'px': v[1], 'rate': rate[(y, m)]} for (y, m), v in px.items()},
+           'meetings': res, 'mpt': atl_mpt(), 'dots': fed_dots(), 'zq': {f'{y}-{m:02d}': {'ticker': v[0], 'px': v[1], 'rate': rate[(y, m)]} for (y, m), v in px.items()},
            'method': __doc__.strip()}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / 'fedwatch.json').write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding='utf-8')

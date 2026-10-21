@@ -905,19 +905,28 @@ function fedWatchCard() {
   const below = m => Object.entries(m.probs).filter(([k]) => parseFloat(k) < lo).reduce((a, [, p]) => a + p, 0);
   const top = m => Object.entries(m.probs).sort((a, b) => b[1] - a[1])[0];
   const n0 = M[0], t0 = top(n0), lastM = M[M.length - 1], dec = M.filter(m => m.date.slice(0, 4) === n0.date.slice(0, 4)).pop() || n0;
-  const kal = m => { const k = m.kalshi && m.kalshi.p; if (!k) return '—'; const g = re => Object.entries(k).filter(([l]) => re.test(l)).reduce((a, [, p]) => a + p, 0);
-    return `giảm ${nf(g(/cut/i), 0)} · giữ ${nf(g(/hold|maintain|unchanged/i), 0)} · tăng ${nf(g(/hike|raise/i), 0)}`; };
+  const pm3 = o => { const k = o && o.p; if (!k) return null; const g = re => Object.entries(k).filter(([l]) => re.test(l)).reduce((a, [, p]) => a + p, 0);
+    return { cut: g(/cut|decrease/i), hold: g(/hold|maintain|unchanged|no change/i), hike: g(/hike|raise|increase/i) }; };
+  const fmt3 = o => o ? `giảm ${nf(o.cut, 0)} · giữ ${nf(o.hold, 0)} · tăng ${nf(o.hike, 0)}` : '—';
+  const kal = m => fmt3(pm3(m.kalshi)), poly = m => fmt3(pm3(m.poly));
+  const yrs = [...new Set(M.map(m => m.date.slice(0, 4)))];
+  const W = (F.mpt && F.mpt.windows) || [], D = (F.dots || {}).FEDTARMD || {}, LR = Object.values((F.dots || {}).FEDTARMDLR || {}).pop();
+  const cmpTbl = () => `<p class="chart-sub" style="margin-top:12px"><b>Đối chiếu mức lãi suất cuối năm theo từng nguồn</b> (%/năm)</p><div class="tscroll"><table><thead><tr><th>Mốc</th><th class="n">Từ giá ZQ (phương pháp FedWatch)</th><th class="n">Atlanta Fed MPT (quyền chọn SOFR) · bình quân [25–75%]</th><th class="n">Dot plot FOMC (trung vị)</th></tr></thead><tbody>
+    ${yrs.map(y => { const lm = M.filter(m => m.date.slice(0, 4) === y).pop(); const w = W.filter(x => x.start >= lm.date).sort((a, b) => a.start.localeCompare(b.start))[0];
+      return `<tr><td>Sau phiên ${dvn(lm.date)}</td><td class="n">${nf(lm.exp_rate, 2)}</td><td class="n">${w ? `${nf(w.mean, 2)} [${nf(w.p25, 2)}–${nf(w.p75, 2)}] · cửa sổ từ ${dvn(w.start)}` : '—'}</td><td class="n">${D[y] != null ? nf(D[y], 3) : '—'}</td></tr>`; }).join('')}
+    ${LR != null ? `<tr><td>Dài hạn</td><td class="n">—</td><td class="n">—</td><td class="n">${nf(LR, 3)}</td></tr>` : ''}
+    </tbody></table></div><p class="chart-sub">ZQ: giá hợp đồng tương lai lãi suất quỹ liên bang 30 ngày, điểm giữa khoảng bình quân theo xác suất. MPT: SOFR bình quân 3 tháng (thường thấp hơn EFFR vài bps)${F.mpt ? `, số ngày ${dvn(F.mpt.date)}` : ''}. Dot plot: trung vị dự báo của thành viên FOMC tại kỳ SEP gần nhất.</p>`;
   const ins = `Phiên ${dvn(n0.date)}: khả năng cao nhất là khoảng <b>${rl(t0[0])}%</b> (<b>${nf(t0[1], 1)}%</b>)${t0[0] === cur ? ' — giữ nguyên' : ''}; xác suất tăng <b>${nf(above(n0), 1)}%</b>, giảm ${nf(below(n0), 1)}%.`
     + ` Đến phiên ${dvn(dec.date)}, tổng xác suất lãi suất cao hơn mức hiện hành ${cur.replace('-', '–')}% là <b>${nf(above(dec), 1)}%</b>; đến ${dvn(lastM.date)} mức kỳ vọng (điểm giữa, bình quân theo xác suất) là <b>${nf(lastM.exp_rate, 2)}%</b> so với ${nf((lo + up) / 2, 3)}% hiện nay.`
-    + (n0.kalshi ? ` Thị trường dự đoán Kalshi cho phiên ${dvn(n0.date)}: ${kal(n0)} (%).` : '')
+    + (n0.kalshi || n0.poly ? ` Thị trường dự đoán cho phiên ${dvn(n0.date)}: Kalshi ${kal(n0)}; Polymarket ${poly(n0)} (%).` : '')
     + ` <b>Hàm ý:</b> kỳ vọng Fed ${above(dec) > 50 ? 'nghiêng về tăng tiếp, chênh lệch lãi suất VND–USD bị ép, NHNN ít dư địa nới' : below(dec) > 50 ? 'nghiêng về giảm, mở thêm dư địa nới lỏng cho NHNN' : 'giữ nguyên là kịch bản chính, áp lực tỷ giá từ phía Fed không tăng thêm'} (R-02).`;
-  const body = `<div class="tscroll"><table><thead><tr><th>Phiên FOMC</th>${keys.map(k => `<th class="n">${rl(k)}</th>`).join('')}<th class="n">Kỳ vọng</th><th>Kalshi · quyết định tại phiên (%)</th></tr></thead><tbody>
-    ${M.map(m => { const tk = top(m)[0]; return `<tr><td style="white-space:nowrap">${dvn(m.date)}</td>${keys.map(k => { const p = m.probs[k]; return `<td class="n"${k === tk ? ' style="background:#fff3c4;font-weight:700"' : ''}>${p == null ? '' : nf(p, 1)}</td>`; }).join('')}<td class="n">${nf(m.exp_rate, 2)}%</td><td class="muted" style="white-space:nowrap">${kal(m)}</td></tr>`; }).join('')}
-    </tbody></table></div>`;
+  const body = `<div class="tscroll"><table><thead><tr><th>Phiên FOMC</th>${keys.map(k => `<th class="n">${rl(k)}</th>`).join('')}<th class="n">Kỳ vọng</th><th>Kalshi · quyết định tại phiên (%)</th><th>Polymarket · quyết định tại phiên (%)</th></tr></thead><tbody>
+    ${M.map(m => { const tk = top(m)[0]; return `<tr><td style="white-space:nowrap">${dvn(m.date)}</td>${keys.map(k => { const p = m.probs[k]; return `<td class="n"${k === tk ? ' style="background:#fff3c4;font-weight:700"' : ''}>${p == null ? '' : nf(p, 1)}</td>`; }).join('')}<td class="n">${nf(m.exp_rate, 2)}%</td><td class="muted" style="white-space:nowrap">${kal(m)}</td><td class="muted" style="white-space:nowrap">${poly(m)}</td></tr>`; }).join('')}
+    </tbody></table></div>${cmpTbl()}`;
   return card({ id: 'gFedPath', title: 'Kỳ vọng lãi suất Fed theo từng phiên họp FOMC', h: 'short',
     sub: `đường = lãi suất kỳ vọng sau mỗi phiên (điểm giữa khoảng, bình quân theo xác suất) · bảng = % xác suất khoảng lãi suất mục tiêu · khoảng hiện hành ${cur.replace('-', '–')}% · ô tô vàng = xác suất cao nhất · giá ZQ lúc ${esc(F.asOf || F.fetched)} (giờ UTC)`,
     body, insight: ins,
-    src: 'Ước tính FinSuccess theo phương pháp CME FedWatch từ giá hợp đồng tương lai lãi suất quỹ liên bang 30 ngày (CBOT, qua Yahoo Finance); có thể lệch nhẹ so với CME FedWatch (CME dùng giá thanh toán cuối ngày). Đối chiếu: Kalshi (KXFEDDECISION). Lịch họp: Federal Reserve.' });
+    src: 'Ước tính FinSuccess theo phương pháp CME FedWatch từ giá hợp đồng tương lai lãi suất quỹ liên bang 30 ngày (CBOT, qua Yahoo Finance); có thể lệch nhẹ so với CME FedWatch (CME dùng giá thanh toán cuối ngày). Đối chiếu: Kalshi (KXFEDDECISION), Polymarket, Atlanta Fed Market Probability Tracker, dot plot FOMC (Federal Reserve qua FRED). Lịch họp: Federal Reserve.' });
 }
 function drawFedPath() {
   const F = GD.fedwatch; if (!F || !document.getElementById('gFedPath')) return;

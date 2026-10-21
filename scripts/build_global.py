@@ -368,6 +368,8 @@ _fw = ROOT / 'data/global/fedwatch.json'
 if _fw.exists():
     G['fedwatch'] = json.loads(_fw.read_text(encoding='utf-8'))
     G['fedwatch'].pop('method', None); G['fedwatch'].pop('zq', None)
+    if G['fedwatch'].get('mpt'):
+        for w in G['fedwatch']['mpt']['windows']: w.pop('probs', None)
     _fh = ROOT / 'data/global/fedwatch_hist.json'
     if _fh.exists():
         G['fedwatchHist'] = json.loads(_fh.read_text(encoding='utf-8'))
