@@ -264,8 +264,8 @@ function paneOverview() {
     </div>
     <div class="src">Nguồn: ${esc(M.src)}; CAR từ báo cáo TT41 (bán niên/năm). LDR theo công thức WiData (tiền gửi KBNN tính theo hệ số TT26/TT08).</div>
   </article>
-  ${card({ id: 'chPrice', title: 'Giá cổ phiếu', sub: `đ/CP · giá đóng cửa đã điều chỉnh · lịch sử từ ${dvn(D.price.series[0].d)} · đường ngang là đỉnh và đáy 52 tuần`, h: 'short',
-    insight: `Giá hiện tại <b>${nf(M.price)}đ</b> thấp hơn đỉnh 52 tuần <b>${nf(D.price.high52.c)}đ</b> (${dvn(D.price.high52.d)}) <b>${sg((M.price / D.price.high52.c - 1) * 100)}</b> và cao hơn đáy <b>${nf(D.price.low52.c)}đ</b> (${dvn(D.price.low52.d)}) <b>${sg((M.price / D.price.low52.c - 1) * 100)}</b>. ${P ? `LNTT ${esc(P.ytdLabel)} ${P.pbtYTDyoy >= 0 ? 'tăng' : 'giảm'} ${sg(P.pbtYTDyoy)} YoY; ` : ''}P/B hiện tại ${x(M.pb)} ${M.pb < VB.pbBand.mean ? 'dưới' : 'trên'} trung bình 5 năm ${x(VB.pbBand.mean)}.`,
+  ${card({ id: 'chPrice', title: 'Giá cổ phiếu so với ngành ngân hàng và VN-Index', sub: `đ/CP · giá đóng cửa đã điều chỉnh · lịch sử từ ${dvn(D.price.series[0].d)} · đường ngang là đỉnh và đáy 52 tuần · chỉ số ngành và VN-Index quy về cùng điểm xuất phát với giá ${T} ở đầu khung đang xem (có từ ${dvn(D.price.series.find(p => p.s != null)?.d)}), nên khoảng cách giữa các đường là chênh lệch hiệu suất`, h: 'short',
+    insight: `${perfTxt()} Giá hiện tại <b>${nf(M.price)}đ</b> thấp hơn đỉnh 52 tuần <b>${nf(D.price.high52.c)}đ</b> (${dvn(D.price.high52.d)}) <b>${sg((M.price / D.price.high52.c - 1) * 100)}</b> và cao hơn đáy <b>${nf(D.price.low52.c)}đ</b> (${dvn(D.price.low52.d)}) <b>${sg((M.price / D.price.low52.c - 1) * 100)}</b>. ${P ? `LNTT ${esc(P.ytdLabel)} ${P.pbtYTDyoy >= 0 ? 'tăng' : 'giảm'} ${sg(P.pbtYTDyoy)} YoY; ` : ''}P/B hiện tại ${x(M.pb)} ${M.pb < VB.pbBand.mean ? 'dưới' : 'trên'} trung bình 5 năm ${x(VB.pbBand.mean)}.`,
     src: D.price.src })}
   <article class="card"><h3 class="sub">Trạng thái 5 trụ luận điểm <span class="pill ai">AI · theo quy tắc</span></h3>
     <p class="chart-sub">${esc(D.thesisNote)} Analyst ghi đè trạng thái ở tab FinSuccess › Thesis.</p>
@@ -282,10 +282,30 @@ function paneOverview() {
   </div>
   ${govSection()}`;
   drawGov();
-  const PS = D.price.series;
-  mk('chPrice', { type: 'line', data: { labels: PS.map(p => dvn(p.d)), datasets: [{ label: 'Giá đóng cửa', data: PS.map(p => p.c), borderColor: C.navy, pointRadius: 0, borderWidth: 1.4, dp: 0, unit: 'đ' }] },
-    options: { scales: { x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } }, y: numAxis() }, plugins: { legend: { display: false },
+  const PS = D.price.series, st = PS.map(p => p.c);
+  const firstOk = (r, i) => { while (i < r.length && (r[i] == null || st[i] == null)) i++; return i; };
+  const rebase = { id: 'rebase', beforeUpdate(ch) {   // quy chỉ số về giá cổ phiếu tại đầu khung đang xem
+    const lo = Math.max(0, Math.round((ch.options.scales.x || {}).min ?? 0));
+    ch.$lo = firstOk(st, lo);
+    ch.data.datasets.forEach((d, k) => { if (!k) return; const r = d.$raw, i = firstOk(r, lo); d.$i0 = i;
+      d.data = r.map((v, j) => v == null || j < i || i >= r.length ? null : v / r[i] * st[i]); });
+  } };
+  const B = (label, key, color) => ({ label, $raw: PS.map(p => p[key] ?? null), data: [], borderColor: color, pointRadius: 0, borderWidth: 1.3, spanGaps: true });
+  mk('chPrice', { type: 'line', plugins: [rebase], data: { labels: PS.map(p => dvn(p.d)), datasets: [{ label: 'Giá ' + T, data: st, borderColor: C.navy, pointRadius: 0, borderWidth: 1.8, dp: 0, unit: 'đ' },
+      B('Ngành ngân hàng', 's', C.purple), B('VN-Index', 'v', C.grey)] },
+    options: { scales: { x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } }, y: numAxis() }, plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 14, boxHeight: 2 } },
+      tooltip: { callbacks: { label: c => { const ch = c.chart, k = c.datasetIndex, d = c.dataset;
+        if (!k) { const b = st[ch.$lo]; return `Giá ${T}: ${nf(c.raw)}đ (${sg((c.raw / b - 1) * 100)} từ đầu khung)`; }
+        const r = d.$raw[c.dataIndex]; return r == null ? null : `${d.label}: ${nf(r, 2)} điểm (${sg((r / d.$raw[d.$i0] - 1) * 100)} từ đầu khung)`; } } },
       refLines: { lines: [{ value: D.price.high52.c, label: '52W High ' + nf(D.price.high52.c), color: C.teal }, { value: D.price.low52.c, label: '52W Low ' + nf(D.price.low52.c), color: C.red }] } } } }, { win: 12 });
+}
+function perfTxt() {   // hiệu suất 1 năm và 3 năm: cổ phiếu vs ngành ngân hàng vs VN-Index
+  const PS = D.price.series, L = PS[PS.length - 1];
+  const at = days => { const t = new Date(new Date(L.d) - days * 864e5).toISOString().slice(0, 10); return PS.find(p => p.d >= t && p.s != null && p.v != null); };
+  const ret = (a, k) => a && a[k] != null && L[k] != null ? (L[k] / a[k] - 1) * 100 : null;
+  const one = (lab, a) => { if (!a) return ''; const r = ret(a, 'c'), rs = ret(a, 's'), rv = ret(a, 'v'); if (r == null || rs == null || rv == null) return '';
+    const vs = r - rs; return `${lab}: <b>${T} ${sg(r)}</b>, ngành ngân hàng ${sg(rs)}, VN-Index ${sg(rv)} → ${T} ${vs >= 0 ? 'vượt' : 'kém'} ngành <b>${nf(Math.abs(vs), 1)} điểm %</b> và ${r - rv >= 0 ? 'vượt' : 'kém'} VN-Index ${nf(Math.abs(r - rv), 1)} điểm %. `; };
+  return one('1 năm', at(365)) + one('3 năm', at(365 * 3));
 }
 /* ---------- Quản trị & sở hữu (theo mẫu MWG Tracker) ---------- */
 const GT = { win: 60, side: 'all', q: '', n: 20 };

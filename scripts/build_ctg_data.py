@@ -395,7 +395,20 @@ def build(raw):
     one_year_ago = (datetime.fromisoformat(px[-1]['d']) - timedelta(days=365)).date().isoformat()
     y1 = [p for p in px if p['d'] > one_year_ago]
     hi = max(y1, key=lambda p: p['c']); lo = min(y1, key=lambda p: p['c'])
-    D['price'] = {'series': px, 'high52': hi, 'low52': lo, 'src': 'WiData eod_adjust (giá đã điều chỉnh)'}
+    # chuẩn so sánh: chỉ số giá ngành ngân hàng (sector_price_daily, sector 405) và VN-Index (eod_adjust VNINDEX)
+    secd, vnid = {}, {}
+    for d in raw:
+        ep = d['request'].get('endpoint_name')
+        if d['tool'] == 'wi_data_sector' and ep == 'sector_price_daily' and str(flt(d['request']).get('sector_id')) == '405':
+            for r in rows(d['response']):
+                if r.get('close') is not None: secd[r['trading_date']] = r['close']
+        elif d['tool'] == 'wi_data_stock' and ep == 'eod_adjust' and syms(d['request']) == ['VNINDEX']:
+            for r in rows(d['response']):
+                if r.get('close') is not None: vnid[r['trading_date']] = r['close']
+    for p in px:
+        if p['d'] in secd: p['s'] = round(secd[p['d']], 2)
+        if p['d'] in vnid: p['v'] = round(vnid[p['d']], 2)
+    D['price'] = {'series': px, 'high52': hi, 'low52': lo, 'src': 'WiData eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)'}
     vh = [{'q': q['q'], 'pb': q['pb'], 'pe': q['pe']} for q in Q if q['pb']]
     last20 = [v for v in vh][-20:]  # 5 năm quý
     def band(key):
