@@ -27,7 +27,8 @@ def main():
             if u.endswith('.xlsx'):
                 import openpyxl, io
                 wb = openpyxl.load_workbook(io.BytesIO(b), read_only=True, data_only=True)
-                rep[k] = {'url': u, 'status': 200, 'bytes': len(b), 'sheets': {ws.title: [[str(c) for c in r] for i, r in enumerate(ws.iter_rows(values_only=True)) if i < 25] + [['... rows', str(ws.max_row)]] for ws in wb.worksheets}}
+                for ws in wb.worksheets: ws.reset_dimensions()
+                rep[k] = {'url': u, 'status': 200, 'bytes': len(b), 'sheets': {ws.title: [[str(c) for c in r] for i, r in enumerate(ws.iter_rows(values_only=True)) if i < 25] for ws in wb.worksheets}}
                 rows = list(wb.worksheets[0].iter_rows(values_only=True)); rep[k]['tail'] = [[str(c) for c in r] for r in rows[-15:]]
                 continue
             if u.endswith('.xls'):
