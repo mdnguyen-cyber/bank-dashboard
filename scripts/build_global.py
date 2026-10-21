@@ -363,6 +363,14 @@ if DP.exists():
         snaps = [('Hiện tại', last), ('1 tháng trước', at((ld - _t(days=30)).isoformat())), ('Đầu năm', next((d for d in ds if d >= f'{ld.year}-01-01'), None)), ('1 năm trước', at((ld - _t(days=365)).isoformat()))]
         G['ustCurve'] = {'t': TEN, 'c': [{'n': n, 'd': d, 'v': [U[d].get(t) for t in TEN]} for n, d in snaps if d]}
 
+# kỳ vọng lãi suất Fed theo phiên FOMC (scripts/fetch_fedwatch.py)
+_fw = ROOT / 'data/global/fedwatch.json'
+if _fw.exists():
+    G['fedwatch'] = json.loads(_fw.read_text(encoding='utf-8'))
+    G['fedwatch'].pop('method', None); G['fedwatch'].pop('zq', None)
+    _fh = ROOT / 'data/global/fedwatch_hist.json'
+    if _fh.exists():
+        G['fedwatchHist'] = json.loads(_fh.read_text(encoding='utf-8'))
 js = 'window.GLOBAL_DATA = ' + json.dumps(G, ensure_ascii=False, separators=(',', ':')) + ';\n'
 (ROOT / 'data/global-data.js').write_text(js, encoding='utf-8')
 print(f'wrote data/global-data.js ({len(js) // 1024} KB), {len(G["s"])} chuỗi')

@@ -887,12 +887,46 @@ function gUS() {
     ${card({ id: 'gUsJobs', title: 'Thị trường lao động', h: 'tall', sub: 'cột = việc làm phi nông nghiệp tăng thêm (nghìn) · đường = tỷ lệ thất nghiệp (trục phải)', src: gsrc(['us_payems']) })}
     ${card({ id: 'gUsSpr', title: 'Áp lực thị trường repo', h: 'tall', sub: 'bps, theo ngày · SOFR, TGCR và SOFR phân vị 99 so với IORB · trên 0 = tiền qua đêm đắt hơn lãi Fed trả cho dự trữ', src: gsrc(['us_sofr', 'us_sofr99']) })}
   </div>
+  ${fedWatchCard()}
   <article class="card"><h3 class="sub">Bậc thang thanh khoản hệ thống ngân hàng Mỹ</h3><p class="chart-sub">①–② đo độ thừa tiền → ③–④ áp lực giá → ⑤–⑦ phản ứng của Fed · cột "Kỳ trước" = 5 phiên/tuần trước</p>
     <div class="tscroll"><table><thead><tr><th>Chỉ báo</th><th class="n">Mới nhất</th><th class="n">Kỳ trước</th><th>Ngưỡng tham chiếu</th><th>Trạng thái</th><th>Ngày</th></tr></thead><tbody>
     ${lad.map(r => `<tr><td><b>${esc(r.n)}</b></td><td class="n">${nf(r.v, 1)} ${r.u}</td><td class="n">${r.p == null ? '—' : nf(r.p, 1)}</td><td class="muted">${esc(r.ref)}</td><td>${st(r)}</td><td>${dvn(r.d)}</td></tr>`).join('')}</tbody></table></div>
     <div class="src">${gsrc(['us_rrp', 'us_sofr99', 'us_walcl'])}</div></article>
   ${card({ id: 'gUsRates', title: 'Lợi suất TPCP Mỹ và lãi suất Fed', sub: '%/năm, theo ngày · EFFR, 2 năm, 10 năm', src: gsrc(['us_10y']) })}
   ${gUSFlow()}`;
+}
+/* ---- Kỳ vọng lãi suất Fed theo phiên FOMC (phương pháp CME FedWatch, tính từ giá ZQ) ---- */
+function fedWatchCard() {
+  const F = GD.fedwatch; if (!F || !F.meetings || !F.meetings.length) return '';
+  const M = F.meetings, [lo, up] = F.target, cur = `${lo.toFixed(2)}-${up.toFixed(2)}`;
+  const keys = [...new Set(M.flatMap(m => Object.keys(m.probs)))].sort((a, b) => parseFloat(a) - parseFloat(b));
+  const rl = k => k.split('-').map(v => nf(+v, 2)).join('–');
+  const above = m => Object.entries(m.probs).filter(([k]) => parseFloat(k) > lo).reduce((a, [, p]) => a + p, 0);
+  const below = m => Object.entries(m.probs).filter(([k]) => parseFloat(k) < lo).reduce((a, [, p]) => a + p, 0);
+  const top = m => Object.entries(m.probs).sort((a, b) => b[1] - a[1])[0];
+  const n0 = M[0], t0 = top(n0), lastM = M[M.length - 1], dec = M.filter(m => m.date.slice(0, 4) === n0.date.slice(0, 4)).pop() || n0;
+  const kal = m => { const k = m.kalshi && m.kalshi.p; if (!k) return '—'; const g = re => Object.entries(k).filter(([l]) => re.test(l)).reduce((a, [, p]) => a + p, 0);
+    return `giảm ${nf(g(/cut/i), 0)} · giữ ${nf(g(/hold|maintain|unchanged/i), 0)} · tăng ${nf(g(/hike|raise/i), 0)}`; };
+  const ins = `Phiên ${dvn(n0.date)}: khả năng cao nhất là khoảng <b>${rl(t0[0])}%</b> (<b>${nf(t0[1], 1)}%</b>)${t0[0] === cur ? ' — giữ nguyên' : ''}; xác suất tăng <b>${nf(above(n0), 1)}%</b>, giảm ${nf(below(n0), 1)}%.`
+    + ` Đến phiên ${dvn(dec.date)}, tổng xác suất lãi suất cao hơn mức hiện hành ${cur.replace('-', '–')}% là <b>${nf(above(dec), 1)}%</b>; đến ${dvn(lastM.date)} mức kỳ vọng (điểm giữa, bình quân theo xác suất) là <b>${nf(lastM.exp_rate, 2)}%</b> so với ${nf((lo + up) / 2, 3)}% hiện nay.`
+    + (n0.kalshi ? ` Thị trường dự đoán Kalshi cho phiên ${dvn(n0.date)}: ${kal(n0)} (%).` : '')
+    + ` <b>Hàm ý:</b> kỳ vọng Fed ${above(dec) > 50 ? 'nghiêng về tăng tiếp, chênh lệch lãi suất VND–USD bị ép, NHNN ít dư địa nới' : below(dec) > 50 ? 'nghiêng về giảm, mở thêm dư địa nới lỏng cho NHNN' : 'giữ nguyên là kịch bản chính, áp lực tỷ giá từ phía Fed không tăng thêm'} (R-02).`;
+  const body = `<div class="tscroll"><table><thead><tr><th>Phiên FOMC</th>${keys.map(k => `<th class="n">${rl(k)}</th>`).join('')}<th class="n">Kỳ vọng</th><th>Kalshi (%)</th></tr></thead><tbody>
+    ${M.map(m => { const tk = top(m)[0]; return `<tr><td style="white-space:nowrap">${dvn(m.date)}</td>${keys.map(k => { const p = m.probs[k]; return `<td class="n"${k === tk ? ' style="background:#fff3c4;font-weight:700"' : ''}>${p == null ? '' : nf(p, 1)}</td>`; }).join('')}<td class="n">${nf(m.exp_rate, 2)}%</td><td class="muted" style="white-space:nowrap">${kal(m)}</td></tr>`; }).join('')}
+    </tbody></table></div><div class="cbox short"><canvas id="gFedPath" role="img" aria-label="Đường lãi suất Fed kỳ vọng"></canvas></div>`;
+  return card({ id: 'gFedW', title: 'Kỳ vọng lãi suất Fed theo từng phiên họp FOMC', h: '',
+    sub: `% xác suất khoảng lãi suất mục tiêu sau mỗi phiên · khoảng hiện hành ${cur.replace('-', '–')}% · ô tô vàng = xác suất cao nhất · giá ZQ lúc ${esc(F.asOf || F.fetched)} (giờ UTC)`,
+    body, insight: ins,
+    src: 'Ước tính FinSuccess theo phương pháp CME FedWatch từ giá hợp đồng tương lai lãi suất quỹ liên bang 30 ngày (CBOT, qua Yahoo Finance); có thể lệch nhẹ so với CME FedWatch (CME dùng giá thanh toán cuối ngày). Đối chiếu: Kalshi (KXFEDDECISION). Lịch họp: Federal Reserve.' });
+}
+function drawFedPath() {
+  const F = GD.fedwatch; if (!F || !document.getElementById('gFedPath')) return;
+  const M = F.meetings, H = GD.fedwatchHist || {}, days = Object.keys(H).sort();
+  const ago = n => { const t = new Date(Date.now() - n * 864e5).toISOString().slice(0, 10); return days.filter(d => d <= t).pop(); };
+  const ds = [{ label: 'Hiện tại', data: M.map(m => m.exp_rate), borderColor: C.navy, backgroundColor: C.navy, borderWidth: 2.4, pointRadius: 3, dp: 2, unit: '%' }];
+  [[7, '1 tuần trước', C.tealInk], [30, '1 tháng trước', C.grey]].forEach(([n, lab, col]) => { const d = ago(n); if (d && d !== days[days.length - 1]) ds.push({ label: `${lab} (${dvn(d)})`, data: M.map(m => (H[d][m.date] || {}).exp_rate ?? null), borderColor: col, backgroundColor: col, borderDash: [4, 3], pointRadius: 2, dp: 2, unit: '%', spanGaps: true }); });
+  ds.push({ label: 'Điểm giữa khoảng hiện hành', data: M.map(() => (F.target[0] + F.target[1]) / 2), borderColor: C.red, backgroundColor: C.red, borderDash: [2, 3], pointRadius: 0, borderWidth: 1.2, dp: 3, unit: '%' });
+  mk('gFedPath', { type: 'line', data: { labels: M.map(m => dvn(m.date)), datasets: ds }, options: { plugins: { legend: { display: true, position: 'bottom' } }, scales: { y: pctAxis('', { beginAtZero: false }) } } });
 }
 /* ---- dùng chung: chart chồng (stacked), nhãn quý ---- */
 const PAL2 = ['#1D2678', '#c0392b', '#1f8a8d', '#d9a400', '#861C52', '#4f9bd1', '#7cc49b', '#ef9f76', '#8997D6', '#5b3a8c', '#b5651d', '#2e8b57', '#e377c2', '#6b6b00', '#17becf', '#9aa3b2'];
@@ -1036,6 +1070,7 @@ function drUS() {
   mk('gUsJobs', { type: 'bar', data: { labels: pd.map(mvn), datasets: [{ label: 'Việc làm tăng thêm (nghìn)', data: pv, backgroundColor: pv.map(v => v < 0 ? 'rgba(192,57,43,.7)' : 'rgba(41,56,168,.55)'), dp: 0, unit: '' }, L('Thất nghiệp', pd.map(d => um[d] ?? null), C.red, { yAxisID: 'y1', dp: 1 })] },
     options: { scales: { y: numAxis('nghìn'), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
   mk('gUsSpr', { type: 'line', data: gLines(['sofr_iorb', 'tgcr_iorb', 'sofr99_iorb'], ['SOFR − IORB', 'TGCR − IORB', 'SOFR p99 − IORB'], [C.navy, C.tealInk, C.red], { unit: ' bps', dp: 0 }), options: { plugins: { refLines: { lines: [{ value: 0, label: '' }] } }, scales: { y: numAxis('bps') } } });
+  drawFedPath();
   mk('gUsRates', { type: 'line', data: gLines(['us_effr_d', 'us_2y_d', 'us_10y_d'], ['EFFR', '2 năm', '10 năm'], [C.navy, C.gold, C.red], { from: '2021-01-01' }), options: { scales: { y: pctAxis('') } } });
   drUSFlow();
 }

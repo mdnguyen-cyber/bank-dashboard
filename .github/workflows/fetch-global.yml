@@ -25,6 +25,7 @@ jobs:
           python scripts/fetch_ust.py || echo "fetch_ust lỗi"
           python scripts/fetch_jp.py || echo "fetch_jp lỗi"
           python scripts/fetch_daily.py || echo "fetch_daily lỗi"
+          python scripts/fetch_fedwatch.py || echo "fetch_fedwatch lỗi"
       - name: Dựng dữ liệu cho trang
         run: |
           if [ -f scripts/build_global.py ]; then python scripts/build_global.py; fi
