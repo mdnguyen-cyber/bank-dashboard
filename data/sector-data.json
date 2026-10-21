@@ -52224,7 +52224,7 @@
    "id": "R-02",
    "layer": "Quốc tế",
    "rule": "Fed hạ lãi suất / kỳ vọng cắt tăng",
-   "now": "Fed TĂNG 25 bps ngày 16/09/2026 lên 3,75–4,00%; EFFR 3,88%",
+   "now": "Fed TĂNG 25 bps ngày 16/09/2026 lên 3,75–4,00%; EFFR 3,88%; kỳ vọng (phương pháp FedWatch, giá ZQ 2026-10-21): phiên 28/10 tăng 13%, giảm 0%; đến 09/12 xác suất cao hơn hiện hành 91%",
    "state": "risk",
    "impact": "Chênh lệch VND–USD hẹp lại, dư địa nới của NHNN giảm"
   },

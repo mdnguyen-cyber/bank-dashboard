@@ -560,9 +560,21 @@ def main():
     npl_now, npl_ly = agg['npl']['all'][-1], agg['npl']['all'][-5]
     cof_now, cof_ly = agg['cof']['all'][-1], agg['cof']['all'][-5]
     sv = D['secVal']
+    # kỳ vọng Fed theo phiên FOMC (scripts/fetch_fedwatch.py: phương pháp CME FedWatch từ giá ZQ)
+    fw_txt, fw_state = '', 'risk'
+    _fwp = ROOT / 'data/global/fedwatch.json'
+    if _fwp.exists():
+        _F = json.loads(_fwp.read_text(encoding='utf-8')); _lo = _F['target'][0]; _M = _F['meetings']
+        if _M:
+            _ab = lambda m: sum(p for k, p in m['probs'].items() if float(k.split('-')[0]) > _lo)
+            _be = lambda m: sum(p for k, p in m['probs'].items() if float(k.split('-')[0]) < _lo)
+            _n, _y = _M[0], [m for m in _M if m['date'][:4] == _M[0]['date'][:4]][-1]
+            fw_txt = (f"; kỳ vọng (phương pháp FedWatch, giá ZQ {_F['asOf'][:10]}): phiên {_n['date'][8:]}/{_n['date'][5:7]} tăng {vn(_ab(_n), 0)}%, giảm {vn(_be(_n), 0)}%; "
+                      f"đến {_y['date'][8:]}/{_y['date'][5:7]} xác suất cao hơn hiện hành {vn(_ab(_y), 0)}%")
+            fw_state = 'risk' if _ab(_y) > 50 else ('ok' if _be(_y) > 50 else 'watch')
     SIG = [
         ('R-01', 'Quốc tế', 'DXY tăng > 1σ trong tháng', f'DXY {vn(dxy[km], 1)} · {vn(dxy1, 1, True)}% 1 tháng (z {vn(dxy1z or 0, 1, True)})', 'risk' if (dxy1z or 0) > 1 else ('watch' if dxy1 > 0 else 'ok'), 'Áp lực USD/VND, NHNN ưu tiên ổn định tỷ giá'),
-        ('R-02', 'Quốc tế', 'Fed hạ lãi suất / kỳ vọng cắt tăng', 'Fed TĂNG 25 bps ngày 16/09/2026 lên 3,75–4,00%; EFFR ' + vn(effr[max(effr)], 2) + '%', 'risk', 'Chênh lệch VND–USD hẹp lại, dư địa nới của NHNN giảm'),
+        ('R-02', 'Quốc tế', 'Fed hạ lãi suất / kỳ vọng cắt tăng', 'Fed TĂNG 25 bps ngày 16/09/2026 lên 3,75–4,00%; EFFR ' + vn(effr[max(effr)], 2) + '%' + fw_txt, fw_state, 'Chênh lệch VND–USD hẹp lại, dư địa nới của NHNN giảm'),
         ('R-03', 'Quốc tế', 'Thanh khoản ròng Fed giảm / SOFR > IORB', 'Chưa có chuỗi trong WiData (FRED WALCL, WTREGEN, RRP)', 'na', '—'),
         ('R-06', 'Quốc tế', 'Brent tăng > 20% YoY', f'Brent {vn(brent[km], 1)} USD/thùng · {vn(br_yoy, 0, True)}% YoY', 'risk' if br_yoy > 20 else 'ok', 'Kỳ vọng lạm phát tăng, NHNN thận trọng hơn'),
         ('R-08', 'Quốc tế', 'USD/CNY tăng > 1σ', f'USD/CNY {vn(S(235032)[km], 3)} · {vn(cny3, 1, True)}% 3 tháng (CNY mạnh lên)', 'ok' if cny3 < 0 else 'watch', 'CNY mạnh lên giảm sức ép cạnh tranh lên VND'),

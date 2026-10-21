@@ -911,11 +911,11 @@ function fedWatchCard() {
     + ` Đến phiên ${dvn(dec.date)}, tổng xác suất lãi suất cao hơn mức hiện hành ${cur.replace('-', '–')}% là <b>${nf(above(dec), 1)}%</b>; đến ${dvn(lastM.date)} mức kỳ vọng (điểm giữa, bình quân theo xác suất) là <b>${nf(lastM.exp_rate, 2)}%</b> so với ${nf((lo + up) / 2, 3)}% hiện nay.`
     + (n0.kalshi ? ` Thị trường dự đoán Kalshi cho phiên ${dvn(n0.date)}: ${kal(n0)} (%).` : '')
     + ` <b>Hàm ý:</b> kỳ vọng Fed ${above(dec) > 50 ? 'nghiêng về tăng tiếp, chênh lệch lãi suất VND–USD bị ép, NHNN ít dư địa nới' : below(dec) > 50 ? 'nghiêng về giảm, mở thêm dư địa nới lỏng cho NHNN' : 'giữ nguyên là kịch bản chính, áp lực tỷ giá từ phía Fed không tăng thêm'} (R-02).`;
-  const body = `<div class="tscroll"><table><thead><tr><th>Phiên FOMC</th>${keys.map(k => `<th class="n">${rl(k)}</th>`).join('')}<th class="n">Kỳ vọng</th><th>Kalshi (%)</th></tr></thead><tbody>
+  const body = `<div class="tscroll"><table><thead><tr><th>Phiên FOMC</th>${keys.map(k => `<th class="n">${rl(k)}</th>`).join('')}<th class="n">Kỳ vọng</th><th>Kalshi · quyết định tại phiên (%)</th></tr></thead><tbody>
     ${M.map(m => { const tk = top(m)[0]; return `<tr><td style="white-space:nowrap">${dvn(m.date)}</td>${keys.map(k => { const p = m.probs[k]; return `<td class="n"${k === tk ? ' style="background:#fff3c4;font-weight:700"' : ''}>${p == null ? '' : nf(p, 1)}</td>`; }).join('')}<td class="n">${nf(m.exp_rate, 2)}%</td><td class="muted" style="white-space:nowrap">${kal(m)}</td></tr>`; }).join('')}
-    </tbody></table></div><div class="cbox short"><canvas id="gFedPath" role="img" aria-label="Đường lãi suất Fed kỳ vọng"></canvas></div>`;
-  return card({ id: 'gFedW', title: 'Kỳ vọng lãi suất Fed theo từng phiên họp FOMC', h: '',
-    sub: `% xác suất khoảng lãi suất mục tiêu sau mỗi phiên · khoảng hiện hành ${cur.replace('-', '–')}% · ô tô vàng = xác suất cao nhất · giá ZQ lúc ${esc(F.asOf || F.fetched)} (giờ UTC)`,
+    </tbody></table></div>`;
+  return card({ id: 'gFedPath', title: 'Kỳ vọng lãi suất Fed theo từng phiên họp FOMC', h: 'short',
+    sub: `đường = lãi suất kỳ vọng sau mỗi phiên (điểm giữa khoảng, bình quân theo xác suất) · bảng = % xác suất khoảng lãi suất mục tiêu · khoảng hiện hành ${cur.replace('-', '–')}% · ô tô vàng = xác suất cao nhất · giá ZQ lúc ${esc(F.asOf || F.fetched)} (giờ UTC)`,
     body, insight: ins,
     src: 'Ước tính FinSuccess theo phương pháp CME FedWatch từ giá hợp đồng tương lai lãi suất quỹ liên bang 30 ngày (CBOT, qua Yahoo Finance); có thể lệch nhẹ so với CME FedWatch (CME dùng giá thanh toán cuối ngày). Đối chiếu: Kalshi (KXFEDDECISION). Lịch họp: Federal Reserve.' });
 }
