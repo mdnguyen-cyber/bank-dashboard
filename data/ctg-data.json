@@ -6,7 +6,7 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Big 4",
-  "updated": "2026-10-21",
+  "updated": "2026-10-22",
   "price": 30000,
   "priceDate": "2026-10-20",
   "mcap": 237280,
@@ -24697,7 +24697,7 @@
     "summary": "TCBS đánh giá cổ phiếu CTG duy trì vị thế hấp dẫn để nắm giữ và tích lũy trong các nhịp điều chỉnh khi sở hữu ROE đạt 21.8%, cao thứ hai hệ thống, trong khi định giá P/B 1.24 lần hiện thấp hơn mức trung bình ngành và lịch sử của chính doanh nghiệp. Động lực tăng trưởng trong nửa cuối năm 2026 dự kiến được thúc đẩy bởi việc nới hạn mức tín dụng và quy định mới cho phép tính 50% tiền gửi Kho bạc Nhà nước vào tỷ lệ LDR, tạo dư địa mở rộng cho vay với dự báo tăng trưởng tín dụng cả năm đạt 14%, tập trung vào phân khúc bán lẻ và doanh nghiệp FDI. Lợi nhuận trước thuế năm 2026 được kỳ vọng đạt 54,216 tỷ đồng, tăng 24.8% so với năm trước, nhờ NIM duy trì ở mức 2.92% và chỉ số CIR thuộc nhóm thấp nhất ngành phản ánh hiệu quả vận hành tối ưu, nối tiếp đà phục hồi từ quý 2/2026 khi lợi nhuận lập đỉnh lịch sử nhờ biên lãi thuần cải thiện mạnh mẽ do lãi suất tài sản gia tăng nhanh hơn chi phí vốn. Tuy nhiên, chất lượng tài sản vẫn là biến số cần theo dõi sát sao khi nợ xấu có dấu hiệu tăng trở lại trong quý 2/2026 tại các lĩnh vực bất động sản, tiêu dùng và nông nghiệp, đồng thời tỷ lệ bao phủ nợ xấu giảm mạnh xuống mức thấp nhất trong hai năm là 134%, tạo áp lực duy trì chi phí dự phòng cao để củng cố bộ đệm rủi ro. Bên cạnh đó, sự suy giảm của tỷ lệ CASA cùng áp lực chi phí vốn đi lên có thể trở thành rào cản kìm hãm đà cải thiện biên lãi thuần của ngân hàng trong thời gian tới."
    }
   ],
-  "fadeBefore": "2026-07-21",
+  "fadeBefore": "2026-07-22",
   "summary": {
    "n": 8,
    "median": 41400.0,
@@ -28490,8 +28490,8 @@
      "v": 5.9
     },
     {
-     "d": "2026-10-14",
-     "v": 5.9
+     "d": "2026-10-21",
+     "v": 5.4
     }
    ],
    "dep12Id": 202862,

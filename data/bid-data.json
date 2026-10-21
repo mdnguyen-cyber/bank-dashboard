@@ -6,7 +6,7 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Big 4",
-  "updated": "2026-10-21",
+  "updated": "2026-10-22",
   "price": 33400,
   "priceDate": "2026-10-20",
   "mcap": 264849,
@@ -22039,7 +22039,7 @@
     "summary": "TCBS duy trì khuyến nghị nắm giữ đối với cổ phiếu BID trong bối cảnh định giá P/B chạm mức 1.43 lần, vùng thấp nhất trong vòng 5 năm qua, sau khi lợi nhuận trước thuế quý 2/2026 ghi nhận 10,333 tỷ đồng, tăng 19.8% so với cùng kỳ nhờ sự phục hồi mạnh mẽ của biên lãi ròng (NIM). Động lực tăng trưởng trong nửa cuối năm 2026 dự kiến được thúc đẩy bởi việc nới hạn mức tín dụng và quy định mới từ tháng 8/2026 cho phép tính 50% tiền gửi Kho bạc Nhà nước vào tỷ lệ dư nợ trên tiền gửi (LDR), tạo dư địa mở rộng cho vay trong khi chiến lược dịch chuyển danh mục sang mảng bán lẻ có lợi suất cao tiếp tục hỗ trợ NIM. Tính chung cả năm 2026, lợi nhuận trước thuế dự báo đạt 42,771 tỷ đồng, tăng 13.2% so với năm trước, với kỳ vọng tín dụng tăng 15.5% và NIM đạt 2.22% nhờ tốc độ giải ngân nhanh hơn vào cuối năm theo yếu tố mùa vụ và mặt bằng lãi suất đi lên. Tuy nhiên, chất lượng tài sản đang trở thành biến số rủi ro khi tỷ lệ nợ xấu đã tăng lên 1.83% và tỷ lệ bao phủ nợ xấu giảm mạnh xuống 75.9%, mức thấp nhất trong nhóm ngân hàng quốc doanh, tạo áp lực trích lập dự phòng để khôi phục bộ đệm này lên trên 100% và có thể kìm hãm đà tăng trưởng lợi nhuận. Song song đó, ngân hàng còn đối mặt với rủi ro thanh khoản khi tốc độ tăng trưởng tiền gửi khách hàng thấp hơn đáng kể so với dư nợ, buộc đơn vị này phải phụ thuộc vào nguồn vốn từ giấy tờ có giá với chi phí vốn cao."
    }
   ],
-  "fadeBefore": "2026-07-21",
+  "fadeBefore": "2026-07-22",
   "summary": {
    "n": 7,
    "median": 44000,
@@ -25838,8 +25838,8 @@
      "v": 5.9
     },
     {
-     "d": "2026-10-20",
-     "v": 5.9
+     "d": "2026-10-21",
+     "v": 5.4
     }
    ],
    "dep12Id": 202700,

@@ -81,7 +81,7 @@ def main():
                     series[s['indicator_id']][k] = (p, v['date'], v['value'])
     # trái phiếu (ngày → cuối tháng)
     for d in raw:
-        if d['tool'] == 'wi_data_gbond':
+        if d['tool'] == 'wi_data_gbond' and d['request'].get('endpoint_name') == 'bonds_gov_yield_curve':
             for row in rows(d['response']):
                 k = ym(row['date'])
                 old = series[row['indicator_id']].get(k)

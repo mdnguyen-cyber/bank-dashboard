@@ -92,7 +92,7 @@ function cardMeta(el) {
 }
 function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình chart
   Object.keys(builders).forEach(k => { if (!['quick', 'book'].includes(k) && !built[k]) { builders[k](); built[k] = true; } });
-  ['intl', 'dom', 'mm', 'bank', 'peer', 'camel', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, peer: chPeer, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; } });
+  ['intl', 'dom', 'mm', 'bond', 'bank', 'peer', 'camel', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bond: chBond, bank: chBank, peer: chPeer, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; } });
   GCOUNTRY.forEach(([k]) => { if (!gDone[k]) { gDone[k] = true; ({ gl: drGL, us: drUS, ea: drEA, jp: drJP, cn: drCN, ov: chIntlOverview })[k](); } });
 }
 function drawSpec(src, cid, last) {   // vẽ lại chart `src` vào canvas `cid`; last = mở sẵn khung N điểm cuối (vẫn kéo/chọn lại được)
@@ -197,7 +197,7 @@ function paneOverview() {
   const go = (p, l) => `<button type="button" class="lnk" data-gop="${p}">${l} →</button>`;
   const DRV = [
     ['Lãi suất điều hành & thanh khoản', 'NHNN dùng lãi suất tái cấp vốn, tái chiết khấu (trần, sàn của lãi suất liên ngân hàng), nghiệp vụ thị trường mở OMO (bơm, hút tiền hằng ngày), tín phiếu NHNN, dự trữ bắt buộc và trần lãi suất tiền gửi kỳ hạn dưới 6 tháng.',
-      'NHNN bơm tiền → lãi suất liên ngân hàng giảm → chi phí vốn (COF) giảm sau vài tháng. NHNN hút tiền → điều ngược lại, ngân hàng phải tăng lãi suất huy động.', ['mm', 'Tiền tệ VND vs USD'], 'NIM · COF'],
+      'NHNN bơm tiền → lãi suất liên ngân hàng giảm → chi phí vốn (COF) giảm sau vài tháng. NHNN hút tiền → điều ngược lại, ngân hàng phải tăng lãi suất huy động.', ['mm', 'Tiền tệ VND vs USD'], ['bond', 'Trái phiếu: FI · G-bond'], 'NIM · COF'],
     ['Room tín dụng', 'Mỗi năm NHNN đặt chỉ tiêu tăng trưởng tín dụng toàn hệ thống rồi giao hạn mức (room) cho từng ngân hàng, dựa trên kết quả xếp hạng (TT 21/2025).',
       'Room quyết định ngân hàng được lớn thêm bao nhiêu. Ngân hàng xếp hạng cao, nợ xấu thấp được room rộng hơn; room hẹp thì dù có khách hàng cũng không cho vay thêm được.', ['camel', 'Xếp hạng TT21 & room'], 'Tăng trưởng tín dụng'],
     ['Tỷ giá USD/VND', 'NHNN công bố tỷ giá trung tâm mỗi ngày; ngân hàng chỉ được giao dịch trong biên độ ±5%. Khi USD mạnh lên (Fed tăng lãi suất, DXY tăng) hoặc cầu ngoại tệ trong nước tăng, NHNN bán USD từ dự trữ.',
@@ -494,7 +494,7 @@ function drawTable(k, dir) {
 /* =====================================================================
    TAB 2 · BỨC TRANH NGÀNH (Quốc tế → Nội địa → Ngân hàng → Kịch bản IDX)
 ===================================================================== */
-const PSUB = [['intl', 'Quốc tế'], ['dom', 'Nội địa'], ['mm', 'Tiền tệ VND vs USD'], ['bank', 'Ngân hàng'], ['peer', 'So sánh ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
+const PSUB = [['intl', 'Quốc tế'], ['dom', 'Nội địa'], ['mm', 'Tiền tệ VND vs USD'], ['bond', 'Trái phiếu: FI · G-bond'], ['bank', 'Ngân hàng'], ['peer', 'So sánh ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
 const pDone = {};
 function panePicture() {
   $('#picture').innerHTML = `
@@ -508,6 +508,7 @@ function panePicture() {
   <div class="sub on" data-pp="intl">${subIntl()}</div>
   <div class="sub" data-pp="dom">${subDom()}</div>
   <div class="sub" data-pp="mm">${subMM()}</div>
+  <div class="sub" data-pp="bond">${subBond()}</div>
   <div class="sub" data-pp="bank">${subBank()}</div>
   <div class="sub" data-pp="peer">${subPeer()}</div>
   <div class="sub" data-pp="camel">${subCamel()}</div>
@@ -523,7 +524,7 @@ function openP(k, reveal = true) {
   const h2 = $('#pic2'); if (reveal && h2 && h2.classList.contains('shut')) h2.click();   // đi tới một mục con thì mở phần chi tiết nếu đang thu gọn
   $$('#pSub button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
   $$('#picture [data-pp]').forEach(p => p.classList.toggle('on', p.dataset.pp === k));
-  if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bank: chBank, peer: chPeer, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; }
+  if (!pDone[k]) { ({ intl: chIntl, dom: chDom, mm: chMM, bond: chBond, bank: chBank, peer: chPeer, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; }
 }
 
 /* ---- Xếp hạng TT21 & room (mô phỏng phần định lượng) ---- */
@@ -1433,7 +1434,7 @@ function drawFeeSec() {
 }
 function nimDepInsight() {
   const d0 = AG.cof.all[QI - 2], d1 = AG.cof.all[QI];
-  return `COF ngành tăng từ ${pc(d0, 2)} (${BQ[QI - 2]}) lên <b>${pc(d1, 2)}</b> (${BQ[QI]}) — đi sau cú tăng LS huy động 12T từ 12/2025 đúng như R-13. NIM ngành ${pc(AG.nim.all[QI], 2)} giữ được nhờ YEA tăng theo (${pc(AG.yea.all[QI], 2)}), nhưng COF Q3–Q4 sẽ còn phản ánh mức 5,9% của 12T.`;
+  return `COF ngành tăng từ ${pc(d0, 2)} (${BQ[QI - 2]}) lên <b>${pc(d1, 2)}</b> (${BQ[QI]}) — đi sau cú tăng LS huy động 12T từ 12/2025 đúng như R-13. NIM ngành ${pc(AG.nim.all[QI], 2)} giữ được nhờ YEA tăng theo (${pc(AG.yea.all[QI], 2)}), nhưng COF Q4 vẫn phản ánh mức 5,9% của 12T (tiền gửi cũ còn kỳ hạn); đợt hạ về 5,4% ngày 20–21/10/2026 chỉ ngấm dần vào COF từ năm 2027.`;
 }
 function aqInsight() {
   const g = GROUPS.map(gg => `${gg}: NPL ${pc(AG.npl[gg][QI], 2)}, bao phủ ${pc(AG.llr[gg][QI], 0)}`).join(' · ');
@@ -1467,6 +1468,190 @@ function drawGrp(k) {
 }
 
 /* ---- Kịch bản IDX ---- */
+/* ---- Trái phiếu: FI (ngân hàng phát hành) · TPDN · G-bond — dữ liệu window.BOND_DATA (scripts/build_bond_data.py) ---- */
+const BD = window.BOND_DATA;
+const BTIER = ['Big 4', 'Tư nhân lớn', 'Tư nhân vừa', 'Tư nhân nhỏ'];
+const nk = v => v == null ? '—' : nf(v / 1000, 1) + ' nghìn tỷ';
+const bIdx = (arr, d) => { let k = -1; arr.forEach((x, i) => { if (x <= d) k = i; }); return k; };
+const dAgo = (d, n) => { const t = new Date(d); t.setDate(t.getDate() - n); return t.toISOString().slice(0, 10); };
+function bondNums() {
+  const dp = BD.dep, n = dp.months.length - 1, T = dp.tiers;
+  const fi = BD.fi, p = fi.cpnPriv13.map((v, i) => [i, v]).filter(x => x[1] != null), pl = p[p.length - 1];
+  const bigAt = m => { const j = dp.months.indexOf(m); return j < 0 ? null : T['Big 4'][j]; };
+  const cv = BD.gb.curve, ci = cv.d.length - 1, c3 = bIdx(cv.d, dAgo(cv.d[ci], 91)), cy = bIdx(cv.d, dAgo(cv.d[ci], 365)), c0 = bIdx(cv.d, cv.d[ci].slice(0, 4) + '-01-01');
+  const a = BD.gb.auc, ai = a.months.length - 1;
+  const cut = dp.banks.filter(b => b.m1 != null && b.v < b.m1), up = dp.banks.filter(b => b.m1 != null && b.v > b.m1);
+  return { dp, n, T, fi, pl, plM: pl ? fi.months[pl[0]] : null, plBig: pl ? bigAt(fi.months[pl[0]]) : null, cv, ci, c3, cy, c0, a, ai, cut, up,
+    slope: k => cv['10Y'][k] != null && cv['1Y'][k] != null ? cv['10Y'][k] - cv['1Y'][k] : null };
+}
+function subBond() {
+  if (!BD) return `<div class="banner">Chưa có dữ liệu trái phiếu.</div>`;
+  const N = bondNums(), { dp, n, T, fi, pl, cv, ci, c3, a, ai } = N;
+  const big = T['Big 4'][n], big1 = T['Big 4'][n - 1], gap = T['Tư nhân nhỏ'][n] - big;
+  const spr = pl && N.plBig != null ? pl[1] - N.plBig : null;
+  const cfN = fi.cf.out.length - 1, cb = BD.cb, cbN = cb.months.length - 1;
+  const sl = N.slope(ci), sl3 = N.slope(c3);
+  const aw = a.inv[ai] ? a.win[ai] / a.inv[ai] * 100 : null;
+  const fi12 = fi.mat.bank.slice(0, 12).reduce((s, v) => s + (v || 0), 0);
+  return `<div class="banner chain">Thị trường 1 (lãi suất huy động) → FI bond (ngân hàng phát hành trái phiếu để có vốn trung dài hạn) → TPDN toàn thị trường (chậm trả, đáo hạn) → G-bond (lãi suất phi rủi ro, đấu thầu Kho bạc, khối ngoại). Chênh coupon FI − huy động 12T là thước đo chi phí vốn dài hạn của ngân hàng.</div>
+  <p class="muted" style="margin:-4px 0 12px">Lãi suất huy động đến ${dvn(BD.meta.depAsof)} · lợi suất TPCP đến ${dvn(BD.meta.curveAsof)} · TPDN, đấu thầu theo tháng (tháng ${mvn(cb.months[cbN])} mới tính đến ${dvn(fi.cf.asof)}).</p>
+  <div class="kpis">
+    ${kpi('Huy động 12T Big 4', pc(big, 2), `${sg((big - big1) * 100, 0, ' bps')} so với cuối tháng trước · ${N.cut.length}/${dp.banks.length} NH giảm trong 30 ngày`, big < big1 ? 'pos' : '')}
+    ${kpi('Coupon FI 1–3 năm (riêng lẻ)', pc(pl && pl[1], 2), `${mvn(N.plM)} · chênh ${sg(spr, 2, ' đ%')} so với huy động 12T Big 4`, spr != null && spr > 2.5 ? 'neg' : '')}
+    ${kpi('Dư nợ trái phiếu ngân hàng', nk(fi.cf.out[cfN]), `đáo hạn 12 tháng tới ${nk(fi12)}`)}
+    ${kpi('TPDN chậm trả (gốc + lãi)', nk(cb.late[cbN]), `${pc(cb.late[cbN] / cb.out[cbN] * 100, 1)} dư nợ · BĐS ${nk((cb.lateBySec.find(x => x.s === 'Bất động sản') || {}).v)}`, 'neg')}
+    ${kpi('TPCP 10 năm', pc(cv['10Y'][ci], 2), `1 năm ${pc(cv['1Y'][ci], 2)} · dốc 10Y−1Y ${sg(sl * 100, 0, ' bps')} (${sg((sl - sl3) * 100, 0, ' bps')} 3 tháng)`)}
+    ${kpi('Đấu thầu TPCP tháng ' + mvn(a.months[ai]).slice(0, 2), pc(aw, 0) + ' trúng', `gọi ${nk(a.inv[ai])} · trúng ${nk(a.win[ai])} · 10Y ${pc(a.y['10 năm'][ai], 2)}`)}
+  </div>
+  <h4 class="sub" style="margin:18px 0 8px;font-size:1.05rem">Thị trường 1 & FI bond</h4>
+  <div class="grid g2 gap">
+    ${card({ id: 'bDep', title: 'Lãi suất huy động 12 tháng theo nhóm ngân hàng', sub: '%/năm · cá nhân, tại quầy · trung bình đơn giản trong nhóm, cuối tháng (tháng hiện tại = ngày mới nhất)', insight: bDepIns(N), src: BD.src.dep })}
+    ${card({ id: 'bFiCpn', title: 'Chi phí vốn dài hạn: coupon trái phiếu ngân hàng vs huy động 12T', sub: '%/năm · coupon bình quân gia quyền theo giá trị phát hành từng tháng · đường đỏ = Big 4 12T · cột = chênh coupon 1–3 năm riêng lẻ − Big 4 (trục phải)', insight: bFiCpnIns(N), src: BD.src.fi + '; ' + BD.src.dep })}
+    ${card({ id: 'bFiIss', title: 'Ngân hàng phát hành trái phiếu theo kỳ hạn', sub: 'tỷ đồng/tháng · giá trị phát hành thực tế · ≤1 năm, 1–3 năm, 3–5 năm, >5 năm (>5 năm thường là nợ thứ cấp bổ sung vốn cấp 2)', insight: bFiIssIns(N), src: BD.src.fi })}
+    ${card({ id: 'bFiMat', title: 'Trái phiếu ngân hàng: dư nợ và lịch đáo hạn', sub: 'đường = dư nợ (nghìn tỷ, trục phải) · cột = gốc đã trả + mua lại trước hạn theo tháng; phần sau tháng hiện tại = gốc đáo hạn theo lịch (tỷ đồng)', insight: bFiMatIns(N), src: BD.src.fi })}
+  </div>
+  <article class="card"><h3 class="sub">Lãi suất huy động 12 tháng từng ngân hàng · ${dvn(BD.meta.depAsof)}</h3><p class="chart-sub">%/năm · Δ 30 ngày và Δ từ đầu năm tính bằng bps · sắp xếp theo nhóm rồi mức lãi suất</p>
+    <div class="tscroll"><table><thead><tr><th>Ngân hàng</th><th>Nhóm</th><th class="n">12T</th><th class="n">Δ 30 ngày</th><th class="n">Δ từ đầu năm</th></tr></thead><tbody>${
+      [...dp.banks].sort((x, y) => BTIER.indexOf(x.g) - BTIER.indexOf(y.g) || y.v - x.v).map(b => `<tr><td><b>${esc(b.n)}</b></td><td>${gdot(b.g)}${b.g}</td><td class="n">${nf(b.v, 2)}</td><td class="n">${b.m1 == null ? '—' : sg((b.v - b.m1) * 100, 0, '')}</td><td class="n">${b.ytd == null ? '—' : sg((b.v - b.ytd) * 100, 0, '')}</td></tr>`).join('')}</tbody></table></div>
+    <div class="src">Nguồn: ${BD.src.dep}</div></article>
+  <h4 class="sub" style="margin:18px 0 8px;font-size:1.05rem">TPDN toàn thị trường</h4>
+  <div class="grid g2 gap">
+    ${card({ id: 'bCbIss', title: 'Phát hành TPDN theo ngành', sub: 'tỷ đồng/tháng · VND · Tài chính (ngân hàng, chứng khoán, tài chính tiêu dùng), Bất động sản, còn lại', insight: bCbIssIns(N), src: BD.src.cb })}
+    ${card({ id: 'bCbLate', title: 'TPDN chậm trả gốc và lãi', sub: 'cột = dư nợ chậm trả cuối tháng (nghìn tỷ) · đường = số mã mới chậm trả trong tháng (trục phải)', insight: bCbLateIns(N), src: BD.src.cb })}
+    ${card({ id: 'bCbMat', title: 'Lịch đáo hạn TPDN 15 tháng tới theo ngành', sub: 'tỷ đồng/tháng · gốc đến hạn theo dư nợ hiện tại (chưa trừ mua lại trước hạn sau này)', insight: bCbMatIns(N), src: BD.src.cb })}
+    ${card({ id: 'bCbSec', title: `Chậm trả theo ngành · ${mvn(BD.cb.lateBySecM)}`, sub: 'nghìn tỷ đồng · dư nợ chậm trả gốc + lãi, VND', insight: bCbSecIns(N), src: BD.src.cb })}
+  </div>
+  <h4 class="sub" style="margin:18px 0 8px;font-size:1.05rem">G-bond (trái phiếu chính phủ)</h4>
+  <div class="grid g2 gap">
+    ${card({ id: 'bCurve', title: 'Đường cong lợi suất TPCP Việt Nam', sub: `%/năm theo kỳ hạn · ${dvn(cv.d[ci])} so với 3 tháng trước, đầu năm và 1 năm trước`, insight: bCurveIns(N), src: BD.src.curve })}
+    ${card({ id: 'bCurveTs', title: 'Lợi suất TPCP 1, 5, 10 năm và độ dốc 10Y − 1Y', sub: '%/năm theo ngày · cột xám = độ dốc (trục phải, điểm %)', h: 'tall', src: BD.src.curve })}
+    ${card({ id: 'bAuc', title: 'Đấu thầu TPCP: gọi thầu, đặt thầu, trúng thầu', sub: 'nghìn tỷ đồng/tháng · Kho bạc Nhà nước, gồm phát hành thêm · đường = tỷ lệ trúng/gọi thầu (trục phải)', insight: bAucIns(N), src: BD.src.auc })}
+    ${card({ id: 'bAucY', title: 'Lãi suất trúng thầu theo kỳ hạn', sub: '%/năm · bình quân gia quyền trong tháng · tháng không trúng thầu để trống', insight: bAucYIns(N), src: BD.src.auc })}
+    ${card({ id: 'bFx', title: 'Khối ngoại mua/bán ròng TPCP trên thứ cấp', sub: 'tỷ đồng/tháng · tổng các nhóm kỳ hạn còn lại', insight: bFxIns(N), src: BD.src.fx })}
+  </div>`;
+}
+function bDepIns(N) {
+  const { T, n, dp } = N, big = T['Big 4'][n];
+  const y0 = dp.months.indexOf(dp.months[n].slice(0, 4) + '-01'), lo = dp.months.indexOf('2025-11');
+  return `Big 4 về <b>${pc(big, 2)}</b> (${dvn(BD.meta.depAsof)}), giảm ${nf((T['Big 4'][n - 1] - big) * 100, 0)} bps so với cuối tháng trước — lần giảm đầu tiên kể từ 2024, sau chuỗi tăng từ ${pc(T['Big 4'][lo], 1)} (11/2025) lên 5,9% (03/2026). ${N.cut.length} ngân hàng giảm trong 30 ngày (phần lớn −50 bps), ${N.up.length} tăng${N.up.length ? ' (' + N.up.map(b => b.n).join(', ') + ')' : ''}. Big 4 vẫn cao hơn cuối năm trước ${nf((big - T['Big 4'][y0 - 1]) * 100, 0)} bps.`
+    + how('Ngân hàng đồng loạt hạ lãi suất huy động khi thanh khoản đã bớt căng (OMO, liên ngân hàng) hoặc theo chỉ đạo giảm mặt bằng lãi suất cho vay. COF giảm trễ 1–2 quý vì tiền gửi cũ còn kỳ hạn; nhóm phụ thuộc tiền gửi kỳ hạn (tư nhân nhỏ) hưởng lợi biên NIM chậm hơn Big 4 nếu phải giữ lãi suất cao để giữ vốn.');
+}
+function bFiCpnIns(N) {
+  const { fi, pl, plM, plBig } = N; if (!pl) return '';
+  const y = plM.slice(0, 4), v = fi.cpnPriv13.filter((x, i) => x != null && fi.months[i].startsWith(y)), avg = v.reduce((a, b) => a + b, 0) / v.length;
+  const yp = String(+y - 1), vp = fi.cpnPriv13.filter((x, i) => x != null && fi.months[i].startsWith(yp)), avgp = vp.length ? vp.reduce((a, b) => a + b, 0) / vp.length : null;
+  return `Trái phiếu ngân hàng 1–3 năm phát hành riêng lẻ trả <b>${pc(pl[1], 2)}</b> (${mvn(plM)}), cao hơn huy động 12T Big 4 <b>${nf(pl[1] - plBig, 2)} điểm %</b>. Bình quân ${y}: ${pc(avg, 2)}${avgp != null ? ` (so với ${pc(avgp, 2)} năm ${yp})` : ''} — ngân hàng phải trả đắt hơn rõ rệt để có vốn trung hạn, khớp với CD 12 tháng nền 8.x% mà thị trường ghi nhận.`
+    + how('Chênh FI − huy động rộng = vốn dài hạn khan, ngân hàng cần nguồn ổn định cho tỷ lệ vốn ngắn hạn cho vay trung dài hạn (và LCR/NSFR khi chuẩn Basel III áp dụng). Huy động giảm mà coupon FI không giảm theo thì chênh còn nới — chi phí vốn biên chưa hạ thật.');
+}
+function bFiIssIns(N) {
+  const { fi } = N, y = fi.months[fi.months.length - 1].slice(0, 4), idx = fi.months.map((m, i) => m.startsWith(y) ? i : -1).filter(i => i >= 0);
+  const yp = String(+y - 1), ip = fi.months.map((m, i) => m.startsWith(yp) && +m.slice(5) <= +fi.months[fi.months.length - 1].slice(5) ? i : -1).filter(i => i >= 0);
+  const sum = (ix, b) => ix.reduce((a, i) => a + (b ? fi.val[b][i] || 0 : BUCK.reduce((s, k) => s + (fi.val[k][i] || 0), 0)), 0);
+  const t = sum(idx), tp = sum(ip), l5 = sum(idx, '>5 năm'), s13 = sum(idx, '1-3 năm');
+  return `Từ đầu ${y} ngân hàng phát hành <b>${nk(t)}</b> (cùng kỳ ${yp}: ${nk(tp)}, ${sg((t / tp - 1) * 100, 0)}). Kỳ hạn 1–3 năm chiếm ${pc(s13 / t * 100, 0)}, trên 5 năm ${pc(l5 / t * 100, 0)}.`
+    + how('Kỳ hạn 1–3 năm là kênh huy động vốn trung hạn (thay CD, bù LDR); trên 5 năm chủ yếu là nợ thứ cấp tính vào vốn cấp 2 để giữ CAR khi tín dụng tăng nhanh. Phát hành dồn vào tháng 6 và 12 là mùa chốt CAR, LDR.');
+}
+const BUCK = ['≤1 năm', '1-3 năm', '3-5 năm', '>5 năm'];
+function bFiMatIns(N) {
+  const m = BD.fi.mat, s12 = m.bank.slice(0, 12).reduce((a, v) => a + (v || 0), 0), pk = m.bank.reduce((a, v, i) => v > m.bank[a] ? i : a, 0), cf = BD.fi.cf, k = cf.out.length - 1, y = cf.months.indexOf(String(+cf.months[k].slice(0, 4) - 1) + cf.months[k].slice(4));
+  const L12 = cf.months.slice(-13, -1).map(m => cf.months.indexOf(m)), bb = { p: L12.reduce((x, i) => x + (cf.paid[i] || 0), 0), b: L12.reduce((x, i) => x + (cf.buyback[i] || 0), 0) };
+  return `Dư nợ trái phiếu ngân hàng <b>${nk(cf.out[k])}</b>${y >= 0 ? ` (${sg((cf.out[k] / cf.out[y] - 1) * 100, 1)} so với cùng kỳ)` : ''}. 12 tháng tới đáo hạn ${nk(s12)}; tháng nặng nhất ${mvn(m.months[pk])} (${nk(m.bank[pk])}). 12 tháng qua ngân hàng trả gốc ${nk(bb.p)}, trong đó mua lại trước hạn ${pc(bb.b / bb.p * 100, 0)} — phần lớn trái phiếu được tất toán sớm chứ không chờ đáo hạn.`
+    + how('Đáo hạn lớn rơi vào lúc lãi suất phát hành mới cao hơn lãi suất cũ thì chi phí vốn tăng khi tái tục. Lịch đáo hạn chưa tính mua lại trước hạn sau này, nên áp lực thực tế thường đến sớm hơn và rải đều hơn.');
+}
+function bCbIssIns(N) {
+  const c = BD.cb, n = c.months.length - 1, y = c.months[n].slice(0, 4), idx = c.months.map((m, i) => m.startsWith(y) ? i : -1).filter(i => i >= 0);
+  const s = k => idx.reduce((a, i) => a + (c.iss[k][i] || 0), 0), tot = s('Tài chính') + s('Bất động sản') + s('Khác');
+  return `Từ đầu ${y}: TPDN phát hành <b>${nk(tot)}</b>, trong đó Tài chính ${pc(s('Tài chính') / tot * 100, 0)}, Bất động sản ${pc(s('Bất động sản') / tot * 100, 0)}. Ngân hàng vẫn là bên phát hành lớn nhất; bất động sản quay lại mạnh từ quý 2/2026.`
+    + how('Phát hành bất động sản tăng giúp giảm áp lực đáo hạn và chậm trả, nhưng nếu ngân hàng là bên mua (qua công ty chứng khoán) thì rủi ro chuyển ngược vào bảng cân đối ngân hàng.');
+}
+function bCbLateIns(N) {
+  const c = BD.cb, n = c.months.length - 1, pk = c.late.reduce((a, v, i) => v > c.late[a] ? i : a, 0), y = c.months.indexOf(String(+c.months[n].slice(0, 4) - 1) + c.months[n].slice(4));
+  return `Dư nợ chậm trả <b>${nk(c.late[n])}</b> (${pc(c.late[n] / c.out[n] * 100, 1)} dư nợ TPDN ${nk(c.out[n])}), đỉnh ${nk(c.late[pk])} (${mvn(c.months[pk])})${y >= 0 ? `, cùng kỳ ${nk(c.late[y])}` : ''}. Số mã mới chậm trả chỉ 0–4 mã/tháng từ 2024 (so với 30–90 mã/tháng giữa 2023): chậm trả phần lớn là nợ cũ chưa xử lý, không phải đợt vỡ nợ mới.`
+    + how('Chậm trả đi ngang ở mức cao = nợ tồn đọng chưa được giải quyết (gia hạn, trả bằng tài sản), rủi ro chủ yếu nằm ở trái phiếu bất động sản và các tổ chức phát hành cũ. Số mã mới chậm trả tăng trở lại mới là tín hiệu xấu đi.');
+}
+function bCbMatIns(N) {
+  const m = BD.cb.mat, t = i => ['Tài chính', 'Bất động sản', 'Khác'].reduce((a, k) => a + (m.sec[k][i] || 0), 0);
+  const s12 = m.months.slice(0, 12).reduce((a, _, i) => a + t(i), 0), r12 = m.months.slice(0, 12).reduce((a, _, i) => a + (m.sec['Bất động sản'][i] || 0), 0);
+  return `12 tháng tới TPDN đáo hạn ${nk(s12)}, bất động sản ${nk(r12)} (${pc(r12 / s12 * 100, 0)}). Tháng nặng: 12/2026 (BĐS ${nk(m.sec['Bất động sản'][2])}), 06/2027 và 12/2027.`
+    + how('Đáo hạn bất động sản dồn vào cuối năm, lúc doanh nghiệp cần tiền trả gốc — nếu không phát hành mới được thì chuyển sang chậm trả hoặc vay ngân hàng. Theo dõi tỷ lệ chậm trả các tháng đó.');
+}
+function bCbSecIns() {
+  const s = BD.cb.lateBySec, t = s.reduce((a, x) => a + x.v, 0);
+  return `Bất động sản chiếm ${pc(s[0].v / t * 100, 0)} dư nợ chậm trả, Hàng tiêu dùng ${pc((s.find(x => x.s === 'Hàng tiêu dùng') || { v: 0 }).v / t * 100, 0)}; Tài chính chỉ ${nk((s.find(x => x.s === 'Tài chính') || {}).v)} — FI bond ngân hàng gần như không có chậm trả.`
+    + how('Rủi ro TPDN với ngân hàng nằm ở dư nợ cho vay và tài sản bảo đảm của các doanh nghiệp bất động sản đang chậm trả, không ở trái phiếu do ngân hàng phát hành.');
+}
+function bCurveIns(N) {
+  const { cv, ci, c3, c0 } = N, ch = (t, k) => (cv[t][ci] - cv[t][k]) * 100;
+  const bf = ch('1Y', c3) - ch('10Y', c3) >= 10 && ch('1Y', c3) > 0;
+  return `10 năm <b>${pc(cv['10Y'][ci], 2)}</b> (${sg(ch('10Y', c0), 0, ' bps')} từ đầu năm), 1 năm ${pc(cv['1Y'][ci], 2)} (${sg(ch('1Y', c0), 0, ' bps')}). Trong 3 tháng: 1 năm ${sg(ch('1Y', c3), 0, ' bps')}, 10 năm ${sg(ch('10Y', c3), 0, ' bps')}${bf ? ' — đầu ngắn tăng nhanh hơn đầu dài (dốc giảm khi lãi suất tăng: bear flattening), dấu hiệu tiền ngắn hạn đắt lên.' : ' — hai đầu đi gần song song, độ dốc gần như không đổi.'}`
+    + how('Lợi suất TPCP là sàn lãi suất phi rủi ro; tăng thì ngân hàng giữ nhiều TPCP lỗ đánh giá lại (chứng khoán sẵn sàng để bán) và lãi suất cho vay khó giảm. Đường cong dốc lên giúp ngân hàng có lãi từ chênh kỳ hạn.');
+}
+function bAucIns(N) {
+  const { a, ai } = N, y = a.months[ai].slice(0, 4), ix = a.months.map((m, i) => m.startsWith(y) ? i : -1).filter(i => i >= 0);
+  const inv = ix.reduce((s, i) => s + a.inv[i], 0), win = ix.reduce((s, i) => s + a.win[i], 0), bid = ix.reduce((s, i) => s + a.bid[i], 0);
+  return `Từ đầu ${y}: gọi thầu ${nk(inv)}, trúng ${nk(win)} (<b>${pc(win / inv * 100, 0)}</b>), đặt thầu bằng ${nf(bid / inv, 2)} lần gọi thầu. Tháng ${mvn(a.months[ai])}: trúng ${pc(a.win[ai] / a.inv[ai] * 100, 0)} — tập trung kỳ hạn 10 năm (${nk(a.win10[ai])}).`
+    + how('Tỷ lệ trúng thầu thấp = Kho bạc không chấp nhận lãi suất nhà đầu tư (chủ yếu ngân hàng) đòi — cầu TPCP yếu khi ngân hàng cần vốn cho tín dụng. Trúng thầu nhiều hút tiền từ hệ thống vào Kho bạc; tiền chỉ quay lại khi giải ngân đầu tư công.');
+}
+function bAucYIns(N) {
+  const { a, ai } = N, y10 = a.y['10 năm'], j = a.months.indexOf(String(+a.months[ai].slice(0, 4) - 1) + '-12');
+  return `Lãi suất trúng thầu 10 năm <b>${pc(y10[ai], 2)}</b>${j >= 0 && y10[j] != null ? ` (cuối năm trước ${pc(y10[j], 2)}, ${sg((y10[ai] - y10[j]) * 100, 0, ' bps')})` : ''} — Kho bạc chấp nhận trả cao hơn để huy động đủ vốn.`
+    + how('Lãi suất trúng thầu là mức Kho bạc chấp nhận; tăng liên tục nghĩa là Bộ Tài chính ưu tiên huy động đủ vốn hơn giữ chi phí thấp — đẩy mặt bằng lãi suất phi rủi ro lên.');
+}
+function bFxIns() {
+  const f = BD.gb.fx, n = f.months.length, s12 = f.net.slice(-12).reduce((a, v) => a + (v || 0), 0);
+  return `Khối ngoại ${s12 >= 0 ? 'mua' : 'bán'} ròng ${nf(Math.abs(s12), 0)} tỷ đồng trong 12 tháng; tháng ${mvn(f.months[n - 1])} ${sg(f.net[n - 1], 0, ' tỷ')}. Quy mô nhỏ so với thị trường — khối ngoại không phải lực chính của G-bond VN.`
+    + how('Lợi suất 10 năm VN thấp hơn UST 10 năm nên dòng vốn ngoại vào TPCP hạn chế; chỉ khi chênh lợi suất dương trở lại và VND ổn định thì khối ngoại mới tăng nắm giữ.');
+}
+function chBond() {
+  if (!BD) return;
+  const N = bondNums(), { dp, fi, cv, a } = N;
+  mk('bDep', { type: 'line', data: { labels: dp.months.map(mvn), datasets: BTIER.map(g => L(g, dp.tiers[g], GC[g], { borderWidth: g === 'Big 4' ? 2.6 : 1.8 })) }, options: { scales: { y: pctAxis('') } } });
+  const i0 = fi.months.indexOf('2023-01'), fm = fi.months.slice(i0), bigM = fm.map(m => { const j = dp.months.indexOf(m); return j < 0 ? null : dp.tiers['Big 4'][j]; });
+  const p13 = fi.cpnPriv13.slice(i0);
+  mk('bFiCpn', { type: 'bar', data: { labels: fm.map(mvn), datasets: [
+    L('Coupon 1–3 năm riêng lẻ', p13, C.navy, { borderWidth: 2.6, pointRadius: 3, spanGaps: false }),
+    L('Coupon bình quân mọi kỳ hạn', fi.cpnAll.slice(i0), C.tealInk, { borderDash: [5, 4], borderWidth: 1.6, pointRadius: 2, spanGaps: false }),
+    L('Huy động 12T Big 4', bigM, C.red, { borderWidth: 2.2 }),
+    { type: 'bar', label: 'Chênh 1–3 năm − Big 4', data: p13.map((v, i) => v == null || bigM[i] == null ? null : +(v - bigM[i]).toFixed(2)), backgroundColor: 'rgba(217,164,0,.35)', yAxisID: 'y1', unit: ' đ%', dp: 2 }] },
+    options: { scales: { y: pctAxis('', { beginAtZero: false }), y1: { position: 'right', min: 0, max: 6, grid: { display: false }, ticks: { callback: v => nf(v, 1) } } } } });
+  stk('bFiIss', fm.map(mvn), Object.fromEntries(BUCK.map(b => [b, fi.val[b].slice(i0)])), { unit: ' tỷ', colors: [C.grey, C.navy, C.teal, C.purple] });
+  const cf = fi.cf, mt = fi.mat, ml = [...cf.months, ...mt.months.filter(m => !cf.months.includes(m))];
+  const at = (arr, ms, m) => { const j = ms.indexOf(m); return j < 0 ? null : arr[j]; };
+  const now = cf.months[cf.months.length - 1];
+  mk('bFiMat', { type: 'bar', data: { labels: ml.map(mvn), datasets: [
+    { label: 'Gốc đã trả', data: ml.map(m => m < now ? at(cf.paid, cf.months, m) - (at(cf.buyback, cf.months, m) || 0) : null), backgroundColor: 'rgba(29,38,120,.75)', stack: 's', unit: ' tỷ', dp: 0 },
+    { label: 'Mua lại trước hạn', data: ml.map(m => m < now ? at(cf.buyback, cf.months, m) : null), backgroundColor: 'rgba(89,197,200,.85)', stack: 's', unit: ' tỷ', dp: 0 },
+    { label: 'Đáo hạn theo lịch', data: ml.map(m => m >= now ? at(mt.bank, mt.months, m) : null), backgroundColor: 'rgba(192,57,43,.7)', stack: 's', unit: ' tỷ', dp: 0 },
+    L('Dư nợ', ml.map(m => { const v = at(cf.out, cf.months, m); return v == null ? null : +(v / 1000).toFixed(1); }), C.gold, { yAxisID: 'y1', unit: ' nghìn tỷ', dp: 1, borderWidth: 2.4 })] },
+    options: { scales: { x: { stacked: true }, y: numAxis('tỷ đồng', { stacked: true }), y1: { position: 'right', beginAtZero: false, grid: { display: false }, ticks: { callback: v => nf(v, 0) } } } } });
+  const cb = BD.cb;
+  stk('bCbIss', cb.months.map(mvn), cb.iss, { unit: ' tỷ', colors: [C.navy, C.red, C.grey] });
+  mk('bCbLate', { type: 'bar', data: { labels: cb.months.map(mvn), datasets: [
+    { label: 'Dư nợ chậm trả', data: cb.late.map(v => v == null ? null : +(v / 1000).toFixed(1)), backgroundColor: 'rgba(192,57,43,.6)', unit: ' nghìn tỷ', dp: 1 },
+    L('Số mã mới chậm trả', cb.newLate, C.navy, { yAxisID: 'y1', unit: ' mã', dp: 0, pointRadius: 2 })] },
+    options: { scales: { y: numAxis('nghìn tỷ đồng'), y1: { position: 'right', min: 0, grid: { display: false }, ticks: { callback: v => nf(v, 0) } } } } });
+  stk('bCbMat', cb.mat.months.map(mvn), cb.mat.sec, { unit: ' tỷ', colors: [C.navy, C.red, C.grey] });
+  mk('bCbSec', { type: 'bar', data: { labels: cb.lateBySec.map(x => x.s), datasets: [{ label: 'Chậm trả', data: cb.lateBySec.map(x => +(x.v / 1000).toFixed(1)), backgroundColor: cb.lateBySec.map(x => x.s === 'Bất động sản' ? 'rgba(192,57,43,.75)' : x.s === 'Tài chính' ? 'rgba(29,38,120,.8)' : 'rgba(154,163,178,.8)'), unit: ' nghìn tỷ', dp: 1 }] },
+    options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: numAxis('nghìn tỷ đồng') } } });
+  const TN = ['1Y', '3Y', '5Y', '10Y', '20Y'], pt = (k, lab, col, o) => k >= 0 ? [L(lab + ' ' + dvn(cv.d[k]), TN.map(t => cv[t][k]), col, Object.assign({ pointRadius: 3 }, o))] : [];
+  mk('bCurve', { type: 'line', data: { labels: TN, datasets: [...pt(N.ci, '', C.navy, { borderWidth: 2.8 }), ...pt(N.c3, '', C.teal, { borderDash: [5, 4] }), ...pt(N.c0, '', C.gold, { borderDash: [2, 3] }), ...pt(N.cy, '', C.grey, { borderDash: [2, 3] })] }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
+  const j0 = cv.d.findIndex(d => d >= '2024-01-01'), cd = cv.d.slice(j0);
+  mk('bCurveTs', { type: 'bar', data: { labels: cd.map(dvn), datasets: [
+    L('1 năm', cv['1Y'].slice(j0), C.teal), L('5 năm', cv['5Y'].slice(j0), C.purple), L('10 năm', cv['10Y'].slice(j0), C.navy, { borderWidth: 2.6 }),
+    { type: 'bar', label: 'Dốc 10Y − 1Y', data: cd.map((_, i) => { const k = j0 + i; return cv['10Y'][k] == null || cv['1Y'][k] == null ? null : +(cv['10Y'][k] - cv['1Y'][k]).toFixed(2); }), backgroundColor: 'rgba(154,163,178,.45)', yAxisID: 'y1', unit: ' đ%', dp: 2, barPercentage: 1, categoryPercentage: 1 }] },
+    options: { scales: { y: pctAxis('', { beginAtZero: false }), y1: { position: 'right', min: 0, grid: { display: false }, ticks: { callback: v => nf(v, 1) } } } } }, { win: 12 });
+  const k0 = a.months.indexOf('2024-01') < 0 ? 0 : a.months.indexOf('2024-01'), am = a.months.slice(k0), t1 = v => v == null ? null : +(v / 1000).toFixed(1);
+  mk('bAuc', { type: 'bar', data: { labels: am.map(mvn), datasets: [
+    { label: 'Gọi thầu', data: a.inv.slice(k0).map(t1), backgroundColor: 'rgba(154,163,178,.6)', unit: ' nghìn tỷ', dp: 1 },
+    { label: 'Đặt thầu', data: a.bid.slice(k0).map(t1), backgroundColor: 'rgba(89,197,200,.75)', unit: ' nghìn tỷ', dp: 1 },
+    { label: 'Trúng thầu', data: a.win.slice(k0).map(t1), backgroundColor: 'rgba(29,38,120,.85)', unit: ' nghìn tỷ', dp: 1 },
+    L('Trúng / gọi thầu', am.map((_, i) => a.inv[k0 + i] ? +(a.win[k0 + i] / a.inv[k0 + i] * 100).toFixed(0) : null), C.red, { yAxisID: 'y1', dp: 0, borderWidth: 2.2 })] },
+    options: { scales: { y: numAxis('nghìn tỷ đồng'), y1: pctAxis('', { position: 'right', min: 0, max: 120, grid: { display: false } }) } } });
+  mk('bAucY', { type: 'line', data: { labels: am.map(mvn), datasets: [['5 năm', C.teal], ['10 năm', C.navy], ['15 năm', C.purple]].map(([t, c]) => L(t, a.y[t].slice(k0), c, { pointRadius: 3, spanGaps: false, borderWidth: t === '10 năm' ? 2.6 : 1.8 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
+  const f = BD.gb.fx, f0 = Math.max(0, f.months.indexOf('2024-01'));
+  mk('bFx', { type: 'bar', data: { labels: f.months.slice(f0).map(mvn), datasets: [{ label: 'Mua/bán ròng', data: f.net.slice(f0), backgroundColor: f.net.slice(f0).map(v => v < 0 ? 'rgba(192,57,43,.7)' : 'rgba(31,138,141,.75)'), unit: ' tỷ', dp: 0 }] }, options: { plugins: { legend: { display: false } }, scales: { y: numAxis('tỷ đồng') } } });
+}
+
 function subIdx() {
   const bt = I.backtest, b6 = bt.h6, b3 = bt.h3;
   const comp = (arr, name) => `<div class="tscroll"><table><thead><tr><th>ID</th><th>${name}: thành phần</th><th class="n">Giá trị</th><th class="n">z (36 tháng)</th><th class="n">Dấu</th><th class="n">Đóng góp</th></tr></thead><tbody>

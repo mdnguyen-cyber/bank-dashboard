@@ -6,7 +6,7 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Big 4",
-  "updated": "2026-10-21",
+  "updated": "2026-10-22",
   "price": 55700,
   "priceDate": "2026-10-20",
   "mcap": 469589,
@@ -25282,7 +25282,7 @@
     "summary": "Vietcombank (VCB) xác lập mức lợi nhuận kỷ lục trong quý 2/2026, thúc đẩy TCBS đưa ra khuyến nghị tiếp tục nắm giữ và tích lũy cổ phiếu khi định giá P/B hiện duy trì tại mức 2.0 lần, thuộc vùng thấp trong lịch sử 5 năm. Động lực tăng trưởng chính của ngân hàng đến từ sự hồi phục của biên lãi ròng (NIM) đạt 3.03% và thu nhập lãi thuần tăng 35.2% trong quý 2/2026, đồng thời dư địa giải ngân cho nửa cuối năm vẫn còn lớn khi mới sử dụng 5.1% trên tổng hạn mức tín dụng 13%. Thanh khoản hệ thống dự kiến được hỗ trợ bởi việc nới lỏng quy định tính tiền gửi Kho bạc vào tỷ lệ cho vay trên huy động (LDR) và nỗ lực đẩy mạnh đầu tư công, góp phần hiện thực hóa dự báo lợi nhuận trước thuế cả năm 2026 đạt 58,232 tỷ đồng, tương ứng mức tăng 32.3% với tăng trưởng tín dụng kế hoạch 15%. Mặc dù tỷ suất sinh lời ROE dự báo đạt 18.8% nhờ tối ưu hóa lợi suất tài sản và kiểm soát chi phí vốn, triển vọng của VCB vẫn đối mặt với áp lực nợ xấu khi nợ nhóm 2 tăng nhanh 64.6% so với đầu năm và chi phí hoạt động, chủ yếu là chi phí nhân viên, tăng 40.2% vượt tốc độ tăng thu nhập lõi. Bên cạnh đó, đà suy giảm của tỷ lệ tiền gửi không kỳ hạn (CASA) cùng tiến độ chào bán riêng lẻ 6.5% vốn là những biến số cần theo dõi sát sao do có khả năng tác động trực tiếp đến chi phí huy động và hệ số an toàn vốn của ngân hàng."
    }
   ],
-  "fadeBefore": "2026-07-21",
+  "fadeBefore": "2026-07-22",
   "summary": {
    "n": 12,
    "median": 75750.0,
@@ -29009,7 +29009,7 @@
      "v": 5.9
     },
     {
-     "d": "2026-10-20",
+     "d": "2026-10-21",
      "v": 5.4
     }
    ],

@@ -6,7 +6,7 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Tư nhân lớn",
-  "updated": "2026-10-21",
+  "updated": "2026-10-22",
   "price": 34250,
   "priceDate": "2026-10-21",
   "mcap": 241995,
@@ -18171,7 +18171,7 @@
    }
   ],
   "forecastOnly": [],
-  "fadeBefore": "2026-07-21",
+  "fadeBefore": "2026-07-22",
   "summary": {
    "n": 18,
    "median": 40650.0,

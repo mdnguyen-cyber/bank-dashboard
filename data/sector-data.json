@@ -1,7 +1,7 @@
 {
  "meta": {
   "title": "CSTT & Ngành Ngân hàng",
-  "updated": "2026-10-21",
+  "updated": "2026-10-22",
   "banks": [
    "VCB",
    "BID",
@@ -2421,8 +2421,8 @@
     "v": 4.581
    },
    {
-    "d": "2026-10-14",
-    "v": 4.578
+    "d": "2026-10-21",
+    "v": 4.584
    }
   ],
   "cny": [
@@ -38500,7 +38500,7 @@
  },
  "consensus": {
   "from": "2026-07-14",
-  "to": "2026-10-21",
+  "to": "2026-10-22",
   "rows": [
    {
     "s": "VCB",
@@ -52288,7 +52288,7 @@
    "id": "R-13",
    "layer": "Ngân hàng",
    "rule": "LS huy động 12T tăng",
-   "now": "NHTM Nhà nước 5,40% · -0,50 điểm % từ 09/10 đến 21/10 · +0,20 điểm % từ đầu năm; COF ngành 4,21% (cùng kỳ 3,59%)",
+   "now": "NHTM Nhà nước 5,40% · -0,50 điểm % từ 01/10 đến 21/10 · +0,20 điểm % từ đầu năm; COF ngành 4,21% (cùng kỳ 3,59%)",
    "state": "ok",
    "impact": "COF giảm dần theo kỳ đáo hạn tiền gửi; lợi ích bị bù trừ bởi yêu cầu giảm LS cho vay 1,5–2 điểm %"
   },
@@ -52304,7 +52304,7 @@
    "id": "R-15",
    "layer": "Ngân hàng",
    "rule": "Lợi suất TPCP tăng",
-   "now": "TPCP 10Y 4,58% · +64 bps 12 tháng",
+   "now": "TPCP 10Y 4,58% · +65 bps 12 tháng",
    "state": "risk",
    "impact": "Lỗ/giảm lãi chứng khoán đầu tư ở NH nắm nhiều TPCP"
   },
@@ -52312,7 +52312,7 @@
    "id": "R-16",
    "layer": "Ngân hàng",
    "rule": "Lãi suất thị trường giảm",
-   "now": "P/B ngành 1,41x vs TB 1,79x từ 01/2021; LS huy động 12T NHTM Nhà nước -0,50 điểm % từ 09/10 đến 21/10",
+   "now": "P/B ngành 1,41x vs TB 1,79x từ 01/2021; LS huy động 12T NHTM Nhà nước -0,50 điểm % từ 01/10 đến 21/10",
    "state": "watch",
    "impact": "Chiết khấu giảm khi LS hạ → P/B mở rộng; điều kiện bắt đầu xuất hiện, nhưng LS cho vay phải giảm nhiều hơn LS huy động nên NIM chịu sức ép"
   }

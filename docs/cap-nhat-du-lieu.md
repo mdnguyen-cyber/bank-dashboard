@@ -44,7 +44,7 @@ Không chép tay số liệu.
 
 ## 3. Build và kiểm tra
 ```
-python3 scripts/build_sector_data.py && for t in CTG VCB BID TCB MBB ACB; do python3 scripts/build_ctg_data.py --ticker $t; done && python3 scripts/build_big3.py && python3 scripts/build_bot_context.py
+python3 scripts/build_sector_data.py && for t in CTG VCB BID TCB MBB ACB; do python3 scripts/build_ctg_data.py --ticker $t; done && python3 scripts/build_big3.py && python3 scripts/build_bond_data.py && python3 scripts/build_bot_context.py
 python3 tests/test_sector_data.py
 ```
 Test định giá chốt cứng (pb, pe) sai vì số mới → cập nhật số trong test cho khớp số mới (không sửa logic).
@@ -59,3 +59,13 @@ Xem nhanh bằng Playwright (`/opt/pw-browsers/chromium`, route Chart.js từ no
 Tin nhắn cuối: số mới đáng chú ý (tín dụng, tỷ giá, LNH, P/B ngành…) kèm ngày dữ liệu, mục nào không cập nhật được và vì sao.
 Nếu lời nhắn kèm theo có yêu cầu thêm — ví dụ "viết bản cập nhật nhanh" — làm theo `docs/cap-nhat-nhanh.md`.
 Không ghi "WiData" ở bất cứ nội dung hiển thị nào; ghi cơ quan công bố gốc.
+
+## Trái phiếu: FI · G-bond (tab "Bức tranh ngành")
+
+`scripts/build_bond_data.py` → `data/bond-data.js`. Lần kéo WiData cần có trong `data/raw/wi`:
+
+- Lãi suất huy động 12T (bảng 46), `wi_data_macro get_values` cho 28 mã trong `TIERS` (cửa sổ ≤ 16 tháng mỗi lần để Wi trả theo tháng).
+- `wi_data_cbond`: `bonds_corp_issuance_monthly` get_data lọc `sector_l1=Tài chính` theo từng năm (cột có `maturity_bucket`); `bonds_corp_cashflow_monthly` get_data `sector_l1=Tài chính` theo năm; aggregate `year,month` (outstanding_value, late_payment_debt, principal_paid, new_late_bond_count, lọc `year__gte`); aggregate issuance `year,month,sector_l1` lọc theo năm; aggregate maturity `year,month,sector_l1` và `year,month,sector_l2` lọc `year__gte/__lte`; aggregate chậm trả `sector_l1` lọc `year,month` tháng mới nhất.
+- `wi_data_gbond`: `bonds_gov_yield_curve` 234528/234530/234531/234526/234529; `bonds_gov_auction_monthly` và `bonds_gov_secondary_yield_monthly` (bond_type TPCP) theo từng năm.
+
+Aggregate của Wi cắt ở 200 nhóm: luôn lọc theo năm để mỗi lần dưới 200 nhóm.
