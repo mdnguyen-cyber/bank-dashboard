@@ -1546,15 +1546,18 @@ function sbvBlock() {
     <p class="chart-sub">${E.length} mốc từ 6/2023 đến ${dvn(E[0].d)} · mới nhất trên cùng · dòng "Thị trường" là diễn biến, không phải quyết định của NHNN</p>
     <div class="picker" id="sbvTool"><button type="button" data-k="">Tất cả</button>${SBV_TOOLS.map(t => `<button type="button" data-k="${t}">${t} <small>${E.filter(e => e.tool === t).length}</small></button>`).join('')}</div>
     <div class="picker" id="sbvDir"><button type="button" data-k="">Mọi hướng</button><button type="button" data-k="nới">Nới</button><button type="button" data-k="thắt">Thắt</button><button type="button" data-k="trung tính">Trung tính</button><span id="sbvQ"></span></div>
+    <div class="picker" id="sbvN"><span class="muted">Hiển thị</span>${[10, 20, 50, 100].map(n => `<button type="button" data-n="${n}">${n} tin</button>`).join('')}<span class="muted" id="sbvCnt"></span></div>
     <div class="tscroll"><table class="sbv"><thead><tr><th>Ngày</th><th>Công cụ</th><th>Quyết định</th><th>Hướng</th><th>Tác động lên ngân hàng</th><th>Văn bản · nguồn</th></tr></thead><tbody id="sbvBody"></tbody></table></div>
     <div class="src">Nguồn: ghi theo từng dòng (NHNN, Chính phủ, báo chính thống). Ngày là ngày hiệu lực hoặc ngày công bố như ghi dưới ngày.</div>
   </article>`;
 }
 function sbvWire() {
-  const E = D.sbv.events, f = { tool: '', dir: '', q: '' };
+  const E = D.sbv.events, f = { tool: '', dir: '', q: '', n: 10 };
   const render = () => {
     const rows = E.filter(e => (!f.tool || e.tool === f.tool) && (!f.dir || e.dir === f.dir) && (!f.q || qOf(e.d) === f.q));
-    $('#sbvBody').innerHTML = rows.map(e => `<tr${e.verify ? ' class="vf"' : ''}><td style="white-space:nowrap">${dvn(e.d)}<div class="muted">${esc(e.dType)}</div></td><td style="white-space:nowrap">${esc(e.tool)}</td>
+    $('#sbvCnt').textContent = `· ${Math.min(f.n, rows.length)}/${rows.length} mốc khớp bộ lọc, mới nhất trước`;
+    $$('#sbvN button').forEach(b => b.classList.toggle('on', +b.dataset.n === f.n));
+    $('#sbvBody').innerHTML = rows.slice(0, f.n).map(e => `<tr${e.verify ? ' class="vf"' : ''}><td style="white-space:nowrap">${dvn(e.d)}<div class="muted">${esc(e.dType)}</div></td><td style="white-space:nowrap">${esc(e.tool)}</td>
       <td><b>${esc(e.t)}</b><div class="note">${esc(e.detail)}</div>${e.verify ? `<div class="note keep">⚠ Cần xác minh: ${esc(e.note)}</div>` : ''}</td><td>${dirTag(e.dir)}</td><td>${esc(e.impact)}</td>
       <td>${e.doc ? `<b>${esc(e.doc)}</b><br>` : ''}${e.url ? `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.src)}</a>` : esc(e.src)}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">Không có mốc nào khớp bộ lọc.</td></tr>';
     $$('#sbvTool button').forEach(b => b.classList.toggle('on', b.dataset.k === f.tool));
@@ -1564,6 +1567,7 @@ function sbvWire() {
   };
   $$('#sbvTool button').forEach(b => b.onclick = () => { f.tool = b.dataset.k; render(); });
   $$('#sbvDir button').forEach(b => b.onclick = () => { f.dir = b.dataset.k; render(); });
+  $$('#sbvN button').forEach(b => b.onclick = () => { f.n = +b.dataset.n; render(); });
   // chart: nới/thắt theo quý + LNH qua đêm cuối quý
   const act = E.filter(e => e.tool !== 'Thị trường');
   const qs = []; for (let y = 2024; y <= 2026; y++) for (let k = 1; k <= 4; k++) { const q = `${y}-Q${k}`; if (q <= qOf(D.meta.asOf || E[0].d)) qs.push(q); }
