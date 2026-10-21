@@ -1,0 +1,77 @@
+{
+ "asOf": "2026-10-21 07:31",
+ "fetched": "2026-10-21 07:41 UTC",
+ "target": [
+  3.75,
+  4.0
+ ],
+ "effr": 3.88,
+ "meetings": [
+  {
+   "date": "2026-10-28",
+   "start": 3.8812,
+   "end": 3.92,
+   "chg_bps": 3.9,
+   "probs": {
+    "3.75-4.00": 84.4,
+    "4.00-4.25": 15.6
+   },
+   "exp_rate": 3.914,
+   "kalshi": {
+    "ticker": "KXFEDDECISION-26OCT",
+    "p": {
+     "Cut >25bps": 0.5,
+     "Cut 25bps": 0.5,
+     "Fed maintains rate": 87.5,
+     "Hike 25bps": 11.5,
+     "Hike >25bps": 0.5
+    }
+   }
+  },
+  {
+   "date": "2026-12-09",
+   "start": 3.8917,
+   "end": 4.15,
+   "chg_bps": 25.8,
+   "probs": {
+    "4.00-4.25": 81.7,
+    "4.25-4.50": 17.8,
+    "4.50-4.75": 0.5
+   },
+   "exp_rate": 4.172,
+   "kalshi": {
+    "ticker": "KXFEDDECISION-26DEC",
+    "p": {
+     "Cut >25bps": 0.5,
+     "Cut 25bps": 1.5,
+     "Fed maintains rate": 21.5,
+     "Hike 25bps": 75.5,
+     "Hike >25bps": 4.5
+    }
+   }
+  }
+ ],
+ "zq": {
+  "2026-10": {
+   "ticker": "ZQV26.CBT",
+   "px": 96.115,
+   "rate": 3.885
+  },
+  "2026-11": {
+   "ticker": "ZQX26.CBT",
+   "px": 96.08,
+   "rate": 3.92
+  },
+  "2026-12": {
+   "ticker": "ZQZ26.CBT",
+   "px": 95.925,
+   "rate": 4.075
+  },
+  "2027-01": {
+   "ticker": "ZQF27.CBT",
+   "px": 95.85,
+   "rate": 4.15
+  }
+ },
+ "method": "Kỳ vọng lãi suất Fed theo từng phiên họp FOMC → data/global/fedwatch.json (+ lịch sử fedwatch_hist.json).\n\nPhương pháp: giống CME FedWatch — xác suất ngụ ý từ giá hợp đồng tương lai lãi suất quỹ liên bang 30 ngày (ZQ, CBOT).\n  - Lãi suất bình quân tháng ngụ ý = 100 − giá ZQ tháng đó.\n  - Tháng có họp: avg = f·r_trước + (1−f)·r_sau, f = (ngày hiệu lực − 1)/số ngày tháng (ngày hiệu lực = ngày cuối cuộc họp + 1).\n    Neo r_sau bằng tháng kế tiếp không họp, hoặc r_trước bằng tháng liền trước không họp, hoặc nối chuỗi từ phiên trước.\n  - Mỗi phiên: Δ = r_sau − r_trước (bước 25 bps): k = sàn(Δ/0,25) bước với xác suất 1 − phần lẻ, k+1 bước với xác suất phần lẻ;\n    phân phối khoảng lãi suất mục tiêu sau từng phiên = tích chập các phiên trước.\nNguồn giá: Yahoo Finance (ZQ<tháng><năm>.CBT, giá giao dịch gần nhất); CME chặn truy cập tự động nên số có thể lệch nhẹ với CME FedWatch\n(CME dùng giá thanh toán cuối ngày). Đối chiếu: thị trường dự đoán Kalshi (KXFEDDECISION) theo từng phiên.\nKhoảng mục tiêu hiện hành: FRED DFEDTARL/DFEDTARU (data/global/series.json do fetch_global.py tải trước)."
+}
