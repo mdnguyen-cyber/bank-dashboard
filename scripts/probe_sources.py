@@ -7,13 +7,7 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'poly_search': 'https://gamma-api.polymarket.com/public-search?q=fed%20decision&events_status=active&limit_per_type=20',
-    'poly_slug_oct': 'https://gamma-api.polymarket.com/events?slug=fed-decision-in-october-2026',
-    'poly_slug_oct2': 'https://gamma-api.polymarket.com/events?slug=fed-decision-in-october',
-    'poly_tag_fed': 'https://gamma-api.polymarket.com/events?tag_slug=fed-rates&closed=false&limit=50',
-    'poly_series': 'https://gamma-api.polymarket.com/series?slug=fed-interest-rates',
-    'atl_mpt_raw': 'https://www.atlantafed.org/cenfis/market-probability-tracker',
-    'fred_dot': 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=FEDTARMD,FEDTARMDLR',
+    'atl_mpt_xlsx': 'https://www.atlantafed.org/-/media/Project/Atlanta/FRBA/Documents/research-and-data/data/market-probability-tracker/mpt_histdata.xlsx',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -30,6 +24,12 @@ def main():
                 u, data = u[0], urllib.parse.urlencode(u[1]).encode()
             with urllib.request.urlopen(urllib.request.Request(u, data=data, headers={**UA, 'X-Requested-With': 'XMLHttpRequest', 'Referer': 'https://www.tpex.org.tw/en-us/bond/info/statistics-gb/day/ebts.html'}), timeout=60) as r:
                 b = r.read(); ct = r.headers.get('Content-Type', '')
+            if u.endswith('.xlsx'):
+                import openpyxl, io
+                wb = openpyxl.load_workbook(io.BytesIO(b), read_only=True, data_only=True)
+                rep[k] = {'url': u, 'status': 200, 'bytes': len(b), 'sheets': {ws.title: [[str(c) for c in r] for i, r in enumerate(ws.iter_rows(values_only=True)) if i < 25] + [['... rows', str(ws.max_row)]] for ws in wb.worksheets}}
+                rows = list(wb.worksheets[0].iter_rows(values_only=True)); rep[k]['tail'] = [[str(c) for c in r] for r in rows[-15:]]
+                continue
             if u.endswith('.xls'):
                 import xlrd
                 wb = xlrd.open_workbook(file_contents=b)
