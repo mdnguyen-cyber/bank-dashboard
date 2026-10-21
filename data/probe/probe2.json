@@ -7,28 +7,308 @@
    "LICENSE": [
     [
      "None"
-    ],
-    [
-     "... rows",
-     "1"
     ]
    ],
    "DICTIONARY": [
+    [],
     [
+     "None",
+     "The Market Probability Tracker uses Chicago Mercantile Exchange (CME) 3-month SOFR options to estimate the probability ditributions implied by their prices and specified reference window.   Below are a selection of statistics generated from those distributions, organized by date and reference window.",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
      "None"
     ],
     [
-     "... rows",
-     "1"
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None"
+    ],
+    [
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None"
+    ],
+    [
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None",
+     "None"
+    ],
+    [],
+    [
+     "None",
+     "date",
+     "Observation date"
+    ],
+    [
+     "None",
+     "reference_start",
+     "Start date of the 3-month window referenced by CME 3-month SOFR contracts"
+    ],
+    [
+     "None",
+     "target_range",
+     "FOMC federal funds rate target range on the indicated observation date"
+    ],
+    [
+     "None",
+     "field",
+     "Statistics generated from the distributions estimated by the Market Probability Tracker"
+    ],
+    [
+     "None",
+     "Rate: 25th percentile",
+     "The rate, in basis points, associated with the 25th percentile of the estimated distribution for a given reference window"
+    ],
+    [
+     "None",
+     "Rate: mean",
+     "The rate, in basis points, associated with the mean of the estimated distribution for a given reference window"
+    ],
+    [
+     "None",
+     "Rate: mode",
+     "The rate, in basis points, associated with the mode of the estimated distribution for a given reference window"
+    ],
+    [
+     "None",
+     "Rate: mean",
+     "The rate, in basis points, associated with the mean of the estimated distribution for a given reference window"
+    ],
+    [
+     "None",
+     "Rate: 75th percentile",
+     "The average, in basis points, associated with the 75th percentile of the distribution for a given reference window"
+    ],
+    [
+     "None",
+     "Prob: cut",
+     "The probability, in percent, average SOFR over the reference window will be below the FOMC's target range"
+    ],
+    [
+     "None",
+     "Prob: hike",
+     "The probability, in percent, average SOFR over the reference window will be above the FOMC's target range"
+    ],
+    [
+     "None",
+     "Prob: various 25bps ranges",
+     "The probability, in percent, average SOFR over the reference window will fall between a given 25bps range"
+    ],
+    [
+     "None",
+     "value",
+     "The value of the indicated statistic"
     ]
    ],
    "DATA": [
     [
-     "date"
+     "date",
+     "reference_start",
+     "target_range",
+     "field",
+     "value"
     ],
     [
-     "... rows",
-     "1"
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Rate: 25th percentile",
+     " 471.21"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Rate: mean",
+     " 481.98"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Rate: mode",
+     " 498.33"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Rate: 75th percentile",
+     " 518.52"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: cut",
+     "  27.98"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: hike",
+     "  45.18"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 275bps - 300bps",
+     "   0.72"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 300bps - 325bps",
+     "   1.31"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 325bps - 350bps",
+     "   1.89"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 350bps - 375bps",
+     "   2.03"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 375bps - 400bps",
+     "   1.62"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 400bps - 425bps",
+     "   1.29"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 425bps - 450bps",
+     "   3.41"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 450bps - 475bps",
+     "  13.21"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 475bps - 500bps",
+     "  26.84"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 500bps - 525bps",
+     "  25.70"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 525bps - 550bps",
+     "  12.70"
+    ],
+    [
+     "2023-03-29",
+     "2023-06-21 00:00:00",
+     "475bps - 500bps",
+     "Prob: 550bps - 575bps",
+     "   4.38"
+    ],
+    [
+     "2023-03-29",
+     "2023-09-20 00:00:00",
+     "475bps - 500bps",
+     "Rate: 25th percentile",
+     " 420.12"
+    ],
+    [
+     "2023-03-29",
+     "2023-09-20 00:00:00",
+     "475bps - 500bps",
+     "Rate: mean",
+     " 455.93"
+    ],
+    [
+     "2023-03-29",
+     "2023-09-20 00:00:00",
+     "475bps - 500bps",
+     "Rate: mode",
+     " 510.56"
+    ],
+    [
+     "2023-03-29",
+     "2023-09-20 00:00:00",
+     "475bps - 500bps",
+     "Rate: 75th percentile",
+     " 534.53"
+    ],
+    [
+     "2023-03-29",
+     "2023-09-20 00:00:00",
+     "475bps - 500bps",
+     "Prob: cut",
+     "  41.48"
+    ],
+    [
+     "2023-03-29",
+     "2023-09-20 00:00:00",
+     "475bps - 500bps",
+     "Prob: hike",
+     "  45.10"
     ]
    ]
   },
