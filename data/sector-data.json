@@ -1,7 +1,7 @@
 {
  "meta": {
   "title": "CSTT & Ngành Ngân hàng",
-  "updated": "2026-10-20",
+  "updated": "2026-10-21",
   "banks": [
    "VCB",
    "BID",
@@ -63,8 +63,8 @@
  "idx": {
   "now": {
    "m": "2026-10",
-   "fx": 0.83,
-   "liq": 0.28,
+   "fx": 0.84,
+   "liq": 0.32,
    "q": "drain"
   },
   "history": [
@@ -472,8 +472,8 @@
    },
    {
     "m": "2026-10",
-    "fx": 0.83,
-    "liq": 0.28,
+    "fx": 0.84,
+    "liq": 0.32,
     "q": "drain"
    }
   ],
@@ -483,18 +483,18 @@
     "key": "dxy3m",
     "label": "DXY, % 3 tháng",
     "sign": "+",
-    "raw": 1.94,
-    "z": 0.67,
-    "contrib": 0.67
+    "raw": 1.81,
+    "z": 0.63,
+    "contrib": 0.63
    },
    {
     "id": "DOM-02",
     "key": "usdvnd3m",
     "label": "USD/VND NHTM bán ra, % 3 tháng",
     "sign": "+",
-    "raw": -1.55,
-    "z": -1.45,
-    "contrib": -1.45
+    "raw": -1.59,
+    "z": -1.47,
+    "contrib": -1.47
    },
    {
     "id": "INT-06",
@@ -510,9 +510,9 @@
     "key": "spread",
     "label": "LNH qua đêm (TB 3 tháng) − EFFR, điểm %",
     "sign": "−",
-    "raw": 0.3,
-    "z": 0.31,
-    "contrib": -0.31
+    "raw": 0.03,
+    "z": 0.2,
+    "contrib": -0.2
    },
    {
     "id": "DOM-06",
@@ -539,9 +539,9 @@
     "key": "on3",
     "label": "LNH qua đêm TB 3 tháng, %",
     "sign": "−",
-    "raw": 4.18,
-    "z": 0.1,
-    "contrib": -0.1
+    "raw": 3.91,
+    "z": -0.04,
+    "contrib": 0.04
    },
    {
     "id": "DOM-11/10",
@@ -566,9 +566,9 @@
    "h3": {
     "h": 3,
     "hit": 9,
-    "miss": 12,
-    "flat": 24,
-    "rate": 43.0,
+    "miss": 13,
+    "flat": 23,
+    "rate": 41.0,
     "rows": [
      {
       "m": "2021-04",
@@ -837,17 +837,17 @@
      {
       "m": "2026-07",
       "p": 1.33,
-      "chg": 0.0,
-      "res": "flat"
+      "chg": -0.5,
+      "res": "miss"
      }
     ]
    },
    "h6": {
     "h": 6,
     "hit": 12,
-    "miss": 16,
-    "flat": 14,
-    "rate": 43.0,
+    "miss": 17,
+    "flat": 13,
+    "rate": 41.0,
     "rows": [
      {
       "m": "2021-04",
@@ -1098,8 +1098,8 @@
      {
       "m": "2026-04",
       "p": 0.73,
-      "chg": 0.0,
-      "res": "flat"
+      "chg": -0.5,
+      "res": "miss"
      }
     ]
    },
@@ -1491,8 +1491,8 @@
     "v": 101.191
    },
    {
-    "d": "2026-10-20",
-    "v": 101.727
+    "d": "2026-10-21",
+    "v": 101.595
    }
   ],
   "effr": [
@@ -1857,7 +1857,7 @@
     "v": 3.88
    },
    {
-    "d": "2026-10-16",
+    "d": "2026-10-19",
     "v": 3.88
    }
   ],
@@ -2703,8 +2703,8 @@
     "v": 6.7046
    },
    {
-    "d": "2026-10-19",
-    "v": 6.6811
+    "d": "2026-10-21",
+    "v": 6.6792
    }
   ],
   "brent": [
@@ -3365,8 +3365,8 @@
     "v": 26160
    },
    {
-    "d": "2026-10-20",
-    "v": 26080
+    "d": "2026-10-21",
+    "v": 26070
    }
   ],
   "nhtmBuy": [
@@ -3647,8 +3647,8 @@
     "v": 25780
    },
    {
-    "d": "2026-10-20",
-    "v": 25700
+    "d": "2026-10-21",
+    "v": 25690
    }
   ],
   "free": [
@@ -3929,8 +3929,8 @@
     "v": 25950
    },
    {
-    "d": "2026-10-20",
-    "v": 26050
+    "d": "2026-10-21",
+    "v": 26080
    }
   ],
   "central": [
@@ -4211,8 +4211,8 @@
     "v": 25627
    },
    {
-    "d": "2026-10-20",
-    "v": 25639
+    "d": "2026-10-21",
+    "v": 25634
    }
   ],
   "ceiling": [
@@ -4493,8 +4493,8 @@
     "v": 26908.35
    },
    {
-    "d": "2026-10-20",
-    "v": 26920.95
+    "d": "2026-10-21",
+    "v": 26915.7
    }
   ],
   "sbvSell": [
@@ -4775,8 +4775,8 @@
     "v": 26858
    },
    {
-    "d": "2026-10-20",
-    "v": 26870
+    "d": "2026-10-21",
+    "v": 26865
    }
   ],
   "on": [
@@ -5153,8 +5153,8 @@
     "v": 6.95
    },
    {
-    "d": "2026-10-19",
-    "v": 4.4
+    "d": "2026-10-20",
+    "v": 3.6
    }
   ],
   "omo": [
@@ -5689,8 +5689,8 @@
     "v": 10038
    },
    {
-    "d": "2026-10-19",
-    "v": -1276.84
+    "d": "2026-10-20",
+    "v": -5414.77
    }
   ],
   "dep12State": [
@@ -6067,8 +6067,8 @@
     "v": 5.9
    },
    {
-    "d": "2026-10-19",
-    "v": 5.9
+    "d": "2026-10-21",
+    "v": 5.4
    }
   ],
   "dep12Large": [
@@ -6349,8 +6349,8 @@
     "v": 5.9125
    },
    {
-    "d": "2026-10-19",
-    "v": 6.1375
+    "d": "2026-10-21",
+    "v": 5.8125
    }
   ],
   "dep12Other": [
@@ -6631,8 +6631,8 @@
     "v": 5.9889
    },
    {
-    "d": "2026-10-19",
-    "v": 5.9444
+    "d": "2026-10-21",
+    "v": 5.6815
    }
   ],
   "m2": [
@@ -15695,6 +15695,10 @@
    {
     "d": "2026-10-19",
     "v": -1276.84
+   },
+   {
+    "d": "2026-10-20",
+    "v": -5414.77
    }
   ],
   "onDaily": [
@@ -21441,6 +21445,10 @@
    {
     "d": "2026-10-19",
     "v": 4.4
+   },
+   {
+    "d": "2026-10-20",
+    "v": 3.6
    }
   ],
   "omoDaily": [
@@ -38461,20 +38469,20 @@
     "pppop": 4.92
    },
    {
-    "d": "2026-10-19",
+    "d": "2026-10-21",
     "pb": 1.41,
-    "pe": 8.44,
-    "mcap": 2623.0,
-    "pppop": 4.79
+    "pe": 8.42,
+    "mcap": 2630.0,
+    "pppop": 4.8
    }
   ],
   "from": "2021-01-29",
   "now": {
-   "d": "2026-10-19",
+   "d": "2026-10-21",
    "pb": 1.41,
-   "pe": 8.44,
-   "mcap": 2623.0,
-   "pppop": 4.79
+   "pe": 8.42,
+   "mcap": 2630.0,
+   "pppop": 4.8
   },
   "pb": {
    "mean": 1.79,
@@ -38488,11 +38496,11 @@
    "mean": 5.58,
    "sd": 0.95
   },
-  "profitTTM": 310.9
+  "profitTTM": 312.4
  },
  "consensus": {
   "from": "2026-07-14",
-  "to": "2026-10-20",
+  "to": "2026-10-21",
   "rows": [
    {
     "s": "VCB",
@@ -40556,6 +40564,95 @@
    "src": "Hiệp hội Ngân hàng Việt Nam",
    "url": "https://vnba.org.vn/vi/ngan-hang-nha-nuoc-viet-nam-tich-cuc-huong-ung-phong-trao--moi-nguoi-dan-lua-chon-it-nhat-mot-mon-the-thao-phu-hop-de-tap-luyen-thuong-xuyen-23898.htm",
    "sym": []
+  },
+  {
+   "d": "2026-10-18",
+   "t": "NHNN yêu cầu các nhà băng giảm lãi suất huy động ít nhất 0,5%, tuyệt đối không đua nhau tăng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-it-nhat-0-5-tuyet-doi-khong-dua-nhau-tang-1471113.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Ngân hàng sẵn sàng giảm lợi nhuận để ưu tiên vốn lưu động giá rẻ cho doanh nghiệp",
+   "src": "vneconomy",
+   "url": "https://vneconomy.vn/ngan-hang-san-sang-giam-loi-nhuan-de-uu-tien-von-luu-dong-gia-re-cho-doanh-nghiep.htm",
+   "sym": [
+    "BID",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Tài chính thị trường ngày 21/10: 15 ngân hàng đồng loạt giảm lãi suất huy động",
+   "src": "Báo Hà Tĩnh",
+   "url": "https://baohatinh.vn/tai-chinh-thi-truong-ngay-2110-15-ngan-hang-dong-loat-giam-lai-suat-huy-dong-post319071.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Giảm lãi suất huy động và cho vay, kiểm soát chặt rủi ro tín dụng",
+   "src": "Báo Hải Phòng",
+   "url": "https://baohaiphong.vn/giam-lai-suat-huy-dong-va-cho-vay-kiem-soat-chat-rui-ro-tin-dung-556255.html",
+   "sym": [
+    "BID",
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Lãnh đạo ngân hàng lớn nói gì sau cuộc họp khẩn với Thống đốc?",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/lanh-dao-ngan-hang-lon-noi-gi-sau-cuoc-hop-khan-voi-thong-doc-d152255.html",
+   "sym": [
+    "ACB",
+    "BID",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Một ngân hàng Big4 vừa giảm lãi suất sáng, chiều tăng trở lại",
+   "src": "Người Đưa Tin - An ninh tiền tệ",
+   "url": "https://antt.nguoiduatin.vn/gui-tien-o-vietinbank-ky-han-6-thang-tro-len-hien-duoc-lai-suat-bao-nhieu-20526102015220261.htm",
+   "sym": [
+    "ACB",
+    "BAB",
+    "BVB",
+    "CTG",
+    "KLB",
+    "LPB",
+    "NAB",
+    "NVB",
+    "OCB",
+    "PGB",
+    "SSB",
+    "STB",
+    "TPB",
+    "VBB",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Không chấp hành chỉ đạo về lãi suất, ngân hàng có thể bị giảm room tín dụng trong năm 2027",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/khong-chap-hanh-chi-dao-ve-lai-suat-ngan-hang-co-the-bi-giam-room-tin-dung-trong-nam-2027-1471209.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Agribank, BIDV, Vietcombank, ACB cùng loạt ngân hàng giảm lãi suất cho vay, ưu đãi tới 2%/năm",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/agribank-bidv-vietcombank-acb-cung-loat-ngan-hang-giam-lai-suat-cho-vay-uu-dai-toi-2-nam-1471236.html",
+   "sym": [
+    "ACB",
+    "BID",
+    "LPB",
+    "STB",
+    "VBB",
+    "VCB"
+   ]
   }
  ],
  "fee": {
@@ -52119,7 +52216,7 @@
    "id": "R-01",
    "layer": "Quốc tế",
    "rule": "DXY tăng > 1σ trong tháng",
-   "now": "DXY 101,7 · +0,5% 1 tháng (z +0,3)",
+   "now": "DXY 101,6 · +0,4% 1 tháng (z +0,3)",
    "state": "watch",
    "impact": "Áp lực USD/VND, NHNN ưu tiên ổn định tỷ giá"
   },
@@ -52151,7 +52248,7 @@
    "id": "R-08",
    "layer": "Quốc tế",
    "rule": "USD/CNY tăng > 1σ",
-   "now": "USD/CNY 6,681 · -1,0% 3 tháng (CNY mạnh lên)",
+   "now": "USD/CNY 6,679 · -1,1% 3 tháng (CNY mạnh lên)",
    "state": "ok",
    "impact": "CNY mạnh lên giảm sức ép cạnh tranh lên VND"
   },
@@ -52167,7 +52264,7 @@
    "id": "R-10",
    "layer": "Nội địa → NH",
    "rule": "OMO bơm ròng kéo dài mà LNH > OMO",
-   "now": "LNH qua đêm 4,40% vs OMO 4,5%; OMO lưu hành 110,9 nghìn tỷ (14/10), giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9",
+   "now": "LNH qua đêm 3,60% vs OMO 4,5%; OMO lưu hành 110,9 nghìn tỷ (14/10), giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9",
    "state": "ok",
    "impact": "TT2 thiếu vốn nhưng OMO không giúp tuân thủ LDR"
   },
@@ -52191,9 +52288,9 @@
    "id": "R-13",
    "layer": "Ngân hàng",
    "rule": "LS huy động 12T tăng",
-   "now": "NHTM Nhà nước 5,90% · +0,70 điểm % từ đầu năm; COF ngành 4,21% (cùng kỳ 3,59%)",
-   "state": "risk",
-   "impact": "COF tăng theo kỳ tái định giá, NIM co nếu YOEA không theo kịp"
+   "now": "NHTM Nhà nước 5,40% · -0,50 điểm % từ 09/10 đến 21/10 · +0,20 điểm % từ đầu năm; COF ngành 4,21% (cùng kỳ 3,59%)",
+   "state": "ok",
+   "impact": "COF giảm dần theo kỳ đáo hạn tiền gửi; lợi ích bị bù trừ bởi yêu cầu giảm LS cho vay 1,5–2 điểm %"
   },
   {
    "id": "R-14",
@@ -52215,9 +52312,9 @@
    "id": "R-16",
    "layer": "Ngân hàng",
    "rule": "Lãi suất thị trường giảm",
-   "now": "P/B ngành 1,41x vs TB 1,79x từ 01/2021; LS chưa giảm",
+   "now": "P/B ngành 1,41x vs TB 1,79x từ 01/2021; LS huy động 12T NHTM Nhà nước -0,50 điểm % từ 09/10 đến 21/10",
    "state": "watch",
-   "impact": "Chiết khấu giảm khi LS hạ → P/B mở rộng; hiện chưa có điều kiện"
+   "impact": "Chiết khấu giảm khi LS hạ → P/B mở rộng; điều kiện bắt đầu xuất hiện, nhưng LS cho vay phải giảm nhiều hơn LS huy động nên NIM chịu sức ép"
   }
  ],
  "events": [

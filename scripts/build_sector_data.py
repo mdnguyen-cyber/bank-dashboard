@@ -10,6 +10,7 @@
 Dùng: python3 scripts/build_sector_data.py
 """
 import json, math, statistics, sys, pathlib
+import datetime as dt
 from collections import defaultdict
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
@@ -444,7 +445,7 @@ def main():
         if d['tool'] == 'wi_data_news' and d['request'].get('action') == 'news_feed':
             for x in rows(d['response']):
                 news.append({'d': x['publish_time'][:10], 't': x['title'], 'src': x['source_name'], 'url': x['url'],
-                             'sym': x['symbol'] or []})
+                             'sym': x.get('symbol') or []})
     D['news'] = news
 
     # ------------------------------------------------ LDR: độ nhạy theo hệ số tiền gửi KBNN (Q2/2026)
@@ -546,6 +547,14 @@ def main():
     fis_q_ly = exp[M[M.index(fq_last) - 12]] - rev[M[M.index(fq_last) - 12]]
     dep_now, dep_3m = dep12[max(dep12)], dep12[M[M.index(max(dep12)) - 3]]
     dep_ytd = dep12[max(dep12)] - dep12['2025-12']
+    _dd = {x['d']: x['v'] for x in daily_merged(raw, 202886)}
+    _dl = max(_dd)
+    _d30 = (dt.date.fromisoformat(_dl) - dt.timedelta(days=30)).isoformat()
+    _base = [k for k in sorted(_dd) if k <= _d30] or sorted(_dd)[:1]
+    _b = _base[-1]
+    dep_1m = _dd[_dl] - _dd[_b]
+    dep_cut = dep_1m <= -0.3
+    dep_txt = f'{vn(dep_1m, 2, True)} điểm % từ {_b[8:]}/{_b[5:7]} đến {_dl[8:]}/{_dl[5:7]}'
     vn10 = S(234526)
     vn10_chg = (vn10[km] - vn10[M[M.index(km) - 12]]) * 100
     npl_now, npl_ly = agg['npl']['all'][-1], agg['npl']['all'][-5]
@@ -561,10 +570,10 @@ def main():
         ('R-10', 'Nội địa → NH', 'OMO bơm ròng kéo dài mà LNH > OMO', f'LNH qua đêm {vn(on_now, 2)}% vs OMO {vn(omo_now, 1)}%; OMO lưu hành 110,9 nghìn tỷ (14/10), giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9', 'watch' if on_now > omo_now else 'ok', 'TT2 thiếu vốn nhưng OMO không giúp tuân thủ LDR'),
         ('R-11', 'Nội địa → NH', 'NHNN nới tỷ lệ an toàn / loại trừ room', 'Hệ số tiền gửi KBNN vào LDR lên 50% từ Q3/2026; CV 4551 loại trừ dự án trọng điểm khỏi room', 'ok', 'Áp lực huy động giảm, tín dụng tăng nhanh hơn'),
         ('R-12', 'Nội địa → NH', 'Chi NSNN vượt thu', f'Q{int(fq_last[5:])//3}/{fq_last[:4]}: chi − thu {vn(fis_q/1000, 1)} nghìn tỷ (cùng kỳ {vn(fis_q_ly/1000, 1)})', 'watch' if fis_q < 0 else 'ok', 'Thu > chi → Kho bạc hút tiền khỏi hệ thống, LNH khó giảm'),
-        ('R-13', 'Ngân hàng', 'LS huy động 12T tăng', f'NHTM Nhà nước {vn(dep_now, 2)}% · {vn(dep_ytd, 2, True)} điểm % từ đầu năm; COF ngành {vn(cof_now, 2)}% (cùng kỳ {vn(cof_ly, 2)}%)', 'risk' if dep_ytd > 0.3 else 'watch', 'COF tăng theo kỳ tái định giá, NIM co nếu YOEA không theo kịp'),
+        ('R-13', 'Ngân hàng', 'LS huy động 12T tăng', f'NHTM Nhà nước {vn(_dd[_dl], 2)}% · {dep_txt} · {vn(dep_ytd, 2, True)} điểm % từ đầu năm; COF ngành {vn(cof_now, 2)}% (cùng kỳ {vn(cof_ly, 2)}%)', 'ok' if dep_cut else ('risk' if dep_ytd > 0.3 else 'watch'), ('COF giảm dần theo kỳ đáo hạn tiền gửi; lợi ích bị bù trừ bởi yêu cầu giảm LS cho vay 1,5–2 điểm %' if dep_cut else 'COF tăng theo kỳ tái định giá, NIM co nếu YOEA không theo kịp')),
         ('R-14', 'Ngân hàng', 'LS cho vay cao kéo dài', f'NPL ngành {vn(npl_now, 2)}% (cùng kỳ {vn(npl_ly, 2)}%)', 'watch' if npl_now >= npl_ly else 'ok', 'Nợ nhóm 2, NPL, chi phí tín dụng tăng sau 2–4 quý'),
         ('R-15', 'Ngân hàng', 'Lợi suất TPCP tăng', f'TPCP 10Y {vn(vn10[km], 2)}% · {vn(vn10_chg, 0, True)} bps 12 tháng', 'risk' if vn10_chg > 50 else 'watch', 'Lỗ/giảm lãi chứng khoán đầu tư ở NH nắm nhiều TPCP'),
-        ('R-16', 'Ngân hàng', 'Lãi suất thị trường giảm', f'P/B ngành {vn(sv["now"]["pb"], 2)}x vs TB {vn(sv["pb"]["mean"], 2)}x từ {sv["from"][5:7]}/{sv["from"][:4]}; LS chưa giảm', 'watch', 'Chiết khấu giảm khi LS hạ → P/B mở rộng; hiện chưa có điều kiện'),
+        ('R-16', 'Ngân hàng', 'Lãi suất thị trường giảm', f'P/B ngành {vn(sv["now"]["pb"], 2)}x vs TB {vn(sv["pb"]["mean"], 2)}x từ {sv["from"][5:7]}/{sv["from"][:4]}; ' + (f'LS huy động 12T NHTM Nhà nước {dep_txt}' if dep_cut else 'LS chưa giảm'), 'watch', 'Chiết khấu giảm khi LS hạ → P/B mở rộng' + ('; điều kiện bắt đầu xuất hiện, nhưng LS cho vay phải giảm nhiều hơn LS huy động nên NIM chịu sức ép' if dep_cut else '; hiện chưa có điều kiện')),
     ]
     D['signals'] = [{'id': a, 'layer': b, 'rule': c, 'now': d_, 'state': e, 'impact': f} for a, b, c, d_, e, f in SIG]
 

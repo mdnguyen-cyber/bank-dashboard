@@ -6,20 +6,20 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Big 4",
-  "updated": "2026-10-20",
+  "updated": "2026-10-21",
   "price": 33400,
   "priceDate": "2026-10-20",
-  "mcap": 259793,
+  "mcap": 264849,
   "pb": 1.39,
   "pe": 8.05,
   "bvps": 24106,
   "eps": 4147,
-  "sharesOut": 7778.2,
+  "sharesOut": 7929.6,
   "latestQuarter": "Q2/2026",
   "view": null,
   "irUrl": "https://bidv.com.vn/vn/quan-he-nha-dau-tu",
   "strategic": "KEB Hana",
-  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-19 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-21 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 18.1,
   "roa": 1.02,
   "nim": 2.15,
@@ -19391,7 +19391,7 @@
     "summary": "TCBS duy trì khuyến nghị nắm giữ đối với cổ phiếu BID trong bối cảnh định giá P/B chạm mức 1.43 lần, vùng thấp nhất trong vòng 5 năm qua, sau khi lợi nhuận trước thuế quý 2/2026 ghi nhận 10,333 tỷ đồng, tăng 19.8% so với cùng kỳ nhờ sự phục hồi mạnh mẽ của biên lãi ròng (NIM). Động lực tăng trưởng trong nửa cuối năm 2026 dự kiến được thúc đẩy bởi việc nới hạn mức tín dụng và quy định mới từ tháng 8/2026 cho phép tính 50% tiền gửi Kho bạc Nhà nước vào tỷ lệ dư nợ trên tiền gửi (LDR), tạo dư địa mở rộng cho vay trong khi chiến lược dịch chuyển danh mục sang mảng bán lẻ có lợi suất cao tiếp tục hỗ trợ NIM. Tính chung cả năm 2026, lợi nhuận trước thuế dự báo đạt 42,771 tỷ đồng, tăng 13.2% so với năm trước, với kỳ vọng tín dụng tăng 15.5% và NIM đạt 2.22% nhờ tốc độ giải ngân nhanh hơn vào cuối năm theo yếu tố mùa vụ và mặt bằng lãi suất đi lên. Tuy nhiên, chất lượng tài sản đang trở thành biến số rủi ro khi tỷ lệ nợ xấu đã tăng lên 1.83% và tỷ lệ bao phủ nợ xấu giảm mạnh xuống 75.9%, mức thấp nhất trong nhóm ngân hàng quốc doanh, tạo áp lực trích lập dự phòng để khôi phục bộ đệm này lên trên 100% và có thể kìm hãm đà tăng trưởng lợi nhuận. Song song đó, ngân hàng còn đối mặt với rủi ro thanh khoản khi tốc độ tăng trưởng tiền gửi khách hàng thấp hơn đáng kể so với dư nợ, buộc đơn vị này phải phụ thuộc vào nguồn vốn từ giấy tờ có giá với chi phí vốn cao."
    }
   ],
-  "fadeBefore": "2026-07-20",
+  "fadeBefore": "2026-07-21",
   "summary": {
    "n": 7,
    "median": 44000,
@@ -19406,16 +19406,16 @@
    "npN": 7
   },
   "fwd": {
-   "bv2026F": 212115.4,
+   "bv2026F": 212047.3,
    "npat2026F": 32006,
-   "pbFwd": 1.22,
-   "peFwd": 8.12,
-   "bvps2026F": 27270,
+   "pbFwd": 1.25,
+   "peFwd": 8.27,
+   "bvps2026F": 26741,
    "npatH1": 15173.7,
    "impliedH2": 16832.3,
    "npat2025": 30430.1,
    "h2_2025": 17576.7,
-   "divPaid": 3500.2
+   "divPaid": 3568.3
   },
   "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
@@ -29306,6 +29306,10 @@
    {
     "d": "2026-10-19",
     "v": 4.4
+   },
+   {
+    "d": "2026-10-20",
+    "v": 3.6
    }
   ],
   "omoNetDaily": [
@@ -33660,6 +33664,10 @@
    {
     "d": "2026-10-19",
     "v": -1276.84
+   },
+   {
+    "d": "2026-10-20",
+    "v": -5414.77
    }
   ],
   "omoRateDaily": [
@@ -38407,10 +38415,10 @@
   {
    "id": "R-10",
    "label": "LNH qua đêm TB 20 phiên vs OMO",
-   "value": -1.57,
+   "value": -1.61,
    "unit": "điểm %",
-   "asOf": "2026-10-19",
-   "rule": "OMO bơm ròng 20 phiên -96.747 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
+   "asOf": "2026-10-20",
+   "rule": "OMO bơm ròng 20 phiên -101.512 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
    "threshold": "> 0 kéo dài (giả định)",
    "state": "ok",
    "impact": "OMO không giúp tuân thủ LDR; TT1 chỉ hạ khi có nới tỉ lệ"

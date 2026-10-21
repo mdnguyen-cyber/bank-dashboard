@@ -6,20 +6,20 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Big 4",
-  "updated": "2026-10-20",
+  "updated": "2026-10-21",
   "price": 55700,
   "priceDate": "2026-10-20",
-  "mcap": 465411,
+  "mcap": 469589,
   "pb": 1.93,
   "pe": 11.17,
   "bvps": 28824,
   "eps": 4984,
-  "sharesOut": 8355.7,
+  "sharesOut": 8430.7,
   "latestQuarter": "Q2/2026",
   "view": null,
   "irUrl": "https://www.vietcombank.com.vn/vi-VN/Nha-dau-tu",
   "strategic": "Mizuho",
-  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-19 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-21 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 18.0,
   "roa": 1.71,
   "nim": 2.81,
@@ -22634,7 +22634,7 @@
     "summary": "Vietcombank (VCB) xác lập mức lợi nhuận kỷ lục trong quý 2/2026, thúc đẩy TCBS đưa ra khuyến nghị tiếp tục nắm giữ và tích lũy cổ phiếu khi định giá P/B hiện duy trì tại mức 2.0 lần, thuộc vùng thấp trong lịch sử 5 năm. Động lực tăng trưởng chính của ngân hàng đến từ sự hồi phục của biên lãi ròng (NIM) đạt 3.03% và thu nhập lãi thuần tăng 35.2% trong quý 2/2026, đồng thời dư địa giải ngân cho nửa cuối năm vẫn còn lớn khi mới sử dụng 5.1% trên tổng hạn mức tín dụng 13%. Thanh khoản hệ thống dự kiến được hỗ trợ bởi việc nới lỏng quy định tính tiền gửi Kho bạc vào tỷ lệ cho vay trên huy động (LDR) và nỗ lực đẩy mạnh đầu tư công, góp phần hiện thực hóa dự báo lợi nhuận trước thuế cả năm 2026 đạt 58,232 tỷ đồng, tương ứng mức tăng 32.3% với tăng trưởng tín dụng kế hoạch 15%. Mặc dù tỷ suất sinh lời ROE dự báo đạt 18.8% nhờ tối ưu hóa lợi suất tài sản và kiểm soát chi phí vốn, triển vọng của VCB vẫn đối mặt với áp lực nợ xấu khi nợ nhóm 2 tăng nhanh 64.6% so với đầu năm và chi phí hoạt động, chủ yếu là chi phí nhân viên, tăng 40.2% vượt tốc độ tăng thu nhập lõi. Bên cạnh đó, đà suy giảm của tỷ lệ tiền gửi không kỳ hạn (CASA) cùng tiến độ chào bán riêng lẻ 6.5% vốn là những biến số cần theo dõi sát sao do có khả năng tác động trực tiếp đến chi phí huy động và hệ số an toàn vốn của ngân hàng."
    }
   ],
-  "fadeBefore": "2026-07-20",
+  "fadeBefore": "2026-07-21",
   "summary": {
    "n": 12,
    "median": 75750.0,
@@ -22649,16 +22649,16 @@
    "npN": 11
   },
   "fwd": {
-   "bv2026F": 263545.3,
+   "bv2026F": 263511.6,
    "npat2026F": 42828,
-   "pbFwd": 1.77,
-   "peFwd": 10.87,
-   "bvps2026F": 31541,
+   "pbFwd": 1.78,
+   "peFwd": 10.96,
+   "bvps2026F": 31256,
    "npatH1": 24013.1,
    "impliedH2": 18814.9,
    "npat2025": 35197.9,
    "h2_2025": 17658.9,
-   "divPaid": 3760.1
+   "divPaid": 3793.8
   },
   "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
@@ -32477,6 +32477,10 @@
    {
     "d": "2026-10-19",
     "v": 4.4
+   },
+   {
+    "d": "2026-10-20",
+    "v": 3.6
    }
   ],
   "omoNetDaily": [
@@ -36831,6 +36835,10 @@
    {
     "d": "2026-10-19",
     "v": -1276.84
+   },
+   {
+    "d": "2026-10-20",
+    "v": -5414.77
    }
   ],
   "omoRateDaily": [
@@ -41578,10 +41586,10 @@
   {
    "id": "R-10",
    "label": "LNH qua đêm TB 20 phiên vs OMO",
-   "value": -1.57,
+   "value": -1.61,
    "unit": "điểm %",
-   "asOf": "2026-10-19",
-   "rule": "OMO bơm ròng 20 phiên -96.747 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
+   "asOf": "2026-10-20",
+   "rule": "OMO bơm ròng 20 phiên -101.512 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
    "threshold": "> 0 kéo dài (giả định)",
    "state": "ok",
    "impact": "OMO không giúp tuân thủ LDR; TT1 chỉ hạ khi có nới tỉ lệ"

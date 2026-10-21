@@ -6,20 +6,20 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Big 4",
-  "updated": "2026-10-20",
+  "updated": "2026-10-21",
   "price": 30000,
   "priceDate": "2026-10-20",
-  "mcap": 233008,
+  "mcap": 237280,
   "pb": 1.2,
   "pe": 5.8,
   "bvps": 25071,
   "eps": 5172,
-  "sharesOut": 7766.9,
+  "sharesOut": 7909.3,
   "latestQuarter": "Q2/2026",
   "view": null,
   "irUrl": "https://investor.vietinbank.vn/",
   "strategic": "MUFG",
-  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-19 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-21 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 22.2,
   "roa": 1.45,
   "nim": 2.75,
@@ -22049,7 +22049,7 @@
     "summary": "TCBS đánh giá cổ phiếu CTG duy trì vị thế hấp dẫn để nắm giữ và tích lũy trong các nhịp điều chỉnh khi sở hữu ROE đạt 21.8%, cao thứ hai hệ thống, trong khi định giá P/B 1.24 lần hiện thấp hơn mức trung bình ngành và lịch sử của chính doanh nghiệp. Động lực tăng trưởng trong nửa cuối năm 2026 dự kiến được thúc đẩy bởi việc nới hạn mức tín dụng và quy định mới cho phép tính 50% tiền gửi Kho bạc Nhà nước vào tỷ lệ LDR, tạo dư địa mở rộng cho vay với dự báo tăng trưởng tín dụng cả năm đạt 14%, tập trung vào phân khúc bán lẻ và doanh nghiệp FDI. Lợi nhuận trước thuế năm 2026 được kỳ vọng đạt 54,216 tỷ đồng, tăng 24.8% so với năm trước, nhờ NIM duy trì ở mức 2.92% và chỉ số CIR thuộc nhóm thấp nhất ngành phản ánh hiệu quả vận hành tối ưu, nối tiếp đà phục hồi từ quý 2/2026 khi lợi nhuận lập đỉnh lịch sử nhờ biên lãi thuần cải thiện mạnh mẽ do lãi suất tài sản gia tăng nhanh hơn chi phí vốn. Tuy nhiên, chất lượng tài sản vẫn là biến số cần theo dõi sát sao khi nợ xấu có dấu hiệu tăng trở lại trong quý 2/2026 tại các lĩnh vực bất động sản, tiêu dùng và nông nghiệp, đồng thời tỷ lệ bao phủ nợ xấu giảm mạnh xuống mức thấp nhất trong hai năm là 134%, tạo áp lực duy trì chi phí dự phòng cao để củng cố bộ đệm rủi ro. Bên cạnh đó, sự suy giảm của tỷ lệ CASA cùng áp lực chi phí vốn đi lên có thể trở thành rào cản kìm hãm đà cải thiện biên lãi thuần của ngân hàng trong thời gian tới."
    }
   ],
-  "fadeBefore": "2026-07-20",
+  "fadeBefore": "2026-07-21",
   "summary": {
    "n": 8,
    "median": 41400.0,
@@ -22064,16 +22064,16 @@
    "npN": 8
   },
   "fwd": {
-   "bv2026F": 218752.7,
+   "bv2026F": 218688.6,
    "npat2026F": 42777.0,
-   "pbFwd": 1.07,
-   "peFwd": 5.45,
-   "bvps2026F": 28165,
+   "pbFwd": 1.09,
+   "peFwd": 5.55,
+   "bvps2026F": 27649,
    "npatH1": 20743.5,
    "impliedH2": 22033.5,
    "npat2025": 34871.3,
    "h2_2025": 19619.9,
-   "divPaid": 3495.1
+   "divPaid": 3559.2
   },
   "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
@@ -31958,6 +31958,10 @@
    {
     "d": "2026-10-19",
     "v": 4.4
+   },
+   {
+    "d": "2026-10-20",
+    "v": 3.6
    }
   ],
   "omoNetDaily": [
@@ -36312,6 +36316,10 @@
    {
     "d": "2026-10-19",
     "v": -1276.84
+   },
+   {
+    "d": "2026-10-20",
+    "v": -5414.77
    }
   ],
   "omoRateDaily": [
@@ -41059,10 +41067,10 @@
   {
    "id": "R-10",
    "label": "LNH qua đêm TB 20 phiên vs OMO",
-   "value": -1.57,
+   "value": -1.61,
    "unit": "điểm %",
-   "asOf": "2026-10-19",
-   "rule": "OMO bơm ròng 20 phiên -96.747 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
+   "asOf": "2026-10-20",
+   "rule": "OMO bơm ròng 20 phiên -101.512 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
    "threshold": "> 0 kéo dài (giả định)",
    "state": "ok",
    "impact": "OMO không giúp tuân thủ LDR; TT1 chỉ hạ khi có nới tỉ lệ"
