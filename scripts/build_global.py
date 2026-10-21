@@ -370,6 +370,9 @@ if _fw.exists():
     G['fedwatch'].pop('method', None); G['fedwatch'].pop('zq', None)
     if G['fedwatch'].get('mpt'):
         for w in G['fedwatch']['mpt']['windows']: w.pop('probs', None)
+    _lr = (G['fedwatch'].get('dots') or {}).get('FEDTARMDLR')
+    if _lr:
+        _k = max(_lr); G['fedwatch']['dots']['FEDTARMDLR'] = {_k: _lr[_k]}
     _fh = ROOT / 'data/global/fedwatch_hist.json'
     if _fh.exists():
         G['fedwatchHist'] = json.loads(_fh.read_text(encoding='utf-8'))
