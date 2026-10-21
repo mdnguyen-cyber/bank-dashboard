@@ -15,6 +15,7 @@ Mục tiêu: kéo số mới nhất, build lại `data/*.js|json`, kiểm tra v�
 gh api -X POST repos/mdnguyen-cyber/bank-dashboard/actions/workflows/fetch-global.yml/dispatches -f ref=main
 gh api -X POST repos/mdnguyen-cyber/bank-dashboard/actions/workflows/fetch-vira.yml/dispatches -f ref=main
 ```
+`fetch-global.yml` cũng chạy `scripts/fetch_fedwatch.py`: xác suất lãi suất Fed theo phiên FOMC tính theo phương pháp CME FedWatch từ giá ZQ (Yahoo), đối chiếu Kalshi → `data/global/fedwatch.json` (+ lịch sử `fedwatch_hist.json`). CME chặn truy cập tự động nên không lấy trực tiếp số CME; trang ghi "ước tính theo phương pháp CME FedWatch".
 Chạy song song với bước 2; chờ xong (`gh api repos/mdnguyen-cyber/bank-dashboard/actions/runs?per_page=5`), rồi `git pull --rebase`.
 
 ## 2. Dữ liệu trong nước qua WiData (connector WiMCP)
