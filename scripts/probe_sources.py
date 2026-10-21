@@ -7,15 +7,13 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'cme_zq_settle': 'https://www.cmegroup.com/CmeWS/mvc/Settlements/Futures/Settlements/305/FUT',
-    'cme_zq_quotes': 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/305/G',
-    'yahoo_zq_front': 'https://query1.finance.yahoo.com/v8/finance/chart/ZQ=F?range=5d&interval=1d',
-    'yahoo_zqz26': 'https://query1.finance.yahoo.com/v8/finance/chart/ZQZ26.CBT?range=5d&interval=1d',
-    'yahoo_zqf27': 'https://query1.finance.yahoo.com/v8/finance/chart/ZQF27.CBT?range=5d&interval=1d',
-    'kalshi_fed': 'https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker=KXFED&status=open&limit=200',
-    'kalshi_fed_dec': 'https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXFEDDECISION&status=open&with_nested_markets=true',
-    'poly_fed': 'https://gamma-api.polymarket.com/events?tag_slug=fed&closed=false&limit=20',
-    'fomc_cal_raw': 'https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm',
+    'poly_search': 'https://gamma-api.polymarket.com/public-search?q=fed%20decision&events_status=active&limit_per_type=20',
+    'poly_slug_oct': 'https://gamma-api.polymarket.com/events?slug=fed-decision-in-october-2026',
+    'poly_slug_oct2': 'https://gamma-api.polymarket.com/events?slug=fed-decision-in-october',
+    'poly_tag_fed': 'https://gamma-api.polymarket.com/events?tag_slug=fed-rates&closed=false&limit=50',
+    'poly_series': 'https://gamma-api.polymarket.com/series?slug=fed-interest-rates',
+    'atl_mpt_raw': 'https://www.atlantafed.org/cenfis/market-probability-tracker',
+    'fred_dot': 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=FEDTARMD,FEDTARMDLR',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -46,7 +44,7 @@ def main():
                 info['paths'] = sorted(set(re.findall(r'["\'](/(?:api|_next/data|embed|nhung)[^"\'\s]*)', txt)))[:80]
                 info['scripts'] = [m[:1500] for m in re.findall(r'<script[^>]*>(.*?)</script>', txt, re.S) if len(m) > 200][:8]
                 info['size'] = len(txt)
-                info['ctx2'] = [txt[max(0, m.start() - 600):m.end() + 600] for m in re.finditer(r'2026 FOMC|2027 FOMC|fomc-meeting', txt)][:6]
+                info['ctx2'] = [txt[max(0, m.start() - 600):m.end() + 600] for m in re.finditer(r'xlsx|csv|download|probability', txt, re.I)][:6]
             if k.startswith('tw'):
                 info['ctx'] = [txt[max(0, m.start() - 300):m.end() + 300] for m in re.finditer(r'BDdys100|Benchmark|storage/|/www/|ajax|fetch\(|\$\.(?:get|post)', txt)][:25]
             if k == 'tw_tpex_api_list':
