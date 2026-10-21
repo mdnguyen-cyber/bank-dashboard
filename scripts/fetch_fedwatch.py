@@ -20,6 +20,7 @@ MCODE = 'FGHJKMNQUVXZ'
 # dự phòng khi không đọc được lịch trên federalreserve.gov (ngày cuối mỗi cuộc họp)
 FOMC_FALLBACK = ['2026-01-28', '2026-03-18', '2026-04-29', '2026-06-17', '2026-07-29', '2026-09-16', '2026-10-28', '2026-12-09']
 MONTHS = {m: i for i, m in enumerate(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], 1)}
+MONTHS.update({k[:3]: v for k, v in list(MONTHS.items())}); MONTHS['Sept'] = 9
 
 
 def get(url, timeout=40):
@@ -35,16 +36,20 @@ def fomc_dates():
         print('fomc calendar lỗi', e, file=sys.stderr)
         return FOMC_FALLBACK
     out = set()
-    for ym, body in re.findall(r'id="\d+">\s*<a[^>]*>\s*(\d{4}) FOMC Meetings</a>(.*?)(?=\d{4} FOMC Meetings</a>|$)', html, re.S):
-        y = int(ym)
-        for mon, day in re.findall(r'fomc-meeting__month[^>]*>\s*<strong>([A-Za-z/]+)</strong>.*?fomc-meeting__date[^>]*>([^<]+)<', body, re.S):
-            mon_last = mon.split('/')[-1]
-            dd = re.findall(r'\d+', day)
-            if mon_last not in MONTHS or not dd:
-                continue
-            m = MONTHS[mon_last]
-            out.add(f'{y}-{m:02d}-{int(dd[-1]):02d}')
+    heads = [(m.start(), int(m.group(1))) for m in re.finditer(r'(\d{4}) FOMC Meetings', html)]
+    for m in re.finditer(r'fomc-meeting__month[^>]*>\s*(?:<strong>)?\s*([A-Za-z/]+)\s*(?:</strong>)?.*?fomc-meeting__date[^>]*>\s*([^<]+)<', html, re.S):
+        ys = [y for pos, y in heads if pos < m.start()]
+        if not ys:
+            continue
+        mon_last = m.group(1).split('/')[-1]
+        dd = re.findall(r'\d+', m.group(2))
+        if mon_last not in MONTHS or not dd:
+            continue
+        out.add(f'{ys[-1]}-{MONTHS[mon_last]:02d}-{int(dd[-1]):02d}')
     out = sorted(out)
+    print('FOMC đọc được:', out[-12:], file=sys.stderr)
+    if len(out) < 8:
+        i = html.find('fomc-meeting__'); print('mẫu HTML:', html[i - 300:i + 700] if i >= 0 else 'không thấy fomc-meeting__', file=sys.stderr)
     return out if len(out) >= 8 else FOMC_FALLBACK
 
 
