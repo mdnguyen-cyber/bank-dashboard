@@ -43,7 +43,7 @@ Không chép tay số liệu.
 
 ## 3. Build và kiểm tra
 ```
-python3 scripts/build_sector_data.py && for t in CTG VCB BID; do python3 scripts/build_ctg_data.py --ticker $t; done && python3 scripts/build_big3.py && python3 scripts/build_bot_context.py
+python3 scripts/build_sector_data.py && for t in CTG VCB BID TCB MBB ACB; do python3 scripts/build_ctg_data.py --ticker $t; done && python3 scripts/build_big3.py && python3 scripts/build_bot_context.py
 python3 tests/test_sector_data.py
 ```
 Test định giá chốt cứng (pb, pe) sai vì số mới → cập nhật số trong test cho khớp số mới (không sửa logic).

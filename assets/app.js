@@ -18,7 +18,8 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 const Q = D.quarterly, QL = Q[Q.length - 1], QP = Q[Q.length - 2];
 const M = D.meta, CS = D.consensus, FW = CS.fwd, VB = D.valuation;
 const TODAY = M.updated;
-const T = M.ticker, NR = D.narr || {};
+const T = M.ticker, NR = D.narr || {}, GRP = M.peerGroup || 'Big 4', BIG = GRP === 'Big 4';
+const LTK = BIG ? ['VCB', 'BID', 'CTG'] : ['TCB', 'MBB', 'ACB'];   // nhóm có chuỗi dài hạn (data/big3-data.js)
 const big4 = () => (D.peers.rows || []).filter(r => r.group === 'Big 4');
 const rankIn = (rows, k, me, desc = true) => { const s = rows.filter(r => r[k] != null).sort((a, b) => desc ? b[k] - a[k] : a[k] - b[k]); const i = s.findIndex(r => (r.symbol || r.s) === me); return i < 0 ? null : { i: i + 1, n: s.length }; };
 const maxIn = (k, n) => Math.max(...lastN(Q, n).map(q => q[k]).filter(v => v != null));
@@ -108,7 +109,7 @@ function roomSub() {
     ${carCard('chCarH')}
     <article class="card"><h3 class="sub">Room tín dụng và LDR theo TT50</h3>
       ${cm ? `<p>Room ngụ ý theo xếp hạng TT21 (ước tính): <b>${pc(cm.room)}</b> (điểm ${nf(cm.total, 2)}, hạng ${cm.grade}). Tín dụng đã tăng <b>${pc(cm.creditYtd)}</b> từ đầu năm tới ${QL.q} — dùng khoảng <b>${pc(used, 0)}</b> room cả năm.</p>` : ''}
-      ${X.peerLdr ? `<p class="chart-sub">LDR Big 4 niêm yết theo hệ số tính tiền gửi Kho bạc (TGKB) — TT50 tính 20%; nâng lên 50% là một đề xuất chính sách</p><div class="tscroll"><table><thead><tr><th>NH</th><th class="n">TGKB/tiền gửi</th><th class="n">TGKB 0%</th><th class="n">TGKB 20%</th><th class="n">TGKB 50%</th></tr></thead><tbody>
+      ${X.peerLdr ? `<p class="chart-sub">LDR ${GRP} niêm yết theo hệ số tính tiền gửi Kho bạc (TGKB) — TT50 tính 20%; nâng lên 50% là một đề xuất chính sách</p><div class="tscroll"><table><thead><tr><th>NH</th><th class="n">TGKB/tiền gửi</th><th class="n">TGKB 0%</th><th class="n">TGKB 20%</th><th class="n">TGKB 50%</th></tr></thead><tbody>
         ${X.peerLdr.map(r => `<tr class="${r.s === M.ticker ? 'hl' : ''}"><td><b>${r.s}</b></td><td class="n">${pc(r.kbnnPctDep)}</td><td class="n">${pc(r.ldr0)}</td><td class="n">${pc(r.ldr20)}</td><td class="n">${pc(r.ldr50)}</td></tr>`).join('')}
       </tbody></table></div>` : ''}
       <div class="src">Room: điểm xếp hạng ước tính × ${nf(X.roomCoef || 2.6, 1)}% (cách giao chỉ tiêu tín dụng 2026), xem dashboard ngành › Xếp hạng TT21 & room. LDR theo hệ số TGKB: tự tính từ BCTC Q2/2026.</div></article>
@@ -117,7 +118,7 @@ function roomSub() {
 function nimPeerIns() {
   const a = AQ(QL.q), b = AQ(Q[Q.length - 5].q);
   const lo = QL.cof < a('cof', 'all');
-  return `NIM ${T} <b>${pc(QL.nim, 2)}</b> so với Big 4 <b>${pc(a('nim', 'Big 4'), 2)}</b> và ngành ${pc(a('nim', 'all'), 2)}; một năm trước ${pc(Q[Q.length - 5].nim, 2)} / ${pc(b('nim', 'Big 4'), 2)} / ${pc(b('nim', 'all'), 2)}. COF ${T} ${pc(QL.cof, 2)} ${lo ? 'thấp hơn' : 'cao hơn'} ngành (${pc(a('cof', 'all'), 2)})${lo ? ' nhờ CASA và tiền gửi Kho bạc' : ''}; CASA ${QL.casa >= QP.casa ? 'tăng' : 'giảm'} ${pc(QP.casa)} → ${pc(QL.casa)} trong quý${lo && QL.casa < QP.casa ? ' — lợi thế chi phí vốn thu hẹp dần' : ''}.`;
+  return `NIM ${T} <b>${pc(QL.nim, 2)}</b> so với ${GRP} <b>${pc(a('nim', GRP), 2)}</b> và ngành ${pc(a('nim', 'all'), 2)}; một năm trước ${pc(Q[Q.length - 5].nim, 2)} / ${pc(b('nim', GRP), 2)} / ${pc(b('nim', 'all'), 2)}. COF ${T} ${pc(QL.cof, 2)} ${lo ? 'thấp hơn' : 'cao hơn'} ngành (${pc(a('cof', 'all'), 2)})${lo ? ' nhờ CASA và tiền gửi Kho bạc' : ''}; CASA ${QL.casa >= QP.casa ? 'tăng' : 'giảm'} ${pc(QP.casa)} → ${pc(QL.casa)} trong quý${lo && QL.casa < QP.casa ? ' — lợi thế chi phí vốn thu hẹp dần' : ''}.`;
 }
 function gapIns() {
   const g = QL.irGap; if (g == null) return 'Chưa có số khe hở lãi suất.';
@@ -131,7 +132,7 @@ function accrIns() {
 }
 function aqPeerIns() {
   const a = AQ(QL.q);
-  return `${T}: NPL <b>${pc(QL.npl, 2)}</b>, nhóm 2 ${pc(QL.g2, 2)}; Big 4: ${pc(a('npl', 'Big 4'), 2)} / ${pc(a('g2', 'Big 4'), 2)}; ngành: ${pc(a('npl', 'all'), 2)} / ${pc(a('g2', 'all'), 2)}. Bao phủ ${T} ${pc(QL.llr, 0)} so với Big 4 ${pc(a('llr', 'Big 4'), 0)}.`;
+  return `${T}: NPL <b>${pc(QL.npl, 2)}</b>, nhóm 2 ${pc(QL.g2, 2)}; ${GRP}: ${pc(a('npl', GRP), 2)} / ${pc(a('g2', GRP), 2)}; ngành: ${pc(a('npl', 'all'), 2)} / ${pc(a('g2', 'all'), 2)}. Bao phủ ${T} ${pc(QL.llr, 0)} so với ${GRP} ${pc(a('llr', GRP), 0)}.`;
 }
 function nfiIns() {
   const o = Q[Q.length - 5];
@@ -176,9 +177,9 @@ function carCard(id) {
 }
 function carRankTxt() {
   const CP = D.carPeers, car = D.car[D.car.length - 1]; if (!CP) return '';
-  const rows = CP.rows.filter(r => r.group === 'Big 4'); const me = rows.find(r => r.s === T);
-  if (me && CP.period === car.period && rows.length >= 3) { const s = [...rows].sort((a, b) => b.car - a.car); const i = s.indexOf(me); return `; ${i === 0 ? 'cao nhất' : i === s.length - 1 ? 'thấp nhất' : 'đứng thứ ' + (i + 1)} trong Big 4 niêm yết (${s.map(r => r.s + ' ' + pc(r.car, 2)).join(', ')})`; }
-  const oth = rows.filter(r => r.s !== T); const miss = ['VCB', 'BID', 'CTG'].filter(s => !rows.find(r => r.s === s)); return oth.length ? `; cùng kỳ ${CP.period}: ${oth.map(r => r.s + ' ' + pc(r.car, 2)).join(', ')}${miss.length ? ' (' + miss.join(', ') + ' chưa công bố kỳ này)' : ''}` : '';
+  const rows = CP.rows.filter(r => r.group === GRP); const me = rows.find(r => r.s === T);
+  if (me && CP.period === car.period && rows.length >= 3) { const s = [...rows].sort((a, b) => b.car - a.car); const i = s.indexOf(me); return `; ${i === 0 ? 'cao nhất' : i === s.length - 1 ? 'thấp nhất' : 'đứng thứ ' + (i + 1)} trong nhóm ${GRP} (${s.map(r => r.s + ' ' + pc(r.car, 2)).join(', ')})`; }
+  const oth = rows.filter(r => r.s !== T); const miss = (BIG ? ['VCB', 'BID', 'CTG'] : rows.map(r => r.s)).filter(s => !rows.find(r => r.s === s)); return oth.length ? `; cùng kỳ ${CP.period}: ${oth.map(r => r.s + ' ' + pc(r.car, 2)).join(', ')}${miss.length ? ' (' + miss.join(', ') + ' chưa công bố kỳ này)' : ''}` : '';
 }
 function drawCar(id) {
   mk(id, { type: 'bar', data: { labels: D.car.map(c => c.period), datasets: [
@@ -189,14 +190,14 @@ function drawCar(id) {
 function ldrCard(id) {
   const X = D.ctx;
   return card({ id, title: 'LDR theo quý so với trần và ngành', sub: '% · LDR theo công thức TT22 (tiền gửi Kho bạc tính theo hệ số) · đường đỏ = trần 85%', ctl: true,
-    insight: `LDR <b>${pc(QL.ldr)}</b> (${QL.q}), còn <b>${nf(85 - QL.ldr, 1)} điểm %</b> tới trần 85%${X && X.agg && X.agg.ldr ? `; bình quân Big 4 ${pc(AQ(QL.q)('ldr', 'Big 4'))}, ngành ${pc(AQ(QL.q)('ldr', 'all'))}` : ''}. Tín dụng tăng <b>${pc(QL.creditYoY)}</b> YoY trong khi huy động chỉ <b>${pc(QL.fundingYoY)}</b> — khoảng cách này thu hẹp dư địa LDR nhanh nhất. Từ Q3/2026 tiền gửi KBNN được tính 50% (thay 20%) — Big 4 hưởng lợi nhiều nhất; từ 1/12/2026 TT50 đổi cách tính (liên ngân hàng chỉ tính vị thế ròng).`,
-    src: 'BCTC hợp nhất, tỷ lệ LDR công bố; bình quân Big 4 và ngành gia quyền theo dư nợ' });
+    insight: `LDR <b>${pc(QL.ldr)}</b> (${QL.q}), ${QL.ldr <= 85 ? `còn <b>${nf(85 - QL.ldr, 1)} điểm %</b> tới trần 85%` : `cao hơn mốc 85% <b>${nf(QL.ldr - 85, 1)} điểm %</b> theo công thức của nguồn dữ liệu (tỷ lệ ngân hàng báo cáo NHNN có thể thấp hơn do khác cách tính nguồn vốn, khoản loại trừ)`}${X && X.agg && X.agg.ldr ? `; bình quân ${GRP} ${pc(AQ(QL.q)('ldr', GRP))}, ngành ${pc(AQ(QL.q)('ldr', 'all'))}` : ''}. Tín dụng tăng <b>${pc(QL.creditYoY)}</b> YoY trong khi huy động chỉ <b>${pc(QL.fundingYoY)}</b> — khoảng cách này thu hẹp dư địa LDR nhanh nhất. Từ Q3/2026 tiền gửi KBNN được tính 50% (thay 20%) — ${BIG ? 'Big 4 hưởng lợi nhiều nhất' : 'Big 4 hưởng lợi nhiều nhất, ' + T + ' ít hơn vì giữ ít tiền gửi KBNN'}; từ 1/12/2026 TT50 đổi cách tính (liên ngân hàng chỉ tính vị thế ròng).`,
+    src: `BCTC hợp nhất, tỷ lệ LDR công bố; bình quân ${GRP} và ngành gia quyền theo dư nợ` });
 }
 function drawLdr(id) {
   const X = D.ctx, qr = Q.filter(q => q.ldr != null);
   mk(id, { type: 'line', data: { labels: qr.map(q => q.q), datasets: [
     { label: 'LDR ' + T, data: qr.map(q => q.ldr), borderColor: C.navy, backgroundColor: C.navy, dp: 1, unit: '%', borderWidth: 2.5 },
-    ...(X ? [{ label: 'LDR Big 4', data: qr.map(q => AQ(q.q)('ldr', 'Big 4')), borderColor: C.teal, backgroundColor: C.teal, dp: 1, unit: '%', spanGaps: true },
+    ...(X ? [{ label: 'LDR ' + GRP, data: qr.map(q => AQ(q.q)('ldr', GRP)), borderColor: C.teal, backgroundColor: C.teal, dp: 1, unit: '%', spanGaps: true },
       { label: 'LDR ngành', data: qr.map(q => AQ(q.q)('ldr', 'all')), borderColor: C.grey, backgroundColor: C.grey, borderDash: [5, 4], dp: 1, unit: '%', spanGaps: true }] : [])] },
     options: { scales: { y: pctAxis() }, plugins: { refLines: { lines: [{ value: 85, label: 'Trần 85% (TT22)', color: C.red }] } } } }, { switch: 'line', win: 60 });
 }
@@ -312,14 +313,14 @@ const GT = { win: 60, side: 'all', q: '', n: 20 };
 function govSection() {
   const G = D.governance, sh = G.shareholders, big = sh.filter(h => h.percent >= 5);
   const top = sh[0];
-  return `<h2 class="sec">Quản trị &amp; sở hữu</h2><p class="sec-sub">Ngân hàng do Nhà nước sở hữu chi phối${M.strategic ? `; ${esc(M.strategic)} là cổ đông chiến lược nước ngoài` : ''}.</p>
+  return `<h2 class="sec">Quản trị &amp; sở hữu</h2><p class="sec-sub">${NR.ownerSub ? esc(NR.ownerSub) : `Ngân hàng do Nhà nước sở hữu chi phối${M.strategic ? `; ${esc(M.strategic)} là cổ đông chiến lược nước ngoài` : ''}.`}</p>
   <div class="grid g2 gap">
     ${card({ id: 'chOwn', title: 'Cơ cấu cổ đông', sub: `% vốn · cổ đông ≥ 0,5% và phần còn lại · ngày chốt gần nhất ${dvn(sh.map(h => h.asOf).sort().pop())}`, h: 'short',
       body: `<div class="tscroll"><table><thead><tr><th>Cổ đông</th><th class="n">Số CP</th><th class="n">Tỷ lệ</th><th>Ngày chốt</th></tr></thead><tbody>
         ${sh.map(h => `<tr><td>${esc(h.name)}</td><td class="n">${nf(h.shares)}</td><td class="n">${nf(h.percent, 2)}%</td><td>${dvn(h.asOf)}</td></tr>`).join('')}
         <tr><td>Cổ đông khác (tự do chuyển nhượng, tổ chức và cá nhân &lt; 0,5%)</td><td class="n">—</td><td class="n">${nf(G.other, 2)}%</td><td></td></tr></tbody></table></div>
         ${G.holderNote ? `<div class="note keep">⚠ ${esc(G.holderNote)}</div>` : ''}`,
-      insight: `${esc(top.name)} nắm <b>${nf(top.percent, 1)}%</b>; nhóm cổ đông lớn (≥ 5%) <b>${nf(big.reduce((a, h) => a + h.percent, 0), 1)}%</b>, phần lưu hành tự do còn khoảng <b>${nf(G.other, 1)}%</b>. Các NHTM có vốn Nhà nước chi phối phải giữ sở hữu Nhà nước ≥ 65% khi tăng vốn — ràng buộc của mọi phương án phát hành (xem Catalyst); room ngoại tối đa 30% với ngân hàng.`,
+      insight: `${esc(top.name)} nắm <b>${nf(top.percent, 1)}%</b>; ${big.length ? `nhóm cổ đông lớn (≥ 5%) <b>${nf(big.reduce((a, h) => a + h.percent, 0), 1)}%</b>` : 'không cổ đông nào nắm từ 5% trở lên'}, phần lưu hành tự do còn khoảng <b>${nf(G.other, 1)}%</b>. ${NR.ownerInsight || 'Các NHTM có vốn Nhà nước chi phối phải giữ sở hữu Nhà nước ≥ 65% khi tăng vốn — ràng buộc của mọi phương án phát hành (xem Catalyst); room ngoại tối đa 30% với ngân hàng.'}`,
       src: 'WiData co_holders' })}
     <article class="card"><h3 class="sub">Cơ cấu quản trị</h3><p class="chart-sub">HĐQT, Ban điều hành, Ban kiểm soát · người đương nhiệm</p><div class="tscroll"><table><thead><tr><th>Họ tên</th><th>Vai trò</th><th>Bổ nhiệm</th></tr></thead><tbody>
       ${G.leadership.map(l => `<tr><td>${esc(l.name)}</td><td>${esc(l.role)}</td><td>${dvn(l.since)}</td></tr>`).join('')}
@@ -445,7 +446,7 @@ function paneMacro() {
       insight: `LNH qua đêm dao động mạnh <b>${nf(Math.min(...on3(MA.onDaily)), 2)}–${nf(Math.max(...on3(MA.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...MA.onDaily.map(v => v.v)), 2)}% ngày ${dvn(MA.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh thường rơi vào cuối tháng (căng mùa vụ) và NHNN bơm OMO đúng các phiên đó. Theo deck (R-10), OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR — nên TT2 hạ không tự kéo lãi suất huy động TT1 xuống.`,
       src: 'WiData macro 82237, 81522, 82268' })}
     ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng (TT1)', sub: '%/năm · cuối tháng · ' + T + ' niêm yết vs bình quân NHTM Nhà nước vs NHTM khác', ctl: true,
-      insight: `Lãi suất 12T của ${T} <b>${pc(lastv(depB).v, 1)}</b> (${dvn(lastv(depB).d)}) ${Math.abs(lastv(depB).v - lastv(r.dep12State).v) < 0.05 ? 'bằng' : lastv(depB).v > lastv(r.dep12State).v ? 'cao hơn' : 'thấp hơn'} bình quân nhóm Nhà nước (${pc(lastv(r.dep12State).v, 2)}), thấp hơn NHTM khác <b>${nf(lastv(r.dep12Other).v - lastv(depB).v, 2)} điểm %</b>. Mặt bằng đã tăng ${nf(lastv(r.dep12State).v - r.dep12State[0].v, 2)} điểm % từ ${dvn(r.dep12State[0].d).slice(3)}; theo R-13, COF thực tế đi sau 1–3 quý — xem COF ở tab Tài chính › Biên lãi.`,
+      insight: `Lãi suất 12T của ${T} <b>${pc(lastv(depB).v, 1)}</b> (${dvn(lastv(depB).d)}) ${Math.abs(lastv(depB).v - lastv(r.dep12State).v) < 0.05 ? 'bằng' : lastv(depB).v > lastv(r.dep12State).v ? 'cao hơn' : 'thấp hơn'} bình quân nhóm Nhà nước (${pc(lastv(r.dep12State).v, 2)}), ${lastv(r.dep12Other).v >= lastv(depB).v ? 'thấp hơn' : 'cao hơn'} bình quân NHTM khác <b>${nf(Math.abs(lastv(r.dep12Other).v - lastv(depB).v), 2)} điểm %</b>. Mặt bằng đã tăng ${nf(lastv(r.dep12State).v - r.dep12State[0].v, 2)} điểm % từ ${dvn(r.dep12State[0].d).slice(3)}; theo R-13, COF thực tế đi sau 1–3 quý — xem COF ở tab Tài chính › Biên lãi.`,
       src: 'WiData macro ' + D.macro.rates.dep12Id + ', 202886, 202880' })}
     ${card({ id: 'chCredit', title: 'Tín dụng toàn hệ thống so với đầu năm', sub: '% · tháng · mỗi đường một năm · đường đỏ = chỉ tiêu 2026 ~15%',
       insight: `Đến ${dvn(ytdNow.d).slice(3)}, tín dụng tăng <b>${pc(ytdNow.v, 2)}</b> so với đầu năm (cùng kỳ ${ytdPrevSame ? pc(ytdPrevSame.v, 2) : '—'}). Riêng ${T} tăng <b>${pc(QL.creditYoY)}</b> YoY (${QL.q}) — ${QL.creditYoY < lastv(MA.credit.yoy).v ? 'chậm hơn' : 'nhanh hơn'} toàn hệ thống (${pc(lastv(MA.credit.yoy).v)}); dư địa nửa cuối năm phụ thuộc room và LDR.`,
@@ -529,7 +530,7 @@ function paneFin() {
         insight: `Cho vay KH ròng <b>${nf(QL.loansNet)}</b> tỷ, chiếm <b>${pc(QL.loansNet / QL.ta * 100)}</b> tổng tài sản; tiền gửi và cho vay TCTD <b>${nf(QL.interbankA)}</b> tỷ (${pc(QL.interbankA / QL.ta * 100)}) — theo TT50 khoản này bị trừ khỏi mẫu số D khi tính LDR. Lãi, phí phải thu <b>${nf(QL.accrued)}</b> tỷ (${pc(QL.accruedToTA, 2)} tổng TS).`,
         src: 'WiData fs_bank' })}
       ${card({ id: 'chWfL', title: `Cơ cấu nguồn vốn ${QL.q}`, sub: 'tỷ đồng · cộng dồn tới tổng nguồn vốn', h: 'tall',
-        insight: `Tiền gửi KH <b>${nf(QL.deposits)}</b> tỷ (${pc(QL.deposits / QL.ta * 100)}); vay CP & NHNN (chủ yếu tiền gửi KBNN) <b>${nf(QL.govSbv)}</b> tỷ — nguồn đặc thù Big 4; GTCG <b>${nf(QL.papers)}</b> tỷ là nguồn ổn định vì không rút trước hạn. VCSH <b>${nf(QL.equity)}</b> tỷ, đòn bẩy TS/VCSH <b>${nf(QL.ta / QL.equity, 1)}x</b>.`,
+        insight: `Tiền gửi KH <b>${nf(QL.deposits)}</b> tỷ (${pc(QL.deposits / QL.ta * 100)}); vay CP & NHNN (chủ yếu tiền gửi KBNN) <b>${nf(QL.govSbv)}</b> tỷ${BIG ? ' — nguồn đặc thù Big 4' : ''}; GTCG <b>${nf(QL.papers)}</b> tỷ là nguồn ổn định vì không rút trước hạn. VCSH <b>${nf(QL.equity)}</b> tỷ, đòn bẩy TS/VCSH <b>${nf(QL.ta / QL.equity, 1)}x</b>.`,
         src: 'WiData fs_bank' })}
       ${card({ id: 'chEA', title: 'Tài sản theo quý', sub: 'tỷ đồng · cột chồng (BNK-01)', ctl: false,
         insight: `Tổng tài sản tăng <b>${sg((QL.ta / Q[Q.length - 5].ta - 1) * 100)}</b> YoY; cho vay KH gộp tăng <b>${sg((QL.loansGross / Q[Q.length - 5].loansGross - 1) * 100)}</b> trong khi liên ngân hàng tăng ${sg((QL.interbankA / Q[Q.length - 5].interbankA - 1) * 100)} — tăng trưởng tài sản không chỉ đến từ cho vay.`, src: 'WiData fs_bank' })}
@@ -550,13 +551,13 @@ function paneFin() {
   <div class="sub" data-subp="room">${roomSub()}</div>
   <div class="sub" data-subp="nim">
     <div class="grid g2 gap">
-      ${X ? card({ id: 'chNimPeer', title: 'NIM và chi phí vốn: ' + T + ' so với Big 4 và ngành', sub: '% · TTM theo quý · Big 4 và ngành = bình quân gia quyền theo dư nợ của các ngân hàng niêm yết', ctl: true,
+      ${X ? card({ id: 'chNimPeer', title: 'NIM và chi phí vốn: ' + T + ' so với ' + GRP + ' và ngành', sub: '% · TTM theo quý · ' + GRP + ' và ngành = bình quân gia quyền theo dư nợ của các ngân hàng niêm yết', ctl: true,
         insight: nimPeerIns(), src: 'BCTC các ngân hàng niêm yết · tự tổng hợp' }) : ''}
       ${card({ id: 'chGap', title: 'Khe hở tài sản − nợ nhạy cảm lãi suất ≤ 12 tháng', sub: '% tổng tài sản · quý · âm = nợ định giá lại nhanh hơn tài sản (thuyết minh rủi ro lãi suất)',
         insight: gapIns(), src: 'Thuyết minh rủi ro lãi suất, BCTC hợp nhất' })}
       ${card({ id: 'chNim', title: 'NIM, YEA và COF', sub: '% · TTM theo quý (BNK-05, 06, 07)', ctl: true,
         insight: (() => { const lo = minIn('nim', 8), d2 = QL.nim - Q[Q.length - 3].nim, dy = QL.yea - Q[Q.length - 3].yea, dc = QL.cof - Q[Q.length - 3].cof;
-          return `NIM TTM <b>${pc(QL.nim, 2)}</b> ${QL.nim > lo + 0.05 ? `phục hồi từ đáy 8 quý <b>${pc(lo, 2)}</b>` : `quanh đáy 8 quý (${pc(lo, 2)})`}; trong 2 quý YEA ${sg(dy, 2, ' điểm %')} lên <b>${pc(QL.yea, 2)}</b>, COF ${sg(dc, 2, ' điểm %')} lên <b>${pc(QL.cof, 2)}</b>. Theo deck, Big 4 có repricing gap ngắn nên NIM có thể nở khi lãi suất tăng — dữ liệu ${Q[Q.length - 3].q}–${QL.q} ${d2 > 0 ? 'khớp với' : 'chưa khớp với'} nhận định này.`; })(), src: 'WiData ratio_bank_ttm' })}
+          return `NIM TTM <b>${pc(QL.nim, 2)}</b> ${QL.nim > lo + 0.05 ? `phục hồi từ đáy 8 quý <b>${pc(lo, 2)}</b>` : `quanh đáy 8 quý (${pc(lo, 2)})`}; trong 2 quý YEA ${sg(dy, 2, ' điểm %')} lên <b>${pc(QL.yea, 2)}</b>, COF ${sg(dc, 2, ' điểm %')} lên <b>${pc(QL.cof, 2)}</b>. Theo deck, ${BIG ? 'Big 4' : 'ngân hàng'} có repricing gap ngắn nên NIM có thể nở khi lãi suất tăng — dữ liệu ${Q[Q.length - 3].q}–${QL.q} ${d2 > 0 ? 'khớp với' : 'chưa khớp với'} nhận định này.`; })(), src: 'WiData ratio_bank_ttm' })}
       ${card({ id: 'chNimAdj', title: 'NIM và NIM sau chi phí tín dụng', sub: '% · TTM · NIM điều chỉnh = (NII − dự phòng) / TS sinh lời (tự tính)', ctl: true,
         insight: `NIM sau dự phòng <b>${pc(QL.nimAdj, 2)}</b> so với NIM <b>${pc(QL.nim, 2)}</b>: chi phí tín dụng ăn <b>${nf(QL.nim - QL.nimAdj, 2)} điểm %</b>. Chỉ số này so sánh ngang giữa ngân hàng cho vay rủi ro cao (YEA cao, dự phòng cao) và ngân hàng thận trọng.`, src: 'Tự tính từ WiData fs_bank, ratio_bank_ttm' })}
       ${card({ id: 'chCof', title: 'COF ' + T + ' vs lãi suất huy động 12T niêm yết', sub: '% · COF TTM theo quý; LS niêm yết ' + T + ' cuối quý', ctl: true,
@@ -568,7 +569,7 @@ function paneFin() {
     <div class="grid g2 gap">
       ${card({ id: 'chNpl', title: 'Nợ xấu và nợ nhóm 2', sub: '% dư nợ · quý (BNK-10)', ctl: true,
         insight: `NPL <b>${pc(QL.npl, 2)}</b> (quý trước ${pc(QP.npl, 2)}), nhóm 2 <b>${pc(QL.g2, 2)}</b>. Deck lưu ý nhóm 2 đồng pha với NPL chứ không phải chỉ báo sớm — nên đọc cùng hình thành nợ xấu.`, src: 'WiData ratio_bank' })}
-      ${X ? card({ id: 'chAqPeer', title: 'Nợ xấu và nhóm 2: ' + T + ' so với Big 4 và ngành', sub: '% dư nợ · quý', ctl: true,
+      ${X ? card({ id: 'chAqPeer', title: 'Nợ xấu và nhóm 2: ' + T + ' so với ' + GRP + ' và ngành', sub: '% dư nợ · quý', ctl: true,
         insight: aqPeerIns(), src: 'BCTC các ngân hàng niêm yết · tự tổng hợp' }) : ''}
       ${card({ id: 'chForm', title: 'Hình thành nợ xấu (ước tính)', sub: 'tỷ đồng/quý và % dư nợ quy năm · = ΔNPL + nợ xử lý bằng dự phòng (BNK-11, tự tính)',
         insight: `${QL.q}: hình thành nợ xấu khoảng <b>${nf(QL.nplFormation)}</b> tỷ (<b>${pc(QL.nplFormationRate, 2)}</b> dư nợ quy năm), nợ xử lý bằng dự phòng ~${nf(QL.writeOffEst)} tỷ. ${NR.nplFormCheck || ''}`, src: 'Tự tính từ WiData fs_bank, ratio_bank' })}
@@ -663,7 +664,7 @@ function finCharts(k) {
     if (D.ctx) { const X = D.ctx, qs = X.quarters, cq = qs.map(l => Q.find(q => q.q === l));
       mk('chNimPeer', { type: 'line', data: { labels: qs, datasets: [
         { label: 'NIM ' + T, data: cq.map(q => q && q.nim), borderColor: C.navy, backgroundColor: C.navy, dp: 2, unit: '%', borderWidth: 2.5 },
-        { label: 'NIM Big 4', data: X.agg.nim['Big 4'], borderColor: C.teal, backgroundColor: C.teal, dp: 2, unit: '%' },
+        { label: 'NIM ' + GRP, data: X.agg.nim[GRP], borderColor: C.teal, backgroundColor: C.teal, dp: 2, unit: '%' },
         { label: 'NIM ngành', data: X.agg.nim.all, borderColor: C.grey, backgroundColor: C.grey, dp: 2, unit: '%', borderDash: [5, 4] },
         { label: 'COF ' + T, data: cq.map(q => q && q.cof), borderColor: C.purple, backgroundColor: C.purple, dp: 2, unit: '%' },
         { label: 'COF ngành', data: X.agg.cof.all, borderColor: C.red, backgroundColor: C.red, dp: 2, unit: '%', borderDash: [5, 4] }] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' }); }
@@ -710,7 +711,7 @@ function finCharts(k) {
     if (D.ctx) { const X = D.ctx, qs = X.quarters, cq = qs.map(l => Q.find(q => q.q === l));
       mk('chAqPeer', { type: 'line', data: { labels: qs, datasets: [
         { label: 'NPL ' + T, data: cq.map(q => q && q.npl), borderColor: C.red, backgroundColor: C.red, dp: 2, unit: '%', borderWidth: 2.5 },
-        { label: 'NPL Big 4', data: X.agg.npl['Big 4'], borderColor: C.purple, backgroundColor: C.purple, dp: 2, unit: '%' },
+        { label: 'NPL ' + GRP, data: X.agg.npl[GRP], borderColor: C.purple, backgroundColor: C.purple, dp: 2, unit: '%' },
         { label: 'NPL ngành', data: X.agg.npl.all, borderColor: C.grey, backgroundColor: C.grey, borderDash: [5, 4], dp: 2, unit: '%' },
         { label: 'Nhóm 2 ' + T, data: cq.map(q => q && q.g2), borderColor: C.gold, backgroundColor: C.gold, dp: 2, unit: '%' },
         { label: 'Nhóm 2 ngành', data: X.agg.g2.all, borderColor: C.teal, backgroundColor: C.teal, borderDash: [5, 4], dp: 2, unit: '%' }] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' }); }
@@ -786,11 +787,11 @@ function peerSub() {
       <div class="insight" id="peerIns"></div>
       <details class="more" open><summary>Bảng so sánh theo kỳ</summary><div class="tscroll" id="peerTbl"></div></details>
       <div class="src">Nguồn: BCTC các ngân hàng niêm yết qua WiData (ratio_bank, ratio_bank_ttm, ratio_common_ttm); nhóm theo dashboard ngành</div></article>
-    <article class="card"><h3 class="sub">Big 4 niêm yết theo thời gian<span class="ctl" data-ctl="chPeerTs"></span></h3>
-      <p class="chart-sub">VCB, BID, CTG theo quý từ 2009 (BID từ 2012) · đường đứt = bình quân Big 4 và toàn ngành từ 2021 (gia quyền dư nợ) · dùng nút khung thời gian để xem dài hạn</p>
-      <div class="cbox tall"><canvas id="chPeerTs" role="img" aria-label="Big 4 theo thời gian"></canvas></div>
+    <article class="card"><h3 class="sub">${BIG ? 'Big 4' : GRP} niêm yết theo thời gian<span class="ctl" data-ctl="chPeerTs"></span></h3>
+      <p class="chart-sub">${LTK.join(', ')} theo quý ${BIG ? 'từ 2009 (BID từ 2012)' : 'từ khi có số liệu'} · đường đứt = bình quân ${GRP} và toàn ngành từ 2021 (gia quyền dư nợ) · dùng nút khung thời gian để xem dài hạn</p>
+      <div class="cbox tall"><canvas id="chPeerTs" role="img" aria-label="${GRP} theo thời gian"></canvas></div>
       <div class="insight" id="peerTsIns"></div>
-      <div class="src">Nguồn: BCTC hợp nhất VCB, BID, CTG qua WiData; bình quân nhóm từ dashboard ngành</div></article>`;
+      <div class="src">Nguồn: BCTC hợp nhất ${LTK.join(', ')} qua WiData; bình quân nhóm từ dashboard ngành</div></article>`;
 }
 function peer(k) {
   const SB = (window.SECTOR_DATA || {}).banks; if (!SB) return;
@@ -807,9 +808,9 @@ function peer(k) {
   // xếp hạng hiện tại và ở kỳ so sánh (trong toàn bộ 26 NH)
   const rk = (field) => { const s = all.filter(r => r[field] != null).sort((a, b) => b[field] - a[field]); const i = s.findIndex(r => r.s === T); return i < 0 ? null : { i: i + 1, n: s.length }; };
   const me = all.find(r => r.s === T), r1 = rk('v'), r0 = rk('v0');
-  const big = all.filter(r => r.group === 'Big 4' && r.v != null).sort((a, b) => b.v - a.v);
+  const big = all.filter(r => r.group === GRP && r.v != null).sort((a, b) => b.v - a.v);
   const better = dir === 1 ? 'cao → thấp, cao là tốt' : dir === -1 ? 'cao → thấp, thấp là tốt' : 'cao → thấp';
-  $('#peerIns').innerHTML = me && me.v != null ? `${lab} của ${T} kỳ ${pst.q} <b>${fmt(me.v)}</b>, xếp <b>${r1.i}/${r1.n}</b> (${better})${me.v0 != null && r0 ? `; kỳ ${pst.q0}: ${fmt(me.v0)}, hạng ${r0.i}/${r0.n} — ${key === 'pb' ? sg(me.v - me.v0, 2, 'x') : sg(me.v - me.v0, dp, ' điểm %')}` : ''}. Big 4 niêm yết: ${big.map(r => `${r.s} ${fmt(r.v)}${r.v0 != null ? ' (' + (key === 'pb' ? sg(r.v - r.v0, 2, 'x') : sg(r.v - r.v0, dp, '')) + ')' : ''}`).join(' · ')}. Điểm vàng = kỳ ${pst.q0}.` : `Chưa có số ${lab} của ${T} kỳ ${pst.q}.`;
+  $('#peerIns').innerHTML = me && me.v != null ? `${lab} của ${T} kỳ ${pst.q} <b>${fmt(me.v)}</b>, xếp <b>${r1.i}/${r1.n}</b> (${better})${me.v0 != null && r0 ? `; kỳ ${pst.q0}: ${fmt(me.v0)}, hạng ${r0.i}/${r0.n} — ${key === 'pb' ? sg(me.v - me.v0, 2, 'x') : sg(me.v - me.v0, dp, ' điểm %')}` : ''}. ${BIG ? 'Big 4 niêm yết' : 'Nhóm ' + GRP}: ${big.map(r => `${r.s} ${fmt(r.v)}${r.v0 != null ? ' (' + (key === 'pb' ? sg(r.v - r.v0, 2, 'x') : sg(r.v - r.v0, dp, '')) + ')' : ''}`).join(' · ')}. Điểm vàng = kỳ ${pst.q0}.` : `Chưa có số ${lab} của ${T} kỳ ${pst.q}.`;
   // bảng: các chỉ tiêu chính kỳ chọn và thay đổi so với kỳ so sánh
   const cols = [['nim', 'NIM', 2], ['cof', 'COF', 2], ['casa', 'CASA', 1], ['npl', 'NPL', 2], ['g2', 'Nhóm 2', 2], ['llr', 'LLR', 0], ['cir', 'CIR', 1], ['roe', 'ROE', 1], ['creditYoY', 'TD YoY', 1], ['ldr', 'LDR', 1]];
   const tr = Object.entries(SB.series).filter(([s, v]) => pst.g === 'Tất cả' || v.group === pst.g || s === T).sort((a, b) => ((b[1][key] || [])[qi] ?? -1e9) - ((a[1][key] || [])[qi] ?? -1e9));
@@ -821,16 +822,16 @@ function peer(k) {
 function peerTs() {
   const B = window.BIG3, SB = (window.SECTOR_DATA || {}).banks, X = D.ctx; if (!B) return;
   const [key, lab, dp] = PEER_M.find(m => m[0] === pst.k), unit = key === 'pb' ? 'x' : '%';
-  const col = { VCB: C.teal, BID: C.purple, CTG: C.navy };
+  const col = { VCB: C.teal, BID: C.purple, CTG: C.navy, TCB: C.red, MBB: C.blue, ACB: C.teal };
   const agg = g => { if (!X || !X.agg[key] || !X.agg[key][g]) return B.quarters.map(() => null); return B.quarters.map(q => { const i = X.quarters.indexOf(q); return i < 0 ? null : X.agg[key][g][i]; }); };
-  const ds = Object.keys(B.series).map(s => ({ label: s, data: B.series[s][key] || B.quarters.map(() => null), borderColor: col[s], backgroundColor: col[s], borderWidth: s === T ? 3 : 1.6, dp, unit, spanGaps: true }));
-  if (X && X.agg[key]) ds.push({ label: 'Bình quân Big 4', data: agg('Big 4'), borderColor: C.gold, backgroundColor: C.gold, borderDash: [5, 4], dp, unit, spanGaps: true }, { label: 'Bình quân ngành', data: agg('all'), borderColor: C.grey, backgroundColor: C.grey, borderDash: [5, 4], dp, unit, spanGaps: true });
+  const ds = LTK.filter(s => B.series[s]).map(s => ({ label: s, data: B.series[s][key] || B.quarters.map(() => null), borderColor: col[s], backgroundColor: col[s], borderWidth: s === T ? 3 : 1.6, dp, unit, spanGaps: true }));
+  if (X && X.agg[key]) ds.push({ label: 'Bình quân ' + GRP, data: agg(GRP), borderColor: C.gold, backgroundColor: C.gold, borderDash: [5, 4], dp, unit, spanGaps: true }, { label: 'Bình quân ngành', data: agg('all'), borderColor: C.grey, backgroundColor: C.grey, borderDash: [5, 4], dp, unit, spanGaps: true });
   mk('chPeerTs', { type: 'line', data: { labels: B.quarters, datasets: ds }, options: { scales: { y: key === 'pb' ? numAxis('lần', { beginAtZero: false, ticks: { callback: v => nf(v, 1) + 'x' } }) : pctAxis() } } }, { switch: 'line', win: 60 });
   const last = s => { const a = B.series[s][key] || []; for (let i = a.length - 1; i >= 0; i--) if (a[i] != null) return { v: a[i], q: B.quarters[i], i }; return null; };
   const me = last(T); if (!me) { $('#peerTsIns').innerHTML = ''; return; }
   const a5 = B.series[T][key][me.i - 20], hist = (B.series[T][key] || []).filter(v => v != null), avg = hist.reduce((a, b) => a + b, 0) / hist.length;
   const f = v => key === 'pb' ? x(v) : pc(v, dp);
-  $('#peerTsIns').innerHTML = `${lab} ${T} ${me.q} <b>${f(me.v)}</b>${a5 != null ? `, 5 năm trước ${f(a5)}` : ''}; bình quân từ ${B.quarters[B.series[T][key].findIndex(v => v != null)]} là ${f(avg)}. ${Object.keys(B.series).filter(s => s !== T).map(s => { const o = last(s); return o ? `${s} ${f(o.v)}` : ''; }).filter(Boolean).join(', ')} cùng kỳ.`;
+  $('#peerTsIns').innerHTML = `${lab} ${T} ${me.q} <b>${f(me.v)}</b>${a5 != null ? `, 5 năm trước ${f(a5)}` : ''}; bình quân từ ${B.quarters[B.series[T][key].findIndex(v => v != null)]} là ${f(avg)}. ${LTK.filter(s => s !== T && B.series[s]).map(s => { const v = (B.series[s][key] || [])[me.i]; return v != null ? `${s} ${f(v)}` : ''; }).filter(Boolean).join(', ')} cùng kỳ.`;
 }
 function camel() {
   const Y = [2021, 2022, 2023, 2024, 2025].map(y => Q.find(q => q.year === y && q.quarter === 4)).filter(Boolean);

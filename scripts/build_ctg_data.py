@@ -16,6 +16,7 @@ from datetime import date, datetime, timedelta
 
 TICKER = 'CTG'   # đổi bằng --ticker
 BANK = {}
+GRP = 'Big 4'
 BIG4 = ['VCB', 'BID', 'CTG']
 PEER_GROUPS = {   # cùng cách nhóm với dashboard ngành (build_sector_data.py)
     'VCB': 'Big 4', 'BID': 'Big 4', 'CTG': 'Big 4',
@@ -185,7 +186,7 @@ def build(raw):
     lq = qlabel(last_q['year'], last_q['quarter'])
     bvps, eps = v_('bvps'), v_('eps')
     D['meta'] = {
-        'ticker': TICKER, 'name': BANK['name'], 'short': BANK.get('short'), 'exchange': BANK.get('exchange', 'HOSE'), 'sector': 'bank', 'peerGroup': 'Big 4',
+        'ticker': TICKER, 'name': BANK['name'], 'short': BANK.get('short'), 'exchange': BANK.get('exchange', 'HOSE'), 'sector': 'bank', 'peerGroup': GRP,
         'updated': asof, 'price': price, 'priceDate': last_px['trading_date'],
         'mcap': mcap_ty, 'pb': round(price / bvps, 2) if bvps else None, 'pe': round(price / eps, 2) if eps else None,
         'bvps': round(bvps) if bvps else None, 'eps': round(eps) if eps else None,
@@ -499,7 +500,7 @@ def build(raw):
         {'d': '2026-12-01', 'type': 'Luật/Chính sách', 't': 'TT50/2026/TT-NHNN có hiệu lực: LDR mới, LCR, NSFR thay SMLR', 'impact': '?', 'status': 'pending',
          'detail': 'Tiền gửi KBNN mặc định 20% trong LDR theo TT50 (Thống đốc có thể điều chỉnh); liên ngân hàng chỉ tính vị thế ròng.', 'src': 'Deck slide 21, 53; báo cáo TT50 FinSuccess'},
         {'d': '2026-08-01', 'type': 'Luật/Chính sách', 't': 'Hệ số tiền gửi KBNN tính vào LDR nâng lên 50% (từ Q3/2026)', 'impact': '+', 'status': 'done',
-         'detail': 'Big 4 hưởng lợi nhiều nhất do giữ nhiều tiền gửi KBNN. ' + BANK.get('kbnnNote', ''), 'src': 'Công thức LDR WiData; WiData ai_news'},
+         'detail': ('Big 4 hưởng lợi nhiều nhất do giữ nhiều tiền gửi KBNN. ' if GRP == 'Big 4' else 'Ngân hàng tư nhân giữ ít tiền gửi KBNN nên hưởng lợi ít hơn Big 4. ') + BANK.get('kbnnNote', ''), 'src': 'Công thức LDR WiData; WiData ai_news'},
     ] + [dict(e) for e in BANK.get('events', [])]
     # mốc 'pending' đã qua ngày cập nhật mà chưa xác nhận → giữ là mốc theo dõi (không tự đổi trạng thái)
     D['events'] = sorted(ev, key=lambda e: e['d'], reverse=True)
@@ -587,7 +588,7 @@ def build(raw):
         _S = json.loads((ROOT / 'data/sector-data.json').read_text(encoding='utf-8'))
         _ls = next((r for r in _S['ldrSens']['rows'] if r['s'] == TICKER), None)
         _cm = next((r for r in _S['camel']['periods']['TTM2Q26']['rows'] if r['s'] == TICKER), None)
-        _bigNim = _S['agg']['series']['nim']['Big 4'][-1]
+        _bigNim = _S['agg']['series']['nim'][GRP][-1]
     except Exception:  # noqa: BLE001
         _ls = _cm = _bigNim = None
     try:   # bối cảnh ngành cho các tab Tài chính (từ dashboard ngành)
@@ -595,8 +596,8 @@ def build(raw):
         D['ctx'] = {'quarters': _bq, 'ldrSens': _ls,
                     'camel': {k: _cm.get(k) for k in ('room', 'creditYtd', 'grade', 'total')} if _cm else None,
                     'roomCoef': _S['camel']['roomCoef'],
-                    'agg': {m: {g: _ag[m][g] for g in ('Big 4', 'all') if g in _ag[m]} for m in ('nim', 'cof', 'yea', 'npl', 'g2', 'llr', 'ldr', 'casa', 'cir', 'roe') if m in _ag},
-                    'peerLdr': [{'s': r['s'], 'group': r['group'], 'ldr20': r['ldr20'], 'ldr0': r['ldr0'], 'ldr50': r['ldr50'], 'kbnnPctDep': r['kbnnPctDep']} for r in _S['ldrSens']['rows'] if r['group'] == 'Big 4']}
+                    'agg': {m: {g: _ag[m][g] for g in dict.fromkeys(('Big 4', GRP, 'all')) if g in _ag[m]} for m in ('nim', 'cof', 'yea', 'npl', 'g2', 'llr', 'ldr', 'casa', 'cir', 'roe') if m in _ag},
+                    'peerLdr': [{'s': r['s'], 'group': r['group'], 'ldr20': r['ldr20'], 'ldr0': r['ldr0'], 'ldr50': r['ldr50'], 'kbnnPctDep': r['kbnnPctDep']} for r in _S['ldrSens']['rows'] if r['group'] == GRP]}
     except Exception:  # noqa: BLE001
         pass
     nfi_ttm = sum(q['nfi'] for q in Q[-4:]); nfi_ttm0 = sum(q['nfi'] for q in Q[-8:-4]) if len(Q) >= 8 else None
@@ -606,7 +607,7 @@ def build(raw):
     if fee_t:
         rws = [r for r in fee_t['rows'] if r['k'] != '_tot' and r['inc'] > 0]
         top = max(rws, key=lambda r: r['incYoY'] if r['incYoY'] is not None else -1e9)
-        fee_txt = (f"; năm {fee_t['year']}: " + ', '.join(f"{r['name'].split(' (')[0].lower()} {r['share']:.0f}% (biên {r['margin']:.0f}%, thu {r['incYoY']:+.1f}%)"
+        fee_txt = (f"; năm {fee_t['year']}: " + ', '.join(f"{r['name'].split(' (')[0].lower()} {r['share']:.0f}%" + (f" (biên {r['margin']:.0f}%" if r.get('margin') is not None else ' (') + (f", thu {r['incYoY']:+.1f}%)" if r.get('incYoY') is not None else ')')
                    for r in sorted(rws, key=lambda r: -(r['share'] or 0))[:3]) + f"; tăng nhanh nhất: {top['name'].split(' (')[0].lower()}")
     room_ok = (qn['ldr'] or 99) < 85 - 1 and car_last['car'] >= 9.5
     D['thesisPillars'] = [
@@ -616,7 +617,7 @@ def build(raw):
                       + (f"; room ngụ ý theo xếp hạng TT21 {_cm['room']}%" if _cm else '')),
          'status': 'holding' if room_ok and qn['fundingYoY'] >= qn['creditYoY'] - 3 else 'watch'},
         {'id': 'p2', 'go': {'sub': 'nim', 'card': 'chNimPeer'}, 'step': 'Bước 5 · Biên lãi', 't': 'NIM giữ được trước áp lực giảm lãi suất',
-         'evidence': f"NIM TTM {qn['nim']}% ({qn['q']}) so với đáy 8 quý {nim_min}%" + (f", bình quân Big 4 {_bigNim}%" if _bigNim else '') + f"; YEA {qn['yea']}%, COF {qn['cof']}%; CASA {qn['casa']}% (quý trước {qp['casa']}%)",
+         'evidence': f"NIM TTM {qn['nim']}% ({qn['q']}) so với đáy 8 quý {nim_min}%" + (f", bình quân {GRP} {_bigNim}%" if _bigNim else '') + f"; YEA {qn['yea']}%, COF {qn['cof']}%; CASA {qn['casa']}% (quý trước {qp['casa']}%)",
          'status': 'holding' if qn['nim'] > nim_min + 0.05 and qn['casa'] >= qp['casa'] - 0.5 else 'watch'},
         {'id': 'p3', 'go': {'sub': 'aq', 'card': 'chAccr'}, 'step': 'Bước 4 · Chất lượng tài sản', 't': 'Nợ xấu: nhóm 2, nhóm 3–5 và lãi phải thu',
          'evidence': (f"Nợ nhóm 2 {qn['g2']}%, nợ xấu nhóm 3–5 {qn['npl']}% dư nợ (quý trước {qp['npl']}%); LLR {qn['llr']}%, tính cả lãi phải thu {qn.get('llrInclAccrued')}%"
@@ -662,7 +663,7 @@ def daily_merged(raw, iid):
     return [{'d': k, 'v': out[k]} for k in sorted(out)]
 
 def main():
-    global TICKER, BANK
+    global TICKER, BANK, GRP
     ap = argparse.ArgumentParser()
     ap.add_argument('--ticker', default='CTG')
     ap.add_argument('--raw', default='data/raw/wi')
@@ -670,6 +671,7 @@ def main():
     a = ap.parse_args()
     TICKER = a.ticker.upper()
     BANK = json.loads((ROOT / 'data/banks.json').read_text(encoding='utf-8'))[TICKER]
+    GRP = PEER_GROUPS.get(TICKER, 'Big 4')
     a.out = a.out or f'data/{TICKER.lower()}-data.js'
     D = build(load_raw(a.raw))
     D['narr'] = BANK.get('narr', {})

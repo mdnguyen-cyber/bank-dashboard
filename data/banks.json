@@ -1,80 +1,284 @@
 {
-  "_note": "Hồ sơ và phần biên tập tay theo từng ngân hàng (dùng bởi scripts/build_ctg_data.py --ticker X). Số liệu KHÔNG nằm ở đây — chỉ tên, đường dẫn, mã chỉ tiêu và lời bình có nguồn.",
-  "CTG": {
-    "name": "Ngân hàng TMCP Công Thương Việt Nam", "short": "VietinBank", "exchange": "HOSE",
-    "irUrl": "https://investor.vietinbank.vn/", "dep12": 202862, "page": "index.html",
-    "strategic": "MUFG",
-    "narr": {
-      "carWhy": "vì vậy CTG giữ lại lợi nhuận (cổ tức tiền mặt thấp, chia cổ phiếu) và phương án tăng vốn là catalyst trực tiếp.",
-      "nplFormCheck": "Số tự tính khớp ước tính ~10.500 tỷ của CTCK (VNDS 04/08/2026). Tỷ lệ NPL thấp phần lớn nhờ xử lý nợ, không phải danh mục sạch hơn.",
-      "llrRef": {"v": 150, "label": "Mục tiêu 150%", "txt": "dưới mục tiêu trung hạn 150% của ngân hàng (theo CTCK)"},
-      "recovTarget": " (mục tiêu ~10.000 tỷ/năm theo CTCK)",
-      "tpSpread": "Chênh lệch lớn nhất nằm ở giả định tái định giá P/B: Vietcap kỳ vọng mở rộng NIM dài hạn, SSI cho rằng CAR mỏng hạn chế tái định giá.",
-      "divNote": "<b>Các năm trống — lợi nhuận được giữ lại để tăng vốn, không phải do lỗ hay Covid:</b><br><b>2017–2018:</b> giữ lại lợi nhuận, cùng phần còn lại năm 2019 dùng cho phương án cổ tức cổ phiếu 28,8% (chờ cơ quan Nhà nước phê duyệt đến 2021).<br><b>2021–2022:</b> NHNN và Bộ Tài chính đồng ý giữ lại toàn bộ lợi nhuận (riêng 2022: 11.678 tỷ) để trả cổ tức bằng cổ phiếu — thực hiện ở đợt phát hành 44,6% cuối 2025 (nguồn lợi nhuận 2021, 2022 và 2009–2016).<br><b>2023:</b> toàn bộ lợi nhuận sau trích quỹ (13.927 tỷ) dành cho chia cổ tức và tăng vốn điều lệ (ĐHĐCĐ 04/2024).<br>Bối cảnh: là NHTM Nhà nước, mức và hình thức cổ tức phải được NHNN, Bộ Tài chính phê duyệt; sở hữu Nhà nước phải giữ ≥ 65% nên CTG khó phát hành cổ phiếu ra ngoài — giữ lại lợi nhuận là kênh chính để nâng CAR. Năm 2015 cũng không chia cổ tức với lý do đảm bảo an toàn vốn theo Basel II.",
-      "divInsight": "Cổ tức tiền mặt thấp (tỷ lệ chi trả ~10%) đi cùng cổ tức cổ phiếu lớn (44,6%): CAR mỏng buộc giữ lại lợi nhuận để tăng vốn, nên những năm không chi tiền mặt là lựa chọn giữ vốn chứ không phải tín hiệu kinh doanh xấu.",
-      "divSrc": "Nghị quyết ĐHĐCĐ, công bố chi trả cổ tức của VietinBank; báo Đấu thầu (06/2016), Tạp chí Công Thương (04/2024), Doanh nhân (12/2025)",
-      "eventsNote": "Ngày của mốc chưa có lịch chính thức (VietinBank Tower, tăng vốn) là mốc theo dõi cuối năm, chưa xác nhận.",
-      "modelNote": " Model CTG v2.3 (Excel) chưa nối vào bản này.",
-      "risks": [["Thu nhập một lần không như kỳ vọng", "VietinBank Tower: ước tính lệch 800–3.000 tỷ giữa CTCK, thời điểm đã lùi", "Catalyst"]]
-    },
-    "events": [
-      {"d": "2026-10-31", "type": "Vốn & huy động", "t": "Chào bán trái phiếu ra công chúng (đã có Giấy chứng nhận 08/10, Bản cáo bạch 12/10)", "impact": "+", "status": "pending",
-       "detail": "GTCG ổn định vì không rút trước hạn; theo TT50, GTCG do TCTD khác nắm giữ bị loại khỏi LDR.", "src": "HOSE CBTT qua WiData"},
-      {"d": "2026-12-31", "type": "Doanh nghiệp", "t": "Chuyển nhượng dự án VietinBank Tower (Ciputra) — các CTCK kỳ vọng ghi nhận lợi nhuận một lần", "impact": "+", "status": "pending",
-       "detail": "Ước tính khác nhau giữa CTCK: ~800 tỷ (VDS), ~1.000 tỷ (VDS 06/2026), 2.000–3.000 tỷ (KAFI); thời điểm từng được kỳ vọng Q2, rồi 08/2026, chưa xác nhận hoàn tất.", "src": "WiData ai_news — báo cáo CTCK 05–09/2026"},
-      {"d": "2026-12-31", "type": "Vốn & huy động", "t": "Phương án tăng vốn điều lệ và nâng sở hữu Nhà nước lên ≥ 65%", "impact": "+", "status": "pending",
-       "detail": "Vốn điều lệ 77.669 tỷ (Q2/2026); Agriseco nêu kế hoạch lên hơn 105.000 tỷ. CAR 2025 9,89% là ràng buộc chính của tăng trưởng.", "src": "WiData ai_news; BCTC Q2/2026"}
-    ],
-    "kbnnNote": "NHSV ước dư địa cho vay thêm ~55.000 tỷ cho CTG."
+ "_note": "Hồ sơ và phần biên tập tay theo từng ngân hàng (dùng bởi scripts/build_ctg_data.py --ticker X). Số liệu KHÔNG nằm ở đây — chỉ tên, đường dẫn, mã chỉ tiêu và lời bình có nguồn.",
+ "CTG": {
+  "name": "Ngân hàng TMCP Công Thương Việt Nam",
+  "short": "VietinBank",
+  "exchange": "HOSE",
+  "irUrl": "https://investor.vietinbank.vn/",
+  "dep12": 202862,
+  "page": "index.html",
+  "strategic": "MUFG",
+  "narr": {
+   "carWhy": "vì vậy CTG giữ lại lợi nhuận (cổ tức tiền mặt thấp, chia cổ phiếu) và phương án tăng vốn là catalyst trực tiếp.",
+   "nplFormCheck": "Số tự tính khớp ước tính ~10.500 tỷ của CTCK (VNDS 04/08/2026). Tỷ lệ NPL thấp phần lớn nhờ xử lý nợ, không phải danh mục sạch hơn.",
+   "llrRef": {
+    "v": 150,
+    "label": "Mục tiêu 150%",
+    "txt": "dưới mục tiêu trung hạn 150% của ngân hàng (theo CTCK)"
+   },
+   "recovTarget": " (mục tiêu ~10.000 tỷ/năm theo CTCK)",
+   "tpSpread": "Chênh lệch lớn nhất nằm ở giả định tái định giá P/B: Vietcap kỳ vọng mở rộng NIM dài hạn, SSI cho rằng CAR mỏng hạn chế tái định giá.",
+   "divNote": "<b>Các năm trống — lợi nhuận được giữ lại để tăng vốn, không phải do lỗ hay Covid:</b><br><b>2017–2018:</b> giữ lại lợi nhuận, cùng phần còn lại năm 2019 dùng cho phương án cổ tức cổ phiếu 28,8% (chờ cơ quan Nhà nước phê duyệt đến 2021).<br><b>2021–2022:</b> NHNN và Bộ Tài chính đồng ý giữ lại toàn bộ lợi nhuận (riêng 2022: 11.678 tỷ) để trả cổ tức bằng cổ phiếu — thực hiện ở đợt phát hành 44,6% cuối 2025 (nguồn lợi nhuận 2021, 2022 và 2009–2016).<br><b>2023:</b> toàn bộ lợi nhuận sau trích quỹ (13.927 tỷ) dành cho chia cổ tức và tăng vốn điều lệ (ĐHĐCĐ 04/2024).<br>Bối cảnh: là NHTM Nhà nước, mức và hình thức cổ tức phải được NHNN, Bộ Tài chính phê duyệt; sở hữu Nhà nước phải giữ ≥ 65% nên CTG khó phát hành cổ phiếu ra ngoài — giữ lại lợi nhuận là kênh chính để nâng CAR. Năm 2015 cũng không chia cổ tức với lý do đảm bảo an toàn vốn theo Basel II.",
+   "divInsight": "Cổ tức tiền mặt thấp (tỷ lệ chi trả ~10%) đi cùng cổ tức cổ phiếu lớn (44,6%): CAR mỏng buộc giữ lại lợi nhuận để tăng vốn, nên những năm không chi tiền mặt là lựa chọn giữ vốn chứ không phải tín hiệu kinh doanh xấu.",
+   "divSrc": "Nghị quyết ĐHĐCĐ, công bố chi trả cổ tức của VietinBank; báo Đấu thầu (06/2016), Tạp chí Công Thương (04/2024), Doanh nhân (12/2025)",
+   "eventsNote": "Ngày của mốc chưa có lịch chính thức (VietinBank Tower, tăng vốn) là mốc theo dõi cuối năm, chưa xác nhận.",
+   "modelNote": " Model CTG v2.3 (Excel) chưa nối vào bản này.",
+   "risks": [
+    [
+     "Thu nhập một lần không như kỳ vọng",
+     "VietinBank Tower: ước tính lệch 800–3.000 tỷ giữa CTCK, thời điểm đã lùi",
+     "Catalyst"
+    ]
+   ]
   },
-  "VCB": {
-    "name": "Ngân hàng TMCP Ngoại thương Việt Nam", "short": "Vietcombank", "exchange": "HOSE",
-    "irUrl": "https://www.vietcombank.com.vn/vi-VN/Nha-dau-tu", "dep12": 202856, "page": "vcb.html",
-    "strategic": "Mizuho",
-    "narr": {
-      "carWhy": "Vốn cấp 1 chiếm gần trọn vốn tự có; phát hành riêng lẻ 6,5% cho nhà đầu tư chiến lược và cổ tức cổ phiếu là hai kênh bổ sung vốn đang chờ thực hiện.",
-      "nplFormCheck": "",
-      "llrRef": null,
-      "recovTarget": " (ngân hàng đặt mục tiêu thu hồi ~3.000 tỷ nợ xấu năm 2026 — VPBS 09/2026)",
-      "tpSpread": "Các CTCK đồng thuận về chất lượng tài sản và COF thấp; chênh lệch nằm ở tốc độ phục hồi NIM, tiến độ phát hành riêng lẻ 6,5% và khoản hoàn nhập dự phòng trái phiếu doanh nghiệp.",
-      "divNote": "<b>Các năm trống — lợi nhuận được giữ lại để tăng vốn bằng cổ tức cổ phiếu (cần NHNN, Bộ Tài chính phê duyệt), không phải do lỗ:</b><br><b>2016–2020:</b> cổ tức tiền mặt 8%/năm; lợi nhuận 2020 trả 12% tiền mặt (cuối 2021).<br><b>2021:</b> không chia tiền mặt — phần lợi nhuận còn lại năm 2021 cùng lợi nhuận lũy kế đến 2018 dùng cho đợt cổ tức cổ phiếu 49,5% (03/2025; WiData ghi vào năm 2024), nâng vốn điều lệ lên ~83.557 tỷ.<br><b>2022–2023:</b> phương án chia cổ tức cổ phiếu từ lợi nhuận hai năm này (tổng hơn 44.000 tỷ) đang chờ phê duyệt; kế hoạch 2026 gồm phát hành cổ phiếu trả cổ tức tỷ lệ 12,8% (VPBS 05/2026).<br><b>2024–2025:</b> cổ tức tiền mặt quay lại ở mức 4,5% (450đ/CP).<br>Bối cảnh: NHTM Nhà nước giữ sở hữu Nhà nước ≥ 65%; tăng vốn chủ yếu bằng lợi nhuận giữ lại, cộng phương án bán 6,5% cho nhà đầu tư chiến lược.",
-      "divInsight": "Tỷ lệ chi trả tiền mặt thấp (~10% từ 2024) và các đợt cổ phiếu lớn cho thấy lợi nhuận được ưu tiên giữ lại để tăng vốn; năm không chi tiền mặt là lựa chọn giữ vốn, không phải tín hiệu kinh doanh xấu.",
-      "divSrc": "WiData co_events, ratio_common_year; Báo Pháp luật/Doanh nhân (01/2025), VnBusiness (09/2025), VPBS (05/2026)",
-      "eventsNote": "Mốc chưa có lịch chính thức (phát hành riêng lẻ 6,5%, cổ tức cổ phiếu từ lợi nhuận 2022–2023) là mốc theo dõi, chưa xác nhận.",
-      "modelNote": "",
-      "risks": [["Tăng vốn chậm hoặc giá bán thấp", "Phát hành riêng lẻ 6,5% dự kiến H2/2026 (BSC 09/2026); các CTCK nêu rủi ro trì hoãn hoặc định giá thấp hơn kỳ vọng", "Catalyst"]]
-    },
-    "events": [
-      {"d": "2026-12-31", "type": "Vốn & huy động", "t": "Phát hành riêng lẻ tối đa 6,5% vốn cho nhà đầu tư chiến lược, chuyên nghiệp", "impact": "+", "status": "pending",
-       "detail": "ĐHĐCĐ 2025 thông qua tối đa 543,1 triệu CP; CTCK kỳ vọng hoàn tất H2/2026 và nâng CAR khoảng 2 điểm %.", "src": "WiData ai_news (BSC 09/2026, Yuanta 05/2026); VnBusiness (09/2025)"},
-      {"d": "2026-12-31", "type": "Vốn & huy động", "t": "Cổ tức cổ phiếu từ lợi nhuận 2022–2023 (kế hoạch tỷ lệ 12,8%)", "impact": "+", "status": "pending",
-       "detail": "Chờ cơ quan có thẩm quyền phê duyệt; tăng vốn điều lệ để giữ CAR khi tín dụng tăng.", "src": "WiData ai_news (VPBS 05/2026); VnBusiness (09/2025)"}
-    ],
-    "kbnnNote": "Vietcap ước LDR của VCB giảm khoảng 2 điểm % nhờ thay đổi này; BSC ước thêm ~47.000 tỷ dư địa cho vay."
+  "events": [
+   {
+    "d": "2026-10-31",
+    "type": "Vốn & huy động",
+    "t": "Chào bán trái phiếu ra công chúng (đã có Giấy chứng nhận 08/10, Bản cáo bạch 12/10)",
+    "impact": "+",
+    "status": "pending",
+    "detail": "GTCG ổn định vì không rút trước hạn; theo TT50, GTCG do TCTD khác nắm giữ bị loại khỏi LDR.",
+    "src": "HOSE CBTT qua WiData"
+   },
+   {
+    "d": "2026-12-31",
+    "type": "Doanh nghiệp",
+    "t": "Chuyển nhượng dự án VietinBank Tower (Ciputra) — các CTCK kỳ vọng ghi nhận lợi nhuận một lần",
+    "impact": "+",
+    "status": "pending",
+    "detail": "Ước tính khác nhau giữa CTCK: ~800 tỷ (VDS), ~1.000 tỷ (VDS 06/2026), 2.000–3.000 tỷ (KAFI); thời điểm từng được kỳ vọng Q2, rồi 08/2026, chưa xác nhận hoàn tất.",
+    "src": "WiData ai_news — báo cáo CTCK 05–09/2026"
+   },
+   {
+    "d": "2026-12-31",
+    "type": "Vốn & huy động",
+    "t": "Phương án tăng vốn điều lệ và nâng sở hữu Nhà nước lên ≥ 65%",
+    "impact": "+",
+    "status": "pending",
+    "detail": "Vốn điều lệ 77.669 tỷ (Q2/2026); Agriseco nêu kế hoạch lên hơn 105.000 tỷ. CAR 2025 9,89% là ràng buộc chính của tăng trưởng.",
+    "src": "WiData ai_news; BCTC Q2/2026"
+   }
+  ],
+  "kbnnNote": "NHSV ước dư địa cho vay thêm ~55.000 tỷ cho CTG."
+ },
+ "VCB": {
+  "name": "Ngân hàng TMCP Ngoại thương Việt Nam",
+  "short": "Vietcombank",
+  "exchange": "HOSE",
+  "irUrl": "https://www.vietcombank.com.vn/vi-VN/Nha-dau-tu",
+  "dep12": 202856,
+  "page": "vcb.html",
+  "strategic": "Mizuho",
+  "narr": {
+   "carWhy": "Vốn cấp 1 chiếm gần trọn vốn tự có; phát hành riêng lẻ 6,5% cho nhà đầu tư chiến lược và cổ tức cổ phiếu là hai kênh bổ sung vốn đang chờ thực hiện.",
+   "nplFormCheck": "",
+   "llrRef": null,
+   "recovTarget": " (ngân hàng đặt mục tiêu thu hồi ~3.000 tỷ nợ xấu năm 2026 — VPBS 09/2026)",
+   "tpSpread": "Các CTCK đồng thuận về chất lượng tài sản và COF thấp; chênh lệch nằm ở tốc độ phục hồi NIM, tiến độ phát hành riêng lẻ 6,5% và khoản hoàn nhập dự phòng trái phiếu doanh nghiệp.",
+   "divNote": "<b>Các năm trống — lợi nhuận được giữ lại để tăng vốn bằng cổ tức cổ phiếu (cần NHNN, Bộ Tài chính phê duyệt), không phải do lỗ:</b><br><b>2016–2020:</b> cổ tức tiền mặt 8%/năm; lợi nhuận 2020 trả 12% tiền mặt (cuối 2021).<br><b>2021:</b> không chia tiền mặt — phần lợi nhuận còn lại năm 2021 cùng lợi nhuận lũy kế đến 2018 dùng cho đợt cổ tức cổ phiếu 49,5% (03/2025; WiData ghi vào năm 2024), nâng vốn điều lệ lên ~83.557 tỷ.<br><b>2022–2023:</b> phương án chia cổ tức cổ phiếu từ lợi nhuận hai năm này (tổng hơn 44.000 tỷ) đang chờ phê duyệt; kế hoạch 2026 gồm phát hành cổ phiếu trả cổ tức tỷ lệ 12,8% (VPBS 05/2026).<br><b>2024–2025:</b> cổ tức tiền mặt quay lại ở mức 4,5% (450đ/CP).<br>Bối cảnh: NHTM Nhà nước giữ sở hữu Nhà nước ≥ 65%; tăng vốn chủ yếu bằng lợi nhuận giữ lại, cộng phương án bán 6,5% cho nhà đầu tư chiến lược.",
+   "divInsight": "Tỷ lệ chi trả tiền mặt thấp (~10% từ 2024) và các đợt cổ phiếu lớn cho thấy lợi nhuận được ưu tiên giữ lại để tăng vốn; năm không chi tiền mặt là lựa chọn giữ vốn, không phải tín hiệu kinh doanh xấu.",
+   "divSrc": "WiData co_events, ratio_common_year; Báo Pháp luật/Doanh nhân (01/2025), VnBusiness (09/2025), VPBS (05/2026)",
+   "eventsNote": "Mốc chưa có lịch chính thức (phát hành riêng lẻ 6,5%, cổ tức cổ phiếu từ lợi nhuận 2022–2023) là mốc theo dõi, chưa xác nhận.",
+   "modelNote": "",
+   "risks": [
+    [
+     "Tăng vốn chậm hoặc giá bán thấp",
+     "Phát hành riêng lẻ 6,5% dự kiến H2/2026 (BSC 09/2026); các CTCK nêu rủi ro trì hoãn hoặc định giá thấp hơn kỳ vọng",
+     "Catalyst"
+    ]
+   ]
   },
-  "BID": {
-    "name": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam", "short": "BIDV", "exchange": "HOSE",
-    "irUrl": "https://bidv.com.vn/vn/quan-he-nha-dau-tu", "dep12": 202700, "page": "bid.html",
-    "strategic": "KEB Hana",
-    "holderSwap": {"a": "Ngân hàng Nhà nước Việt Nam", "b": "KEB Hana Bank, Co Ltd",
-      "note": "Số liệu nguồn ghi đảo tỷ lệ giữa NHNN và KEB Hana; bảng đã hoán đổi theo CBTT giao dịch của KEB Hana (mua 603,3 triệu CP, nắm 15% vốn, 11/2019 — WiData co_insider)."},
-    "narr": {
-      "carWhy": "Vốn cấp 1 mỏng (CTCK nêu ~7%) nên BIDV phải tăng vốn liên tục: phát hành riêng lẻ (03/2026), cổ phiếu thưởng từ quỹ dự trữ (08/2026) và kế hoạch nâng vốn điều lệ lên tối đa 99.558 tỷ giai đoạn 2026–2027.",
-      "nplFormCheck": "CTCK cùng ghi nhận nợ xấu hình thành ròng ở mức cao, tập trung ở bán lẻ và thủy điện (VDS 09/2026).",
-      "llrRef": {"v": 100, "label": "Mốc 100%", "txt": "dưới mốc 100% mà CTCK cho rằng ngân hàng cần khôi phục (TCBS 08/2026)"},
-      "recovTarget": " (mục tiêu thu hồi nợ ngoại bảng 14.000 tỷ năm 2026 — VDS 06/2026)",
-      "tpSpread": "Chênh lệch giữa các CTCK chủ yếu ở chất lượng tài sản (LLR thấp nhất nhiều năm) và tốc độ phục hồi NIM; nhiều CTCK đã hạ TP trong 2026.",
-      "divNote": "<b>Năm trống trong dữ liệu — lợi nhuận được giữ lại để tăng vốn bằng cổ phiếu (cần Bộ Tài chính, NHNN phê duyệt), không phải do lỗ:</b><br><b>2016–2019:</b> cổ tức tiền mặt 7–8%/năm.<br><b>2020:</b> 2% tiền mặt và 25,77% cổ phiếu (thực hiện 12/2021).<br><b>2021:</b> cổ phiếu 12,69% từ lợi nhuận 2021 (11/2023), vốn điều lệ lên 57.004 tỷ.<br><b>2022:</b> không chi tiền mặt — lợi nhuận 2022 trả bằng cổ phiếu 21% (12/2024; WiData ghi vào năm 2023), vốn điều lệ lên ~68.975 tỷ.<br><b>2024–2025:</b> tiền mặt quay lại ở 4,5%; thêm cổ phiếu thưởng 6,84% từ quỹ dự trữ bổ sung vốn điều lệ (08/2026).<br>Bối cảnh: CAR và vốn cấp 1 mỏng nhất nhóm Big 4 nên ưu tiên giữ lại lợi nhuận.",
-      "divInsight": "Cổ tức tiền mặt thấp và đều đặn đi cùng cổ tức cổ phiếu lớn: lợi nhuận được giữ lại để nâng vốn cấp 1, nên năm không chi tiền mặt là lựa chọn giữ vốn chứ không phải tín hiệu kinh doanh xấu.",
-      "divSrc": "WiData co_events, ratio_common_year; Mekong ASEAN (11/2023, 12/2024); Tạp chí Công Thương (11/2024); HOSE CBTT (08/2026)",
-      "eventsNote": "Mốc chưa có lịch chính thức (các cấu phần tăng vốn 2026–2027) là mốc theo dõi, chưa xác nhận.",
-      "modelNote": "",
-      "risks": [["Tăng vốn chậm, pha loãng", "Kế hoạch nâng vốn điều lệ lên tối đa 99.558 tỷ giai đoạn 2026–2027 (VNDS 09/2026); tiến độ phụ thuộc phê duyệt và thị trường", "Catalyst"]]
-    },
-    "events": [
-      {"d": "2026-12-31", "type": "Vốn & huy động", "t": "Kế hoạch tăng vốn điều lệ lên tối đa 99.558 tỷ (giai đoạn 2026–2027)", "impact": "+", "status": "pending",
-       "detail": "Gồm lợi nhuận giữ lại, quỹ dự trữ và phát hành riêng lẻ; mục tiêu đáp ứng chuẩn Basel cao hơn. Các CTCK lưu ý rủi ro chậm tiến độ.", "src": "WiData ai_news (VNDS 09/2026, VDS 09/2026)"}
+  "events": [
+   {
+    "d": "2026-12-31",
+    "type": "Vốn & huy động",
+    "t": "Phát hành riêng lẻ tối đa 6,5% vốn cho nhà đầu tư chiến lược, chuyên nghiệp",
+    "impact": "+",
+    "status": "pending",
+    "detail": "ĐHĐCĐ 2025 thông qua tối đa 543,1 triệu CP; CTCK kỳ vọng hoàn tất H2/2026 và nâng CAR khoảng 2 điểm %.",
+    "src": "WiData ai_news (BSC 09/2026, Yuanta 05/2026); VnBusiness (09/2025)"
+   },
+   {
+    "d": "2026-12-31",
+    "type": "Vốn & huy động",
+    "t": "Cổ tức cổ phiếu từ lợi nhuận 2022–2023 (kế hoạch tỷ lệ 12,8%)",
+    "impact": "+",
+    "status": "pending",
+    "detail": "Chờ cơ quan có thẩm quyền phê duyệt; tăng vốn điều lệ để giữ CAR khi tín dụng tăng.",
+    "src": "WiData ai_news (VPBS 05/2026); VnBusiness (09/2025)"
+   }
+  ],
+  "kbnnNote": "Vietcap ước LDR của VCB giảm khoảng 2 điểm % nhờ thay đổi này; BSC ước thêm ~47.000 tỷ dư địa cho vay."
+ },
+ "BID": {
+  "name": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
+  "short": "BIDV",
+  "exchange": "HOSE",
+  "irUrl": "https://bidv.com.vn/vn/quan-he-nha-dau-tu",
+  "dep12": 202700,
+  "page": "bid.html",
+  "strategic": "KEB Hana",
+  "holderSwap": {
+   "a": "Ngân hàng Nhà nước Việt Nam",
+   "b": "KEB Hana Bank, Co Ltd",
+   "note": "Số liệu nguồn ghi đảo tỷ lệ giữa NHNN và KEB Hana; bảng đã hoán đổi theo CBTT giao dịch của KEB Hana (mua 603,3 triệu CP, nắm 15% vốn, 11/2019 — WiData co_insider)."
+  },
+  "narr": {
+   "carWhy": "Vốn cấp 1 mỏng (CTCK nêu ~7%) nên BIDV phải tăng vốn liên tục: phát hành riêng lẻ (03/2026), cổ phiếu thưởng từ quỹ dự trữ (08/2026) và kế hoạch nâng vốn điều lệ lên tối đa 99.558 tỷ giai đoạn 2026–2027.",
+   "nplFormCheck": "CTCK cùng ghi nhận nợ xấu hình thành ròng ở mức cao, tập trung ở bán lẻ và thủy điện (VDS 09/2026).",
+   "llrRef": {
+    "v": 100,
+    "label": "Mốc 100%",
+    "txt": "dưới mốc 100% mà CTCK cho rằng ngân hàng cần khôi phục (TCBS 08/2026)"
+   },
+   "recovTarget": " (mục tiêu thu hồi nợ ngoại bảng 14.000 tỷ năm 2026 — VDS 06/2026)",
+   "tpSpread": "Chênh lệch giữa các CTCK chủ yếu ở chất lượng tài sản (LLR thấp nhất nhiều năm) và tốc độ phục hồi NIM; nhiều CTCK đã hạ TP trong 2026.",
+   "divNote": "<b>Năm trống trong dữ liệu — lợi nhuận được giữ lại để tăng vốn bằng cổ phiếu (cần Bộ Tài chính, NHNN phê duyệt), không phải do lỗ:</b><br><b>2016–2019:</b> cổ tức tiền mặt 7–8%/năm.<br><b>2020:</b> 2% tiền mặt và 25,77% cổ phiếu (thực hiện 12/2021).<br><b>2021:</b> cổ phiếu 12,69% từ lợi nhuận 2021 (11/2023), vốn điều lệ lên 57.004 tỷ.<br><b>2022:</b> không chi tiền mặt — lợi nhuận 2022 trả bằng cổ phiếu 21% (12/2024; WiData ghi vào năm 2023), vốn điều lệ lên ~68.975 tỷ.<br><b>2024–2025:</b> tiền mặt quay lại ở 4,5%; thêm cổ phiếu thưởng 6,84% từ quỹ dự trữ bổ sung vốn điều lệ (08/2026).<br>Bối cảnh: CAR và vốn cấp 1 mỏng nhất nhóm Big 4 nên ưu tiên giữ lại lợi nhuận.",
+   "divInsight": "Cổ tức tiền mặt thấp và đều đặn đi cùng cổ tức cổ phiếu lớn: lợi nhuận được giữ lại để nâng vốn cấp 1, nên năm không chi tiền mặt là lựa chọn giữ vốn chứ không phải tín hiệu kinh doanh xấu.",
+   "divSrc": "WiData co_events, ratio_common_year; Mekong ASEAN (11/2023, 12/2024); Tạp chí Công Thương (11/2024); HOSE CBTT (08/2026)",
+   "eventsNote": "Mốc chưa có lịch chính thức (các cấu phần tăng vốn 2026–2027) là mốc theo dõi, chưa xác nhận.",
+   "modelNote": "",
+   "risks": [
+    [
+     "Tăng vốn chậm, pha loãng",
+     "Kế hoạch nâng vốn điều lệ lên tối đa 99.558 tỷ giai đoạn 2026–2027 (VNDS 09/2026); tiến độ phụ thuộc phê duyệt và thị trường",
+     "Catalyst"
+    ]
+   ]
+  },
+  "events": [
+   {
+    "d": "2026-12-31",
+    "type": "Vốn & huy động",
+    "t": "Kế hoạch tăng vốn điều lệ lên tối đa 99.558 tỷ (giai đoạn 2026–2027)",
+    "impact": "+",
+    "status": "pending",
+    "detail": "Gồm lợi nhuận giữ lại, quỹ dự trữ và phát hành riêng lẻ; mục tiêu đáp ứng chuẩn Basel cao hơn. Các CTCK lưu ý rủi ro chậm tiến độ.",
+    "src": "WiData ai_news (VNDS 09/2026, VDS 09/2026)"
+   }
+  ],
+  "kbnnNote": "TCBS kỳ vọng thay đổi này tạo thêm dư địa cho vay trong nửa cuối năm."
+ },
+ "TCB": {
+  "name": "Ngân hàng TMCP Kỹ thương Việt Nam",
+  "short": "Techcombank",
+  "exchange": "HOSE",
+  "irUrl": "https://techcombank.com/nha-dau-tu",
+  "dep12": 202820,
+  "page": "tcb.html",
+  "strategic": null,
+  "narr": {
+   "ownerSub": "Ngân hàng TMCP tư nhân, không có vốn Nhà nước; Tập đoàn Masan là cổ đông tổ chức lớn nhất.",
+   "ownerInsight": "Không chịu ràng buộc giữ sở hữu Nhà nước ≥ 65% như Big 4; tăng vốn chủ yếu bằng lợi nhuận giữ lại, cổ tức cổ phiếu và phát hành cho cổ đông hiện hữu. Room ngoại tối đa 30% với ngân hàng.",
+   "carWhy": "Vốn cấp 1 chiếm phần lớn vốn tự có; TCB chia cổ tức tiền mặt thấp (700đ/CP cho năm 2025) và giữ lại phần lớn lợi nhuận, nên đệm vốn dày cho phép tăng tín dụng nhanh hơn ngành. Phương án tăng vốn điều lệ 2026 đã được ĐHĐCĐ thông qua bằng văn bản (09/2026).",
+   "nplFormCheck": "",
+   "llrRef": null,
+   "recovTarget": "",
+   "tpSpread": "Các CTCK đồng thuận về tín dụng tăng nhanh và thu nhập phí (bảo hiểm, ngân hàng đầu tư, chứng khoán); chênh lệch nằm ở tốc độ phục hồi NIM, việc nới hạn mức tín dụng Q4/2026 và mức tập trung vào bất động sản, trái phiếu doanh nghiệp.",
+   "divNote": "",
+   "divInsight": "Cổ tức tiền mặt duy trì ở mức thấp (1.000đ/CP cho năm 2024, 700đ/CP cho năm 2025, tỷ suất ~2%); phần lớn lợi nhuận được giữ lại để tăng vốn.",
+   "divSrc": "WiData co_events, ratio_common_year",
+   "eventsNote": "",
+   "modelNote": "",
+   "risks": [
+    [
+     "Tập trung bất động sản và trái phiếu doanh nghiệp",
+     "Tín dụng doanh nghiệp gắn với chuỗi bất động sản và kế hoạch phân phối lại trái phiếu đã tư vấn trong H2/2026 (VDS 09/2026)",
+     "Chất lượng tài sản"
     ],
-    "kbnnNote": "TCBS kỳ vọng thay đổi này tạo thêm dư địa cho vay trong nửa cuối năm."
-  }
+    [
+     "Hạn mức tín dụng",
+     "Tăng trưởng tín dụng 9T/2026 vượt ngành, phụ thuộc NHNN nới hạn mức Q4/2026 (VDS 09/2026)",
+     "Tăng trưởng"
+    ]
+   ]
+  },
+  "events": [],
+  "kbnnNote": ""
+ },
+ "MBB": {
+  "name": "Ngân hàng TMCP Quân đội",
+  "short": "MB",
+  "exchange": "HOSE",
+  "irUrl": "https://www.mbbank.com.vn/Investor",
+  "dep12": 202742,
+  "page": "mbb.html",
+  "strategic": null,
+  "narr": {
+   "ownerSub": "Ngân hàng TMCP có cổ đông lớn là các doanh nghiệp Quân đội (Viettel, Tổng Công ty Trực thăng Việt Nam, Tân Cảng Sài Gòn) và SCIC; không thuộc nhóm NHTM Nhà nước.",
+   "ownerInsight": "Các cổ đông Quân đội và SCIC thường thực hiện đủ quyền mua khi MB tăng vốn (đợt 10:1 giá 10.000đ tháng 9/2026). Không chịu ràng buộc giữ sở hữu Nhà nước ≥ 65% như Big 4; tăng vốn chủ yếu bằng lợi nhuận giữ lại, cổ tức cổ phiếu và phát hành cho cổ đông hiện hữu. Room ngoại tối đa 30% với ngân hàng.",
+   "carWhy": "CAR (11,0% cuối 2025) thấp hơn TCB và ACB do tài sản rủi ro tăng nhanh theo tín dụng và việc nhận chuyển giao bắt buộc MBV; đợt cổ tức cổ phiếu 15% và quyền mua 10:1 (08–09/2026) cùng khoản góp vốn tăng vốn MBV (10/2026) là các thay đổi vốn cần theo dõi.",
+   "nplFormCheck": "",
+   "llrRef": null,
+   "recovTarget": "",
+   "tpSpread": "Các CTCK đồng thuận về lợi thế hạn mức tín dụng từ việc nhận chuyển giao bắt buộc và ROE dẫn đầu; chênh lệch nằm ở áp lực huy động, thanh khoản (LDR cao) và tốc độ phục hồi NIM.",
+   "divNote": "",
+   "divInsight": "MB kết hợp cổ tức cổ phiếu tỷ lệ lớn (32% cho năm 2024, 15% cho năm 2025) với tiền mặt (1.000đ/CP cho năm 2025) và phát hành quyền mua giá 10.000đ để tăng vốn theo tốc độ tín dụng.",
+   "divSrc": "WiData co_events, ratio_common_year",
+   "eventsNote": "",
+   "modelNote": "",
+   "risks": [
+    [
+     "Huy động và thanh khoản",
+     "Tín dụng tăng nhanh hơn huy động; CTCK nêu vướng mắc ở bài toán huy động (KBSV 09/2026) và áp lực thanh khoản (DSC 08/2026)",
+     "Nguồn vốn"
+    ],
+    [
+     "Ngân hàng nhận chuyển giao bắt buộc (MBV)",
+     "Hỗ trợ tái cơ cấu MBV đi kèm ưu đãi hạn mức tín dụng nhưng cần vốn góp và có thể ảnh hưởng chất lượng tài sản hợp nhất",
+     "Chất lượng tài sản"
+    ]
+   ]
+  },
+  "events": [
+   {
+    "d": "2026-12-31",
+    "type": "Vốn & huy động",
+    "t": "Đề xuất nới room ngoại lên 49% (gắn với nhận chuyển giao bắt buộc)",
+    "impact": "+",
+    "status": "pending",
+    "detail": "CTCK kỳ vọng được nới room ngoại; chưa có quyết định chính thức.",
+    "src": "WiData ai_news (KBSV 09/2026)"
+   }
+  ],
+  "kbnnNote": ""
+ },
+ "ACB": {
+  "name": "Ngân hàng TMCP Á Châu",
+  "short": "ACB",
+  "exchange": "HOSE",
+  "irUrl": "https://acb.com.vn/nha-dau-tu",
+  "dep12": 202676,
+  "page": "acb.html",
+  "strategic": null,
+  "narr": {
+   "ownerSub": "Ngân hàng TMCP tư nhân, cơ cấu sở hữu phân tán (không cổ đông nào trên 5%); nhóm cổ đông gắn với HĐQT và các quỹ ngoại giữ tỷ lệ nhỏ.",
+   "ownerInsight": "Không chịu ràng buộc giữ sở hữu Nhà nước ≥ 65% như Big 4; tăng vốn chủ yếu bằng lợi nhuận giữ lại, cổ tức cổ phiếu và phát hành cho cổ đông hiện hữu. Room ngoại tối đa 30% với ngân hàng.",
+   "carWhy": "ACB tăng vốn đều đặn bằng cổ tức cổ phiếu (13–15% mỗi năm) và phát hành giấy tờ có giá, vay hợp vốn quốc tế để bổ sung nguồn; CAR thấp hơn TCB do tài sản rủi ro tăng theo tín dụng doanh nghiệp.",
+   "nplFormCheck": "",
+   "llrRef": null,
+   "recovTarget": "",
+   "tpSpread": "Các CTCK đồng thuận chất lượng tài sản thuộc nhóm tốt nhất ngành; chênh lệch nằm ở tốc độ phục hồi NIM, chi phí dự phòng tăng trong 2026 và cạnh tranh ở mảng bán lẻ, SME. Giá mục tiêu của phần lớn CTCK được hạ dần trong 2026.",
+   "divNote": "",
+   "divInsight": "Chính sách cổ tức ổn định: tiền mặt 1.000đ/CP (năm 2022–2024), 700đ/CP cho năm 2025 cùng cổ tức cổ phiếu 13–15% mỗi năm.",
+   "divSrc": "WiData co_events, ratio_common_year",
+   "eventsNote": "",
+   "modelNote": "",
+   "risks": [
+    [
+     "NIM",
+     "NIM thấp nhất nhóm tư nhân lớn; CTCK kỳ vọng phục hồi khi phần lớn dư nợ định giá lại dưới 3 tháng (VPBS 10/2026)",
+     "Biên lãi"
+    ],
+    [
+     "Chi phí dự phòng",
+     "Dự phòng tăng mạnh làm lợi nhuận 6T/2026 đi ngang (VDS, SSI 08–09/2026)",
+     "Lợi nhuận"
+    ]
+   ]
+  },
+  "events": [],
+  "kbnnNote": ""
+ }
 }
