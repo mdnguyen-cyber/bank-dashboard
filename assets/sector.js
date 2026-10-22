@@ -125,7 +125,7 @@ function mk(id, cfg, opt = {}) {
 }
 const pctAxis = (title, extra = {}) => Object.assign({ ticks: { callback: v => nf(v, 1) + '%' }, title: title ? { display: true, text: title } : undefined, grid: { color: '#eef0f4' } }, extra);
 const numAxis = (title, extra = {}) => Object.assign({ ticks: { callback: v => nf(v, 0) }, title: title ? { display: true, text: title } : undefined, grid: { color: '#eef0f4' } }, extra);
-const L = (label, data, color, o = {}) => Object.assign({ type: 'line', label, data, borderColor: color, backgroundColor: color, borderWidth: 2, pointRadius: 0, dp: 2, unit: '%', spanGaps: true }, o);
+const L = (label, data, color, o = {}) => Object.assign({ type: 'line', label, data, borderColor: color, backgroundColor: color, borderWidth: 2, pointRadius: 0, pointBorderWidth: 0, pointHoverBorderWidth: 0, dp: 2, unit: '%', spanGaps: true }, o);
 
 /* ---------- templates ---------- */
 function card({ id, title, sub, insight, src, h = '', ctl = false, body = '', cls = '' }) {
@@ -1729,8 +1729,8 @@ function chBond() {
   const i0 = fi.months.indexOf('2021-01'), fm = fi.months.slice(i0), bigM = fm.map(m => { const j = dp.months.indexOf(m); return j < 0 ? null : dp.tiers['Big 4'][j]; });
   const p13 = fi.cpnPriv13.slice(i0);
   mk('bFiCpn', { type: 'bar', data: { labels: fm.map(mvn), datasets: [
-    L('Coupon 1–3 năm riêng lẻ', p13, C.navy, { borderWidth: 2.6, pointRadius: 3, spanGaps: false }),
-    L('Coupon bình quân mọi kỳ hạn', fi.cpnAll.slice(i0), C.tealInk, { borderDash: [5, 4], borderWidth: 1.6, pointRadius: 2, spanGaps: false }),
+    L('Coupon 1–3 năm riêng lẻ', p13, C.navy, { borderWidth: 2.2, pointRadius: 2, spanGaps: false }),
+    L('Coupon bình quân mọi kỳ hạn', fi.cpnAll.slice(i0), C.tealInk, { borderDash: [5, 4], borderWidth: 1.6, pointRadius: 1.5, spanGaps: false }),
     L('Huy động 12T Big 4', bigM, C.red, { borderWidth: 2.2 }),
     { type: 'bar', label: 'Chênh 1–3 năm − Big 4', data: p13.map((v, i) => v == null || bigM[i] == null ? null : +(v - bigM[i]).toFixed(2)), backgroundColor: 'rgba(217,164,0,.35)', yAxisID: 'y1', unit: ' đ%', dp: 2 }] },
     options: { scales: { y: pctAxis('', { beginAtZero: false }), y1: { position: 'right', min: 0, max: 6, grid: { display: false }, ticks: { callback: v => nf(v, 1) } } } } });
