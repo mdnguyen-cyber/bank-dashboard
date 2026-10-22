@@ -494,7 +494,7 @@ function drawTable(k, dir) {
 /* =====================================================================
    TAB 2 · BỨC TRANH NGÀNH (Quốc tế → Nội địa → Ngân hàng → Kịch bản IDX)
 ===================================================================== */
-const PSUB = [['intl', 'Quốc tế'], ['dom', 'Nội địa'], ['mm', 'Tỷ giá USD/VND'], ['bank', 'Ngân hàng'], ['peer', 'So sánh ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
+const PSUB = [['dom', 'Nội địa'], ['mm', 'Tỷ giá USD/VND'], ['bank', 'Ngân hàng'], ['peer', 'So sánh ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['intl', 'Quốc tế'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
 const pDone = {};
 function panePicture() {
   $('#picture').innerHTML = `
@@ -551,6 +551,8 @@ function subCamel() {
       insight: '<span id="cmIns"></span>', src: 'tự tính từ bảng điểm bên cạnh và tín dụng (cho vay + trái phiếu DN) theo BCTC' })}
     <article class="card" id="cmDet"></article>
   </div>
+  ${card({ id: 'chCmHist', title: '<span id="cmHistT">Lịch sử điểm</span>', h: 'tall', sub: 'điểm 1–5 theo từng kỳ, cùng ngưỡng TT 21/2025 và cùng điểm định tính cho mọi kỳ để so sánh được · đường đậm = tổng điểm · nét đứt = ranh giới hạng A (4,5) và B (3,5) · bấm 1 dòng ở bảng trên để đổi ngân hàng',
+    insight: '<span id="cmHistIns"></span>', src: 'tự tính từ BCTC, thuyết minh và báo cáo CAR (TT41) các năm 2021–2025 và 4 quý gần nhất' })}
   ${cmMethod()}`;
 }
 function cmMethod() {
@@ -598,6 +600,52 @@ function cmDetail() {
     </tbody></table></div>
     ${lev.length ? `<div class="insight"><b>Đòn bẩy room:</b> ${lev.map(x => `${esc(x.I.name.split(' (')[0])} ${x.I.dir === 'up' ? 'tăng' : 'giảm'} thêm <b>${nf(Math.abs(x.gap), 2)}${x.I.id === 'E4' ? ' ngày' : ' điểm %'}</b> (về ${nf(x.t, 1)}) → +${nf(x.dT, 2)} điểm, +${nf(x.dRoom, 2)} điểm % room`).join('; ')}.</div>` : ''}`;
 }
+/* Lịch sử điểm từng ngân hàng qua các kỳ + nhận định tự động: xu hướng, kỳ nhảy điểm, điểm bất thường */
+function cmHist(sym) {
+  const ks = Object.keys(CM.periods);
+  return ks.map(k => { const R = CM.periods[k].rows.map(r => Object.assign({}, r, { T: cmTot(r) })).sort((a, b) => b.T.pt - a.T.pt), i = R.findIndex(r => r.s === sym);
+    return { k, label: CM.periods[k].label, r: i < 0 ? null : R[i], rank: i + 1, n: R.length }; }).filter(h => h.r);
+}
+function cmHistIns(sym) {
+  const H = cmHist(sym); if (H.length < 2) return 'Chưa đủ kỳ để so sánh.';
+  const f = H[0], l = H[H.length - 1], ann = H.filter(h => /^FY/.test(h.k)), base = ann.slice(0, -1);
+  const indName = id => (CM.ind.find(I => I.id === id) || {}).name.split(' (')[0];
+  const fmtV = (id, v) => v == null ? '—' : nf(v, id === 'E4' ? 0 : 2) + (id === 'E4' ? ' ngày' : '%');
+  const drivers = (a, b) => CM.ind.filter(I => (b.r.big ? I.wL : I.wS) > 0).map(I => ({ I, a: a.r.v[I.id], b: b.r.v[I.id] }))
+    .filter(x => x.a && x.b && x.a.s != null && x.b.s != null && x.b.s !== x.a.s).sort((x, y) => Math.abs(y.b.s - y.a.s) - Math.abs(x.b.s - x.a.s)).slice(0, 3)
+    .map(x => `${indName(x.I.id)} ${fmtV(x.I.id, x.a.v)} → ${fmtV(x.I.id, x.b.v)} (${x.a.s}→${x.b.s} điểm)`);
+  const steps = H.slice(1).map((h, i) => ({ a: H[i], b: h, d: h.r.T.pt - H[i].r.T.pt }));
+  const big = steps.filter(x => Math.abs(x.d) >= 0.3).sort((x, y) => Math.abs(y.d) - Math.abs(x.d));
+  let t = `${sym}: tổng điểm ${nf(f.r.T.pt, 2)} (${f.label}, hạng ${cmGrade(f.r.T.pt)}, thứ ${f.rank}/${f.n}) → <b>${nf(l.r.T.pt, 2)}</b> (${l.label}, hạng ${cmGrade(l.r.T.pt)}, thứ <b>${l.rank}/${l.n}</b>). `;
+  t += big.length ? `Kỳ đổi điểm mạnh nhất: <b>${big[0].a.label} → ${big[0].b.label} ${sg(big[0].d, 2, ' điểm')}</b>${drivers(big[0].a, big[0].b).length ? ' — do ' + drivers(big[0].a, big[0].b).join('; ') : ''}. ` : 'Điểm đi trong biên độ hẹp (không kỳ nào đổi quá 0,3 điểm). ';
+  const flags = [];
+  const jump = steps.filter(x => x.d >= 0.5);
+  jump.forEach(x => flags.push(`<b>nhảy ${sg(x.d, 2, ' điểm')} trong một kỳ</b> (${x.a.label} → ${x.b.label}) — mức tăng hiếm gặp với ngân hàng, cần kiểm tra có bền không`));
+  if (base.length >= 2) { const avg = base.reduce((a, h) => a + h.r.T.pt, 0) / base.length;
+    if (l.r.T.pt - avg >= 0.4) flags.push(`điểm hiện tại cao hơn bình quân ${base[0].label.replace('Năm ', '')}–${base[base.length - 1].label.replace('Năm ', '')} (${nf(avg, 2)}) <b>${nf(l.r.T.pt - avg, 2)} điểm</b>`);
+    if (avg - l.r.T.pt >= 0.4) flags.push(`điểm hiện tại thấp hơn bình quân các năm trước (${nf(avg, 2)}) <b>${nf(avg - l.r.T.pt, 2)} điểm</b> — xu hướng xấu đi`); }
+  steps.forEach(x => { const up = ['E', 'M'].map(c => [c, x.b.r.crit[c].pt - x.a.r.crit[c].pt]).filter(([, d]) => d >= 1.5);
+    if (up.length) flags.push(`${up.map(([c, d]) => `${c} (${CM.crit[c].name.toLowerCase()}) +${nf(d, 1)} điểm`).join(', ')} ở ${x.b.label} — hai tiêu chí này dựa trên lợi nhuận 4 quý, dễ bị đẩy lên bởi thu nhập bất thường (thu hồi nợ đã xử lý, bán khoản đầu tư, hoàn nhập dự phòng); cần đối chiếu thuyết minh BCTC`); });
+  steps.forEach(x => { const d = x.b.r.crit.A.pt - x.a.r.crit.A.pt, a7 = [x.a.r.v.A7, x.b.r.v.A7];
+    if (d >= 0.9) flags.push(`chất lượng tài sản (A) tăng ${nf(d, 1)} điểm ở ${x.b.label}${a7[0] && a7[1] && a7[1].v != null && a7[0].v != null ? ` trong khi bao phủ nhóm 2–5 ${a7[1].v < a7[0].v ? 'giảm' : 'tăng'} từ ${nf(a7[0].v, 0)}% còn ${nf(a7[1].v, 0)}%` : ''} — nợ xấu giảm có thể đến từ xử lý bằng dự phòng hoặc bán nợ, chưa chắc là chất lượng cho vay tốt lên`); });
+  const rk = steps.filter(x => x.a.rank - x.b.rank >= 8);
+  rk.forEach(x => flags.push(`thứ hạng tăng ${x.a.rank - x.b.rank} bậc (${x.a.rank} → ${x.b.rank}) ở ${x.b.label}`));
+  if (l.r.cov < 70) flags.push(`chỉ ${l.r.cov}% trọng số định lượng có số công khai — điểm dao động rộng (${nf(l.r.T.lo, 2)}–${nf(l.r.T.hi, 2)})`);
+  t += flags.length ? `<br><b>Điểm cần chú ý:</b><ul style="margin:4px 0 0 18px;padding:0">${flags.slice(0, 5).map(x => `<li>${x}</li>`).join('')}</ul>` : '<br>Không thấy dấu hiệu bất thường: điểm ổn định, không kỳ nào nhảy mạnh.';
+  return t + how('Room tín dụng giao theo điểm của năm trước, nên một năm lợi nhuận đột biến có thể kéo room lên trong khi nền tảng (vốn, chất lượng tài sản, thanh khoản) chưa đổi. Điểm đáng tin hơn khi tăng đều qua nhiều kỳ và được C, A, L cùng xác nhận chứ không chỉ E và M.');
+}
+function cmHistDraw() {
+  const H = cmHist(cmS.sel); if (!H.length) return;
+  const col = { C: '#1f8a8d', A: '#861C52', M: '#d9a400', E: '#2938A8', L: '#7a5bb5', S: '#9aa3b2' };
+  mk('chCmHist', { type: 'line', data: { labels: H.map(h => h.label.replace('Năm ', '')), datasets: [
+      { label: 'Tổng điểm', data: H.map(h => +h.r.T.pt.toFixed(2)), borderColor: '#1D2678', backgroundColor: '#1D2678', borderWidth: 3, pointRadius: 4, dp: 2, unit: '' },
+      ...CK.map(k => ({ label: `${k} · ${CM.crit[k].name}`, data: H.map(h => +h.r.crit[k].pt.toFixed(2)), borderColor: col[k], backgroundColor: col[k], borderWidth: 1.4, pointRadius: 2, dp: 1, unit: '' }))] },
+    options: { scales: { y: { min: 1, max: 5, title: { display: true, text: 'điểm' }, ticks: { stepSize: 0.5, callback: v => nf(v, 1) } } },
+      plugins: { refLines: { lines: [{ value: 4.5, label: 'A', color: '#1e8f5a' }, { value: 3.5, label: 'B', color: '#c0392b' }] },
+        tooltip: { callbacks: { afterTitle: it => { const h = H[it[0].dataIndex]; return `Hạng ${cmGrade(h.r.T.pt)} · thứ ${h.rank}/${h.n}`; } } } } } });
+  $('#cmHistT').textContent = `${cmS.sel} · lịch sử điểm CAMELS 2021 → nay`;
+  $('#cmHistIns').innerHTML = cmHistIns(cmS.sel);
+}
 function cmRender() {
   const R = cmRows();
   $$('#cmP button').forEach(b => b.classList.toggle('on', b.dataset.k === cmS.p));
@@ -625,7 +673,7 @@ function cmRender() {
       ch.data.datasets.forEach((d, i) => { if (!d.data[0] || !d.data[0].s) return; ch.getDatasetMeta(i).data.forEach((e, j) => ctx.fillText(d.data[j].s, e.x + 6, e.y - 4)); }); ctx.restore(); } }] });
   const over = pts.filter(p => p.y > p.x * f + (half ? 1.5 : 3)).sort((a, b) => (b.y - b.x * f) - (a.y - a.x * f));
   $('#cmIns').innerHTML = `CTG xếp <b>${rk}/${R.length}</b> (${nf(ctg.T.pt, 2)} điểm, hạng ${cmGrade(ctg.T.pt)}) → room ngụ ý <b>${nf(ctg.T.pt * CM.roomCoef, 1)}%</b>; tiêu chí kéo điểm xuống: ${CK.filter(k => ctg.crit[k].pt < 4).map(k => `${k} ${nf(ctg.crit[k].pt, 1)}`).join(', ') || 'không có'}. ${over.length ? `${half ? 'Nửa đầu 2026 đã tăng vượt nửa room ngụ ý trên 1,5 điểm %' : 'Năm 2025 tăng vượt room ngụ ý trên 3 điểm %'}: ${over.slice(0, 6).map(p => `<b>${p.s}</b> ${pc(p.y, 0)}`).join(', ')} — phần lớn là NH được ưu tiên (★) hoặc được nới room trong năm; NH khác vượt chỉ tiêu bị trừ 1 điểm M định tính (Điều 16.6).` : ''}`;
-  cmDetail(); decorate && decorate();
+  cmDetail(); cmHistDraw(); decorate && decorate();
 }
 function chCamel() {
   $$('#cmP button').forEach(b => b.onclick = () => { cmS.p = b.dataset.k; cmRender(); });

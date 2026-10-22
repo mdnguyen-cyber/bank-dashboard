@@ -21,6 +21,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Gom file trang
         run: bash scripts/gom_site.sh
+      # Giữ bộ PDF đang có trên web trong lúc job 2 dựng bộ mới (nút "Xuất PDF" không bị rơi về bản chụp)
+      - name: Giữ PDF bản trước
+        continue-on-error: true
+        run: |
+          U="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pdf"
+          mkdir -p _site/pdf
+          curl -sfL "$U/index.json" -o _site/pdf/index.json || exit 0
+          python3 -c "import json;[print(k) for k in json.load(open('_site/pdf/index.json'))['files']]" | while read k; do curl -sfL "$U/$k.pdf" -o "_site/pdf/$k.pdf" || true; done
+          ls _site/pdf | wc -l
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

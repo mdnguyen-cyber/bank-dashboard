@@ -446,3 +446,4 @@ body.pdf-cap .card{box-shadow:none}
   body.print-all *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 .pdfbtn2{font-weight:500;color:#5a6275;border-style:dashed}
+body.compact article:has(#chCmHist) .insight{display:block}   /* nhận định lịch sử CAMELS luôn hiện khi chọn ngân hàng */

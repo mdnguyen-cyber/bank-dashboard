@@ -75,6 +75,7 @@ def build(fs_rows, note_rows, ratio_rows, car_rows, banks_panel, quarters, BANKS
     T = lambda v: (v or 0) / 1e9   # VND → tỷ
 
     periods = {
+        **{f'FY{y}': {'label': f'Năm {y}', 'end': (y, 4), 'qs': [(y, 1), (y, 2), (y, 3), (y, 4)], 'car': [(y, 0)]} for y in (2021, 2022, 2023, 2024)},
         'FY2025': {'label': 'Năm 2025', 'end': (2025, 4), 'qs': [(2025, 1), (2025, 2), (2025, 3), (2025, 4)],
                    'car': [(2025, 0)]},
         'TTM2Q26': {'label': 'TTM Q2/2026', 'end': (2026, 2), 'qs': [(2025, 3), (2025, 4), (2026, 1), (2026, 2)],
