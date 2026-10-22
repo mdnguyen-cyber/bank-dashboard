@@ -1100,17 +1100,59 @@ function decorate() {
       const ctl = h.querySelector('.ctl'); ctl ? h.insertBefore(b, ctl) : h.appendChild(b);
     }
     const hasIns = c.querySelector(':scope > .insight, :scope > .note:not(.keep)'), hasSrc = c.querySelector(':scope > .src');
-    if (hasIns || hasSrc) {   // nút Insight / Nguồn cuối thẻ (chế độ Gọn)
+    const cv = c.querySelector('canvas'), hasPeer = cv && !c.closest('#macro');   // biểu đồ riêng của ngân hàng → có nút so sánh peer
+    if (hasIns || hasSrc || hasPeer) {   // nút Insight / Nguồn (chế độ Gọn) + So sánh peer (mọi chế độ)
       const row = document.createElement('div'); row.className = 'ibar';
-      row.innerHTML = (hasIns ? '<button type="button" class="ipill" data-k="ins">ⓘ Insight</button>' : '') + (hasSrc ? '<button type="button" class="ipill" data-k="src">ⓘ Nguồn</button>' : '');
+      row.innerHTML = (hasIns ? '<button type="button" class="ipill" data-k="ins">ⓘ Insight</button>' : '') + (hasSrc ? '<button type="button" class="ipill" data-k="src">ⓘ Nguồn</button>' : '')
+        + (hasPeer ? `<button type="button" class="ipill peerpill" data-k="peer" data-cid="${cv.id}">⇄ So sánh peer</button>` : '');
       c.appendChild(row);
     }
   });
 }
 const tip = document.createElement('div'); tip.className = 'tip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true; document.body.appendChild(tip);
 let tipFor = null;
+/* ---------- So sánh peer: thứ hạng trong nhóm (tier) và so với bình quân ngành, theo chỉ tiêu chính của từng biểu đồ ---------- */
+const PEER_MX = {   // [khoá trong SECTOR_DATA.banks.series, tên, chiều tốt: up = cao tốt, down = thấp tốt, val = định giá (thấp = rẻ), 0 = trung tính]
+  nim: ['nim', 'NIM', 'up'], yea: ['yea', 'Lợi suất tài sản sinh lãi', 'up'], cof: ['cof', 'Chi phí vốn (COF)', 'down'], casa: ['casa', 'CASA', 'up'], cir: ['cir', 'CIR', 'down'],
+  npl: ['npl', 'Nợ xấu (NPL)', 'down'], g2: ['g2', 'Nợ nhóm 2', 'down'], llr: ['llr', 'Bao phủ nợ xấu (LLR)', 'up'], ldr: ['ldr', 'LDR', 0],
+  credit: ['creditYoY', 'Tăng trưởng tín dụng YoY', 'up'], roe: ['roe', 'ROE', 'up'], roa: ['roa', 'ROA', 'up'], np: ['npYoY', 'Tăng trưởng LNST YoY', 'up'],
+  pb: ['pb', 'P/B', 'val'], pe: ['pe', 'P/E', 'val'] };
+const PEER_C = { chNim: ['nim', 'yea', 'cof'], chNimAdj: ['nim'], chNimPeer: ['nim', 'cof'], chCof: ['cof'], chCasa: ['casa'], chCir: ['cir'], chNpl: ['npl', 'g2'], chAqPeer: ['npl', 'g2', 'llr'],
+  chForm: ['npl', 'g2'], chAccr: ['npl'], chLlr: ['llr', 'npl'], chCc: ['npl', 'llr'], chLdr: ['ldr'], chLdrQ: ['ldr'], chGrow: ['credit'], chEA: ['credit'], chFund: ['casa', 'ldr'], chWfA: ['credit'], chWfL: ['casa'],
+  chRoe: ['roe', 'roa'], chPpop: ['np', 'roe'], chToiQ: ['np', 'cir'], chToiY: ['np'], chPlY: ['np'], chPlanDone: ['np'], chNfiQ: ['cir'], chNfiShare: ['cir'], chVal: ['pb', 'pe', 'roe'], chPrice: ['pb', 'pe'] };
+function peerHtml(cid, title) {
+  const SB = (window.SECTOR_DATA || {}).banks, ks = PEER_C[cid];
+  const head = `<h5>${title} · So sánh peer</h5>`;
+  if (!SB || !ks) return head + `<p class="tn">So sánh peer cho biểu đồ này đang cập nhật.</p>`;
+  const S = SB.series, me = S[T]; if (!me) return head + `<p class="tn">${T} chưa có trong bộ dữ liệu ngành — thông tin đang cập nhật.</p>`;
+  const tier = me.group, qs = SB.quarters;
+  const at = (s, k, back = 0) => { const a = (S[s] || {})[k] || []; let i = a.length - 1; while (i >= 0 && a[i] == null) i--; i -= back; return i >= 0 ? { v: a[i], q: qs[i] } : null; };
+  const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+  const rows = ks.map(id => {
+    const [k, name, dir] = PEER_MX[id], u = k === 'pb' || k === 'pe' ? 'x' : '%', dp = k === 'llr' ? 0 : k === 'pb' || k === 'pe' ? 2 : 2;
+    const f = v => v == null ? '—' : nf(v, dp) + (u === 'x' ? 'x' : '%');
+    const mine = at(T, k); if (!mine) return `<p class="tn">${name}: chưa có số của ${T}.</p>`;
+    const peers = Object.keys(S).filter(s => S[s].group === tier).map(s => ({ s, x: at(s, k) })).filter(p => p.x && p.x.q === mine.q);
+    const all = Object.keys(S).map(s => ({ s, x: at(s, k) })).filter(p => p.x && p.x.q === mine.q);
+    if (peers.length < 2) return `<p class="tn">${name}: nhóm ${tier} chưa đủ ngân hàng có số kỳ ${mine.q} — đang cập nhật.</p>`;
+    const asc = dir === 'down' || dir === 'val', ord = a => a.slice().sort((p, q) => asc ? p.x.v - q.x.v : q.x.v - p.x.v);
+    const rT = ord(peers).findIndex(p => p.s === T) + 1, rA = ord(all).findIndex(p => p.s === T) + 1;
+    const mT = avg(peers.filter(p => p.s !== T).map(p => p.x.v)), mA = avg(all.map(p => p.x.v));
+    const best = ord(peers)[0], worst = ord(peers)[peers.length - 1];
+    const prev = at(T, k, 4), dT = prev ? mine.v - prev.v : null;
+    const pPrev = peers.filter(p => p.s !== T).map(p => at(p.s, k, 4)).filter(Boolean), dP = pPrev.length ? mT - avg(pPrev.map(x => x.v)) : null;
+    const good = dir === 0 ? null : (asc ? mine.v < mT : mine.v > mT);
+    const verdict = dir === 0 ? (mine.v > mT ? `cao hơn bình quân nhóm — ít dư địa cho vay hơn` : `thấp hơn bình quân nhóm — còn dư địa cho vay`)
+      : dir === 'val' ? (good ? 'rẻ hơn bình quân phần còn lại của nhóm' : 'đắt hơn bình quân phần còn lại của nhóm') : (good ? 'tốt hơn bình quân phần còn lại của nhóm' : 'kém hơn bình quân phần còn lại của nhóm');
+    return `<p class="ti"><b>${name}</b> ${T} <b>${f(mine.v)}</b> (${mine.q}) — xếp <b>${rT}/${peers.length}</b> trong nhóm ${tier}, ${rA}/${all.length} toàn ngành${dir === 0 ? '' : dir === 'val' ? ' (1 = rẻ nhất)' : ' (1 = tốt nhất)'}; ${verdict}. `
+      + `Bình quân các ngân hàng còn lại trong nhóm ${f(mT)}, toàn ngành ${f(mA)}; trong nhóm ${dir === 'val' ? 'rẻ nhất' : 'tốt nhất'} ${best.s} ${f(best.x.v)}, ${dir === 'val' ? 'đắt nhất' : 'kém nhất'} ${worst.s} ${f(worst.x.v)}.`
+      + (dT != null && dP != null ? ` 1 năm qua ${T} ${dT >= 0 ? '+' : '−'}${nf(Math.abs(dT), dp)}${u === 'x' ? 'x' : ' điểm %'}, nhóm ${dP >= 0 ? '+' : '−'}${nf(Math.abs(dP), dp)}${u === 'x' ? 'x' : ' điểm %'}.` : '') + `</p>`;
+  });
+  return head + rows.join('') + `<p class="ts">Nhóm theo quy mô: Big 4 · Tư nhân lớn · Tư nhân vừa · Tư nhân nhỏ (26 ngân hàng niêm yết), cùng kỳ số liệu mới nhất của ngành.</p>`;
+}
 function tipHtml(b) {
   const c = b.closest('.card'), k = b.dataset.k;
+  if (k === 'peer') { const h = c.querySelector(':scope > h3.sub').cloneNode(true); h.querySelectorAll('.grip,.info,.ctl,button').forEach(e => e.remove()); return peerHtml(b.dataset.cid, esc(h.textContent.trim())); }
   const part = sel => [...c.querySelectorAll(':scope > ' + sel)].map(e => e.innerHTML);
   const title = esc((c.querySelector(':scope > h3.sub').childNodes[0] || {}).textContent || '');
   if (k === 'sub') return part('.chart-sub').map(t => `<p>${t}</p>`).join('');

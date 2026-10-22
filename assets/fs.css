@@ -447,3 +447,9 @@ body.pdf-cap .card{box-shadow:none}
 }
 .pdfbtn2{font-weight:500;color:#5a6275;border-style:dashed}
 body.compact article:has(#chCmHist) .insight{display:block}   /* nhận định lịch sử CAMELS luôn hiện khi chọn ngân hàng */
+
+/* So sánh peer: hiện ở cả chế độ Chi tiết (khi đó chỉ hiện nút này) */
+body:not(.compact) .ibar:has(.peerpill){display:flex}
+body:not(.compact) .ibar .ipill:not(.peerpill){display:none}
+.peerpill{background:#fff7e6;border-color:#efd9a8}
+body.print-all .peerpill,body.pdf-cap .peerpill{display:none!important}
