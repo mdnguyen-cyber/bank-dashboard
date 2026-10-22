@@ -1,245 +1,210 @@
 {
- "fetched": "2026-10-21T14:46:00Z",
+ "fetched": "2026-10-22T01:35:34Z",
  "report": {
   "us_cpi": [
    {
     "id": "fred:CPIAUCSL",
-    "n": 200,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_cpi_core": [
    {
     "id": "fred:CPILFESL",
-    "n": 200,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_cpi_shelter": [
    {
     "id": "fred:CUSR0000SAH1",
-    "n": 200,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_cpi_coregoods": [
    {
     "id": "fred:CUSR0000SACL1E",
-    "n": 200,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_cpi_svc_ex_energy": [
    {
     "id": "fred:CUSR0000SASLE",
-    "n": 200,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_cpi_supercore": [
    {
     "id": "fred:CUSR0000SASL2RS",
-    "n": 200,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_cpi_energy": [
    {
     "id": "fred:CPIENGSL",
-    "n": 200,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_cpi_food": [
    {
     "id": "fred:CPIUFDSL",
-    "n": 200,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_pce": [
    {
     "id": "fred:PCEPI",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_pce_core": [
    {
     "id": "fred:PCEPILFE",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_pce_supercore": [
    {
     "id": "fred:IA001260M",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_pce_goods": [
    {
     "id": "fred:DGDSRG3M086SBEA",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_pce_services": [
    {
     "id": "fred:DSERRG3M086SBEA",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_pce_trim": [
    {
     "id": "fred:PCETRIM12M159SFRBDAL",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_ppi_fd": [
    {
     "id": "fred:PPIFIS",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:WPSFD49207",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_ppi_core": [
    {
     "id": "fred:PPICOR",
-    "n": 198,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:WPSFD4111",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_ppi_inter": [
    {
     "id": "fred:WPSID61",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_ppi_crude": [
    {
     "id": "fred:WPSID62",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_breakeven5": [
    {
     "id": "fred:T5YIE",
-    "n": 4202,
-    "last": "2026-10-20"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_unrate": [
    {
     "id": "fred:UNRATE",
-    "n": 200,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_payems": [
    {
     "id": "fred:PAYEMS",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_ahe": [
    {
     "id": "fred:CES0500000003",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_claims": [
    {
     "id": "fred:ICSA",
-    "n": 876,
-    "last": "2026-10-10"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_jolts": [
    {
     "id": "fred:JTSJOL",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_gdp": [
    {
     "id": "fred:GDPC1",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_gdppot": [
    {
     "id": "fred:GDPPOT",
-    "n": 108,
-    "last": "2036-10-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_nrou": [
    {
     "id": "fred:NROU",
-    "n": 108,
-    "last": "2036-10-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_effr": [
    {
     "id": "fred:DFF",
-    "n": 6136,
-    "last": "2026-10-19"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_fedtgt_up": [
    {
     "id": "fred:DFEDTARU",
-    "n": 6138,
-    "last": "2026-10-21"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_fedtgt_lo": [
    {
     "id": "fred:DFEDTARL",
-    "n": 6138,
-    "last": "2026-10-21"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_iorb": [
    {
     "id": "fred:IORB",
-    "n": 1911,
-    "last": "2026-10-21"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_sofr": [
    {
     "id": "fred:SOFR",
-    "n": 2135,
-    "last": "2026-10-20"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_tgcr": [
    {
     "id": "fred:TGCRRATE",
-    "n": 2136,
-    "last": "2026-10-20"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_sofr99": [
@@ -252,29 +217,25 @@
   "us_2y": [
    {
     "id": "fred:DGS2",
-    "n": 4201,
-    "last": "2026-10-19"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_10y": [
    {
     "id": "fred:DGS10",
-    "n": 4201,
-    "last": "2026-10-19"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_walcl": [
    {
     "id": "fred:WALCL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_bills": [
    {
     "id": "fred:WSHOBL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_rstar": [
@@ -287,392 +248,341 @@
   "us_reserves": [
    {
     "id": "fred:WRESBAL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_tga": [
    {
     "id": "fred:WTREGEN",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_rrp": [
    {
     "id": "fred:RRPONTSYD",
-    "n": 3276,
-    "last": "2026-10-20"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_repo": [
    {
     "id": "fred:RPONTSYD",
-    "n": 1781,
-    "last": "2026-10-20"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_dxy": [
    {
     "id": "fred:DTWEXBGS",
-    "n": 4181,
-    "last": "2026-10-16"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_casehiller": [
    {
     "id": "fred:CSUSHPISA",
-    "n": 199,
-    "last": "2026-07-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_wti": [
    {
     "id": "fred:DCOILWTICO",
-    "n": 4156,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "us_brent": [
    {
     "id": "fred:DCOILBRENTEU",
-    "n": 4246,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_notes": [
    {
     "id": "fred:WSHONBNL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_tips": [
    {
     "id": "fred:WSHONBIIL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_tips_ic": [
    {
     "id": "fred:WSHOICL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_ust": [
    {
     "id": "fred:WSHOTSL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_mbs": [
    {
     "id": "fred:WSHOMCB",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_loans": [
    {
     "id": "fred:WLCFLL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_currency": [
    {
     "id": "fred:WCURCIR",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_rrp_all": [
    {
     "id": "fred:WLRRAL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_res_wed": [
    {
     "id": "fred:WRBWFRBL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_tga_wed": [
    {
     "id": "fred:WDTGAL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_currency_wed": [
    {
     "id": "fred:WLFN",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:WCURCIR",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_nfc": [
    {
     "id": "fred:BOGZ1LM103061103Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL103061103Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_etf": [
    {
     "id": "fred:BOGZ1LM563061103Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL563061103Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_gse": [
    {
     "id": "fred:BOGZ1FL403061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1LM403061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_slpen": [
    {
     "id": "fred:BOGZ1FL223061143Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1LM223061143Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_fedpen": [
    {
     "id": "fred:BOGZ1FL343061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1LM343061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "fed_rrp_foreign": [
    {
     "id": "fred:WLRRAFOIAL",
-    "n": 876,
-    "last": "2026-10-14"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "tsy_debt_total": [
    {
     "id": "fred:GFDEBTN",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "tsy_debt_public": [
    {
     "id": "fred:FYGFDPUN",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "tsy_deficit": [
    {
     "id": "fred:MTSDS133FMS",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_total": [
    {
     "id": "fred:BOGZ1FL313161105Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL313161100Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_fed": [
    {
     "id": "fred:BOGZ1FL713061103Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL713061100Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:FDHBFRBN",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_row": [
    {
     "id": "fred:BOGZ1FL263061105Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1LM263061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL263061103Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:FDHBFIN",
-    "n": 65,
-    "last": "2026-01-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_row_official": [
    {
     "id": "fred:BOGZ1FL263061120Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:FDHBFIN",
-    "n": 65,
-    "last": "2026-01-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_banks": [
    {
     "id": "fred:BOGZ1FL763061100Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL763061105Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:TLTSYSUS",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_mmf": [
    {
     "id": "fred:BOGZ1FL633061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL633061100Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_mf": [
    {
     "id": "fred:BOGZ1FL653061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL653061100Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_hh": [
    {
     "id": "fred:BOGZ1FL153061105Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1LM153061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL153061103Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1LM153061103Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_ins": [
    {
     "id": "fred:BOGZ1FL513061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL543061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_pension": [
    {
     "id": "fred:BOGZ1FL593061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL573061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_slg": [
    {
     "id": "fred:BOGZ1FL213061103Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1LM213061103Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL213061105Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ust_broker": [
    {
     "id": "fred:BOGZ1FL663061105Q",
-    "n": 66,
-    "last": "2026-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:BOGZ1FL663061100Q",
-    "error": "HTTP Error 404: Not Found"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ea_hicp": [
@@ -759,15 +669,13 @@
   "ea_dfr": [
    {
     "id": "fred:ECBDFR",
-    "n": 6138,
-    "last": "2026-10-21"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ea_assets": [
    {
     "id": "fred:ECBASSETSW",
-    "n": 877,
-    "last": "2026-10-16"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "ea_unrate": [
@@ -778,22 +686,19 @@
    },
    {
     "id": "fred:LRHUTTTTEZM156S",
-    "n": 157,
-    "last": "2023-01-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "de_10y": [
    {
     "id": "fred:IRLTLT01DEM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "eurusd": [
    {
     "id": "fred:DEXUSEU",
-    "n": 4200,
-    "last": "2026-10-16"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "jp_cpi_idx": [
@@ -830,8 +735,7 @@
    },
    {
     "id": "fred:CPALTT01JPM659N",
-    "n": 138,
-    "last": "2021-06-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "jp_cpi_core": [
@@ -842,8 +746,7 @@
    },
    {
     "id": "fred:CPGRLE01JPM659N",
-    "n": 138,
-    "last": "2021-06-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "dbn:OECD/DSD_PRICES@DF_PRICES_ALL/JPN.M.N.CPI.PA._TXCP01_NRG.N.GY",
@@ -854,41 +757,35 @@
   "jp_rate": [
    {
     "id": "fred:IRSTCI01JPM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:IR3TIB01JPM156N",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "jp_assets": [
    {
     "id": "fred:JPNASSETS",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "jp_10y": [
    {
     "id": "fred:IRLTLT01JPM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "usdjpy": [
    {
     "id": "fred:DEXJPUS",
-    "n": 4200,
-    "last": "2026-10-16"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "jp_reserves": [
    {
     "id": "fred:TRESEGJPM052N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "y10_de": [
@@ -899,8 +796,7 @@
    },
    {
     "id": "fred:IRLTLT01DEM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "y10_fr": [
@@ -911,8 +807,7 @@
    },
    {
     "id": "fred:IRLTLT01FRM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "y10_it": [
@@ -923,8 +818,7 @@
    },
    {
     "id": "fred:IRLTLT01ITM156N",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "y10_es": [
@@ -935,8 +829,7 @@
    },
    {
     "id": "fred:IRLTLT01ESM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "y10_nl": [
@@ -947,36 +840,31 @@
    },
    {
     "id": "fred:IRLTLT01NLM156N",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "y10_gb": [
    {
     "id": "fred:IRLTLT01GBM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "y10_kr": [
    {
     "id": "fred:IRLTLT01KRM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "y10_au": [
    {
     "id": "fred:IRLTLT01AUM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "y10_ca": [
    {
     "id": "fred:IRLTLT01CAM156N",
-    "n": 201,
-    "last": "2026-09-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "cpi_de": [
@@ -1202,8 +1090,7 @@
    },
    {
     "id": "fred:CPALTT01CNM659N",
-    "n": 184,
-    "last": "2025-04-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "cn_ppi": [
@@ -1216,20 +1103,17 @@
   "cn_rate": [
    {
     "id": "fred:IR3TIB01CNM156N",
-    "n": 200,
-    "last": "2026-08-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    },
    {
     "id": "fred:INTDSRCNM193N",
-    "n": 185,
-    "last": "2025-06-01"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ],
   "usdcny": [
    {
     "id": "fred:DEXCHUS",
-    "n": 4200,
-    "last": "2026-10-16"
+    "error": "not enough values to unpack (expected 2, got 1)"
    }
   ]
  }
