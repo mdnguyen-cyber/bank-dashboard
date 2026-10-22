@@ -1524,18 +1524,10 @@ function oilChgIns() {
   return `So với cuối 2025: Brent ${sg(ch('brent'), 0)}, WTI ${sg(ch('wti'), 0)}; trong nước RON 95 ${sg(ch('r95'), 0)}, E5 ${sg(ch('e5'), 0)}, dầu DO <b>${sg(ch('do'), 0)}</b>. Xăng trong nước tăng ${ch('r95') < ch('brent') ? 'ít' : 'nhiều'} hơn dầu thô — thuế, phí cố định theo lít làm phần trăm thay đổi của giá bán lẻ nhỏ hơn giá dầu thô.`
     + how('Mức tăng giá bán lẻ trong nước là phần đã truyền vào CPI; phần dầu thô tăng chưa truyền hết (chênh giữa hai nhóm đường) là áp lực còn lại nếu giá thế giới giữ ở mức cao.');
 }
-function big4Y10() {   // TPCP 10 năm cuối tháng theo trục tháng của big4
-  const cv = BD.gb.curve, m = {}; cv.d.forEach((d, i) => { if (cv['10Y'][i] != null) m[d.slice(0, 7)] = cv['10Y'][i]; });
-  return BD.big4.months.map(k => m[k] ?? null);
-}
-function bBig4Ins() {
-  const B = BD.big4, it = B.items, y = it[it.length - 1].d.slice(0, 4), cur = it.filter(z => z.d.startsWith(y)), prv = it.filter(z => z.d.startsWith(String(+y - 1)));
-  const wa = xs => { const w = xs.reduce((a, z) => a + z.v, 0); return w ? xs.reduce((a, z) => a + z.c * z.v, 0) / w : null; };
-  const by = Object.keys(B.names).map(k => [k, cur.filter(z => z.s === k)]).filter(x => x[1].length);
-  const l = it[it.length - 1], n = B.months.length - 1, y10 = big4Y10();
-  const dNow = B.dep[n], tNow = y10.filter(v => v != null).slice(-1)[0];
-  return `Từ đầu ${y} Big 4 phát hành ${nk(cur.reduce((a, z) => a + z.v, 0))}, lãi suất bình quân <b>${pc(wa(cur), 2)}</b> (năm ${+y - 1}: ${pc(wa(prv), 2)}): ${by.map(([k, xs]) => `${B.names[k]} ${pc(wa(xs), 2)}`).join(', ')}. Đợt gần nhất: ${B.names[l.s]} ${dvn(l.d)}, ${nf(l.t, 0)} năm, <b>${pc(l.c, 2)}</b> — cao hơn huy động 12T Big 4 (${pc(dNow, 2)}) ${nf(l.c - dNow, 2)} điểm % và TPCP 10 năm (${pc(tNow, 2)}) ${nf(l.c - tNow, 2)} điểm %.`
-    + how('Trái phiếu Big 4 là mặt bằng chi phí vốn dài hạn thấp nhất của khối ngân hàng (sở hữu Nhà nước, rủi ro thấp). Khi chính Big 4 phải trả quanh 8% cho kỳ hạn 5–10 năm thì vốn trung dài hạn toàn hệ thống đang khan; chênh so với TPCP cùng kỳ hạn là phần bù rủi ro tín dụng và thanh khoản mà nhà đầu tư đòi.');
+function big4Kpi() {
+  const it = BD.big4.items, l = it[it.length - 1], y = l.d.slice(0, 4), cur = it.filter(z => z.d.startsWith(y)), w = cur.reduce((a, z) => a + z.v, 0), wa = cur.reduce((a, z) => a + z.c * z.v, 0) / w;
+  const prv = it.filter(z => z.d.startsWith(String(+y - 1))), wp = prv.reduce((a, z) => a + z.v, 0), wap = wp ? prv.reduce((a, z) => a + z.c * z.v, 0) / wp : null;
+  return kpi('Lợi suất TP Big 4 (phát hành)', pc(l.c, 2), `${BD.big4.names[l.s]} ${dvn(l.d)}, ${nf(l.t, 0)} năm · BQ ${y} ${pc(wa, 2)} (${y - 1}: ${pc(wap, 2)})`, 'neg');
 }
 function subBond() {
   if (!BD) return '';
@@ -1551,6 +1543,7 @@ function subBond() {
   <p class="muted" style="margin:-4px 0 12px">Lãi suất huy động đến ${dvn(BD.meta.depAsof)} · lợi suất TPCP đến ${dvn(BD.meta.curveAsof)} · TPDN, đấu thầu theo tháng (tháng ${mvn(cb.months[cbN])} mới tính đến ${dvn(fi.cf.asof)}).</p>
   <div class="kpis">
     ${kpi('Coupon FI 1–3 năm (riêng lẻ)', pc(pl && pl[1], 2), `${mvn(N.plM)} · chênh ${sg(spr, 2, ' đ%')} so với huy động 12T Big 4`, spr != null && spr > 2.5 ? 'neg' : '')}
+    ${big4Kpi()}
     ${kpi('Dư nợ trái phiếu ngân hàng', nk(fi.cf.out[cfN]), `đáo hạn 12 tháng tới ${nk(fi12)}`)}
     ${kpi('TPDN chậm trả (gốc + lãi)', nk(cb.late[cbN]), `${pc(cb.late[cbN] / cb.out[cbN] * 100, 1)} dư nợ · BĐS ${nk((cb.lateBySec.find(x => x.s === 'Bất động sản') || {}).v)}`, 'neg')}
     ${kpi('TPCP 10 năm', pc(cv['10Y'][ci], 2), `1 năm ${pc(cv['1Y'][ci], 2)} · dốc 10Y−1Y ${sg(sl * 100, 0, ' bps')} (${sg((sl - sl3) * 100, 0, ' bps')} 3 tháng)`)}
@@ -1558,11 +1551,6 @@ function subBond() {
   </div>
   <div class="grid g2 gap">
     ${card({ id: 'bFiCpn', title: 'Chi phí vốn dài hạn: coupon trái phiếu ngân hàng vs huy động 12T', sub: '%/năm · coupon bình quân gia quyền theo giá trị phát hành từng tháng · đường đỏ = Big 4 12T · cột = chênh coupon 1–3 năm riêng lẻ − Big 4 (trục phải)', insight: bFiCpnIns(N), src: BD.src.fi + '; ' + BD.src.dep })}
-    ${card({ id: 'bBig4', title: 'Lợi suất trái phiếu Big 4 khi phát hành', sub: '%/năm · lãi suất coupon tại thời điểm phát hành, bình quân gia quyền theo giá trị trong tháng · điểm = từng ngân hàng · đường đỏ = huy động 12T Big 4 · đường xám = TPCP 10 năm (cuối tháng)', insight: bBig4Ins(), src: BD.src.big4 + '; ' + BD.src.curve })}
-    <article class="card"><h3 class="sub">Các đợt phát hành gần nhất của Big 4</h3><p class="chart-sub">tỷ đồng · kỳ hạn tính từ ngày phát hành tới ngày đáo hạn · đa số có quyền mua lại trước hạn</p>
-      <div class="tscroll"><table><thead><tr><th>Ngày</th><th>Ngân hàng</th><th>Mã</th><th class="n">Kỳ hạn (năm)</th><th class="n">Lãi suất</th><th class="n">Giá trị</th><th>Hình thức</th></tr></thead><tbody>${
-        BD.big4.items.slice(-12).reverse().map(z => `<tr><td>${dvn(z.d)}</td><td>${esc(BD.big4.names[z.s])}</td><td>${esc(z.tk || '')}</td><td class="n">${z.t == null ? '—' : nf(z.t, 0)}</td><td class="n"><b>${nf(z.c, 2)}%</b></td><td class="n">${nf(z.v, 0)}</td><td>${z.pub ? 'Công chúng' : 'Riêng lẻ'}</td></tr>`).join('')}</tbody></table></div>
-      <div class="src">Nguồn: ${BD.src.big4}</div></article>
     ${card({ id: 'bFiIss', title: 'Ngân hàng phát hành trái phiếu theo kỳ hạn', sub: 'tỷ đồng/tháng · giá trị phát hành thực tế · ≤1 năm, 1–3 năm, 3–5 năm, >5 năm (>5 năm thường là nợ thứ cấp bổ sung vốn cấp 2)', insight: bFiIssIns(N), src: BD.src.fi })}
     ${card({ id: 'bFiMat', title: 'Trái phiếu ngân hàng: dư nợ và lịch đáo hạn', sub: 'đường = dư nợ (nghìn tỷ, trục phải) · cột = gốc đã trả + mua lại trước hạn theo tháng; phần sau tháng hiện tại = gốc đáo hạn theo lịch (tỷ đồng)', insight: bFiMatIns(N), src: BD.src.fi })}
     ${card({ id: 'bCbIss', title: 'Phát hành TPDN theo ngành', sub: 'tỷ đồng/tháng · VND · Tài chính (ngân hàng, chứng khoán, tài chính tiêu dùng), Bất động sản, còn lại', insight: bCbIssIns(N), src: BD.src.cb })}
@@ -1713,11 +1701,6 @@ function chBond() {
   const b0 = o.d.findIndex(d => d >= '2026-01-01') - 1, od = o.d.slice(b0), rel = k => o[k].slice(b0).map(v => v == null || !o[k][b0] ? null : +((v / o[k][b0] - 1) * 100).toFixed(1));
   mk('chOilChg', { type: 'line', data: { labels: od.map(dvn), datasets: [L('Brent', rel('brent'), C.red, { borderDash: [5, 4] }), L('WTI', rel('wti'), C.gold, { borderDash: [2, 3] }), L('RON 95', rel('r95'), C.navy, { borderWidth: 2.4 }), L('E5 RON 92', rel('e5'), C.teal), L('Dầu DO', rel('do'), C.purple, { borderWidth: 2.4 })] },
     options: { plugins: { refLines: { lines: [{ value: 0, label: '', color: C.grey }] } }, scales: { y: pctAxis('') } } });
-  { const B = BD.big4, BC = { VCB: C.tealInk, CTG: C.navy, BID: C.purple, AGRIBANK: C.gold };
-    mk('bBig4', { type: 'line', data: { labels: B.months.map(mvn), datasets: [
-      ...Object.keys(B.names).map(k => L(B.names[k], B.bank[k], BC[k], { showLine: false, pointRadius: 5, pointHoverRadius: 7 })),
-      L('Huy động 12T Big 4', B.months.map((m, i) => B.dep[i] ?? byM(dom.dep12State)[m] ?? null), C.red, { borderWidth: 2.2 }), L('TPCP 10 năm', big4Y10(), C.grey, { borderDash: [5, 4] })] },
-      options: { scales: { y: pctAxis('', { beginAtZero: false }) } } }); }
   const H = BD.gb.holders, est = H.map(h => !!h.e);
   mk('bHold', { type: 'bar', data: { labels: H.map(h => h.p), datasets: [
     { label: 'Ngân hàng', data: H.map(h => h.bank), backgroundColor: est.map(e => e ? 'rgba(29,38,120,.45)' : 'rgba(29,38,120,.85)'), stack: 's', unit: '%', dp: 1 },
