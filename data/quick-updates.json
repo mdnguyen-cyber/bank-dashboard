@@ -2,6 +2,242 @@
  "note": "Mỗi bản cập nhật là một phần tử trong updates. Bản mới thêm vào, không sửa bản cũ. author.type = 'AI' hoặc 'Chuyên viên'. follows = id bản trước mà bản này viết tiếp. concerns[].status: mới | nóng lên | tiếp diễn | hạ nhiệt. charts[].id = mã chart trong Chart book (python3 scripts/chart_ids.py), last = chỉ hiện N điểm gần nhất. Quy trình: docs/cap-nhat-nhanh.md",
  "updates": [
   {
+   "id": "QU-2026-10-22-AI",
+   "date": "2026-10-22",
+   "author": {
+    "type": "AI",
+    "name": "Claude",
+    "requestedBy": "Minh Đức"
+   },
+   "follows": "QU-2026-10-20-AI",
+   "vsPrev": "NHNN ra công văn thứ hai (9736, 21/10) biến yêu cầu giảm lãi suất thành chỉ tiêu có giám sát; lãi suất tiết kiệm 12 tháng Big 4 về 5,4%, tư nhân lớn 5,81%, nhưng lãi suất chứng chỉ tiền gửi và trái phiếu ngân hàng vẫn quanh 8%; lãi suất qua đêm hạ về 3,30%.",
+   "headline": "Giảm lãi suất thành chỉ tiêu có giám sát: tiết kiệm 12 tháng Big 4 về 5,4%, nhưng vốn biên (chứng chỉ tiền gửi, trái phiếu) vẫn quanh 8% — NIM bị ép từ phía cho vay trước khi chi phí vốn kịp hạ",
+   "summary": [
+    "Quan điểm chuyên viên (Minh Đức, 20/10): ép hạ lãi suất không theo cơ chế thị trường có thể gây hậu quả khó lường, có thể sinh thêm <b>ngân hàng 0 đồng</b> khi NIM bị ép quá mức — NIM bình quân 26 ngân hàng đã giảm từ <b>3,81%</b> (Q1/2023) xuống <b>3,08%</b> (Q2/2026). NHNN và Bộ Tài chính nên phối hợp: tăng tỷ lệ tiền gửi Kho bạc tính vào LDR, tăng tiền gửi Kho bạc, đẩy đầu tư công, hoán đổi (swap) USD sang VND, mua đứt USD; tái cấp vốn là giải pháp cuối cùng.",
+    "Công văn <b>9736/NHNN-CSTT</b> (21/10) nối tiếp 9608 (18/10): giảm tối thiểu <b>0,5 điểm %</b> lãi suất tiền gửi <b>bình quân của giao dịch phát sinh mới</b> kỳ hạn từ 6 tháng (so với chính ngân hàng giai đoạn 11–20/10), không chỉ biểu niêm yết; NHNN theo dõi qua báo cáo thống kê; vi phạm có thể bị giảm chỉ tiêu tín dụng. Cho vay giảm 1,5–2%/năm, áp dụng cả khách hàng hiện hữu.",
+    "Lãi suất tiết kiệm 12 tháng (19/10 → 22/10): Big 4 <b>5,90% → 5,40%</b>, tư nhân lớn 6,14% → <b>5,81%</b>, nhóm còn lại 6,00% → 5,65%. Ngược chiều: lãi suất chứng chỉ tiền gửi tăng 0,1–0,3 điểm % (MB tới 8%/năm kỳ hạn 3 tháng, VPBank tới 9%), Big 4 vẫn phát hành trái phiếu 5–10 năm ở <b>8,0–8,25%</b>.",
+    "Mùa KQKD Q3: Techcombank LNST công ty mẹ <b>7.943 tỷ</b> (+23,7% YoY), VPBank 8.644 tỷ (+18,8%), LPBank 3.562 tỷ (+28,9%) — phản ánh giai đoạn trước chỉ đạo. P/B ngành <b>1,42x</b> (22/10).",
+    "Trong nước: lãi suất qua đêm hạ về <b>3,30%</b> (21/10) từ 4,42% (19/10); VNIBOR 3 tháng 7,60%, 1 năm 7,90%; lượng OMO lưu hành còn 97,7 nghìn tỷ (đỉnh 255 nghìn tỷ cuối tháng 8). Vietcombank bán USD <b>26.030</b> (22/10, −20đ), tự do 26.080.",
+    "Bên ngoài: UST 10 năm <b>5,13%</b> (21/10), DXY 101,65; giá hợp đồng tương lai lãi suất quỹ liên bang ngụ ý xác suất Fed giữ nguyên ngày 28/10 là <b>86,8%</b>, nhưng xác suất lên 4,00–4,25% sau phiên 9/12 là 77,4%."
+   ],
+   "kpis": [
+    {
+     "l": "LS tiết kiệm 12T Big 4",
+     "v": "5,40%",
+     "s": "22/10 · −50 bps so với 19/10",
+     "cls": "pos"
+    },
+    {
+     "l": "P/B ngành",
+     "v": "1,42x",
+     "s": "22/10 · P/E 8,43x",
+     "cls": "pos"
+    },
+    {
+     "l": "Tín dụng so với đầu năm",
+     "v": "11,44%",
+     "s": "14/10 · 30/9: 11,59%",
+     "cls": "neg"
+    },
+    {
+     "l": "LNH qua đêm",
+     "v": "3,30%",
+     "s": "21/10 · 19/10: 4,42%",
+     "cls": ""
+    },
+    {
+     "l": "UST 10 năm",
+     "v": "5,13%",
+     "s": "21/10 · Fed giữ 28/10: 86,8%",
+     "cls": "neg"
+    }
+   ],
+   "concerns": [
+    {
+     "title": "Giảm lãi suất thành chỉ tiêu có giám sát: tiết kiệm giảm, vốn biên chưa giảm",
+     "scope": "nganh",
+     "status": "nóng lên",
+     "note": "Hai công văn trong 4 ngày (9608 ngày 18/10, <b>9736</b> ngày 21/10) chuyển yêu cầu chung thành chỉ tiêu định lượng: tiền gửi bình quân giao dịch mới kỳ hạn từ 6 tháng phải giảm ít nhất <b>0,5 điểm %</b> so với 11–20/10, NHNN đo qua báo cáo thống kê, vi phạm có thể bị giảm chỉ tiêu tín dụng. Lãi suất tiết kiệm 12 tháng Big 4 về <b>5,40%</b>, tư nhân lớn 5,81%, nhóm còn lại 5,65% (22/10). Nhưng chứng chỉ tiền gửi tăng 0,1–0,3 điểm % (MB 8%/năm kỳ hạn 3 tháng với khoản từ 300 triệu, VPBank tới 9%), và Big 4 vẫn trả <b>8,0–8,25%</b> cho trái phiếu 5–10 năm phát hành tháng 8–9. <b>Nhận định:</b> lãi suất niêm yết giảm, nhưng các kênh vốn chưa bị chỉ đạo trực tiếp (chứng chỉ tiền gửi, trái phiếu) vẫn đắt — chi phí vốn biên chưa hạ thật; ngân hàng có LDR cao, phụ thuộc chứng chỉ tiền gửi chịu nhiều nhất.",
+     "change": "Từ yêu cầu chung (18/10) sang chỉ tiêu đo trên giao dịch mới (21/10); tiết kiệm 12 tháng Big 4 −50 bps, tư nhân lớn −33 bps trong 3 ngày; lãi suất chứng chỉ tiền gửi đi ngược, tăng 0,1–0,3 điểm %.",
+     "charts": [
+      {
+       "id": "chDep",
+       "last": 24,
+       "caption": "Lãi suất tiết kiệm 12 tháng theo nhóm: cả ba nhóm cùng giảm 20–21/10."
+      },
+      {
+       "id": "bBig4",
+       "last": 18,
+       "caption": "Trái phiếu Big 4 phát hành quanh 8% từ tháng 6 — vốn dài hạn vẫn đắt so với tiết kiệm 12 tháng."
+      }
+     ]
+    },
+    {
+     "title": "NIM bị ép từ phía cho vay trước khi chi phí vốn kịp hạ",
+     "scope": "nganh",
+     "status": "nóng lên",
+     "note": "Cho vay phải giảm <b>1,5–2%/năm</b> cho sản xuất kinh doanh và lĩnh vực ưu tiên, kể cả khách hàng hiện hữu, trong khi tiền gửi chỉ phải giảm 0,5 điểm % và chỉ với giao dịch mới — phần tiền gửi cũ lãi suất cao còn trả tới khi đáo hạn. Chênh coupon trái phiếu ngân hàng 1–3 năm phát hành riêng lẻ với tiết kiệm 12 tháng Big 4 đã là <b>2,95 điểm %</b> (tháng 9), nay nới thêm khi tiết kiệm giảm. <b>Hàm ý:</b> NIM Q4/2026 – Q1/2027 bị ép rõ nhất ở ngân hàng có tỷ trọng cho vay doanh nghiệp sản xuất cao và CASA thấp; nhóm CASA cao (VCB, TCB, MBB) chịu ít hơn.",
+     "change": "Yêu cầu giảm cho vay áp dụng cả khách hàng hiện hữu (công văn 9736), làm tác động lên NIM đến sớm hơn.",
+     "charts": [
+      {
+       "id": "chNimDep",
+       "caption": "NIM đi ngang–giảm trong khi COF tăng từ Q2/2025; cho vay giảm 1,5–2% sẽ ép NIM trước khi COF kịp hạ."
+      },
+      {
+       "id": "bFiCpn",
+       "last": 24,
+       "caption": "Coupon trái phiếu ngân hàng 1–3 năm so với tiết kiệm 12 tháng Big 4."
+      }
+     ]
+    },
+    {
+     "title": "Tín dụng chững lại, kiểm soát nhóm khách hàng dư nợ lớn",
+     "scope": "nganh",
+     "status": "tiếp diễn",
+     "note": "Chưa có số mới sau mức <b>11,44%</b> so với đầu năm (14/10), thấp hơn 11,59% cuối tháng 9. Tín dụng tháng 8 tăng 17,4% YoY, tiền gửi 13,6% YoY. Công văn 9736 nhắc lại khả năng giảm chỉ tiêu tín dụng với ngân hàng không giảm lãi suất — room 2026 và 2027 thành công cụ ép lãi suất. TT50 (hiệu lực 1/12/2026) đổi công thức LDR, giới hạn 95% theo cách tính mới.",
+     "change": "Không có số tín dụng mới; thêm rủi ro room bị cắt với ngân hàng không thực hiện chỉ đạo.",
+     "charts": [
+      {
+       "id": "chCredit",
+       "caption": "Tín dụng so với đầu năm theo tháng."
+      },
+      {
+       "id": "chMoney",
+       "last": 36,
+       "caption": "Tín dụng tăng nhanh hơn tiền gửi 4–6 điểm % từ giữa 2024."
+      }
+     ]
+    },
+    {
+     "title": "Định giá ngành ở vùng đáy, KQKD Q3 tốt nhưng là số trước chỉ đạo",
+     "scope": "nganh",
+     "status": "tiếp diễn",
+     "note": "P/B ngành <b>1,42x</b>, P/E 8,43x (22/10), quanh các đáy 10/2022 và 4/2025. KQKD Q3: Techcombank LNST công ty mẹ <b>7.943 tỷ</b> (+23,7% YoY; 9 tháng 21.964 tỷ, +18,0%, đạt 78,4% kế hoạch), VPBank 8.644 tỷ (+18,8%), LPBank 3.562 tỷ (+28,9%). <b>Hàm ý:</b> thị trường chiết khấu lợi nhuận Q4/2026 – 2027 do chia sẻ lợi nhuận theo chỉ đạo (BIDV ước giảm thu nhập khoảng 500 tỷ, Agribank khoảng 6.000 tỷ); KQKD Q3 tốt chưa đủ kéo định giá lên.",
+     "change": "P/B 1,41x → 1,42x; thêm KQKD Q3 của Techcombank, LPBank.",
+     "charts": [
+      {
+       "id": "chPbBand",
+       "caption": "P/B ngành so với bình quân và dải ±1σ."
+      }
+     ]
+    },
+    {
+     "title": "Thanh khoản liên ngân hàng: qua đêm hạ, kỳ hạn dài vẫn gần 8%",
+     "scope": "noi",
+     "status": "hạ nhiệt",
+     "note": "Lãi suất qua đêm <b>3,30%</b> (21/10) từ 4,42% (19/10); VNIBOR 1 tháng 5,35%, 3 tháng <b>7,60%</b>, 6 tháng 7,85%, 1 năm 7,90% (21/10). NHNN hút ròng nhẹ qua OMO (−5.415 tỷ ngày 20/10, −514 tỷ ngày 21/10), lượng OMO lưu hành còn <b>97,7 nghìn tỷ</b> so với đỉnh 255 nghìn tỷ cuối tháng 8. Chênh VND − USD 3 tháng khoảng <b>+3,4 điểm %</b>. <b>Nhận định:</b> tiền ngắn hạn dư, nhưng vốn liên ngân hàng 3 tháng – 1 năm quanh 7,6–7,9% vẫn cao hơn tiết kiệm 12 tháng Big 4 khoảng 2,5 điểm % — khe hở này là lý do ngân hàng nhỏ vẫn phải huy động bằng chứng chỉ tiền gửi lãi suất cao.",
+     "change": "Qua đêm −112 bps trong 2 phiên; VNIBOR 3 tháng đứng ở 7,60%.",
+     "charts": [
+      {
+       "id": "dMmCurve",
+       "caption": "Đường cong VNIBOR VND, VNIBOR USD và SOFR theo kỳ hạn."
+      },
+      {
+       "id": "chOn",
+       "last": 24,
+       "caption": "Lãi suất qua đêm, OMO và bơm/hút ròng."
+      }
+     ]
+    },
+    {
+     "title": "Lạm phát trên mục tiêu, giá xăng dầu còn cao",
+     "scope": "noi",
+     "status": "tiếp diễn",
+     "note": "CPI tháng 9 <b>5,08%</b> YoY, bình quân 9 tháng <b>4,52%</b>, lạm phát cơ bản 4,45%. Brent (hợp đồng tương lai) <b>110,8 USD/thùng</b> (22/10), +82% so với cuối 2025; giá bán lẻ trong nước tăng ít hơn: RON 95 +41%, dầu DO +67%. Dầu DO 28,80 nghìn đồng/lít, đắt hơn RON 95 (26,72). <b>Hàm ý:</b> giảm lãi suất bằng chỉ đạo hành chính khi lạm phát trên mục tiêu — NHNN không hạ lãi suất điều hành; CPI tháng 10 (6/11) là phép thử.",
+     "change": "Chưa có CPI mới; giá dầu tăng lại lên trên 110 USD.",
+     "charts": [
+      {
+       "id": "chCpi",
+       "last": 24,
+       "caption": "CPI, lạm phát cơ bản và CPI bình quân từ đầu năm so với mục tiêu."
+      },
+      {
+       "id": "chOilChg",
+       "caption": "Thay đổi giá dầu thế giới và giá xăng dầu trong nước so với cuối 2025."
+      }
+     ]
+    },
+    {
+     "title": "Fed và tỷ giá: thị trường đặt cược tăng lãi suất tháng 12",
+     "scope": "qt",
+     "status": "tiếp diễn",
+     "note": "Xác suất ngụ ý từ hợp đồng tương lai lãi suất quỹ liên bang: Fed giữ 3,75–4,00% ngày 28/10 <b>86,8%</b>; sau phiên 9/12 khả năng cao nhất là 4,00–4,25% (<b>77,4%</b>). UST 10 năm <b>5,13%</b>, 2 năm 4,81% (21/10); DXY 101,65. Trong nước: Vietcombank bán USD <b>26.030</b> (22/10), tỷ giá trung tâm 25.632, tự do 26.080. <b>Hàm ý:</b> tỷ giá ổn định là điều kiện để NHNN chọn giảm lãi suất; Fed tăng tháng 12 sẽ ép chênh lệch VND − USD đúng lúc lãi suất VND bị ép giảm.",
+     "change": "UST 10 năm −2 bps; tỷ giá NHTM giảm 50đ trong 3 phiên.",
+     "charts": [
+      {
+       "id": "gFedPath",
+       "caption": "Lãi suất kỳ vọng sau mỗi phiên FOMC và bảng xác suất."
+      },
+      {
+       "id": "chFx",
+       "last": 18,
+       "caption": "Hành lang tỷ giá, tỷ giá NHTM, tự do theo ngày và DXY."
+      }
+     ]
+    },
+    {
+     "title": "Lợi suất trái phiếu chính phủ toàn cầu: cao hơn đầu năm, đi ngang trong tuần",
+     "scope": "qt",
+     "status": "tiếp diễn",
+     "note": "Lợi suất 10 năm (21/10): Mỹ <b>5,13%</b>, Nhật 2,92%, Đức 3,47% — đều đi ngang so với tuần trước, vẫn cao hơn đầu năm 50–95 bps. USD/JPY 157,9, vẫn trong vùng Bộ Tài chính Nhật từng can thiệp. Dầu neo trên 100 USD giữ lạm phát vòng 2 và lợi suất dài hạn khó giảm.",
+     "change": "Không đổi xu hướng: UST 10 năm 5,15% → 5,13%, JGB 2,94% → 2,92%.",
+     "charts": [
+      {
+       "id": "gGlY10",
+       "last": 260,
+       "caption": "Thay đổi lợi suất 10 năm so với phiên đầu năm (bps)."
+      },
+      {
+       "id": "gJpSpr",
+       "last": 130,
+       "caption": "Chênh UST − JGB 10 năm và USD/JPY."
+      }
+     ]
+    }
+   ],
+   "watch": [
+    {
+     "d": "2026-10-23",
+     "t": "Fed công bố H.4.1 (tuần đến 21/10)",
+     "why": "Dự trữ ngân hàng và TGA."
+    },
+    {
+     "d": "2026-10-28",
+     "t": "FOMC 27–28/10",
+     "why": "Thị trường đặt 86,8% giữ nguyên; tín hiệu cho tháng 12 quyết định chênh lệch VND − USD."
+    },
+    {
+     "d": "2026-10-31",
+     "t": "Biểu lãi suất và lãi suất bình quân giao dịch mới cuối tháng 10",
+     "why": "Đo mức giảm thực tế so với chỉ tiêu 0,5 điểm % (tiền gửi) và 1,5–2% (cho vay); theo dõi lãi suất chứng chỉ tiền gửi."
+    },
+    {
+     "d": "2026-10-31",
+     "t": "KQKD Q3 các ngân hàng còn lại (Big 4, MBB, ACB)",
+     "why": "NIM, COF, dự phòng trước khi chỉ đạo giảm lãi suất có hiệu lực."
+    },
+    {
+     "d": "2026-11-06",
+     "t": "CPI tháng 10 (Cục Thống kê)",
+     "why": "Bình quân năm vượt rõ 4,5% thì giảm lãi suất bằng chỉ đạo càng khó bền."
+    },
+    {
+     "d": "2026-12-01",
+     "t": "TT50/2026 có hiệu lực",
+     "why": "Tính lại LDR từng ngân hàng theo công thức mới."
+    }
+   ],
+   "sources": [
+    "NHNN (công văn 9608/NHNN-CSTT ngày 18/10/2026, 9736/NHNN-CSTT ngày 21/10/2026; họp với các ngân hàng 19/10/2026) qua Báo Nhà Đầu Tư, Tạp chí Kinh tế Chứng khoán Việt Nam",
+    "Biểu lãi suất tiền gửi các ngân hàng; vietnamfinance 22/10/2026 (chứng chỉ tiền gửi)",
+    "BCTC Q3/2026 Techcombank, VPBank, LPBank; HNX (trái phiếu doanh nghiệp)",
+    "NHNN, Cục Thống kê, Petrolimex, ICE (Brent)",
+    "VIRA Market Watch (VNIBOR, SOFR), Vietcombank (tỷ giá)",
+    "U.S. Treasury (lợi suất), CBOT (hợp đồng tương lai lãi suất quỹ liên bang), Federal Reserve",
+    "Bộ Tài chính Nhật Bản, Deutsche Bundesbank (lợi suất TPCP)"
+   ]
+  },
+  {
    "id": "QU-2026-10-20-AI",
    "date": "2026-10-20",
    "author": {
