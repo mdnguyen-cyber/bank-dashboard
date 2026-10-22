@@ -134,6 +134,40 @@ def oil_block(raw):
     return out
 
 
+BIG4 = {'VCB': 'Vietcombank', 'CTG': 'VietinBank', 'BID': 'BIDV', 'AGRIBANK': 'Agribank'}
+
+
+def big4_block(raw, dep_months, big4_dep):
+    iss, mat = {}, {}
+    for d in sel(raw, 'wi_data_cbond', 'bonds_corp_issuances', 'get_data'):
+        for x in rows(d['response']):
+            if x.get('symbol') in BIG4 and x.get('currency_id', 1) == 1 and x.get('actual_issuance_value'):
+                iss[x['id']] = x
+    for d in sel(raw, 'wi_data_cbond', 'bonds_corp_issuances_hist', 'get_data'):
+        for x in rows(d['response']):
+            if x.get('maturity_date'):
+                mat[x['issuance_information_id']] = x['maturity_date']
+    items = []
+    for i, x in iss.items():
+        md = mat.get(i)
+        ten = round((dt.date.fromisoformat(md) - dt.date.fromisoformat(x['issuance_start_date'])).days / 365.25, 1) if md else None
+        items.append({'s': x['symbol'], 'd': x['issuance_start_date'], 'c': x['issuance_interest_rate'], 'v': round(x['actual_issuance_value'] / TY), 't': ten,
+                      'pub': x.get('issuance_method_id') == 2, 'tk': x.get('trading_bond_ticker') or x.get('bond_ticker')})
+    items.sort(key=lambda z: z['d'])
+    months = mrange('2023-01', dt.date.today().isoformat()[:7])
+    def wavg(f):
+        out = []
+        for m in months:
+            xs = [z for z in items if z['d'][:7] == m and f(z) and z['c']]
+            w = sum(z['v'] for z in xs)
+            out.append(round(sum(z['c'] * z['v'] for z in xs) / w, 2) if w else None)
+        return out
+    ser = {k: wavg(lambda z, k=k: z['s'] == k) for k in BIG4}
+    bucket = {'≤6 năm': wavg(lambda z: z['t'] is not None and z['t'] <= 6.5), '7–10 năm': wavg(lambda z: z['t'] is not None and 6.5 < z['t'] <= 10.5), '>10 năm': wavg(lambda z: z['t'] is not None and z['t'] > 10.5)}
+    dep = [big4_dep[dep_months.index(m)] if m in dep_months else None for m in months]
+    return {'months': months, 'bank': ser, 'ten': bucket, 'dep': dep, 'items': items[-400:], 'names': BIG4}
+
+
 def main():
     raw = load_raw(ROOT / 'data/raw/wi')
     today = dt.date.today().isoformat()
@@ -275,13 +309,14 @@ def main():
     out = {
         'meta': {'updated': today, 'depAsof': asof, 'curveAsof': ds[-1] if ds else None, 'aucAsof': am[-1] if am else None,
                  'fiLast': fm[li] if li is not None else None, 'bigNow': big4},
-        'dep': dep, 'fi': fi, 'cb': cb, 'gb': gb, 'oil': oil_block(raw),
+        'dep': dep, 'fi': fi, 'cb': cb, 'gb': gb, 'oil': oil_block(raw), 'big4': big4_block(raw, months, tiers['Big 4']),
         'src': {
             'dep': 'WiData bảng 46 (lãi suất huy động 12 tháng, cá nhân, tại quầy) — các mã ' + ', '.join(str(i) for l in TIERS.values() for i, _ in l),
             'fi': 'WiData bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), nhóm Ngân hàng',
             'cb': 'WiData bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), VND',
             'curve': 'WiData bonds_gov_yield_curve 234528/234530/234531/234526/234529',
             'auc': 'WiData bonds_gov_auction_monthly (HNX, Kho bạc Nhà nước)', 'fx': 'WiData bonds_gov_secondary_yield_monthly (HNX)',
+            'big4': 'WiData bonds_corp_issuances, bonds_corp_issuances_hist (HNX) — lãi suất tại thời điểm phát hành, VND',
             'oil': 'WiData — Brent (ICE, hợp đồng tương lai) 203084, WTI (CME) 203111; giá bán lẻ Petrolimex vùng 1: RON 95-III 80241 / E10 RON 95-III 1276626, E5 RON 92-II 1276554, DO 0,05S 1276560',
             'holders': 'Bộ Tài chính; ADB AsianBondsOnline (Viet Nam Market Summary các kỳ); VBMA (Báo cáo thường niên 2022, 2023); KBNN qua Tạp chí Tài chính (2016–2017)'},
     }
