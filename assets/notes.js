@@ -79,10 +79,22 @@
   const local = k => { try { return JSON.parse(localStorage.getItem(LK(k)) || '[]'); } catch (e) { return []; } };
   const saveLocal = (k, arr) => { try { localStorage.setItem(LK(k), JSON.stringify(arr)); return true; } catch (e) { return false; } };
   const published = k => ((window.FS_NOTES || {}).notes || {})[k] || [];
-  function versions(k) {   // bản đã đăng + bản trên máy chưa đăng, mới nhất trước
-    const pub = published(k), ids = new Set(pub.map(v => v.id));
-    const loc = local(k).filter(v => !ids.has(v.id)).map(v => Object.assign({}, v, { _local: true }));
-    return [...pub, ...loc].sort((a, b) => (b.at || '').localeCompare(a.at || ''));
+  /* Bản trên máy chưa đăng = BẢN NHÁP: mỗi khối chỉ giữ 1 bản nháp (bản mới nhất), tự xoá sau DRAFT_DAYS ngày,
+     và tự bỏ khi nội dung đã được đăng (trùng id hoặc trùng nội dung với một bản đã đăng). */
+  const DRAFT_DAYS = 7;
+  const atMs = at => { const t = Date.parse((at || '').replace(' ', 'T')); return isNaN(t) ? 0 : t; };
+  const draftLeft = v => Math.max(0, Math.ceil((atMs(v.at) + DRAFT_DAYS * 864e5 - Date.now()) / 864e5));
+  function draft(k) {
+    const pub = published(k), ids = new Set(pub.map(v => v.id)), htmls = new Set(pub.map(v => cleanStr(v.html)));
+    const all = local(k), keep = all.filter(v => !ids.has(v.id) && !htmls.has(cleanStr(v.html)) && (/-seed$/.test(v.id) || draftLeft(v) > 0))
+      .sort((a, b) => (a.at || '').localeCompare(b.at || '')).slice(-1);
+    if (keep.length !== all.length) saveLocal(k, keep);
+    return keep[0] ? Object.assign({}, keep[0], { _local: true }) : null;
+  }
+  function versions(k) {   // bản đã đăng (mới nhất trước) + bản nháp nếu có (đứng đầu khi mới hơn)
+    const pub = [...published(k)].sort((a, b) => (b.at || '').localeCompare(a.at || ''));
+    const d = draft(k);
+    return d ? [d, ...pub].sort((a, b) => (b.at || '').localeCompare(a.at || '')) : pub;
   }
 
   /* ---------- trình soạn có thanh công cụ ---------- */
@@ -130,22 +142,23 @@
           const html = cleanStr(el.querySelector('.fsn-area').innerHTML), f = opt.read(el), au = el.querySelector('[data-a="who"]').value.trim() || 'Chuyên viên';
           try { localStorage.setItem('quWho', au); } catch (e) {}
           const v = { id: `${opt.key}-${Date.now()}`, at: now(), author: au, f, html, text: plain(html) };
-          const L = local(opt.key); L.push(v);
-          if (!saveLocal(opt.key, L)) { el.querySelector('[data-a="msg"]').textContent = 'Trình duyệt không cho lưu.'; return; }
+          if (!saveLocal(opt.key, [v])) { el.querySelector('[data-a="msg"]').textContent = 'Trình duyệt không cho lưu.'; return; }
           if (opt.onSave) opt.onSave(v);
           mode = 'view'; render();
         };
         return;
       }
       el.innerHTML = `<div class="fsn-head"><h3 class="sub">${opt.title}</h3>
-          <span class="fsn-btns">${nLocal ? `<button type="button" class="btn ghost" data-a="copy" title="${nLocal} bản mới chỉ nằm trên máy này — sao chép rồi dán vào chat với AI kèm câu &quot;đăng nhận định này&quot;">Sao chép để đăng</button>` : ''}<button type="button" class="btn ghost" data-a="hist">Lịch sử (${V.length})</button><button type="button" class="btn ghost" data-a="edit">✎ Chỉnh sửa</button></span></div>
-        <div class="fsn-meta"><span>${dvn(cur.at)}${cur.at.length > 10 && cur.at.slice(11) !== '00:00' ? ' ' + cur.at.slice(11) : ''}</span><span>${esc(cur.author || '')}</span>${cur._local ? '<span class="pill watch" title="Mới lưu trên máy này — AI chưa đọc được">chưa đăng</span>' : '<span class="pill ok">đã đăng</span>'}</div>
+          <span class="fsn-btns">${nLocal ? `<button type="button" class="btn ghost" data-a="copy" title="Bản nháp chỉ nằm trên máy này — sao chép rồi dán vào chat với AI kèm câu &quot;đăng nhận định này&quot;">Sao chép để đăng</button><button type="button" class="btn ghost" data-a="deldraft" title="Xoá bản nháp trên máy này">Xoá nháp</button>` : ''}<button type="button" class="btn ghost" data-a="hist">Lịch sử (${V.length - nLocal})</button><button type="button" class="btn ghost" data-a="edit">✎ Chỉnh sửa</button></span></div>
+        <div class="fsn-meta"><span>${dvn(cur.at)}${cur.at.length > 10 && cur.at.slice(11) !== '00:00' ? ' ' + cur.at.slice(11) : ''}</span><span>${esc(cur.author || '')}</span>${cur._local ? `<span class="pill watch" title="Chỉ lưu trên máy này, AI chưa đọc được. Mỗi lần lưu thay bản nháp cũ; tự xoá sau ${DRAFT_DAYS} ngày hoặc khi đã đăng.">${/-seed$/.test(cur.id) ? 'bản nháp' : `bản nháp · tự xoá sau ${draftLeft(cur)} ngày`}</span>` : '<span class="pill ok">đã đăng</span>'}</div>
         ${opt.meta ? `<div class="fsn-sum">${opt.meta(cur.f)}</div>` : ''}
         <div class="fsn-body">${cleanStr(cur.html) || '<span class="muted">(chưa có nội dung)</span>'}</div>
         <span class="muted fsn-cmsg" data-a="cmsg"></span>
-        ${showHist ? `<div class="fsn-hist">${V.map((v, i) => `<details${i ? '' : ' open'}><summary><b>${dvn(v.at)}</b> ${v.at.length > 10 && v.at.slice(11) !== '00:00' ? v.at.slice(11) : ''} · ${esc(v.author || '')}${v._local ? ' <span class="pill watch">chưa đăng</span>' : ''}${opt.meta ? ` · <span class="muted">${esc(plain(opt.meta(v.f).replace(/<\/span>\s*<span/g, '</span> · <span')))}</span>` : ''}</summary><div class="fsn-body">${cleanStr(v.html)}</div></details>`).join('')}</div>` : ''}`;
+        ${showHist ? `<div class="fsn-hist">${V.filter(v => !v._local).map((v, i) => `<details${i ? '' : ' open'}><summary><b>${dvn(v.at)}</b> ${v.at.length > 10 && v.at.slice(11) !== '00:00' ? v.at.slice(11) : ''} · ${esc(v.author || '')}${v._local ? ' <span class="pill watch">chưa đăng</span>' : ''}${opt.meta ? ` · <span class="muted">${esc(plain(opt.meta(v.f).replace(/<\/span>\s*<span/g, '</span> · <span')))}</span>` : ''}</summary><div class="fsn-body">${cleanStr(v.html)}</div></details>`).join('')}</div>` : ''}`;
       el.querySelector('[data-a="edit"]').onclick = () => { mode = 'edit'; render(); };
       el.querySelector('[data-a="hist"]').onclick = () => { showHist = !showHist; render(); };
+      const dd = el.querySelector('[data-a="deldraft"]');
+      if (dd) dd.onclick = () => { saveLocal(opt.key, []); render(); };
       const cp = el.querySelector('[data-a="copy"]');
       if (cp) cp.onclick = async () => {
         const payload = JSON.stringify({ key: opt.key, versions: V.filter(v => v._local).map(v => { const o = Object.assign({}, v); delete o._local; return o; }) }, null, 1);
