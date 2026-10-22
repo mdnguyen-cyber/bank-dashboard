@@ -9,17 +9,17 @@
   "updated": "2026-10-22",
   "price": 55700,
   "priceDate": "2026-10-20",
-  "mcap": 469589,
+  "mcap": 470425,
   "pb": 1.93,
   "pe": 11.17,
   "bvps": 28824,
   "eps": 4984,
-  "sharesOut": 8430.7,
+  "sharesOut": 8445.7,
   "latestQuarter": "Q2/2026",
   "view": null,
   "irUrl": "https://www.vietcombank.com.vn/vi-VN/Nha-dau-tu",
   "strategic": "Mizuho",
-  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-21 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-22 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 18.0,
   "roa": 1.71,
   "nim": 2.81,
@@ -25297,16 +25297,16 @@
    "npN": 11
   },
   "fwd": {
-   "bv2026F": 263511.6,
+   "bv2026F": 263504.8,
    "npat2026F": 42828,
-   "pbFwd": 1.78,
-   "peFwd": 10.96,
-   "bvps2026F": 31256,
+   "pbFwd": 1.79,
+   "peFwd": 10.98,
+   "bvps2026F": 31200,
    "npatH1": 24013.1,
    "impliedH2": 18814.9,
    "npat2025": 35197.9,
    "h2_2025": 17658.9,
-   "divPaid": 3793.8
+   "divPaid": 3800.6
   },
   "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
@@ -39336,7 +39336,11 @@
    },
    {
     "d": "2026-10-20",
-    "v": 3.6
+    "v": 3.71
+   },
+   {
+    "d": "2026-10-21",
+    "v": 3.3
    }
   ],
   "omoNetDaily": [
@@ -43695,6 +43699,10 @@
    {
     "d": "2026-10-20",
     "v": -5414.77
+   },
+   {
+    "d": "2026-10-21",
+    "v": -513.75
    }
   ],
   "omoRateDaily": [
@@ -48442,10 +48450,10 @@
   {
    "id": "R-10",
    "label": "LNH qua đêm TB 20 phiên vs OMO",
-   "value": -1.61,
+   "value": -1.57,
    "unit": "điểm %",
-   "asOf": "2026-10-20",
-   "rule": "OMO bơm ròng 20 phiên -101.512 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
+   "asOf": "2026-10-21",
+   "rule": "OMO bơm ròng 20 phiên -98.910 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
    "threshold": "> 0 kéo dài (giả định)",
    "state": "ok",
    "impact": "OMO không giúp tuân thủ LDR; TT1 chỉ hạ khi có nới tỉ lệ"

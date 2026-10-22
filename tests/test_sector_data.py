@@ -45,7 +45,7 @@ def test_ldr_sensitivity_formula():
 
 
 def test_sector_valuation_now_matches_wi():
-    assert abs(D['secVal']['now']['pb'] - 1.41) < 0.01 and abs(D['secVal']['now']['pe'] - 8.42) < 0.01
+    assert abs(D['secVal']['now']['pb'] - 1.42) < 0.01 and abs(D['secVal']['now']['pe'] - 8.43) < 0.01
 
 
 def test_no_nan():

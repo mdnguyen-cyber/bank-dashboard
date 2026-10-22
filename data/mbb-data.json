@@ -9,17 +9,17 @@
   "updated": "2026-10-22",
   "price": 19850,
   "priceDate": "2026-10-21",
-  "mcap": 200368,
+  "mcap": 199361,
   "pb": 1.35,
   "pe": 6.64,
   "bvps": 14652,
   "eps": 2987,
-  "sharesOut": 10094.1,
+  "sharesOut": 10043.4,
   "latestQuarter": "Q2/2026",
   "view": null,
   "irUrl": "https://www.mbbank.com.vn/Investor",
   "strategic": null,
-  "src": "WiData eod_adjust 2026-10-21 (giá), ratio_daily 2026-10-21 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "WiData eod_adjust 2026-10-21 (giá), ratio_daily 2026-10-22 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 21.7,
   "roa": 2.04,
   "nim": 4.03,
@@ -24000,16 +24000,16 @@
    "npN": 16
   },
   "fwd": {
-   "bv2026F": 162193.3,
+   "bv2026F": 162244.0,
    "npat2026F": 31673.0,
-   "pbFwd": 1.24,
-   "peFwd": 6.33,
-   "bvps2026F": 16068,
+   "pbFwd": 1.23,
+   "peFwd": 6.29,
+   "bvps2026F": 16154,
    "npatH1": 16148.2,
    "impliedH2": 15524.8,
    "npat2025": 27383.0,
    "h2_2025": 14703.4,
-   "divPaid": 10094.1
+   "divPaid": 10043.4
   },
   "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
@@ -38006,7 +38006,11 @@
    },
    {
     "d": "2026-10-20",
-    "v": 3.6
+    "v": 3.71
+   },
+   {
+    "d": "2026-10-21",
+    "v": 3.3
    }
   ],
   "omoNetDaily": [
@@ -42365,6 +42369,10 @@
    {
     "d": "2026-10-20",
     "v": -5414.77
+   },
+   {
+    "d": "2026-10-21",
+    "v": -513.75
    }
   ],
   "omoRateDaily": [
@@ -47112,10 +47120,10 @@
   {
    "id": "R-10",
    "label": "LNH qua đêm TB 20 phiên vs OMO",
-   "value": -1.61,
+   "value": -1.57,
    "unit": "điểm %",
-   "asOf": "2026-10-20",
-   "rule": "OMO bơm ròng 20 phiên -101.512 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
+   "asOf": "2026-10-21",
+   "rule": "OMO bơm ròng 20 phiên -98.910 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
    "threshold": "> 0 kéo dài (giả định)",
    "state": "ok",
    "impact": "OMO không giúp tuân thủ LDR; TT1 chỉ hạ khi có nới tỉ lệ"

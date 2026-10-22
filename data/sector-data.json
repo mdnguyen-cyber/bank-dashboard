@@ -63,8 +63,8 @@
  "idx": {
   "now": {
    "m": "2026-10",
-   "fx": 0.82,
-   "liq": 0.32,
+   "fx": 0.81,
+   "liq": 0.33,
    "q": "drain"
   },
   "history": [
@@ -472,8 +472,8 @@
    },
    {
     "m": "2026-10",
-    "fx": 0.82,
-    "liq": 0.32,
+    "fx": 0.81,
+    "liq": 0.33,
     "q": "drain"
    }
   ],
@@ -483,9 +483,9 @@
     "key": "dxy3m",
     "label": "DXY, % 3 tháng",
     "sign": "+",
-    "raw": 1.81,
-    "z": 0.63,
-    "contrib": 0.63
+    "raw": 1.55,
+    "z": 0.56,
+    "contrib": 0.56
    },
    {
     "id": "DOM-02",
@@ -510,9 +510,9 @@
     "key": "spread",
     "label": "LNH qua đêm (TB 3 tháng) − EFFR, điểm %",
     "sign": "−",
-    "raw": 0.03,
-    "z": 0.2,
-    "contrib": -0.2
+    "raw": -0.07,
+    "z": 0.16,
+    "contrib": -0.16
    },
    {
     "id": "DOM-06",
@@ -539,9 +539,9 @@
     "key": "on3",
     "label": "LNH qua đêm TB 3 tháng, %",
     "sign": "−",
-    "raw": 3.91,
-    "z": -0.04,
-    "contrib": 0.04
+    "raw": 3.81,
+    "z": -0.1,
+    "contrib": 0.1
    },
    {
     "id": "DOM-11/10",
@@ -1491,8 +1491,8 @@
     "v": 101.191
    },
    {
-    "d": "2026-10-21",
-    "v": 101.595
+    "d": "2026-10-22",
+    "v": 101.333
    }
   ],
   "effr": [
@@ -2703,8 +2703,8 @@
     "v": 6.7046
    },
    {
-    "d": "2026-10-21",
-    "v": 6.6792
+    "d": "2026-10-22",
+    "v": 6.6746
    }
   ],
   "brent": [
@@ -3647,8 +3647,8 @@
     "v": 25780
    },
    {
-    "d": "2026-10-21",
-    "v": 25690
+    "d": "2026-10-22",
+    "v": 25650
    }
   ],
   "free": [
@@ -4211,8 +4211,8 @@
     "v": 25627
    },
    {
-    "d": "2026-10-21",
-    "v": 25634
+    "d": "2026-10-22",
+    "v": 25632
    }
   ],
   "freeD": [
@@ -8701,8 +8701,8 @@
     "v": 26908.35
    },
    {
-    "d": "2026-10-21",
-    "v": 26915.7
+    "d": "2026-10-22",
+    "v": 26913.6
    }
   ],
   "sbvSell": [
@@ -8983,8 +8983,8 @@
     "v": 26858
    },
    {
-    "d": "2026-10-21",
-    "v": 26865
+    "d": "2026-10-22",
+    "v": 26863
    }
   ],
   "on": [
@@ -9361,8 +9361,8 @@
     "v": 6.95
    },
    {
-    "d": "2026-10-20",
-    "v": 3.6
+    "d": "2026-10-21",
+    "v": 3.3
    }
   ],
   "omo": [
@@ -9897,8 +9897,8 @@
     "v": 10038
    },
    {
-    "d": "2026-10-20",
-    "v": -5414.77
+    "d": "2026-10-21",
+    "v": -513.75
    }
   ],
   "dep12State": [
@@ -10275,7 +10275,7 @@
     "v": 5.9
    },
    {
-    "d": "2026-10-21",
+    "d": "2026-10-22",
     "v": 5.4
    }
   ],
@@ -10557,7 +10557,7 @@
     "v": 5.9125
    },
    {
-    "d": "2026-10-21",
+    "d": "2026-10-22",
     "v": 5.8125
    }
   ],
@@ -10839,8 +10839,8 @@
     "v": 5.9889
    },
    {
-    "d": "2026-10-21",
-    "v": 5.6815
+    "d": "2026-10-22",
+    "v": 5.6519
    }
   ],
   "m2": [
@@ -19907,6 +19907,10 @@
    {
     "d": "2026-10-20",
     "v": -5414.77
+   },
+   {
+    "d": "2026-10-21",
+    "v": -513.75
    }
   ],
   "onDaily": [
@@ -25656,7 +25660,11 @@
    },
    {
     "d": "2026-10-20",
-    "v": 3.6
+    "v": 3.71
+   },
+   {
+    "d": "2026-10-21",
+    "v": 3.3
    }
   ],
   "omoDaily": [
@@ -42677,20 +42685,20 @@
     "pppop": 4.92
    },
    {
-    "d": "2026-10-21",
-    "pb": 1.41,
-    "pe": 8.42,
-    "mcap": 2630.0,
-    "pppop": 4.8
+    "d": "2026-10-22",
+    "pb": 1.42,
+    "pe": 8.43,
+    "mcap": 2645.0,
+    "pppop": 4.83
    }
   ],
   "from": "2021-01-29",
   "now": {
-   "d": "2026-10-21",
-   "pb": 1.41,
-   "pe": 8.42,
-   "mcap": 2630.0,
-   "pppop": 4.8
+   "d": "2026-10-22",
+   "pb": 1.42,
+   "pe": 8.43,
+   "mcap": 2645.0,
+   "pppop": 4.83
   },
   "pb": {
    "mean": 1.79,
@@ -42704,7 +42712,7 @@
    "mean": 5.58,
    "sd": 0.95
   },
-  "profitTTM": 312.4
+  "profitTTM": 313.7
  },
  "consensus": {
   "from": "2026-07-14",
@@ -44405,6 +44413,80 @@
   "note": "Mỗi CTCK lấy báo cáo mới nhất trong 92 ngày. Upside tính trên giá đóng cửa 19/10/2026. P/E fwd = vốn hóa / LNST 2026F trung vị."
  },
  "news": [
+  {
+   "d": "2026-10-18",
+   "t": "NHNN yêu cầu các nhà băng giảm lãi suất huy động ít nhất 0,5%, tuyệt đối không đua nhau tăng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-it-nhat-0-5-tuyet-doi-khong-dua-nhau-tang-1471113.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Ngân hàng sẵn sàng giảm lợi nhuận để ưu tiên vốn lưu động giá rẻ cho doanh nghiệp",
+   "src": "vneconomy",
+   "url": "https://vneconomy.vn/ngan-hang-san-sang-giam-loi-nhuan-de-uu-tien-von-luu-dong-gia-re-cho-doanh-nghiep.htm",
+   "sym": [
+    "BID",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngân hàng Nhà nước yêu cầu các nhà băng giảm lãi suất huy động tối thiểu 0,5% cho kỳ hạn từ 6 tháng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/ngan-hang-nha-nuoc-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-toi-thieu-0-5-cho-ky-han-tu-6-thang-1471551.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-19",
+   "t": "LPBank điều chỉnh hạ lãi suất huy động và cho vay tại nhiều kỳ hạn sau chỉ đạo Chính phủ",
+   "src": "Thanh Niên Việt",
+   "url": "https://thanhnienviet.vn/lpbank-dieu-chinh-ha-lai-suat-huy-dong-va-cho-vay-tai-nhieu-ky-han-sau-chi-dao-chinh-phu-209261019104855103.htm",
+   "sym": [
+    "LPB"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Giảm lãi suất huy động và cho vay, kiểm soát chặt rủi ro tín dụng",
+   "src": "Báo Hải Phòng",
+   "url": "https://baohaiphong.vn/giam-lai-suat-huy-dong-va-cho-vay-kiem-soat-chat-rui-ro-tin-dung-556255.html",
+   "sym": [
+    "BID",
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Lãnh đạo ngân hàng lớn nói gì sau cuộc họp khẩn với Thống đốc?",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/lanh-dao-ngan-hang-lon-noi-gi-sau-cuoc-hop-khan-voi-thong-doc-d152255.html",
+   "sym": [
+    "ACB",
+    "BID",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngân hàng Nhà nước chỉ đạo về việc giảm mặt bằng lãi suất",
+   "src": "Báo Hải Phòng",
+   "url": "https://baohaiphong.vn/ngan-hang-nha-nuoc-chi-dao-ve-viec-giam-mat-bang-lai-suat-556402.html",
+   "sym": [
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Rà soát kỹ lưỡng các nội dung trình Kỳ họp HĐND tỉnh sắp tới",
+   "src": "Báo Hà Tĩnh",
+   "url": "https://baohatinh.vn/ra-soat-ky-luong-cac-noi-dung-trinh-ky-hop-hdnd-tinh-sap-toi-post319104.html",
+   "sym": [
+    "MBB",
+    "TCB",
+    "VPB"
+   ]
+  },
   {
    "d": "2026-10-14",
    "t": "Chủ tịch Eximbank Nguyễn Lê Quốc Anh: Thay đổi room ngoại sẽ tác động tích cực tới định giá cổ phiếu",
@@ -56424,7 +56506,7 @@
    "id": "R-01",
    "layer": "Quốc tế",
    "rule": "DXY tăng > 1σ trong tháng",
-   "now": "DXY 101,6 · +0,4% 1 tháng (z +0,3)",
+   "now": "DXY 101,3 · +0,1% 1 tháng (z +0,1)",
    "state": "watch",
    "impact": "Áp lực USD/VND, NHNN ưu tiên ổn định tỷ giá"
   },
@@ -56456,7 +56538,7 @@
    "id": "R-08",
    "layer": "Quốc tế",
    "rule": "USD/CNY tăng > 1σ",
-   "now": "USD/CNY 6,679 · -1,1% 3 tháng (CNY mạnh lên)",
+   "now": "USD/CNY 6,675 · -1,1% 3 tháng (CNY mạnh lên)",
    "state": "ok",
    "impact": "CNY mạnh lên giảm sức ép cạnh tranh lên VND"
   },
@@ -56472,7 +56554,7 @@
    "id": "R-10",
    "layer": "Nội địa → NH",
    "rule": "OMO bơm ròng kéo dài mà LNH > OMO",
-   "now": "LNH qua đêm 3,60% vs OMO 4,5%; OMO lưu hành 110,9 nghìn tỷ (14/10), giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9",
+   "now": "LNH qua đêm 3,30% vs OMO 4,5%; OMO lưu hành 110,9 nghìn tỷ (14/10), giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9",
    "state": "ok",
    "impact": "TT2 thiếu vốn nhưng OMO không giúp tuân thủ LDR"
   },
@@ -56496,7 +56578,7 @@
    "id": "R-13",
    "layer": "Ngân hàng",
    "rule": "LS huy động 12T tăng",
-   "now": "NHTM Nhà nước 5,40% · -0,50 điểm % từ 01/10 đến 21/10 · +0,20 điểm % từ đầu năm; COF ngành 4,21% (cùng kỳ 3,59%)",
+   "now": "NHTM Nhà nước 5,40% · -0,50 điểm % từ 01/10 đến 22/10 · +0,20 điểm % từ đầu năm; COF ngành 4,21% (cùng kỳ 3,59%)",
    "state": "ok",
    "impact": "COF giảm dần theo kỳ đáo hạn tiền gửi; lợi ích bị bù trừ bởi yêu cầu giảm LS cho vay 1,5–2 điểm %"
   },
@@ -56520,7 +56602,7 @@
    "id": "R-16",
    "layer": "Ngân hàng",
    "rule": "Lãi suất thị trường giảm",
-   "now": "P/B ngành 1,41x vs TB 1,79x từ 01/2021; LS huy động 12T NHTM Nhà nước -0,50 điểm % từ 01/10 đến 21/10",
+   "now": "P/B ngành 1,42x vs TB 1,79x từ 01/2021; LS huy động 12T NHTM Nhà nước -0,50 điểm % từ 01/10 đến 22/10",
    "state": "watch",
    "impact": "Chiết khấu giảm khi LS hạ → P/B mở rộng; điều kiện bắt đầu xuất hiện, nhưng LS cho vay phải giảm nhiều hơn LS huy động nên NIM chịu sức ép"
   }

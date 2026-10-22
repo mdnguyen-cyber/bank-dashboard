@@ -9,17 +9,17 @@
   "updated": "2026-10-22",
   "price": 30000,
   "priceDate": "2026-10-20",
-  "mcap": 237280,
+  "mcap": 234950,
   "pb": 1.2,
   "pe": 5.8,
   "bvps": 25071,
   "eps": 5172,
-  "sharesOut": 7909.3,
+  "sharesOut": 7831.7,
   "latestQuarter": "Q2/2026",
   "view": null,
   "irUrl": "https://investor.vietinbank.vn/",
   "strategic": "MUFG",
-  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-21 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-22 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 22.2,
   "roa": 1.45,
   "nim": 2.75,
@@ -24712,16 +24712,16 @@
    "npN": 8
   },
   "fwd": {
-   "bv2026F": 218688.6,
+   "bv2026F": 218723.5,
    "npat2026F": 42777.0,
-   "pbFwd": 1.09,
-   "peFwd": 5.55,
-   "bvps2026F": 27649,
+   "pbFwd": 1.07,
+   "peFwd": 5.49,
+   "bvps2026F": 27928,
    "npatH1": 20743.5,
    "impliedH2": 22033.5,
    "npat2025": 34871.3,
    "h2_2025": 19619.9,
-   "divPaid": 3559.2
+   "divPaid": 3524.3
   },
   "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
@@ -38817,7 +38817,11 @@
    },
    {
     "d": "2026-10-20",
-    "v": 3.6
+    "v": 3.71
+   },
+   {
+    "d": "2026-10-21",
+    "v": 3.3
    }
   ],
   "omoNetDaily": [
@@ -43176,6 +43180,10 @@
    {
     "d": "2026-10-20",
     "v": -5414.77
+   },
+   {
+    "d": "2026-10-21",
+    "v": -513.75
    }
   ],
   "omoRateDaily": [
@@ -47923,10 +47931,10 @@
   {
    "id": "R-10",
    "label": "LNH qua đêm TB 20 phiên vs OMO",
-   "value": -1.61,
+   "value": -1.57,
    "unit": "điểm %",
-   "asOf": "2026-10-20",
-   "rule": "OMO bơm ròng 20 phiên -101.512 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
+   "asOf": "2026-10-21",
+   "rule": "OMO bơm ròng 20 phiên -98.910 tỷ; LNH > OMO kéo dài → TT2 thiếu vốn",
    "threshold": "> 0 kéo dài (giả định)",
    "state": "ok",
    "impact": "OMO không giúp tuân thủ LDR; TT1 chỉ hạ khi có nới tỉ lệ"

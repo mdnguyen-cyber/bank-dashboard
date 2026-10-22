@@ -1,5 +1,5 @@
 {
- "asOf": "2026-10-15",
+ "asOf": "2026-10-22",
  "current": [
   {
    "k": "Tái cấp vốn",
@@ -143,6 +143,48 @@
   }
  ],
  "events": [
+  {
+   "d": "2026-10-21",
+   "dType": "công bố",
+   "tool": "Lãi suất",
+   "t": "Công văn 9736/NHNN-CSTT: giảm tối thiểu 0,5 điểm % lãi suất tiền gửi bình quân giao dịch mới kỳ hạn từ 6 tháng",
+   "detail": "Mức giảm tính trên lãi suất bình quân của giao dịch phát sinh mới (không chỉ biểu niêm yết), so với kỳ báo cáo 11–20/10/2026 của chính ngân hàng; NHNN theo dõi qua báo cáo thống kê. Cho vay giảm 1,5–2%/năm cho sản xuất kinh doanh và lĩnh vực ưu tiên, áp dụng cả khách hàng hiện hữu. Không thực hiện nghiêm có thể bị giảm hoặc giao thấp chỉ tiêu tăng trưởng tín dụng.",
+   "dir": "nới",
+   "impact": "Biến yêu cầu ngày 18/10 thành chỉ tiêu định lượng có giám sát: lãi suất tiền gửi 12 tháng Big 4 về 5,4% (20–21/10), phần lớn ngân hàng giảm 0,5–0,7 điểm %. Cho vay giảm nhanh hơn chi phí vốn bình quân → NIM bị ép 1–2 quý; ngân hàng CASA cao chịu ít hơn.",
+   "doc": "CV 9736/NHNN-CSTT",
+   "src": "Báo Nhà Đầu Tư",
+   "url": "https://nhadautu.vn/4-ngay-2-cong-van-nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-d108419.html",
+   "verify": false,
+   "note": ""
+  },
+  {
+   "d": "2026-10-19",
+   "dType": "công bố",
+   "tool": "Lãi suất",
+   "t": "Thống đốc họp với các ngân hàng thương mại về giảm lãi suất",
+   "detail": "Các ngân hàng cam kết giảm lãi suất cho vay 1,5–2 điểm % cho sản xuất kinh doanh và lĩnh vực ưu tiên; BIDV ước giảm thu nhập khoảng 500 tỷ đồng từ gói tín dụng ưu đãi.",
+   "dir": "nới",
+   "impact": "Big 4 đi đầu giảm lãi suất, chia sẻ lợi nhuận.",
+   "doc": "",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/lanh-dao-ngan-hang-lon-noi-gi-sau-cuoc-hop-khan-voi-thong-doc-d152255.html",
+   "verify": false,
+   "note": ""
+  },
+  {
+   "d": "2026-10-18",
+   "dType": "công bố",
+   "tool": "Lãi suất",
+   "t": "Công văn 9608/NHNN-CSTT: giảm lãi suất huy động tối thiểu 0,5%/năm, cho vay 1,5–2%/năm, không chạy đua lãi suất",
+   "detail": "Yêu cầu giảm lãi suất tiền gửi niêm yết tối thiểu 0,5%/năm cho kỳ hạn từ 6 tháng, giảm lãi suất cho vay 1,5–2%/năm cho sản xuất kinh doanh và lĩnh vực ưu tiên; không đua tăng lãi suất huy động; kiểm soát tín dụng nhóm khách hàng dư nợ lớn.",
+   "dir": "nới",
+   "impact": "Đổi hướng từ để lãi suất huy động neo cao sang giảm bằng chỉ đạo hành chính khi lạm phát vẫn trên mục tiêu.",
+   "doc": "CV 9608/NHNN-CSTT",
+   "src": "Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-it-nhat-0-5-tuyet-doi-khong-dua-nhau-tang-1471113.html",
+   "verify": false,
+   "note": ""
+  },
   {
    "d": "2026-10-03",
    "dType": "công bố",
