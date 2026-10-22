@@ -355,12 +355,27 @@ window.FSPDF = (function () {
     groups().forEach(g => { const on = g.querySelector('button.on'); if (on) parts.push(on.textContent.trim()); });
     return parts.filter(Boolean).join(' - ');
   }
+  const VIEW = {
+    chFx: { show: [/^Tự do bán ra/, /^DXY/], range: 'ytd', y: 'fit' },   // tỷ giá: chỉ tự do bán ra và DXY, từ đầu năm
+  };
   // Chuẩn bị bản in (dùng khi dựng PDF): mở mục thu gọn, đổi biểu đồ canvas thành ảnh để bản in nét, bật lớp in
   async function prep() {
     document.body.classList.add('print-all');
     const R = pane() || document.body;
     R.querySelectorAll('.coll.shut').forEach(h => h.click());
     await new Promise(r => setTimeout(r, 600));
+    // Cách hiển thị riêng của từng biểu đồ trong bản PDF: chỉ giữ một số đường, khung thời gian, trục Y co theo dữ liệu
+    Object.entries(VIEW).forEach(([id, v]) => {
+      const c = R.querySelector('#' + id), ch = c && window.Chart && Chart.getChart(c); if (!ch) return;
+      if (v.show) ch.data.datasets.forEach((d, i) => ch.setDatasetVisibility(i, v.show.some(re => re.test(d.label || ''))));
+      ch.update('none');
+      const bar = c.parentElement.previousElementSibling;
+      if (bar && bar.classList.contains('rng')) {
+        const rb = v.range && bar.querySelector(`[data-k="${v.range}"]`); if (rb) rb.click();
+        const yb = v.y && bar.querySelector(`[data-y="${v.y}"]`); if (yb) yb.click();
+      }
+    });
+    await new Promise(r => setTimeout(r, 300));
     R.querySelectorAll('canvas').forEach(c => {
       if (!c.offsetParent || !c.width) return;
       const ch = window.Chart && Chart.getChart(c); if (ch) { ch.resize(); ch.update('none'); }
