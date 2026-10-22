@@ -1327,8 +1327,8 @@ function subDom() {
   <h3 class="ovh dsec" id="d-fx">Tỷ giá, đối ngoại và tài khóa</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: dom.nhtmSell, free: dom.free, freeD: dom.freeD, nhtmD: dom.nhtmD }), src: FSFX.SRC })}
-    ${card({ id: 'chFxGap', title: 'Chênh lệch tỷ giá tự do − NHTM bán ra', sub: 'VND · cuối tháng · dương = USD ngoài hệ thống đắt hơn ngân hàng (deck DOM-03: kỳ vọng mất giá)',
-      insight: `Chênh dương kéo dài 2024–Q1/2026 (cầu USD tiền mặt, vàng) và đổi dấu từ 07/2026 — áp lực ngoài hệ thống đã qua; áp lực còn lại nằm ở lãi suất (UST, Fed).`, src: 'WiData 82226, 82223' })}
+    ${card({ id: 'chFxGap', title: 'Chênh lệch tỷ giá tự do − NHTM bán ra', sub: 'VND · theo ngày từ 07/2025, theo tuần trước đó · dương = USD ngoài hệ thống đắt hơn ngân hàng (kỳ vọng mất giá)',
+      insight: fxGapIns(), src: 'WiData 82226, 82223' })}
     ${card({ id: 'chExt', title: 'Đối ngoại: cán cân thương mại, FDI và dự trữ', sub: 'Tỷ USD · cột = cán cân XNK tháng, đường = FDI giải ngân lũy kế 12 tháng; trục phải = dự trữ ngoại hối',
       insight: `Cán cân thương mại thâm hụt liên tục từ 12/2025 (đáy −5,3 tỷ USD tháng 5) rồi dương lại 09/2026; FDI giải ngân 12 tháng vẫn tăng. Dự trữ ${nf(res.v / 1000, 1)} tỷ USD (${mvn(res.d)}) — thấp hơn mức 109 tỷ đầu 2022, dư địa bán USD can thiệp có hạn.`,
       src: 'WiData 255693, 76951, 76885' })}
@@ -1372,8 +1372,8 @@ function drFx() { const cfg = FSFX.config({ nhtmSell: dom.nhtmSell, free: dom.fr
 function chDom() {
   const labs = monthsFrom('2021-01', TODAY.slice(0, 7));
   drFx();
-  const gap = labs.map(k => { const f = byM(dom.free)[k], n = byM(dom.nhtmSell)[k]; return f != null && n != null ? f - n : null; });
-  mk('chFxGap', { type: 'bar', data: { labels: labs.map(mvn), datasets: [{ label: 'Tự do − NHTM', data: gap, backgroundColor: gap.map(v => v > 0 ? 'rgba(192,57,43,.7)' : 'rgba(31,138,141,.7)'), dp: 0, unit: 'đ' }] },
+  const G = fxGapSer();
+  mk('chFxGap', { type: 'bar', data: { labels: G.map(p => dvn(p.d)), datasets: [{ label: 'Tự do − NHTM', data: G.map(p => p.v), backgroundColor: G.map(p => p.v > 0 ? 'rgba(192,57,43,.7)' : 'rgba(31,138,141,.7)'), dp: 0, unit: 'đ', barPercentage: 1, categoryPercentage: 1 }] },
     options: { plugins: { legend: { display: false } }, scales: { y: numAxis('VND') } } });
   const dl = dom.onDaily.map(p => p.d), netM = Object.fromEntries(dom.netDaily.map(p => [p.d, p.v])), omoM = Object.fromEntries((dom.omoDaily || []).map(p => [p.d, p.v]));
   let omoLast = null; const omoD = dl.map(d => (omoLast = omoM[d] ?? omoLast));   // lãi suất OMO giữ mức phiên gần nhất có giao dịch
@@ -1493,6 +1493,18 @@ function bondNums() {
   const cut = dp.banks.filter(b => b.m1 != null && b.v < b.m1), up = dp.banks.filter(b => b.m1 != null && b.v > b.m1);
   return { dp, n, T, fi, pl, plM: pl ? fi.months[pl[0]] : null, plBig: pl ? bigAt(fi.months[pl[0]]) : null, cv, ci, c3, cy, c0, a, ai, cut, up,
     slope: k => cv['10Y'][k] != null && cv['1Y'][k] != null ? cv['10Y'][k] - cv['1Y'][k] : null };
+}
+function fxGapSer() {   // tự do − NHTM bán ra theo ngày tự do có số; NHTM lấy giá gần nhất trong 8 ngày trước đó
+  const F = dom.freeD || [], N = (dom.nhtmD || []).slice(); let j = -1;
+  return F.map(p => { while (j + 1 < N.length && N[j + 1].d <= p.d) j++; return j >= 0 && (new Date(p.d) - new Date(N[j].d)) / 864e5 <= 8 ? { d: p.d, v: p.v - N[j].v } : null; }).filter(Boolean);
+}
+function fxGapIns() {
+  const G = fxGapSer(); if (!G.length) return '';
+  const l = G[G.length - 1], y0 = l.d.slice(0, 4), ytd = G.filter(p => p.d.startsWith(y0)), pk = ytd.reduce((m, p) => p.v > m.v ? p : m, ytd[0]);
+  const r90 = G.filter(p => p.d >= new Date(new Date(l.d) - 90 * 864e5).toISOString().slice(0, 10)), neg = r90.filter(p => p.v < 0).length;
+  const avg = r90.reduce((a, p) => a + p.v, 0) / r90.length;
+  return `${dvn(l.d)}: tự do cao hơn NHTM <b>${sg(l.v, 0, 'đ')}</b>. Đỉnh năm ${y0} ${sg(pk.v, 0, 'đ')} (${dvn(pk.d)}); 90 ngày gần nhất chênh trung bình ${sg(avg, 0, 'đ')}, ${neg}/${r90.length} phiên âm${l.v > 0 && neg > r90.length / 2 ? ' — chênh vừa dương trở lại sau giai đoạn âm, cần theo dõi thêm vài phiên' : ''}.`
+    + how('Chênh dương lớn = cầu USD ngoài hệ thống (tiền mặt, vàng, nhập lậu) vượt cung ngân hàng, dấu hiệu kỳ vọng mất giá. Chênh co về 0 hoặc âm = áp lực ngoài hệ thống đã qua; áp lực còn lại (nếu có) nằm ở chênh lãi suất VND − USD.');
 }
 function depIns() {
   const st = dom.dep12State, l = lastv(st), p0 = st.find(p => p.d >= '2025-11'), pk = st.filter(p => p.d >= p0.d).reduce((m, p) => p.v > m.v ? p : m);
