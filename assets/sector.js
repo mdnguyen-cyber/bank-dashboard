@@ -1324,13 +1324,19 @@ function subDom() {
     ${kpi('CPI', pc(lastv(dom.cpi).v, 2), `lõi ${pc(lastv(dom.cpiCore).v, 2)} · BQ 9T ${pc(lastv(dom.cpiAvg).v, 2)}`, lastv(dom.cpiAvg).v > 4.5 ? 'neg' : '')}
     ${kpi('Dự trữ ngoại hối', nf(res.v / 1000, 1) + ' tỷ USD', mvn(res.d))}
   </div>
-  <h3 class="ovh dsec" id="d-fx">Tỷ giá</h3>
+  <h3 class="ovh dsec" id="d-fx">Tỷ giá, đối ngoại và tài khóa</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: dom.nhtmSell, free: dom.free }), src: FSFX.SRC })}
     ${card({ id: 'chFxGap', title: 'Chênh lệch tỷ giá tự do − NHTM bán ra', sub: 'VND · cuối tháng · dương = USD ngoài hệ thống đắt hơn ngân hàng (deck DOM-03: kỳ vọng mất giá)',
       insight: `Chênh dương kéo dài 2024–Q1/2026 (cầu USD tiền mặt, vàng) và đổi dấu từ 07/2026 — áp lực ngoài hệ thống đã qua; áp lực còn lại nằm ở lãi suất (UST, Fed).`, src: 'WiData 82226, 82223' })}
+    ${card({ id: 'chExt', title: 'Đối ngoại: cán cân thương mại, FDI và dự trữ', sub: 'Tỷ USD · cột = cán cân XNK tháng, đường = FDI giải ngân lũy kế 12 tháng; trục phải = dự trữ ngoại hối',
+      insight: `Cán cân thương mại thâm hụt liên tục từ 12/2025 (đáy −5,3 tỷ USD tháng 5) rồi dương lại 09/2026; FDI giải ngân 12 tháng vẫn tăng. Dự trữ ${nf(res.v / 1000, 1)} tỷ USD (${mvn(res.d)}) — thấp hơn mức 109 tỷ đầu 2022, dư địa bán USD can thiệp có hạn.`,
+      src: 'WiData 255693, 76951, 76885' })}
+    ${card({ id: 'chFiscal', title: 'Tài khóa: chi − thu ngân sách theo quý', sub: 'Nghìn tỷ đồng · dương = Kho bạc bơm tiền ra hệ thống (R-12) · quý 4 luôn chi lớn theo mùa vụ',
+    insight: `${mvn(lastF.d).replace(/^0?(\d+)\//, (m, a) => 'Q' + Math.ceil(a / 3) + '/')}: chi − thu <b>${nf(lastF.bal / 1000, 1)} nghìn tỷ</b> (cùng kỳ ${nf(lyF ? lyF.bal / 1000 : null, 1)}) — thu vượt chi, Kho bạc đang hút tiền. Chưa có số tiền gửi KBNN theo tháng (deck slide 58); thường quý IV đảo chiều mạnh khi giải ngân đầu tư công dồn cuối năm.`,
+    src: 'WiData 82420, 75598' })}
   </div>
-  <h3 class="ovh dsec" id="d-liq">Thanh khoản và lãi suất (TT2, TT1)</h3>
+  <h3 class="ovh dsec" id="d-liq">Thanh khoản, lãi suất và tín dụng</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động <b>${nf(Math.min(...on3(dom.onDaily)), 2)}–${nf(Math.max(...on3(dom.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...dom.onDaily.map(p => p.v)), 2)}% ngày ${dvn(dom.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh rơi vào cuối tháng. OMO lưu hành giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9 xuống 110,9 nghìn tỷ (14/10) — NHNN rút bớt tiền khi áp lực tỷ giá tăng. R-10: OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR.`,
@@ -1338,9 +1344,6 @@ function subDom() {
     ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · cuối tháng · NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác', ctl: true,
       insight: depIns(),
       src: 'WiData 202886, 202874, 202880' })}
-  </div>
-  <h3 class="ovh dsec" id="d-cr">Tín dụng, tiền gửi và cung tiền</h3>
-  <div class="grid g2 gap">
     ${card({ id: 'chMoney', title: 'Tín dụng, tiền gửi và M2', sub: '% YoY · tháng · chênh tín dụng − tiền gửi dương = ngân hàng phải tìm thêm nguồn vốn (R-09)', ctl: true,
       insight: `Tín dụng <b>${pc(cr.v, 1)}</b> YoY (${mvn(cr.d)}) so với tiền gửi <b>${pc(dp.v, 1)}</b> (${mvn(dp.d)}) — chênh ${nf(cr.v - dp.v, 1)} điểm %, duy trì 5–6 điểm % từ cuối 2024 (đỉnh 8,7 điểm % tháng 9/2022). M2 chậm lại còn ${pc(m2.v, 1)} (đỉnh 18,8% giữa 2025): tiền mới tạo ra ít hơn trong khi nhu cầu vốn vẫn cao. Lưu ý: số tiền gửi NHNN chưa gồm GTCG, liên ngân hàng (deck slide 58).`,
       src: 'WiData 75847, 265963, 265954' })}
@@ -1353,18 +1356,9 @@ function subDom() {
     ${card({ id: 'chCpi', title: 'Lạm phát', sub: '% YoY · tháng · CPI, lạm phát cơ bản, CPI bình quân từ đầu năm · đường đỏ = mục tiêu ~4,5% (NQ 244/2025/QH15)',
       insight: `CPI ${pc(lastv(dom.cpi).v, 2)} và lạm phát cơ bản ${pc(lastv(dom.cpiCore).v, 2)} cùng ở vùng cao nhất kể từ đầu 2023 — giá tăng đã lan vào lõi, không chỉ do xăng dầu. CPI bình quân 9T <b>${pc(lastv(dom.cpiAvg).v, 2)}</b> vượt nhẹ mục tiêu: NHNN gần như không có dư địa hạ lãi suất điều hành trong quý IV.`,
       src: 'WiData 75701, 202889, 75804' })}
-    ${card({ id: 'chOil', title: 'Giá dầu thế giới và giá xăng dầu bán lẻ trong nước', h: 'tall', sub: 'nghìn đồng/lít (trục trái): RON 95-III, E5 RON 92, dầu DO 0,05S — Petrolimex vùng 1 · USD/thùng (trục phải): Brent, WTI · theo tháng đến 12/2025, theo kỳ điều chỉnh từ 2026', insight: oilIns(), src: BD ? BD.src.oil : '' })}
     ${card({ id: 'chOilChg', title: 'Truyền dẫn giá dầu vào giá xăng dầu trong nước', sub: '% thay đổi so với kỳ cuối năm 2025 · dầu thô tính bằng USD, giá bán lẻ tính bằng VND', insight: oilChgIns(), src: BD ? BD.src.oil : '' })}
   </div>
-  <h3 class="ovh dsec" id="d-ext">Đối ngoại và tài khóa</h3>
-  <div class="grid g2 gap">
-    ${card({ id: 'chExt', title: 'Đối ngoại: cán cân thương mại, FDI và dự trữ', sub: 'Tỷ USD · cột = cán cân XNK tháng, đường = FDI giải ngân lũy kế 12 tháng; trục phải = dự trữ ngoại hối',
-      insight: `Cán cân thương mại thâm hụt liên tục từ 12/2025 (đáy −5,3 tỷ USD tháng 5) rồi dương lại 09/2026; FDI giải ngân 12 tháng vẫn tăng. Dự trữ ${nf(res.v / 1000, 1)} tỷ USD (${mvn(res.d)}) — thấp hơn mức 109 tỷ đầu 2022, dư địa bán USD can thiệp có hạn.`,
-      src: 'WiData 255693, 76951, 76885' })}
-  </div>
-  ${card({ id: 'chFiscal', title: 'Tài khóa: chi − thu ngân sách theo quý', sub: 'Nghìn tỷ đồng · dương = Kho bạc bơm tiền ra hệ thống (R-12) · quý 4 luôn chi lớn theo mùa vụ',
-    insight: `${mvn(lastF.d).replace(/^0?(\d+)\//, (m, a) => 'Q' + Math.ceil(a / 3) + '/')}: chi − thu <b>${nf(lastF.bal / 1000, 1)} nghìn tỷ</b> (cùng kỳ ${nf(lyF ? lyF.bal / 1000 : null, 1)}) — thu vượt chi, Kho bạc đang hút tiền. Chưa có số tiền gửi KBNN theo tháng (deck slide 58); thường quý IV đảo chiều mạnh khi giải ngân đầu tư công dồn cuối năm.`,
-    src: 'WiData 82420, 75598' })}
+  ${card({ id: 'chOil', title: 'Giá dầu thế giới và giá xăng dầu bán lẻ trong nước', h: 'tall', sub: 'nghìn đồng/lít (trục trái): RON 95-III, E5 RON 92, dầu DO 0,05S — Petrolimex vùng 1 · USD/thùng (trục phải): Brent, WTI · theo tháng đến 12/2025, theo kỳ điều chỉnh từ 2026', insight: oilIns(), src: BD ? BD.src.oil : '' })}
   ${subBond()}`;
 }
 function fxIns() {
@@ -1527,7 +1521,7 @@ function subBond() {
   const sl = N.slope(ci), sl3 = N.slope(c3);
   const aw = a.inv[ai] ? a.win[ai] / a.inv[ai] * 100 : null;
   const fi12 = fi.mat.bank.slice(0, 12).reduce((s, v) => s + (v || 0), 0);
-  return `<h3 class="ovh dsec" id="d-bond">Thị trường trái phiếu: tổng quan</h3>
+  return `<h3 class="ovh dsec" id="d-bond">Thị trường trái phiếu: FI bond, TPDN và G-bond</h3>
   <p class="sec-sub">Ngân hàng phát hành trái phiếu (FI bond) để có vốn trung dài hạn; chênh coupon FI − huy động 12T đo chi phí vốn dài hạn. TPDN toàn thị trường (chậm trả, đáo hạn) là rủi ro tín dụng gián tiếp; G-bond là lãi suất phi rủi ro, do ngân hàng và nhóm bảo hiểm (chủ yếu BHXH) nắm gần hết.</p>
   <p class="muted" style="margin:-4px 0 12px">Lãi suất huy động đến ${dvn(BD.meta.depAsof)} · lợi suất TPCP đến ${dvn(BD.meta.curveAsof)} · TPDN, đấu thầu theo tháng (tháng ${mvn(cb.months[cbN])} mới tính đến ${dvn(fi.cf.asof)}).</p>
   <div class="kpis">
@@ -1537,21 +1531,14 @@ function subBond() {
     ${kpi('TPCP 10 năm', pc(cv['10Y'][ci], 2), `1 năm ${pc(cv['1Y'][ci], 2)} · dốc 10Y−1Y ${sg(sl * 100, 0, ' bps')} (${sg((sl - sl3) * 100, 0, ' bps')} 3 tháng)`)}
     ${kpi('Đấu thầu TPCP tháng ' + mvn(a.months[ai]).slice(0, 2), pc(aw, 0) + ' trúng', `gọi ${nk(a.inv[ai])} · trúng ${nk(a.win[ai])} · 10Y ${pc(a.y['10 năm'][ai], 2)}`)}
   </div>
-  <h3 class="ovh dsec" id="d-fi">FI bond: trái phiếu ngân hàng</h3>
   <div class="grid g2 gap">
     ${card({ id: 'bFiCpn', title: 'Chi phí vốn dài hạn: coupon trái phiếu ngân hàng vs huy động 12T', sub: '%/năm · coupon bình quân gia quyền theo giá trị phát hành từng tháng · đường đỏ = Big 4 12T · cột = chênh coupon 1–3 năm riêng lẻ − Big 4 (trục phải)', insight: bFiCpnIns(N), src: BD.src.fi + '; ' + BD.src.dep })}
     ${card({ id: 'bFiIss', title: 'Ngân hàng phát hành trái phiếu theo kỳ hạn', sub: 'tỷ đồng/tháng · giá trị phát hành thực tế · ≤1 năm, 1–3 năm, 3–5 năm, >5 năm (>5 năm thường là nợ thứ cấp bổ sung vốn cấp 2)', insight: bFiIssIns(N), src: BD.src.fi })}
     ${card({ id: 'bFiMat', title: 'Trái phiếu ngân hàng: dư nợ và lịch đáo hạn', sub: 'đường = dư nợ (nghìn tỷ, trục phải) · cột = gốc đã trả + mua lại trước hạn theo tháng; phần sau tháng hiện tại = gốc đáo hạn theo lịch (tỷ đồng)', insight: bFiMatIns(N), src: BD.src.fi })}
-  </div>
-  <h3 class="ovh dsec" id="d-cb">TPDN toàn thị trường</h3>
-  <div class="grid g2 gap">
     ${card({ id: 'bCbIss', title: 'Phát hành TPDN theo ngành', sub: 'tỷ đồng/tháng · VND · Tài chính (ngân hàng, chứng khoán, tài chính tiêu dùng), Bất động sản, còn lại', insight: bCbIssIns(N), src: BD.src.cb })}
     ${card({ id: 'bCbLate', title: 'TPDN chậm trả gốc và lãi', sub: 'cột = dư nợ chậm trả cuối tháng (nghìn tỷ) · đường = số mã mới chậm trả trong tháng (trục phải)', insight: bCbLateIns(N), src: BD.src.cb })}
     ${card({ id: 'bCbMat', title: 'Lịch đáo hạn TPDN 15 tháng tới theo ngành', sub: 'tỷ đồng/tháng · gốc đến hạn theo dư nợ hiện tại (chưa trừ mua lại trước hạn sau này)', insight: bCbMatIns(N), src: BD.src.cb })}
     ${card({ id: 'bCbSec', title: `Chậm trả theo ngành · ${mvn(BD.cb.lateBySecM)}`, sub: 'nghìn tỷ đồng · dư nợ chậm trả gốc + lãi, VND', insight: bCbSecIns(N), src: BD.src.cb })}
-  </div>
-  <h3 class="ovh dsec" id="d-gb">G-bond (trái phiếu chính phủ)</h3>
-  <div class="grid g2 gap">
     ${card({ id: 'bCurve', title: 'Đường cong lợi suất TPCP Việt Nam', sub: `%/năm theo kỳ hạn · ${dvn(cv.d[ci])} so với 3 tháng trước, đầu năm và 1 năm trước`, insight: bCurveIns(N), src: BD.src.curve })}
     ${card({ id: 'bCurveTs', title: 'Lợi suất TPCP 1, 5, 10 năm và độ dốc 10Y − 1Y', sub: '%/năm theo ngày · cột xám = độ dốc (trục phải, điểm %)', h: 'tall', src: BD.src.curve })}
     ${card({ id: 'bAuc', title: 'Đấu thầu TPCP: gọi thầu, đặt thầu, trúng thầu', sub: 'nghìn tỷ đồng/tháng · Kho bạc Nhà nước, gồm phát hành thêm · đường = tỷ lệ trúng/gọi thầu (trục phải)', insight: bAucIns(N), src: BD.src.auc })}
