@@ -1,321 +1,132 @@
 {
- "atl_mpt_xlsx": {
-  "url": "https://www.atlantafed.org/-/media/Project/Atlanta/FRBA/Documents/research-and-data/data/market-probability-tracker/mpt_histdata.xlsx",
+ "abo_portal_raw": {
+  "url": "https://asianbondsonline.adb.org/data-portal/",
   "status": 200,
-  "bytes": 7088964,
-  "sheets": {
-   "LICENSE": [
-    [
-     "None"
-    ]
-   ],
-   "DICTIONARY": [
-    [],
-    [
-     "None",
-     "The Market Probability Tracker uses Chicago Mercantile Exchange (CME) 3-month SOFR options to estimate the probability ditributions implied by their prices and specified reference window.   Below are a selection of statistics generated from those distributions, organized by date and reference window.",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None"
-    ],
-    [
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None"
-    ],
-    [
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None"
-    ],
-    [
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None",
-     "None"
-    ],
-    [],
-    [
-     "None",
-     "date",
-     "Observation date"
-    ],
-    [
-     "None",
-     "reference_start",
-     "Start date of the 3-month window referenced by CME 3-month SOFR contracts"
-    ],
-    [
-     "None",
-     "target_range",
-     "FOMC federal funds rate target range on the indicated observation date"
-    ],
-    [
-     "None",
-     "field",
-     "Statistics generated from the distributions estimated by the Market Probability Tracker"
-    ],
-    [
-     "None",
-     "Rate: 25th percentile",
-     "The rate, in basis points, associated with the 25th percentile of the estimated distribution for a given reference window"
-    ],
-    [
-     "None",
-     "Rate: mean",
-     "The rate, in basis points, associated with the mean of the estimated distribution for a given reference window"
-    ],
-    [
-     "None",
-     "Rate: mode",
-     "The rate, in basis points, associated with the mode of the estimated distribution for a given reference window"
-    ],
-    [
-     "None",
-     "Rate: mean",
-     "The rate, in basis points, associated with the mean of the estimated distribution for a given reference window"
-    ],
-    [
-     "None",
-     "Rate: 75th percentile",
-     "The average, in basis points, associated with the 75th percentile of the distribution for a given reference window"
-    ],
-    [
-     "None",
-     "Prob: cut",
-     "The probability, in percent, average SOFR over the reference window will be below the FOMC's target range"
-    ],
-    [
-     "None",
-     "Prob: hike",
-     "The probability, in percent, average SOFR over the reference window will be above the FOMC's target range"
-    ],
-    [
-     "None",
-     "Prob: various 25bps ranges",
-     "The probability, in percent, average SOFR over the reference window will fall between a given 25bps range"
-    ],
-    [
-     "None",
-     "value",
-     "The value of the indicated statistic"
-    ]
-   ],
-   "DATA": [
-    [
-     "date",
-     "reference_start",
-     "target_range",
-     "field",
-     "value"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Rate: 25th percentile",
-     " 471.21"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Rate: mean",
-     " 481.98"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Rate: mode",
-     " 498.33"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Rate: 75th percentile",
-     " 518.52"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: cut",
-     "  27.98"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: hike",
-     "  45.18"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 275bps - 300bps",
-     "   0.72"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 300bps - 325bps",
-     "   1.31"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 325bps - 350bps",
-     "   1.89"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 350bps - 375bps",
-     "   2.03"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 375bps - 400bps",
-     "   1.62"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 400bps - 425bps",
-     "   1.29"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 425bps - 450bps",
-     "   3.41"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 450bps - 475bps",
-     "  13.21"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 475bps - 500bps",
-     "  26.84"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 500bps - 525bps",
-     "  25.70"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 525bps - 550bps",
-     "  12.70"
-    ],
-    [
-     "2023-03-29",
-     "2023-06-21 00:00:00",
-     "475bps - 500bps",
-     "Prob: 550bps - 575bps",
-     "   4.38"
-    ],
-    [
-     "2023-03-29",
-     "2023-09-20 00:00:00",
-     "475bps - 500bps",
-     "Rate: 25th percentile",
-     " 420.12"
-    ],
-    [
-     "2023-03-29",
-     "2023-09-20 00:00:00",
-     "475bps - 500bps",
-     "Rate: mean",
-     " 455.93"
-    ],
-    [
-     "2023-03-29",
-     "2023-09-20 00:00:00",
-     "475bps - 500bps",
-     "Rate: mode",
-     " 510.56"
-    ],
-    [
-     "2023-03-29",
-     "2023-09-20 00:00:00",
-     "475bps - 500bps",
-     "Rate: 75th percentile",
-     " 534.53"
-    ],
-    [
-     "2023-03-29",
-     "2023-09-20 00:00:00",
-     "475bps - 500bps",
-     "Prob: cut",
-     "  41.48"
-    ],
-    [
-     "2023-03-29",
-     "2023-09-20 00:00:00",
-     "475bps - 500bps",
-     "Prob: hike",
-     "  45.10"
-    ]
-   ]
-  },
-  "tail": [
-   [
-    "None"
-   ]
-  ]
+  "ct": "text/html; charset=UTF-8",
+  "bytes": 387166,
+  "tail": "ion () {\r\n      const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n      if (popupInvite && typeof $ !== 'undefined') {\r\n        $(popupInvite).modal({\r\n          backdrop: true,\r\n          keyboard: true,\r\n          show: true\r\n        });\r\n      }\r\n    };\r\n\r\n  // Check URL to ensure we're on index.php only\r\n  const isHomePage = window.location.pathname === '/';\r\n\r\n// Show popup only on homepage and if not yet submitted\r\n  if (isHomePage) {\r\n    setTimeout(() => {\r\n      window.AboWebsiteSurvey03.showPopupInvite();\r\n    }, 1500);\r\n  }\r\n\r\n  // Show #abo-website-survey-02-footer-bar on non-homepages if not yet submitted\r\n  if (!isHomePage) {\r\n    const altFooterBar = document.getElementById('abo-website-survey-03-footer-bar');\r\n    if (altFooterBar) {\r\n      altFooterBar.style.bottom = '0';  // make visible (adjust if needed)\r\n    }\r\n  }\r\n    // Also trigger popup from footer bar link\r\n    document.addEventListener(\"DOMContentLoaded\", function () {\r\n      const footerLink = document.querySelector('#abo-website-survey-03-footer-bar a');\r\n      const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n\r\n      if (footerLink && popupInvite && typeof $ !== 'undefined') {\r\n        footerLink.addEventListener('click', function (e) {\r\n          e.preventDefault();\r\n          $(popupInvite).modal({\r\n            backdrop: true,\r\n            keyboard: true,\r\n            show: true\r\n          });\r\n        });\r\n      }\r\n    });\r\n  })();\r\n</script>\r\n<script>\r\ndocument.addEventListener(\"DOMContentLoaded\", function () {\r\n  const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n  const footerBar = document.getElementById('abo-website-survey-03-footer-bar');\r\n  const minimizeBtn = popupInvite.querySelector('.minimize');\r\n  const footerLink = footerBar.querySelector('a');\r\n\r\n  if (typeof $ !== 'undefined') {\r\n    // When footer link is clicked: show popup, hide footer\r\n    if (footerLink) {\r\n      footerLink.addEventListener('click', function (e) {\r\n        e.preventDefault();\r\n        footerBar.style.bottom = '-300px'; // Hide footer bar\r\n        $(popupInvite).modal({\r\n          backdrop: true,\r\n          keyboard: true,\r\n          show: true\r\n        });\r\n      });\r\n    }\r\n\r\n    // When modal is hidden (via outside click or minimize), show footer\r\n    $(popupInvite).on('hidden.bs.modal', function () {\r\n      footerBar.style.bottom = '0';\r\n    });\r\n\r\n    // Minimize button triggers modal hide\r\n    if (minimizeBtn) {\r\n      minimizeBtn.addEventListener('click', function () {\r\n        $(popupInvite).modal('hide');\r\n      });\r\n    }\r\n  }\r\n});\r\n</script>      \n<!-- /.container --><!-- Bootstrap core JavaScript -->\t\n<script type=\"text/javascript\" src=\"../vendor/jquery/jquery.min.js\"></script>\n<script type=\"text/javascript\" src=\"../vendor/bootstrap/js/bootstrap.bundle.min.js\"></script>\n<script type=\"text/javascript\" src=\"../js/codebase/dhtmlx.js\"></script>\n<script type=\"text/javascript\" src=\"js/data-portal-v4.js\"></script>\n<!--script type=\"text/javascript\" src=\"js/data-portal-v4.1.js\"></script-->    \n<script type=\"text/javascript\" src=\"js/hopscotch.js\"></script>\n<script>\n  var chartLayout, chartToolbar, chartSb;\n  var dataLayout, dataToolbar, dataTabs;\n  var dataTables = [];\n  var notesLayout, notesTabs;\n\n  var selIndicator = '';\n  var selEconomies = '';\n  var selYears = '';\n  var selFrequency = '';\n  var selOpts = '';\n  var frequencySwitch = '';\n\n  var selCompare = 0;\n  var frmIndicator, frmMeta;  \n\n  var wins = new dhtmlXWindows();\n//  wins.enableAutoViewport(true);\n\n  var sidebar=true;\n  var tourStep=1;\n  var tour;\n\n  var treeLCYBondMarket;\n\n $('.panel-collapse').on('show.bs.collapse', function () {\n    $(this).siblings('.panel-heading').addClass('active');\n  });\n\n  $('.panel-collapse').on('hide.bs.collapse', function () {\n    $(this).siblings('.panel-heading').removeClass('active');\n  });\n</script>\n<div id=\"form_main\" style=\"display:none;\"></div>\n<div id=\"form_meta\" style=\"display:none;\"></div>\n<div id=\"metadata\" style=\"display:none;width:520px;\">\n  <table style=\"width:520px;\">\n    <tr>\n      <td style=\"padding:5px;text-align:left;border: 1px solid #aaa;font-size:1.1em;\" id=\"indicator_name\"></td></tr>\n    <tr>\n      <td style=\"padding:5px;text-align:justify;line-height:normal;\" id=\"definition\"></td></tr>\n    <tr>\n      <td style=\"padding:5px;text-align:justify;font-size:0.95em;line-height:normal;\" id=\"economy\"></td></tr>\n    <tr>\n      <td style=\"padding:5px;text-align:justify;font-size:0.95em;line-height:normal;\" id=\"series\"></td></tr>\n    <tr>\n      <td style=\"padding:5px;text-align:justify;font-size:0.95em;line-height:normal;\" id=\"frequency\"></td></tr>\n    <tr>\n      <td style=\"padding:5px;text-align:justify;font-size:0.95em;line-height:normal;\" id=\"latest_data\"></td></tr>\n  </table>\n</div>\n<script type=\"text/javascript\" src=\"/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=473778735\" async></script></body>\n</html>",
+  "form": [
+   "<form class=\"form-inline\" style=\"padding-right:50px;\" action=\"/search_results.php\" id=\"cse-search-box\" name=\"google_search\">",
+   "<form id=\"survey-form\">"
+  ],
+  "urls": [
+   "https://www.adb.org",
+   "https://www.google.com/cse/brand?form=cse-search-box&lang=en",
+   "https://www.google.com/cse/t13n?form=cse-search-box&t13n_langs=en",
+   "https://www.google.com/jsapi",
+   "https://www.googletagmanager.com/gtag/js?id=G-3BE9ZFZT9F",
+   "https://www.googletagmanager.com/gtm.js?id="
+  ],
+  "paths": [],
+  "scripts": [
+   "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':\n\tnew Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],\n\tj=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\n\t'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n\t})(window,document,'script','dataLayer','GTM-K3PNNMW');",
+   "\ndocument.addEventListener('DOMContentLoaded', function() {\n  // Function to get the value of a query parameter by name\n  function getQueryParam(name) {\n    const urlParams = new URLSearchParams(window.location.search);\n    return urlParams.get(name);\n  }\n\n  // Function to check the checkboxes\n  function checkCheckboxes() {\n    const sectionValue = getQueryParam('section');\n    if (sectionValue === 'sustainablebonds') {\n      document.querySelector('input[name=\"chk-indicators\"][value=\"sustainable_bonds_list\"]').click();\n      document.getElementById('chk-all-economies').click();\n      //document.getElementById('chk-all-years').click();\n    }\n    if (sectionValue === 'ambif') {\n      document.querySelector('input[name=\"chk-indicators\"][value=\"bond_issuance\"]').click();\n      document.getElementById('chk-all-economies').click();\n      //document.getElementById('chk-all-years').click();\n    }\n  }\n\n  // Call the function when the page loads\n  checkCheckboxes();\n});\n\n",
+   "\nwindow.onscroll = function() {myFunction()};\n\nvar navbar = document.getElementById(\"navbar\");\nvar sticky = navbar.offsetTop;\n\nfunction myFunction() {\n  if (window.pageYOffset >= sticky) {\n    navbar.classList.add(\"sticky\")\n  } else {\n    navbar.classList.remove(\"sticky\");\n  }\n}\n</script-->\n\n<!-- Breadcrumbs starts here -->\n<div class=\"container\" style=\"margin-top:0px;\">\n  <div class=\"row\">\n    <small>\n      <nav aria-label=\"breadcrumb\">\n        <ol class=\"breadcrumb\" style=\" background-color:transparent;\">\n            <li class=\"breadcrumb-item\"><a href=\"../\">Home</a></li>\n            <li class=\"breadcrumb-item active\" aria-current=\"page\">Data Portal</li>\n        </ol>\n      </nav>\n    </small>\n  </div>\n</div>\n<!-- Breadcrumbs ends here -->\n<!-- Data Portal starts here -->\n<div id=\"body\" class=\"container\">\n  <div class=\"row\">\n    <h4 class=\"display-4\" style=\"font-size:30px;\"><img src=\"../image/dataportal.png\"></h4>\n  </div>\n  <div class=\"row\">\n<!-- TAB NAVIGATION STARTS HERE -->\n<div class=\"col-12\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-12 pt-4 mb-4\">\n        <ul class=\"nav nav-pills\">\n          <li class=\"nav-item\">\n            <a class=\"nav-link active\" data-toggle=\"pill\" href=\"#bondmarket\" role=\"tab\"\n               aria-controls=\"pills-bondmarket\" aria-selected=\"true\">Bond Market</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link \" data-toggle=\"pill\" href=\"#liquiditysurvey\" role=\"tab\"\n               aria-cont",
+   "\r\n(function() {\r\n  window.AboWebsiteSurvey03 = window.AboWebsiteSurvey03 || { showFooterBar: undefined }\r\n\r\n  window.AboWebsiteSurvey03.showFooterBar = function() {\r\n    const footerBar = document.getElementById('abo-website-survey-03-footer-bar')\r\n    const proceedButton = footerBar.querySelector('.proceed')\r\n\r\n    setTimeout(() => {\r\n      footerBar.style.bottom = '0'\r\n      proceedButton.focus()      \r\n    }, 750)  \r\n    \r\n    Cookies.set('AboWebsiteSurvey03_ShowFooterBar', 'true')\r\n  }\r\n  \r\n  const footerContentSeparator = footer.querySelector('#footer .separator')\r\n  footerContentSeparator.classList.add('expanded') \r\n})()  \r\n",
+   "\r\ndocument.addEventListener('DOMContentLoaded', function () {\r\n  const form = document.querySelector('#abo-website-survey-03-popup-invite form');\r\n  const thankYouMessage = document.createElement('div');\r\n  thankYouMessage.innerHTML = \"<h3 style='color: green;'>Thank you for your feedback!</h3>\";\r\n  thankYouMessage.style.display = 'none';\r\n  form.parentNode.appendChild(thankYouMessage);\r\n\r\n  form.addEventListener('submit', function (e) {\r\n    e.preventDefault();\r\n\r\n    const formData = new FormData(form);\r\n    const params = new URLSearchParams();\r\n    for (const pair of formData.entries()) {\r\n      params.append(pair[0], pair[1]);\r\n    }\r\n\r\n\r\n\r\n    fetch('/surveys/abo_website_survey_03/survey_processor2.php', {\r\n      method: 'POST',\r\n      headers: {\r\n        'Content-Type': 'application/x-www-form-urlencoded'\r\n      },\r\n      body: params.toString()\r\n    })\r\n    .then(response => response.json())\r\n    .then(result => {\r\n      if (result.status === 'success') {\r\n        form.style.display = 'none';\r\n        thankYouMessage.style.display = 'block';\r\n        setTimeout(() => {\r\n          $('#abo-website-survey-03-popup-invite').modal('hide');\r\n          window.AboWebsiteSurvey02.showFooterBar();\r\n        }, 15000);\r\n      } else {\r\n        alert('Submission failed: ' + result.message);\r\n      }\r\n    })\r\n    .catch(error => {\r\n      alert('Unexpected error: ' + error.message);\r\n    });\r\n  });\r\n});\r\n",
+   "\r\n  (function () {\r\n    window.AboWebsiteSurvey03 = window.AboWebsiteSurvey03 || { showPopupInvite: undefined };\r\n\r\n    window.AboWebsiteSurvey03.showPopupInvite = function () {\r\n      const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n      if (popupInvite && typeof $ !== 'undefined') {\r\n        $(popupInvite).modal({\r\n          backdrop: true,\r\n          keyboard: true,\r\n          show: true\r\n        });\r\n      }\r\n    };\r\n\r\n  // Check URL to ensure we're on index.php only\r\n  const isHomePage = window.location.pathname === '/';\r\n\r\n// Show popup only on homepage and if not yet submitted\r\n  if (isHomePage) {\r\n    setTimeout(() => {\r\n      window.AboWebsiteSurvey03.showPopupInvite();\r\n    }, 1500);\r\n  }\r\n\r\n  // Show #abo-website-survey-02-footer-bar on non-homepages if not yet submitted\r\n  if (!isHomePage) {\r\n    const altFooterBar = document.getElementById('abo-website-survey-03-footer-bar');\r\n    if (altFooterBar) {\r\n      altFooterBar.style.bottom = '0';  // make visible (adjust if needed)\r\n    }\r\n  }\r\n    // Also trigger popup from footer bar link\r\n    document.addEventListener(\"DOMContentLoaded\", function () {\r\n      const footerLink = document.querySelector('#abo-website-survey-03-footer-bar a');\r\n      const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n\r\n      if (footerLink && popupInvite && typeof $ !== 'undefined') {\r\n        footerLink.addEventListener('click', function (e) {\r\n          e.preventDefaul",
+   "\r\ndocument.addEventListener(\"DOMContentLoaded\", function () {\r\n  const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n  const footerBar = document.getElementById('abo-website-survey-03-footer-bar');\r\n  const minimizeBtn = popupInvite.querySelector('.minimize');\r\n  const footerLink = footerBar.querySelector('a');\r\n\r\n  if (typeof $ !== 'undefined') {\r\n    // When footer link is clicked: show popup, hide footer\r\n    if (footerLink) {\r\n      footerLink.addEventListener('click', function (e) {\r\n        e.preventDefault();\r\n        footerBar.style.bottom = '-300px'; // Hide footer bar\r\n        $(popupInvite).modal({\r\n          backdrop: true,\r\n          keyboard: true,\r\n          show: true\r\n        });\r\n      });\r\n    }\r\n\r\n    // When modal is hidden (via outside click or minimize), show footer\r\n    $(popupInvite).on('hidden.bs.modal', function () {\r\n      footerBar.style.bottom = '0';\r\n    });\r\n\r\n    // Minimize button triggers modal hide\r\n    if (minimizeBtn) {\r\n      minimizeBtn.addEventListener('click', function () {\r\n        $(popupInvite).modal('hide');\r\n      });\r\n    }\r\n  }\r\n});\r\n",
+   "\n  var chartLayout, chartToolbar, chartSb;\n  var dataLayout, dataToolbar, dataTabs;\n  var dataTables = [];\n  var notesLayout, notesTabs;\n\n  var selIndicator = '';\n  var selEconomies = '';\n  var selYears = '';\n  var selFrequency = '';\n  var selOpts = '';\n  var frequencySwitch = '';\n\n  var selCompare = 0;\n  var frmIndicator, frmMeta;  \n\n  var wins = new dhtmlXWindows();\n//  wins.enableAutoViewport(true);\n\n  var sidebar=true;\n  var tourStep=1;\n  var tour;\n\n  var treeLCYBondMarket;\n\n $('.panel-collapse').on('show.bs.collapse', function () {\n    $(this).siblings('.panel-heading').addClass('active');\n  });\n\n  $('.panel-collapse').on('hide.bs.collapse', function () {\n    $(this).siblings('.panel-heading').removeClass('active');\n  });\n"
+  ],
+  "size": 387164,
+  "ctx2": [],
+  "links": [],
+  "xls": [
+   "../js/codebase/dhtmlx.js",
+   "../vendor/bootstrap/js/bootstrap.bundle.min.js",
+   "../vendor/jquery/jquery.min.js",
+   "/js/google_analytics.js",
+   "/js/stickynav.js",
+   "/vendor/js-cookie/3.0.5/js.cookie.min.js",
+   "gtag.js",
+   "gtm.js",
+   "https://www.googletagmanager.com/gtm.js?id=",
+   "js/data-portal-v4.1.js",
+   "js/data-portal-v4.js",
+   "js/hopscotch.js",
+   "response.json"
+  ],
+  "api": [],
+  "text": " AsianBondsOnline - Data Portal --> --> About Feedback Contact Site Map Search Welcome! AsianBondsOnline is a one-stop source of information on bond markets in emerging East Asia. Home Home Data Portal Economies &#9656 Brunei Darussalam &#9656 Cambodia &#9656 People's Republic of China &#9656 Hong Kong, China &#9656 Indonesia &#9656 Japan &#9656 Republic of Korea &#9656 Lao People's Democratic Republic &#9656 Malaysia &#9656 Myanmar &#9656 Philippines &#9656 Singapore &#9656 Thailand &#9656 Viet Nam &#9656 Brunei Darussalam &#9656 Cambodia &#9656 People's Republic of China &#9656 Hong Kong, China &#9656 Indonesia &#9656 Japan &#9656 Republic of Korea &#9656 Lao People's Democratic Republic &#9656 Malaysia &#9656 Myanmar &#9656 Philippines &#9656 Singapore &#9656 Thailand &#9656 Viet Nam --> Market Watch Publications Events Publications and Events Regulations What's New Sustainable Finance ABMF Macro Tracker &#9656 About &#9656 Economy Dashboard &#9656 Resources Fiscal Asia &#9656 Fiscal Indicators &#9656 ADB Fiscal Research and Publications &#9656 Events Legacy site ---> Thank you for visiting AsianBondsOnline. Help us improve our website by participating in a short survey &nbsp;&nbsp; &mdash; AsianBondsOnline User Feedback Survey Thank you for visiting the ABO website! 1. I was able to access the information I needed from the ABO website. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No 2. Using the ABO website has deepened my knowledge of and capacity to address key issues in sustainable bond market development. Strongly Agree Agree Neutral Disagree Strongly Disagree 3. The information and knowledge shared on the ABO website are relevant to my current work, tasks, or studies. Strongly Agree Agree Neutral Disagree Strongly Disagree 4. Kindly rate your experience using the ABO website. &#128512; Excellent &#128578; Good &#128528; Average &#128577; Poor &#128550; Bad 5. Kindly provide any additional feedback and suggestion to help us improve your user experience. (Optional) *Only letters, numbers, spaces, and periods are allowed. Submit Feedback Thank you for your feedback! ",
+  "title": "AsianBondsOnline - Data Portal"
+ },
+ "abo_vn_raw": {
+  "url": "https://asianbondsonline.adb.org/vietnam/",
+  "status": 200,
+  "ct": "text/html; charset=UTF-8",
+  "bytes": 49160,
+  "tail": "-www-form-urlencoded'\r\n      },\r\n      body: params.toString()\r\n    })\r\n    .then(response => response.json())\r\n    .then(result => {\r\n      if (result.status === 'success') {\r\n        form.style.display = 'none';\r\n        thankYouMessage.style.display = 'block';\r\n        setTimeout(() => {\r\n          $('#abo-website-survey-03-popup-invite').modal('hide');\r\n          window.AboWebsiteSurvey02.showFooterBar();\r\n        }, 15000);\r\n      } else {\r\n        alert('Submission failed: ' + result.message);\r\n      }\r\n    })\r\n    .catch(error => {\r\n      alert('Unexpected error: ' + error.message);\r\n    });\r\n  });\r\n});\r\n</script>\r\n\r\n<!-- Show popup when minimized footer bar is clicked -->\r\n<script>\r\n  (function () {\r\n    window.AboWebsiteSurvey03 = window.AboWebsiteSurvey03 || { showPopupInvite: undefined };\r\n\r\n    window.AboWebsiteSurvey03.showPopupInvite = function () {\r\n      const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n      if (popupInvite && typeof $ !== 'undefined') {\r\n        $(popupInvite).modal({\r\n          backdrop: true,\r\n          keyboard: true,\r\n          show: true\r\n        });\r\n      }\r\n    };\r\n\r\n  // Check URL to ensure we're on index.php only\r\n  const isHomePage = window.location.pathname === '/';\r\n\r\n// Show popup only on homepage and if not yet submitted\r\n  if (isHomePage) {\r\n    setTimeout(() => {\r\n      window.AboWebsiteSurvey03.showPopupInvite();\r\n    }, 1500);\r\n  }\r\n\r\n  // Show #abo-website-survey-02-footer-bar on non-homepages if not yet submitted\r\n  if (!isHomePage) {\r\n    const altFooterBar = document.getElementById('abo-website-survey-03-footer-bar');\r\n    if (altFooterBar) {\r\n      altFooterBar.style.bottom = '0';  // make visible (adjust if needed)\r\n    }\r\n  }\r\n    // Also trigger popup from footer bar link\r\n    document.addEventListener(\"DOMContentLoaded\", function () {\r\n      const footerLink = document.querySelector('#abo-website-survey-03-footer-bar a');\r\n      const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n\r\n      if (footerLink && popupInvite && typeof $ !== 'undefined') {\r\n        footerLink.addEventListener('click', function (e) {\r\n          e.preventDefault();\r\n          $(popupInvite).modal({\r\n            backdrop: true,\r\n            keyboard: true,\r\n            show: true\r\n          });\r\n        });\r\n      }\r\n    });\r\n  })();\r\n</script>\r\n<script>\r\ndocument.addEventListener(\"DOMContentLoaded\", function () {\r\n  const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n  const footerBar = document.getElementById('abo-website-survey-03-footer-bar');\r\n  const minimizeBtn = popupInvite.querySelector('.minimize');\r\n  const footerLink = footerBar.querySelector('a');\r\n\r\n  if (typeof $ !== 'undefined') {\r\n    // When footer link is clicked: show popup, hide footer\r\n    if (footerLink) {\r\n      footerLink.addEventListener('click', function (e) {\r\n        e.preventDefault();\r\n        footerBar.style.bottom = '-300px'; // Hide footer bar\r\n        $(popupInvite).modal({\r\n          backdrop: true,\r\n          keyboard: true,\r\n          show: true\r\n        });\r\n      });\r\n    }\r\n\r\n    // When modal is hidden (via outside click or minimize), show footer\r\n    $(popupInvite).on('hidden.bs.modal', function () {\r\n      footerBar.style.bottom = '0';\r\n    });\r\n\r\n    // Minimize button triggers modal hide\r\n    if (minimizeBtn) {\r\n      minimizeBtn.addEventListener('click', function () {\r\n        $(popupInvite).modal('hide');\r\n      });\r\n    }\r\n  }\r\n});\r\n</script>      \n    <div id=\"form_main\" style=\"display:none;\"></div>\n    <div id=\"form_meta\" style=\"display:none;\"></div>\n\n    <!-- Bootstrap core JavaScript -->\n    <script type=\"text/javascript\" src=\"/vendor/bootstrap/js/bootstrap.bundle.min.js\"></script>\n    <script type=\"text/javascript\" src=\"/js/codebase/dhtmlx.js\"></script>\n    \n\n    <!-- Menu Toggle Script -->\n    <script>\n      var chartLayout, chartToolbar, chartSb;\n      var dataTabs, dataLayout, dataToolbar;\n      var dataTable;\n\t  var dataTables = [];\n\n      var selIndicator = '';\n      var selEconomy = 'VN';\n      var selYears = '2023^2024^2025^2026';\n      var frmIndicator, frmMeta;  \n\n      var wins = new dhtmlXWindows();\n\n      var tourStep=1;\n      var tour;\n\n      var dataNames = '20-Oct-26~Prev. Week~End of Sep.~End of 2025';\n      $('#country-pages-content').show();\n    </script>\n\n          <script>      \n      if (dataNames!=\"\"){\n        //load indicator\n        var tempLayout = new dhtmlXLayoutObject(\"cont-marketwatch\", \"1C\");\n        tempLayout.cells(\"a\").hideHeader();\n        tempLayout.setSizes(true);\n        tempLayout.cells(\"a\").attachURL(\"../charts/government_bond_yields.php?economies=\"+selEconomy);\n      }  \n      else {\n        document.getElementById(\"cont-marketwatch\").style.display=\"none\";\n      }\n      </script> \n     \n  <script type=\"text/javascript\" src=\"/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=977656131\" async></script></body>\n</html>\n",
+  "form": [
+   "<form class=\"form-inline\" style=\"padding-right:50px;\" action=\"/search_results.php\" id=\"cse-search-box\" name=\"google_search\">",
+   "<form id=\"survey-form\">"
+  ],
+  "urls": [
+   "https://vbma.org.vn/en/activities/ket-qua-dau-thau-trai-phieu-chinh-phu-ngay-14-10-2026",
+   "https://vbma.org.vn/en/activities/ket-qua-dau-thau-trai-phieu-chinh-phu-ngay-16-9-2026",
+   "https://vbma.org.vn/en/activities/ket-qua-dau-thau-trai-phieu-chinh-phu-ngay-30-9-2026",
+   "https://vbma.org.vn/en/activities/ket-qua-dau-thau-trai-phieu-chinh-phu-ngay-7-10-2026",
+   "https://vbma.org.vn/en/activities/ket-qua-dau-thau-trai-phieu-chinh-phu-ngay-9-9-2026",
+   "https://vietnamnews.vn/economy/1802302/sme-revenue-threshold-proposed-to-be-raised-to-15-2-million.html",
+   "https://vietnamnews.vn/economy/1802306/hcm-city-attracts-us-5-7-billion-into-export-processing-and-industrial-zones.html",
+   "https://vietnamnews.vn/economy/1802316/shb-reports-17-profit-growth-completes-share-issuance.html",
+   "https://vietnamnews.vn/economy/1802372/banks-cut-costs-to-lower-lending-rates-for-priority-sectors.html",
+   "https://vietnamnews.vn/economy/1802378/losses-in-heavy-weight-stocks-push-vn-index-below-1-700-points.html",
+   "https://www.adb.org",
+   "https://www.google.com/cse/brand?form=cse-search-box&lang=en",
+   "https://www.google.com/cse/t13n?form=cse-search-box&t13n_langs=en",
+   "https://www.google.com/jsapi",
+   "https://www.googletagmanager.com/gtag/js?id=G-3BE9ZFZT9F"
+  ],
+  "paths": [],
+  "scripts": [
+   "\nwindow.onscroll = function() {myFunction()};\n\nvar navbar = document.getElementById(\"navbar\");\nvar sticky = navbar.offsetTop;\n\nfunction myFunction() {\n  if (window.pageYOffset >= sticky) {\n    navbar.classList.add(\"sticky\")\n  } else {\n    navbar.classList.remove(\"sticky\");\n  }\n}\n</script-->\n\n   \n</div>\n      \n    <!-- Breadcrumbs starts here -->\n    <div class=\"container\" style=\"position:relative; top:0px;\">\n      <div class=\"row\">\n        <small>\n       <nav aria-label=\"breadcrumb\">\n  <ol class=\"breadcrumb\" style=\" background-color:transparent;\">\n    <li class=\"breadcrumb-item\"><a href=\"/\">Home</a></li>\n            <li class=\"breadcrumb-item\">Viet Nam</li>    \n          \n  </ol>\n</nav> \n        </small>\n      </div>\n    </div>\n    <!-- Breadcrumbs ends here -->\n      \n    <!-- Economies starts here -->\n    <main class=\"container\" style=\"position:relative; top:0px; z-index:0;\">\n      <div class=\"row\" style=\"padding-top:0px;\">\n        <h4 class=\"display-4\" style=\"font-size:30px; padding:0px 0px 20px 10px;\">Viet Nam</h4>\n        <div class=\"col-12\">          \n          <ul class=\"nav nav-pills mb-5\" id=\"country-pages-menu\" >\n    <li class=\"nav-item\" style=\"border-radius: 15px 15px 0px 0px\">\n    <a\n      class=\"nav-link active\"\n      id=\"market-at-a-glance-tab\"\n      href=\"/vietnam/\"\n      role=\"tab\"\n      aria-controls=\"pills-1\"\n      aria-selected=\"true\"\n      style=\"border-radius: 15px 15px 0px 0px\"\n      >Market at a Glance</a\n    >\n  </li>\n      \n  <li class=\"nav-item\" styl",
+   "\r\n(function() {\r\n  window.AboWebsiteSurvey03 = window.AboWebsiteSurvey03 || { showFooterBar: undefined }\r\n\r\n  window.AboWebsiteSurvey03.showFooterBar = function() {\r\n    const footerBar = document.getElementById('abo-website-survey-03-footer-bar')\r\n    const proceedButton = footerBar.querySelector('.proceed')\r\n\r\n    setTimeout(() => {\r\n      footerBar.style.bottom = '0'\r\n      proceedButton.focus()      \r\n    }, 750)  \r\n    \r\n    Cookies.set('AboWebsiteSurvey03_ShowFooterBar', 'true')\r\n  }\r\n  \r\n  const footerContentSeparator = footer.querySelector('#footer .separator')\r\n  footerContentSeparator.classList.add('expanded') \r\n})()  \r\n",
+   "\r\ndocument.addEventListener('DOMContentLoaded', function () {\r\n  const form = document.querySelector('#abo-website-survey-03-popup-invite form');\r\n  const thankYouMessage = document.createElement('div');\r\n  thankYouMessage.innerHTML = \"<h3 style='color: green;'>Thank you for your feedback!</h3>\";\r\n  thankYouMessage.style.display = 'none';\r\n  form.parentNode.appendChild(thankYouMessage);\r\n\r\n  form.addEventListener('submit', function (e) {\r\n    e.preventDefault();\r\n\r\n    const formData = new FormData(form);\r\n    const params = new URLSearchParams();\r\n    for (const pair of formData.entries()) {\r\n      params.append(pair[0], pair[1]);\r\n    }\r\n\r\n\r\n\r\n    fetch('/surveys/abo_website_survey_03/survey_processor2.php', {\r\n      method: 'POST',\r\n      headers: {\r\n        'Content-Type': 'application/x-www-form-urlencoded'\r\n      },\r\n      body: params.toString()\r\n    })\r\n    .then(response => response.json())\r\n    .then(result => {\r\n      if (result.status === 'success') {\r\n        form.style.display = 'none';\r\n        thankYouMessage.style.display = 'block';\r\n        setTimeout(() => {\r\n          $('#abo-website-survey-03-popup-invite').modal('hide');\r\n          window.AboWebsiteSurvey02.showFooterBar();\r\n        }, 15000);\r\n      } else {\r\n        alert('Submission failed: ' + result.message);\r\n      }\r\n    })\r\n    .catch(error => {\r\n      alert('Unexpected error: ' + error.message);\r\n    });\r\n  });\r\n});\r\n",
+   "\r\n  (function () {\r\n    window.AboWebsiteSurvey03 = window.AboWebsiteSurvey03 || { showPopupInvite: undefined };\r\n\r\n    window.AboWebsiteSurvey03.showPopupInvite = function () {\r\n      const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n      if (popupInvite && typeof $ !== 'undefined') {\r\n        $(popupInvite).modal({\r\n          backdrop: true,\r\n          keyboard: true,\r\n          show: true\r\n        });\r\n      }\r\n    };\r\n\r\n  // Check URL to ensure we're on index.php only\r\n  const isHomePage = window.location.pathname === '/';\r\n\r\n// Show popup only on homepage and if not yet submitted\r\n  if (isHomePage) {\r\n    setTimeout(() => {\r\n      window.AboWebsiteSurvey03.showPopupInvite();\r\n    }, 1500);\r\n  }\r\n\r\n  // Show #abo-website-survey-02-footer-bar on non-homepages if not yet submitted\r\n  if (!isHomePage) {\r\n    const altFooterBar = document.getElementById('abo-website-survey-03-footer-bar');\r\n    if (altFooterBar) {\r\n      altFooterBar.style.bottom = '0';  // make visible (adjust if needed)\r\n    }\r\n  }\r\n    // Also trigger popup from footer bar link\r\n    document.addEventListener(\"DOMContentLoaded\", function () {\r\n      const footerLink = document.querySelector('#abo-website-survey-03-footer-bar a');\r\n      const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n\r\n      if (footerLink && popupInvite && typeof $ !== 'undefined') {\r\n        footerLink.addEventListener('click', function (e) {\r\n          e.preventDefaul",
+   "\r\ndocument.addEventListener(\"DOMContentLoaded\", function () {\r\n  const popupInvite = document.getElementById('abo-website-survey-03-popup-invite');\r\n  const footerBar = document.getElementById('abo-website-survey-03-footer-bar');\r\n  const minimizeBtn = popupInvite.querySelector('.minimize');\r\n  const footerLink = footerBar.querySelector('a');\r\n\r\n  if (typeof $ !== 'undefined') {\r\n    // When footer link is clicked: show popup, hide footer\r\n    if (footerLink) {\r\n      footerLink.addEventListener('click', function (e) {\r\n        e.preventDefault();\r\n        footerBar.style.bottom = '-300px'; // Hide footer bar\r\n        $(popupInvite).modal({\r\n          backdrop: true,\r\n          keyboard: true,\r\n          show: true\r\n        });\r\n      });\r\n    }\r\n\r\n    // When modal is hidden (via outside click or minimize), show footer\r\n    $(popupInvite).on('hidden.bs.modal', function () {\r\n      footerBar.style.bottom = '0';\r\n    });\r\n\r\n    // Minimize button triggers modal hide\r\n    if (minimizeBtn) {\r\n      minimizeBtn.addEventListener('click', function () {\r\n        $(popupInvite).modal('hide');\r\n      });\r\n    }\r\n  }\r\n});\r\n",
+   "\n      var chartLayout, chartToolbar, chartSb;\n      var dataTabs, dataLayout, dataToolbar;\n      var dataTable;\n\t  var dataTables = [];\n\n      var selIndicator = '';\n      var selEconomy = 'VN';\n      var selYears = '2023^2024^2025^2026';\n      var frmIndicator, frmMeta;  \n\n      var wins = new dhtmlXWindows();\n\n      var tourStep=1;\n      var tour;\n\n      var dataNames = '20-Oct-26~Prev. Week~End of Sep.~End of 2025';\n      $('#country-pages-content').show();\n    ",
+   "      \n      if (dataNames!=\"\"){\n        //load indicator\n        var tempLayout = new dhtmlXLayoutObject(\"cont-marketwatch\", \"1C\");\n        tempLayout.cells(\"a\").hideHeader();\n        tempLayout.setSizes(true);\n        tempLayout.cells(\"a\").attachURL(\"../charts/government_bond_yields.php?economies=\"+selEconomy);\n      }  \n      else {\n        document.getElementById(\"cont-marketwatch\").style.display=\"none\";\n      }\n      "
+  ],
+  "size": 49160,
+  "ctx2": [],
+  "links": [
+   "https://vietnamnews.vn/economy/1802302/sme-revenue-threshold-proposed-to-be-raised-to-15-2-million.html",
+   "https://vietnamnews.vn/economy/1802306/hcm-city-attracts-us-5-7-billion-into-export-processing-and-industrial-zones.html",
+   "https://vietnamnews.vn/economy/1802316/shb-reports-17-profit-growth-completes-share-issuance.html",
+   "https://vietnamnews.vn/economy/1802372/banks-cut-costs-to-lower-lending-rates-for-priority-sectors.html",
+   "https://vietnamnews.vn/economy/1802378/losses-in-heavy-weight-stocks-push-vn-index-below-1-700-points.html"
+  ],
+  "xls": [
+   "/js/codebase/dhtmlx.js",
+   "/js/stickynav.js",
+   "/vendor/bootstrap/js/bootstrap.bundle.min.js",
+   "/vendor/jquery/jquery-3.5.1.js",
+   "/vendor/js-cookie/3.0.5/js.cookie.min.js",
+   "gtag.js",
+   "response.json"
+  ],
+  "api": [],
+  "text": " AsianBondsOnline - Viet Nam --> --> About Feedback Contact Site Map Search Welcome! AsianBondsOnline is a one-stop source of information on bond markets in emerging East Asia. Home Home Data Portal Economies &#9656 Brunei Darussalam &#9656 Cambodia &#9656 People's Republic of China &#9656 Hong Kong, China &#9656 Indonesia &#9656 Japan &#9656 Republic of Korea &#9656 Lao People's Democratic Republic &#9656 Malaysia &#9656 Myanmar &#9656 Philippines &#9656 Singapore &#9656 Thailand &#9656 Viet Nam &#9656 Brunei Darussalam &#9656 Cambodia &#9656 People's Republic of China &#9656 Hong Kong, China &#9656 Indonesia &#9656 Japan &#9656 Republic of Korea &#9656 Lao People's Democratic Republic &#9656 Malaysia &#9656 Myanmar &#9656 Philippines &#9656 Singapore &#9656 Thailand &#9656 Viet Nam --> Market Watch Publications Events Publications and Events Regulations What's New Sustainable Finance ABMF Macro Tracker &#9656 About &#9656 Economy Dashboard &#9656 Resources Fiscal Asia &#9656 Fiscal Indicators &#9656 ADB Fiscal Research and Publications &#9656 Events Legacy site ---> Thank you for visiting AsianBondsOnline. Help us improve our website by participating in a short survey &nbsp;&nbsp; &mdash; AsianBondsOnline User Feedback Survey Thank you for visiting the ABO website! 1. I was able to access the information I needed from the ABO website. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No 2. Using the ABO website has deepened my knowledge of and capacity to address key issues in sustainable bond market development. Strongly Agree Agree Neutral Disagree Strongly Disagree 3. The information and knowledge shared on the ABO website are relevant to my current work, tasks, or studies. Strongly Agree Agree Neutral Disagree Strongly Disagree 4. Kindly rate your experience using the ABO website. &#128512; Excellent &#128578; Good &#128528; Average &#128577; Poor &#128550; Bad 5. Kindly provide any additional feedback and suggestion to help us improve your user experience. (Optional) *Only letters, numbers, spaces, and periods are allowed. Submit Feedback Thank you for your feedback! ",
+  "title": "AsianBondsOnline - Viet Nam"
+ },
+ "abo_ms_202609_pdf": {
+  "url": "https://asianbondsonline.adb.org/vietnam/market_summary/vn_market_summary_202609.pdf",
+  "status": 200,
+  "bytes": 312771
+ },
+ "abo_ms_202603_pdf": {
+  "url": "https://asianbondsonline.adb.org/vietnam/market_summary/vn_market_summary_202603.pdf",
+  "status": 200,
+  "bytes": 239199
+ },
+ "abo_ms_202509_pdf": {
+  "url": "https://asianbondsonline.adb.org/vietnam/market_summary/vn_market_summary_202509.pdf",
+  "status": 200,
+  "bytes": 219243
+ },
+ "abo_ms_202409_pdf": {
+  "url": "https://asianbondsonline.adb.org/vietnam/market_summary/vn_market_summary_202409.pdf",
+  "status": 200,
+  "bytes": 223717
  }
 }
