@@ -27,6 +27,22 @@ TIERS = {
 CURVE = {'1Y': 234528, '3Y': 234530, '5Y': 234531, '10Y': 234526, '20Y': 234529}
 BUCKETS = ['≤1 năm', '1-3 năm', '3-5 năm', '>5 năm']
 
+# Cơ cấu người nắm giữ TPCP (% dư nợ) — số công bố, nhập tay; 'e' = tách ngân hàng/bảo hiểm ước từ biểu đồ ADB, tổng hai nhóm theo số công bố
+# Nhóm "bảo hiểm" theo Bộ Tài chính gồm BHXH Việt Nam, Bảo hiểm tiền gửi và doanh nghiệp bảo hiểm (BHXH chiếm phần lớn).
+HOLDERS = [
+    {'p': 'Đầu 2016', 'bank': 77.0, 'ins': 23.0, 'src': 'KBNN qua Tạp chí Tài chính (nhóm "nhà đầu tư dài hạn")'},
+    {'p': '2017', 'bank': 53.7, 'ins': 46.3, 'src': 'KBNN qua Tạp chí Tài chính (nhóm "nhà đầu tư dài hạn")'},
+    {'p': 'Q4/2022', 'bank': 40.5, 'ins': 58.9, 'src': 'VBMA, Báo cáo thường niên 2022 (số liệu Bộ Tài chính, AsianBondsOnline)'},
+    {'p': 'Q3/2023', 'bank': 39.9, 'ins': 59.7, 'src': 'VBMA, Báo cáo thường niên 2023'},
+    {'p': 'Q2/2024', 'bank': 37.5, 'ins': 61.5, 'src': 'ADB AsianBondsOnline, Viet Nam Market Summary 09/2025 (Bộ Tài chính)'},
+    {'p': 'Q3/2024', 'bank': 39.4, 'ins': 59.8, 'src': 'ADB AsianBondsOnline, Viet Nam Market Summary 03/2026'},
+    {'p': 'Q4/2024', 'bank': 39.8, 'ins': 59.4, 'src': 'Bộ Tài chính, Báo cáo Thị trường trái phiếu Việt Nam năm 2024'},
+    {'p': 'Q2/2025', 'bank': 37.0, 'ins': 62.0, 'src': 'ADB AsianBondsOnline, Viet Nam Market Summary 09/2025'},
+    {'p': 'Q3/2025', 'bank': 37.4, 'ins': 61.6, 'src': 'ADB AsianBondsOnline, Viet Nam Market Summary 03/2026'},
+    {'p': 'Q4/2025', 'bank': 38.0, 'ins': 60.8, 'e': True, 'src': 'ADB AsianBondsOnline, Viet Nam Market Summary 09/2026 (tổng hai nhóm 98,8%)'},
+    {'p': 'Q1/2026', 'bank': 36.5, 'ins': 60.5, 'e': True, 'sec': 0.5, 'fund': 0.1, 'fx': 0.1, 'src': 'ADB AsianBondsOnline, Viet Nam Market Summary 09/2026 (tổng hai nhóm 97,0%; CTCK 0,5%, quỹ 0,1%, nước ngoài 0,1%)'},
+]
+
 
 def r(v, n=2):
     return None if v is None else round(v, n)
@@ -205,7 +221,7 @@ def main():
             sy[ym(x['year'], x['month'])][x['remaining_term_bucket']] = x
     sm = sorted(sy)
     fnet = [r(sum((x.get('foreign_net_value') or 0) for x in sy[m].values()) / TY, 0) for m in sm]
-    gb = {'curve': cv, 'auc': gb_auc, 'fx': {'months': sm, 'net': fnet}}
+    gb = {'curve': cv, 'auc': gb_auc, 'fx': {'months': sm, 'net': fnet}, 'holders': HOLDERS}
 
     # ---------- 5. tín hiệu tổng hợp ----------
     i_now = len(months) - 1
@@ -221,7 +237,8 @@ def main():
             'fi': 'WiData bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), nhóm Ngân hàng',
             'cb': 'WiData bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), VND',
             'curve': 'WiData bonds_gov_yield_curve 234528/234530/234531/234526/234529',
-            'auc': 'WiData bonds_gov_auction_monthly (HNX, Kho bạc Nhà nước)', 'fx': 'WiData bonds_gov_secondary_yield_monthly (HNX)'},
+            'auc': 'WiData bonds_gov_auction_monthly (HNX, Kho bạc Nhà nước)', 'fx': 'WiData bonds_gov_secondary_yield_monthly (HNX)',
+            'holders': 'Bộ Tài chính; ADB AsianBondsOnline (Viet Nam Market Summary các kỳ); VBMA (Báo cáo thường niên 2022, 2023); KBNN qua Tạp chí Tài chính (2016–2017)'},
     }
     js = '// Sinh tự động bởi scripts/build_bond_data.py — KHÔNG sửa tay.\nwindow.BOND_DATA = ' + json.dumps(out, ensure_ascii=False, separators=(',', ':')) + ';\n'
     (ROOT / 'data/bond-data.js').write_text(js, encoding='utf-8')
