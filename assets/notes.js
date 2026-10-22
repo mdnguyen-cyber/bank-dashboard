@@ -85,16 +85,16 @@
   const atMs = at => { const t = Date.parse((at || '').replace(' ', 'T')); return isNaN(t) ? 0 : t; };
   const draftLeft = v => Math.max(0, Math.ceil((atMs(v.at) + DRAFT_DAYS * 864e5 - Date.now()) / 864e5));
   function draft(k) {
-    const pub = published(k), ids = new Set(pub.map(v => v.id)), htmls = new Set(pub.map(v => cleanStr(v.html)));
-    const all = local(k), keep = all.filter(v => !ids.has(v.id) && !htmls.has(cleanStr(v.html)) && (/-seed$/.test(v.id) || draftLeft(v) > 0))
+    const pub = published(k), ids = new Set(pub.map(v => v.id)), sig = v => cleanStr(v.html) + '|' + JSON.stringify(v.f || {}), htmls = new Set(pub.map(sig));
+    const all = local(k), keep = all.filter(v => !ids.has(v.id) && !htmls.has(sig(v)) && (/-seed$/.test(v.id) || draftLeft(v) > 0))
       .sort((a, b) => (a.at || '').localeCompare(b.at || '')).slice(-1);
     if (keep.length !== all.length) saveLocal(k, keep);
     return keep[0] ? Object.assign({}, keep[0], { _local: true }) : null;
   }
-  function versions(k) {   // bản đã đăng (mới nhất trước) + bản nháp nếu có (đứng đầu khi mới hơn)
+  function versions(k) {   // bản nháp (nếu có) + bản đã đăng, mới nhất trước
     const pub = [...published(k)].sort((a, b) => (b.at || '').localeCompare(a.at || ''));
     const d = draft(k);
-    return d ? [d, ...pub].sort((a, b) => (b.at || '').localeCompare(a.at || '')) : pub;
+    return d ? [d, ...pub] : pub;   // bản nháp luôn đứng đầu: đó là bản người dùng vừa sửa
   }
 
   /* ---------- trình soạn có thanh công cụ ---------- */
