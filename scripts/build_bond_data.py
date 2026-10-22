@@ -90,6 +90,50 @@ def macro_series(raw, iid):
     return out
 
 
+def commodity_series(raw, iid):
+    out = {}
+    for d in raw:
+        if d['tool'] != 'wi_data_commodity':
+            continue
+        for x in (d['response'].get('data') or []):
+            if isinstance(x, dict) and x.get('indicator_id') == iid:
+                for v in x.get('values', []):
+                    if v.get('value') is not None:
+                        out[v['date']] = v['value']
+    return out
+
+
+OIL = {'brent': 203084, 'wti': 203111, 'ron95': 80241, 'e10': 1276626, 'e5': 1276554, 'do': 1276560}
+
+
+def oil_block(raw):
+    S = {k: commodity_series(raw, i) for k, i in OIL.items()}
+    # RON 95-III (80241) ngừng 05/2026, thay bằng E10 RON 95-III (1276626)
+    end95 = max(S['ron95']) if S['ron95'] else ''
+    S['r95'] = {**S['ron95'], **{d: v for d, v in S['e10'].items() if d > end95}}
+    # trục thời gian: cuối tháng tới hết 2025, theo tuần từ 2026 (ngày có giá xăng dầu trong nước)
+    ds = sorted(set(S['e5']) | set(S['brent']))
+    keep = []
+    for d in ds:
+        if d >= '2026-01-01' and d in S['e5']:
+            keep.append(d)
+        elif d < '2026-01-01' and d >= '2024-09-01':
+            keep.append(d)
+    bym = {}
+    for d in keep:
+        k = d[:7] if d < '2026-01-01' else d
+        bym[k] = d
+    dts = sorted(bym.values())
+    def at(s, d):
+        ks = [k for k in s if k <= d and k >= (dt.date.fromisoformat(d) - dt.timedelta(days=9)).isoformat()]
+        return s[max(ks)] if ks else None
+    out = {'d': dts}
+    for k in ['brent', 'wti', 'r95', 'e5', 'do']:
+        out[k] = [at(S[k], d) for d in dts]
+    out['r95switch'] = end95
+    return out
+
+
 def main():
     raw = load_raw(ROOT / 'data/raw/wi')
     today = dt.date.today().isoformat()
@@ -231,13 +275,14 @@ def main():
     out = {
         'meta': {'updated': today, 'depAsof': asof, 'curveAsof': ds[-1] if ds else None, 'aucAsof': am[-1] if am else None,
                  'fiLast': fm[li] if li is not None else None, 'bigNow': big4},
-        'dep': dep, 'fi': fi, 'cb': cb, 'gb': gb,
+        'dep': dep, 'fi': fi, 'cb': cb, 'gb': gb, 'oil': oil_block(raw),
         'src': {
             'dep': 'WiData bảng 46 (lãi suất huy động 12 tháng, cá nhân, tại quầy) — các mã ' + ', '.join(str(i) for l in TIERS.values() for i, _ in l),
             'fi': 'WiData bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), nhóm Ngân hàng',
             'cb': 'WiData bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), VND',
             'curve': 'WiData bonds_gov_yield_curve 234528/234530/234531/234526/234529',
             'auc': 'WiData bonds_gov_auction_monthly (HNX, Kho bạc Nhà nước)', 'fx': 'WiData bonds_gov_secondary_yield_monthly (HNX)',
+            'oil': 'WiData — Brent (ICE, hợp đồng tương lai) 203084, WTI (CME) 203111; giá bán lẻ Petrolimex vùng 1: RON 95-III 80241 / E10 RON 95-III 1276626, E5 RON 92-II 1276554, DO 0,05S 1276560',
             'holders': 'Bộ Tài chính; ADB AsianBondsOnline (Viet Nam Market Summary các kỳ); VBMA (Báo cáo thường niên 2022, 2023); KBNN qua Tạp chí Tài chính (2016–2017)'},
     }
     js = '// Sinh tự động bởi scripts/build_bond_data.py — KHÔNG sửa tay.\nwindow.BOND_DATA = ' + json.dumps(out, ensure_ascii=False, separators=(',', ':')) + ';\n'

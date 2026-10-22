@@ -174,11 +174,11 @@ const regSt = r => { const t = new Date().toISOString().slice(0, 10), f = d => d
   return r.eff && r.eff > t ? `<span class="pill rs-soon">Chưa hiệu lực</span><div class="rs-d">từ ${f(r.eff)}</div>`
     : `<span class="pill rs-on">Đang hiệu lực</span>${r.until ? `<div class="rs-d">đến ${f(r.until)}</div>` : r.eff ? `<div class="rs-d">từ ${f(r.eff)}</div>` : ''}`; };
 const regDoc = (r, ref) => esc(r.doc) + (r.ref && ref ? `<div><a href="${ref.u}" target="_blank" rel="noopener" class="rs-a">Phân tích FinSuccess →</a></div>` : '');
-function collapsify(root, key, openIds = []) {   // mỗi tiêu đề h3.ovh thành nút thu gọn/mở phần nội dung phía sau nó (tới tiêu đề kế tiếp)
+function collapsify(root, key, openIds = [], sel = 'h3.ovh:not(.dsec)') {   // mỗi tiêu đề h3.ovh thành nút thu gọn/mở phần nội dung phía sau nó (tới tiêu đề kế tiếp)
   let st = {}; try { st = JSON.parse(localStorage.getItem('fs-col:' + key) || '{}'); } catch (e) {}
-  $$('h3.ovh', root).forEach(h => {
+  $$(sel, root).forEach(h => {
     const body = document.createElement('div'); body.className = 'ovbody';
-    while (h.nextElementSibling && !h.nextElementSibling.matches('h3.ovh')) body.appendChild(h.nextElementSibling);
+    while (h.nextElementSibling && !h.nextElementSibling.matches(sel)) body.appendChild(h.nextElementSibling);
     h.after(body); h.classList.add('coll'); h.setAttribute('role', 'button'); h.tabIndex = 0;
     const set = open => { h.classList.toggle('shut', !open); body.hidden = !open; h.setAttribute('aria-expanded', open); if (open) body.querySelectorAll('canvas').forEach(c => { const ch = Chart.getChart(c); if (ch) ch.resize(); }); };
     set(st[h.id] != null ? st[h.id] : openIds.includes(h.id));
@@ -187,8 +187,8 @@ function collapsify(root, key, openIds = []) {   // mỗi tiêu đề h3.ovh th�
   });
   const bar = document.createElement('div'); bar.className = 'colbar';
   bar.innerHTML = '<button type="button" class="lnk" data-c="1">Mở tất cả</button> · <button type="button" class="lnk" data-c="0">Thu gọn tất cả</button>';
-  const first = $('h3.ovh', root); if (first) first.before(bar);
-  bar.onclick = e => { const b = e.target.closest('[data-c]'); if (!b) return; $$('h3.ovh', root).forEach(h => { if (h.classList.contains('shut') === (b.dataset.c === '1')) h.click(); }); };
+  const first = $(sel, root); if (first) first.before(bar);
+  bar.onclick = e => { const b = e.target.closest('[data-c]'); if (!b) return; $$(sel, root).forEach(h => { if (h.classList.contains('shut') === (b.dataset.c === '1')) h.click(); }); };
 }
 function paneOverview() {
   const qu = D.quick && D.quick.updates[0];
@@ -514,6 +514,7 @@ function panePicture() {
   <div class="sub" data-pp="idx">${subIdx()}</div>`;
   viewNoteMount();
   collapsify($('#picture'), 'pic', ['pic1', 'pic2']);
+  collapsify($('#picture [data-pp="dom"]'), 'dom', ['d-fx'], 'h3.dsec');
   $$('#pSub button').forEach(b => b.onclick = () => openP(b.dataset.p));
   Object.keys(pDone).forEach(k => delete pDone[k]);
   FSK.sortable($('#pSub'), 'picture', 'p');
@@ -1323,25 +1324,40 @@ function subDom() {
     ${kpi('CPI', pc(lastv(dom.cpi).v, 2), `lõi ${pc(lastv(dom.cpiCore).v, 2)} · BQ 9T ${pc(lastv(dom.cpiAvg).v, 2)}`, lastv(dom.cpiAvg).v > 4.5 ? 'neg' : '')}
     ${kpi('Dự trữ ngoại hối', nf(res.v / 1000, 1) + ' tỷ USD', mvn(res.d))}
   </div>
+  <h3 class="ovh dsec" id="d-fx">Tỷ giá</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: dom.nhtmSell, free: dom.free }), src: FSFX.SRC })}
     ${card({ id: 'chFxGap', title: 'Chênh lệch tỷ giá tự do − NHTM bán ra', sub: 'VND · cuối tháng · dương = USD ngoài hệ thống đắt hơn ngân hàng (deck DOM-03: kỳ vọng mất giá)',
       insight: `Chênh dương kéo dài 2024–Q1/2026 (cầu USD tiền mặt, vàng) và đổi dấu từ 07/2026 — áp lực ngoài hệ thống đã qua; áp lực còn lại nằm ở lãi suất (UST, Fed).`, src: 'WiData 82226, 82223' })}
+  </div>
+  <h3 class="ovh dsec" id="d-liq">Thanh khoản và lãi suất (TT2, TT1)</h3>
+  <div class="grid g2 gap">
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động <b>${nf(Math.min(...on3(dom.onDaily)), 2)}–${nf(Math.max(...on3(dom.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...dom.onDaily.map(p => p.v)), 2)}% ngày ${dvn(dom.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh rơi vào cuối tháng. OMO lưu hành giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9 xuống 110,9 nghìn tỷ (14/10) — NHNN rút bớt tiền khi áp lực tỷ giá tăng. R-10: OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR.`,
       src: 'WiData 82237, 81522, 82268; ai_news 14/10/2026' })}
     ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · cuối tháng · NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác', ctl: true,
       insight: depIns(),
       src: 'WiData 202886, 202874, 202880' })}
+  </div>
+  <h3 class="ovh dsec" id="d-cr">Tín dụng, tiền gửi và cung tiền</h3>
+  <div class="grid g2 gap">
     ${card({ id: 'chMoney', title: 'Tín dụng, tiền gửi và M2', sub: '% YoY · tháng · chênh tín dụng − tiền gửi dương = ngân hàng phải tìm thêm nguồn vốn (R-09)', ctl: true,
       insight: `Tín dụng <b>${pc(cr.v, 1)}</b> YoY (${mvn(cr.d)}) so với tiền gửi <b>${pc(dp.v, 1)}</b> (${mvn(dp.d)}) — chênh ${nf(cr.v - dp.v, 1)} điểm %, duy trì 5–6 điểm % từ cuối 2024 (đỉnh 8,7 điểm % tháng 9/2022). M2 chậm lại còn ${pc(m2.v, 1)} (đỉnh 18,8% giữa 2025): tiền mới tạo ra ít hơn trong khi nhu cầu vốn vẫn cao. Lưu ý: số tiền gửi NHNN chưa gồm GTCG, liên ngân hàng (deck slide 58).`,
       src: 'WiData 75847, 265963, 265954' })}
     ${card({ id: 'chCredit', title: 'Tín dụng toàn hệ thống so với đầu năm', sub: '% · tháng · mỗi đường một năm · đường đỏ = chỉ tiêu 2026 ~15%',
       insight: `Đến ${mvn(ytdNow.d)}, tín dụng tăng <b>${pc(ytdNow.v, 2)}</b> so với đầu năm, thấp hơn cùng kỳ ${pc(ytdLY && ytdLY.v, 2)} dù YoY vẫn cao — nhiều khả năng bị giới hạn bởi nguồn vốn (tiền gửi tăng chậm) hơn là room. Cho vay kinh doanh BĐS tăng 19,6% đến cuối tháng 8 (Phó Thống đốc, 14/10).`,
       src: 'WiData 241732; vietnambiz 14/10/2026' })}
+  </div>
+  <h3 class="ovh dsec" id="d-cpi">Lạm phát và giá xăng dầu</h3>
+  <div class="grid g2 gap">
     ${card({ id: 'chCpi', title: 'Lạm phát', sub: '% YoY · tháng · CPI, lạm phát cơ bản, CPI bình quân từ đầu năm · đường đỏ = mục tiêu ~4,5% (NQ 244/2025/QH15)',
       insight: `CPI ${pc(lastv(dom.cpi).v, 2)} và lạm phát cơ bản ${pc(lastv(dom.cpiCore).v, 2)} cùng ở vùng cao nhất kể từ đầu 2023 — giá tăng đã lan vào lõi, không chỉ do xăng dầu. CPI bình quân 9T <b>${pc(lastv(dom.cpiAvg).v, 2)}</b> vượt nhẹ mục tiêu: NHNN gần như không có dư địa hạ lãi suất điều hành trong quý IV.`,
       src: 'WiData 75701, 202889, 75804' })}
+    ${card({ id: 'chOil', title: 'Giá dầu thế giới và giá xăng dầu bán lẻ trong nước', h: 'tall', sub: 'nghìn đồng/lít (trục trái): RON 95-III, E5 RON 92, dầu DO 0,05S — Petrolimex vùng 1 · USD/thùng (trục phải): Brent, WTI · theo tháng đến 12/2025, theo kỳ điều chỉnh từ 2026', insight: oilIns(), src: BD ? BD.src.oil : '' })}
+    ${card({ id: 'chOilChg', title: 'Truyền dẫn giá dầu vào giá xăng dầu trong nước', sub: '% thay đổi so với kỳ cuối năm 2025 · dầu thô tính bằng USD, giá bán lẻ tính bằng VND', insight: oilChgIns(), src: BD ? BD.src.oil : '' })}
+  </div>
+  <h3 class="ovh dsec" id="d-ext">Đối ngoại và tài khóa</h3>
+  <div class="grid g2 gap">
     ${card({ id: 'chExt', title: 'Đối ngoại: cán cân thương mại, FDI và dự trữ', sub: 'Tỷ USD · cột = cán cân XNK tháng, đường = FDI giải ngân lũy kế 12 tháng; trục phải = dự trữ ngoại hối',
       insight: `Cán cân thương mại thâm hụt liên tục từ 12/2025 (đáy −5,3 tỷ USD tháng 5) rồi dương lại 09/2026; FDI giải ngân 12 tháng vẫn tăng. Dự trữ ${nf(res.v / 1000, 1)} tỷ USD (${mvn(res.d)}) — thấp hơn mức 109 tỷ đầu 2022, dư địa bán USD can thiệp có hạn.`,
       src: 'WiData 255693, 76951, 76885' })}
@@ -1490,6 +1506,18 @@ function depIns() {
   return `NHTM Nhà nước: ${pc(p0.v, 2)} (${mvn(p0.d)}) → đỉnh ${pc(pk.v, 2)} (${mvn(pk.d)}) → <b>${pc(l.v, 2)}</b> (${dvn(l.d)}); NHTM lớn ${pc(lastv(dom.dep12Large).v, 2)}, NHTM khác ${pc(lastv(dom.dep12Other).v, 2)}.${N ? ` Big 4 đồng loạt hạ 50 bps ngày 20–21/10; ${N.cut.length}/${N.dp.banks.length} ngân hàng theo dõi giảm trong 30 ngày, ${N.up.length} tăng${N.up.length ? ' (' + N.up.map(b => b.n).join(', ') + ')' : ''}.` : ''}`
     + how('COF đi sau lãi suất huy động 1–3 quý (R-13): đợt tăng đầu 2026 còn đẩy COF lên đến cuối năm, đợt hạ tháng 10 ngấm dần từ 2027. Nhóm phụ thuộc tiền gửi có kỳ hạn hưởng lợi chậm hơn nếu phải giữ lãi suất cao để giữ vốn.');
 }
+function oilIns() {
+  if (!BD) return ''; const o = BD.oil, n = o.d.length - 1, y0 = o.d.findIndex(d => d >= '2026-01-01') - 1;
+  const pk = k => o[k].reduce((m, v, i) => v != null && v > m.v ? { v, i } : m, { v: -1, i: 0 });
+  const dp = pk('do'), bp = pk('brent');
+  return `${dvn(o.d[n])}: Brent <b>${nf(o.brent[n], 1)} USD/thùng</b>, RON 95 <b>${nf(o.r95[n], 2)}</b>, E5 RON 92 ${nf(o.e5[n], 2)}, dầu DO <b>${nf(o.do[n], 2)} nghìn đồng/lít</b>. Đỉnh năm: Brent ${nf(bp.v, 1)} USD (${dvn(o.d[bp.i])}), DO ${nf(dp.v, 2)} (${dvn(o.d[dp.i])}).${o.do[n] > o.r95[n] ? ' Dầu DO đắt hơn xăng RON 95 — ngược với thông thường, do giá diesel thế giới tăng mạnh hơn xăng trong đợt sốc năm nay.' : ''}`
+    + how('Xăng dầu chiếm khoảng 3–4% rổ CPI và đi vào chi phí vận tải, sản xuất; dầu DO tác động mạnh tới vận tải hàng hóa. Giá trong nước điều chỉnh theo kỳ điều hành của Bộ Công Thương và có quỹ bình ổn nên trễ và mượt hơn giá thế giới. Giá xăng dầu cao kéo dài là lý do CPI và lạm phát cơ bản cùng tăng, làm hẹp dư địa hạ lãi suất của NHNN.');
+}
+function oilChgIns() {
+  if (!BD) return ''; const o = BD.oil, n = o.d.length - 1, b = o.d.findIndex(d => d >= '2026-01-01') - 1, ch = k => o[k][b] ? (o[k][n] / o[k][b] - 1) * 100 : null;
+  return `So với cuối 2025: Brent ${sg(ch('brent'), 0)}, WTI ${sg(ch('wti'), 0)}; trong nước RON 95 ${sg(ch('r95'), 0)}, E5 ${sg(ch('e5'), 0)}, dầu DO <b>${sg(ch('do'), 0)}</b>. Xăng trong nước tăng ${ch('r95') < ch('brent') ? 'ít' : 'nhiều'} hơn dầu thô — thuế, phí cố định theo lít làm phần trăm thay đổi của giá bán lẻ nhỏ hơn giá dầu thô.`
+    + how('Mức tăng giá bán lẻ trong nước là phần đã truyền vào CPI; phần dầu thô tăng chưa truyền hết (chênh giữa hai nhóm đường) là áp lực còn lại nếu giá thế giới giữ ở mức cao.');
+}
 function subBond() {
   if (!BD) return '';
   const N = bondNums(), { dp, n, T, fi, pl, cv, ci, c3, a, ai } = N;
@@ -1499,7 +1527,7 @@ function subBond() {
   const sl = N.slope(ci), sl3 = N.slope(c3);
   const aw = a.inv[ai] ? a.win[ai] / a.inv[ai] * 100 : null;
   const fi12 = fi.mat.bank.slice(0, 12).reduce((s, v) => s + (v || 0), 0);
-  return `<h3 class="sub" style="margin:26px 0 6px;font-size:1.15rem">Thị trường vốn: FI bond, TPDN và G-bond</h3>
+  return `<h3 class="ovh dsec" id="d-bond">Thị trường trái phiếu: tổng quan</h3>
   <p class="sec-sub">Ngân hàng phát hành trái phiếu (FI bond) để có vốn trung dài hạn; chênh coupon FI − huy động 12T đo chi phí vốn dài hạn. TPDN toàn thị trường (chậm trả, đáo hạn) là rủi ro tín dụng gián tiếp; G-bond là lãi suất phi rủi ro, do ngân hàng và nhóm bảo hiểm (chủ yếu BHXH) nắm gần hết.</p>
   <p class="muted" style="margin:-4px 0 12px">Lãi suất huy động đến ${dvn(BD.meta.depAsof)} · lợi suất TPCP đến ${dvn(BD.meta.curveAsof)} · TPDN, đấu thầu theo tháng (tháng ${mvn(cb.months[cbN])} mới tính đến ${dvn(fi.cf.asof)}).</p>
   <div class="kpis">
@@ -1509,27 +1537,27 @@ function subBond() {
     ${kpi('TPCP 10 năm', pc(cv['10Y'][ci], 2), `1 năm ${pc(cv['1Y'][ci], 2)} · dốc 10Y−1Y ${sg(sl * 100, 0, ' bps')} (${sg((sl - sl3) * 100, 0, ' bps')} 3 tháng)`)}
     ${kpi('Đấu thầu TPCP tháng ' + mvn(a.months[ai]).slice(0, 2), pc(aw, 0) + ' trúng', `gọi ${nk(a.inv[ai])} · trúng ${nk(a.win[ai])} · 10Y ${pc(a.y['10 năm'][ai], 2)}`)}
   </div>
-  <h4 class="sub" style="margin:18px 0 8px;font-size:1.05rem">FI bond: trái phiếu ngân hàng</h4>
+  <h3 class="ovh dsec" id="d-fi">FI bond: trái phiếu ngân hàng</h3>
   <div class="grid g2 gap">
     ${card({ id: 'bFiCpn', title: 'Chi phí vốn dài hạn: coupon trái phiếu ngân hàng vs huy động 12T', sub: '%/năm · coupon bình quân gia quyền theo giá trị phát hành từng tháng · đường đỏ = Big 4 12T · cột = chênh coupon 1–3 năm riêng lẻ − Big 4 (trục phải)', insight: bFiCpnIns(N), src: BD.src.fi + '; ' + BD.src.dep })}
     ${card({ id: 'bFiIss', title: 'Ngân hàng phát hành trái phiếu theo kỳ hạn', sub: 'tỷ đồng/tháng · giá trị phát hành thực tế · ≤1 năm, 1–3 năm, 3–5 năm, >5 năm (>5 năm thường là nợ thứ cấp bổ sung vốn cấp 2)', insight: bFiIssIns(N), src: BD.src.fi })}
     ${card({ id: 'bFiMat', title: 'Trái phiếu ngân hàng: dư nợ và lịch đáo hạn', sub: 'đường = dư nợ (nghìn tỷ, trục phải) · cột = gốc đã trả + mua lại trước hạn theo tháng; phần sau tháng hiện tại = gốc đáo hạn theo lịch (tỷ đồng)', insight: bFiMatIns(N), src: BD.src.fi })}
   </div>
-  <h4 class="sub" style="margin:18px 0 8px;font-size:1.05rem">TPDN toàn thị trường</h4>
+  <h3 class="ovh dsec" id="d-cb">TPDN toàn thị trường</h3>
   <div class="grid g2 gap">
     ${card({ id: 'bCbIss', title: 'Phát hành TPDN theo ngành', sub: 'tỷ đồng/tháng · VND · Tài chính (ngân hàng, chứng khoán, tài chính tiêu dùng), Bất động sản, còn lại', insight: bCbIssIns(N), src: BD.src.cb })}
     ${card({ id: 'bCbLate', title: 'TPDN chậm trả gốc và lãi', sub: 'cột = dư nợ chậm trả cuối tháng (nghìn tỷ) · đường = số mã mới chậm trả trong tháng (trục phải)', insight: bCbLateIns(N), src: BD.src.cb })}
     ${card({ id: 'bCbMat', title: 'Lịch đáo hạn TPDN 15 tháng tới theo ngành', sub: 'tỷ đồng/tháng · gốc đến hạn theo dư nợ hiện tại (chưa trừ mua lại trước hạn sau này)', insight: bCbMatIns(N), src: BD.src.cb })}
     ${card({ id: 'bCbSec', title: `Chậm trả theo ngành · ${mvn(BD.cb.lateBySecM)}`, sub: 'nghìn tỷ đồng · dư nợ chậm trả gốc + lãi, VND', insight: bCbSecIns(N), src: BD.src.cb })}
   </div>
-  <h4 class="sub" style="margin:18px 0 8px;font-size:1.05rem">G-bond (trái phiếu chính phủ)</h4>
+  <h3 class="ovh dsec" id="d-gb">G-bond (trái phiếu chính phủ)</h3>
   <div class="grid g2 gap">
     ${card({ id: 'bCurve', title: 'Đường cong lợi suất TPCP Việt Nam', sub: `%/năm theo kỳ hạn · ${dvn(cv.d[ci])} so với 3 tháng trước, đầu năm và 1 năm trước`, insight: bCurveIns(N), src: BD.src.curve })}
     ${card({ id: 'bCurveTs', title: 'Lợi suất TPCP 1, 5, 10 năm và độ dốc 10Y − 1Y', sub: '%/năm theo ngày · cột xám = độ dốc (trục phải, điểm %)', h: 'tall', src: BD.src.curve })}
     ${card({ id: 'bAuc', title: 'Đấu thầu TPCP: gọi thầu, đặt thầu, trúng thầu', sub: 'nghìn tỷ đồng/tháng · Kho bạc Nhà nước, gồm phát hành thêm · đường = tỷ lệ trúng/gọi thầu (trục phải)', insight: bAucIns(N), src: BD.src.auc })}
     ${card({ id: 'bAucY', title: 'Lãi suất trúng thầu theo kỳ hạn', sub: '%/năm · bình quân gia quyền trong tháng · tháng không trúng thầu để trống', insight: bAucYIns(N), src: BD.src.auc })}
     ${card({ id: 'bHold', title: 'Ai nắm giữ TPCP: ngân hàng vs nhóm bảo hiểm', sub: '% dư nợ TPCP · nhóm bảo hiểm = BHXH Việt Nam, Bảo hiểm tiền gửi và doanh nghiệp bảo hiểm (BHXH chiếm phần lớn) · 2016–2017 là nhóm "nhà đầu tư dài hạn" · cột nhạt = tách hai nhóm ước từ biểu đồ ADB, tổng theo số công bố', insight: bHoldIns(), src: BD.src.holders })}
-    ${card({ id: 'bTen', title: 'Trúng thầu TPCP theo kỳ hạn: ai đang mua', sub: '% giá trị trúng thầu trong năm (năm hiện tại tính đến tháng mới nhất) · 5–10 năm chủ yếu ngân hàng; 15–30 năm chủ yếu BHXH và doanh nghiệp bảo hiểm', insight: bTenIns(), src: BD.src.auc })}
+    ${card({ id: 'bTen', title: 'Cơ cấu kỳ hạn trúng thầu TPCP', sub: '% giá trị trúng thầu sơ cấp trong năm (năm hiện tại tính đến tháng mới nhất) · đây là lượng mua mới, không phải lượng nắm giữ · kỳ hạn 5–10 năm chủ yếu ngân hàng mua, 15–30 năm chủ yếu BHXH và doanh nghiệp bảo hiểm', insight: bTenIns(), src: BD.src.auc })}
     ${card({ id: 'bFx', title: 'Khối ngoại mua/bán ròng TPCP trên thứ cấp', sub: 'tỷ đồng/tháng · tổng các nhóm kỳ hạn còn lại', insight: bFxIns(N), src: BD.src.fx })}
   </div>`;
 }
@@ -1608,7 +1636,7 @@ function bHoldIns() {
 function bTenIns() {
   const T = tenYears(), c = T[T.length - 1], p = T[T.length - 2], lng = x => ['15 năm', '20 năm', '30 năm'].reduce((s, k) => s + (x.sh[k] || 0), 0), mid = x => ['5 năm', '7 năm', '10 năm'].reduce((s, k) => s + (x.sh[k] || 0), 0);
   return `${c.y} (đến ${mvn(c.last)}): kỳ hạn 10 năm chiếm <b>${pc(c.sh['10 năm'], 0)}</b> lượng trúng thầu, 5–10 năm cộng lại ${pc(mid(c), 0)}, 15–30 năm chỉ ${pc(lng(c), 0)} (năm ${p.y}: ${pc(lng(p), 0)}; năm ${T[0].y}: ${pc(lng(T[0]), 0)}). Kho bạc đã chuyển hẳn sang phát hành 5–10 năm.`
-    + how('Kho bạc bán được kỳ hạn nào cho thấy ai đang mua: kỳ hạn 15–30 năm gần như chỉ BHXH và doanh nghiệp bảo hiểm nhận; ngân hàng mua 5–10 năm để giữ thanh khoản. Phần dài hạn co lại nghĩa là cầu từ nhóm bảo hiểm yếu đi và Kho bạc phải dựa vào ngân hàng.');
+    + how('Biểu đồ nắm giữ bên cạnh là lượng tồn (ai đang giữ); biểu đồ này là dòng mua mới mỗi năm. Kỳ hạn bán được cho biết gián tiếp nhóm nào đang mua thêm: kỳ hạn 15–30 năm gần như chỉ BHXH và doanh nghiệp bảo hiểm nhận; ngân hàng mua 5–10 năm để giữ thanh khoản. Phần dài hạn co lại nghĩa là cầu từ nhóm bảo hiểm yếu đi và Kho bạc phải dựa vào ngân hàng.');
 }
 function bFxIns() {
   const f = BD.gb.fx, n = f.months.length, s12 = f.net.slice(-12).reduce((a, v) => a + (v || 0), 0);
@@ -1660,6 +1688,14 @@ function chBond() {
     L('Trúng / gọi thầu', am.map((_, i) => a.inv[k0 + i] ? +(a.win[k0 + i] / a.inv[k0 + i] * 100).toFixed(0) : null), C.red, { yAxisID: 'y1', dp: 0, borderWidth: 2.2 })] },
     options: { scales: { y: numAxis('nghìn tỷ đồng'), y1: pctAxis('', { position: 'right', min: 0, max: 120, grid: { display: false } }) } } });
   mk('bAucY', { type: 'line', data: { labels: am.map(mvn), datasets: [['5 năm', C.teal], ['10 năm', C.navy], ['15 năm', C.purple]].map(([t, c]) => L(t, a.y[t].slice(k0), c, { pointRadius: 3, spanGaps: false, borderWidth: t === '10 năm' ? 2.6 : 1.8 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
+  const o = BD.oil, ol = o.d.map(dvn);
+  mk('chOil', { type: 'line', data: { labels: ol, datasets: [
+    L('RON 95' , o.r95, C.navy, { unit: ' nghìn đ/lít', dp: 2, borderWidth: 2.4 }), L('E5 RON 92', o.e5, C.teal, { unit: ' nghìn đ/lít', dp: 2 }), L('Dầu DO 0,05S', o.do, C.purple, { unit: ' nghìn đ/lít', dp: 2, borderWidth: 2.4 }),
+    L('Brent', o.brent, C.red, { yAxisID: 'y1', unit: ' USD/thùng', dp: 1, borderDash: [5, 4] }), L('WTI', o.wti, C.gold, { yAxisID: 'y1', unit: ' USD/thùng', dp: 1, borderDash: [2, 3] })] },
+    options: { scales: { y: numAxis('nghìn đồng/lít', { beginAtZero: false, ticks: { callback: v => nf(v, 0) } }), y1: { position: 'right', beginAtZero: false, grid: { display: false }, title: { display: true, text: 'USD/thùng' }, ticks: { callback: v => nf(v, 0) } } } } });
+  const b0 = o.d.findIndex(d => d >= '2026-01-01') - 1, od = o.d.slice(b0), rel = k => o[k].slice(b0).map(v => v == null || !o[k][b0] ? null : +((v / o[k][b0] - 1) * 100).toFixed(1));
+  mk('chOilChg', { type: 'line', data: { labels: od.map(dvn), datasets: [L('Brent', rel('brent'), C.red, { borderDash: [5, 4] }), L('WTI', rel('wti'), C.gold, { borderDash: [2, 3] }), L('RON 95', rel('r95'), C.navy, { borderWidth: 2.4 }), L('E5 RON 92', rel('e5'), C.teal), L('Dầu DO', rel('do'), C.purple, { borderWidth: 2.4 })] },
+    options: { plugins: { refLines: { lines: [{ value: 0, label: '', color: C.grey }] } }, scales: { y: pctAxis('') } } });
   const H = BD.gb.holders, est = H.map(h => !!h.e);
   mk('bHold', { type: 'bar', data: { labels: H.map(h => h.p), datasets: [
     { label: 'Ngân hàng', data: H.map(h => h.bank), backgroundColor: est.map(e => e ? 'rgba(29,38,120,.45)' : 'rgba(29,38,120,.85)'), stack: 's', unit: '%', dp: 1 },

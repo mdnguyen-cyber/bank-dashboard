@@ -32,7 +32,7 @@ def load_raw(folder):
         d = json.load(open(p, encoding='utf-8'))
         d['_file'] = p.split('/')[-1]
         r = d.get('response')
-        if d.get('tool') == 'wi_data_macro' and isinstance(r, dict) and isinstance(r.get('data'), dict) and 'cot' in r['data']:
+        if d.get('tool') in ('wi_data_macro', 'wi_data_commodity') and isinstance(r, dict) and isinstance(r.get('data'), dict) and 'cot' in r['data']:
             # bản trả dạng bảng (cot/dong) → danh sách chuỗi như bản cũ; bảng danh mục (list_indicators) không phải chuỗi số → bỏ qua
             r['data'] = rows(r) if {'indicator_id', 'values'} <= set(r['data']['cot']) else []
         out.append(d)

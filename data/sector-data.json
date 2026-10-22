@@ -2985,8 +2985,8 @@
     "v": 98.03
    },
    {
-    "d": "2026-10-14",
-    "v": 106.36
+    "d": "2026-10-22",
+    "v": 110.82
    }
   ]
  },
@@ -52224,7 +52224,7 @@
    "id": "R-02",
    "layer": "Quốc tế",
    "rule": "Fed hạ lãi suất / kỳ vọng cắt tăng",
-   "now": "Fed TĂNG 25 bps ngày 16/09/2026 lên 3,75–4,00%; EFFR 3,88%; kỳ vọng (phương pháp FedWatch, giá ZQ 2026-10-21): phiên 28/10 tăng 13%, giảm 0%; đến 09/12 xác suất cao hơn hiện hành 91%",
+   "now": "Fed TĂNG 25 bps ngày 16/09/2026 lên 3,75–4,00%; EFFR 3,88%; kỳ vọng (phương pháp FedWatch, giá ZQ 2026-10-22): phiên 28/10 tăng 13%, giảm 0%; đến 09/12 xác suất cao hơn hiện hành 91%",
    "state": "risk",
    "impact": "Chênh lệch VND–USD hẹp lại, dư địa nới của NHNN giảm"
   },
@@ -52240,7 +52240,7 @@
    "id": "R-06",
    "layer": "Quốc tế",
    "rule": "Brent tăng > 20% YoY",
-   "now": "Brent 106,4 USD/thùng · +63% YoY",
+   "now": "Brent 110,8 USD/thùng · +70% YoY",
    "state": "risk",
    "impact": "Kỳ vọng lạm phát tăng, NHNN thận trọng hơn"
   },
