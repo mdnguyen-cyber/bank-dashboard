@@ -1326,7 +1326,7 @@ function subDom() {
   </div>
   <h3 class="ovh dsec" id="d-fx">Tỷ giá, đối ngoại và tài khóa</h3>
   <div class="grid g2 gap">
-    ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: dom.nhtmSell, free: dom.free }), src: FSFX.SRC })}
+    ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: dom.nhtmSell, free: dom.free, freeD: dom.freeD, nhtmD: dom.nhtmD }), src: FSFX.SRC })}
     ${card({ id: 'chFxGap', title: 'Chênh lệch tỷ giá tự do − NHTM bán ra', sub: 'VND · cuối tháng · dương = USD ngoài hệ thống đắt hơn ngân hàng (deck DOM-03: kỳ vọng mất giá)',
       insight: `Chênh dương kéo dài 2024–Q1/2026 (cầu USD tiền mặt, vàng) và đổi dấu từ 07/2026 — áp lực ngoài hệ thống đã qua; áp lực còn lại nằm ở lãi suất (UST, Fed).`, src: 'WiData 82226, 82223' })}
     ${card({ id: 'chExt', title: 'Đối ngoại: cán cân thương mại, FDI và dự trữ', sub: 'Tỷ USD · cột = cán cân XNK tháng, đường = FDI giải ngân lũy kế 12 tháng; trục phải = dự trữ ngoại hối',
@@ -1368,7 +1368,7 @@ function fxIns() {
   return `${dvn(c.d)}: trung tâm <b>${nf(c.v)}</b> (${sg((c.v / c0 - 1) * 100, 1)}% từ đầu năm), trần ${nf(ce.v)}, NHNN bán can thiệp ${nf(se.v)}. ${vs.v != null && vs.d >= ns.d ? 'Vietcombank' : 'NHTM'} bán ra <b>${nf(mkt.v)}</b> — cách trần <b>${nf(ce.v - mkt.v)}đ</b> (${pc((ce.v - mkt.v) / ce.v * 100, 2)}). DXY <b>${nf(x.v, 1)}</b> (${dvn(x.d)}): ${sg((x.v / x0 - 1) * 100, 1)}% từ đầu năm, ${sg((x.v / x1m - 1) * 100, 1)}% 1 tháng.`
     + how('Tỷ giá NHTM sát trần nghĩa là NHNN phải bán USD (giá bán can thiệp = trần − 50đ) để giữ biên độ, làm hút VND và đẩy lãi suất liên ngân hàng lên. DXY tăng là áp lực từ bên ngoài; khi DXY giảm mà USD/VND vẫn đi lên thì áp lực chủ yếu nằm trong nước (cầu ngoại tệ, chênh lãi suất VND − USD). NHNN nâng tỷ giá trung tâm là chủ động dời cả hành lang lên.');
 }
-function drFx() { const cfg = FSFX.config({ nhtmSell: dom.nhtmSell, free: dom.free }, { numAxis }); if (cfg) mk('chFx', cfg); }
+function drFx() { const cfg = FSFX.config({ nhtmSell: dom.nhtmSell, free: dom.free, freeD: dom.freeD, nhtmD: dom.nhtmD }, { numAxis }); if (cfg) mk('chFx', cfg); }
 function chDom() {
   const labs = monthsFrom('2021-01', TODAY.slice(0, 7));
   drFx();

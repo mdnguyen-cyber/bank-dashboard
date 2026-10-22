@@ -441,7 +441,7 @@ function paneMacro() {
     </article>
   </div>
   <div class="grid g2 gap">
-    ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: fx.nhtmSell, free: fx.free }), src: FSFX.SRC })}
+    ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: fx.nhtmSell, free: fx.free, freeD: fx.freeD, nhtmD: fx.nhtmD }), src: FSFX.SRC })}
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động mạnh <b>${nf(Math.min(...on3(MA.onDaily)), 2)}–${nf(Math.max(...on3(MA.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...MA.onDaily.map(v => v.v)), 2)}% ngày ${dvn(MA.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh thường rơi vào cuối tháng (căng mùa vụ) và NHNN bơm OMO đúng các phiên đó. Theo deck (R-10), OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR — nên TT2 hạ không tự kéo lãi suất huy động TT1 xuống.`,
       src: 'WiData macro 82237, 81522, 82268' })}
@@ -477,7 +477,7 @@ function paneMacro() {
       return `<tr class="${g.flag ? 'hl' : soon ? 'soon' : ''}"><td style="white-space:nowrap">${g.id}${soon ? `<div><span class="pill rs-soon">Chưa hiệu lực</span></div><div class="rs-d">từ ${f(g.eff)}</div>` : ''}</td><td>${esc(g.rule)}</td><td>${esc(g.level)}${g.flag ? `<div class="note keep">⚠ ${esc(g.flag)}</div>` : ''}</td><td>${esc(g.doc)}${g.ref && D.regRef ? `<div><a href="${D.regRef.u}" target="_blank" rel="noopener" class="rs-a">Phân tích FinSuccess →</a></div>` : ''}</td><td>${esc(g.path)}</td></tr>`; }).join('')}
     </tbody></table></div></article>`;
 
-  { const cfg = FSFX.config({ nhtmSell: fx.nhtmSell, free: fx.free }, { numAxis }); if (cfg) mk('chFx', cfg); }
+  { const cfg = FSFX.config({ nhtmSell: fx.nhtmSell, free: fx.free, freeD: fx.freeD, nhtmD: fx.nhtmD }, { numAxis }); if (cfg) mk('chFx', cfg); }
   const onL = MA.onDaily.map(v => v.d), netM = Object.fromEntries(MA.omoNetDaily.map(v => [v.d, v.v])), omoM = Object.fromEntries(MA.omoRateDaily.map(v => [v.d, v.v]));
   let omoLast = null; const omoD = onL.map(d => (omoLast = omoM[d] ?? omoLast)), netD = onL.map(d => netM[d] ?? null);
   mk('chOn', { type: 'bar', data: { labels: onL.map(d => dvn(d)), datasets: [

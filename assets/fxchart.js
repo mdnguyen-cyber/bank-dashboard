@@ -13,8 +13,8 @@
   const lastArr = a => (a && a.length ? a[a.length - 1] : { d: null, v: null });
 
   const TITLE = 'Hành lang tỷ giá USD/VND và chỉ số USD (DXY)';
-  const SUB = 'VND · theo ngày từ 2021 · trung tâm, trần/sàn ±5%, giá NHNN bán can thiệp, NHTM và tự do bán ra (cuối tháng), Vietcombank bán ra · trục phải = DXY';
-  const SRC = 'Ngân hàng Nhà nước (tỷ giá trung tâm, trần, sàn, giá bán của Sở Giao dịch NHNN); Vietcombank; DXY tính theo công thức ICE từ tỷ giá tham chiếu ECB; NHTM và tự do: số liệu tổng hợp cuối tháng';
+  const SUB = 'VND · theo ngày từ 2021 · trung tâm, trần/sàn ±5%, giá NHNN bán can thiệp, NHTM và tự do bán ra (theo ngày từ 07/2025, theo tuần trước đó), Vietcombank bán ra · trục phải = DXY';
+  const SRC = 'Ngân hàng Nhà nước (tỷ giá trung tâm, trần, sàn, giá bán của Sở Giao dịch NHNN); Vietcombank; DXY tính theo công thức ICE từ tỷ giá tham chiếu ECB; NHTM và tự do: WiData 82223, 82226';
 
   function insight(m) {   // m = { nhtmSell: [{d,v}], free: [{d,v}] }
     const c = last('vn_sbv_central_d'), ce = last('vn_sbv_ceil_d'), se = last('vn_sbv_sell_d'), x = last('dxy_d'), ns = lastArr(m.nhtmSell), vs = last('usdvnd_vcb_sell');
@@ -29,6 +29,10 @@
     if (!labs.length) return null;
     const at = k => { const x = S(k), mp = {}; x.d.forEach((d, i) => mp[d] = x.v[i]); return labs.map(d => mp[d] ?? null); };
     const eom = arr => { const mp = {}; (arr || []).forEach(p => { mp[p.d.slice(0, 7)] = p.v; }); return labs.map((d, i) => (i === labs.length - 1 || labs[i + 1].slice(0, 7) !== d.slice(0, 7)) ? (mp[d.slice(0, 7)] ?? null) : null); };
+    const daily = arr => {   // chuỗi ngày/tuần (Wi): mỗi ngày trên trục lấy giá gần nhất trong 8 ngày trước đó
+      const a = (arr || []).slice().sort((p, q) => p.d < q.d ? -1 : 1); let j = -1;
+      return labs.map(d => { while (j + 1 < a.length && a[j + 1].d <= d) j++; if (j < 0) return null; const gap = (new Date(d) - new Date(a[j].d)) / 864e5; return gap <= 8 ? a[j].v : null; });
+    };
     const dx = S('dxy_d'), dm = {}; dx.d.forEach((d, i) => dm[d] = dx.v[i]);
     let lastDx = null; const dxa = labs.map(d => { if (dm[d] != null) lastDx = dm[d]; return dm[d] ?? lastDx; });
     const L = (label, data, color, o = {}) => Object.assign({ type: 'line', label, data, borderColor: color, backgroundColor: color, borderWidth: 2, pointRadius: 0, dp: 0, unit: '', spanGaps: true }, o);
@@ -37,8 +41,8 @@
       L('Trần biên độ (+5%)', at('vn_sbv_ceil_d'), C.red, { borderDash: [5, 4], borderWidth: 1.5 }),
       L('Sàn biên độ (−5%)', at('vn_sbv_floor_d'), C.grey, { borderDash: [5, 4], borderWidth: 1.2, hidden: true }),
       L('NHNN bán can thiệp', at('vn_sbv_sell_d'), C.purple, { borderDash: [2, 3], borderWidth: 1.5 }),
-      L('NHTM bán ra (cuối tháng)', eom(m.nhtmSell), C.navy, { borderWidth: 2.4, pointRadius: 2 }),
-      L('Tự do bán ra (cuối tháng)', eom(m.free), C.gold, { pointRadius: 2 }),
+      m.nhtmD && m.nhtmD.length ? L('NHTM bán ra', daily(m.nhtmD), C.navy, { borderWidth: 2 }) : L('NHTM bán ra (cuối tháng)', eom(m.nhtmSell), C.navy, { borderWidth: 2.4, pointRadius: 2 }),
+      m.freeD && m.freeD.length ? L('Tự do bán ra', daily(m.freeD), C.gold, { borderWidth: 1.6 }) : L('Tự do bán ra (cuối tháng)', eom(m.free), C.gold, { pointRadius: 2 }),
       L('Vietcombank bán ra', at('usdvnd_vcb_sell'), C.vcb, { pointRadius: 3, spanGaps: false }),
       L('DXY (trục phải)', dxa, C.dxy, { dp: 1, yAxisID: 'y1', borderWidth: 1.4 })] },
       options: { scales: { y: axis.numAxis('VND', { beginAtZero: false }), y1: axis.numAxis('DXY', { position: 'right', beginAtZero: false, grid: { display: false }, ticks: { callback: v => nf(v, 0) } }) } } };

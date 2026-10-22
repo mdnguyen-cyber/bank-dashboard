@@ -39,6 +39,20 @@ def load_raw(folder):
     return out
 
 
+def daily_fx(raw, iid):
+    """Chuỗi ngày/tuần (Wi nén) của một chỉ tiêu vĩ mô từ mọi lần kéo, từ 2021."""
+    out = {}
+    for d in raw:
+        if d.get('tool') != 'wi_data_macro':
+            continue
+        for s in (d['response'].get('data') or []):
+            if isinstance(s, dict) and s.get('indicator_id') == iid and s.get('time_type') in ('daily', 'weekly'):
+                for v in s.get('values', []):
+                    if v.get('value') is not None and v['date'] >= '2021-01-01':
+                        out[v['date']] = v['value']
+    return [{'d': k, 'v': out[k]} for k in sorted(out)]
+
+
 def rows(resp):
     data = resp.get('data', resp)
     if isinstance(data, dict) and 'cot' in data:
@@ -525,7 +539,7 @@ def build(raw):
                             bym[k] = {'d': v['date'], 'v': v['value']}
         return [bym[k] for k in sorted(bym)]
     M = {
-        'fx': {'nhtmSell': ser(82223), 'central': ser(82227), 'ceiling': ser(82228), 'sbvSell': ser(82231), 'free': ser(82226), 'dxy': ser(235028),
+        'fx': {'nhtmSell': ser(82223), 'central': ser(82227), 'ceiling': ser(82228), 'sbvSell': ser(82231), 'free': ser(82226), 'freeD': daily_fx(raw, 82226), 'nhtmD': daily_fx(raw, 82223), 'dxy': ser(235028),
                'note': 'Cuối tháng (Wi nén chuỗi ngày về tháng). Tỷ giá NHTM bán ra, trung tâm, trần biên độ, giá NHNN bán can thiệp, tỷ giá tự do bán ra.'},
         'rates': {'onMonthEnd': ser(82237), 'omo': ser(81522), 'dep12State': ser(202886), 'dep12Other': ser(202880), 'dep12Bank': ser(BANK['dep12']), 'dep12Id': BANK['dep12'], 'effr': ser(7079)},
         'onDaily': daily_merged(raw, 82237), 'omoNetDaily': daily_merged(raw, 82268), 'omoRateDaily': daily_merged(raw, 81522),

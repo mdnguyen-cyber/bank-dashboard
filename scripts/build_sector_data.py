@@ -251,6 +251,7 @@ def main():
     }
     D['dom'] = {
         'nhtmSell': lst(82223), 'nhtmBuy': lst(82224), 'free': lst(82226), 'central': lst(82227),
+        'freeD': [p for p in daily_merged(raw, 82226) if p['d'] >= '2021-01-01'], 'nhtmD': [p for p in daily_merged(raw, 82223) if p['d'] >= '2021-01-01'],
         'ceiling': lst(82228), 'sbvSell': lst(82231),
         'on': lst(82237), 'omo': lst(81522), 'net': lst(82268, '2021-01'),
         'dep12State': lst(202886), 'dep12Large': lst(202874, '2021-01'), 'dep12Other': lst(202880, '2021-01'),
