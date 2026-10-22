@@ -875,8 +875,9 @@ function gUS() {
     ${kpi('Taylor V1 (PCE lõi)', pc(tl('v1'), 2), `trimmed ${pc(tl('v1_trim'), 2)} · FFR ${pc(tl('ffr'), 2)}`, tl('v1') - tl('ffr') > 0.5 ? 'neg' : '')}
     ${kpi('CPI', pc(glast('us_cpi_yoy').v, 2), `lõi ${pc(glast('us_cpi_core_yoy').v, 2)} · ${mvn(glast('us_cpi_yoy').d)}`, glast('us_cpi_yoy').v > 3 ? 'neg' : '')}
     ${kpi('PCE lõi', pc(glast('us_pce_core_yoy').v, 2), `supercore ${pc(glast('us_pce_supercore_yoy').v, 2)} · ${mvn(glast('us_pce_core_yoy').d)}`, 'neg')}
-    ${kpi('PPI cầu cuối cùng', pc(glast('us_ppi_fd_yoy').v, 1), `lõi ${pc(glast('us_ppi_core_yoy').v, 1)} · ${mvn(glast('us_ppi_fd_yoy').d)}`)}
     ${kpi('Thất nghiệp', pc(glast('us_unrate').v, 1), `NFP ${sg(glast('us_payems_chg').v, 0, ' nghìn')} · ${mvn(glast('us_unrate').d)}`)}
+    ${(() => { const br = glast('us_brent_d'), x = gs('us_brent_d'), i0 = x.d.findIndex(d => d >= (br.d || '').slice(0, 4) + '-01-01'), b0 = i0 >= 0 ? x.v[i0] : null;
+      return kpi('Giá dầu Brent', nf(br.v, 1) + ' USD', `${b0 ? sg((br.v / b0 - 1) * 100, 0) + ' từ đầu năm · ' : ''}WTI ${nf(glast('us_wti_d').v, 1)} · ${dvn(br.d)}`, b0 && br.v > b0 * 1.2 ? 'neg' : ''); })()}
   </div>
   <h3 class="sec2">Lãi suất Fed và kỳ vọng lãi suất</h3>
   ${fedWatchCard()}

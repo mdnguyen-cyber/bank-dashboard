@@ -16,7 +16,7 @@ const today = new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);   //
 const files = {};
 
 async function newPage(browser) {
-  const p = await browser.newPage({ viewport: { width: 1008, height: 1300 } });
+  const p = await browser.newPage({ viewport: { width: 1008, height: 1300 }, deviceScaleFactor: 3 });
   p.on('pageerror', e => console.warn('  lỗi trang:', e.message));
   p.on('dialog', d => d.dismiss());
   if (process.env.CHARTJS_LOCAL) await p.route('**/chart.umd.min.js', r => r.fulfill({ path: process.env.CHARTJS_LOCAL, contentType: 'application/javascript' }));
