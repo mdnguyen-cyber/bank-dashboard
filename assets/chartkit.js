@@ -335,3 +335,40 @@
   const add = () => document.body.appendChild(a);
   if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
 })();
+
+/* Nút "Xuất PDF": in trang đang xem (tab đang mở) ra PDF qua hộp thoại in của trình duyệt.
+   Trước khi in: mở mọi mục đang thu gọn, đổi biểu đồ canvas thành ảnh để bản in nét và không bị co giãn; in xong trả lại như cũ. */
+(function () {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'pdfbtn'; b.textContent = 'Xuất PDF'; b.title = 'Xuất trang đang xem ra PDF (chọn "Lưu dưới dạng PDF" trong hộp thoại in)';
+  let undo = [];
+  const restore = () => {
+    undo.reverse().forEach(f => { try { f(); } catch (e) {} }); undo = [];
+    document.body.classList.remove('print-all');
+  };
+  b.onclick = () => {
+    restore();
+    document.body.classList.add('print-all'); undo.push(() => document.body.classList.remove('print-all'));
+    const root = document.querySelector('.pane.active') || document.querySelector('main') || document.body;
+    root.querySelectorAll('.coll.shut').forEach(h => { h.click(); undo.push(() => { if (!h.classList.contains('shut')) h.click(); }); });
+    setTimeout(() => {
+      root.querySelectorAll('canvas').forEach(c => {
+        if (!c.offsetParent || !c.width) return;
+        const ch = window.Chart && Chart.getChart(c); if (ch) ch.resize();
+        try {
+          const img = new Image(); img.src = c.toDataURL('image/png'); img.className = 'pdf-img'; img.alt = c.getAttribute('aria-label') || '';
+          c.after(img); c.classList.add('pdf-hide');
+          undo.push(() => { img.remove(); c.classList.remove('pdf-hide'); });
+        } catch (e) {}
+      });
+      const t = document.title, tab = (document.querySelector('[role=tab].active,[role=tab].on') || {}).textContent || '';
+      const d = new Date(), ds = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
+      document.title = `FinSuccess_${(t.split('·')[0] || t).trim()}${tab ? ' - ' + tab.replace(/^\d+\.\s*/, '').trim() : ''}_${ds}`;
+      undo.push(() => { document.title = t; });
+      window.print();
+    }, 700);
+  };
+  window.addEventListener('afterprint', () => setTimeout(restore, 50));
+  const add = () => { const host = document.querySelector('.logo-right') || document.body; host.prepend(b); };
+  if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
+})();
