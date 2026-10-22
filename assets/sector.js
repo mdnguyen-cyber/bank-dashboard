@@ -1530,7 +1530,7 @@ function depIns() {
 }
 function oilIns() {
   if (!BD) return ''; const o = BD.oil, n = o.d.length - 1, y0 = o.d.findIndex(d => d >= '2026-01-01') - 1;
-  const pk = k => o[k].reduce((m, v, i) => v != null && v > m.v ? { v, i } : m, { v: -1, i: 0 });
+  const pk = k => o[k].reduce((m, v, i) => v != null && i > y0 && v > m.v ? { v, i } : m, { v: -1, i: 0 });   // đỉnh trong năm hiện tại
   const dp = pk('do'), bp = pk('brent');
   return `${dvn(o.d[n])}: Brent <b>${nf(o.brent[n], 1)} USD/thùng</b>, RON 95 <b>${nf(o.r95[n], 2)}</b>, E5 RON 92 ${nf(o.e5[n], 2)}, dầu DO <b>${nf(o.do[n], 2)} nghìn đồng/lít</b>. Đỉnh năm: Brent ${nf(bp.v, 1)} USD (${dvn(o.d[bp.i])}), DO ${nf(dp.v, 2)} (${dvn(o.d[dp.i])}).${o.do[n] > o.r95[n] ? ' Dầu DO đắt hơn xăng RON 95 — ngược với thông thường, do giá diesel thế giới tăng mạnh hơn xăng trong đợt sốc năm nay.' : ''}`
     + how('Xăng dầu chiếm khoảng 3–4% rổ CPI và đi vào chi phí vận tải, sản xuất; dầu DO tác động mạnh tới vận tải hàng hóa. Giá trong nước điều chỉnh theo kỳ điều hành của Bộ Công Thương và có quỹ bình ổn nên trễ và mượt hơn giá thế giới. Giá xăng dầu cao kéo dài là lý do CPI và lạm phát cơ bản cùng tăng, làm hẹp dư địa hạ lãi suất của NHNN.');
@@ -1656,7 +1656,7 @@ function bAucYIns(N) {
 }
 const TENS = ['3 năm', '5 năm', '7 năm', '10 năm', '15 năm', '20 năm', '30 năm'];
 function tenYears() {
-  const a = BD.gb.auc, ys = [...new Set(a.months.map(m => m.slice(0, 4)))].filter(y => y >= '2023');
+  const a = BD.gb.auc, ys = [...new Set(a.months.map(m => m.slice(0, 4)))].filter(y => y >= '2021');
   return ys.map(y => { const ix = a.months.map((m, i) => m.startsWith(y) ? i : -1).filter(i => i >= 0), t = Object.fromEntries(TENS.map(k => [k, ix.reduce((s, i) => s + (a.byTen[k][i] || 0), 0)])), tot = TENS.reduce((s, k) => s + t[k], 0);
     return { y, last: a.months[ix[ix.length - 1]], tot, sh: Object.fromEntries(TENS.map(k => [k, tot ? t[k] / tot * 100 : null])) }; });
 }
@@ -1678,7 +1678,7 @@ function bFxIns() {
 function chBond() {
   if (!BD) return;
   const N = bondNums(), { dp, fi, cv, a } = N;
-  const i0 = fi.months.indexOf('2023-01'), fm = fi.months.slice(i0), bigM = fm.map(m => { const j = dp.months.indexOf(m); return j < 0 ? null : dp.tiers['Big 4'][j]; });
+  const i0 = fi.months.indexOf('2021-01'), fm = fi.months.slice(i0), bigM = fm.map(m => { const j = dp.months.indexOf(m); return j < 0 ? null : dp.tiers['Big 4'][j]; });
   const p13 = fi.cpnPriv13.slice(i0);
   mk('bFiCpn', { type: 'bar', data: { labels: fm.map(mvn), datasets: [
     L('Coupon 1–3 năm riêng lẻ', p13, C.navy, { borderWidth: 2.6, pointRadius: 3, spanGaps: false }),
@@ -1707,12 +1707,12 @@ function chBond() {
     options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: numAxis('nghìn tỷ đồng') } } });
   const TN = ['1Y', '3Y', '5Y', '10Y', '20Y'], pt = (k, lab, col, o) => k >= 0 ? [L(lab + ' ' + dvn(cv.d[k]), TN.map(t => cv[t][k]), col, Object.assign({ pointRadius: 3 }, o))] : [];
   mk('bCurve', { type: 'line', data: { labels: TN, datasets: [...pt(N.ci, '', C.navy, { borderWidth: 2.8 }), ...pt(N.c3, '', C.teal, { borderDash: [5, 4] }), ...pt(N.c0, '', C.gold, { borderDash: [2, 3] }), ...pt(N.cy, '', C.grey, { borderDash: [2, 3] })] }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
-  const j0 = cv.d.findIndex(d => d >= '2024-01-01'), cd = cv.d.slice(j0);
+  const j0 = cv.d.findIndex(d => d >= '2021-01-01'), cd = cv.d.slice(j0);
   mk('bCurveTs', { type: 'bar', data: { labels: cd.map(dvn), datasets: [
     L('1 năm', cv['1Y'].slice(j0), C.teal), L('5 năm', cv['5Y'].slice(j0), C.purple), L('10 năm', cv['10Y'].slice(j0), C.navy, { borderWidth: 2.6 }),
     { type: 'bar', label: 'Dốc 10Y − 1Y', data: cd.map((_, i) => { const k = j0 + i; return cv['10Y'][k] == null || cv['1Y'][k] == null ? null : +(cv['10Y'][k] - cv['1Y'][k]).toFixed(2); }), backgroundColor: 'rgba(154,163,178,.45)', yAxisID: 'y1', unit: ' đ%', dp: 2, barPercentage: 1, categoryPercentage: 1 }] },
     options: { scales: { y: pctAxis('', { beginAtZero: false }), y1: { position: 'right', min: 0, grid: { display: false }, ticks: { callback: v => nf(v, 1) } } } } }, { win: 12 });
-  const k0 = a.months.indexOf('2024-01') < 0 ? 0 : a.months.indexOf('2024-01'), am = a.months.slice(k0), t1 = v => v == null ? null : +(v / 1000).toFixed(1);
+  const k0 = a.months.indexOf('2021-01') < 0 ? 0 : a.months.indexOf('2021-01'), am = a.months.slice(k0), t1 = v => v == null ? null : +(v / 1000).toFixed(1);
   mk('bAuc', { type: 'bar', data: { labels: am.map(mvn), datasets: [
     { label: 'Gọi thầu', data: a.inv.slice(k0).map(t1), backgroundColor: 'rgba(154,163,178,.6)', unit: ' nghìn tỷ', dp: 1 },
     { label: 'Đặt thầu', data: a.bid.slice(k0).map(t1), backgroundColor: 'rgba(89,197,200,.75)', unit: ' nghìn tỷ', dp: 1 },
@@ -1742,7 +1742,7 @@ function chBond() {
     options: { scales: { x: { stacked: true }, y: pctAxis('', { stacked: true, min: 0, max: 100 }) } } });
   const TY_ = tenYears();
   stk('bTen', TY_.map(t => t.y === TY_[TY_.length - 1].y ? t.y + ' (đến ' + mvn(t.last).slice(0, 2) + ')' : t.y), Object.fromEntries(TENS.map(k => [k, TY_.map(t => t.sh[k] == null ? null : +t.sh[k].toFixed(1))])), { unit: '%', dp: 1, colors: ['#B3BDE8', '#8997D6', '#4354B7', C.navy, C.teal, C.tealInk, C.purple], y: { max: 100, ticks: { callback: v => nf(v, 0) + '%' } } });
-  const f = BD.gb.fx, f0 = Math.max(0, f.months.indexOf('2024-01'));
+  const f = BD.gb.fx, f0 = Math.max(0, f.months.indexOf('2021-01'));
   mk('bFx', { type: 'bar', data: { labels: f.months.slice(f0).map(mvn), datasets: [{ label: 'Mua/bán ròng', data: f.net.slice(f0), backgroundColor: f.net.slice(f0).map(v => v < 0 ? 'rgba(192,57,43,.7)' : 'rgba(31,138,141,.75)'), unit: ' tỷ', dp: 0 }] }, options: { plugins: { legend: { display: false } }, scales: { y: numAxis('tỷ đồng') } } });
 }
 

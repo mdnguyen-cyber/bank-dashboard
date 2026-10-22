@@ -6,7 +6,7 @@ Khung theo báo cáo thị trường tiền tệ: Thị trường 1 (lãi suất
 (trái phiếu ngân hàng phát hành: lãi suất coupon theo kỳ hạn so với huy động), TPDN toàn thị trường (phát hành,
 chậm trả, đáo hạn), G-bond (đường cong, đấu thầu, khối ngoại).
 """
-import json, pathlib, sys, datetime as dt
+import json, re, pathlib, sys, datetime as dt
 from collections import defaultdict
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -117,7 +117,7 @@ def oil_block(raw):
     for d in ds:
         if d >= '2026-01-01' and d in S['e5']:
             keep.append(d)
-        elif d < '2026-01-01' and d >= '2024-09-01':
+        elif d < '2026-01-01' and d >= '2021-01-01':
             keep.append(d)
     bym = {}
     for d in keep:
@@ -132,6 +132,15 @@ def oil_block(raw):
         out[k] = [at(S[k], d) for d in dts]
     out['r95switch'] = end95
     return out
+
+
+def ticker_tenor(x):
+    """Kỳ hạn suy từ mã trái phiếu khi chưa có lịch sử điều khoản: CTGL2230014 = phát hành 2022, đáo hạn 2030."""
+    m = re.search(r'[A-Z]+(\d{2})(\d{2})\d{3}C?$', x.get('bond_ticker') or '')
+    if not m or not x.get('issuance_start_date'):
+        return None
+    y1, y2 = int(m.group(1)), int(m.group(2))
+    return float(y2 - y1) if y2 > y1 and str(2000 + y1) == x['issuance_start_date'][:4] else None
 
 
 BIG4 = {'VCB': 'Vietcombank', 'CTG': 'VietinBank', 'BID': 'BIDV', 'AGRIBANK': 'Agribank'}
@@ -150,11 +159,11 @@ def big4_block(raw, dep_months, big4_dep):
     items = []
     for i, x in iss.items():
         md = mat.get(i)
-        ten = round((dt.date.fromisoformat(md) - dt.date.fromisoformat(x['issuance_start_date'])).days / 365.25, 1) if md else None
+        ten = round((dt.date.fromisoformat(md) - dt.date.fromisoformat(x['issuance_start_date'])).days / 365.25, 1) if md else ticker_tenor(x)
         items.append({'s': x['symbol'], 'd': x['issuance_start_date'], 'c': x['issuance_interest_rate'], 'v': round(x['actual_issuance_value'] / TY), 't': ten,
                       'pub': x.get('issuance_method_id') == 2, 'tk': x.get('trading_bond_ticker') or x.get('bond_ticker')})
     items.sort(key=lambda z: z['d'])
-    months = mrange('2023-01', dt.date.today().isoformat()[:7])
+    months = mrange('2021-01', dt.date.today().isoformat()[:7])
     def wavg(f):
         out = []
         for m in months:
@@ -173,7 +182,7 @@ def main():
     today = dt.date.today().isoformat()
 
     # ---------- 1. Lãi suất huy động 12T theo nhóm ----------
-    months = mrange('2024-01', today[:7])
+    months = mrange('2021-01', today[:7])
     banks, tiers = [], {}
     asof = None
     for tier, lst in TIERS.items():
@@ -241,7 +250,7 @@ def main():
                  'fin': [r(mat2.get((m[:4], str(int(m[5:])), 'Dịch vụ tài chính'), 0) / TY, 0) for m in nxt]}
 
     # ---------- 3. TPDN toàn thị trường ----------
-    cm2 = mrange('2023-01', today[:7])
+    cm2 = mrange('2021-01', today[:7])
     is1 = agg(raw, 'wi_data_cbond', 'bonds_corp_issuance_monthly', 'year,month,sector_l1', 'sum:actual_issuance_value', lambda f: 'year' in f or 'year__gte' in f)
     def pick(dct, m, sec=None):
         k = (m[:4], str(int(m[5:]))) + ((sec,) if sec else ())
@@ -266,7 +275,7 @@ def main():
         s = {}
         for d in sel(raw, 'wi_data_gbond', 'bonds_gov_yield_curve', 'get_data', lambda q, f: str(f.get('indicator_id')) == str(iid)):
             for x in rows(d['response']):
-                if x.get('value') is not None and x['date'] >= '2023-01-01':
+                if x.get('value') is not None and x['date'] >= '2021-01-01':
                     s[x['date']] = x['value']
         curve[t] = s
     ds = sorted(set().union(*[set(v) for v in curve.values()]))
