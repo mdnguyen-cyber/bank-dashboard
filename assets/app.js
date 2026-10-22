@@ -402,7 +402,7 @@ function checklist() {
 function paneMacro() {
   const SX = window.SECTOR_DATA ? window.SECTOR_DATA.idx : null;
   const qc = (k, b, txt) => `<div class="cell ${SX && SX.now.q === k ? 'on' : ''}"><b>${b}</b>${txt}${SX && SX.now.q === k ? '<br><span class="now">Hiện tại</span>' : ''}</div>`;
-  const MA = D.macro; const fx = MA.fx, r = MA.rates;
+  const MA = D.macro; const fx = MA.fx, r = MA.rates, SD = (window.SECTOR_DATA || {}).dom || {};
   const lastv = a => a[a.length - 1];
   const sigRows = D.signals.map(s => `<tr><td style="white-space:nowrap"><b>${s.id}</b></td><td>${esc(s.label)}</td><td class="n">${nf(s.value, 2)} ${s.unit}</td><td>${esc(s.threshold)}</td><td>${pill(s.state)}</td><td>${esc(s.rule)}</td><td>${esc(s.impact)}</td><td style="white-space:nowrap">${esc(s.asOf)}</td></tr>`).join('');
   const ytdNow = lastv(MA.credit.ytd);
@@ -445,15 +445,18 @@ function paneMacro() {
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động mạnh <b>${nf(Math.min(...on3(MA.onDaily)), 2)}–${nf(Math.max(...on3(MA.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...MA.onDaily.map(v => v.v)), 2)}% ngày ${dvn(MA.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh thường rơi vào cuối tháng (căng mùa vụ) và NHNN bơm OMO đúng các phiên đó. Theo deck (R-10), OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR — nên TT2 hạ không tự kéo lãi suất huy động TT1 xuống.`,
       src: 'WiData macro 82237, 81522, 82268' })}
-    ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng (TT1)', sub: '%/năm · cuối tháng · ' + T + ' niêm yết vs bình quân NHTM Nhà nước vs NHTM khác', ctl: true,
-      insight: `Lãi suất 12T của ${T} <b>${pc(lastv(depB).v, 1)}</b> (${dvn(lastv(depB).d)}) ${Math.abs(lastv(depB).v - lastv(r.dep12State).v) < 0.05 ? 'bằng' : lastv(depB).v > lastv(r.dep12State).v ? 'cao hơn' : 'thấp hơn'} bình quân nhóm Nhà nước (${pc(lastv(r.dep12State).v, 2)}), ${lastv(r.dep12Other).v >= lastv(depB).v ? 'thấp hơn' : 'cao hơn'} bình quân NHTM khác <b>${nf(Math.abs(lastv(r.dep12Other).v - lastv(depB).v), 2)} điểm %</b>. Mặt bằng đã tăng ${nf(lastv(r.dep12State).v - r.dep12State[0].v, 2)} điểm % từ ${dvn(r.dep12State[0].d).slice(3)}; theo R-13, COF thực tế đi sau 1–3 quý — xem COF ở tab Tài chính › Biên lãi.`,
-      src: 'WiData macro ' + D.macro.rates.dep12Id + ', 202886, 202880' })}
+    ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · cuối tháng · NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác · đường vàng = ' + T + ' niêm yết', ctl: true,
+      insight: (() => { const st = lastv(SD.dep12State), lg = lastv(SD.dep12Large), ot = lastv(SD.dep12Other), b = lastv(depB);
+        return `Lãi suất 12T của ${T} <b>${pc(b.v, 2)}</b> (${dvn(b.d)}) so với bình quân NHTM Nhà nước <b>${pc(st.v, 2)}</b>, NHTM lớn ${pc(lg.v, 2)}, NHTM khác ${pc(ot.v, 2)} (${mvn(st.d)}). ${(() => { const [gn, g] = ['CTG', 'VCB', 'BID', 'AGR'].includes(T) ? ['NHTM Nhà nước', st] : ['MBB', 'ACB', 'TCB', 'VPB'].includes(T) ? ['NHTM lớn', lg] : ['NHTM khác', ot], dd = b.v - g.v;
+          return Math.abs(dd) < 0.05 ? `${T} ngang bình quân nhóm ${gn}.` : `${T} ${dd > 0 ? 'cao' : 'thấp'} hơn bình quân nhóm ${gn} <b>${nf(Math.abs(dd), 2)} điểm %</b>${dd > 0 ? ' — trả giá cao hơn để giữ tiền gửi' : ''}.`; })()} Theo R-13, COF thực tế đi sau lãi suất niêm yết 1–3 quý — xem COF ở tab Tài chính › Biên lãi.`; })(),
+      src: 'WiData 202886, 202874, 202880; ' + T + ': WiData macro ' + D.macro.rates.dep12Id })}
     ${card({ id: 'chCredit', title: 'Tín dụng toàn hệ thống so với đầu năm', sub: '% · tháng · mỗi đường một năm · đường đỏ = chỉ tiêu 2026 ~15%',
       insight: `Đến ${dvn(ytdNow.d).slice(3)}, tín dụng tăng <b>${pc(ytdNow.v, 2)}</b> so với đầu năm (cùng kỳ ${ytdPrevSame ? pc(ytdPrevSame.v, 2) : '—'}). Riêng ${T} tăng <b>${pc(QL.creditYoY)}</b> YoY (${QL.q}) — ${QL.creditYoY < lastv(MA.credit.yoy).v ? 'chậm hơn' : 'nhanh hơn'} toàn hệ thống (${pc(lastv(MA.credit.yoy).v)}); dư địa nửa cuối năm phụ thuộc room và LDR.`,
       src: 'WiData macro 241732 (so cuối năm trước)' })}
-    ${card({ id: 'chCreditDep', title: 'Tín dụng vs tiền gửi (YoY)', sub: '% · tháng · chênh lệch dương = ngân hàng phải tìm thêm nguồn vốn', ctl: true,
-      insight: `Tín dụng YoY <b>${pc(lastv(MA.credit.yoy).v)}</b> so với tiền gửi <b>${pc(lastv(MA.credit.depositsYoY).v)}</b>: chênh <b>${nf(lastv(MA.credit.yoy).v - lastv(MA.credit.depositsYoY).v, 1)} điểm %</b> (R-09). Deck lưu ý số tiền gửi của NHNN chưa gồm GTCG và liên ngân hàng — chênh lệch không đồng nghĩa thiếu vốn toàn phần, nhưng cho biết áp lực cạnh tranh tiền gửi.`,
-      src: 'WiData macro 75847, 265963 (bảng đã điều chỉnh)' })}
+    ${card({ id: 'chMoney', title: 'Tín dụng, tiền gửi và M2', sub: '% YoY · tháng · chênh tín dụng − tiền gửi dương = ngân hàng phải tìm thêm nguồn vốn (R-09)', ctl: true,
+      insight: (() => { const cr = lastv(SD.creditYoY), dp = lastv(SD.depYoY), m2 = lastv(SD.m2);
+        return `Tín dụng <b>${pc(cr.v, 1)}</b> YoY (${mvn(cr.d)}) so với tiền gửi <b>${pc(dp.v, 1)}</b> (${mvn(dp.d)}) — chênh ${nf(cr.v - dp.v, 1)} điểm % (R-09); M2 ${pc(m2.v, 1)} (${mvn(m2.d)}). Riêng ${T}: cho vay ${sg((QL.loansGross / Q[Q.length - 5].loansGross - 1) * 100)} YoY, tiền gửi KH ${sg((QL.deposits / Q[Q.length - 5].deposits - 1) * 100)} (${QL.q}). Lưu ý: số tiền gửi NHNN chưa gồm GTCG, liên ngân hàng (deck slide 58).`; })(),
+      src: 'WiData 75847, 265963, 265954' })}
     ${ldrCard('chLdr')}
   </div>
   <div class="grid g2 gap">
@@ -485,20 +488,19 @@ function paneMacro() {
     { type: 'line', label: 'Lãi suất OMO', data: omoD, borderColor: C.teal, borderDash: [5, 4], yAxisID: 'y', pointRadius: 0, dp: 2, unit: '%' },
     { label: 'Bơm/hút ròng (tỷ)', data: netD, backgroundColor: netD.map(v => (v ?? 0) >= 0 ? 'rgba(41,56,168,.35)' : 'rgba(192,57,43,.35)'), yAxisID: 'y1', dp: 0 },
   ] }, options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis('%'), y1: numAxis('tỷ đồng', { position: 'right', grid: { display: false } }) } } }, { win: 3 });
-  mk('chDep', { type: 'line', data: { labels: r.dep12State.map(v => v.d.slice(0, 7)), datasets: [
-    { label: T + ' 12T', data: alignM(depB, r.dep12State), borderColor: C.navy, backgroundColor: C.navy, borderWidth: 2.4, dp: 2, unit: '%' },
-    { label: 'NHTM Nhà nước 12T', data: r.dep12State.map(v => v.v), borderColor: C.teal, backgroundColor: C.teal, borderDash: [4, 3], dp: 2, unit: '%' },
-    { label: 'NHTM khác 12T', data: alignM(r.dep12Other, r.dep12State), borderColor: C.purple, backgroundColor: C.purple, dp: 2, unit: '%' },
-  ] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' });
+  // Cùng dữ liệu và cách vẽ với dashboard ngành (Nội địa), thêm đường của ngân hàng đang xem
+  const LN = (label, data, color, o = {}) => Object.assign({ label, data, borderColor: color, backgroundColor: color, borderWidth: 2, pointRadius: 0, dp: 2, unit: '%', spanGaps: true }, o);
+  const l21 = monthsFrom('2021-01', lastv(SD.dep12State).d.slice(0, 7));
+  mk('chDep', { type: 'line', data: { labels: l21.map(mvn), datasets: [LN('NHTM Nhà nước', alM(SD.dep12State, l21), C.navy, { borderWidth: 2.4 }), LN('NHTM lớn', alM(SD.dep12Large, l21), '#1f8a8d'), LN('NHTM khác', alM(SD.dep12Other, l21), C.purple), LN(T + ' niêm yết', alM(depB, l21), C.gold, { borderWidth: 2.4 })] },
+    options: { scales: { y: pctAxis() } } }, { switch: 'line' });
   const yrs = [...new Set(MA.credit.ytd.map(v => v.d.slice(0, 4)))].slice(-4);
   mk('chCredit', { type: 'line', data: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'], datasets: yrs.map((y, i) => ({
     label: y, data: Array.from({ length: 12 }, (_, m) => { const f = MA.credit.ytd.find(v => v.d.startsWith(`${y}-${String(m + 1).padStart(2, '0')}`)); return f ? f.v : null; }),
     borderColor: [C.steps[5], C.steps[4], C.steps[2], C.navy][i + 4 - yrs.length], backgroundColor: [C.steps[5], C.steps[4], C.steps[2], C.navy][i + 4 - yrs.length], borderWidth: y === yrs[yrs.length - 1] ? 3 : 1.6, pointRadius: 2, dp: 2, unit: '%', spanGaps: false })) },
     options: { scales: { y: pctAxis() }, plugins: { refLines: { lines: [{ value: 15, label: 'Chỉ tiêu 2026 ~15%' }] } } } });
-  mk('chCreditDep', { type: 'line', data: { labels: MA.credit.yoy.map(v => v.d.slice(0, 7)), datasets: [
-    { label: 'Tín dụng YoY', data: MA.credit.yoy.map(v => v.v), borderColor: C.navy, backgroundColor: C.navy, dp: 1, unit: '%' },
-    { label: 'Tổng tiền gửi YoY', data: alignM(MA.credit.depositsYoY, MA.credit.yoy), borderColor: C.teal, backgroundColor: C.teal, dp: 1, unit: '%' },
-  ] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' });
+  const l19 = monthsFrom('2019-01', lastv(SD.creditYoY).d.slice(0, 7));
+  mk('chMoney', { type: 'line', data: { labels: l19.map(mvn), datasets: [LN('Tín dụng YoY', alM(SD.creditYoY, l19), C.navy, { dp: 1, borderWidth: 2.4 }), LN('Tiền gửi YoY', alM(SD.depYoY, l19), C.teal, { dp: 1 }), LN('M2 YoY', alM(SD.m2, l19), C.gold, { dp: 1, borderDash: [4, 3] })] },
+    options: { scales: { y: pctAxis() } } }, { switch: 'line' });
   const q16 = Q.filter(q => q.ldr != null);
   drawLdr('chLdr');
   drawCar('chCar');
@@ -512,6 +514,9 @@ function casaVs() {
   const R = D.peers.rows.filter(r => r.casa != null && r.symbol !== T), hi = R.filter(r => r.casa > QL.casa).sort((a, b) => b.casa - a.casa);
   return hi.length ? ` thấp hơn ${hi.slice(0, 3).map(r => r.symbol).join(', ')}${hi.length > 3 ? ' và ' + (hi.length - 3) + ' NH khác' : ''}` : ' cao nhất nhóm niêm yết';
 }
+const mvn = s => s ? s.slice(5, 7) + '/' + s.slice(0, 4) : '—';
+const monthsFrom = (a, b) => { const out = []; let [y, m] = a.split('-').map(Number); const [Y, MM] = b.split('-').map(Number); while (y < Y || (y === Y && m <= MM)) { out.push(`${y}-${String(m).padStart(2, '0')}`); m++; if (m > 12) { m = 1; y++; } } return out; };
+const alM = (arr, labs) => { const m = {}; (arr || []).forEach(p => { m[p.d.slice(0, 7)] = p.v; }); return labs.map(k => m[k] ?? null); };
 function alignM(src, base) { return base.map(b => { const f = src.find(s => s.d.slice(0, 7) === b.d.slice(0, 7)); return f ? f.v : null; }); }
 function alignD(src, base) { return base.map(b => { const f = src.find(s => s.d === b.d); return f ? f.v : null; }); }
 
