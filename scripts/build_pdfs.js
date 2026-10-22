@@ -68,7 +68,7 @@ async function states(browser, pg) {
     const st = await states(browser, pg);
     console.log(`${pg}: ${st.length} trạng thái`);
     const q = st.slice(), conc = +(process.env.PDF_CONC || 4);
-    await Promise.all(Array.from({ length: conc }, async () => { while (q.length) { const [tab, clicks] = q.shift(); try { await printState(browser, pg, tab, clicks); } catch (e) { console.warn('  ✗', pg, tab, JSON.stringify(clicks), e.message); } } }));
+    await Promise.all(Array.from({ length: conc }, async () => { while (q.length) { const [tab, clicks] = q.shift(); try { await printState(browser, pg, tab, clicks); } catch (e) { console.log(`::warning title=PDF lỗi::${pg} ${tab} ${JSON.stringify(clicks)} ${e.message.split('\n')[0]}`); } } }));
   }
   fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify({ built: today, files }));
   console.log(`Xong: ${Object.keys(files).length} file PDF`);

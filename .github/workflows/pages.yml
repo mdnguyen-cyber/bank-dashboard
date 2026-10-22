@@ -11,6 +11,7 @@ concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
+  # 1) Đưa trang lên ngay (khoảng 1 phút)
   deploy:
     runs-on: ubuntu-latest
     environment:
@@ -18,36 +19,42 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      # Chỉ đưa file cần để xem dashboard lên web; data/raw (response WiData gốc) và scripts không publish
       - name: Gom file trang
-        run: |
-          mkdir -p _site/data _site/assets
-          cp *.html .nojekyll _site/
-          cp assets/*.js assets/*.css assets/fin-success-logo.png assets/favicon-32.png assets/favicon-192.png assets/favicon.ico _site/assets/
-          cp assets/favicon.ico _site/favicon.ico
-          cp data/*.js _site/data/
-          [ -f data/vira-data.js ] && cp data/vira-data.js _site/data/ || echo "window.VIRA_DATA = null;" > _site/data/vira-data.js
-          # Gắn mã commit vào đường dẫn script để trình duyệt không dùng bản cache cũ sau mỗi lần deploy
-          V=${GITHUB_SHA::7}
-          for f in _site/*.html; do
-            sed -i -E "s#(data/[a-z0-9-]+\.js|assets/[a-z0-9-]+\.js|assets/fs\.css)\"#\1?v=$V\"#g" "$f"
-          done
-          grep -c "?v=" _site/*.html
-      # Dựng sẵn PDF chữ thật cho mọi tab (nút "Xuất PDF" tải file này); lỗi thì vẫn deploy, nút tự chuyển sang chụp bản đang xem
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Dựng PDF các tab
-        continue-on-error: true
-        timeout-minutes: 15
-        run: |
-          npm i --no-save --no-package-lock playwright@1.47.2
-          npx playwright install --with-deps chromium
-          node scripts/build_pdfs.js _site
-          du -sh _site/pdf
+        run: bash scripts/gom_site.sh
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+  # 2) Dựng sẵn PDF chữ thật cho mọi tab rồi deploy lại kèm thư mục pdf/ (nút "Xuất PDF" tải các file này;
+  #    trong lúc chờ hoặc nếu bước này lỗi, nút tự chuyển sang chụp bản đang xem)
+  pdf:
+    needs: deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gom file trang
+        run: bash scripts/gom_site.sh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Dựng PDF các tab
+        timeout-minutes: 20
+        run: |
+          npm i --no-save --no-package-lock playwright@1.47.2
+          npx playwright install --with-deps chromium
+          node scripts/build_pdfs.js _site
+          N=$(ls _site/pdf/*.pdf | wc -l); echo "::notice title=PDF::$N file PDF, $(du -sh _site/pdf | cut -f1)"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+          name: github-pages-pdf
+      - id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-pdf
