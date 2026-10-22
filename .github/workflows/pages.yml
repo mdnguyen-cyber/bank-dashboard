@@ -33,6 +33,18 @@ jobs:
             sed -i -E "s#(data/[a-z0-9-]+\.js|assets/[a-z0-9-]+\.js|assets/fs\.css)\"#\1?v=$V\"#g" "$f"
           done
           grep -c "?v=" _site/*.html
+      # Dựng sẵn PDF chữ thật cho mọi tab (nút "Xuất PDF" tải file này); lỗi thì vẫn deploy, nút tự chuyển sang chụp bản đang xem
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Dựng PDF các tab
+        continue-on-error: true
+        timeout-minutes: 15
+        run: |
+          npm i --no-save --no-package-lock playwright@1.47.2
+          npx playwright install --with-deps chromium
+          node scripts/build_pdfs.js _site
+          du -sh _site/pdf
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

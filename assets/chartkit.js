@@ -336,6 +336,40 @@
   if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
 })();
 
+/* Khoá PDF dựng sẵn: trang + tab chính + các tab con đang chọn (theo thứ tự trên trang).
+   scripts/build_pdfs.js dùng cùng hàm này để đặt tên file pdf/<khoá>.pdf khi deploy. */
+window.FSPDF = (function () {
+  const vis = el => el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+  const pane = () => document.querySelector('.pane.active');
+  const groups = () => { const P = pane(); return P ? [...P.querySelectorAll('.subtabs')].filter(g => vis(g) && g.querySelector('button')) : []; };
+  const bval = btn => { const k = Object.keys(btn.dataset)[0]; return k ? btn.dataset[k] : (btn.textContent || '').trim(); };
+  const page = () => (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '') || 'index';
+  const tabBtn = () => document.querySelector('.tabs [data-tab].active, .tabs [data-tab].on');
+  function key() {
+    const t = tabBtn(); if (!t) return null;
+    return [page(), t.dataset.tab, ...groups().map(g => { const on = g.querySelector('button.on') || g.querySelector('button'); return bval(on); })]
+      .join('__').replace(/[^A-Za-z0-9_-]+/g, '-');
+  }
+  function label() {
+    const t = tabBtn(), parts = [t ? t.textContent.replace(/^\d+\.\s*/, '').trim() : ''];
+    groups().forEach(g => { const on = g.querySelector('button.on'); if (on) parts.push(on.textContent.trim()); });
+    return parts.filter(Boolean).join(' - ');
+  }
+  // Chuẩn bị bản in (dùng khi dựng PDF): mở mục thu gọn, đổi biểu đồ canvas thành ảnh để bản in nét, bật lớp in
+  async function prep() {
+    document.body.classList.add('print-all');
+    const R = pane() || document.body;
+    R.querySelectorAll('.coll.shut').forEach(h => h.click());
+    await new Promise(r => setTimeout(r, 600));
+    R.querySelectorAll('canvas').forEach(c => {
+      if (!c.offsetParent || !c.width) return;
+      const ch = window.Chart && Chart.getChart(c); if (ch) { ch.resize(); ch.update('none'); }
+      try { const img = new Image(); img.src = c.toDataURL('image/png'); img.className = 'pdf-img'; c.after(img); c.classList.add('pdf-hide'); } catch (e) {}
+    });
+  }
+  return { key, label, prep, groups, bval, vis, page };
+})();
+
 /* Nút "Xuất PDF": tải thẳng file PDF của tab đang xem (không qua hộp thoại in).
    Mở mọi mục đang thu gọn, chụp nội dung bằng html2canvas theo từng trang (ngắt trang giữa các khối, không cắt ngang biểu đồ), ghép bằng jsPDF rồi trả trang về như cũ. */
 (function () {
@@ -343,8 +377,9 @@
     'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'];
   const load = src => new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
   const ready = () => (window.html2canvas && window.jspdf) ? Promise.resolve() : Promise.all(LIBS.map(load));
-  const b = document.createElement('button');
-  b.type = 'button'; b.className = 'pdfbtn'; b.textContent = 'Xuất PDF'; b.title = 'Tải PDF của trang đang xem';
+  const b = document.createElement('button'), b2 = document.createElement('button');
+  b.type = 'button'; b.className = 'pdfbtn'; b.textContent = 'Xuất PDF'; b.title = 'Tải PDF (chữ thật, dựng sẵn sau mỗi lần cập nhật) của tab đang xem';
+  b2.type = 'button'; b2.className = 'pdfbtn pdfbtn2'; b2.textContent = 'PDF bản đang xem'; b2.title = 'Chụp đúng trạng thái đang xem trên máy này (gồm bản nháp, bộ lọc) thành PDF dạng ảnh';
   const vis = el => el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
   // Các khoảng [top,bottom] không được cắt ngang (thẻ biểu đồ, ô KPI, đoạn chữ…), gộp các khối nằm cạnh nhau
   function units(el, maxH, out) {
@@ -371,11 +406,26 @@
     return pages;
   }
   const root = () => document.querySelector('.pane.active') || document.querySelector('main') || document.body;
-  let busy = false;
+  let busy = false, MAN = null;
+  const dmy = d => `${d.slice(8, 10)}-${d.slice(5, 7)}-${d.slice(0, 4)}`;
+  const fname = date => { const t = document.title; return `FinSuccess_${(t.split('·')[0] || t).trim()} - ${FSPDF.label()}_${date}`.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').replace(/[\\/:*?"<>|]+/g, '-') + '.pdf'; };   // bỏ dấu cho tên file (theo quy ước FinSuccess_...)
   b.onclick = async () => {
+    if (busy) return;
+    try {
+      if (!MAN) MAN = await fetch('pdf/index.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : { files: {} });
+      const k = FSPDF.key();
+      if (k && MAN.files && MAN.files[k]) {
+        const a = document.createElement('a'); a.href = 'pdf/' + k + '.pdf?v=' + (MAN.built || ''); a.download = fname(dmy(MAN.built || ''));
+        document.body.appendChild(a); a.click(); a.remove(); return;
+      }
+    } catch (e) {}
+    shot(b);   // chưa có bản dựng sẵn cho tab này → chụp bản đang xem
+  };
+  b2.onclick = () => shot(b2);
+  async function shot(btn) {
     if (busy) return; busy = true;
-    const label = b.textContent, undo = [];
-    b.textContent = 'Đang tạo PDF…'; b.disabled = true;
+    const label = btn.textContent, undo = [];
+    btn.textContent = 'Đang tạo PDF…'; btn.disabled = true;
     try {
       await ready();
       document.body.classList.add('pdf-cap'); undo.push(() => document.body.classList.remove('pdf-cap'));
@@ -391,7 +441,7 @@
       const rr = R.getBoundingClientRect(), W = rr.width, k = PW / W, maxH = PH / k;
       const head = [...document.querySelectorAll('.logo-bar,.stock-head')].filter(vis);
       const opt = { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, windowWidth: document.documentElement.clientWidth,
-        ignoreElements: el => el === b || el.classList && (el.classList.contains('aibot') || el.classList.contains('totop')) };
+        ignoreElements: el => el === b || el === b2 || el.classList && (el.classList.contains('aibot') || el.classList.contains('totop')) };
       let headH = 0, hImg = null;
       if (head.length) {
         const h0 = head[0].getBoundingClientRect(), h1 = head[head.length - 1].getBoundingClientRect();
@@ -401,7 +451,7 @@
       const top = rr.top + scrollY, bottom = rr.bottom + scrollY;
       const pages = cuts(top, bottom, maxH, maxH - headH / k - 3 / k);
       for (let i = 0; i < pages.length; i++) {
-        b.textContent = `Đang tạo PDF… ${i + 1}/${pages.length}`;
+        btn.textContent = `Đang tạo PDF… ${i + 1}/${pages.length}`;
         const [y0, y1] = pages[i];
         const c = await html2canvas(document.body, Object.assign({}, opt, { x: rr.left, y: y0, width: W, height: y1 - y0 }));
         if (i) pdf.addPage();
@@ -411,17 +461,15 @@
         pdf.setFontSize(8); pdf.setTextColor(140);
         pdf.text(`FinSuccess  |  ${i + 1}/${pages.length}`, 297 - M, 210 - 4, { align: 'right' });
       }
-      const t = document.title, tab = (document.querySelector('[role=tab].active,[role=tab].on,.tabs .active') || {}).textContent || '';
-      const d = new Date(), ds = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
-      const name = `FinSuccess_${(t.split('·')[0] || t).trim()}${tab ? ' - ' + tab.replace(/^\d+\.\s*/, '').trim() : ''}_${ds}`.replace(/[\\/:*?"<>|]+/g, '-');
-      pdf.save(name + '.pdf');
+      const d = new Date();
+      pdf.save(fname(`${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`));
     } catch (e) {
       console.error(e); alert('Không tạo được PDF: ' + (e && e.message || e));
     } finally {
       undo.reverse().forEach(f => { try { f(); } catch (e) {} });
-      b.textContent = label; b.disabled = false; busy = false;
+      btn.textContent = label; btn.disabled = false; busy = false;
     }
-  };
-  const add = () => { const host = document.querySelector('.logo-right') || document.body; host.prepend(b); };
+  }
+  const add = () => { const host = document.querySelector('.logo-right') || document.body; host.prepend(b2); host.prepend(b); };
   if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
 })();

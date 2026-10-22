@@ -442,3 +442,4 @@ body.pdf-cap .card{box-shadow:none}
   body.print-all .grid.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
   body.print-all *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+.pdfbtn2{font-weight:500;color:#5a6275;border-style:dashed}
