@@ -14179,8 +14179,8 @@
 }
 },
 "2026-09-23": {
-"pub": "2026-09-28",
-"src": "https://vira.org.vn/tin/Market-Watch/Market-Watch-24-09--1-2.html",
+"pub": "2026-09-24",
+"src": "https://vira.org.vn/tin/Market-Watch/Market-Watch-24-09--1.html",
 "dateFromHeader": true,
 "ok": 25,
 "rows": 25,
@@ -14858,7 +14858,45 @@
 "9M": 4.38,
 "1Y": 4.51
 }
+},
+"2026-10-21": {
+"pub": "2026-10-22",
+"src": "https://vira.org.vn/tin/Market-Watch/Market-Watch-22-10--1-2.html",
+"dateFromHeader": true,
+"ok": 25,
+"rows": 25,
+"vnd": {
+"ON": 3.3,
+"1W": 3.7,
+"2W": 4.9,
+"1M": 5.35,
+"2M": 6.5,
+"3M": 7.6,
+"6M": 7.85,
+"9M": 7.9,
+"1Y": 7.9
+},
+"usd": {
+"ON": 3.85,
+"1W": 3.89,
+"2W": 3.92,
+"1M": 4.03,
+"2M": 4.14,
+"3M": 4.17,
+"6M": 4.24,
+"9M": 4.26,
+"1Y": 4.26
+},
+"sofr": {
+"SW": 3.92,
+"2W": 3.93,
+"1M": 3.93,
+"3M": 4.06,
+"6M": 4.23,
+"9M": 4.39,
+"1Y": 4.51
+}
 }
 },
-"fetched": "2026-10-21T15:37:21Z"
+"fetched": "2026-10-22T07:15:43Z"
 }
