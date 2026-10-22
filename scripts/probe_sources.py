@@ -7,7 +7,12 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
 URLS = {
-    'atl_mpt_xlsx': 'https://www.atlantafed.org/-/media/Project/Atlanta/FRBA/Documents/research-and-data/data/market-probability-tracker/mpt_histdata.xlsx',
+    'abo_portal_raw': 'https://asianbondsonline.adb.org/data-portal/',
+    'abo_vn_raw': 'https://asianbondsonline.adb.org/vietnam/',
+    'abo_ms_202609_pdf': 'https://asianbondsonline.adb.org/vietnam/market_summary/vn_market_summary_202609.pdf',
+    'abo_ms_202603_pdf': 'https://asianbondsonline.adb.org/vietnam/market_summary/vn_market_summary_202603.pdf',
+    'abo_ms_202509_pdf': 'https://asianbondsonline.adb.org/vietnam/market_summary/vn_market_summary_202509.pdf',
+    'abo_ms_202409_pdf': 'https://asianbondsonline.adb.org/vietnam/market_summary/vn_market_summary_202409.pdf',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
@@ -36,6 +41,8 @@ def main():
                 wb = xlrd.open_workbook(file_contents=b)
                 rep[k] = {'url': u, 'status': 200, 'sheets': {sh.name: [[str(c.value) for c in sh.row(i)] for i in range(min(sh.nrows, 60))] for sh in wb.sheets()}}
                 continue
+            if k.endswith('_pdf'):
+                (OUT / (k + '.pdf')).write_bytes(b); rep[k] = {'url': u, 'status': 200, 'bytes': len(b)}; continue
             txt = b.decode('utf-8', 'replace') if 'pdf' not in ct else ''
             info = {'url': u, 'status': 200, 'ct': ct, 'bytes': len(b)}
             if k.endswith('_raw'):
