@@ -336,7 +336,7 @@
   if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
 })();
 
-/* Nút "Xuất PDF": tải thẳng file PDF của tab đang xem (không qua hộp thoại in).
+/* Nút "Xuất PDF": tải thẳng file PDF của tab đang xem (không qua hộp thoại in), khổ trang theo màn hình (không theo khổ giấy).
    Mở mọi mục đang thu gọn, chụp nội dung bằng html2canvas theo từng trang (ngắt trang giữa các khối, không cắt ngang biểu đồ), ghép bằng jsPDF rồi trả trang về như cũ. */
 (function () {
   const LIBS = ['https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
@@ -386,30 +386,30 @@
       await new Promise(r => setTimeout(r, 300));
       R.querySelectorAll('canvas').forEach(c => { const ch = window.Chart && Chart.getChart(c); if (ch) { ch.resize(); ch.update('none'); } });
       await new Promise(r => setTimeout(r, 500));
-      const { jsPDF } = window.jspdf, pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-      const M = 8, PW = 297 - 2 * M, PH = 210 - 2 * M - 5;
-      const rr = R.getBoundingClientRect(), W = rr.width, k = PW / W, maxH = PH / k;
+      // Khổ giống màn hình: trang rộng bằng vùng nội dung, mỗi trang cao khoảng một màn hình, ngắt giữa các khối (đơn vị pt = px × 0,75)
+      const rr = R.getBoundingClientRect(), W = rr.width, maxH = Math.max(700, innerHeight), M = 16, F = 14, pt = 0.75;
       const head = [...document.querySelectorAll('.logo-bar,.stock-head')].filter(vis);
       const opt = { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, windowWidth: document.documentElement.clientWidth,
         ignoreElements: el => el === b || el.classList && (el.classList.contains('aibot') || el.classList.contains('totop')) };
       let headH = 0, hImg = null;
       if (head.length) {
         const h0 = head[0].getBoundingClientRect(), h1 = head[head.length - 1].getBoundingClientRect();
-        const hc = await html2canvas(document.body, Object.assign({}, opt, { x: h0.left, y: h0.top + scrollY, width: h0.width, height: h1.bottom - h0.top }));
-        headH = Math.min(PH * 0.3, (h1.bottom - h0.top) * PW / h0.width); hImg = hc;
+        hImg = await html2canvas(document.body, Object.assign({}, opt, { x: h0.left, y: h0.top + scrollY, width: h0.width, height: h1.bottom - h0.top }));
+        headH = (h1.bottom - h0.top) * W / h0.width;
       }
       const top = rr.top + scrollY, bottom = rr.bottom + scrollY;
-      const pages = cuts(top, bottom, maxH, maxH - headH / k - 3 / k);
+      const pages = cuts(top, bottom, maxH, maxH - headH - 8);
+      let pdf = null;
       for (let i = 0; i < pages.length; i++) {
         b.textContent = `Đang tạo PDF… ${i + 1}/${pages.length}`;
-        const [y0, y1] = pages[i];
+        const [y0, y1] = pages[i], hTop = i === 0 && hImg ? headH + 8 : 0;
+        const fmt = [(W + 2 * M) * pt, (y1 - y0 + hTop + 2 * M + F) * pt], ori = fmt[0] > fmt[1] ? 'landscape' : 'portrait';
+        if (!pdf) pdf = new window.jspdf.jsPDF({ orientation: ori, unit: 'pt', format: fmt }); else pdf.addPage(fmt, ori);
         const c = await html2canvas(document.body, Object.assign({}, opt, { x: rr.left, y: y0, width: W, height: y1 - y0 }));
-        if (i) pdf.addPage();
-        let y = M;
-        if (i === 0 && hImg) { pdf.addImage(hImg.toDataURL('image/jpeg', 0.85), 'JPEG', M, y, PW, headH, undefined, 'FAST'); y += headH + 3; }
-        pdf.addImage(c.toDataURL('image/jpeg', 0.82), 'JPEG', M, y, PW, (y1 - y0) * k, undefined, 'FAST');
+        if (hTop) pdf.addImage(hImg.toDataURL('image/jpeg', 0.85), 'JPEG', M * pt, M * pt, W * pt, headH * pt, undefined, 'FAST');
+        pdf.addImage(c.toDataURL('image/jpeg', 0.82), 'JPEG', M * pt, (M + hTop) * pt, W * pt, (y1 - y0) * pt, undefined, 'FAST');
         pdf.setFontSize(8); pdf.setTextColor(140);
-        pdf.text(`FinSuccess  |  ${i + 1}/${pages.length}`, 297 - M, 210 - 4, { align: 'right' });
+        pdf.text(`FinSuccess  |  ${i + 1}/${pages.length}`, (W + M) * pt, fmt[1] - 8 * pt, { align: 'right' });
       }
       const t = document.title, tab = (document.querySelector('[role=tab].active,[role=tab].on,.tabs .active') || {}).textContent || '';
       const d = new Date(), ds = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
