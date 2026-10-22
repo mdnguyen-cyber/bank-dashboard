@@ -128,7 +128,10 @@ function gapIns() {
 }
 function accrIns() {
   const a = yoyQ('accrued'), l = yoyQ('loansGross');
-  return `Lãi, phí phải thu <b>${nf(QL.accrued / 1000, 1)} nghìn tỷ</b> = ${pc(QL.accrued / QL.loansGross * 100, 2)} dư nợ, tăng <b>${sg(a)}</b> YoY so với dư nợ ${sg(l)}. Lãi dự thu tăng nhanh hơn dư nợ nghĩa là một phần thu nhập lãi đã ghi nhận nhưng chưa thu được tiền — có thể là nợ khó đòi chưa phân loại. LLR nếu coi khoản này là nợ xấu: <b>${pc(QL.llrInclAccrued, 0)}</b> (LLR công bố ${pc(QL.llr, 0)}).`;
+  const n = Q.length - 1, q4 = Q[n - 4], nplTxt = QL.npl != null && q4 && q4.npl != null ? (() => {
+    const r0 = q4.accrued / q4.loansGross * 100, r1 = QL.accrued / QL.loansGross * 100, dn = QL.npl - q4.npl, dr = r1 - r0;
+    return ` Tỷ lệ nợ xấu <b>${pc(QL.npl, 2)}</b> (${QL.q}) so với ${pc(q4.npl, 2)} cùng kỳ; lãi phải thu / dư nợ ${pc(r0, 2)} → ${pc(r1, 2)}${dr > 0.03 && dn > 0.05 ? ' — cả hai cùng tăng: rủi ro tín dụng đang lộ ra' : dr > 0.03 && dn <= 0.05 ? ' — lãi dự thu tăng nhưng NPL chưa tăng: cần theo dõi, có thể là nợ xấu tiềm ẩn chưa phân loại' : dr <= 0.03 && dn > 0.05 ? ' — NPL tăng trong khi lãi dự thu không tăng thêm' : ' — chưa thấy dấu hiệu xấu đi'}.`; })() : '';
+  return `Lãi, phí phải thu <b>${nf(QL.accrued / 1000, 1)} nghìn tỷ</b> = ${pc(QL.accrued / QL.loansGross * 100, 2)} dư nợ, tăng <b>${sg(a)}</b> YoY so với dư nợ ${sg(l)}. Lãi dự thu tăng nhanh hơn dư nợ nghĩa là một phần thu nhập lãi đã ghi nhận nhưng chưa thu được tiền — có thể là nợ khó đòi chưa phân loại. LLR nếu coi khoản này là nợ xấu: <b>${pc(QL.llrInclAccrued, 0)}</b> (LLR công bố ${pc(QL.llr, 0)}).${nplTxt}`;
 }
 function aqPeerIns() {
   const a = AQ(QL.q);
@@ -585,7 +588,7 @@ function paneFin() {
         insight: `LLR ${QL.llr < Q[Q.length - 3].llr ? 'giảm' : 'tăng'} từ <b>${pc(Q[Q.length - 3].llr, 0)}</b> (${Q[Q.length - 3].q}) ${QL.llr < Q[Q.length - 3].llr ? 'xuống' : 'lên'} <b>${pc(QL.llr, 0)}</b>${NR.llrRef && QL.llr < NR.llrRef.v ? ', ' + NR.llrRef.txt : ''}. Stress test theo deck — cộng lãi dự thu vào nợ xấu — LLR còn <b>${pc(QL.llrInclAccrued, 0)}</b>.`, src: 'WiData ratio_bank; tự tính' })}
       ${card({ id: 'chCc', title: 'Chi phí tín dụng và thu hồi nợ đã xử lý', sub: 'chi phí tín dụng % (TTM, tự tính) · thu hồi nợ tỷ đồng/quý (LCTT)', ctl: false,
         insight: `Chi phí tín dụng TTM <b>${pc(QL.creditCost, 2)}</b> dư nợ bình quân. Thu hồi nợ đã xử lý TTM <b>${nf(QL.recoveriesTTM)}</b> tỷ; nợ ngoại bảng đã xử lý còn <b>${nf(QL.writtenOff)}</b> tỷ — "kho" thu nhập khác cho các năm tới${NR.recovTarget || ''}.`, src: 'WiData fs_bank (is140, cfx04, obs11)' })}
-      ${card({ id: 'chAccr', title: 'Lãi, phí phải thu so với cho vay', sub: 'tăng trưởng YoY (%) và lãi phải thu / dư nợ (%, trục phải) · lãi dự thu tăng nhanh hơn dư nợ là dấu hiệu nợ xấu tiềm ẩn', ctl: true,
+      ${card({ id: 'chAccr', title: 'Lãi, phí phải thu so với cho vay', sub: 'tăng trưởng YoY (%) · trục phải: lãi phải thu / dư nợ và tỷ lệ nợ xấu (%, nét đứt đỏ) · lãi dự thu tăng nhanh hơn dư nợ là dấu hiệu nợ xấu tiềm ẩn — NPL đi lên sau đó là xác nhận', ctl: true,
         insight: accrIns(), src: 'BCTC hợp nhất (tài sản Có khác: lãi, phí phải thu; cho vay khách hàng)' })}
     </div></div>
   <div class="sub" data-subp="nfi">
@@ -710,11 +713,12 @@ function finCharts(k) {
     drawCar('chCarH');
   }
   if (k === 'aq') {
-    const qa = Q.filter((q, i) => i >= 4 && yok(q, 2021)).map(q => { const i = Q.indexOf(q); return { q: q.q, a: yoyQ('accrued', i), l: yoyQ('loansGross', i), r: q.accrued / q.loansGross * 100 }; });
+    const qa = Q.filter((q, i) => i >= 4 && yok(q, 2021)).map(q => { const i = Q.indexOf(q); return { q: q.q, a: yoyQ('accrued', i), l: yoyQ('loansGross', i), r: q.accrued / q.loansGross * 100, npl: q.npl }; });
     mk('chAccr', { type: 'bar', data: { labels: qa.map(x => x.q), datasets: [
       { label: 'Lãi phải thu YoY', data: qa.map(x => x.a), backgroundColor: C.purple, dp: 1, unit: '%' },
       { label: 'Cho vay YoY', data: qa.map(x => x.l), backgroundColor: C.navy, dp: 1, unit: '%' },
-      { type: 'line', label: 'Lãi phải thu / dư nợ', data: qa.map(x => x.r), borderColor: C.gold, backgroundColor: C.gold, yAxisID: 'y1', dp: 2, unit: '%' }] },
+      { type: 'line', label: 'Lãi phải thu / dư nợ', data: qa.map(x => x.r), borderColor: C.gold, backgroundColor: C.gold, yAxisID: 'y1', dp: 2, unit: '%' },
+      { type: 'line', label: 'Tỷ lệ nợ xấu (NPL)', data: qa.map(x => x.npl ?? null), borderColor: C.red, backgroundColor: C.red, yAxisID: 'y1', borderDash: [5, 3], borderWidth: 2, pointRadius: 2, dp: 2, unit: '%', spanGaps: true }] },
       options: { scales: { y: pctAxis('YoY'), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
     if (D.ctx) { const X = D.ctx, qs = X.quarters, cq = qs.map(l => Q.find(q => q.q === l));
       mk('chAqPeer', { type: 'line', data: { labels: qs, datasets: [
