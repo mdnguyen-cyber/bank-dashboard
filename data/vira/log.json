@@ -1,16 +1,8 @@
 {
- "fetched": "2026-10-22T07:15:43Z",
+ "fetched": "2026-10-22T10:22:08Z",
  "log": [
   {
-   "src": "https://vira.org.vn/tin/Market-Watch/Market-Watch-22-10--1-2.html",
-   "date": "2026-10-21",
-   "ok": 25,
-   "rows": 25,
-   "bad": [],
-   "raw": null
-  },
-  {
-   "src": "https://vira.org.vn/tin/Market-Watch/Market-Watch-24-09--1.html",
+   "src": "https://vira.org.vn/tin/Market-Watch/Market-Watch-24-09--1-2.html",
    "date": "2026-09-23",
    "ok": 25,
    "rows": 25,
