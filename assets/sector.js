@@ -1778,7 +1778,7 @@ function chBond() {
     options: { plugins: { refLines: { lines: [{ value: 0, label: '', color: C.grey }] } }, scales: { y: pctAxis('') } } });
   { const B = BD.big4, BC = { VCB: C.tealInk, CTG: C.navy, BID: C.purple, AGRIBANK: C.gold };
     mk('bBig4', { type: 'line', data: { labels: B.months.map(mvn), datasets: [
-      ...Object.keys(B.names).map(k => L(B.names[k], B.bank[k], BC[k], { showLine: false, pointRadius: 5, pointHoverRadius: 7 })),
+      ...Object.keys(B.names).map(k => L(B.names[k], B.bank[k], BC[k], { showLine: false, pointRadius: 2.5, pointHoverRadius: 5, pointBorderWidth: 0 })),
       L('Huy động 12T Big 4', B.months.map((m, i) => B.dep[i] ?? byM(dom.dep12State)[m] ?? null), C.red, { borderWidth: 2.2 }), L('TPCP 10 năm', big4Y10(), C.grey, { borderDash: [5, 4] })] },
       options: { scales: { y: pctAxis('', { beginAtZero: false }) } } }); }
   drMmCurve('dMmCurve');
