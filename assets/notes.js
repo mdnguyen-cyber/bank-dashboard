@@ -80,13 +80,13 @@
   const saveLocal = (k, arr) => { try { localStorage.setItem(LK(k), JSON.stringify(arr)); return true; } catch (e) { return false; } };
   const published = k => ((window.FS_NOTES || {}).notes || {})[k] || [];
   /* Bản trên máy chưa đăng = BẢN NHÁP: mỗi khối chỉ giữ 1 bản nháp (bản mới nhất), tự xoá sau DRAFT_DAYS ngày,
-     và tự bỏ khi nội dung đã được đăng (trùng id hoặc trùng nội dung với một bản đã đăng). */
+     và tự bỏ khi đã được đăng (trùng id/nội dung, hoặc đã có bản đăng mới hơn bản nháp). */
   const DRAFT_DAYS = 7;
   const atMs = at => { const t = Date.parse((at || '').replace(' ', 'T')); return isNaN(t) ? 0 : t; };
   const draftLeft = v => Math.max(0, Math.ceil((atMs(v.at) + DRAFT_DAYS * 864e5 - Date.now()) / 864e5));
   function draft(k) {
-    const pub = published(k), ids = new Set(pub.map(v => v.id)), sig = v => cleanStr(v.html) + '|' + JSON.stringify(v.f || {}), htmls = new Set(pub.map(sig));
-    const all = local(k), keep = all.filter(v => !ids.has(v.id) && !htmls.has(sig(v)) && (/-seed$/.test(v.id) || draftLeft(v) > 0))
+    const pub = published(k), ids = new Set(pub.map(v => v.id)), sig = v => cleanStr(v.html) + '|' + JSON.stringify(v.f || {}), htmls = new Set(pub.map(sig)), pubAt = pub.reduce((m, v) => (v.at || '') > m ? v.at : m, '');
+    const all = local(k), keep = all.filter(v => !ids.has(v.id) && !htmls.has(sig(v)) && (/-seed$/.test(v.id) || draftLeft(v) > 0) && !(pubAt && (v.at || '') <= pubAt))
       .sort((a, b) => (a.at || '').localeCompare(b.at || '')).slice(-1);
     if (keep.length !== all.length) saveLocal(k, keep);
     return keep[0] ? Object.assign({}, keep[0], { _local: true }) : null;
