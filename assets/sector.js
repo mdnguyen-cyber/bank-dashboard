@@ -1510,10 +1510,6 @@ function subBond() {
     ${card({ id: 'bFiIss', title: 'Ngân hàng phát hành trái phiếu theo kỳ hạn', sub: 'tỷ đồng/tháng · giá trị phát hành thực tế · ≤1 năm, 1–3 năm, 3–5 năm, >5 năm (>5 năm thường là nợ thứ cấp bổ sung vốn cấp 2)', insight: bFiIssIns(N), src: BD.src.fi })}
     ${card({ id: 'bFiMat', title: 'Trái phiếu ngân hàng: dư nợ và lịch đáo hạn', sub: 'đường = dư nợ (nghìn tỷ, trục phải) · cột = gốc đã trả + mua lại trước hạn theo tháng; phần sau tháng hiện tại = gốc đáo hạn theo lịch (tỷ đồng)', insight: bFiMatIns(N), src: BD.src.fi })}
   </div>
-  <article class="card"><h3 class="sub">Lãi suất huy động 12 tháng từng ngân hàng · ${dvn(BD.meta.depAsof)}</h3><p class="chart-sub">%/năm · Δ 30 ngày và Δ từ đầu năm tính bằng bps · sắp xếp theo nhóm rồi mức lãi suất</p>
-    <div class="tscroll"><table><thead><tr><th>Ngân hàng</th><th>Nhóm</th><th class="n">12T</th><th class="n">Δ 30 ngày</th><th class="n">Δ từ đầu năm</th></tr></thead><tbody>${
-      [...dp.banks].sort((x, y) => BTIER.indexOf(x.g) - BTIER.indexOf(y.g) || y.v - x.v).map(b => `<tr><td><b>${esc(b.n)}</b></td><td>${gdot(b.g)}${b.g}</td><td class="n">${nf(b.v, 2)}</td><td class="n">${b.m1 == null ? '—' : sg((b.v - b.m1) * 100, 0, '')}</td><td class="n">${b.ytd == null ? '—' : sg((b.v - b.ytd) * 100, 0, '')}</td></tr>`).join('')}</tbody></table></div>
-    <div class="src">Nguồn: ${BD.src.dep}</div></article>
   <h4 class="sub" style="margin:18px 0 8px;font-size:1.05rem">TPDN toàn thị trường</h4>
   <div class="grid g2 gap">
     ${card({ id: 'bCbIss', title: 'Phát hành TPDN theo ngành', sub: 'tỷ đồng/tháng · VND · Tài chính (ngân hàng, chứng khoán, tài chính tiêu dùng), Bất động sản, còn lại', insight: bCbIssIns(N), src: BD.src.cb })}
