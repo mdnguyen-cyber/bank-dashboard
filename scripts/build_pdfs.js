@@ -16,7 +16,7 @@ const today = new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);   //
 const files = {};
 
 async function newPage(browser) {
-  const p = await browser.newPage({ viewport: { width: 1060, height: 900 } });
+  const p = await browser.newPage({ viewport: { width: 1008, height: 1300 } });
   p.on('pageerror', e => console.warn('  lỗi trang:', e.message));
   p.on('dialog', d => d.dismiss());
   if (process.env.CHARTJS_LOCAL) await p.route('**/chart.umd.min.js', r => r.fulfill({ path: process.env.CHARTJS_LOCAL, contentType: 'application/javascript' }));
@@ -33,9 +33,9 @@ async function printState(browser, pg, tab, clicks) {
   if (!key || files[key]) { await p.close(); return; }
   await p.evaluate(() => FSPDF.prep()); await p.waitForTimeout(500);
   const title = await p.evaluate(() => FSPDF.label());
-  await p.pdf({ path: path.join(OUT, key + '.pdf'), format: 'A4', landscape: true, printBackground: true, preferCSSPageSize: false,
-    margin: { top: '8mm', bottom: '10mm', left: '8mm', right: '8mm' }, displayHeaderFooter: true, headerTemplate: '<span></span>',
-    footerTemplate: '<div style="font:8px Arial;color:#8a90a0;width:100%;text-align:right;padding-right:8mm">FinSuccess | <span class="pageNumber"></span>/<span class="totalPages"></span></div>' });
+  await p.pdf({ path: path.join(OUT, key + '.pdf'), format: 'A4', landscape: false, scale: 0.75, printBackground: true, preferCSSPageSize: false,
+    margin: { top: '5mm', bottom: '8mm', left: '5mm', right: '5mm' }, displayHeaderFooter: true, headerTemplate: '<span></span>',
+    footerTemplate: '<div style="font:8px Arial;color:#8a90a0;width:100%;text-align:right;padding-right:5mm">FinSuccess | <span class="pageNumber"></span>/<span class="totalPages"></span></div>' });
   files[key] = { page: pg, label: title };
   console.log('  ✓', key);
   await p.close();

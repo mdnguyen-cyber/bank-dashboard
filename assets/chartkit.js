@@ -436,8 +436,8 @@ window.FSPDF = (function () {
       await new Promise(r => setTimeout(r, 300));
       R.querySelectorAll('canvas').forEach(c => { const ch = window.Chart && Chart.getChart(c); if (ch) { ch.resize(); ch.update('none'); } });
       await new Promise(r => setTimeout(r, 500));
-      const { jsPDF } = window.jspdf, pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-      const M = 8, PW = 297 - 2 * M, PH = 210 - 2 * M - 5;
+      const { jsPDF } = window.jspdf, pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const M = 5, PW = 210 - 2 * M, PH = 297 - 2 * M - 4;
       const rr = R.getBoundingClientRect(), W = rr.width, k = PW / W, maxH = PH / k;
       const head = [...document.querySelectorAll('.logo-bar,.stock-head')].filter(vis);
       const opt = { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, windowWidth: document.documentElement.clientWidth,
@@ -459,7 +459,7 @@ window.FSPDF = (function () {
         if (i === 0 && hImg) { pdf.addImage(hImg.toDataURL('image/jpeg', 0.85), 'JPEG', M, y, PW, headH, undefined, 'FAST'); y += headH + 3; }
         pdf.addImage(c.toDataURL('image/jpeg', 0.82), 'JPEG', M, y, PW, (y1 - y0) * k, undefined, 'FAST');
         pdf.setFontSize(8); pdf.setTextColor(140);
-        pdf.text(`FinSuccess  |  ${i + 1}/${pages.length}`, 297 - M, 210 - 4, { align: 'right' });
+        pdf.text(`FinSuccess  |  ${i + 1}/${pages.length}`, 210 - M, 297 - 2.5, { align: 'right' });
       }
       const d = new Date();
       pdf.save(fname(`${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`));
