@@ -403,22 +403,25 @@ function paneMacro() {
   const SX = window.SECTOR_DATA ? window.SECTOR_DATA.idx : null;
   const qc = (k, b, txt) => `<div class="cell ${SX && SX.now.q === k ? 'on' : ''}"><b>${b}</b>${txt}${SX && SX.now.q === k ? '<br><span class="now">Hiện tại</span>' : ''}</div>`;
   const MA = D.macro; const fx = MA.fx, r = MA.rates, SD = (window.SECTOR_DATA || {}).dom || {};
+  const NS = (SD.nhtmD && SD.nhtmD.length ? SD.nhtmD : fx.nhtmD && fx.nhtmD.length ? fx.nhtmD : fx.nhtmSell), FR = (SD.freeD && SD.freeD.length ? SD.freeD : fx.freeD && fx.freeD.length ? fx.freeD : fx.free);   // tỷ giá theo ngày, chung với dashboard ngành
+  const FXM = SD.nhtmSell ? { nhtmSell: SD.nhtmSell, free: SD.free, freeD: SD.freeD, nhtmD: SD.nhtmD } : { nhtmSell: fx.nhtmSell, free: fx.free, freeD: fx.freeD, nhtmD: fx.nhtmD };
   const lastv = a => a[a.length - 1];
   const sigRows = D.signals.map(s => `<tr><td style="white-space:nowrap"><b>${s.id}</b></td><td>${esc(s.label)}</td><td class="n">${nf(s.value, 2)} ${s.unit}</td><td>${esc(s.threshold)}</td><td>${pill(s.state)}</td><td>${esc(s.rule)}</td><td>${esc(s.impact)}</td><td style="white-space:nowrap">${esc(s.asOf)}</td></tr>`).join('');
-  const ytdNow = lastv(MA.credit.ytd);
-  const ytdPrevSame = MA.credit.ytd.find(v => v.d.slice(5, 7) === ytdNow.d.slice(5, 7) && +v.d.slice(0, 4) === +ytdNow.d.slice(0, 4) - 1);
+  const CY = SD.creditYtd || MA.credit.ytd, DST = SD.dep12State || r.dep12State, DOT = SD.dep12Other || r.dep12Other;   // số hệ thống lấy chung với dashboard ngành
+  const ytdNow = lastv(CY);
+  const ytdPrevSame = CY.find(v => v.d.slice(5, 7) === ytdNow.d.slice(5, 7) && +v.d.slice(0, 4) === +ytdNow.d.slice(0, 4) - 1);
   const mix = D.loanMix[D.loanMix.length - 1], mix0 = D.loanMix.find(m => m.q.startsWith('Q4/2019'));
   const mixQ4 = [...D.loanMix].reverse().find(m => m.q.startsWith('Q4'));
-  const fxGap = lastv(fx.free).v - lastv(fx.nhtmSell).v;
+  const fxGap = lastv(FR).v - lastv(NS).v;
   const fxPk = fx.nhtmSell.map(b => { const f = fx.free.find(s => s.d.slice(0, 7) === b.d.slice(0, 7)); return f ? { g: f.v - b.v, d: b.d.slice(5, 7) + '/' + b.d.slice(0, 4) } : null; }).filter(Boolean).reduce((a, b) => b.g > a.g ? b : a);
   $('#macro').innerHTML = `
   <h2 class="sec">Vĩ mô &amp; Tỉ lệ an toàn</h2>
   <p class="sec-sub">Tab tùy biến cho ngân hàng: lãi suất quyết định lợi nhuận và định giá; tỉ giá quyết định dư địa nới lỏng của NHNN.</p>
   <div class="banner chain">Thế giới → Tỉ giá → Phản ứng NHNN → Lãi suất (TT2 → TT1) → COF, NIM, nợ xấu, định giá ${T}</div>
   <div class="kpis k4">
-    ${kpi('USD/VND NHTM bán ra', nf(lastv(fx.nhtmSell).v), 'tự do ' + nf(lastv(fx.free).v) + ' (' + (lastv(fx.free).v - lastv(fx.nhtmSell).v >= 0 ? '+' : '−') + nf(Math.abs(lastv(fx.free).v - lastv(fx.nhtmSell).v)) + 'đ) · cách trần ' + pc(Math.abs((lastv(fx.nhtmSell).v / lastv(fx.ceiling).v - 1) * 100), 1))}
+    ${kpi('USD/VND NHTM bán ra', nf(lastv(NS).v), 'tự do ' + nf(lastv(FR).v) + ' (' + (lastv(FR).v - lastv(NS).v >= 0 ? '+' : '−') + nf(Math.abs(lastv(FR).v - lastv(NS).v)) + 'đ) · cách trần ' + pc(Math.abs((lastv(NS).v / lastv(fx.ceiling).v - 1) * 100), 1))}
     ${kpi('LNH qua đêm', pc(lastv(MA.onDaily).v, 2), dvn(lastv(MA.onDaily).d) + ' · OMO ' + pc(lastv(MA.omoRateDaily).v, 1))}
-    ${kpi('Huy động 12T NHTM Nhà nước', pc(lastv(r.dep12State).v, 2), T + ' ' + pc(lastv(depB).v, 2) + ' · NHTM khác ' + pc(lastv(r.dep12Other).v, 2))}
+    ${kpi('Huy động 12T NHTM Nhà nước', pc(lastv(DST).v, 2), T + ' ' + pc(lastv(depB).v, 2) + ' · NHTM khác ' + pc(lastv(DOT).v, 2))}
     ${kpi('Tín dụng so đầu năm', pc(ytdNow.v, 2), dvn(ytdNow.d).slice(3) + ' · cùng kỳ ' + pc(ytdPrevSame && ytdPrevSame.v, 2) + ' · chỉ tiêu ~15%')}
   </div>
   <div class="grid g2 gap">
@@ -441,7 +444,7 @@ function paneMacro() {
     </article>
   </div>
   <div class="grid g2 gap">
-    ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: fx.nhtmSell, free: fx.free, freeD: fx.freeD, nhtmD: fx.nhtmD }), src: FSFX.SRC })}
+    ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight(FXM), src: FSFX.SRC })}
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động mạnh <b>${nf(Math.min(...on3(MA.onDaily)), 2)}–${nf(Math.max(...on3(MA.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...MA.onDaily.map(v => v.v)), 2)}% ngày ${dvn(MA.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh thường rơi vào cuối tháng (căng mùa vụ) và NHNN bơm OMO đúng các phiên đó. Theo deck (R-10), OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR — nên TT2 hạ không tự kéo lãi suất huy động TT1 xuống.`,
       src: 'WiData macro 82237, 81522, 82268' })}
@@ -480,7 +483,7 @@ function paneMacro() {
       return `<tr class="${g.flag ? 'hl' : soon ? 'soon' : ''}"><td style="white-space:nowrap">${g.id}${soon ? `<div><span class="pill rs-soon">Chưa hiệu lực</span></div><div class="rs-d">từ ${f(g.eff)}</div>` : ''}</td><td>${esc(g.rule)}</td><td>${esc(g.level)}${g.flag ? `<div class="note keep">⚠ ${esc(g.flag)}</div>` : ''}</td><td>${esc(g.doc)}${g.ref && D.regRef ? `<div><a href="${D.regRef.u}" target="_blank" rel="noopener" class="rs-a">Phân tích FinSuccess →</a></div>` : ''}</td><td>${esc(g.path)}</td></tr>`; }).join('')}
     </tbody></table></div></article>`;
 
-  { const cfg = FSFX.config({ nhtmSell: fx.nhtmSell, free: fx.free, freeD: fx.freeD, nhtmD: fx.nhtmD }, { numAxis }); if (cfg) mk('chFx', cfg); }
+  { const cfg = FSFX.config(FXM, { numAxis }); if (cfg) mk('chFx', cfg); }
   const onL = MA.onDaily.map(v => v.d), netM = Object.fromEntries(MA.omoNetDaily.map(v => [v.d, v.v])), omoM = Object.fromEntries(MA.omoRateDaily.map(v => [v.d, v.v]));
   let omoLast = null; const omoD = onL.map(d => (omoLast = omoM[d] ?? omoLast)), netD = onL.map(d => netM[d] ?? null);
   mk('chOn', { type: 'bar', data: { labels: onL.map(d => dvn(d)), datasets: [
@@ -493,9 +496,9 @@ function paneMacro() {
   const l21 = monthsFrom('2021-01', lastv(SD.dep12State).d.slice(0, 7));
   mk('chDep', { type: 'line', data: { labels: l21.map(mvn), datasets: [LN('NHTM Nhà nước', alM(SD.dep12State, l21), C.navy, { borderWidth: 2.4 }), LN('NHTM lớn', alM(SD.dep12Large, l21), '#1f8a8d'), LN('NHTM khác', alM(SD.dep12Other, l21), C.purple), LN(T + ' niêm yết', alM(depB, l21), C.gold, { borderWidth: 2.4 })] },
     options: { scales: { y: pctAxis() } } }, { switch: 'line' });
-  const yrs = [...new Set(MA.credit.ytd.map(v => v.d.slice(0, 4)))].slice(-4);
+  const yrs = [...new Set(CY.map(v => v.d.slice(0, 4)))].slice(-4);
   mk('chCredit', { type: 'line', data: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'], datasets: yrs.map((y, i) => ({
-    label: y, data: Array.from({ length: 12 }, (_, m) => { const f = MA.credit.ytd.find(v => v.d.startsWith(`${y}-${String(m + 1).padStart(2, '0')}`)); return f ? f.v : null; }),
+    label: y, data: Array.from({ length: 12 }, (_, m) => { const f = CY.find(v => v.d.startsWith(`${y}-${String(m + 1).padStart(2, '0')}`)); return f ? f.v : null; }),
     borderColor: [C.steps[5], C.steps[4], C.steps[2], C.navy][i + 4 - yrs.length], backgroundColor: [C.steps[5], C.steps[4], C.steps[2], C.navy][i + 4 - yrs.length], borderWidth: y === yrs[yrs.length - 1] ? 3 : 1.6, pointRadius: 2, dp: 2, unit: '%', spanGaps: false })) },
     options: { scales: { y: pctAxis() }, plugins: { refLines: { lines: [{ value: 15, label: 'Chỉ tiêu 2026 ~15%' }] } } } });
   const l19 = monthsFrom('2019-01', lastv(SD.creditYoY).d.slice(0, 7));
