@@ -2029,24 +2029,38 @@ function consIns(full) {
 function paneHot() {
   const big = D.ldrSens.rows.filter(r => r.group === 'Big 4');
   const gapNow = lastv(dom.creditYoY).v - lastv(dom.depYoY).v;
+  const fw = ((GD.fedwatch || {}).meetings || []), fwD = fw.find(m => m.date >= '2026-12-01'), top = m => m && Object.entries(m.probs || {}).sort((x, y) => y[1] - x[1])[0];
+  const i23 = BQ.indexOf('Q1/2023'), nim0 = i23 >= 0 ? AG.nim.all[i23] : null;
+  const st = lastv(dom.dep12State), lg = lastv(dom.dep12Large), ot = lastv(dom.dep12Other);
+  const BB = (window.BOND_DATA || {}).big4, b4 = BB ? BB.items.filter(z => z.c && z.d >= '2026-06-01') : [], b4lo = b4.length ? Math.min(...b4.map(z => z.c)) : null, b4hi = b4.length ? Math.max(...b4.map(z => z.c)) : null;
+  const news = [...new Map(D.news.map(n => [n.url, n])).values()].sort((x, y) => (y.d || '').localeCompare(x.d || ''));
   $('#hot').innerHTML = `
   <h2 class="sec">Chủ đề nóng</h2>
-  <p class="sec-sub">Ba câu hỏi đang quyết định ngành trong 1–2 quý tới, mỗi câu kèm số và nơi kiểm chứng.</p>
+  <p class="sec-sub">Những câu hỏi đang quyết định ngành trong 1–2 quý tới, mỗi câu kèm số và nơi kiểm chứng · cập nhật ${dvn(st.d)}.</p>
   <div class="grid g2 gap">
-    <article class="card hot"><h3 class="sub">1 · Fed đảo chiều + dầu 100 USD: NHNN còn dư địa nới?</h3>
-      <p>Fed tăng 25 bps (16/09/2026), UST 10Y <b>${pc(lastv(intl.ust10).v, 2)}</b>, Brent <b>${nf(lastv(intl.brent).v, 0)} USD</b> (${sg(yoyAt(intl.brent, lastv(intl.brent).d), 0)} YoY). Trong nước CPI ${pc(lastv(dom.cpi).v, 2)}, lõi ${pc(lastv(dom.cpiCore).v, 2)}.</p>
-      <p><b>Đọc:</b> R-02 và R-06 cùng bật — NHNN gần như không thể hạ lãi suất điều hành trong quý IV. Điểm đỡ duy nhất là CNY mạnh lên và tỷ giá tự do đã hạ nhiệt.</p>
-      <div class="src">Xem: Bức tranh ngành › Quốc tế; Catalyst · Risk (R-02, R-06)</div></article>
-    <article class="card hot"><h3 class="sub">2 · Tín dụng vượt huy động ${nf(gapNow, 1)} điểm %: cuộc đua tiền gửi đi đến đâu?</h3>
-      <p>LS huy động 12T NHTM Nhà nước ${pc(lastv(dom.dep12State).v, 2)} (từ 4,68% cuối 2025); COF ngành ${pc(AG.cof.all[QY], 2)} → <b>${pc(AG.cof.all[QI], 2)}</b> trong 1 năm. NIM ngành ${pc(AG.nim.all[QI], 2)}.</p>
-      <p><b>Đọc:</b> COF mới phản ánh một phần đợt tăng 12T (R-13 trễ 1–3 quý) — Q3/2026 là quý kiểm chứng NIM. Tư nhân lớn chịu nhiều nhất vì LDR 85–90% (VPB > 100%).</p>
-      <div class="src">Xem: Bức tranh ngành › Nội địa, Ngân hàng; KQKD Q3 (Catalyst)</div></article>
-    <article class="card hot"><h3 class="sub">3 · TT50 và tiền gửi Kho bạc: lợi thế Big 4 kéo dài bao lâu?</h3>
-      <p>Hệ số KBNN vào LDR lên 50% từ Q3/2026 kéo LDR Big 4 xuống ${big.map(r => `${r.s} ${nf(r.ldr20 - r.ldr50, 1)}`).join(', ')} điểm % (cận trên). TT50 hiệu lực 1/12/2026 đặt mặc định 20%.</p>
-      <p><b>Đọc:</b> Nếu Thống đốc không giữ 50% sau 1/12, dư địa cho vay thêm của Big 4 thu hẹp đúng lúc cuộc đua tiền gửi căng nhất. Theo dõi văn bản hướng dẫn TT50 tháng 11.</p>
+    <article class="card hot"><h3 class="sub">1 · Chỉ đạo giảm lãi suất: niêm yết đã giảm, vốn biên thì chưa</h3>
+      <p>Hai công văn trong 4 ngày (9608 ngày 18/10, <b>9736</b> ngày 21/10): tiền gửi bình quân giao dịch mới kỳ hạn từ 6 tháng phải giảm tối thiểu <b>0,5 điểm %</b>, NHNN giám sát qua báo cáo thống kê, vi phạm có thể bị giảm chỉ tiêu tín dụng. Tiết kiệm 12 tháng NHTM Nhà nước về <b>${pc(st.v, 2)}</b>, NHTM lớn ${pc(lg.v, 2)}, NHTM khác ${pc(ot.v, 2)} (${dvn(st.d)}).</p>
+      <p>Ngược chiều: chứng chỉ tiền gửi tăng 0,1–0,3 điểm % (MB tới 8%, VPBank tới 9%)${b4.length ? `, Big 4 phát hành trái phiếu từ 06/2026 ở <b>${nf(b4lo, 2)}–${nf(b4hi, 2)}%</b>` : ''}; BIDV dự kiến phát hành thêm 8.000 tỷ trái phiếu riêng lẻ trong quý IV.</p>
+      <p><b>Nhận định:</b> kênh bị chỉ đạo (tiết kiệm) rẻ đi, kênh chưa bị chỉ đạo (chứng chỉ tiền gửi, trái phiếu) vẫn đắt — chi phí vốn biên chưa hạ thật. Ngân hàng LDR cao, phụ thuộc chứng chỉ tiền gửi chịu nhiều nhất.</p>
+      <div class="src">Xem: Bức tranh ngành › Nội địa (Chi phí vốn &amp; thanh khoản); Chính sách · Nhật ký NHNN</div></article>
+    <article class="card hot"><h3 class="sub">2 · NIM bị ép từ phía cho vay trước khi chi phí vốn kịp hạ</h3>
+      <p>Cho vay phải giảm <b>1,5–2%/năm</b>, áp dụng cả khách hàng hiện hữu; tiền gửi chỉ giảm 0,5 điểm % và chỉ với giao dịch mới. NIM ngành <b>${pc(AG.nim.all[QI], 2)}</b> (${BQ[QI]})${nim0 != null ? `, từ ${pc(nim0, 2)} ở Q1/2023` : ''}; COF ${pc(AG.cof.all[QY], 2)} → <b>${pc(AG.cof.all[QI], 2)}</b> trong 1 năm. Tín dụng vẫn nhanh hơn tiền gửi <b>${nf(gapNow, 1)} điểm %</b> (${mvn(lastv(dom.creditYoY).d)}).</p>
+      <p><b>Nhận định:</b> phần tiền gửi cũ lãi suất cao còn trả tới khi đáo hạn, nên NIM Q4/2026 – Q1/2027 bị ép rõ nhất ở ngân hàng CASA thấp và cho vay doanh nghiệp nhiều. Cần theo dõi số giải ngân thực của các gói lãi suất thấp (MSB 10.000 tỷ, VIB 15.000 tỷ, VPBank giảm 1,5%) — có thể chỉ mang tính truyền thông.</p>
+      <div class="src">Xem: Bức tranh ngành › Ngân hàng (NIM, COF theo nhóm); BCTC Q4/2026</div></article>
+    <article class="card hot"><h3 class="sub">3 · Fed nghiêng về tăng + dầu ~110 USD: NHNN còn dư địa nới?</h3>
+      <p>UST 10 năm <b>${pc(glast('us_10y_d').v ?? lastv(intl.ust10).v, 2)}</b> (${dvn(glast('us_10y_d').d)}), Brent <b>${nf(lastv(intl.brent).v, 0)} USD</b> (${sg(yoyAt(intl.brent, lastv(intl.brent).d), 0)} YoY)${fwD && top(fwD) ? `; hợp đồng tương lai lãi suất quỹ liên bang ngụ ý <b>${nf(top(fwD)[1], 1)}%</b> khả năng mức ${top(fwD)[0].replace(/\./g, ',').replace('-', '–')}% sau phiên ${dvn(fwD.date)}` : ''}. Trong nước CPI <b>${pc(lastv(dom.cpi).v, 2)}</b>, lõi ${pc(lastv(dom.cpiCore).v, 2)} — vượt mục tiêu 4,5–5%.</p>
+      <p><b>Nhận định:</b> R-02 và R-06 cùng bật, NHNN khó hạ lãi suất điều hành mạnh tay; điểm đỡ là tỷ giá NHTM và tự do đều thấp hơn đầu năm. Đổi chiều nếu Fed giữ nguyên ngày 9/12 và Brent về dưới 90 USD.</p>
+      <div class="src">Xem: Bức tranh ngành › Quốc tế (Mỹ), Tỷ giá USD/VND; Catalyst · Risk (R-02, R-06)</div></article>
+    <article class="card hot"><h3 class="sub">4 · Mùa KQKD Q3: lợi nhuận tốt nhưng phản ánh giai đoạn trước chỉ đạo</h3>
+      <p>Techcombank LNST công ty mẹ Q3 <b>7.943 tỷ</b> (+23,7% YoY, kỷ lục, thu dịch vụ +40%), VPBank 8.644 tỷ (+18,8%, tín dụng bất động sản +40%), LPBank 3.562 tỷ (+28,9%; 9 tháng hơn 10.400 tỷ). P/B ngành <b>${x(SV.now.pb)}</b>.</p>
+      <p><b>Nhận định:</b> Q3 chưa chịu tác động của đợt giảm lãi suất cho vay từ 20/10; rủi ro điều chỉnh dự phóng nằm ở Q4/2026 – 2027. Ưu tiên ngân hàng CASA cao, ít phụ thuộc chứng chỉ tiền gửi.</p>
+      <div class="src">Xem: Catalyst · KQKD; trang từng ngân hàng › Tài chính</div></article>
+    <article class="card hot"><h3 class="sub">5 · TT50 và tiền gửi Kho bạc: lợi thế Big 4 kéo dài bao lâu?</h3>
+      <p>Hệ số tiền gửi Kho bạc vào LDR lên 50% từ Q3/2026 kéo LDR Big 4 xuống ${big.map(r => `${r.s} ${nf(r.ldr20 - r.ldr50, 1)}`).join(', ')} điểm % (cận trên). TT50 hiệu lực 01/12/2026 đặt mặc định 20%.</p>
+      <p><b>Nhận định:</b> nếu không giữ 50% sau 01/12, dư địa cho vay thêm của Big 4 thu hẹp đúng lúc cuộc đua vốn căng nhất. Theo dõi văn bản hướng dẫn TT50 trong tháng 11.</p>
       <div class="src">Xem: Chính sách · Quy định (bảng độ nhạy LDR); báo cáo TT50 FinSuccess</div></article>
-    <article class="card"><h3 class="sub">Tin ngành mới nhất</h3><p class="chart-sub">Báo chí gắn chủ đề Ngân hàng · ${dvn(D.news.length ? D.news[D.news.length - 1].d : '')} – ${dvn(D.news.length ? D.news[0].d : '')} · chỉ tiêu đề và link</p>
-      <ul class="news" style="padding-left:18px;margin:0">${D.news.filter(n => n.sym.length || /NHNN|tín dụng|lãi suất|nợ xấu|Thông tư/i.test(n.t)).slice(0, 14).map(n => `<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.t)}</a> <small>· ${esc(n.src)} · ${dvn(n.d)}${n.sym.length ? ' · ' + n.sym.slice(0, 4).join(', ') : ''}</small></li>`).join('')}</ul>
+    <article class="card"><h3 class="sub">Tin ngành mới nhất</h3><p class="chart-sub">Báo chí gắn chủ đề Ngân hàng · ${dvn(news.length ? news[Math.min(13, news.length - 1)].d : '')} – ${dvn(news.length ? news[0].d : '')} · chỉ tiêu đề và link</p>
+      <ul class="news" style="padding-left:18px;margin:0">${news.filter(n => n.sym.length || /NHNN|tín dụng|lãi suất|nợ xấu|Thông tư|Thống đốc/i.test(n.t)).slice(0, 14).map(n => `<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.t)}</a> <small>· ${esc(n.src)} · ${dvn(n.d)}${n.sym.length ? ' · ' + n.sym.slice(0, 4).join(', ') : ''}</small></li>`).join('')}</ul>
       <div class="src">Nguồn: WiData news_feed</div></article>
   </div>`;
 }
