@@ -424,6 +424,9 @@ article.card.flash{box-shadow:0 0 0 3px var(--teal);transition:box-shadow .3s}
 .pdfbtn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:8px;border:1px solid var(--line,#dfe3ea);background:#fff;color:var(--navy,#1b2a6b);cursor:pointer;margin-right:10px}
 .pdfbtn:hover{background:var(--navy,#1b2a6b);color:#fff}
 .pdf-img{display:none}
+body.pdf-cap .pdfbtn,body.pdf-cap .tabs,body.pdf-cap .mode-sw,body.pdf-cap .totop,body.pdf-cap .aibot,body.pdf-cap .aibot-soon,body.pdf-cap .ibar,body.pdf-cap .ctl,body.pdf-cap .rng,body.pdf-cap .rng-hint,body.pdf-cap .zsel,body.pdf-cap .picker,body.pdf-cap .colbar,body.pdf-cap .tfbar,body.pdf-cap .tf{display:none!important}
+body.pdf-cap .insight,body.pdf-cap .chart-sub,body.pdf-cap .sec-sub,body.pdf-cap .card>.src{display:block!important}
+body.pdf-cap .card{box-shadow:none}
 @media print{
   body.print-all{background:#fff}
   body.print-all main,body.print-all .logo-bar,body.print-all .stock-head{page:pdfall}

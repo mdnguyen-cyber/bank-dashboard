@@ -336,39 +336,92 @@
   if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
 })();
 
-/* Nút "Xuất PDF": in trang đang xem (tab đang mở) ra PDF qua hộp thoại in của trình duyệt.
-   Trước khi in: mở mọi mục đang thu gọn, đổi biểu đồ canvas thành ảnh để bản in nét và không bị co giãn; in xong trả lại như cũ. */
+/* Nút "Xuất PDF": tải thẳng file PDF của tab đang xem (không qua hộp thoại in).
+   Mở mọi mục đang thu gọn, chụp nội dung bằng html2canvas theo từng trang (ngắt trang giữa các khối, không cắt ngang biểu đồ), ghép bằng jsPDF rồi trả trang về như cũ. */
 (function () {
+  const LIBS = ['https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'];
+  const load = src => new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  const ready = () => (window.html2canvas && window.jspdf) ? Promise.resolve() : Promise.all(LIBS.map(load));
   const b = document.createElement('button');
-  b.type = 'button'; b.className = 'pdfbtn'; b.textContent = 'Xuất PDF'; b.title = 'Xuất trang đang xem ra PDF (chọn "Lưu dưới dạng PDF" trong hộp thoại in)';
-  let undo = [];
-  const restore = () => {
-    undo.reverse().forEach(f => { try { f(); } catch (e) {} }); undo = [];
-    document.body.classList.remove('print-all');
-  };
-  b.onclick = () => {
-    restore();
-    document.body.classList.add('print-all'); undo.push(() => document.body.classList.remove('print-all'));
-    const root = document.querySelector('.pane.active') || document.querySelector('main') || document.body;
-    root.querySelectorAll('.coll.shut').forEach(h => { h.click(); undo.push(() => { if (!h.classList.contains('shut')) h.click(); }); });
-    setTimeout(() => {
-      root.querySelectorAll('canvas').forEach(c => {
-        if (!c.offsetParent || !c.width) return;
-        const ch = window.Chart && Chart.getChart(c); if (ch) ch.resize();
-        try {
-          const img = new Image(); img.src = c.toDataURL('image/png'); img.className = 'pdf-img'; img.alt = c.getAttribute('aria-label') || '';
-          c.after(img); c.classList.add('pdf-hide');
-          undo.push(() => { img.remove(); c.classList.remove('pdf-hide'); });
-        } catch (e) {}
-      });
-      const t = document.title, tab = (document.querySelector('[role=tab].active,[role=tab].on') || {}).textContent || '';
+  b.type = 'button'; b.className = 'pdfbtn'; b.textContent = 'Xuất PDF'; b.title = 'Tải PDF của trang đang xem';
+  const vis = el => el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+  // Các khoảng [top,bottom] không được cắt ngang (thẻ biểu đồ, ô KPI, đoạn chữ…), gộp các khối nằm cạnh nhau
+  function units(el, maxH, out) {
+    for (const c of el.children) {
+      if (!vis(c)) continue;
+      const r = c.getBoundingClientRect(); if (r.height < 1) continue;
+      if (r.height <= maxH || !c.children.length || c.tagName === 'CANVAS' || c.tagName === 'TABLE') out.push([r.top + scrollY, r.bottom + scrollY]);
+      else units(c, maxH, out);
+    }
+    return out;
+  }
+  function cuts(top, bottom, maxH, firstH) {
+    const iv = units(root(), maxH, []).sort((a, b) => a[0] - b[0]), m = [];
+    iv.forEach(x => { const l = m[m.length - 1]; if (l && x[0] < l[1] - 1) l[1] = Math.max(l[1], x[1]); else m.push(x.slice()); });
+    const pages = []; let st = top, cap = firstH;
+    const push = e => { pages.push([st, e]); st = e; cap = maxH; };
+    for (const [a, z] of m) {
+      while (z - st > cap) {
+        if (a > st + 20 && a - st <= cap) push(a);
+        else push(st + cap);
+      }
+    }
+    if (bottom - st > 1) { while (bottom - st > cap) push(st + cap); push(bottom); }
+    return pages;
+  }
+  const root = () => document.querySelector('.pane.active') || document.querySelector('main') || document.body;
+  let busy = false;
+  b.onclick = async () => {
+    if (busy) return; busy = true;
+    const label = b.textContent, undo = [];
+    b.textContent = 'Đang tạo PDF…'; b.disabled = true;
+    try {
+      await ready();
+      document.body.classList.add('pdf-cap'); undo.push(() => document.body.classList.remove('pdf-cap'));
+      const R = root();
+      R.querySelectorAll('.coll.shut').forEach(h => { h.click(); undo.push(() => { if (!h.classList.contains('shut')) h.click(); }); });
+      const sx = scrollX, sy = scrollY; undo.push(() => scrollTo(sx, sy));
+      scrollTo(0, 0);
+      await new Promise(r => setTimeout(r, 300));
+      R.querySelectorAll('canvas').forEach(c => { const ch = window.Chart && Chart.getChart(c); if (ch) { ch.resize(); ch.update('none'); } });
+      await new Promise(r => setTimeout(r, 500));
+      const { jsPDF } = window.jspdf, pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      const M = 8, PW = 297 - 2 * M, PH = 210 - 2 * M - 5;
+      const rr = R.getBoundingClientRect(), W = rr.width, k = PW / W, maxH = PH / k;
+      const head = [...document.querySelectorAll('.logo-bar,.stock-head')].filter(vis);
+      const opt = { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, windowWidth: document.documentElement.clientWidth,
+        ignoreElements: el => el === b || el.classList && (el.classList.contains('aibot') || el.classList.contains('totop')) };
+      let headH = 0, hImg = null;
+      if (head.length) {
+        const h0 = head[0].getBoundingClientRect(), h1 = head[head.length - 1].getBoundingClientRect();
+        const hc = await html2canvas(document.body, Object.assign({}, opt, { x: h0.left, y: h0.top + scrollY, width: h0.width, height: h1.bottom - h0.top }));
+        headH = Math.min(PH * 0.3, (h1.bottom - h0.top) * PW / h0.width); hImg = hc;
+      }
+      const top = rr.top + scrollY, bottom = rr.bottom + scrollY;
+      const pages = cuts(top, bottom, maxH, maxH - headH / k - 3 / k);
+      for (let i = 0; i < pages.length; i++) {
+        b.textContent = `Đang tạo PDF… ${i + 1}/${pages.length}`;
+        const [y0, y1] = pages[i];
+        const c = await html2canvas(document.body, Object.assign({}, opt, { x: rr.left, y: y0, width: W, height: y1 - y0 }));
+        if (i) pdf.addPage();
+        let y = M;
+        if (i === 0 && hImg) { pdf.addImage(hImg.toDataURL('image/jpeg', 0.85), 'JPEG', M, y, PW, headH, undefined, 'FAST'); y += headH + 3; }
+        pdf.addImage(c.toDataURL('image/jpeg', 0.82), 'JPEG', M, y, PW, (y1 - y0) * k, undefined, 'FAST');
+        pdf.setFontSize(8); pdf.setTextColor(140);
+        pdf.text(`FinSuccess  |  ${i + 1}/${pages.length}`, 297 - M, 210 - 4, { align: 'right' });
+      }
+      const t = document.title, tab = (document.querySelector('[role=tab].active,[role=tab].on,.tabs .active') || {}).textContent || '';
       const d = new Date(), ds = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
-      document.title = `FinSuccess_${(t.split('·')[0] || t).trim()}${tab ? ' - ' + tab.replace(/^\d+\.\s*/, '').trim() : ''}_${ds}`;
-      undo.push(() => { document.title = t; });
-      window.print();
-    }, 700);
+      const name = `FinSuccess_${(t.split('·')[0] || t).trim()}${tab ? ' - ' + tab.replace(/^\d+\.\s*/, '').trim() : ''}_${ds}`.replace(/[\\/:*?"<>|]+/g, '-');
+      pdf.save(name + '.pdf');
+    } catch (e) {
+      console.error(e); alert('Không tạo được PDF: ' + (e && e.message || e));
+    } finally {
+      undo.reverse().forEach(f => { try { f(); } catch (e) {} });
+      b.textContent = label; b.disabled = false; busy = false;
+    }
   };
-  window.addEventListener('afterprint', () => setTimeout(restore, 50));
   const add = () => { const host = document.querySelector('.logo-right') || document.body; host.prepend(b); };
   if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
 })();
