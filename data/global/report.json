@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-23T03:37:31Z",
+ "fetched": "2026-10-23T04:28:06Z",
  "report": {
   "us_cpi": [
    {
@@ -184,6 +184,75 @@
     "id": "fred:GDPC1",
     "n": 66,
     "last": "2026-04-01"
+   }
+  ],
+  "us_umcsent": [
+   {
+    "id": "fred:UMCSENT",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_mich": [
+   {
+    "id": "fred:MICH",
+    "n": 200,
+    "last": "2026-08-01"
+   }
+  ],
+  "us_ism_mfg": [
+   {
+    "id": "dbn:ISM/pmi/pm",
+    "n": 68,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "dbn:ISM/pmi/PMI",
+    "error": "HTTP Error 404: NOT FOUND"
+   }
+  ],
+  "us_ism_svc": [
+   {
+    "id": "dbn:ISM/nm-pmi/pm",
+    "n": 64,
+    "last": "2025-08-01"
+   },
+   {
+    "id": "dbn:ISM/nm-pmi/NMI",
+    "error": "HTTP Error 404: NOT FOUND"
+   }
+  ],
+  "cn_pmi_mfg": [
+   {
+    "id": "dbn:NBS/M_A0B01/A0B0101",
+    "n": 13,
+    "last": "2026-02-01"
+   }
+  ],
+  "cn_pmi_svc": [
+   {
+    "id": "dbn:NBS/M_A0B02/A0B0201",
+    "n": 13,
+    "last": "2026-02-01"
+   }
+  ],
+  "ea_esi": [
+   {
+    "id": "dbn:Eurostat/ei_bssi_m_r2/M.BS-ESI-I.SA.EA20",
+    "n": 192,
+    "last": "2025-12-01"
+   },
+   {
+    "id": "dbn:Eurostat/teibs010/M.BS-ESI-I.SA.EA20",
+    "n": 12,
+    "last": "2025-12-01"
+   }
+  ],
+  "ea_indconf": [
+   {
+    "id": "dbn:Eurostat/ei_bssi_m_r2/M.BS-ICI-BAL.SA.EA20",
+    "n": 192,
+    "last": "2025-12-01"
    }
   ],
   "us_gdppot": [

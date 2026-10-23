@@ -1,0 +1,235 @@
+{
+ "ISM manufacturing PMI": [
+  {
+   "code": "ISM/nm-pmi",
+   "name": "Non manufacturing - PMI",
+   "nb": 1
+  },
+  {
+   "code": "ISM/pmi",
+   "name": "Manufacturing - PMI",
+   "nb": 1
+  }
+ ],
+ "ISM services PMI": [],
+ "manufacturing purchasing managers index China": [
+  {
+   "code": "NBS/M_A0B01",
+   "name": "Manufacturing Purchasing Managers' Index",
+   "nb": 14
+  },
+  {
+   "code": "NBS/M_A0B02",
+   "name": "Non-Manufacturing Purchasing Managers' Index",
+   "nb": 12
+  }
+ ],
+ "non-manufacturing PMI China": [
+  {
+   "code": "NBS/M_A0B02",
+   "name": "Non-Manufacturing Purchasing Managers' Index",
+   "nb": 2
+  }
+ ],
+ "economic sentiment indicator euro area": [
+  {
+   "code": "Eurostat/ei_bssi_m_r2",
+   "name": "Economic sentiment and confidence indicators by sector - monthly data",
+   "nb": 11
+  },
+  {
+   "code": "ECB/RTD",
+   "name": "Real Time Database (research database)",
+   "nb": 1
+  },
+  {
+   "code": "Eurostat/EI_BSSI_M_R2",
+   "name": "Sentiment indicators - monthly data",
+   "nb": 1
+  },
+  {
+   "code": "Eurostat/TEIBS010",
+   "name": "Economic sentiment indicator",
+   "nb": 1
+  },
+  {
+   "code": "Eurostat/teibs010",
+   "name": "Economic sentiment indicator",
+   "nb": 1
+  }
+ ],
+ "purchasing managers index": [
+  {
+   "code": "NBS/M_A0B01",
+   "name": "Manufacturing Purchasing Managers' Index",
+   "nb": 14
+  },
+  {
+   "code": "NBS/M_A0B02",
+   "name": "Non-Manufacturing Purchasing Managers' Index",
+   "nb": 12
+  }
+ ],
+ "ECB/HICP M": [
+  [
+   "M.U2.N.000000.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.000000.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.010000.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.010000.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011000.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011000.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011100.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011100.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011110.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011110.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011120.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011120.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011130.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011130.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011131.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011131.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011139.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011139.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011140.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011140.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011150.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011150.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011190.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011190.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011200.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011200.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011220.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011220.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011221.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011221.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011222.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011222.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011223.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011223.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011224.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011224.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011225.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011225.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011226.4D0.ANR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ],
+  [
+   "M.U2.N.011226.4D0.CTR",
+   "Monthly – Euro area (Member States and Institutions of the Euro Area) changing composition – Neither seasonally nor work"
+  ]
+ ]
+}
