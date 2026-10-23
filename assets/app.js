@@ -715,10 +715,10 @@ function finCharts(k) {
   if (k === 'aq') {
     const qa = Q.filter((q, i) => i >= 4 && yok(q, 2021)).map(q => { const i = Q.indexOf(q); return { q: q.q, a: yoyQ('accrued', i), l: yoyQ('loansGross', i), r: q.accrued / q.loansGross * 100, npl: q.npl }; });
     mk('chAccr', { type: 'bar', data: { labels: qa.map(x => x.q), datasets: [
-      { label: 'Lãi phải thu YoY', data: qa.map(x => x.a), backgroundColor: C.purple, dp: 1, unit: '%' },
-      { label: 'Cho vay YoY', data: qa.map(x => x.l), backgroundColor: C.navy, dp: 1, unit: '%' },
-      { type: 'line', label: 'Lãi phải thu / dư nợ', data: qa.map(x => x.r), borderColor: C.gold, backgroundColor: C.gold, yAxisID: 'y1', dp: 2, unit: '%' },
-      { type: 'line', label: 'Tỷ lệ nợ xấu (NPL)', data: qa.map(x => x.npl ?? null), borderColor: C.red, backgroundColor: C.red, yAxisID: 'y1', borderDash: [5, 3], borderWidth: 2, pointRadius: 2, dp: 2, unit: '%', spanGaps: true }] },
+      { label: 'Lãi phải thu YoY', data: qa.map(x => x.a), backgroundColor: C.purple + '59', order: 2, dp: 1, unit: '%' },
+      { label: 'Cho vay YoY', data: qa.map(x => x.l), backgroundColor: C.navy + '59', order: 2, dp: 1, unit: '%' },
+      { type: 'line', label: 'Lãi phải thu / dư nợ', data: qa.map(x => x.r), borderColor: C.gold, backgroundColor: C.gold, yAxisID: 'y1', borderWidth: 2.5, order: 0, dp: 2, unit: '%' },
+      { type: 'line', label: 'Tỷ lệ nợ xấu (NPL)', data: qa.map(x => x.npl ?? null), borderColor: C.red, backgroundColor: C.red, yAxisID: 'y1', borderDash: [5, 3], borderWidth: 2, pointRadius: 2, order: 0, dp: 2, unit: '%', spanGaps: true }] },
       options: { scales: { y: pctAxis('YoY'), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
     if (D.ctx) { const X = D.ctx, qs = X.quarters, cq = qs.map(l => Q.find(q => q.q === l));
       mk('chAqPeer', { type: 'line', data: { labels: qs, datasets: [
@@ -1176,7 +1176,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTip(); }
 addEventListener('scroll', hideTip, { passive: true }); addEventListener('resize', hideTip);
 new MutationObserver(() => requestAnimationFrame(decorate)).observe(document.querySelector('main'), { childList: true, subtree: true });
 $$('#modeSw button').forEach(b => b.onclick = () => setMode(b.dataset.mode));
-let mode0 = 'compact'; try { mode0 = localStorage.getItem(UI_KEY) || 'compact'; } catch (e) {}
+const mode0 = 'compact';   // chỉ dùng bản gọn
 setMode(mode0);
 header(); footer();
 show((location.hash || '#overview').slice(1));

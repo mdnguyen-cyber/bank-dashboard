@@ -2503,7 +2503,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTip(); }
 addEventListener('scroll', hideTip, { passive: true }); addEventListener('resize', hideTip);
 new MutationObserver(() => requestAnimationFrame(decorate)).observe(document.querySelector('main'), { childList: true, subtree: true });
 $$('#modeSw button').forEach(b => b.onclick = () => setMode(b.dataset.mode));
-let mode0 = 'compact'; try { mode0 = localStorage.getItem(UI_KEY) || 'compact'; } catch (e) {}
+const mode0 = 'compact';   // chỉ dùng bản gọn
 setMode(mode0);
 
 header(); footer();
