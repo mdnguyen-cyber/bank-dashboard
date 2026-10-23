@@ -1365,7 +1365,7 @@ function fxChg(key, inv, back) {   // % thay đổi giá trị đồng tiền so
   const a = inv ? 1 / r.v[i] : r.v[i], b = inv ? 1 / r.v[n] : r.v[n]; return (b / a - 1) * 100;
 }
 const fxLast = key => { const r = fxRaw(key); let n = r.v.length - 1; while (n >= 0 && r.v[n] == null) n--; return n < 0 ? { d: null, v: null } : { d: r.d[n], v: r.v[n] }; };
-function fxIns(g) {
+function fxIntlIns(g) {
   const S = FXG[g].s.map(([c, n, k, inv]) => ({ c, n, y: fxChg(k, inv, 'ytd'), m: fxChg(k, inv, 30) })).filter(x => x.y != null);
   if (!S.length) return 'Đang nạp số liệu.';
   const o = S.slice().sort((a, b) => b.y - a.y), hi = o[0], lo = o[o.length - 1];
@@ -1386,7 +1386,7 @@ function subFxIntl() {
   <div class="grid g2 gap">
     ${['g7', 'safe', 'apac'].map(g => card({ id: 'fxI_' + g, title: FXG[g].t + ': ' + FXG[g].s.map(x => x[1]).join(', '), h: 'tall',
       sub: '% thay đổi từ đầu khung đang xem, theo ngày · dương = đồng tiền mạnh lên so với USD (USD theo DXY; vàng theo giá USD/ounce) · đổi khung bằng nút 1M–5Y',
-      insight: fxIns(g), src: 'ECB · DXY tính theo công thức ICE' + (g === 'safe' ? ' · vàng: Stooq / WiData' : g === 'apac' ? ' · USD/VND: NHTM bán ra (WiData)' : '') })).join('')}
+      insight: fxIntlIns(g), src: 'ECB · DXY tính theo công thức ICE' + (g === 'safe' ? ' · vàng: Stooq / WiData' : g === 'apac' ? ' · USD/VND: NHTM bán ra (WiData)' : '') })).join('')}
   </div>`;
 }
 const fxRebase = { id: 'fxRebase', beforeUpdate(ch) {   // quy về % thay đổi so với điểm đầu khung đang xem
