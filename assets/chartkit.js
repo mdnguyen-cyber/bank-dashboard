@@ -488,3 +488,24 @@ window.FSPDF = (function () {
   const add = () => { const host = document.querySelector('.logo-right') || document.body; host.prepend(b2); host.prepend(b); };
   if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
 })();
+
+/* Nút "Hiện tất cả / Ẩn tất cả" dưới chú thích của mọi chart có từ 3 đường/cột trở lên:
+   đang ẩn bớt → bấm để hiện lại toàn bộ; đang hiện đủ → bấm để ẩn hết rồi chọn lại mục muốn xem. */
+(function () {
+  if (!window.Chart) return;
+  const label = ch => ch.data.datasets.some((d, i) => !ch.isDatasetVisible(i)) ? '↺ Hiện tất cả' : '⊘ Ẩn tất cả';
+  Chart.register({ id: 'legendAll', afterUpdate(ch) {
+    const t = ch.config.type; if (['pie', 'doughnut', 'polarArea'].includes(t)) return;
+    const n = ch.data.datasets.length, lg = ch.options.plugins && ch.options.plugins.legend;
+    const box = ch.canvas.parentElement; if (!box || !box.parentElement) return;
+    let b = box.nextElementSibling && box.nextElementSibling.classList && box.nextElementSibling.classList.contains('lgall') ? box.nextElementSibling : null;
+    if (n < 3 || (lg && lg.display === false)) { if (b) b.remove(); return; }
+    if (!b) {
+      b = document.createElement('div'); b.className = 'lgall';
+      b.innerHTML = '<button type="button"></button>'; box.after(b);
+    }
+    const btn = b.firstChild; btn.textContent = label(ch);
+    btn.onclick = () => { const any = ch.data.datasets.some((d, i) => !ch.isDatasetVisible(i));
+      ch.data.datasets.forEach((d, i) => ch.setDatasetVisibility(i, any)); ch.update(); };
+  } });
+})();

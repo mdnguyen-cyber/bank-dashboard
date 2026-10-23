@@ -453,3 +453,7 @@ body:not(.compact) .ibar:has(.peerpill){display:flex}
 body:not(.compact) .ibar .ipill:not(.peerpill){display:none}
 .peerpill{background:#fff7e6;border-color:#efd9a8}
 body.print-all .peerpill,body.pdf-cap .peerpill{display:none!important}
+.lgall{display:flex;justify-content:center;margin:2px 0 4px}
+.lgall button{font:600 11px Arial,sans-serif;color:var(--navy,#1d2678);background:none;border:1px dashed var(--line,#dfe3ea);border-radius:99px;padding:2px 10px;cursor:pointer}
+.lgall button:hover{background:#f3f5fb}
+body.print-all .lgall,body.pdf-cap .lgall{display:none!important}
