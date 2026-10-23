@@ -312,7 +312,7 @@ if DP.exists():
     merge_d('eurusd_d', {d: x.get('eurusd') for d, x in e.items()}, 4)
     merge_d('usdcny_d', {d: x.get('usdcny') for d, x in e.items()}, 4)
     put('dxy_d', {d: x['dxy'] for d, x in e.items() if x.get('dxy') and d >= DAILY_FROM}, 2)
-    for k in ['gbpusd', 'usdcad', 'usdchf', 'usdinr', 'usdsgd']:   # tỷ giá quốc tế theo ngày (ECB)
+    for k in ['gbpusd', 'usdcad', 'usdchf', 'usdinr', 'usdsgd', 'usdidr']:   # tỷ giá quốc tế theo ngày (ECB)
         put(k + '_d', {d: x[k] for d, x in e.items() if x.get(k) and d >= DAILY_FROM}, 4)
     put('gold_d', {d: v for d, v in DY.get('gold', {}).items() if v and d >= DAILY_FROM}, 2)
     for k in ['central', 'ceil', 'floor', 'buy', 'sell']:

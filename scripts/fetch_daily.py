@@ -85,7 +85,7 @@ def jgb():
 
 def ecb():
     res = {}
-    for cur in ['USD', 'JPY', 'CNY', 'GBP', 'CAD', 'SEK', 'CHF', 'INR', 'SGD']:
+    for cur in ['USD', 'JPY', 'CNY', 'GBP', 'CAD', 'SEK', 'CHF', 'INR', 'SGD', 'IDR']:
         txt = get(f'https://data-api.ecb.europa.eu/service/data/EXR/D.{cur}.EUR.SP00.A?format=csvdata&startPeriod={FROM}')
         res[cur] = {r['TIME_PERIOD']: fnum(r['OBS_VALUE']) for r in csv.DictReader(io.StringIO(txt)) if r.get('OBS_VALUE')}
     out = {}
@@ -97,7 +97,8 @@ def ecb():
                       'usdcad': round(res['CAD'][d] / usd, 4) if res['CAD'].get(d) else None,
                       'usdchf': round(res['CHF'][d] / usd, 4) if res['CHF'].get(d) else None,
                       'usdinr': round(res['INR'][d] / usd, 3) if res['INR'].get(d) else None,
-                      'usdsgd': round(res['SGD'][d] / usd, 4) if res['SGD'].get(d) else None}
+                      'usdsgd': round(res['SGD'][d] / usd, 4) if res['SGD'].get(d) else None,
+                      'usdidr': round(res['IDR'][d] / usd, 1) if res['IDR'].get(d) else None}
             g = {c: res[c].get(d) for c in ['JPY', 'GBP', 'CAD', 'SEK', 'CHF']}
             if all(g.values()):   # DXY theo công thức ICE: 50,14348112 × EURUSD^−0,576 × USDJPY^0,136 × GBPUSD^−0,119 × USDCAD^0,091 × USDSEK^0,042 × USDCHF^0,036
                 out[d]['dxy'] = round(50.14348112 * usd ** -0.576 * (g['JPY'] / usd) ** 0.136 * (usd / g['GBP']) ** -0.119 * (g['CAD'] / usd) ** 0.091

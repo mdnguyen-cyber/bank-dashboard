@@ -1334,9 +1334,9 @@ function subMM() {
 // [mã, tên, chuỗi, đảo (USD/xxx → giá trị đồng tiền tính bằng USD), cách niêm yết]
 const FXG = {
   g7: { t: 'Nhóm G7', s: [['EUR', 'EUR', 'eurusd_d', false, 'EUR/USD'], ['JPY', 'JPY', 'usdjpy_d', true, 'USD/JPY'], ['GBP', 'GBP', 'gbpusd_d', false, 'GBP/USD'], ['CAD', 'CAD', 'usdcad_d', true, 'USD/CAD'], ['USD', 'USD (DXY)', 'dxy_d', false, 'DXY']] },
-  safe: { t: 'Nhóm trú ẩn an toàn', s: [['USD', 'USD (DXY)', 'dxy_d', false, 'DXY'], ['JPY', 'JPY', 'usdjpy_d', true, 'USD/JPY'], ['CHF', 'CHF', 'usdchf_d', true, 'USD/CHF'], ['XAU', 'Vàng', 'gold', false, 'XAU/USD']] },
-  apac: { t: 'Nhóm châu Á – Thái Bình Dương', s: [['CNY', 'CNY', 'usdcny_d', true, 'USD/CNY'], ['INR', 'INR', 'usdinr_d', true, 'USD/INR'], ['SGD', 'SGD', 'usdsgd_d', true, 'USD/SGD'], ['VND', 'VND', 'vnd', true, 'USD/VND']] } };
-const FXC = { EUR: C.navy, JPY: C.red, GBP: C.purple, CAD: C.tealInk, USD: C.grey, CHF: '#7a5bb5', XAU: C.gold, CNY: C.red, INR: '#e07b39', SGD: C.tealInk, VND: C.navy };
+  safe: { t: 'Nhóm trú ẩn an toàn', s: [['USD', 'USD (DXY)', 'dxy_d', false, 'DXY'], ['JPY', 'JPY', 'usdjpy_d', true, 'USD/JPY'], ['CHF', 'CHF', 'usdchf_d', true, 'USD/CHF'], ['XAU', 'Vàng', 'gold', false, 'XAU/USD'], ['OIL', 'Dầu Brent', 'us_brent_d', false, 'Brent (USD/thùng)']] },
+  apac: { t: 'Nhóm châu Á – Thái Bình Dương', s: [['CNY', 'CNY', 'usdcny_d', true, 'USD/CNY'], ['INR', 'INR', 'usdinr_d', true, 'USD/INR'], ['SGD', 'SGD', 'usdsgd_d', true, 'USD/SGD'], ['IDR', 'IDR', 'usdidr_d', true, 'USD/IDR'], ['VND', 'VND', 'vnd', true, 'USD/VND']] } };
+const FXC = { EUR: C.navy, JPY: C.red, GBP: C.purple, CAD: C.tealInk, USD: C.grey, CHF: '#7a5bb5', XAU: C.gold, CNY: C.red, INR: '#e07b39', SGD: C.tealInk, IDR: C.purple, VND: C.navy, OIL: '#3f4656' };
 function fxRaw(key) {   // {d:[], v:[]} theo ngày, giá niêm yết gốc
   if (key === 'gold') { const g = gs('gold_d'); if (g.d.length > 200) return g; const w = D.goldWi || []; return { d: w.map(p => p.d), v: w.map(p => p.v) }; }
   if (key === 'vnd') { const a = (dom.nhtmD && dom.nhtmD.length ? dom.nhtmD : dom.nhtmSell || []); return { d: a.map(p => p.d), v: a.map(p => p.v) }; }
@@ -1378,16 +1378,48 @@ function subFxIntl() {
   const rows = [];
   const seen = new Set();
   Object.values(FXG).forEach(G => G.s.forEach(([c, n, k, inv, q]) => { if (seen.has(q)) return; seen.add(q); const l = fxLast(k);
-    rows.push(`<tr><td><b>${q}</b></td><td class="n">${l.v == null ? '—' : nf(l.v, k === 'gold' || k === 'vnd' ? 0 : k === 'dxy_d' || k === 'usdjpy_d' || k === 'usdinr_d' ? 2 : 4)}</td>${[7, 30, 'ytd', 365].map(b => { const v = fxChg(k, inv, b); return `<td class="n" style="color:${v == null ? '' : (k === 'dxy_d' ? v < 0 : v > 0) ? '#1e8f5a' : '#c0392b'}">${v == null ? '—' : sg(v, 1)}</td>`; }).join('')}<td class="muted">${l.d ? dvn(l.d) : ''}</td></tr>`); }));
+    rows.push(`<tr><td><b>${q}</b></td><td class="n">${l.v == null ? '—' : nf(l.v, k === 'gold' || k === 'vnd' || k === 'usdidr_d' ? 0 : k === 'dxy_d' || k === 'usdjpy_d' || k === 'usdinr_d' || k === 'us_brent_d' ? 2 : 4)}</td>${[7, 30, 'ytd', 365].map(b => { const v = fxChg(k, inv, b); return `<td class="n" style="color:${v == null ? '' : (k === 'dxy_d' ? v < 0 : v > 0) ? '#1e8f5a' : '#c0392b'}">${v == null ? '—' : sg(v, 1)}</td>`; }).join('')}<td class="muted">${l.d ? dvn(l.d) : ''}</td></tr>`); }));
   return `<h3 class="ovh dsec" id="m-intl">Tỷ giá quốc tế</h3>
-  <article class="card"><h3 class="sub">Bảng tỷ giá quốc tế</h3><p class="chart-sub">giá niêm yết gần nhất · % thay đổi giá trị đồng tiền so với USD (xanh = mạnh lên so với USD; riêng DXY xanh = USD yếu đi, vàng = giá vàng tăng)</p>
+  <article class="card"><h3 class="sub">Bảng tỷ giá quốc tế</h3><p class="chart-sub">giá niêm yết gần nhất · % thay đổi giá trị đồng tiền so với USD (xanh = mạnh lên so với USD; riêng DXY xanh = USD yếu đi; vàng, Brent xanh = giá tăng)</p>
     <div class="tscroll"><table><thead><tr><th>Cặp</th><th class="n">Hiện tại</th><th class="n">1 tuần</th><th class="n">1 tháng</th><th class="n">Từ đầu năm</th><th class="n">1 năm</th><th>Ngày</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>
     <div class="src">Nguồn: ECB (tỷ giá tham chiếu, tính chéo theo USD); DXY theo công thức ICE; vàng: Stooq (XAU/USD) hoặc WiData 74407 (CME); USD/VND: NHTM bán ra.</div></article>
   <div class="grid g2 gap">
-    ${['g7', 'safe', 'apac'].map(g => card({ id: 'fxI_' + g, title: FXG[g].t + ': ' + FXG[g].s.map(x => x[1]).join(', '), h: 'tall',
+    ${['g7', 'apac'].map(g => card({ id: 'fxI_' + g, title: FXG[g].t + ': ' + FXG[g].s.map(x => x[1]).join(', '), h: 'tall',
       sub: '% thay đổi từ đầu khung đang xem, theo ngày · dương = đồng tiền mạnh lên so với USD (USD theo DXY; vàng theo giá USD/ounce) · đổi khung bằng nút 1M–5Y',
       insight: fxIntlIns(g), src: 'ECB · DXY tính theo công thức ICE' + (g === 'safe' ? ' · vàng: Stooq / WiData' : g === 'apac' ? ' · USD/VND: NHTM bán ra (WiData)' : '') })).join('')}
-  </div>`;
+    </div>
+  <h3 class="sec2">Nhóm trú ẩn an toàn — so với DXY (nét đứt, trục phải)</h3>
+  <div class="grid g2 gap">
+    ${SAFE.map(([id, t, k, u]) => card({ id: 'fxS_' + id, title: t, h: 'tall', sub: `${u} theo ngày (trục trái) · nét đứt xám = DXY (trục phải) để tham chiếu sức mạnh đồng USD`,
+      insight: safeIns(id), src: { jpy: 'ECB', chf: 'ECB', xau: 'Stooq (XAU/USD) hoặc WiData 74407 (CME)', oil: 'EIA qua FRED (Brent giao ngay)' }[id] + ' · DXY tính theo công thức ICE từ tỷ giá ECB' })).join('')}
+</div>`;
+}
+const SAFE = [['jpy', 'USD/JPY', 'usdjpy_d', 'JPY cho 1 USD'], ['xau', 'Vàng XAU/USD', 'gold', 'USD/ounce'], ['chf', 'USD/CHF', 'usdchf_d', 'CHF cho 1 USD'], ['oil', 'Dầu Brent', 'us_brent_d', 'USD/thùng']];
+function corr(a, b) { const n = a.length; if (n < 10) return null; const ma = a.reduce((x, y) => x + y, 0) / n, mb = b.reduce((x, y) => x + y, 0) / n;
+  let c = 0, va = 0, vb = 0; for (let i = 0; i < n; i++) { c += (a[i] - ma) * (b[i] - mb); va += (a[i] - ma) ** 2; vb += (b[i] - mb) ** 2; } return va && vb ? c / Math.sqrt(va * vb) : null; }
+function safeIns(id) {
+  const [, t, k, u] = SAFE.find(x => x[0] === id), l = fxLast(k); if (l.v == null) return 'Đang nạp số liệu.';
+  const lv = b => { const r = fxRaw(k); let n = r.v.length - 1; while (n >= 0 && r.v[n] == null) n--; const tgt = b === 'ytd' ? r.d[n].slice(0, 4) + '-01-01' : new Date(new Date(r.d[n]) - b * 864e5).toISOString().slice(0, 10);
+    let i = r.d.findIndex(d => d >= tgt); i = i > 0 ? i - 1 : Math.max(0, i); return i < 0 || r.v[i] == null ? null : (r.v[n] / r.v[i] - 1) * 100; };
+  const y = lv('ytd'), m = lv(30), dy = fxChg('dxy_d', false, 'ytd'), dm = fxChg('dxy_d', false, 30);
+  const days = fxAxis().slice(-61), a = fxAlign(k, false, days), b = fxAlign('dxy_d', false, days), ra = [], rb = [];
+  for (let i = 1; i < days.length; i++) if (a[i] != null && a[i - 1] != null && b[i] != null && b[i - 1] != null && a[i] !== a[i - 1]) { ra.push(a[i] / a[i - 1] - 1); rb.push(b[i] / b[i - 1] - 1); }
+  const r = id === 'xau' && gs('gold_d').d.length <= 200 ? null : corr(ra, rb);
+  const read = { jpy: `USD/JPY ${y > 0 ? 'tăng' : 'giảm'} = JPY ${y > 0 ? 'yếu đi' : 'mạnh lên'} so với USD. JPY chỉ đóng vai trò trú ẩn khi chênh lợi suất Mỹ – Nhật thu hẹp; khi lợi suất Mỹ ở mức cao, JPY thường yếu dù thị trường căng thẳng.`,
+    chf: `USD/CHF ${y > 0 ? 'tăng' : 'giảm'} = CHF ${y > 0 ? 'yếu đi' : 'mạnh lên'} so với USD. CHF mạnh lên cùng lúc DXY tăng là dấu hiệu dòng tiền phòng thủ thật sự, không chỉ do USD.`,
+    xau: 'Vàng thường đi ngược DXY và lợi suất thực của Mỹ; vàng tăng trong khi DXY cũng tăng cho thấy nhu cầu trú ẩn vượt trội hơn tác động của USD mạnh.',
+    oil: 'Dầu không phải tài sản trú ẩn nhưng là nguồn rủi ro lạm phát: dầu tăng cùng USD mạnh làm chi phí nhập khẩu của các nước châu Á (gồm Việt Nam) tăng gấp đôi, tạo áp lực lên tỷ giá và CPI.' }[id];
+  return `${dvn(l.d)}: <b>${nf(l.v, id === 'xau' ? 0 : 2)} ${u}</b> — ${sg(m, 1)} 1 tháng, <b>${sg(y, 1)}</b> từ đầu năm (DXY ${sg(dm, 1)} và ${sg(dy, 1)}).${r != null ? ` Tương quan biến động ngày với DXY trong 60 phiên: <b>${nf(r, 2)}</b> (${Math.abs(r) < 0.2 ? 'gần như không liên quan' : r > 0 ? 'cùng chiều' : 'ngược chiều'}).` : ''}` + how(read);
+}
+function chSafe() {
+  const days = fxAxis(); if (!days.length) return;
+  const dxy = fxAlign('dxy_d', false, days);
+  SAFE.forEach(([id, t, k, u]) => { if (!document.getElementById('fxS_' + id)) return;
+    mk('fxS_' + id, { type: 'line', data: { labels: days.map(dvn), datasets: [
+        L(t, fxAlign(k, false, days), FXC[{ jpy: 'JPY', xau: 'XAU', chf: 'CHF', oil: 'OIL' }[id]], { borderWidth: 2, dp: id === 'xau' ? 0 : 2, unit: '', yAxisID: 'y' }),
+        L('DXY (tham chiếu)', dxy, C.grey, { borderWidth: 1.4, borderDash: [5, 4], dp: 2, unit: '', yAxisID: 'y1' })] },
+      options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: numAxis(u, { beginAtZero: false, ticks: { callback: v => nf(v, id === 'chf' ? 3 : id === 'xau' ? 0 : 1) } }), y1: numAxis('DXY', { position: 'right', beginAtZero: false, grid: { display: false } }) } } }, { win: 12 });
+  });
 }
 const fxRebase = { id: 'fxRebase', beforeUpdate(ch) {   // quy về % thay đổi so với điểm đầu khung đang xem
   const lo = Math.max(0, Math.round((ch.options.scales.x || {}).min ?? 0));
@@ -1396,7 +1428,8 @@ const fxRebase = { id: 'fxRebase', beforeUpdate(ch) {   // quy về % thay đổ
 } };
 function chFxIntl() {
   const days = fxAxis(); if (!days.length) return;
-  ['g7', 'safe', 'apac'].forEach(g => {
+  chSafe();
+  ['g7', 'apac'].forEach(g => {
     if (!document.getElementById('fxI_' + g)) return;
     mk('fxI_' + g, { type: 'line', plugins: [fxRebase], data: { labels: days.map(dvn), datasets: FXG[g].s.map(([c, n, k, inv]) => ({ label: n, $raw: fxAlign(k, inv, days), data: [],
         borderColor: FXC[c], backgroundColor: FXC[c], borderWidth: c === 'USD' ? 2.4 : c === 'VND' ? 2.4 : 1.6, borderDash: c === 'USD' && g !== 'safe' ? [5, 4] : [], pointRadius: 0, spanGaps: true, dp: 2, unit: '%' })) },
