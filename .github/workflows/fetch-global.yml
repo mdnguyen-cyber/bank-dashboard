@@ -27,6 +27,7 @@ jobs:
           python scripts/fetch_daily.py || echo "fetch_daily lỗi"
           python scripts/fetch_fedwatch.py || echo "fetch_fedwatch lỗi"
           python scripts/fetch_calendar.py || echo "fetch_calendar lỗi"
+          python scripts/fetch_dlkt.py || echo "fetch_dlkt lỗi"
       - name: Dựng dữ liệu cho trang
         run: |
           if [ -f scripts/build_global.py ]; then python scripts/build_global.py; fi
@@ -40,6 +41,7 @@ jobs:
           git add -A data/global
           [ -f data/global-data.js ] && git add data/global-data.js
           [ -f data/fx-daily.js ] && git add data/fx-daily.js
+          git add -A data/vn
           git add -A data/calendar; [ -f data/calendar-data.js ] && git add data/calendar-data.js
           if git diff --cached --quiet; then echo "Không có số mới"; exit 0; fi
           git commit -m "Số liệu quốc tế $(date -u +%Y-%m-%d) (tự động)"
