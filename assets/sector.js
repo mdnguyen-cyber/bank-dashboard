@@ -863,20 +863,23 @@ const Y10M = { eu: [['y10_de_m', 'Đức'], ['y10_fr_m', 'Pháp'], ['y10_it_m', 
   ap: [['jp_10y_m', 'Nhật Bản'], ['y10_kr_m', 'Hàn Quốc'], ['y10_au_m', 'Úc'], ['y10_ca_m', 'Canada'], ['us_10y_m', 'Mỹ']] };
 const yStart = k => { const x = gs(k), y0 = (gd(k) || '').slice(0, 4); const i = x.d.findIndex(d => d >= y0 + '-01-01'); return i >= 0 ? x.v[i] : null; };
 const cpiSer = k => k === 'vn' ? { d: (dom.cpi || []).map(p => p.d.slice(0, 7)), v: (dom.cpi || []).map(p => p.v) } : (() => { const x = gs(k); return { d: x.d.map(d => d.slice(0, 7)), v: x.v }; })();
-function cpiTable(o = {}) {
-  const N = o.n || 12;
-  const T = GD.cpiTab || [], last = T.flatMap(([, cs]) => cs.map(([k]) => { const x = cpiSer(k); return x.d[x.d.length - 1]; })).filter(Boolean).sort();
-  if (!last.length) return '';
-  const end = last[Math.floor(last.length / 2)], months = []; for (let i = N - 1; i >= 0; i--) { let y = +end.slice(0, 4), m = +end.slice(5) - i; while (m <= 0) { m += 12; y--; } months.push(`${y}-${String(m).padStart(2, '0')}`); }
-  const col = v => v == null ? '' : v >= 5 ? 'background:#c0392b;color:#fff' : v >= 4 ? 'background:#e8836f' : v >= 3 ? 'background:#f4c1b3' : v >= 2 ? 'background:#fbe7e1' : v >= 1 ? 'background:#e3ecfa' : v >= 0 ? 'background:#b9cdf0' : 'background:#6f93d6;color:#fff';
-  const spark = vs => { const v = vs.filter(x => x != null); if (v.length < 2) return ''; const mn = Math.min(...v), mx = Math.max(...v), r = mx - mn || 1; const pts = vs.map((x, i) => x == null ? null : `${(i / (vs.length - 1) * 70).toFixed(1)},${(18 - (x - mn) / r * 16).toFixed(1)}`).filter(Boolean).join(' ');
-    return `<svg width="72" height="20" viewBox="0 0 72 20" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="#1D2678" stroke-width="1.4"/></svg>`; };
-  const rowsOf = cs => cs.map(([k, n]) => { const x = cpiSer(k), mp = {}; x.d.forEach((d, i) => mp[d] = x.v[i]); return [n, months.map(m => mp[m] ?? null)]; }).filter(([, vs]) => vs.some(v => v != null));
-  return `<article class="card"${o.id ? ` id="${o.id}"` : ''}><h3 class="sub">Lạm phát CPI so cùng kỳ theo nước</h3><p class="chart-sub">% YoY · 12 tháng gần nhất · ô đậm = cao · Việt Nam theo Cục Thống kê; châu Âu theo Eurostat (HICP)</p>
-    <div class="tscroll"><table class="cpi-heat cpi-c"><thead><tr><th></th>${months.map((m, i) => `<th class="n">${i === 0 || m.slice(5) === '01' ? `T${+m.slice(5)}/${m.slice(2, 4)}` : 'T' + (+m.slice(5))}</th>`).join('')}<th></th></tr></thead><tbody>
-    ${T.map(([g, cs]) => { const R = rowsOf(cs); return R.length ? `<tr class="grp"><td colspan="${months.length + 2}"><b>${esc(g.toUpperCase())}</b></td></tr>` + R.map(([n, vs]) =>
-      `<tr><td><b>${esc(n)}</b></td>${vs.map(v => `<td class="n" style="${col(v)}">${v == null ? '—' : nf(v, 1)}</td>`).join('')}<td>${spark(vs)}</td></tr>`).join('') : ''; }).join('')}
-    </tbody></table></div><div class="src">Nguồn: Eurostat, BLS, OECD, IMF, Cục Thống kê Nhật Bản, NBS Trung Quốc, Cục Thống kê Việt Nam</div></article>`;
+const qCharts = c => [...(c.charts || []), ...(c.tables || []).filter(t => t === 'cpi').map(() => ({ id: 'gGlCpiBar' }))];   // bảng CPI cũ trong báo cáo → chart
+const CPI_SRC = 'Eurostat, BLS, OECD, BIS, Cục Thống kê Nhật Bản, NBS Trung Quốc, Cục Thống kê Việt Nam';
+const CPI_G = { eu: ['Châu Âu', 'Mỹ'], ad: ['Châu Á phát triển'], em: ['Châu Á mới nổi'] }, CPI_GC = { 'Châu Âu': C.navy, 'Mỹ': C.purple, 'Châu Á phát triển': C.tealInk, 'Châu Á mới nổi': C.gold };
+function cpiRows() {   // [nhóm, khoá, tên, mới nhất, kỳ, cùng kỳ năm trước]
+  return (GD.cpiTab || []).flatMap(([g, cs]) => cs.map(([k, n]) => { const x = cpiSer(k); let i = x.v.length - 1; while (i >= 0 && x.v[i] == null) i--; if (i < 0) return null;
+    const d = x.d[i], y = (+d.slice(0, 4) - 1) + d.slice(4), j = x.d.indexOf(y); return [g, k, n, x.v[i], d, j >= 0 ? x.v[j] : null]; })).filter(Boolean);
+}
+function cpiBarIns() {
+  const R = cpiRows().sort((a, b) => b[3] - a[3]); if (!R.length) return '';
+  const vn = R.find(r => r[1] === 'vn'), up = R.filter(r => r[5] != null && r[3] > r[5]).length, hi3 = R.filter(r => r[3] >= 3).length;
+  return `Cao nhất <b>${esc(R[0][2])} ${pc(R[0][3], 1)}</b>, thấp nhất ${esc(R[R.length - 1][2])} ${pc(R[R.length - 1][3], 1)}. <b>${up}/${R.length}</b> nước có lạm phát cao hơn cùng kỳ năm trước; ${hi3} nước từ 3% trở lên.${vn ? ` Việt Nam <b>${pc(vn[3], 2)}</b> (${mvn(vn[4])}), xếp thứ ${R.indexOf(vn) + 1}/${R.length}.` : ''}`
+    + how('Lạm phát tăng đồng loạt ở nhiều nước thường đến từ cú sốc chung (giá dầu, giá lương thực, đồng USD mạnh) và khiến các ngân hàng trung ương cùng giữ lãi suất cao; nếu chỉ tăng ở vài nước thì là yếu tố trong nước. Việt Nam lạm phát cao hơn các nước châu Á khác thu hẹp dư địa hạ lãi suất của NHNN.');
+}
+function cpiGrpIns() {
+  const R = cpiRows(); if (!R.length) return '';
+  const avg = gs => { const r = R.filter(x => gs.includes(x[0])); return r.length ? r.reduce((a, x) => a + x[3], 0) / r.length : null; };
+  return `Bình quân giản đơn mới nhất: châu Âu và Mỹ <b>${pc(avg(CPI_G.eu), 1)}</b>, châu Á phát triển <b>${pc(avg(CPI_G.ad), 1)}</b>, châu Á mới nổi <b>${pc(avg(CPI_G.em), 1)}</b>.`;
 }
 function gGL() {
   const u = glast('us_10y_d'), de = glast('de_10y_d'), jp = glast('jp_10y_d'), ea = glast('ea_all_10y_d'), w = glast('us_wti_d');
@@ -894,8 +897,9 @@ function gGL() {
     ${card({ id: 'gGlY10m', title: 'Lợi suất 10 năm theo tháng: châu Âu và các nước phát triển khác', h: 'tall', sub: '%/năm, bình quân tháng · ECB (lãi suất dài hạn hội tụ) và OECD', body: tfPick('glM', [['eu', 'Châu Âu'], ['ap', 'Mỹ, Nhật, Hàn, Úc, Canada']]), src: 'ECB; OECD qua FRED' })}
     ${card({ id: 'gGlCurve', title: 'Đường cong lợi suất TPCP Mỹ', h: 'tall', sub: '%/năm theo kỳ hạn · hiện tại so với 1 tháng trước, đầu năm và 1 năm trước', src: 'U.S. Treasury (Daily Treasury Par Yield Curve)' })}
     ${card({ id: 'gGlOil', title: 'Giá dầu WTI và Brent theo ngày', h: 'tall', sub: 'USD/thùng · giá giao ngay', src: 'EIA qua FRED' })}
-  </div>
-  ${cpiTable()}`;
+    ${card({ id: 'gGlCpi', title: 'Lạm phát CPI các nước theo nhóm', h: 'tall', sub: '% so cùng kỳ, theo tháng · chọn nhóm nước', body: tfPick('glC', [['eu', 'Châu Âu và Mỹ'], ['ad', 'Châu Á phát triển'], ['em', 'Châu Á mới nổi']]), insight: cpiGrpIns(), src: CPI_SRC })}
+    ${card({ id: 'gGlCpiBar', title: 'Lạm phát CPI mới nhất theo nước', h: 'tall', sub: '% so cùng kỳ · cột = tháng mới nhất của từng nước, chấm = cùng kỳ năm trước · màu theo nhóm nước', insight: cpiBarIns(), src: CPI_SRC })}
+  </div>`;
 }
 function drGL() {
   const drY = (id, list, from) => k => {
@@ -910,6 +914,16 @@ function drGL() {
   wireTf('glM', k => { const S = Y10M[k || 'eu'].filter(([kk]) => gs(kk).v.length); mk('gGlY10m', { type: 'line', data: gLines(S.map(x => x[0]), S.map(x => x[1]), PAL2, { from: '2021-01', dp: 2 }), options: { scales: { y: pctAxis('') } } }); });
   const UC = GD.ustCurve; if (UC) mk('gGlCurve', { type: 'line', data: { labels: UC.t, datasets: UC.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.teal, C.tealInk, C.red, C.grey][i] || C.grey, { pointRadius: 3, borderWidth: i ? 1.6 : 2.6, borderDash: i === 1 ? [2, 2] : i === 4 ? [4, 3] : [], dp: 2 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
   mk('gGlOil', { type: 'line', data: gLines(['us_wti_d', 'us_brent_d'], ['WTI', 'Brent'], [C.navy, C.gold], { unit: ' USD', dp: 2, from: '2021-01-01' }), options: { scales: { y: numAxis('USD/thùng', { beginAtZero: false }) } } });
+  wireTf('glC', k => { const gs_ = CPI_G[k || 'eu'], cs = (GD.cpiTab || []).filter(([g]) => gs_.includes(g)).flatMap(([, c]) => c);
+    const sers = cs.map(([kk, n]) => [n, cpiSer(kk)]).filter(([, x]) => x.v.length), all = [...new Set(sers.flatMap(([, x]) => x.d))].filter(d => d >= '2021-01').sort();
+    mk('gGlCpi', { type: 'line', data: { labels: all.map(mvn), datasets: sers.map(([n, x], i) => { const m = {}; x.d.forEach((d, j) => m[d] = x.v[j]); return L(n, all.map(d => m[d] ?? null), n === 'Việt Nam' ? C.red : n === 'Mỹ' ? C.navy : PAL2[(i + 2) % PAL2.length], { borderWidth: n === 'Việt Nam' || n === 'Mỹ' || /Euro/.test(n) ? 2.6 : 1.6, dp: 1 }); }) },
+      options: { scales: { y: pctAxis('') }, plugins: { refLines: { lines: [{ value: 2, label: '2%', color: C.grey }] } } } }); });
+  { const R = cpiRows().sort((a, b) => b[3] - a[3]);
+    mk('gGlCpiBar', { type: 'bar', data: { labels: R.map(r => `${r[2]} (T${+r[4].slice(5)})`), datasets: [
+      { label: 'Mới nhất', data: R.map(r => r[3]), grouped: false, backgroundColor: R.map(r => r[1] === 'vn' ? C.red : CPI_GC[r[0]] || C.grey), dp: 1, unit: '%', order: 2 },
+      { type: 'line', label: 'Cùng kỳ năm trước', data: R.map(r => r[5]), showLine: false, pointRadius: 4, pointStyle: 'circle', backgroundColor: '#fff', borderColor: '#1f2433', pointBorderWidth: 1.5, dp: 1, unit: '%', order: 1 },
+      ...[['Châu Âu', C.navy], ['Mỹ', C.purple], ['Châu Á phát triển', C.tealInk], ['Châu Á mới nổi', C.gold], ['Việt Nam', C.red]].map(([g, c]) => ({ label: g, data: [], backgroundColor: c, order: 3 }))] },
+      options: { indexAxis: 'y', interaction: { mode: 'index', intersect: false, axis: 'y' }, plugins: { legend: { labels: { filter: it => it.text !== 'Mới nhất' } }, refLines: { lines: [{ value: 2, axis: 'x', label: '', color: C.grey }] } }, scales: { x: pctAxis(''), y: { ticks: { autoSkip: false, font: { size: 11 } }, grid: { display: false } } } } }); }
 }
 /* -------- Mỹ -------- */
 function gUS() {
@@ -2345,14 +2359,13 @@ function paneQuick() {
     <div class="qc-h"><span class="qn">${i + 1}</span>${f(`concerns.${i}.title`, esc(c.title), 'h3')}${E ? `<select data-st="${i}">${Object.entries(ST).map(([k, [, l]]) => `<option value="${k}"${k === c.status ? ' selected' : ''}>${l}</option>`).join('')}</select>` : stPill(c.status)}${ed.has(`concerns.${i}.status`) ? '<span class="pill watch" title="Chuyên viên đổi trạng thái">đã đổi</span>' : ''}</div>
     ${f(`concerns.${i}.note`, c.note, 'p', 'qnote')}
     ${c.change || E ? `<p class="qchg"><b>So với bản trước:</b> ${f(`concerns.${i}.change`, c.change || '')}</p>` : ''}
-    <div class="grid ${c.charts.length > 1 ? 'g2' : ''} gap">${c.charts.map((g, j) => SPEC[g.id] ? `
+    <div class="grid ${qCharts(c).length > 1 ? 'g2' : ''} gap">${qCharts(c).map((g, j) => SPEC[g.id] ? `
       <article class="card qchart"><h3 class="sub">${esc(g.title || cardMeta(SPEC[g.id].el).title)}</h3>
         ${chartBox(g.id, `qu-${i}-${j}-${g.id}`, g.h || '')}
         ${g.caption || E ? f(`concerns.${i}.charts.${j}.caption`, g.caption || '', 'p', 'qcap') : ''}
         ${(m => (m.sub ? `<p class="chart-sub" hidden>${m.sub}</p>` : '') + (m.insight ? `<div class="insight">${m.insight}</div>` : '') + (m.src ? `<div class="src">${/^Nguồn/.test(m.src) ? '' : 'Nguồn: '}${m.src}</div>` : ''))(cardMeta(SPEC[g.id].el))}
         <div class="qfoot"><span>Chart book: <code>${g.id}</code>${g.last ? ` · ${g.last} điểm gần nhất` : ''}</span><button type="button" class="lnk" data-book="${g.id}">Mở trong Chart book →</button></div>
       </article>` : `<article class="card"><p class="muted">Chart <code>${esc(g.id)}</code> không còn trong dashboard.</p></article>`).join('')}</div>
-    ${(c.tables || []).map(t => t === 'cpi' ? cpiTable() : '').join('')}
   </section>`).join('')}
   ${u.watch && u.watch.length ? `<article class="card"><h3 class="sub">Theo dõi tiếp</h3><div class="tscroll"><table><thead><tr><th>Ngày</th><th>Sự kiện</th><th>Vì sao quan trọng</th></tr></thead><tbody>
     ${u.watch.map((w, k) => `<tr><td style="white-space:nowrap">${dvn(w.d)}</td><td><b>${esc(w.t)}</b></td><td>${f(`watch.${k}.why`, esc(w.why))}</td></tr>`).join('')}</tbody></table></div></article>` : ''}
@@ -2363,7 +2376,7 @@ function paneQuick() {
     </tbody></table></div>
     <p class="note keep">Cách cập nhật: (1) chuyên viên bấm <b>✎ Chỉnh sửa</b> để sửa vài đoạn của bản đang xem → lưu thành bản mới mang tên mình (đoạn đã sửa có vạch vàng); hoặc (2) nhắn AI <i>"Cập nhật nhanh ngành ngân hàng"</i> — AI đọc các bản trước, ưu tiên bản gần nhất của chuyên viên, rồi viết tiếp.</p>
   </article>`;
-  u.concerns.forEach((c, i) => c.charts.forEach((g, j) => drawSpec(g.id, `qu-${i}-${j}-${g.id}`, g.last)));
+  u.concerns.forEach((c, i) => qCharts(c).forEach((g, j) => drawSpec(g.id, `qu-${i}-${j}-${g.id}`, g.last)));
   if (!E) $$('#quick section.qc > .qc-h').forEach(h => { h.classList.add('coll'); h.title = 'Bấm để thu gọn / mở'; h.onclick = e => { if (e.target.closest('select,[contenteditable]')) return; h.parentElement.classList.toggle('qshut'); }; });
   $$('#quick [data-qv]').forEach(b => b.onclick = () => { quSel = +b.dataset.qv; quEdit = false; paneQuick(); window.scrollTo({ top: 0 }); });
   $$('#quick [data-book]').forEach(b => b.onclick = () => openBook(b.dataset.book));
@@ -2417,9 +2430,9 @@ function paneBook() {
   $('#book').innerHTML = `
   <h2 class="sec">Chart book</h2>
   <p class="sec-sub">${ids.length} chart của dashboard ở một chỗ, luôn theo dữ liệu mới nhất. Mã chart (vd. <code>chOn</code>) dùng để gọi trong Báo cáo vĩ mô hoặc nhắn AI.</p>
-  <div class="picker" id="bkG"><button type="button" data-k="">Tất cả <small>${ids.length}</small></button>${groups.map(g => `<button type="button" data-k="${g}">${g} <small>${ids.filter(id => M[id].group === g).length}</small></button>`).join('')}<button type="button" data-k="Bảng số liệu">Bảng số liệu <small>1</small></button></div>
+  <div class="picker" id="bkG"><button type="button" data-k="">Tất cả <small>${ids.length}</small></button>${groups.map(g => `<button type="button" data-k="${g}">${g} <small>${ids.filter(id => M[id].group === g).length}</small></button>`).join('')}</div>
   <div class="bk-bar"><input id="bkQ" type="search" placeholder="Tìm chart: tỷ giá, LNH, NIM, P/B…" aria-label="Tìm chart"><span class="muted">Mỗi chart có nút 1M…5Y và kéo chuột để zoom; nhấp đúp để về toàn bộ.</span></div>
-  <div class="grid g2 gap" id="bkGrid">${(() => { const t = cpiTable(); return t ? t.replace('<article class="card"', '<article class="card bk bk-tb" data-tb="1" data-id="tbCpi" data-g="Bảng số liệu" data-s="lạm phát cpi theo nước bảng số liệu"') : ''; })()}${ids.map(id => { const m = M[id]; return `
+  <div class="grid g2 gap" id="bkGrid">${ids.map(id => { const m = M[id]; return `
     <article class="card bk" data-id="${id}" data-g="${esc(m.group)}" data-s="${esc((m.title + ' ' + id + ' ' + m.group + ' ' + m.sub.replace(/<[^>]+>/g, '')).toLowerCase())}">
       <h3 class="sub">${esc(m.title)}</h3>${m.sub ? `<p class="chart-sub">${m.sub}</p>` : ''}
       ${chartBox(id, 'cb-' + id)}
