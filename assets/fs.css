@@ -506,9 +506,8 @@ body.fss-open{overflow:hidden}
 .cal-badge{min-width:18px;height:18px;border-radius:9px;background:#e0533d;color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px}
 .cal-badge[hidden]{display:none}
 body.cal-open .cal-rail{display:none}
-.cal-drawer{position:fixed;top:0;right:0;bottom:0;width:420px;z-index:80;background:#fff;border-left:1px solid #dfe3ea;box-shadow:-8px 0 24px rgba(20,30,70,.12);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease;font-family:Arial,sans-serif;color:#1f2433;visibility:hidden}
+.cal-drawer{contain:layout paint;will-change:transform;position:fixed;top:0;right:0;bottom:0;width:420px;z-index:80;background:#fff;border-left:1px solid #dfe3ea;box-shadow:-8px 0 24px rgba(20,30,70,.12);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease;font-family:Arial,sans-serif;color:#1f2433;visibility:hidden}
 body.cal-open .cal-drawer{transform:none;visibility:visible}
-body{transition:padding-right .25s ease}
 @media (min-width:901px){body.cal-open{padding-right:420px}body.cal-open .aibot,body.cal-open .totop{right:438px}}
 .cal-hd{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;border-bottom:1px solid #e8ebf2}
 .cal-hd b{display:block;color:var(--navy);font-size:16px}.cal-hd small{color:#6b7385;font-size:11.5px}

@@ -509,3 +509,6 @@ window.FSPDF = (function () {
       ch.data.datasets.forEach((d, i) => ch.setDatasetVisibility(i, any)); ch.update(); };
   } });
 })();
+
+/* gom các lần co giãn liên tiếp (mở lịch, đổi cỡ cửa sổ) thành một lần vẽ lại cho mỗi chart */
+if (window.Chart) Chart.defaults.resizeDelay = 120;

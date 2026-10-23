@@ -50,7 +50,7 @@
   const linkOf = e => (LINK.find(([c, rx]) => c === e.c && rx.test(e.t)) || [])[2];
 
   const EV = CAL.ev.map(e => ({ ...e, ts: Date.parse(e.d.replace('Z', ':00Z')) })).sort((a, b) => a.ts - b.ts);
-  const fmt = (ts, o) => new Intl.DateTimeFormat('vi-VN', Object.assign({ timeZone: TZ }, o)).format(new Date(ts));
+  const FMTC = new Map(), fmt = (ts, o) => { const k = JSON.stringify(o); let f = FMTC.get(k); if (!f) FMTC.set(k, f = new Intl.DateTimeFormat('vi-VN', Object.assign({ timeZone: TZ }, o))); return f.format(new Date(ts)); };
   const hm = ts => fmt(ts, { hour: '2-digit', minute: '2-digit', hour12: false });
   const dkey = ts => fmt(ts, { year: 'numeric', month: '2-digit', day: '2-digit' });
   const num = s => { if (!s) return null; const v = parseFloat(String(s).replace(/[%KMBT,]/g, '')); return isNaN(v) ? null : v; };
@@ -139,7 +139,6 @@
   function setOpen(o) {
     st.open = o; save(); document.body.classList.toggle('cal-open', o); rail.setAttribute('aria-expanded', o);
     if (o) render(true);
-    setTimeout(() => window.dispatchEvent(new Event('resize')), 280);   // chart co giãn theo khung mới
   }
   rail.onclick = () => setOpen(true);
   dr.querySelector('.cal-x').onclick = () => setOpen(false);
@@ -208,5 +207,5 @@
   } });
 
   if (st.open) setOpen(true); else badge();
-  setInterval(() => { badge(); if (st.open && !dr.matches(':hover')) { const top = list.scrollTop; render(false); list.scrollTop = top; } }, 60000);
+  setInterval(() => { if (document.hidden) return; badge(); if (st.open && !dr.matches(':hover')) { const top = list.scrollTop; render(false); list.scrollTop = top; } }, 60000);
 })();
