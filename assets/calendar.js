@@ -183,16 +183,21 @@
   window.FSCAL = { go, focus, open: () => setOpen(true) };
   if (/^#cal-/.test(location.hash)) { const id = location.hash.slice(5), lk = LINK.map(x => x[2]).find(x => x.id === id); setTimeout(() => go(lk), 1200); }
 
-  /* ---------- đánh dấu kỳ công bố sắp tới trên chart (thử với CPI Mỹ) ---------- */
-  const MARK = { gUsCpi: e => e.c === 'USD' && /^CPI y\/y$/.test(e.t) };
+  /* ---------- đánh dấu kỳ công bố sắp tới trên chart (mọi chart có liên kết trong LINK, chỉ trong 7 ngày trước khi công bố) ---------- */
+  // mỗi chart có trong LINK: tin sắp công bố đầu tiên khớp chart đó (ưu tiên mức Cao; CPI ưu tiên y/y)
+  const PRI = e => (e.i === 'H' ? 0 : 2) + (/m\/m/.test(e.t) && /CPI/.test(e.t) && !/Core|PCE/.test(e.t) ? 1 : 0) + (/^Core CPI/.test(e.t) ? 1 : 0);
+  const MARK = {}; LINK.forEach(([, , lk]) => { MARK[lk.id] = e => { const l = linkOf(e); return l && l.id === lk.id; }; });
+  const nextFor = (id, n) => { const f = MARK[id]; if (!f) return null; const c = EV.filter(x => x.ts > n && f(x)); if (!c.length) return null; const t0 = c[0].ts; return c.filter(x => x.ts === t0).sort((a, b) => PRI(a) - PRI(b))[0]; };
   if (window.Chart) Chart.register({ id: 'calMark', afterDatasetsDraw(ch) {
-    const f = MARK[ch.canvas.id]; if (!f) return; const n = NOW(), e = EV.find(x => x.ts > n && f(x)); ch.$calHit = null; if (!e || e.ts - n > 7 * DAY) return;   // chỉ hiện trong 7 ngày trước khi công bố
+    if (!MARK[ch.canvas.id]) return; const n = NOW(), e = nextFor(ch.canvas.id, n); ch.$calHit = null; if (!e || e.ts - n > 7 * DAY) return;   // chỉ hiện trong 7 ngày trước khi công bố
     const { ctx, chartArea: A, scales: { x } } = ch; if (!x || !A) return;
     const L = (ch.data.labels || []).length; let px = L ? x.getPixelForValue(L - 1) + (L > 1 ? (x.getPixelForValue(L - 1) - x.getPixelForValue(L - 2)) : 0) : A.right;
-    if (!(px > A.left && px <= A.right)) px = A.right - 1;
-    const lbl = `Kỳ tới: CPI ${e.per ? 'T' + (+e.per.slice(5)) + '/' + e.per.slice(0, 4) : ''} · ${dkey(e.ts).slice(0, 5)} ${hm(e.ts)}${e.f ? ' · dự báo ' + vn(e.f) : ''}`;
+    const dl = e.d.slice(8, 10) + '/' + e.d.slice(5, 7) + '/' + e.d.slice(0, 4), li = (ch.data.labels || []).indexOf(dl);   // chart có trục theo ngày họp: đặt vạch đúng ngày đó
+    if (li >= 0) px = x.getPixelForValue(li);
+    if (!(px >= A.left && px <= A.right)) px = A.right - 1;
+    const lbl = `Kỳ tới: ${vname(e.t)}${e.per ? ' T' + (+e.per.slice(5)) + '/' + e.per.slice(0, 4) : ''} · ${dkey(e.ts).slice(0, 5)} ${hm(e.ts)}${e.f ? ' · dự báo ' + vn(e.f) : ''}`;
     ctx.save(); ctx.strokeStyle = '#861C52'; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]); ctx.beginPath(); ctx.moveTo(px, A.top); ctx.lineTo(px, A.bottom); ctx.stroke(); ctx.setLineDash([]);
-    ctx.font = '700 10.5px Arial, sans-serif'; const w = ctx.measureText(lbl).width + 10; const bx = Math.max(A.left + 2, px - w - 4);
+    ctx.font = '700 10.5px Arial, sans-serif'; const w = ctx.measureText(lbl).width + 10; const bx = px - w - 4 >= A.left + 2 ? px - w - 4 : Math.min(px + 4, A.right - w);
     ctx.fillStyle = 'rgba(255,255,255,.92)'; ctx.fillRect(bx, A.top + 2, w, 17); ctx.strokeStyle = '#861C52'; ctx.lineWidth = 1; ctx.strokeRect(bx, A.top + 2, w, 17);
     ctx.fillStyle = '#861C52'; ctx.textBaseline = 'middle'; ctx.fillText(lbl + '  ›', bx + 5, A.top + 10.5); ctx.restore();
     ch.$calHit = { x0: bx, x1: bx + w + 12, y0: A.top + 2, y1: A.top + 19, line: px, e };
