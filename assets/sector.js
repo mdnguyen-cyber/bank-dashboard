@@ -49,6 +49,7 @@ Chart.defaults.maintainAspectRatio = false;
 Chart.defaults.animation = false;
 Chart.defaults.plugins.tooltip.callbacks.label = ctx => {
   const v = ctx.parsed.y ?? ctx.parsed.x; const ds = ctx.dataset;
+  if (ds.$tip) return ds.$tip(ctx.dataIndex);
   return `${ds.label}: ${nf(v, ds.dp ?? 1)}${ds.unit || ''}`;
 };
 const refLines = { id: 'refLines', afterDatasetsDraw(chart, _a, opt) {
@@ -1391,7 +1392,7 @@ function subFxIntl() {
   <h3 class="sec2">Nhóm trú ẩn an toàn — so với DXY (nét đứt, trục phải)</h3>
   <div class="grid g2 gap">
     ${SAFE.map(([id, t, k, u]) => card({ id: 'fxS_' + id, title: t, h: 'tall', sub: `${u} theo ngày (trục trái) · nét đứt xám = DXY (trục phải) để tham chiếu sức mạnh đồng USD`,
-      insight: safeIns(id), src: { jpy: 'ECB', chf: 'ECB', xau: 'Stooq (XAU/USD) hoặc WiData 74407 (CME)', oil: 'EIA qua FRED (Brent giao ngay)' }[id] + ' · DXY tính theo công thức ICE từ tỷ giá ECB' })).join('')}
+      insight: safeIns(id), src: { jpy: 'ECB · can thiệp: Bộ Tài chính Nhật (FEIO), tháng 7–8/2026 ước tính', chf: 'ECB', xau: 'Stooq (XAU/USD) hoặc WiData 74407 (CME)', oil: 'EIA qua FRED (Brent giao ngay)' }[id] + ' · DXY tính theo công thức ICE từ tỷ giá ECB' })).join('')}
 </div>`;
 }
 const SAFE = [['jpy', 'USD/JPY', 'usdjpy_d', 'JPY cho 1 USD'], ['xau', 'Vàng XAU/USD', 'gold', 'USD/ounce'], ['chf', 'USD/CHF', 'usdchf_d', 'CHF cho 1 USD'], ['oil', 'Dầu Brent', 'us_brent_d', 'USD/thùng']];
@@ -1409,16 +1410,47 @@ function safeIns(id) {
     chf: `USD/CHF ${y > 0 ? 'tăng' : 'giảm'} = CHF ${y > 0 ? 'yếu đi' : 'mạnh lên'} so với USD. CHF mạnh lên cùng lúc DXY tăng là dấu hiệu dòng tiền phòng thủ thật sự, không chỉ do USD.`,
     xau: 'Vàng thường đi ngược DXY và lợi suất thực của Mỹ; vàng tăng trong khi DXY cũng tăng cho thấy nhu cầu trú ẩn vượt trội hơn tác động của USD mạnh.',
     oil: 'Dầu không phải tài sản trú ẩn nhưng là nguồn rủi ro lạm phát: dầu tăng cùng USD mạnh làm chi phí nhập khẩu của các nước châu Á (gồm Việt Nam) tăng gấp đôi, tạo áp lực lên tỷ giá và CPI.' }[id];
-  return `${dvn(l.d)}: <b>${nf(l.v, id === 'xau' ? 0 : 2)} ${u}</b> — ${sg(m, 1)} 1 tháng, <b>${sg(y, 1)}</b> từ đầu năm (DXY ${sg(dm, 1)} và ${sg(dy, 1)}).${r != null ? ` Tương quan biến động ngày với DXY trong 60 phiên: <b>${nf(r, 2)}</b> (${Math.abs(r) < 0.2 ? 'gần như không liên quan' : r > 0 ? 'cùng chiều' : 'ngược chiều'}).` : ''}` + how(read);
+  let zt = '';
+  if (id === 'jpy') { const dd = fxAxis(), z = jpiZone(jpiPts(dd, fxAlign(k, false, dd)));
+    if (z) zt = ` Trong 12 tháng qua Nhật can thiệp <b>${z.n} lần</b> (${dvn(z.d0)}–${dvn(z.d1)}), tổng ~¥${nf(z.t, 1)} nghìn tỷ ≈ <b>US$${nf(z.usd, 0)} tỷ</b>, khi USD/JPY ở vùng <b>${nf(z.lo, 1)}–${nf(z.hi, 1)}</b> (vùng tô xanh). Mức hiện tại ${l.v > z.hi ? `<b>đã vượt đỉnh vùng</b> ${nf(l.v - z.hi, 1)} yên → rủi ro can thiệp rất cao` : l.v >= z.lo ? `<b>nằm trong vùng</b>, cách đỉnh ${nf(z.hi - l.v, 1)} yên → càng tiến gần đỉnh, khả năng Nhật ra tay càng lớn` : `thấp hơn đáy vùng ${nf(z.lo - l.v, 1)} yên → áp lực can thiệp chưa lớn`}.`; }
+  return `${dvn(l.d)}: <b>${nf(l.v, id === 'xau' ? 0 : 2)} ${u}</b> — ${sg(m, 1)} 1 tháng, <b>${sg(y, 1)}</b> từ đầu năm (DXY ${sg(dm, 1)} và ${sg(dy, 1)}).${r != null ? ` Tương quan biến động ngày với DXY trong 60 phiên: <b>${nf(r, 2)}</b> (${Math.abs(r) < 0.2 ? 'gần như không liên quan' : r > 0 ? 'cùng chiều' : 'ngược chiều'}).` : ''}${zt}` + how(read + (id === 'jpy' ? ' Chấm xanh đậm là ngày Bộ Tài chính Nhật bán USD mua JPY (số liệu công bố chính thức; tháng 7–8/2026 là ước tính vì chưa có số theo ngày); số USD quy đổi theo tỷ giá đóng cửa ngày đó.' : ''));
 }
+/* Can thiệp tỷ giá của Bộ Tài chính Nhật (bán USD, mua JPY). t = nghìn tỷ yên; e = ước tính thị trường (chưa có số theo ngày). Nguồn: MoF Nhật (FEIO) */
+const JPI = [['2022-09-22', 2.8382], ['2022-10-21', 5.6202], ['2022-10-24', 0.7296],
+  ['2024-04-29', 5.9185], ['2024-05-01', 3.87], ['2024-07-11', 3.1678], ['2024-07-12', 2.367],
+  ['2026-04-30', 6.2787], ['2026-05-04', 0.7802], ['2026-05-06', 4.6759],
+  ['2026-07-30', 6, 'Ước tính thị trường từ số dư tài khoản BOJ'],
+  ['2026-07-31', 9.4, 'Phối hợp Mỹ – Nhật; phần còn lại của tổng 15,4 nghìn tỷ yên (30/07–26/08)']];
+function jpiPts(days, lv) {   // điểm can thiệp trên trục ngày, kèm quy đổi USD theo tỷ giá đóng cửa của ngày đó
+  return JPI.map(([d, t, e]) => { const i = days.findIndex(x => x >= d); if (i < 0 || lv[i] == null) return null;
+    return { i, d, t, e, v: lv[i], usd: t * 1e3 / lv[i] }; }).filter(Boolean);
+}
+function jpiZone(pts) {   // vùng can thiệp 12 tháng gần nhất: từ chấm thấp nhất tới chấm cao nhất
+  const cut = new Date(new Date(TODAY) - 365 * 864e5).toISOString().slice(0, 10), r = pts.filter(p => p.d >= cut);
+  return r.length ? { lo: Math.min(...r.map(p => p.v)), hi: Math.max(...r.map(p => p.v)), n: r.length, t: r.reduce((a, p) => a + p.t, 0), usd: r.reduce((a, p) => a + p.usd, 0), d0: r[0].d, d1: r[r.length - 1].d } : null;
+}
+const jpiBand = { id: 'jpiBand', beforeDatasetsDraw(ch, _a, o) {
+  if (!o || o.lo == null) return; const { ctx, chartArea: a } = ch, y = ch.scales.y;
+  const t = Math.max(a.top, y.getPixelForValue(o.hi)), b = Math.min(a.bottom, y.getPixelForValue(o.lo)); if (b <= a.top || t >= a.bottom) return;
+  ctx.save(); ctx.fillStyle = 'rgba(40,60,130,0.08)'; ctx.fillRect(a.left, t, a.right - a.left, Math.max(b - t, 2));
+  ctx.strokeStyle = 'rgba(40,60,130,0.35)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+  [t, b].forEach(p => { ctx.beginPath(); ctx.moveTo(a.left, p); ctx.lineTo(a.right, p); ctx.stroke(); });
+  ctx.fillStyle = 'rgba(30,45,110,0.9)'; ctx.font = '600 10px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+  ctx.fillText(`Vùng can thiệp 12 tháng: ${nf(o.lo, 1)}–${nf(o.hi, 1)}`, a.left + 6, t - 2); ctx.restore();
+} };
 function chSafe() {
   const days = fxAxis(); if (!days.length) return;
   const dxy = fxAlign('dxy_d', false, days);
   SAFE.forEach(([id, t, k, u]) => { if (!document.getElementById('fxS_' + id)) return;
-    mk('fxS_' + id, { type: 'line', data: { labels: days.map(dvn), datasets: [
-        L(t, fxAlign(k, false, days), FXC[{ jpy: 'JPY', xau: 'XAU', chf: 'CHF', oil: 'OIL' }[id]], { borderWidth: 2, dp: id === 'xau' ? 0 : 2, unit: '', yAxisID: 'y' }),
+    const lv = fxAlign(k, false, days), ex = [], pl = {};
+    if (id === 'jpy') { const P = jpiPts(days, lv), z = jpiZone(P), m = new Map(P.map(p => [p.i, p]));
+      ex.push(L('Can thiệp của Nhật', days.map((_, i) => m.has(i) ? m.get(i).v : null), C.navy, { showLine: false, pointRadius: 5, pointHoverRadius: 7, pointStyle: 'circle', backgroundColor: C.navy, pointBorderColor: '#fff', pointBorderWidth: 1.5, pointHoverBorderWidth: 1.5, yAxisID: 'y', dp: 2, unit: '',
+        $tip: i => { const p = m.get(i); return p ? [`Can thiệp ${dvn(p.d)}${p.e ? ' (ước tính)' : ''}: ~¥${nf(p.t, 2)} nghìn tỷ ≈ US$${nf(p.usd, 1)} tỷ`, `USD/JPY đóng cửa ${nf(p.v, 2)}`, ...(p.e ? [p.e] : [])] : ''; } }));
+      if (z) pl.jpiBand = z; }
+    mk('fxS_' + id, { type: 'line', plugins: id === 'jpy' ? [jpiBand] : [], data: { labels: days.map(dvn), datasets: [
+        L(t, lv, FXC[{ jpy: 'JPY', xau: 'XAU', chf: 'CHF', oil: 'OIL' }[id]], { borderWidth: 2, dp: id === 'xau' ? 0 : 2, unit: '', yAxisID: 'y' }), ...ex,
         L('DXY (tham chiếu)', dxy, C.grey, { borderWidth: 1.4, borderDash: [5, 4], dp: 2, unit: '', yAxisID: 'y1' })] },
-      options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: numAxis(u, { beginAtZero: false, ticks: { callback: v => nf(v, id === 'chf' ? 3 : id === 'xau' ? 0 : 1) } }), y1: numAxis('DXY', { position: 'right', beginAtZero: false, grid: { display: false } }) } } }, { win: 12 });
+      options: { plugins: pl, scales: { x: { ticks: { maxTicksLimit: 10 } }, y: numAxis(u, { beginAtZero: false, ticks: { callback: v => nf(v, id === 'chf' ? 3 : id === 'xau' ? 0 : 1) } }), y1: numAxis('DXY', { position: 'right', beginAtZero: false, grid: { display: false } }) } } }, { win: 12 });
   });
 }
 const fxRebase = { id: 'fxRebase', beforeUpdate(ch) {   // quy về % thay đổi so với điểm đầu khung đang xem
