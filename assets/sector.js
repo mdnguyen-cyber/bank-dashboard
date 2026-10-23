@@ -1446,7 +1446,8 @@ function chSafe() {
     if (id === 'jpy') { const P = jpiPts(days, lv), z = jpiZone(P), m = new Map(P.map(p => [p.i, p]));
       ex.push(L('Can thiệp của Nhật', days.map((_, i) => m.has(i) ? m.get(i).v : null), C.navy, { showLine: false, pointRadius: 5, pointHoverRadius: 7, pointStyle: 'circle', backgroundColor: C.navy, pointBorderColor: '#fff', pointBorderWidth: 1.5, pointHoverBorderWidth: 1.5, yAxisID: 'y', dp: 2, unit: '',
         $tip: i => { const p = m.get(i); return p ? [`Can thiệp ${dvn(p.d)}${p.e ? ' (ước tính)' : ''}: ~¥${nf(p.t, 2)} nghìn tỷ ≈ US$${nf(p.usd, 1)} tỷ`, `USD/JPY đóng cửa ${nf(p.v, 2)}`, ...(p.e ? [p.e] : [])] : ''; } }));
-      if (z) pl.jpiBand = z; }
+      if (z) pl.jpiBand = z;
+      const lp = P[P.length - 1]; if (lp) pl.refLines = { lines: [{ value: lp.v, axis: 'y', color: C.red, width: 1.6, dash: [6, 4], label: `Can thiệp gần nhất ${dvn(lp.d)}: ${nf(lp.v, 2)}` }] }; }
     mk('fxS_' + id, { type: 'line', plugins: id === 'jpy' ? [jpiBand] : [], data: { labels: days.map(dvn), datasets: [
         L(t, lv, FXC[{ jpy: 'JPY', xau: 'XAU', chf: 'CHF', oil: 'OIL' }[id]], { borderWidth: 2, dp: id === 'xau' ? 0 : 2, unit: '', yAxisID: 'y' }), ...ex,
         L('DXY (tham chiếu)', dxy, C.grey, { borderWidth: 1.4, borderDash: [5, 4], dp: 2, unit: '', yAxisID: 'y1' })] },
