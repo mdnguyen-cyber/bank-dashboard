@@ -1,6 +1,6 @@
 {
- "asOf": "2026-10-23 04:21",
- "fetched": "2026-10-23 04:32 UTC",
+ "asOf": "2026-10-23 04:41",
+ "fetched": "2026-10-23 04:54 UTC",
  "target": [
   3.75,
   4.0
@@ -36,7 +36,7 @@
      "Hike 25bps": 5.5,
      "Hike 50+ bps": 0.4
     },
-    "volume": 57383548
+    "volume": 57385004
    }
   },
   {
@@ -124,7 +124,7 @@
     "p": {
      "Cut >25bps": 1.5,
      "Cut 25bps": 35.0,
-     "Fed maintains rate": 30.5,
+     "Fed maintains rate": 30.0,
      "Hike 25bps": 53.0,
      "Hike >25bps": 1.5
     }
@@ -183,8 +183,8 @@
   },
   {
    "date": "2027-07-28",
-   "start": 4.4779,
-   "end": 4.5,
+   "start": 4.4729,
+   "end": 4.495,
    "chg_bps": 2.2,
    "probs": {
     "3.75-4.00": 2.5,
@@ -209,19 +209,19 @@
   },
   {
    "date": "2027-09-15",
-   "start": 4.5,
-   "end": 4.52,
-   "chg_bps": 2.0,
+   "start": 4.495,
+   "end": 4.525,
+   "chg_bps": 3.0,
    "probs": {
-    "3.75-4.00": 2.3,
-    "4.00-4.25": 15.3,
-    "4.25-4.50": 32.0,
-    "4.50-4.75": 30.7,
-    "4.75-5.00": 15.2,
-    "5.00-5.25": 3.9,
-    "5.25-5.50": 0.5
+    "3.75-4.00": 2.2,
+    "4.00-4.25": 14.7,
+    "4.25-4.50": 31.4,
+    "4.50-4.75": 30.8,
+    "4.75-5.00": 15.8,
+    "5.00-5.25": 4.4,
+    "5.25-5.50": 0.6
    },
-   "exp_rate": 4.513,
+   "exp_rate": 4.523,
    "kalshi": {
     "ticker": "KXFEDDECISION-27SEP",
     "p": {
@@ -235,19 +235,20 @@
   },
   {
    "date": "2027-10-27",
-   "start": 4.525,
-   "end": 4.525,
-   "chg_bps": 0.0,
+   "start": 4.5257,
+   "end": 4.52,
+   "chg_bps": -0.6,
    "probs": {
-    "3.75-4.00": 2.3,
-    "4.00-4.25": 15.3,
-    "4.25-4.50": 32.0,
-    "4.50-4.75": 30.7,
-    "4.75-5.00": 15.2,
-    "5.00-5.25": 3.9,
-    "5.25-5.50": 0.5
+    "3.50-3.75": 0.1,
+    "3.75-4.00": 2.5,
+    "4.00-4.25": 15.1,
+    "4.25-4.50": 31.3,
+    "4.50-4.75": 30.5,
+    "4.75-5.00": 15.6,
+    "5.00-5.25": 4.3,
+    "5.25-5.50": 0.6
    },
-   "exp_rate": 4.513,
+   "exp_rate": 4.517,
    "kalshi": {
     "ticker": "KXFEDDECISION-27OCT",
     "p": {
@@ -261,27 +262,27 @@
   },
   {
    "date": "2027-12-08",
-   "start": 4.4712,
-   "end": 4.51,
-   "chg_bps": 3.9,
+   "start": 4.4856,
+   "end": 4.505,
+   "chg_bps": 1.9,
    "probs": {
-    "3.75-4.00": 2.0,
-    "4.00-4.25": 13.3,
-    "4.25-4.50": 29.4,
-    "4.50-4.75": 30.9,
-    "4.75-5.00": 17.6,
-    "5.00-5.25": 5.7,
-    "5.25-5.50": 1.1,
+    "3.75-4.00": 2.3,
+    "4.00-4.25": 14.2,
+    "4.25-4.50": 30.1,
+    "4.50-4.75": 30.5,
+    "4.75-5.00": 16.7,
+    "5.00-5.25": 5.1,
+    "5.25-5.50": 0.9,
     "5.50-5.75": 0.1
    },
-   "exp_rate": 4.552,
+   "exp_rate": 4.536,
    "kalshi": {
     "ticker": "KXFEDDECISION-27DEC",
     "p": {
      "Cut >25bps": 0.5,
-     "Cut 25bps": 22.0,
+     "Cut 25bps": 18.5,
      "Fed maintains rate": 60.0,
-     "Hike 25bps": 13.5,
+     "Hike 25bps": 15.5,
      "Hike >25bps": 1.5
     }
    }
@@ -941,13 +942,13 @@
   },
   "2027-07": {
    "ticker": "ZQN27.CBT",
-   "px": 95.52,
-   "rate": 4.48
+   "px": 95.525,
+   "rate": 4.475
   },
   "2027-08": {
    "ticker": "ZQQ27.CBT",
-   "px": 95.5,
-   "rate": 4.5
+   "px": 95.505,
+   "rate": 4.495
   },
   "2027-09": {
    "ticker": "ZQU27.CBT",
@@ -961,8 +962,8 @@
   },
   "2027-11": {
    "ticker": "ZQX27.CBT",
-   "px": 95.475,
-   "rate": 4.525
+   "px": 95.48,
+   "rate": 4.52
   },
   "2027-12": {
    "ticker": "ZQZ27.CBT",
@@ -971,8 +972,8 @@
   },
   "2028-01": {
    "ticker": "ZQF28.CBT",
-   "px": 95.49,
-   "rate": 4.51
+   "px": 95.495,
+   "rate": 4.505
   }
  },
  "method": "Kỳ vọng lãi suất Fed theo từng phiên họp FOMC → data/global/fedwatch.json (+ lịch sử fedwatch_hist.json).\n\nPhương pháp: giống CME FedWatch — xác suất ngụ ý từ giá hợp đồng tương lai lãi suất quỹ liên bang 30 ngày (ZQ, CBOT).\n  - Lãi suất bình quân tháng ngụ ý = 100 − giá ZQ tháng đó.\n  - Tháng có họp: avg = f·r_trước + (1−f)·r_sau, f = (ngày hiệu lực − 1)/số ngày tháng (ngày hiệu lực = ngày cuối cuộc họp + 1).\n    Neo r_sau bằng tháng kế tiếp không họp, hoặc r_trước bằng tháng liền trước không họp, hoặc nối chuỗi từ phiên trước.\n  - Mỗi phiên: Δ = r_sau − r_trước (bước 25 bps): k = sàn(Δ/0,25) bước với xác suất 1 − phần lẻ, k+1 bước với xác suất phần lẻ;\n    phân phối khoảng lãi suất mục tiêu sau từng phiên = tích chập các phiên trước.\nNguồn giá: Yahoo Finance (ZQ<tháng><năm>.CBT, giá giao dịch gần nhất); CME chặn truy cập tự động nên số có thể lệch nhẹ với CME FedWatch\n(CME dùng giá thanh toán cuối ngày). Đối chiếu: thị trường dự đoán Kalshi (KXFEDDECISION) theo từng phiên.\nKhoảng mục tiêu hiện hành: FRED DFEDTARL/DFEDTARU (data/global/series.json do fetch_global.py tải trước)."

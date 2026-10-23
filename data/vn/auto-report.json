@@ -1,6 +1,10 @@
 {
- "at": "2026-10-23T04:25Z",
+ "at": "2026-10-23T04:56Z",
  "report": {
-  "banks": "0/26 ngân hàng, giá đến 2026-10-19"
+  "banks": "26/26 ngân hàng, giá đến 2026-10-23",
+  "secVal": "P/B ngành 1.38 ngày 2026-10-23",
+  "gold": "nối 0 điểm",
+  "news": "thêm 58 tin",
+  "dom.onDaily": "nối 0 điểm"
  }
 }

@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-23T04:25Z"
+  "auto": "2026-10-23T04:56Z"
  },
  "idx": {
   "now": {
@@ -40147,15 +40147,15 @@
  },
  "latest": {
   "quarter": "Q2/2026",
-  "priceDate": "2026-10-19",
+  "priceDate": "2026-10-23",
   "rows": [
    {
     "s": "VCB",
     "group": "Big 4",
-    "price": 56201.0,
-    "pb": 1.95,
-    "pe": 11.28,
-    "mcap": 469589.0,
+    "price": 56400,
+    "pb": 1.92,
+    "pe": 11.3,
+    "mcap": 471252,
     "bvps": 28824,
     "nim": 2.81,
     "cof": 2.6,
@@ -40172,17 +40172,17 @@
     "npYoY": 20.16,
     "credit": 1765527.0,
     "ppop": 55974.0,
-    "pppop": 8.39,
+    "pppop": 8.42,
     "provRatio": 8.3,
     "ppopYoY": 24.0
    },
    {
     "s": "BID",
     "group": "Big 4",
-    "price": 33649.0,
-    "pb": 1.4,
-    "pe": 8.11,
-    "mcap": 261737.0,
+    "price": 33700,
+    "pb": 1.39,
+    "pe": 8.15,
+    "mcap": 262134,
     "bvps": 24106.0,
     "nim": 2.15,
     "cof": 3.6,
@@ -40199,17 +40199,17 @@
     "npYoY": 26.21,
     "credit": 2508616.0,
     "ppop": 64294.0,
-    "pppop": 4.07,
+    "pppop": 4.08,
     "provRatio": 36.8,
     "ppopYoY": 17.9
    },
    {
     "s": "CTG",
     "group": "Big 4",
-    "price": 30501.0,
-    "pb": 1.22,
-    "pe": 5.9,
-    "mcap": 236892.0,
+    "price": 30350,
+    "pb": 1.21,
+    "pe": 5.91,
+    "mcap": 235719,
     "bvps": 25071.0,
     "nim": 2.75,
     "cof": 3.49,
@@ -40226,17 +40226,17 @@
     "npYoY": 33.41,
     "credit": 2094806.0,
     "ppop": 69607.0,
-    "pppop": 3.4,
+    "pppop": 3.38,
     "provRatio": 27.6,
     "ppopYoY": 15.0
    },
    {
     "s": "MBB",
     "group": "Tư nhân lớn",
-    "price": 19699.0,
-    "pb": 1.34,
-    "pe": 6.59,
-    "mcap": 198354.0,
+    "price": 19750,
+    "pb": 1.27,
+    "pe": 6.66,
+    "mcap": 198868,
     "bvps": 14652.0,
     "nim": 4.03,
     "cof": 3.99,
@@ -40253,17 +40253,17 @@
     "npYoY": 22.67,
     "credit": 1253927.0,
     "ppop": 52240.0,
-    "pppop": 3.8,
+    "pppop": 3.81,
     "provRatio": 26.2,
     "ppopYoY": 18.9
    },
    {
     "s": "TCB",
     "group": "Tư nhân lớn",
-    "price": 33251.0,
-    "pb": 1.36,
-    "pe": 8.69,
-    "mcap": 235617.0,
+    "price": 33900,
+    "pb": 1.29,
+    "pe": 8.45,
+    "mcap": 240216,
     "bvps": 24417.0,
     "nim": 3.73,
     "cof": 4.03,
@@ -40280,17 +40280,17 @@
     "npYoY": 27.28,
     "credit": 949414.0,
     "ppop": 39847.0,
-    "pppop": 5.91,
+    "pppop": 6.03,
     "provRatio": 9.8,
     "ppopYoY": 31.2
    },
    {
     "s": "ACB",
     "group": "Tư nhân lớn",
-    "price": 20250.0,
-    "pb": 1.21,
-    "pe": 7.5,
-    "mcap": 117540.0,
+    "price": 20350,
+    "pb": 1.2,
+    "pe": 7.59,
+    "mcap": 118120,
     "bvps": 16716.0,
     "nim": 2.92,
     "cof": 4.5,
@@ -40307,17 +40307,17 @@
     "npYoY": -7.64,
     "credit": 747530.0,
     "ppop": 23576.0,
-    "pppop": 4.99,
+    "pppop": 5.01,
     "provRatio": 16.9,
     "ppopYoY": 3.4
    },
    {
     "s": "VPB",
     "group": "Tư nhân lớn",
-    "price": 24000.0,
-    "pb": 1.29,
-    "pe": 7.7,
-    "mcap": 240000.0,
+    "price": 23750,
+    "pb": 1.28,
+    "pe": 7.68,
+    "mcap": 237500,
     "bvps": 18557.0,
     "nim": 5.23,
     "cof": 5.24,
@@ -40334,17 +40334,17 @@
     "npYoY": 71.33,
     "credit": 1183027.0,
     "ppop": 66661.0,
-    "pppop": 3.6,
+    "pppop": 3.56,
     "provRatio": 42.6,
     "ppopYoY": 36.1
    },
    {
     "s": "HDB",
     "group": "Tư nhân lớn",
-    "price": 22750.0,
-    "pb": 1.74,
-    "pe": 7.75,
-    "mcap": 148031.0,
+    "price": 22150,
+    "pb": 1.69,
+    "pe": 7.62,
+    "mcap": 144127,
     "bvps": 13058.0,
     "nim": 4.21,
     "cof": 5.38,
@@ -40361,17 +40361,17 @@
     "npYoY": 33.66,
     "credit": 686836.0,
     "ppop": 32577.0,
-    "pppop": 4.54,
+    "pppop": 4.42,
     "provRatio": 24.9,
     "ppopYoY": 20.5
    },
    {
     "s": "LPB",
     "group": "Tư nhân lớn",
-    "price": 38450.0,
-    "pb": 2.76,
-    "pe": 10.17,
-    "mcap": 114861.0,
+    "price": 39400,
+    "pb": 2.5,
+    "pe": 9.63,
+    "mcap": 117699,
     "bvps": 13953.0,
     "nim": 3.02,
     "cof": 5.37,
@@ -40388,17 +40388,17 @@
     "npYoY": 13.72,
     "credit": 429465.0,
     "ppop": 16392.0,
-    "pppop": 7.01,
+    "pppop": 7.18,
     "provRatio": 14.1,
     "ppopYoY": 15.0
    },
    {
     "s": "SHB",
     "group": "Tư nhân vừa",
-    "price": 10550.0,
-    "pb": 0.8,
-    "pe": 4.64,
-    "mcap": 56376.0,
+    "price": 10650,
+    "pb": 0.7,
+    "pe": 4.34,
+    "mcap": 56910,
     "bvps": 13214.0,
     "nim": 2.16,
     "cof": 5.7,
@@ -40415,17 +40415,17 @@
     "npYoY": 10.71,
     "credit": 664280.0,
     "ppop": 23388.0,
-    "pppop": 2.41,
+    "pppop": 2.43,
     "provRatio": 34.9,
     "ppopYoY": -0.9
    },
    {
     "s": "STB",
     "group": "Tư nhân vừa",
-    "price": 61799.0,
-    "pb": 1.95,
-    "pe": 37.83,
-    "mcap": 116506.0,
+    "price": 66500,
+    "pb": 1.92,
+    "pe": 39.24,
+    "mcap": 125369,
     "bvps": 31760.0,
     "nim": 3.06,
     "cof": 4.7,
@@ -40442,17 +40442,17 @@
     "npYoY": -73.43,
     "credit": 636029.0,
     "ppop": 21828.0,
-    "pppop": 5.34,
+    "pppop": 5.75,
     "provRatio": 79.7,
     "ppopYoY": 31.1
    },
    {
     "s": "VIB",
     "group": "Tư nhân vừa",
-    "price": 13750.0,
-    "pb": 1.08,
-    "pe": 6.92,
-    "mcap": 51362.0,
+    "price": 14000,
+    "pb": 1.09,
+    "pe": 7.06,
+    "mcap": 52296,
     "bvps": 12683.0,
     "nim": 3.06,
     "cof": 4.89,
@@ -40469,17 +40469,17 @@
     "npYoY": -1.52,
     "credit": 397083.0,
     "ppop": 14170.0,
-    "pppop": 3.62,
+    "pppop": 3.69,
     "provRatio": 34.6,
     "ppopYoY": 11.1
    },
    {
     "s": "TPB",
     "group": "Tư nhân vừa",
-    "price": 11950.0,
-    "pb": 0.85,
-    "pe": 5.03,
-    "mcap": 38122.0,
+    "price": 12650,
+    "pb": 0.92,
+    "pe": 5.37,
+    "mcap": 40355,
     "bvps": 14080.0,
     "nim": 3.0,
     "cof": 5.2,
@@ -40496,17 +40496,17 @@
     "npYoY": 18.37,
     "credit": 343282.0,
     "ppop": 12765.0,
-    "pppop": 2.99,
+    "pppop": 3.17,
     "provRatio": 25.0,
     "ppopYoY": 12.4
    },
    {
     "s": "MSB",
     "group": "Tư nhân vừa",
-    "price": 14800.0,
-    "pb": 1.23,
-    "pe": 9.41,
-    "mcap": 55411.0,
+    "price": 15400,
+    "pb": 1.27,
+    "pe": 9.79,
+    "mcap": 57657,
     "bvps": 11990.0,
     "nim": 3.27,
     "cof": 3.98,
@@ -40523,17 +40523,17 @@
     "npYoY": 15.53,
     "credit": 230796.0,
     "ppop": 9182.0,
-    "pppop": 6.03,
+    "pppop": 6.27,
     "provRatio": 20.4,
     "ppopYoY": 9.5
    },
    {
     "s": "SSB",
     "group": "Tư nhân vừa",
-    "price": 15950.0,
-    "pb": 1.34,
-    "pe": 18.53,
-    "mcap": 55327.0,
+    "price": 16250,
+    "pb": 1.32,
+    "pe": 18.65,
+    "mcap": 56368,
     "bvps": 11888.0,
     "nim": 2.4,
     "cof": 5.07,
@@ -40550,17 +40550,17 @@
     "npYoY": -56.47,
     "credit": 266678.0,
     "ppop": 6480.0,
-    "pppop": 8.54,
+    "pppop": 8.7,
     "provRatio": 42.7,
     "ppopYoY": -38.7
    },
    {
     "s": "OCB",
     "group": "Tư nhân vừa",
-    "price": 10050.0,
-    "pb": 0.87,
-    "pe": 6.91,
-    "mcap": 30778.0,
+    "price": 10700,
+    "pb": 0.88,
+    "pe": 7.12,
+    "mcap": 32769,
     "bvps": 11574.0,
     "nim": 3.09,
     "cof": 5.11,
@@ -40577,17 +40577,17 @@
     "npYoY": 48.02,
     "credit": 223759.0,
     "ppop": 8347.0,
-    "pppop": 3.69,
+    "pppop": 3.93,
     "provRatio": 32.9,
     "ppopYoY": 29.7
    },
    {
     "s": "EIB",
     "group": "Tư nhân vừa",
-    "price": 16250.0,
-    "pb": 1.27,
-    "pe": 61.54,
-    "mcap": 30269.0,
+    "price": 17450,
+    "pb": 1.19,
+    "pe": 64.19,
+    "mcap": 32504,
     "bvps": 12775.0,
     "nim": 2.39,
     "cof": 4.74,
@@ -40604,17 +40604,17 @@
     "npYoY": -85.19,
     "credit": 191030.0,
     "ppop": 2698.0,
-    "pppop": 11.22,
+    "pppop": 12.05,
     "provRatio": 74.0,
     "ppopYoY": -46.0
    },
    {
     "s": "NAB",
     "group": "Tư nhân nhỏ",
-    "price": 12000.0,
+    "price": 12400,
     "pb": 1.02,
-    "pe": 5.52,
-    "mcap": 25906.0,
+    "pe": 5.64,
+    "mcap": 26770,
     "bvps": 11712.0,
     "nim": 2.37,
     "cof": 5.3,
@@ -40631,17 +40631,17 @@
     "npYoY": 21.94,
     "credit": 218790.0,
     "ppop": 7406.0,
-    "pppop": 3.5,
+    "pppop": 3.62,
     "provRatio": 20.4,
     "ppopYoY": 26.1
    },
    {
     "s": "ABB",
     "group": "Tư nhân nhỏ",
-    "price": 17599.0,
-    "pb": 1.28,
-    "pe": 6.95,
-    "mcap": 28279.0,
+    "price": 17700,
+    "pb": 1.2,
+    "pe": 6.42,
+    "mcap": 28441,
     "bvps": 13741.0,
     "nim": 2.43,
     "cof": 5.31,
@@ -40658,17 +40658,17 @@
     "npYoY": 208.94,
     "credit": 136196.0,
     "ppop": 7381.0,
-    "pppop": 3.83,
+    "pppop": 3.85,
     "provRatio": 30.7,
     "ppopYoY": 123.7
    },
    {
     "s": "KLB",
     "group": "Tư nhân nhỏ",
-    "price": 11150.0,
-    "pb": 0.97,
+    "price": 11250,
+    "pb": 0.9,
     "pe": 4.05,
-    "mcap": 8351.0,
+    "mcap": 8426,
     "bvps": 11445.0,
     "nim": 4.05,
     "cof": 5.49,
@@ -40685,17 +40685,17 @@
     "npYoY": 73.99,
     "credit": 77618.0,
     "ppop": 3224.0,
-    "pppop": 2.59,
+    "pppop": 2.61,
     "provRatio": 20.1,
     "ppopYoY": 30.2
    },
    {
     "s": "VAB",
     "group": "Tư nhân nhỏ",
-    "price": 9000.0,
+    "price": 9030,
     "pb": 0.76,
-    "pe": 5.76,
-    "mcap": 8119.0,
+    "pe": 5.79,
+    "mcap": 8146,
     "bvps": 11825.0,
     "nim": 2.65,
     "cof": 5.51,
@@ -40712,17 +40712,17 @@
     "npYoY": 42.55,
     "credit": 96199.0,
     "ppop": 2941.0,
-    "pppop": 2.76,
+    "pppop": 2.77,
     "provRatio": 40.3,
     "ppopYoY": 71.7
    },
    {
     "s": "BVB",
     "group": "Tư nhân nhỏ",
-    "price": 10300.0,
-    "pb": 1.43,
-    "pe": 12.7,
-    "mcap": 9901.0,
+    "price": 10450,
+    "pb": 0.91,
+    "pe": 12.95,
+    "mcap": 10045,
     "bvps": 7217.0,
     "nim": 2.67,
     "cof": 5.75,
@@ -40739,17 +40739,17 @@
     "npYoY": 195.04,
     "credit": 83385.0,
     "ppop": 1702.0,
-    "pppop": 5.82,
+    "pppop": 5.9,
     "provRatio": 42.7,
     "ppopYoY": 77.1
    },
    {
     "s": "BAB",
     "group": "Tư nhân nhỏ",
-    "price": 10600.0,
-    "pb": 0.95,
+    "price": 10600,
+    "pb": 0.89,
     "pe": 10.21,
-    "mcap": 12217.0,
+    "mcap": 12217,
     "bvps": 11169.0,
     "nim": 2.05,
     "cof": 6.13,
@@ -40773,10 +40773,10 @@
    {
     "s": "PGB",
     "group": "Tư nhân nhỏ",
-    "price": 9500.0,
-    "pb": 0.85,
-    "pe": 9.66,
-    "mcap": 6961.0,
+    "price": 9600,
+    "pb": 0.71,
+    "pe": 10.18,
+    "mcap": 7034,
     "bvps": 11142.0,
     "nim": 2.37,
     "cof": 4.4,
@@ -40793,17 +40793,17 @@
     "npYoY": 88.35,
     "credit": 49349.0,
     "ppop": 1453.0,
-    "pppop": 4.79,
+    "pppop": 4.84,
     "provRatio": 38.0,
     "ppopYoY": 44.8
    },
    {
     "s": "SGB",
     "group": "Tư nhân nhỏ",
-    "price": 13000.0,
-    "pb": 1.23,
-    "pe": 230.68,
-    "mcap": 4691.0,
+    "price": 13000,
+    "pb": 1.11,
+    "pe": 231.18,
+    "mcap": 4691,
     "bvps": 10561.0,
     "nim": 1.96,
     "cof": 5.39,
@@ -40827,10 +40827,10 @@
    {
     "s": "NVB",
     "group": "Tư nhân nhỏ",
-    "price": 13300.0,
-    "pb": 2.83,
-    "pe": 147.03,
-    "mcap": 38898.0,
+    "price": 14000,
+    "pb": 2.8,
+    "pe": 151.45,
+    "mcap": 40945,
     "bvps": 4702.0,
     "nim": 2.33,
     "cof": 5.45,
@@ -40847,7 +40847,7 @@
     "npYoY": null,
     "credit": 133527.0,
     "ppop": 1188.0,
-    "pppop": 32.74,
+    "pppop": 34.46,
     "provRatio": 77.6,
     "ppopYoY": null
    }
@@ -42686,20 +42686,20 @@
     "pppop": 4.92
    },
    {
-    "d": "2026-10-22",
-    "pb": 1.42,
-    "pe": 8.43,
-    "mcap": 2645.0,
-    "pppop": 4.83
+    "d": "2026-10-23",
+    "pb": 1.38,
+    "pe": 8.44,
+    "mcap": 2672,
+    "pppop": 4.88
    }
   ],
   "from": "2021-01-29",
   "now": {
-   "d": "2026-10-22",
-   "pb": 1.42,
-   "pe": 8.43,
-   "mcap": 2645.0,
-   "pppop": 4.83
+   "d": "2026-10-23",
+   "pb": 1.38,
+   "pe": 8.44,
+   "mcap": 2672,
+   "pppop": 4.88
   },
   "pb": {
    "mean": 1.79,
@@ -44415,21 +44415,342 @@
  },
  "news": [
   {
-   "d": "2026-10-18",
-   "t": "NHNN yêu cầu các nhà băng giảm lãi suất huy động ít nhất 0,5%, tuyệt đối không đua nhau tăng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-it-nhat-0-5-tuyet-doi-khong-dua-nhau-tang-1471113.html",
+   "d": "2026-10-23",
+   "t": "Agribank rao bán khoản nợ của ông Trần Văn Thạnh và bà Nguyễn Thị Hồng Vân, tài sản thế chấp là 2 xe Lexus LX570 và nhà đất tại TP.HCM",
+   "src": "CafeF",
+   "url": "https://cafef.vn/agribank-rao-ban-khoan-no-cua-ong-tran-van-thanh-va-ba-nguyen-thi-hong-van-tai-san-the-chap-la-2-xe-lexus-lx570-va-nha-dat-tai-tphcm-188261023113319602.chn",
    "sym": []
   },
   {
-   "d": "2026-10-19",
-   "t": "Ngân hàng sẵn sàng giảm lợi nhuận để ưu tiên vốn lưu động giá rẻ cho doanh nghiệp",
-   "src": "vneconomy",
-   "url": "https://vneconomy.vn/ngan-hang-san-sang-giam-loi-nhuan-de-uu-tien-von-luu-dong-gia-re-cho-doanh-nghiep.htm",
+   "d": "2026-10-23",
+   "t": "Sun Group và NCB tài trợ Kim cương cho live concert “Bay về phía mặt trời” của Tùng Dương, hé lộ đặc quyền cho khách hàng NCB tại concert",
+   "src": "CafeF",
+   "url": "https://cafef.vn/sun-group-va-ncb-tai-tro-kim-cuong-cho-live-concert-bay-ve-phia-mat-troi-cua-tung-duong-he-lo-dac-quyen-cho-khach-hang-ncb-tai-concert-188261023112827516.chn",
    "sym": [
-    "BID",
+    "NVB"
+   ]
+  },
+  {
+   "d": "2026-10-23",
+   "t": "Lợi nhuận ngân hàng tăng mạnh",
+   "src": "CafeF",
+   "url": "https://cafef.vn/loi-nhuan-ngan-hang-tang-manh-188261023105720587.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-23",
+   "t": "Giá vàng miếng, vàng nhẫn sáng 23/10 đồng loạt giảm",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-sang-23-10-dong-loat-giam-188261023082632015.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-23",
+   "t": "Người thân qua đời nhưng vẫn còn nợ ngân hàng, ai phải trả?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/nguoi-than-qua-doi-nhung-van-con-no-ngan-hang-ai-phai-tra-188261023072842331.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-23",
+   "t": "Chuyển giao gia sản: Câu hỏi lớn của thế hệ doanh nhân sáng lập",
+   "src": "CafeF",
+   "url": "https://cafef.vn/chuyen-giao-gia-san-cau-hoi-lon-cua-the-he-doanh-nhan-sang-lap-188261022153243623.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-23",
+   "t": "Ngày 23/10, gửi 100 triệu đồng tại MB, VPBank, Techcombank, Sacombank, SHB, ACB nhận bao nhiêu tiền lãi sau 6 tháng?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngay-23-10-gui-100-trieu-dong-tai-mb-vpbank-techcombank-sacombank-shb-acb-nhan-bao-nhieu-tien-lai-sau-6-thang-188261022233924875.chn",
+   "sym": [
+    "TCB",
+    "ACB",
+    "VPB",
+    "SHB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Toàn cảnh các chỉ đạo điều hành lãi suất của NHNN từ đầu năm 2026",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/toan-canh-cac-chi-dao-dieu-hanh-lai-suat-cua-nhnn-tu-dau-nam-2026-1471701.html",
+   "sym": [
+    "VPX"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "NHNN sửa quy định về thông tin giám sát QTDND và tài chính vi mô",
+   "src": "Hiệp hội Ngân hàng Việt Nam",
+   "url": "https://vnba.org.vn/vi/nhnn-sua-quy-dinh-ve-thong-tin-giam-sat-qtdnd-va-tai-chinh-vi-mo-23951.htm",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Ngân hàng có vợ chồng tỷ phú Phạm Nhật Vượng nắm gần 10% vốn tăng mạnh thu nhập nhân viên",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/ngan-hang-co-vo-chong-ty-phu-pham-nhat-vuong-nam-gan-10-von-tang-manh-thu-nhap-nhan-vien-1471670.html",
+   "sym": [
+    "LPB",
+    "VIC"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "PGS.TS. Phùng Thế Đông: Cần phát triển thị trường vốn dài hạn để giảm áp lực cho tín dụng ngân hàng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/pgs-ts-phung-the-dong-can-phat-trien-thi-truong-von-dai-han-de-giam-ap-luc-cho-tin-dung-ngan-hang-1471667.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Phó Thống đốc: AI phải tạo giá trị thực chất thay vì chỉ tạo ấn tượng về công nghệ",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/pho-thong-doc-ai-phai-tao-gia-tri-thuc-chat-thay-vi-chi-tao-an-tuong-ve-cong-nghe-d152464.html",
+   "sym": [
+    "TPB"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Chuyển đổi số ngành Ngân hàng: Lấy AI thực chất làm động lực, lấy niềm tin và khả năng chống chịu làm nền tảng",
+   "src": "Hiệp hội Ngân hàng Việt Nam",
+   "url": "https://vnba.org.vn/vi/chuyen-doi-so-nganh-ngan-hang--lay-ai-thuc-chat-lam-dong-luc--lay-niem-tin-va-kha-nang-chong-chiu-lam-nen-tang-23982.htm",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Chưa dứt cơn khát vốn: Ngân hàng giảm lãi suất tiết kiệm, tăng lãi chứng chỉ tiền gửi",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/chua-dut-con-khat-von-ngan-hang-giam-lai-suat-tiet-kiem-tang-lai-chung-chi-tien-gui-d152449.html",
+   "sym": [
+    "ABB",
+    "BAB",
+    "BVB",
+    "HDB",
+    "KLB",
+    "LPB",
+    "MBB",
+    "NAB",
+    "NVB",
+    "OCB",
+    "SGB",
+    "SSI",
+    "STB",
+    "TCB",
+    "TPB",
+    "VBB",
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Agribank Chi nhánh Bắc Giang ký kết hợp tác toàn diện với Công ty cổ phần Đầu tư Minh Hùng",
+   "src": "Báo Bắc Ninh",
+   "url": "https://baobacninhtv.vn/agribank-chi-nhanh-bac-giang-ky-ket-hop-tac-toan-dien-voi-cong-ty-co-phan-dau-tu-minh-hung-postid456835.bbg",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Ngân hàng tư nhân đầu tiên có vốn chủ sở hữu vượt 200.000 tỷ",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/ngan-hang-tu-nhan-dau-tien-co-von-chu-so-huu-vuot-200000-ty-d152466.html",
+   "sym": [
+    "VPB",
+    "CTG",
+    "TCB",
     "VCB"
    ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Chưa cần thêm room tín dụng, Tổng Giám đốc Techcombank hé lộ chiến lược rót vốn vào hạ tầng quốc gia",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/chua-can-them-room-tin-dung-tong-giam-doc-techcombank-he-lo-chien-luoc-rot-von-vao-ha-tang-quoc-gia-1471639.html",
+   "sym": [
+    "TCB",
+    "VCI"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "TS. Cấn Văn Lực: Thị trường vốn cần chiếm ít nhất 30% để giảm phụ thuộc vào ngân hàng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/ts-can-van-luc-thi-truong-von-can-chiem-it-nhat-30-de-giam-phu-thuoc-vao-ngan-hang-1471637.html",
+   "sym": [
+    "BID",
+    "DTR",
+    "MBB",
+    "OCB",
+    "PLX",
+    "TCB",
+    "VCG"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "LPBank lãi hơn 10.400 tỷ đồng, doanh thu từ bảo hiểm tăng vọt 163%",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/lpbank-lai-hon-10400-ty-dong-doanh-thu-tu-bao-hiem-tang-vot-163-d152444.html",
+   "sym": [
+    "LPB"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "4 ngày 2 công văn: NHNN yêu cầu các nhà băng giảm lãi suất",
+   "src": "Nhà Đầu Tư",
+   "url": "https://nhadautu.vn/4-ngay-2-cong-van-nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-d108419.html",
+   "sym": [
+    "ACB",
+    "BAB",
+    "BVB",
+    "KLB",
+    "LPB",
+    "NAB",
+    "NVB",
+    "OCB",
+    "PGB",
+    "SSB",
+    "STB",
+    "TPB",
+    "VBB"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "ĐBQH Nguyễn Việt Hà: Không để người mua nhà mất đi lớp bảo vệ từ bảo lãnh ngân hàng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/dbqh-nguyen-viet-ha-khong-de-nguoi-mua-nha-mat-di-lop-bao-ve-tu-bao-lanh-ngan-hang-188261022193934667.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Chiều 22/10: Giá vàng nhẫn tại một doanh nghiệp bất ngờ giảm sâu",
+   "src": "CafeF",
+   "url": "https://cafef.vn/chieu-22-10-gia-vang-nhan-tai-mot-doanh-nghiep-bat-ngo-giam-sau-188261021234853069.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Case study pop-up BIGBANG tại VPBank: Lời giải cho bài toán \"bây giờ còn mấy ai ra ngân hàng giao dịch\"",
+   "src": "CafeF",
+   "url": "https://cafef.vn/case-study-pop-up-bigbang-tai-vpbank-loi-giai-cho-bai-toan-bay-gio-con-may-ai-ra-ngan-hang-giao-dich-188261022150741239.chn",
+   "sym": [
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Chứng khoán HD báo lãi 9 tháng gấp 3,7 lần cùng kỳ, vượt xa lợi nhuận cả năm 2025",
+   "src": "CafeF",
+   "url": "https://cafef.vn/chung-khoan-hd-bao-lai-9-thang-gap-37-lan-cung-ky-vuot-xa-loi-nhuan-ca-nam-2025-18826102214590234.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Techcombank giảm lãi suất cho vay đến 2%, tập trung vào hoạt động sản xuất kinh doanh",
+   "src": "CafeF",
+   "url": "https://cafef.vn/techcombank-giam-lai-suat-cho-vay-den-2-tap-trung-vao-hoat-dong-san-xuat-kinh-doanh-188261022143951193.chn",
+   "sym": [
+    "TCB"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Đề xuất giữ lại 5% tiền mua nhà tại ngân hàng, có sổ đỏ mới trả cho chủ đầu tư",
+   "src": "CafeF",
+   "url": "https://cafef.vn/de-xuat-giu-lai-5-tien-mua-nha-tai-ngan-hang-co-so-do-moi-tra-cho-chu-dau-tu-188261022123648226.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "CEO TPBank Nguyễn Hưng: Ngân hàng 18 triệu khách nhưng chỉ 0,5% giao dịch còn ra quầy",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ceo-tpbank-nguyen-hung-ngan-hang-18-trieu-khach-nhung-chi-05-giao-dich-con-ra-quay-188261022121842134.chn",
+   "sym": [
+    "TPB"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "VDSC: Chỉ đạo mới của NHNN có thể khiến một số ngân hàng bị vượt room tín dụng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vdsc-chi-dao-moi-cua-nhnn-co-the-khien-mot-so-ngan-hang-bi-vuot-room-tin-dung-188261022113202819.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Chủ tịch Tân Việt Books Nguyễn Kim Thoa: Hành trình gieo thói quen đọc sách và hơn 10 năm đồng hành cùng BIDV",
+   "src": "CafeF",
+   "url": "https://cafef.vn/chu-tich-tan-viet-books-nguyen-kim-thoa-hanh-trinh-gieo-thoi-quen-doc-sach-va-hon-10-nam-dong-hanh-cung-bidv-188261022111018606.chn",
+   "sym": [
+    "BID"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Sau khách hàng doanh nghiệp, SACOMBANK tiếp tục hạ lãi suất cho vay khách hàng cá nhân thấp nhất từ 1,5% đến 2%",
+   "src": "CafeF",
+   "url": "https://cafef.vn/sau-khach-hang-doanh-nghiep-sacombank-tiep-tuc-ha-lai-suat-cho-vay-khach-hang-ca-nhan-thap-nhat-tu-15-den-2-188261022105945051.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Phó Thống đốc NHNN Phạm Tiến Dũng: \"AI phải mang lại hiệu quả thực chất, tránh biến AI thành một chiếc áo đẹp khoác lên người\"",
+   "src": "CafeF",
+   "url": "https://cafef.vn/pho-thong-doc-nhnn-pham-tien-dung-ai-phai-mang-lai-hieu-qua-thuc-chat-tranh-bien-ai-thanh-mot-chiec-ao-khoac-dep-khoac-len-nguoi-188261022095132079.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Khi USD là tâm điểm quý IV/2026: Doanh nghiệp cần chuẩn bị gì cho các khoản thu chi ngoại tệ?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/khi-usd-la-tam-diem-quy-iv-2026-doanh-nghiep-can-chuan-bi-gi-cho-cac-khoan-thu-chi-ngoai-te-188261022072445566.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Ngày 22/10, gửi 100 triệu đồng tại MB, VPBank, Techcombank, Sacombank, SHB, ACB nhận bao nhiêu tiền lãi sau 24 tháng?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngay-22-10-gui-100-trieu-dong-tai-mb-vpbank-techcombank-sacombank-shb-acb-nhan-bao-nhieu-tien-lai-sau-24-thang-188261021231203821.chn",
+   "sym": [
+    "TCB",
+    "ACB",
+    "VPB",
+    "SHB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Ngân hàng tư nhân đầu tiên có vốn chủ sở hữu vượt 200.000 tỷ đồng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngan-hang-tu-nhan-dau-tien-co-von-chu-so-huu-vuot-200000-ty-dong-188261021232900038.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "'Nhiều ngân hàng bị tin tặc xâm nhập hệ thống mấy tháng không biết'",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/nhieu-ngan-hang-bi-tin-tac-xam-nhap-he-thong-may-thang-khong-biet-5135600.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Giá USD ngân hàng xuống thấp nhất một năm rưỡi",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/gia-usd-ngan-hang-xuong-thap-nhat-mot-nam-ruoi-5135506.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
+   "t": "Nhiều ngân hàng cho vay bình quân trên 11% trước đợt hạ lãi suất",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/nhieu-ngan-hang-cho-vay-binh-quan-tren-11-truoc-dot-ha-lai-suat-5135336.html",
+   "sym": []
   },
   {
    "d": "2026-10-21",
@@ -44437,36 +44758,6 @@
    "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
    "url": "https://dautu.kinhtechungkhoan.vn/ngan-hang-nha-nuoc-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-toi-thieu-0-5-cho-ky-han-tu-6-thang-1471551.html",
    "sym": []
-  },
-  {
-   "d": "2026-10-19",
-   "t": "LPBank điều chỉnh hạ lãi suất huy động và cho vay tại nhiều kỳ hạn sau chỉ đạo Chính phủ",
-   "src": "Thanh Niên Việt",
-   "url": "https://thanhnienviet.vn/lpbank-dieu-chinh-ha-lai-suat-huy-dong-va-cho-vay-tai-nhieu-ky-han-sau-chi-dao-chinh-phu-209261019104855103.htm",
-   "sym": [
-    "LPB"
-   ]
-  },
-  {
-   "d": "2026-10-20",
-   "t": "Giảm lãi suất huy động và cho vay, kiểm soát chặt rủi ro tín dụng",
-   "src": "Báo Hải Phòng",
-   "url": "https://baohaiphong.vn/giam-lai-suat-huy-dong-va-cho-vay-kiem-soat-chat-rui-ro-tin-dung-556255.html",
-   "sym": [
-    "BID",
-    "CTG"
-   ]
-  },
-  {
-   "d": "2026-10-19",
-   "t": "Lãnh đạo ngân hàng lớn nói gì sau cuộc họp khẩn với Thống đốc?",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/lanh-dao-ngan-hang-lon-noi-gi-sau-cuoc-hop-khan-voi-thong-doc-d152255.html",
-   "sym": [
-    "ACB",
-    "BID",
-    "VCB"
-   ]
   },
   {
    "d": "2026-10-21",
@@ -44487,6 +44778,676 @@
     "TCB",
     "VPB"
    ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngân hàng Nhà nước chỉ đạo về việc giảm mặt bằng lãi suất",
+   "src": "Báo Hải Phòng",
+   "url": "https://baohaiphong.vn/ngan-hang-nha-nuoc-chi-dao-ve-viec-giam-mat-bang-lai-suat-556402.html",
+   "sym": [
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Từ sức hút văn hóa đến chiến lược gia tăng giá trị ngân hàng",
+   "src": "Thanh Niên Việt",
+   "url": "https://thanhnienviet.vn/tu-suc-hut-van-hoa-den-chien-luoc-gia-tang-gia-tri-ngan-hang-209261021182405135.htm",
+   "sym": [
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Một ngân hàng vừa ký khoản vay 50 triệu USD với định chế tài chính Đức",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/mot-ngan-hang-vua-ky-khoan-vay-50-trieu-usd-voi-dinh-che-tai-chinh-duc-1471575.html",
+   "sym": [
+    "TPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "BIDV dự kiến phát hành 8.000 tỷ đồng trái phiếu riêng lẻ trong quý IV",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/bidv-du-kien-phat-hanh-8-000-ty-dong-trai-phieu-rieng-le-trong-quy-iv-1471566.html",
+   "sym": [
+    "BID",
+    "CTG",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "MSB giảm lãi suất tiền gửi từ 6 tháng, triển khai chương trình cho vay ưu đãi 10.000 tỷ đồng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/msb-giam-lai-suat-tien-gui-tu-6-thang-trien-khai-chuong-trinh-cho-vay-uu-dai-10-000-ty-dong-1471564.html",
+   "sym": [
+    "MSB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "LPBank báo lãi hơn 10.400 tỷ đồng sau 9 tháng, có khoản thu tăng đến 136%",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/lpbank-bao-lai-hon-10-400-ty-dong-sau-9-thang-co-khoan-thu-tang-den-136-1471554.html",
+   "sym": [
+    "LPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Thuế Hải Phòng đồng hành cùng doanh nghiệp để tăng thu bền vững",
+   "src": "Báo Hải Phòng",
+   "url": "https://baohaiphong.vn/thue-hai-phong-dong-hanh-cung-doanh-nghiep-de-tang-thu-ben-vung-556359.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngân hàng Nhà nước yêu cầu các nhà băng giảm lãi suất huy động tối thiểu 0,5% cho kỳ hạn từ 6 tháng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/ngan-hang-nha-nuoc-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-toi-thieu-0-5-cho-ky-han-tu-6-thang-1471551.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngân hàng Nhà nước yêu cầu giảm lãi suất thực chất",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/ngan-hang-nha-nuoc-yeu-cau-giam-lai-suat-thuc-chat-d152411.html",
+   "sym": [
+    "ACB",
+    "BAB",
+    "BVB",
+    "KLB",
+    "LPB",
+    "NAB",
+    "NVB",
+    "OCB",
+    "PGB",
+    "SSB",
+    "STB",
+    "TPB",
+    "VBB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ông Dương Đức Hùng trở thành Tổng giám đốc OCB",
+   "src": "tinnhanhchungkhoan",
+   "url": "https://www.tinnhanhchungkhoan.vn/ong-duong-duc-hung-tro-thanh-tong-giam-doc-ocb-post399935.html",
+   "sym": [
+    "OCB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "VIB giảm lãi suất cho vay, đồng hành cùng doanh nghiệp và khách hàng cá nhân",
+   "src": "vnbusiness",
+   "url": "https://vnbusiness.vn/vib-giam-lai-suat-cho-vay-dong-hanh-cung-doanh-nghiep-va-khach-hang-ca-nhan.html",
+   "sym": [
+    "VIB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "TPBank nhận 50 triệu USD vốn dài hạn từ DEG: Tối ưu nguồn vốn quốc tế, thúc đẩy tài chính xanh",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/tpbank-nhan-50-trieu-usd-von-dai-han-tu-deg-toi-uu-nguon-von-quoc-te-thuc-day-tai-chinh-xanh-d152387.html",
+   "sym": [
+    "TPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Công ty CP Shinec và VietABank hợp tác thúc đẩy chuyển đổi xanh",
+   "src": "Báo Hải Phòng",
+   "url": "https://baohaiphong.vn/cong-ty-cp-shinec-va-vietabank-hop-tac-thuc-day-chuyen-doi-xanh-556333.html",
+   "sym": [
+    "VAB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "MSB triển khai đồng bộ giải pháp lãi suất, hỗ trợ doanh nghiệp vốn ưu đãi từ 7,5%/năm",
+   "src": "Thanh Niên Việt",
+   "url": "https://thanhnienviet.vn/msb-trien-khai-dong-bo-giai-phap-lai-suat-ho-tro-doanh-nghiep-von-uu-dai-tu-75-nam-209261021102017754.htm",
+   "sym": [
+    "MSB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Phó Thống đốc Nguyễn Ngọc Cảnh dự Hội nghị Bộ trưởng Tài chính APEC 2026, làm việc với AIIB và BOCHK",
+   "src": "Hiệp hội Ngân hàng Việt Nam",
+   "url": "https://vnba.org.vn/vi/pho-thong-doc-nguyen-ngoc-canh-du-hoi-nghi-bo-truong-tai-chinh-apec-2026--lam-viec-voi-aiib-va-bochk-23969.htm",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Các lần yêu cầu ngân hàng hạ lãi suất của Thống đốc Phạm Đức Ấn",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/cac-lan-yeu-cau-ngan-hang-ha-lai-suat-cua-thong-doc-pham-duc-an-1471481.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "LPBank lãi 10.421 tỷ đồng sau 9 tháng đầu năm 2026",
+   "src": "Người Đưa Tin",
+   "url": "https://www.nguoiduatin.vn/lpbank-lai-10421-ty-dong-sau-9-thang-dau-nam-2026-204261021091521205.htm",
+   "sym": [
+    "LPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Đang ưu đãi 7% đột ngột lên gần 20%: 'Ác mộng' lãi suất thả nổi của người mua nhà",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/vay-uu-dai-7-dot-ngot-len-gan-20-ac-mong-lai-suat-tha-noi-cua-nguoi-mua-nha-d152290.html",
+   "sym": [
+    "ACB",
+    "DXS",
+    "TCB",
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Thống đốc Ngân hàng Nhà nước yêu cầu gỡ rào cản pháp lý, khơi thông dòng vốn cho nền kinh tế",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/thong-doc-ngan-hang-nha-nuoc-yeu-cau-go-rao-can-phap-ly-khoi-thong-dong-von-cho-nen-kinh-te-1471465.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Tài chính thị trường ngày 21/10: 15 ngân hàng đồng loạt giảm lãi suất huy động",
+   "src": "Báo Hà Tĩnh",
+   "url": "https://baohatinh.vn/tai-chinh-thi-truong-ngay-2110-15-ngan-hang-dong-loat-giam-lai-suat-huy-dong-post319071.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Từ sức hút văn hóa đến chiến lược gia tăng giá trị ngân hàng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/tu-suc-hut-van-hoa-den-chien-luoc-gia-tang-gia-tri-ngan-hang-188261021200812889.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "TPBank nhận 50 triệu USD vốn dài hạn từ DEG: Tối ưu nguồn vốn quốc tế, thúc đẩy tài chính xanh",
+   "src": "CafeF",
+   "url": "https://cafef.vn/tpbank-nhan-50-trieu-usd-von-dai-han-tu-deg-toi-uu-nguon-von-quoc-te-thuc-day-tai-chinh-xanh-18826102118452996.chn",
+   "sym": [
+    "TPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Trái phiếu 'nóng' giữa lúc lãi suất ngân hàng ì ạch 'hạ nhiệt'",
+   "src": "CafeF",
+   "url": "https://cafef.vn/trai-phieu-nong-giua-luc-lai-suat-ngan-hang-i-ach-ha-nhiet-188261021173546826.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngày 21/10, BIDV và VietinBank đồng loạt giảm lãi suất tiết kiệm",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngay-21-10-bidv-va-vietinbank-dong-loat-giam-lai-suat-tiet-kiem-188261021170607213.chn",
+   "sym": [
+    "BID",
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngôi vương vốn điều lệ ngân hàng sắp đổi chủ: Một nhà băng sắp vượt MB và VPBank, bỏ xa Vietcombank, VietinBank, BIDV và Agribank",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngoi-vuong-von-dieu-le-ngan-hang-sap-doi-chu-mot-nha-bang-sap-vuot-mb-va-vpbank-bo-xa-vietcombank-vietinbank-bidv-va-agribank-18826102116350762.chn",
+   "sym": [
+    "VCB",
+    "BID",
+    "CTG",
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Một cổ phiếu ngân hàng được 52 quỹ đầu tư mua ròng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/mot-co-phieu-ngan-hang-duoc-52-quy-dau-tu-mua-rong-188261021153407792.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Vàng bạc Đá quý Phú Nhuận đóng loạt cửa hàng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vang-bac-da-quy-phu-nhuan-dong-loat-cua-hang-188261021143313357.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "OCB có Tổng Giám đốc mới",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ocb-co-tong-giam-doc-moi-188261021152940952.chn",
+   "sym": [
+    "OCB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngân hàng Nhà nước có chỉ đạo mới về lãi suất",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngan-hang-nha-nuoc-co-chi-dao-moi-ve-lai-suat-188261021150259725.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Giá vàng nhẫn, vàng miếng chiều 21/10 tại SJC, PNJ, DOJI, Bảo Tín Minh Châu, Phú Quý",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-nhan-vang-mieng-chieu-21-10-tai-sjc-pnj-doji-bao-tin-minh-chau-phu-quy-188261021082257133.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "LPBank ghi nhận LNTT 10.421 tỷ đồng trong 9 tháng, hoàn thành 70% kế hoạch cả năm 2026",
+   "src": "CafeF",
+   "url": "https://cafef.vn/lpbank-ghi-nhan-lntt-10421-ty-dong-trong-9-thang-hoan-thanh-70-ke-hoach-ca-nam-2026-188261021143518721.chn",
+   "sym": [
+    "LPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngày 21/10, gửi 100 triệu đồng tại VPBank, Techcombank, HDBank, MB, SHB và Sacombank nhận bao nhiêu tiền lãi sau 12 tháng?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngay-21-10-gui-100-trieu-dong-tai-vpbank-techcombank-hdbank-mb-shb-va-sacombank-nhan-bao-nhieu-tien-lai-sau-12-thang-188261021142713175.chn",
+   "sym": [
+    "TCB",
+    "VPB",
+    "HDB",
+    "SHB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Doanh nghiệp nặng nợ cũ không mặn mà gói vay mới dù lãi suất giảm",
+   "src": "CafeF",
+   "url": "https://cafef.vn/doanh-nghiep-nang-no-cu-khong-man-ma-goi-vay-moi-du-lai-suat-giam-188261021135712762.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "VIB giảm lãi suất cho vay, đồng hành cùng doanh nghiệp và khách hàng cá nhân",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vib-giam-lai-suat-cho-vay-dong-hanh-cung-doanh-nghiep-va-khach-hang-ca-nhan-18826102114040236.chn",
+   "sym": [
+    "VIB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "MSB triển khai đồng bộ giải pháp lãi suất, hỗ trợ doanh nghiệp vốn ưu đãi từ 7,5%/năm",
+   "src": "CafeF",
+   "url": "https://cafef.vn/msb-trien-khai-dong-bo-giai-phap-lai-suat-ho-tro-doanh-nghiep-von-uu-dai-tu-75-nam-188261021131237.chn",
+   "sym": [
+    "MSB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "LPS đạt gần 895 tỷ đồng lợi nhuận trước thuế trong 9 tháng, bám sát kế hoạch năm 2026",
+   "src": "CafeF",
+   "url": "https://cafef.vn/lps-dat-gan-895-ty-dong-loi-nhuan-truoc-thue-trong-9-thang-bam-sat-ke-hoach-nam-2026-188261021113814224.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Doanh nhân Đặng Huỳnh Ức My và hành trình nông nghiệp Việt vươn tầm",
+   "src": "CafeF",
+   "url": "https://cafef.vn/doanh-nhan-dang-huynh-uc-my-va-hanh-trinh-nong-nghiep-viet-vuon-tam-188261021112502363.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Cập nhật lợi nhuận ngân hàng sáng 21/10: VPBank tạm dẫn đầu, thêm ngân hàng lãi trên 10.000 tỷ sau 9 tháng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/cap-nhat-loi-nhuan-ngan-hang-sang-21-10-vpbank-tam-dan-dau-them-ngan-hang-lai-tren-10000-ty-sau-9-thang-188261021110917971.chn",
+   "sym": [
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Techcombank nhận giải “Ngân hàng Tốt nhất Việt Nam” năm thứ 3 liên tiếp từ Global Finance, tiếp tục “chuỗi hat-trick” từ 3 tổ chức danh giá thế giới",
+   "src": "CafeF",
+   "url": "https://cafef.vn/techcombank-nhan-giai-ngan-hang-tot-nhat-viet-nam-nam-thu-3-lien-tiep-tu-global-finance-tiep-tuc-chuoi-hat-trick-tu-3-to-chuc-danh-gia-the-gioi-188261021103654366.chn",
+   "sym": [
+    "TCB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Từ tạo lập tài sản đến quản trị gia sản: Việt Nam cần một chuẩn Private Banking mới",
+   "src": "CafeF",
+   "url": "https://cafef.vn/tu-tao-lap-tai-san-den-quan-tri-gia-san-viet-nam-can-mot-chuan-private-banking-moi-188261021094428281.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "VPBank đồng loạt giảm lãi suất cho vay và huy động",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vpbank-dong-loat-giam-lai-suat-cho-vay-va-huy-dong-188261021083511993.chn",
+   "sym": [
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Khi thương hiệu càng lớn, Logo càng nói ít",
+   "src": "CafeF",
+   "url": "https://cafef.vn/khi-thuong-hieu-cang-lon-logo-cang-noi-it-18826102108175388.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "BAOVIET Bank 9 tháng: Đa dạng hóa nguồn thu, ưu tiên gia cố đệm an toàn",
+   "src": "CafeF",
+   "url": "https://cafef.vn/baoviet-bank-9-thang-da-dang-hoa-nguon-thu-uu-tien-gia-co-dem-an-toan-188261020205818488.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Tòa xét xử Mr Pips, Shark Bình cùng 186 đồng phạm tại 3 điểm cầu",
+   "src": "CafeF",
+   "url": "https://cafef.vn/toa-xet-xu-mr-pips-shark-binh-cung-186-dong-pham-tai-3-diem-cau-188261021065219991.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Giải mã bài toán thu hẹp khoảng cách huy động và tín dụng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/giai-ma-bai-toan-thu-hep-khoang-cach-huy-dong-va-tin-dung-188261021064828594.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Chân dung đại gia cảng biển vừa xuất hiện tại Eximbank: Rót hơn 700 tỷ đồng vào cổ phiếu, vay Eximbank 2.800 tỷ đồng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/chan-dung-dai-gia-cang-bien-vua-xuat-hien-tai-eximbank-rot-hon-700-ty-dong-vao-co-phieu-vay-eximbank-2800-ty-dong-188261020222232639.chn",
+   "sym": [
+    "EIB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Giữa làn sóng giảm lãi suất, ngân hàng hút vốn cách nào?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/giua-lan-song-giam-lai-suat-ngan-hang-hut-von-cach-nao-188261020212713212.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "OCB thay tổng giám đốc",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/ocb-thay-tong-giam-doc-5135290.html",
+   "sym": [
+    "OCB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Ngân hàng Nhà nước giục giảm lãi suất tiết kiệm trên tất cả kênh",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/ngan-hang-nha-nuoc-giuc-giam-lai-suat-tiet-kiem-tren-tat-ca-kenh-5135186.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "Lãi suất trái phiếu doanh nghiệp gần vùng đỉnh",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/lai-suat-trai-phieu-doanh-nghiep-gan-vung-dinh-5134769.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-21",
+   "t": "SHB lần đầu công bố khung tài chính bền vững",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/shb-lan-dau-cong-bo-khung-tai-chinh-ben-vung-5135111.html",
+   "sym": [
+    "SHB"
+   ]
+  },
+  {
+   "d": "2026-10-21",
+   "t": "LPBank lãi trước thuế hơn 10.400 tỷ trong 9 tháng",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/lpbank-lai-truoc-thue-hon-10-400-ty-trong-9-thang-5135088.html",
+   "sym": [
+    "LPB"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Giảm lãi suất huy động và cho vay, kiểm soát chặt rủi ro tín dụng",
+   "src": "Báo Hải Phòng",
+   "url": "https://baohaiphong.vn/giam-lai-suat-huy-dong-va-cho-vay-kiem-soat-chat-rui-ro-tin-dung-556255.html",
+   "sym": [
+    "BID",
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "'Đường xuống' gập ghềnh của lãi suất",
+   "src": "nguoiquansat",
+   "url": "https://nguoiquansat.vn/duong-xuong-gap-ghenh-cua-lai-suat-323160.html",
+   "sym": [
+    "FPT"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Cập nhật lợi nhuận ngân hàng tối 20/10: Thêm nhà băng lãi hơn 10.000 tỷ trong quý 3, một ngân hàng cao gấp đôi cùng kỳ",
+   "src": "Người Đưa Tin - An ninh tiền tệ",
+   "url": "https://antt.nguoiduatin.vn/cap-nhat-loi-nhuan-ngan-hang-toi-20-10-them-nha-bang-lai-hon-10000-ty-trong-quy-3-mot-ngan-hang-cao-gap-doi-cung-ky-205261020202045027.htm",
+   "sym": [
+    "TCB",
+    "VPB",
+    "ABB",
+    "NAB",
+    "PGB",
+    "SHB",
+    "VBB"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Vietcap hạ định giá BIDV (BID)",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/vietcap-ha-dinh-gia-bidv-bid-1471417.html",
+   "sym": [
+    "BID",
+    "VCI"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "VPBank giảm 1,5% lãi suất cho vay, đồng hành cùng khách hàng bứt phá tăng trưởng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/vpbank-giam-1-5-lai-suat-cho-vay-dong-hanh-cung-khach-hang-but-pha-tang-truong-1471415.html",
+   "sym": [
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "VPBank lãi gần 30.000 tỷ đồng, tín dụng bất động sản tăng hơn 40%",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/vpbank-lai-gan-30000-ty-dong-tin-dung-bat-dong-san-tang-hon-40-d152346.html",
+   "sym": [
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "SACOMBANK giảm 0,5%/năm lãi suất huy động, \nhưởng ứng chủ trương của Chính phủ",
+   "src": "Người Đưa Tin - An ninh tiền tệ",
+   "url": "https://antt.nguoiduatin.vn/sacombank-giam-05-nam-lai-suat-huy-dong-huong-ung-chu-truong-cua-chinh-phu-205261020174546784.htm",
+   "sym": [
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Nguồn thu dịch vụ tăng 40%, Techcombank củng cố vị thế dẫn đầu, lợi nhuận quý 3 lập kỉ lục mới",
+   "src": "Người Đưa Tin - An ninh tiền tệ",
+   "url": "https://antt.nguoiduatin.vn/nguon-thu-dich-vu-tang-40-techcombank-cung-co-vi-the-dan-dau-loi-nhuan-quy-3-lap-ki-luc-moi-205261020173520199.htm",
+   "sym": [
+    "TCB",
+    "TCX"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Techcombank lập kỷ lục về lợi nhuận, cho vay xây dựng tăng mạnh",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/techcombank-lap-ky-luc-ve-loi-nhuan-cho-vay-xay-dung-tang-manh-d152337.html",
+   "sym": [
+    "TCB"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Giảm lãi suất huy động và cho vay, kiểm soát chặt rủi ro tín dụng",
+   "src": "Báo Hải Phòng",
+   "url": "https://baohaiphong.vn/giam-lai-suat-huy-dong-va-cho-vay-kiem-soat-chat-rui-ro-tin-dung-556255.html",
+   "sym": [
+    "BID",
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Một ngân hàng Big4 vừa giảm lãi suất sáng, chiều tăng trở lại",
+   "src": "Người Đưa Tin - An ninh tiền tệ",
+   "url": "https://antt.nguoiduatin.vn/gui-tien-o-vietinbank-ky-han-6-thang-tro-len-hien-duoc-lai-suat-bao-nhieu-20526102015220261.htm",
+   "sym": [
+    "ACB",
+    "BAB",
+    "BVB",
+    "CTG",
+    "KLB",
+    "LPB",
+    "NAB",
+    "NVB",
+    "OCB",
+    "PGB",
+    "SSB",
+    "STB",
+    "TPB",
+    "VBB",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Ngành tài chính tham vấn đối tác Trung Quốc, Hoa Kỳ trước thềm APEC 2027",
+   "src": "CafeF",
+   "url": "https://cafef.vn/nganh-tai-chinh-tham-van-doi-tac-trung-quoc-hoa-ky-truoc-them-apec-2027-18826102021202332.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Lãi suất cho vay mới nhất của các ngân hàng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/lai-suat-cho-vay-moi-nhat-cua-cac-ngan-hang-188261020211837231.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Ngân hàng sẵn sàng giảm lợi nhuận để ưu tiên vốn lưu động giá rẻ cho doanh nghiệp",
+   "src": "vneconomy",
+   "url": "https://vneconomy.vn/ngan-hang-san-sang-giam-loi-nhuan-de-uu-tien-von-luu-dong-gia-re-cho-doanh-nghiep.htm",
+   "sym": [
+    "BID",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-19",
+   "t": "LPBank điều chỉnh hạ lãi suất huy động và cho vay tại nhiều kỳ hạn sau chỉ đạo Chính phủ",
+   "src": "Thanh Niên Việt",
+   "url": "https://thanhnienviet.vn/lpbank-dieu-chinh-ha-lai-suat-huy-dong-va-cho-vay-tai-nhieu-ky-han-sau-chi-dao-chinh-phu-209261019104855103.htm",
+   "sym": [
+    "LPB"
+   ]
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Lãnh đạo ngân hàng lớn nói gì sau cuộc họp khẩn với Thống đốc?",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/lanh-dao-ngan-hang-lon-noi-gi-sau-cuoc-hop-khan-voi-thong-doc-d152255.html",
+   "sym": [
+    "ACB",
+    "BID",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Ngân hàng sẵn sàng giảm lợi nhuận để ưu tiên vốn lưu động giá rẻ cho doanh nghiệp",
+   "src": "vneconomy",
+   "url": "https://vneconomy.vn/ngan-hang-san-sang-giam-loi-nhuan-de-uu-tien-von-luu-dong-gia-re-cho-doanh-nghiep.htm",
+   "sym": [
+    "BID",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Lãnh đạo ngân hàng lớn nói gì sau cuộc họp khẩn với Thống đốc?",
+   "src": "vietnamfinance",
+   "url": "https://vietnamfinance.vn/lanh-dao-ngan-hang-lon-noi-gi-sau-cuoc-hop-khan-voi-thong-doc-d152255.html",
+   "sym": [
+    "ACB",
+    "BID",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Không chấp hành chỉ đạo về lãi suất, ngân hàng có thể bị giảm room tín dụng trong năm 2027",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/khong-chap-hanh-chi-dao-ve-lai-suat-ngan-hang-co-the-bi-giam-room-tin-dung-trong-nam-2027-1471209.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-19",
+   "t": "Agribank, BIDV, Vietcombank, ACB cùng loạt ngân hàng giảm lãi suất cho vay, ưu đãi tới 2%/năm",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/agribank-bidv-vietcombank-acb-cung-loat-ngan-hang-giam-lai-suat-cho-vay-uu-dai-toi-2-nam-1471236.html",
+   "sym": [
+    "ACB",
+    "BID",
+    "LPB",
+    "STB",
+    "VBB",
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-18",
+   "t": "NHNN yêu cầu các nhà băng giảm lãi suất huy động ít nhất 0,5%, tuyệt đối không đua nhau tăng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-it-nhat-0-5-tuyet-doi-khong-dua-nhau-tang-1471113.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-18",
+   "t": "NHNN yêu cầu các nhà băng giảm lãi suất huy động ít nhất 0,5%, tuyệt đối không đua nhau tăng",
+   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
+   "url": "https://dautu.kinhtechungkhoan.vn/nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-it-nhat-0-5-tuyet-doi-khong-dua-nhau-tang-1471113.html",
+   "sym": []
   },
   {
    "d": "2026-10-14",
@@ -44855,501 +45816,6 @@
    "src": "Hiệp hội Ngân hàng Việt Nam",
    "url": "https://vnba.org.vn/vi/ngan-hang-nha-nuoc-viet-nam-tich-cuc-huong-ung-phong-trao--moi-nguoi-dan-lua-chon-it-nhat-mot-mon-the-thao-phu-hop-de-tap-luyen-thuong-xuyen-23898.htm",
    "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Toàn cảnh các chỉ đạo điều hành lãi suất của NHNN từ đầu năm 2026",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/toan-canh-cac-chi-dao-dieu-hanh-lai-suat-cua-nhnn-tu-dau-nam-2026-1471701.html",
-   "sym": [
-    "VPX"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "NHNN sửa quy định về thông tin giám sát QTDND và tài chính vi mô",
-   "src": "Hiệp hội Ngân hàng Việt Nam",
-   "url": "https://vnba.org.vn/vi/nhnn-sua-quy-dinh-ve-thong-tin-giam-sat-qtdnd-va-tai-chinh-vi-mo-23951.htm",
-   "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Ngân hàng có vợ chồng tỷ phú Phạm Nhật Vượng nắm gần 10% vốn tăng mạnh thu nhập nhân viên",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/ngan-hang-co-vo-chong-ty-phu-pham-nhat-vuong-nam-gan-10-von-tang-manh-thu-nhap-nhan-vien-1471670.html",
-   "sym": [
-    "LPB",
-    "VIC"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "PGS.TS. Phùng Thế Đông: Cần phát triển thị trường vốn dài hạn để giảm áp lực cho tín dụng ngân hàng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/pgs-ts-phung-the-dong-can-phat-trien-thi-truong-von-dai-han-de-giam-ap-luc-cho-tin-dung-ngan-hang-1471667.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Phó Thống đốc: AI phải tạo giá trị thực chất thay vì chỉ tạo ấn tượng về công nghệ",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/pho-thong-doc-ai-phai-tao-gia-tri-thuc-chat-thay-vi-chi-tao-an-tuong-ve-cong-nghe-d152464.html",
-   "sym": [
-    "TPB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Chuyển đổi số ngành Ngân hàng: Lấy AI thực chất làm động lực, lấy niềm tin và khả năng chống chịu làm nền tảng",
-   "src": "Hiệp hội Ngân hàng Việt Nam",
-   "url": "https://vnba.org.vn/vi/chuyen-doi-so-nganh-ngan-hang--lay-ai-thuc-chat-lam-dong-luc--lay-niem-tin-va-kha-nang-chong-chiu-lam-nen-tang-23982.htm",
-   "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Chưa dứt cơn khát vốn: Ngân hàng giảm lãi suất tiết kiệm, tăng lãi chứng chỉ tiền gửi",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/chua-dut-con-khat-von-ngan-hang-giam-lai-suat-tiet-kiem-tang-lai-chung-chi-tien-gui-d152449.html",
-   "sym": [
-    "ABB",
-    "BAB",
-    "BVB",
-    "HDB",
-    "KLB",
-    "LPB",
-    "MBB",
-    "NAB",
-    "NVB",
-    "OCB",
-    "SGB",
-    "SSI",
-    "STB",
-    "TCB",
-    "TPB",
-    "VBB",
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Agribank Chi nhánh Bắc Giang ký kết hợp tác toàn diện với Công ty cổ phần Đầu tư Minh Hùng",
-   "src": "Báo Bắc Ninh",
-   "url": "https://baobacninhtv.vn/agribank-chi-nhanh-bac-giang-ky-ket-hop-tac-toan-dien-voi-cong-ty-co-phan-dau-tu-minh-hung-postid456835.bbg",
-   "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Ngân hàng tư nhân đầu tiên có vốn chủ sở hữu vượt 200.000 tỷ",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/ngan-hang-tu-nhan-dau-tien-co-von-chu-so-huu-vuot-200000-ty-d152466.html",
-   "sym": [
-    "VPB",
-    "CTG",
-    "TCB",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Chưa cần thêm room tín dụng, Tổng Giám đốc Techcombank hé lộ chiến lược rót vốn vào hạ tầng quốc gia",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/chua-can-them-room-tin-dung-tong-giam-doc-techcombank-he-lo-chien-luoc-rot-von-vao-ha-tang-quoc-gia-1471639.html",
-   "sym": [
-    "TCB",
-    "VCI"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "TS. Cấn Văn Lực: Thị trường vốn cần chiếm ít nhất 30% để giảm phụ thuộc vào ngân hàng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/ts-can-van-luc-thi-truong-von-can-chiem-it-nhat-30-de-giam-phu-thuoc-vao-ngan-hang-1471637.html",
-   "sym": [
-    "BID",
-    "DTR",
-    "MBB",
-    "OCB",
-    "PLX",
-    "TCB",
-    "VCG"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "LPBank lãi hơn 10.400 tỷ đồng, doanh thu từ bảo hiểm tăng vọt 163%",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/lpbank-lai-hon-10400-ty-dong-doanh-thu-tu-bao-hiem-tang-vot-163-d152444.html",
-   "sym": [
-    "LPB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "4 ngày 2 công văn: NHNN yêu cầu các nhà băng giảm lãi suất",
-   "src": "Nhà Đầu Tư",
-   "url": "https://nhadautu.vn/4-ngay-2-cong-van-nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-d108419.html",
-   "sym": [
-    "ACB",
-    "BAB",
-    "BVB",
-    "KLB",
-    "LPB",
-    "NAB",
-    "NVB",
-    "OCB",
-    "PGB",
-    "SSB",
-    "STB",
-    "TPB",
-    "VBB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Ngân hàng Nhà nước chỉ đạo về việc giảm mặt bằng lãi suất",
-   "src": "Báo Hải Phòng",
-   "url": "https://baohaiphong.vn/ngan-hang-nha-nuoc-chi-dao-ve-viec-giam-mat-bang-lai-suat-556402.html",
-   "sym": [
-    "CTG"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Từ sức hút văn hóa đến chiến lược gia tăng giá trị ngân hàng",
-   "src": "Thanh Niên Việt",
-   "url": "https://thanhnienviet.vn/tu-suc-hut-van-hoa-den-chien-luoc-gia-tang-gia-tri-ngan-hang-209261021182405135.htm",
-   "sym": [
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Một ngân hàng vừa ký khoản vay 50 triệu USD với định chế tài chính Đức",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/mot-ngan-hang-vua-ky-khoan-vay-50-trieu-usd-voi-dinh-che-tai-chinh-duc-1471575.html",
-   "sym": [
-    "TPB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "BIDV dự kiến phát hành 8.000 tỷ đồng trái phiếu riêng lẻ trong quý IV",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/bidv-du-kien-phat-hanh-8-000-ty-dong-trai-phieu-rieng-le-trong-quy-iv-1471566.html",
-   "sym": [
-    "BID",
-    "CTG",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "MSB giảm lãi suất tiền gửi từ 6 tháng, triển khai chương trình cho vay ưu đãi 10.000 tỷ đồng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/msb-giam-lai-suat-tien-gui-tu-6-thang-trien-khai-chuong-trinh-cho-vay-uu-dai-10-000-ty-dong-1471564.html",
-   "sym": [
-    "MSB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "LPBank báo lãi hơn 10.400 tỷ đồng sau 9 tháng, có khoản thu tăng đến 136%",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/lpbank-bao-lai-hon-10-400-ty-dong-sau-9-thang-co-khoan-thu-tang-den-136-1471554.html",
-   "sym": [
-    "LPB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Thuế Hải Phòng đồng hành cùng doanh nghiệp để tăng thu bền vững",
-   "src": "Báo Hải Phòng",
-   "url": "https://baohaiphong.vn/thue-hai-phong-dong-hanh-cung-doanh-nghiep-de-tang-thu-ben-vung-556359.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Ngân hàng Nhà nước yêu cầu các nhà băng giảm lãi suất huy động tối thiểu 0,5% cho kỳ hạn từ 6 tháng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/ngan-hang-nha-nuoc-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-toi-thieu-0-5-cho-ky-han-tu-6-thang-1471551.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Ngân hàng Nhà nước yêu cầu giảm lãi suất thực chất",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/ngan-hang-nha-nuoc-yeu-cau-giam-lai-suat-thuc-chat-d152411.html",
-   "sym": [
-    "ACB",
-    "BAB",
-    "BVB",
-    "KLB",
-    "LPB",
-    "NAB",
-    "NVB",
-    "OCB",
-    "PGB",
-    "SSB",
-    "STB",
-    "TPB",
-    "VBB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Ông Dương Đức Hùng trở thành Tổng giám đốc OCB",
-   "src": "tinnhanhchungkhoan",
-   "url": "https://www.tinnhanhchungkhoan.vn/ong-duong-duc-hung-tro-thanh-tong-giam-doc-ocb-post399935.html",
-   "sym": [
-    "OCB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "VIB giảm lãi suất cho vay, đồng hành cùng doanh nghiệp và khách hàng cá nhân",
-   "src": "vnbusiness",
-   "url": "https://vnbusiness.vn/vib-giam-lai-suat-cho-vay-dong-hanh-cung-doanh-nghiep-va-khach-hang-ca-nhan.html",
-   "sym": [
-    "VIB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "TPBank nhận 50 triệu USD vốn dài hạn từ DEG: Tối ưu nguồn vốn quốc tế, thúc đẩy tài chính xanh",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/tpbank-nhan-50-trieu-usd-von-dai-han-tu-deg-toi-uu-nguon-von-quoc-te-thuc-day-tai-chinh-xanh-d152387.html",
-   "sym": [
-    "TPB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Công ty CP Shinec và VietABank hợp tác thúc đẩy chuyển đổi xanh",
-   "src": "Báo Hải Phòng",
-   "url": "https://baohaiphong.vn/cong-ty-cp-shinec-va-vietabank-hop-tac-thuc-day-chuyen-doi-xanh-556333.html",
-   "sym": [
-    "VAB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "MSB triển khai đồng bộ giải pháp lãi suất, hỗ trợ doanh nghiệp vốn ưu đãi từ 7,5%/năm",
-   "src": "Thanh Niên Việt",
-   "url": "https://thanhnienviet.vn/msb-trien-khai-dong-bo-giai-phap-lai-suat-ho-tro-doanh-nghiep-von-uu-dai-tu-75-nam-209261021102017754.htm",
-   "sym": [
-    "MSB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Phó Thống đốc Nguyễn Ngọc Cảnh dự Hội nghị Bộ trưởng Tài chính APEC 2026, làm việc với AIIB và BOCHK",
-   "src": "Hiệp hội Ngân hàng Việt Nam",
-   "url": "https://vnba.org.vn/vi/pho-thong-doc-nguyen-ngoc-canh-du-hoi-nghi-bo-truong-tai-chinh-apec-2026--lam-viec-voi-aiib-va-bochk-23969.htm",
-   "sym": []
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Các lần yêu cầu ngân hàng hạ lãi suất của Thống đốc Phạm Đức Ấn",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/cac-lan-yeu-cau-ngan-hang-ha-lai-suat-cua-thong-doc-pham-duc-an-1471481.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-21",
-   "t": "LPBank lãi 10.421 tỷ đồng sau 9 tháng đầu năm 2026",
-   "src": "Người Đưa Tin",
-   "url": "https://www.nguoiduatin.vn/lpbank-lai-10421-ty-dong-sau-9-thang-dau-nam-2026-204261021091521205.htm",
-   "sym": [
-    "LPB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Đang ưu đãi 7% đột ngột lên gần 20%: 'Ác mộng' lãi suất thả nổi của người mua nhà",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/vay-uu-dai-7-dot-ngot-len-gan-20-ac-mong-lai-suat-tha-noi-cua-nguoi-mua-nha-d152290.html",
-   "sym": [
-    "ACB",
-    "DXS",
-    "TCB",
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Thống đốc Ngân hàng Nhà nước yêu cầu gỡ rào cản pháp lý, khơi thông dòng vốn cho nền kinh tế",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/thong-doc-ngan-hang-nha-nuoc-yeu-cau-go-rao-can-phap-ly-khoi-thong-dong-von-cho-nen-kinh-te-1471465.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-20",
-   "t": "'Đường xuống' gập ghềnh của lãi suất",
-   "src": "nguoiquansat",
-   "url": "https://nguoiquansat.vn/duong-xuong-gap-ghenh-cua-lai-suat-323160.html",
-   "sym": [
-    "FPT"
-   ]
-  },
-  {
-   "d": "2026-10-20",
-   "t": "Cập nhật lợi nhuận ngân hàng tối 20/10: Thêm nhà băng lãi hơn 10.000 tỷ trong quý 3, một ngân hàng cao gấp đôi cùng kỳ",
-   "src": "Người Đưa Tin - An ninh tiền tệ",
-   "url": "https://antt.nguoiduatin.vn/cap-nhat-loi-nhuan-ngan-hang-toi-20-10-them-nha-bang-lai-hon-10000-ty-trong-quy-3-mot-ngan-hang-cao-gap-doi-cung-ky-205261020202045027.htm",
-   "sym": [
-    "TCB",
-    "VPB",
-    "ABB",
-    "NAB",
-    "PGB",
-    "SHB",
-    "VBB"
-   ]
-  },
-  {
-   "d": "2026-10-20",
-   "t": "Vietcap hạ định giá BIDV (BID)",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/vietcap-ha-dinh-gia-bidv-bid-1471417.html",
-   "sym": [
-    "BID",
-    "VCI"
-   ]
-  },
-  {
-   "d": "2026-10-20",
-   "t": "VPBank giảm 1,5% lãi suất cho vay, đồng hành cùng khách hàng bứt phá tăng trưởng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/vpbank-giam-1-5-lai-suat-cho-vay-dong-hanh-cung-khach-hang-but-pha-tang-truong-1471415.html",
-   "sym": [
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-20",
-   "t": "VPBank lãi gần 30.000 tỷ đồng, tín dụng bất động sản tăng hơn 40%",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/vpbank-lai-gan-30000-ty-dong-tin-dung-bat-dong-san-tang-hon-40-d152346.html",
-   "sym": [
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-20",
-   "t": "SACOMBANK giảm 0,5%/năm lãi suất huy động, \nhưởng ứng chủ trương của Chính phủ",
-   "src": "Người Đưa Tin - An ninh tiền tệ",
-   "url": "https://antt.nguoiduatin.vn/sacombank-giam-05-nam-lai-suat-huy-dong-huong-ung-chu-truong-cua-chinh-phu-205261020174546784.htm",
-   "sym": [
-    "STB"
-   ]
-  },
-  {
-   "d": "2026-10-20",
-   "t": "Nguồn thu dịch vụ tăng 40%, Techcombank củng cố vị thế dẫn đầu, lợi nhuận quý 3 lập kỉ lục mới",
-   "src": "Người Đưa Tin - An ninh tiền tệ",
-   "url": "https://antt.nguoiduatin.vn/nguon-thu-dich-vu-tang-40-techcombank-cung-co-vi-the-dan-dau-loi-nhuan-quy-3-lap-ki-luc-moi-205261020173520199.htm",
-   "sym": [
-    "TCB",
-    "TCX"
-   ]
-  },
-  {
-   "d": "2026-10-20",
-   "t": "Techcombank lập kỷ lục về lợi nhuận, cho vay xây dựng tăng mạnh",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/techcombank-lap-ky-luc-ve-loi-nhuan-cho-vay-xay-dung-tang-manh-d152337.html",
-   "sym": [
-    "TCB"
-   ]
-  },
-  {
-   "d": "2026-10-18",
-   "t": "NHNN yêu cầu các nhà băng giảm lãi suất huy động ít nhất 0,5%, tuyệt đối không đua nhau tăng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-it-nhat-0-5-tuyet-doi-khong-dua-nhau-tang-1471113.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-19",
-   "t": "Ngân hàng sẵn sàng giảm lợi nhuận để ưu tiên vốn lưu động giá rẻ cho doanh nghiệp",
-   "src": "vneconomy",
-   "url": "https://vneconomy.vn/ngan-hang-san-sang-giam-loi-nhuan-de-uu-tien-von-luu-dong-gia-re-cho-doanh-nghiep.htm",
-   "sym": [
-    "BID",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-21",
-   "t": "Tài chính thị trường ngày 21/10: 15 ngân hàng đồng loạt giảm lãi suất huy động",
-   "src": "Báo Hà Tĩnh",
-   "url": "https://baohatinh.vn/tai-chinh-thi-truong-ngay-2110-15-ngan-hang-dong-loat-giam-lai-suat-huy-dong-post319071.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-20",
-   "t": "Giảm lãi suất huy động và cho vay, kiểm soát chặt rủi ro tín dụng",
-   "src": "Báo Hải Phòng",
-   "url": "https://baohaiphong.vn/giam-lai-suat-huy-dong-va-cho-vay-kiem-soat-chat-rui-ro-tin-dung-556255.html",
-   "sym": [
-    "BID",
-    "CTG"
-   ]
-  },
-  {
-   "d": "2026-10-19",
-   "t": "Lãnh đạo ngân hàng lớn nói gì sau cuộc họp khẩn với Thống đốc?",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/lanh-dao-ngan-hang-lon-noi-gi-sau-cuoc-hop-khan-voi-thong-doc-d152255.html",
-   "sym": [
-    "ACB",
-    "BID",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-20",
-   "t": "Một ngân hàng Big4 vừa giảm lãi suất sáng, chiều tăng trở lại",
-   "src": "Người Đưa Tin - An ninh tiền tệ",
-   "url": "https://antt.nguoiduatin.vn/gui-tien-o-vietinbank-ky-han-6-thang-tro-len-hien-duoc-lai-suat-bao-nhieu-20526102015220261.htm",
-   "sym": [
-    "ACB",
-    "BAB",
-    "BVB",
-    "CTG",
-    "KLB",
-    "LPB",
-    "NAB",
-    "NVB",
-    "OCB",
-    "PGB",
-    "SSB",
-    "STB",
-    "TPB",
-    "VBB",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-19",
-   "t": "Không chấp hành chỉ đạo về lãi suất, ngân hàng có thể bị giảm room tín dụng trong năm 2027",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/khong-chap-hanh-chi-dao-ve-lai-suat-ngan-hang-co-the-bi-giam-room-tin-dung-trong-nam-2027-1471209.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-19",
-   "t": "Agribank, BIDV, Vietcombank, ACB cùng loạt ngân hàng giảm lãi suất cho vay, ưu đãi tới 2%/năm",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/agribank-bidv-vietcombank-acb-cung-loat-ngan-hang-giam-lai-suat-cho-vay-uu-dai-toi-2-nam-1471236.html",
-   "sym": [
-    "ACB",
-    "BID",
-    "LPB",
-    "STB",
-    "VBB",
-    "VCB"
-   ]
   }
  ],
  "goldWi": [
