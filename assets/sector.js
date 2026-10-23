@@ -881,6 +881,24 @@ function cpiGrpIns() {
   const avg = gs => { const r = R.filter(x => gs.includes(x[0])); return r.length ? r.reduce((a, x) => a + x[3], 0) / r.length : null; };
   return `Bình quân giản đơn mới nhất: châu Âu và Mỹ <b>${pc(avg(CPI_G.eu), 1)}</b>, châu Á phát triển <b>${pc(avg(CPI_G.ad), 1)}</b>, châu Á mới nổi <b>${pc(avg(CPI_G.em), 1)}</b>.`;
 }
+const PMI_K = [['us_ism_mfg', 'Mỹ (ISM)', C.navy], ['ea_pmi_mfg', 'Khu vực euro', C.tealInk], ['de_pmi_mfg', 'Đức', C.grey], ['cn_pmi_mfg', 'Trung Quốc (NBS)', C.gold], ['vn_pmi', 'Việt Nam', C.red]];
+function pmiIns() {
+  const r = PMI_K.map(([k, n]) => [n, glast(k)]).filter(([, l]) => l.v != null); if (!r.length) return '';
+  const up = r.filter(([, l]) => l.v >= 50).map(([n]) => n), ch = k => { const x = gs(k); const n = x.v.length; return n > 3 ? x.v[n - 1] - x.v[n - 4] : null; };
+  const vn = glast('vn_pmi');
+  return `${r.map(([n, l]) => `${n} <b>${nf(l.v, 1)}</b>`).join(', ')} (${mvn(r[0][1].d)}). ${up.length ? `Đang mở rộng: ${up.join(', ')}.` : 'Tất cả đang thu hẹp.'}${vn.v != null ? ` PMI Việt Nam ${sg(ch('vn_pmi'), 1, ' điểm')} trong 3 tháng.` : ''}`
+    + how('PMI là số liệu sớm nhất của mỗi tháng. PMI Mỹ, châu Âu và Trung Quốc cùng trên 50 là cầu hàng hoá toàn cầu đang mạnh lên, có lợi cho xuất khẩu và sản xuất của Việt Nam; PMI Việt Nam giảm dưới 50 thường đi trước số xuất khẩu và tăng trưởng tín dụng doanh nghiệp yếu đi.');
+}
+function usSurveyIns() {
+  const m = glast('us_ism_mfg'), sv = glast('us_ism_svc'), u = glast('us_umcsent');
+  return `PMI sản xuất ISM <b>${nf(m.v, 1)}</b>, dịch vụ <b>${nf(sv.v, 1)}</b> (${mvn(m.d)}); niềm tin tiêu dùng ĐH Michigan <b>${nf(u.v, 1)}</b> (${mvn(u.d)}).`
+    + how('Doanh nghiệp mở rộng (PMI trên 50) trong khi niềm tin hộ gia đình thấp là dấu hiệu tăng trưởng dựa vào đầu tư và nhóm thu nhập cao; niềm tin tiêu dùng thấp kéo dài thường đi trước chi tiêu yếu đi.');
+}
+function usInfExpIns() {
+  const e1 = glast('us_mich'), e5 = glast('us_mich5'), c = glast('us_cpi_yoy');
+  return `Kỳ vọng lạm phát 1 năm <b>${pc(e1.v, 1)}</b>, 5–10 năm <b>${pc(e5.v, 1)}</b> (${mvn(e1.d)}); CPI thực tế ${pc(c.v, 1)} (${mvn(c.d)}).`
+    + how('Kỳ vọng dài hạn (5–10 năm) là thước đo Fed theo dõi để biết lạm phát có "neo" hay không; kỳ vọng dài hạn tăng lên trên 3% là rủi ro lạm phát ngấm vào đòi hỏi tiền lương, khiến Fed khó hạ lãi suất.');
+}
 function gGL() {
   const u = glast('us_10y_d'), de = glast('de_10y_d'), jp = glast('jp_10y_d'), ea = glast('ea_all_10y_d'), w = glast('us_wti_d');
   const ytd = k => { const a = glast(k).v, b = yStart(k); return a != null && b != null ? (a - b) * 100 : null; };
@@ -899,6 +917,7 @@ function gGL() {
     ${card({ id: 'gGlOil', title: 'Giá dầu WTI và Brent theo ngày', h: 'tall', sub: 'USD/thùng · giá giao ngay', src: 'EIA qua FRED' })}
     ${card({ id: 'gGlCpi', title: 'Lạm phát CPI các nước theo nhóm', h: 'tall', sub: '% so cùng kỳ, theo tháng · chọn nhóm nước', body: tfPick('glC', [['eu', 'Châu Âu và Mỹ'], ['ad', 'Châu Á phát triển'], ['em', 'Châu Á mới nổi']]), insight: cpiGrpIns(), src: CPI_SRC })}
     ${card({ id: 'gGlCpiBar', title: 'Lạm phát CPI mới nhất theo nước', h: 'tall', sub: '% so cùng kỳ · cột = tháng mới nhất của từng nước, chấm = cùng kỳ năm trước · màu theo nhóm nước', insight: cpiBarIns(), src: CPI_SRC })}
+    ${card({ id: 'gGlPmi', title: 'PMI sản xuất các nền kinh tế lớn và Việt Nam', h: 'tall', sub: 'điểm · trên 50 = mở rộng, dưới 50 = thu hẹp · Mỹ: ISM; khu vực euro, Đức: HCOB/S&P Global; Trung Quốc: NBS; Việt Nam: S&P Global', insight: pmiIns(), src: 'ISM, S&P Global, HCOB, NBS Trung Quốc' })}
   </div>`;
 }
 function drGL() {
@@ -914,6 +933,7 @@ function drGL() {
   wireTf('glM', k => { const S = Y10M[k || 'eu'].filter(([kk]) => gs(kk).v.length); mk('gGlY10m', { type: 'line', data: gLines(S.map(x => x[0]), S.map(x => x[1]), PAL2, { from: '2021-01', dp: 2 }), options: { scales: { y: pctAxis('') } } }); });
   const UC = GD.ustCurve; if (UC) mk('gGlCurve', { type: 'line', data: { labels: UC.t, datasets: UC.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.teal, C.tealInk, C.red, C.grey][i] || C.grey, { pointRadius: 3, borderWidth: i ? 1.6 : 2.6, borderDash: i === 1 ? [2, 2] : i === 4 ? [4, 3] : [], dp: 2 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
   mk('gGlOil', { type: 'line', data: gLines(['us_wti_d', 'us_brent_d'], ['WTI', 'Brent'], [C.navy, C.gold], { unit: ' USD', dp: 2, from: '2021-01-01' }), options: { scales: { y: numAxis('USD/thùng', { beginAtZero: false }) } } });
+  mk('gGlPmi', { type: 'line', data: gLines(PMI_K.map(x => x[0]), PMI_K.map(x => x[1]), PMI_K.map(x => x[2]), { unit: '', dp: 1, from: '2021-01', ds: { borderWidth: 1.8 } }), options: { scales: { y: numAxis('điểm', { beginAtZero: false }) }, plugins: { refLines: { lines: [{ value: 50, label: '50', color: C.grey }] } } } }, { win: 36 });
   wireTf('glC', k => { const gs_ = CPI_G[k || 'eu'], cs = (GD.cpiTab || []).filter(([g]) => gs_.includes(g)).flatMap(([, c]) => c);
     const sers = cs.map(([kk, n]) => [n, cpiSer(kk)]).filter(([, x]) => x.v.length), all = [...new Set(sers.flatMap(([, x]) => x.d))].filter(d => d >= '2021-01').sort();
     mk('gGlCpi', { type: 'line', data: { labels: all.map(mvn), datasets: sers.map(([n, x], i) => { const m = {}; x.d.forEach((d, j) => m[d] = x.v[j]); return L(n, all.map(d => m[d] ?? null), n === 'Việt Nam' ? C.red : n === 'Mỹ' ? C.navy : PAL2[(i + 2) % PAL2.length], { borderWidth: n === 'Việt Nam' || n === 'Mỹ' || /Euro/.test(n) ? 2.6 : 1.6, dp: 1 }); }) },
@@ -964,7 +984,12 @@ function gUS() {
   </div>
   ${GD.pceC ? card({ id: 'gUsPceC', title: 'Đóng góp vào lạm phát PCE: hàng hoá và dịch vụ', h: 'tall', sub: 'điểm % · cột chồng = đóng góp từng nhóm, đường = tổng · nhà ở, dịch vụ lõi trừ nhà ở, hàng hoá lõi, lương thực & năng lượng', body: tfPick('usPceC', [['yoy', 'PCE tổng · YoY'], ['mom', 'PCE tổng · theo tháng'], ['core', 'PCE lõi · YoY'], ['super', 'Supercore theo ngành · YoY']]), src: 'Fed San Francisco (tính từ số liệu chi tiết PCE của BEA)' }) : ''}
   <h3 class="sec2">Việc làm</h3>
-  ${card({ id: 'gUsJobs', title: 'Thị trường lao động', h: 'tall', sub: 'cột = việc làm phi nông nghiệp tăng thêm (nghìn) · đường = tỷ lệ thất nghiệp (trục phải)', src: gsrc(['us_payems']) })}`;
+  ${card({ id: 'gUsJobs', title: 'Thị trường lao động', h: 'tall', sub: 'cột = việc làm phi nông nghiệp tăng thêm (nghìn) · đường = tỷ lệ thất nghiệp (trục phải)', src: gsrc(['us_payems']) })}
+  <h3 class="sec2">Khảo sát doanh nghiệp và hộ gia đình</h3>
+  <div class="grid g2 gap">
+  ${card({ id: 'gUsSurvey', title: 'PMI ISM và niềm tin tiêu dùng', h: 'tall', sub: 'PMI: trên 50 = mở rộng (trục trái) · niềm tin tiêu dùng ĐH Michigan (trục phải, 1966 = 100)', insight: usSurveyIns(), src: 'ISM; Đại học Michigan (qua FRED)' })}
+  ${card({ id: 'gUsInfExp', title: 'Kỳ vọng lạm phát của hộ gia đình so với CPI', h: 'tall', sub: '% · kỳ vọng 1 năm và 5–10 năm (khảo sát ĐH Michigan) so với CPI thực tế so cùng kỳ', insight: usInfExpIns(), src: 'Đại học Michigan (qua FRED); BLS' })}
+  </div>`;
 }
 /* ---- Kỳ vọng lãi suất Fed theo phiên FOMC (phương pháp CME FedWatch, tính từ giá ZQ) ---- */
 function fedWatchCard() {
@@ -1151,6 +1176,9 @@ function drUS() {
   });
   const p = gs('us_payems_chg'), u = gs('us_unrate'), um = {}; u.d.forEach((d, i) => um[d] = u.v[i]);
   const pd = p.d.filter(d => d >= '2021-01'), pv = pd.map(d => p.v[p.d.indexOf(d)]);
+  mk('gUsSurvey', { type: 'line', data: (() => { const g = gLines(['us_ism_mfg', 'us_ism_svc', 'us_umcsent'], ['PMI sản xuất ISM', 'PMI dịch vụ ISM', 'Niềm tin tiêu dùng Michigan'], [C.navy, C.tealInk, C.gold], { unit: '', dp: 1, from: '2021-01' }); g.datasets[2].yAxisID = 'y1'; g.datasets[2].borderDash = [5, 4]; return g; })(),
+    options: { scales: { y: numAxis('PMI', { beginAtZero: false }), y1: numAxis('niềm tin', { position: 'right', beginAtZero: false, grid: { display: false } }) }, plugins: { refLines: { lines: [{ value: 50, label: '50', color: C.grey }] } } } });
+  mk('gUsInfExp', { type: 'line', data: gLines(['us_mich', 'us_mich5', 'us_cpi_yoy'], ['Kỳ vọng 1 năm', 'Kỳ vọng 5–10 năm', 'CPI thực tế'], [C.red, C.purple, C.navy], { dp: 1, from: '2021-01' }), options: { scales: { y: pctAxis('') } } });
   mk('gUsJobs', { type: 'bar', data: { labels: pd.map(mvn), datasets: [{ label: 'Việc làm tăng thêm (nghìn)', data: pv, backgroundColor: pv.map(v => v < 0 ? 'rgba(192,57,43,.7)' : 'rgba(41,56,168,.55)'), dp: 0, unit: '' }, L('Thất nghiệp', pd.map(d => um[d] ?? null), C.red, { yAxisID: 'y1', dp: 1 })] },
     options: { scales: { y: numAxis('nghìn'), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
   mk('gUsSpr', { type: 'line', data: gLines(['sofr_iorb', 'tgcr_iorb', 'sofr99_iorb'], ['SOFR − IORB', 'TGCR − IORB', 'SOFR p99 − IORB'], [C.navy, C.tealInk, C.red], { unit: ' bps', dp: 0 }), options: { plugins: { refLines: { lines: [{ value: 0, label: '' }] } }, scales: { y: numAxis('bps') } } });

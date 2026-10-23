@@ -41,6 +41,8 @@
   const why = e => e.note || ((WHY.find(([rx]) => rx.test(e.t)) || [])[1]) || '';
   /* chart liên quan trên dashboard ngành */
   const LINK = [
+    ['USD', /Inflation Expectations/, { id: 'gUsInfExp', p: 'intl', c: 'us', n: 'Kỳ vọng lạm phát Mỹ' }], ['USD', /PMI|Consumer Sentiment/, { id: 'gUsSurvey', p: 'intl', c: 'us', n: 'PMI ISM và niềm tin tiêu dùng' }],
+    ['EUR', /PMI/, { id: 'gGlPmi', p: 'intl', c: 'gl', n: 'PMI sản xuất các nước' }], ['GBP', /PMI/, { id: 'gGlPmi', p: 'intl', c: 'gl', n: 'PMI sản xuất các nước' }], ['CNY', /PMI/, { id: 'gGlPmi', p: 'intl', c: 'gl', n: 'PMI sản xuất các nước' }],
     ['USD', /^(Core )?CPI/, { id: 'gUsCpi', p: 'intl', c: 'us', n: 'CPI Mỹ' }], ['USD', /PPI/, { id: 'gUsPpi', p: 'intl', c: 'us', n: 'PPI Mỹ' }], ['USD', /PCE/, { id: 'gUsPce', p: 'intl', c: 'us', n: 'PCE Mỹ' }],
     ['USD', /Employment|Unemployment|Earnings|JOLTS|Claims/, { id: 'gUsJobs', p: 'intl', c: 'us', n: 'Thị trường lao động Mỹ' }], ['USD', /Federal Funds Rate|FOMC/, { id: 'gFedPath', p: 'intl', c: 'us', n: 'Kỳ vọng lãi suất Fed' }],
     ['EUR', /CPI/, { id: 'gEaHicp', p: 'intl', c: 'ea', n: 'Lạm phát khu vực euro' }], ['EUR', /Main Refinancing|ECB/, { id: 'gEaRate', p: 'intl', c: 'ea', n: 'Lãi suất ECB' }],

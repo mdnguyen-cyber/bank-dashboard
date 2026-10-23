@@ -41,15 +41,9 @@ CAT = {
     'us_claims': ('Đơn xin trợ cấp thất nghiệp lần đầu', ['fred:ICSA']),
     'us_jolts': ('Số việc làm trống (JOLTS)', ['fred:JTSJOL']),
     'us_gdp': ('GDP thực', ['fred:GDPC1']),
-    # ---------------- Khảo sát: niềm tin, kỳ vọng lạm phát, PMI (nguồn công khai, tự cập nhật)
+    # ---------------- Khảo sát: niềm tin, kỳ vọng lạm phát (FRED, tự cập nhật). PMI ISM/S&P/NBS không có nguồn công khai cập nhật (DBnomics dừng 2025–02/2026) → data/backfill/surveys.json
     'us_umcsent': ('Niềm tin tiêu dùng ĐH Michigan', ['fred:UMCSENT']),
     'us_mich': ('Kỳ vọng lạm phát 1 năm ĐH Michigan (%)', ['fred:MICH']),
-    'us_ism_mfg': ('PMI sản xuất ISM', ['dbn:ISM/pmi/pm', 'dbn:ISM/pmi/PMI']),
-    'us_ism_svc': ('PMI dịch vụ ISM', ['dbn:ISM/nm-pmi/pm', 'dbn:ISM/nm-pmi/NMI']),
-    'cn_pmi_mfg': ('PMI sản xuất Trung Quốc (NBS)', ['dbn:NBS/M_A0B01/A0B0101']),
-    'cn_pmi_svc': ('PMI phi sản xuất Trung Quốc (NBS)', ['dbn:NBS/M_A0B02/A0B0201']),
-    'ea_esi': ('Chỉ số tâm lý kinh tế khu vực euro (ESI)', ['dbn:Eurostat/ei_bssi_m_r2/M.BS-ESI-I.SA.EA20', 'dbn:Eurostat/teibs010/M.BS-ESI-I.SA.EA20']),
-    'ea_indconf': ('Niềm tin ngành công nghiệp khu vực euro', ['dbn:Eurostat/ei_bssi_m_r2/M.BS-ICI-BAL.SA.EA20']),
     'us_gdppot': ('GDP tiềm năng (CBO)', ['fred:GDPPOT']),
     'us_nrou': ('Thất nghiệp tự nhiên (NAIRU, CBO)', ['fred:NROU']),
     # ---------------- Mỹ · Fed, lãi suất, thanh khoản

@@ -328,6 +328,25 @@ if DP.exists():
     G['dailyReport'] = DY.get('report')
     G['dailyFetched'] = DY.get('fetched')
 
+# ---------------- Khảo sát: PMI, niềm tin, kỳ vọng lạm phát — lịch sử dựng sẵn (data/backfill/surveys.json), nối tháng mới từ nguồn tự động
+_sv = ROOT / 'data/backfill/surveys.json'
+if _sv.exists():
+    _B = json.loads(_sv.read_text(encoding='utf-8'))['series']
+    _dl = ROOT / 'data/vn/dlkt.json'
+    _vn = {}
+    if _dl.exists():
+        _pg = (json.loads(_dl.read_text(encoding='utf-8')).get('pages') or {}).get('pmi-271') or {}
+        _r = next((x for x in _pg.values() if x.get('n') == 'PMI'), None)
+        if _r:
+            _vn = {d[:7]: v for d, v in zip(_r['d'], _r['v'])}
+    for _k, _b in _B.items():
+        _m = dict(_b)
+        _auto = _vn if _k == 'vn_pmi' else (monthly(_k) if _k in ('us_umcsent', 'us_mich') and _k in SER else {})   # chỉ nối nguồn đã đối chiếu khớp
+        for _mm, _v in _auto.items():
+            if _mm >= '2021-01':
+                _m[_mm] = round(_v, 2)
+        put(_k, dict(sorted(_m.items())), 1)
+
 # ---------------- Toàn cầu: lợi suất 10 năm (tháng), CPI các nước, dầu theo ngày, đường cong UST
 for k in ['y10_de', 'y10_fr', 'y10_it', 'y10_es', 'y10_nl', 'y10_gb', 'y10_kr', 'y10_au', 'y10_ca']:
     if k in SER:
