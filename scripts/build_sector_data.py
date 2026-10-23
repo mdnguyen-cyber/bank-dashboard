@@ -648,6 +648,11 @@ def main():
     (ROOT / 'data/sector-data.js').write_text(js, encoding='utf-8')
     (ROOT / 'data/sector-data.json').write_text(json.dumps(D, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f'wrote data/sector-data.js ({len(js) // 1024} KB)')
+    try:   # nối lại phần số mới từ nguồn tự động (giá, định giá, vàng, tin, vĩ mô VN)
+        import importlib.util
+        sp = importlib.util.spec_from_file_location('build_auto', ROOT / 'scripts/build_auto.py'); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m); m.main()
+    except Exception as e:  # noqa: BLE001
+        print('build_auto lỗi:', e)
 
 
 if __name__ == '__main__':

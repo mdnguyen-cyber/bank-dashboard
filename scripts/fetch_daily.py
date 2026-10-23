@@ -107,11 +107,20 @@ def ecb():
 
 
 def gold():
-    """Giá vàng giao ngay XAU/USD theo ngày (Stooq, giá đóng cửa)."""
-    txt = get('https://stooq.com/q/d/l/?s=xauusd&i=d')
-    out = {r['Date']: fnum(r['Close']) for r in csv.DictReader(io.StringIO(txt)) if r.get('Date', '') >= FROM and r.get('Close')}
+    """Giá vàng thế giới theo ngày: hợp đồng vàng COMEX gần nhất (Yahoo Finance GC=F, USD/ounce); Stooq dự phòng."""
+    from datetime import datetime, timedelta, timezone
+    out = {}
+    try:
+        js = json.loads(get('https://query1.finance.yahoo.com/v8/finance/chart/GC=F?range=10y&interval=1d'))['chart']['result'][0]
+        for t, c in zip(js['timestamp'], js['indicators']['quote'][0]['close']):
+            d = datetime.fromtimestamp(t, timezone(timedelta(hours=-5))).date().isoformat()
+            if c and d >= FROM:
+                out[d] = round(c, 1)
+    except Exception:  # noqa: BLE001
+        txt = get('https://stooq.com/q/d/l/?s=xauusd&i=d')
+        out = {r['Date']: fnum(r['Close']) for r in csv.DictReader(io.StringIO(txt)) if r.get('Date', '') >= FROM and r.get('Close')}
     if len(out) < 100:
-        raise ValueError('Stooq trả ít dữ liệu vàng')
+        raise ValueError('Nguồn vàng trả ít dữ liệu')
     return dict(sorted(out.items()))
 
 
