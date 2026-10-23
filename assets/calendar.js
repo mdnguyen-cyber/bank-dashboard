@@ -170,13 +170,23 @@
       if (matchMedia('(max-width: 900px)').matches) setOpen(false);
     }, 250);
   }
-  window.FSCAL = { go, open: () => setOpen(true) };
+  function focus(e) {   // mở lịch, cuộn tới tin, mở chi tiết và nháy nhẹ
+    const n = NOW(), [a, b] = range();
+    if (e.ts < a || e.ts > b) st.range = Math.abs(e.ts - n) <= 7 * DAY ? 'w' : 'm';
+    st.imp[e.i] = true; st.g[grpOf(e.c)] = true; save();
+    if (!st.open) setOpen(true);
+    st.exp = null; render(false); st.exp = VIEW.indexOf(e); render(false);
+    const el = list.querySelector(`.cal-ev[data-k="${st.exp}"]`); if (!el) return;
+    list.scrollTop = Math.max(0, el.offsetTop - list.offsetTop - 60);
+    el.classList.add('cal-flash'); setTimeout(() => el.classList.remove('cal-flash'), 1800);
+  }
+  window.FSCAL = { go, focus, open: () => setOpen(true) };
   if (/^#cal-/.test(location.hash)) { const id = location.hash.slice(5), lk = LINK.map(x => x[2]).find(x => x.id === id); setTimeout(() => go(lk), 1200); }
 
   /* ---------- đánh dấu kỳ công bố sắp tới trên chart (thử với CPI Mỹ) ---------- */
   const MARK = { gUsCpi: e => e.c === 'USD' && /^CPI y\/y$/.test(e.t) };
   if (window.Chart) Chart.register({ id: 'calMark', afterDatasetsDraw(ch) {
-    const f = MARK[ch.canvas.id]; if (!f) return; const n = NOW(), e = EV.find(x => x.ts > n && f(x)); if (!e) return;
+    const f = MARK[ch.canvas.id]; if (!f) return; const n = NOW(), e = EV.find(x => x.ts > n && f(x)); ch.$calHit = null; if (!e || e.ts - n > 7 * DAY) return;   // chỉ hiện trong 7 ngày trước khi công bố
     const { ctx, chartArea: A, scales: { x } } = ch; if (!x || !A) return;
     const L = (ch.data.labels || []).length; let px = L ? x.getPixelForValue(L - 1) + (L > 1 ? (x.getPixelForValue(L - 1) - x.getPixelForValue(L - 2)) : 0) : A.right;
     if (!(px > A.left && px <= A.right)) px = A.right - 1;
@@ -184,7 +194,14 @@
     ctx.save(); ctx.strokeStyle = '#861C52'; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]); ctx.beginPath(); ctx.moveTo(px, A.top); ctx.lineTo(px, A.bottom); ctx.stroke(); ctx.setLineDash([]);
     ctx.font = '700 10.5px Arial, sans-serif'; const w = ctx.measureText(lbl).width + 10; const bx = Math.max(A.left + 2, px - w - 4);
     ctx.fillStyle = 'rgba(255,255,255,.92)'; ctx.fillRect(bx, A.top + 2, w, 17); ctx.strokeStyle = '#861C52'; ctx.lineWidth = 1; ctx.strokeRect(bx, A.top + 2, w, 17);
-    ctx.fillStyle = '#861C52'; ctx.textBaseline = 'middle'; ctx.fillText(lbl, bx + 5, A.top + 10.5); ctx.restore();
+    ctx.fillStyle = '#861C52'; ctx.textBaseline = 'middle'; ctx.fillText(lbl + '  ›', bx + 5, A.top + 10.5); ctx.restore();
+    ch.$calHit = { x0: bx, x1: bx + w + 12, y0: A.top + 2, y1: A.top + 19, line: px, e };
+  },
+  afterEvent(ch, args) {   // bấm vào nhãn → mở lịch tại đúng tin đó
+    const h = ch.$calHit, ev = args.event; if (!h) return;
+    const on = ev.x >= h.x0 && ev.x <= h.x1 && ev.y >= h.y0 && ev.y <= h.y1;
+    ch.canvas.style.cursor = on ? 'pointer' : '';
+    if (on && ev.type === 'click') focus(h.e);
   } });
 
   if (st.open) setOpen(true); else badge();
