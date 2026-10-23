@@ -15,7 +15,7 @@
     [/^CPI Flash Estimate y\/y$/, 'CPI sơ bộ y/y'], [/^Core CPI Flash Estimate y\/y$/, 'CPI lõi sơ bộ y/y'], [/^CPI y\/y · GDP quý$/, 'CPI y/y, kèm GDP quý'],
     [/^Non-Farm Employment Change$/, 'Việc làm phi nông nghiệp (NFP)'], [/^Unemployment Rate$/, 'Tỷ lệ thất nghiệp'], [/^Unemployment Claims$/, 'Đơn xin trợ cấp thất nghiệp lần đầu'],
     [/^Average Hourly Earnings m\/m$/, 'Thu nhập bình quân theo giờ m/m'], [/^Average Earnings Index 3m\/y$/, 'Thu nhập bình quân (3 tháng, y/y)'], [/^JOLTS Job Openings$/, 'Số việc làm trống (JOLTS)'], [/^Employment Change$/, 'Thay đổi số việc làm'],
-    [/^Core PCE Price Index m\/m$/, 'PCE lõi m/m'], [/^Advance GDP q\/q$/, 'GDP sơ bộ q/q'], [/^Prelim GDP q\/q$/, 'GDP ước tính lần 2 q/q'], [/^Final GDP q\/q$/, 'GDP chính thức q/q'], [/^GDP q\/q$/, 'GDP q/q'],
+    [/^Core PCE Price Index m\/m$/, 'PCE lõi m/m'], [/^Core PCE Price Index y\/y$/, 'PCE lõi y/y'], [/^PCE Price Index m\/m$/, 'PCE m/m'], [/^PCE Price Index y\/y$/, 'PCE y/y'], [/^Advance GDP q\/q$/, 'GDP sơ bộ q/q'], [/^Prelim GDP q\/q$/, 'GDP ước tính lần 2 q/q'], [/^Final GDP q\/q$/, 'GDP chính thức q/q'], [/^GDP q\/q$/, 'GDP q/q'],
     [/^Core PPI m\/m$/, 'PPI lõi m/m'], [/^Retail Sales m\/m$/, 'Doanh số bán lẻ m/m'], [/^Core Retail Sales m\/m$/, 'Doanh số bán lẻ lõi m/m'],
     [/^ISM Manufacturing PMI$/, 'PMI sản xuất ISM'], [/^ISM Services PMI$/, 'PMI dịch vụ ISM'],
     [/^Flash Manufacturing PMI$/, 'PMI sản xuất sơ bộ'], [/^Flash Services PMI$/, 'PMI dịch vụ sơ bộ'],
@@ -183,7 +183,7 @@
 
   /* ---------- đánh dấu kỳ công bố sắp tới trên chart (mọi chart có liên kết trong LINK, chỉ trong 7 ngày trước khi công bố) ---------- */
   // mỗi chart có trong LINK: tin sắp công bố đầu tiên khớp chart đó (ưu tiên mức Cao; CPI ưu tiên y/y)
-  const PRI = e => (e.i === 'H' ? 0 : 2) + (/m\/m/.test(e.t) && /CPI/.test(e.t) && !/Core|PCE/.test(e.t) ? 1 : 0) + (/^Core CPI/.test(e.t) ? 1 : 0);
+  const PRI = e => (e.i === 'H' ? 0 : 2) + (/PCE/.test(e.t) && !/^Core PCE Price Index y/.test(e.t) ? 1 : 0) + (/m\/m/.test(e.t) && /CPI/.test(e.t) && !/Core|PCE/.test(e.t) ? 1 : 0) + (/^Core CPI/.test(e.t) ? 1 : 0);
   const MARK = {}; LINK.forEach(([, , lk]) => { MARK[lk.id] = e => { const l = linkOf(e); return l && l.id === lk.id; }; });
   const nextFor = (id, n) => { const f = MARK[id]; if (!f) return null; const c = EV.filter(x => x.ts > n && f(x)); if (!c.length) return null; const t0 = c[0].ts; return c.filter(x => x.ts === t0).sort((a, b) => PRI(a) - PRI(b))[0]; };
   if (window.Chart) Chart.register({ id: 'calMark', afterDatasetsDraw(ch) {
