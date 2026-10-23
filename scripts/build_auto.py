@@ -15,8 +15,14 @@ ROOT = Path(__file__).resolve().parent.parent
 J = lambda p: json.loads((ROOT / p).read_text(encoding='utf-8')) if (ROOT / p).exists() else None
 
 # dom key → (trang dulieukinhte, tên dòng chính xác, kiểu): 'd' = theo ngày (nối điểm mới), 'm' = theo tháng (ngày đầu tháng)
+# (đã đối chiếu khớp số WiData; CPI và M2 của nguồn này khác định nghĩa/kỳ gốc nên không nối)
 DOM_MAP = {
-    'onDaily': ('lai-suat-dieu-hanh-lien-ngan-hang-391', 'Qua đêm', 'd'),
+    'creditYtd': ('tang-truong-tin-dung-toc-do-353', 'TỔNG CỘNG', 'm'),
+    'freeD': ('ty-gia-cho-den-719', 'Bán ra', 'd'),
+    'dep12State': ('lai-suat-huy-dong-vietcombank-376', '12 tháng', 'd'),
+}
+DOM_CALC = {   # dom key → (hàm từ các dòng, kiểu)
+    'trade': (lambda g: {m: g('tong-xuat-khau-292', 'Tổng').get(m) - g('tong-nhap-khau-293', 'Tổng').get(m) for m in g('tong-xuat-khau-292', 'Tổng') if g('tong-nhap-khau-293', 'Tổng').get(m) is not None}, 'm'),
 }
 
 
@@ -58,12 +64,18 @@ def main():
         if r.get('price') and close:
             k = close / r['price']   # vốn hoá theo giá; P/B, P/E lấy VNDirect nếu có, không thì co giãn theo giá
             r['mcap'] = round(r['mcap'] * k) if r.get('mcap') else r.get('mcap')
-            r['pb'] = round(ra['PRICE_TO_BOOK'][1], 2) if 'PRICE_TO_BOOK' in ra else (round(r['pb'] * k, 2) if r.get('pb') else r.get('pb'))
-            r['pe'] = round(ra['PRICE_TO_EARNINGS'][1], 2) if 'PRICE_TO_EARNINGS' in ra else (round(r['pe'] * k, 2) if r.get('pe') else r.get('pe'))
+            r['pb'] = round(r['pb'] * k, 2) if r.get('pb') else r.get('pb')   # giữ cách tính vốn chủ, lợi nhuận của bản WiData, chỉ co giãn theo giá
+            r['pe'] = round(r['pe'] * k, 2) if r.get('pe') else r.get('pe')
             if r.get('pppop'):
                 r['pppop'] = round(r['pppop'] * k, 2)
         r['price'] = close; upd += 1; pdate = max(pdate, d)
     S['latest']['priceDate'] = pdate
+    px_of = {r['s']: r['price'] for r in rows}
+    for c in (S.get('consensus') or {}).get('rows', []):   # upside theo giá mới
+        tps = sorted(p['tp'] for p in c.get('reports', []) if p.get('tp'))
+        if tps and px_of.get(c['s']):
+            n = len(tps); med = tps[n // 2] if n % 2 else (tps[n // 2 - 1] + tps[n // 2]) / 2
+            c['upside'] = round((med / px_of[c['s']] - 1) * 100, 1)
     rep['banks'] = f'{upd}/{len(rows)} ngân hàng, giá đến {pdate}'
 
     # 2) định giá ngành: co giãn mức WiData theo thay đổi tổng hợp từ các ngân hàng
@@ -102,6 +114,17 @@ def main():
         rw = next((x for x in (pages.get(pg) or {}).values() if x.get('n') == name), None)
         if rw and key in S.get('dom', {}):
             rep['dom.' + key] = f"nối {append(S['dom'][key], list(zip(rw['d'], rw['v'])), kind == 'm')} điểm"
+
+    def g(pg, name):
+        rw = next((x for x in (pages.get(pg) or {}).values() if x.get('n') == name), None)
+        return {d[:7] + '-01': v for d, v in zip(rw['d'], rw['v'])} if rw else {}
+    for key, (fn, kind) in DOM_CALC.items():
+        try:
+            pts = sorted(fn(g).items())
+            if pts and key in S.get('dom', {}):
+                rep['dom.' + key] = f"nối {append(S['dom'][key], [(d, round(v, 4)) for d, v in pts], kind == 'm')} điểm"
+        except Exception as e:  # noqa: BLE001
+            rep['dom.' + key] = 'lỗi ' + str(e)[:80]
 
     S.setdefault('meta', {})['auto'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ')
     (ROOT / 'data/sector-data.json').write_text(json.dumps(S, ensure_ascii=False, indent=1), encoding='utf-8')
