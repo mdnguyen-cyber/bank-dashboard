@@ -189,17 +189,29 @@ def wk2(k, frm='2019-01-01'):
     return {d: v / 1000 for d, v in obs(k) if d >= frm}
 fa = {k: wk2(s_) for k, s_ in [('total', 'us_walcl'), ('bills', 'us_bills'), ('notes', 'fed_notes'), ('tips', 'fed_tips'), ('tipsic', 'fed_tips_ic'), ('mbs', 'fed_mbs'), ('loans', 'fed_loans'),
                                ('cur', 'fed_currency_wed' if 'fed_currency_wed' in SER else 'fed_currency'), ('res', 'fed_res_wed' if 'fed_res_wed' in SER else 'us_reserves'),
-                               ('tga', 'fed_tga_wed' if 'fed_tga_wed' in SER else 'us_tga'), ('rrp', 'fed_rrp_all')]}
+                               ('tga', 'fed_tga_wed' if 'fed_tga_wed' in SER else 'us_tga'), ('rrp', 'fed_rrp_all'), ('fima', 'fed_repo_fima'), ('srf', 'fed_repo_oth')]}
 if fa['total'] and fa['notes']:
     ds = [d for d in sorted(fa['total']) if all(d in fa[k] for k in ['bills', 'notes', 'mbs'])]
     g = lambda k, d: fa[k].get(d) or 0
     G['fedbs'] = {'d': ds,
                   'a': {'Tín phiếu (bills)': [round(g('bills', d)) for d in ds], 'Trái phiếu notes & bonds': [round(g('notes', d)) for d in ds],
                         'TIPS (gồm bù lạm phát)': [round(g('tips', d) + g('tipsic', d)) for d in ds], 'MBS': [round(g('mbs', d)) for d in ds], 'Cho vay': [round(g('loans', d)) for d in ds],
-                        'Khác': [round(g('total', d) - g('bills', d) - g('notes', d) - g('tips', d) - g('tipsic', d) - g('mbs', d) - g('loans', d)) for d in ds]},
+                        'Repo FIMA (nước ngoài)': [round(g('fima', d), 1) for d in ds], 'Repo SRF (trong nước)': [round(g('srf', d), 1) for d in ds],
+                        'Khác': [round(g('total', d) - g('bills', d) - g('notes', d) - g('tips', d) - g('tipsic', d) - g('mbs', d) - g('loans', d) - g('fima', d) - g('srf', d)) for d in ds]},
                   'l': {'Tiền mặt lưu hành': [round(g('cur', d)) for d in ds], 'Dự trữ NH': [round(g('res', d)) for d in ds], 'TGA (Kho bạc)': [round(g('tga', d)) for d in ds],
                         'Reverse repo': [round(g('rrp', d)) for d in ds],
                         'Khác (gồm vốn)': [max(0, round(g('total', d) - g('cur', d) - g('res', d) - g('tga', d) - g('rrp', d))) for d in ds]}}
+
+# ---------------- Mỹ: UST Fed nắm theo thời gian còn lại đến đáo hạn (H.4.1 bảng 2, tỷ USD, thứ Tư)
+MAT = [('fed_tm15', '≤15 ngày'), ('fed_tm90', '16–90 ngày'), ('fed_tm1y', '91 ngày–1 năm'), ('fed_tm5y', '1–5 năm'), ('fed_tm10y', '5–10 năm'), ('fed_tmlong', 'Trên 10 năm')]
+mt = {lab: wk2(k) for k, lab in MAT if obs(k)}
+if len(mt) == len(MAT):
+    dm = sorted(set.intersection(*[set(x) for x in mt.values()]))
+    G['fedMat'] = {'d': dm, 'm': {lab: [round(x[d]) for d in dm] for lab, x in mt.items()}}
+fr = {k: wk2(k) for k in ['fed_repo_fima', 'fed_repo_oth'] if obs(k)}
+if fr:
+    dr = sorted(set().union(*[set(x) for x in fr.values()]))
+    G['fedRepo'] = {'d': dr, 'fima': [round(fr.get('fed_repo_fima', {}).get(d, 0), 2) for d in dr], 'srf': [round(fr.get('fed_repo_oth', {}).get(d, 0), 2) for d in dr]}
 
 # ---------------- Mỹ: ai nắm UST (Z.1, tỷ USD, quý)
 HOLD = [('ust_fed', 'Fed'), ('ust_row', 'Nước ngoài'), ('ust_banks', 'Ngân hàng Mỹ'), ('ust_mmf', 'Quỹ thị trường tiền tệ'), ('ust_mf', 'Quỹ tương hỗ'),

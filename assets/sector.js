@@ -889,6 +889,17 @@ function pmiIns() {
   return `${r.map(([n, l]) => `${n} <b>${nf(l.v, 1)}</b>`).join(', ')} (${mvn(r[0][1].d)}). ${up.length ? `Đang mở rộng: ${up.join(', ')}.` : 'Tất cả đang thu hẹp.'}${vn.v != null ? ` PMI Việt Nam ${sg(ch('vn_pmi'), 1, ' điểm')} trong 3 tháng.` : ''}`
     + how('PMI là số liệu sớm nhất của mỗi tháng. PMI Mỹ, châu Âu và Trung Quốc cùng trên 50 là cầu hàng hoá toàn cầu đang mạnh lên, có lợi cho xuất khẩu và sản xuất của Việt Nam; PMI Việt Nam giảm dưới 50 thường đi trước số xuất khẩu và tăng trưởng tín dụng doanh nghiệp yếu đi.');
 }
+function fedMatIns() {
+  const M = GD.fedMat; if (!M) return ''; const n = M.d.length - 1, v = k => M.m[k][n], t = Object.keys(M.m).reduce((a, k) => a + v(k), 0), y1 = v('≤15 ngày') + v('16–90 ngày') + v('91 ngày–1 năm');
+  const b = n >= 13 ? Object.keys(M.m).reduce((a, k) => a + M.m[k][n - 13], 0) : null;
+  return `${dvn(M.d[n])}: Fed nắm <b>${nf(t, 0)} tỷ USD</b> UST, trong đó <b>${nf(y1, 0)} tỷ</b> (${pc(y1 / t * 100, 0)}) đáo hạn trong 1 năm, ${nf(v('Trên 10 năm'), 0)} tỷ trên 10 năm.${b ? ` So với 13 tuần trước: ${sg(t - b, 0, ' tỷ')}.` : ''}`
+    + how('Phần đáo hạn ngắn càng lớn thì Fed càng dễ điều chỉnh tốc độ thu hẹp bảng cân đối (QT) chỉ bằng việc không tái đầu tư; Fed chuyển dần danh mục sang tín phiếu ngắn hạn cũng làm giảm áp lực lên lợi suất dài hạn.');
+}
+function fedRepoIns() {
+  const R = GD.fedRepo; if (!R) return ''; const n = R.d.length - 1, mx = (a, w) => Math.max(...a.slice(-w));
+  return `${dvn(R.d[n])}: repo FIMA <b>${nf(R.fima[n], 1)} tỷ USD</b>, SRF <b>${nf(R.srf[n], 1)} tỷ USD</b>. Cao nhất 52 tuần: FIMA ${nf(mx(R.fima, 52), 1)} tỷ, SRF ${nf(mx(R.srf, 52), 1)} tỷ.`
+    + how('FIMA cho ngân hàng trung ương nước ngoài vay USD bằng cách cầm cố UST thay vì bán ra thị trường; dùng nhiều là dấu hiệu thiếu USD ngoài nước Mỹ. SRF là cửa vay cuối cùng của ngân hàng Mỹ; số dư tăng khi lãi suất repo thị trường vượt trần, cho thấy dự trữ đã gần mức tối thiểu.');
+}
 function usSurveyIns() {
   const m = glast('us_ism_mfg'), sv = glast('us_ism_svc'), u = glast('us_umcsent');
   return `PMI sản xuất ISM <b>${nf(m.v, 1)}</b>, dịch vụ <b>${nf(sv.v, 1)}</b> (${mvn(m.d)}); niềm tin tiêu dùng ĐH Michigan <b>${nf(u.v, 1)}</b> (${mvn(u.d)}).`
@@ -1111,6 +1122,8 @@ function gUSFlow() {
       insight: `Tổng tài sản ${nf(F.a['Tín phiếu (bills)'].map((_, i) => Object.values(F.a).reduce((a, v) => a + v[i], 0))[nF], 0)} tỷ USD (${dvn(F.d[nF])}). Trong 13 tuần: tín phiếu ${sg(fa('Tín phiếu (bills)') - F.a['Tín phiếu (bills)'][nF - 13], 0, ' tỷ')}, notes & bonds ${sg(fa('Trái phiếu notes & bonds') - F.a['Trái phiếu notes & bonds'][nF - 13], 0, ' tỷ')}, MBS ${sg(fa('MBS') - F.a['MBS'][nF - 13], 0, ' tỷ')}. Tín phiếu chiếm ${pc(fa('Tín phiếu (bills)') / Object.values(F.a).reduce((a, v) => a + v[nF], 0) * 100, 1)} tài sản Fed.` + how('Tín phiếu tăng trong khi MBS giảm = Fed đã dừng thu hẹp bảng cân đối (QT) và đang rút ngắn kỳ hạn danh mục: tiền MBS đáo hạn chuyển sang tín phiếu, cộng mua thêm tín phiếu để giữ dự trữ ngân hàng đủ. Việc này bơm thanh khoản ngắn hạn nhưng không ép lợi suất dài hạn như QE (mua notes, bonds, MBS).'), src: gsrc(['us_walcl', 'fed_notes', 'fed_mbs']) })}
     ${card({ id: 'gUsFedL', title: 'Bảng cân đối Fed: nguồn vốn theo cấu phần', h: 'tall', sub: 'tỷ USD, theo tuần · TGA tăng hoặc RRP tăng = hút dự trữ khỏi hệ thống ngân hàng',
       insight: `Dự trữ NH ${nf(fl('Dự trữ NH'), 0)} tỷ, TGA ${nf(fl('TGA (Kho bạc)'), 0)} tỷ, reverse repo ${nf(fl('Reverse repo'), 0)} tỷ. 13 tuần: TGA ${sg(fl('TGA (Kho bạc)') - F.l['TGA (Kho bạc)'][nF - 13], 0, ' tỷ')}, dự trữ ${sg(fl('Dự trữ NH') - F.l['Dự trữ NH'][nF - 13], 0, ' tỷ')}.`, src: gsrc(['us_reserves', 'us_tga', 'fed_rrp_all']) })}
+    ${GD.fedMat ? card({ id: 'gUsFedMat', title: 'UST Fed nắm theo thời gian còn lại đến đáo hạn', h: 'tall', sub: 'tỷ USD, số ngày thứ Tư (H.4.1, bảng 2) · cho biết bao nhiêu trái phiếu sắp đáo hạn và được tái đầu tư hoặc để chảy ra (QT)', insight: fedMatIns(), src: 'Federal Reserve H.4.1 qua FRED' }) : ''}
+    ${GD.fedRepo ? card({ id: 'gUsFedRepo', title: 'Repo của Fed: FIMA (tổ chức nước ngoài) và SRF (trong nước)', h: 'tall', sub: 'tỷ USD, số ngày thứ Tư · tăng vọt = có nơi thiếu thanh khoản USD (thường cuối quý, kỳ nộp thuế)', insight: fedRepoIns(), src: 'Federal Reserve H.4.1 qua FRED (H41RESPPALGTRFNWW, H41RESPPALGTRONWW)' }) : ''}
     ${card({ id: 'gUsDebt', title: 'Kho bạc phát hành gì: cơ cấu nợ thị trường', h: 'tall', sub: 'nghìn tỷ USD, cuối tháng (MSPD) · cột = Tín phiếu, Notes, Bonds, TIPS, FRN · đường = tỷ trọng tín phiếu (trục phải, khuyến nghị TBAC ~20%)',
       src: 'Nguồn: U.S. Treasury Fiscal Data — Monthly Statement of the Public Debt' })}
     ${card({ id: 'gUsNet', title: 'Phát hành ròng hằng tháng: tín phiếu và coupon', h: 'tall', sub: 'tỷ USD · thay đổi dư nợ do công chúng nắm · tín phiếu do quỹ thị trường tiền tệ hấp thụ (rút từ RRP); coupon cần nhà đầu tư dài hạn',
@@ -1131,6 +1144,9 @@ function drUSFlow() {
   if (!F || !H || !M || !A) return;
   stk('gUsFedA', F.d.map(dvn), F.a, { type: 'line', total: true, unit: ' tỷ USD' });
   stk('gUsFedL', F.d.map(dvn), F.l, { type: 'line', total: true, unit: ' tỷ USD' });
+  if (GD.fedMat) stk('gUsFedMat', GD.fedMat.d.map(dvn), GD.fedMat.m, { type: 'line', total: true, unit: ' tỷ USD', colors: [C.red, C.gold, C.teal, C.tealInk, C.navy, C.purple] });
+  if (GD.fedRepo) { const R = GD.fedRepo; mk('gUsFedRepo', { type: 'bar', data: { labels: R.d.map(dvn), datasets: [{ label: 'Repo FIMA (nước ngoài)', data: R.fima, backgroundColor: C.gold, stack: 's', unit: ' tỷ USD', dp: 1 }, { label: 'Repo SRF (trong nước)', data: R.srf, backgroundColor: C.navy, stack: 's', unit: ' tỷ USD', dp: 1 }] },
+    options: { scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, ticks: { callback: v => nf(v, 0) } } } } }, { win: 24 }); }
   const mf = M.d.findIndex(d => d >= '2018-01'), md = M.d.slice(mf);
   const debt = Object.fromEntries(Object.entries(M.c).map(([k, v]) => [k, v.slice(mf).map(x => x == null ? null : +(x / 1000).toFixed(2))]));
   stk('gUsDebt', md.map(mvn), debt, { unit: ' nghìn tỷ', dp: 2, extra: [L('Tỷ trọng tín phiếu', M.billShare.slice(mf), C.red, { yAxisID: 'y1', borderWidth: 2.4, dp: 1 })],
