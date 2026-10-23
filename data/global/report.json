@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-23T05:18:38Z",
+ "fetched": "2026-10-23T05:32:15Z",
  "report": {
   "us_cpi": [
    {
@@ -433,11 +433,21 @@
   ],
   "fed_tm5y": [
    {
+    "id": "fred:TREAS1T5",
+    "n": 877,
+    "last": "2026-10-21"
+   },
+   {
     "id": "fred:TREAS1T5Y",
     "error": "HTTP Error 404: Not Found"
    }
   ],
   "fed_tm10y": [
+   {
+    "id": "fred:TREAS5T10",
+    "n": 877,
+    "last": "2026-10-21"
+   },
    {
     "id": "fred:TREAS5T10Y",
     "error": "HTTP Error 404: Not Found"
