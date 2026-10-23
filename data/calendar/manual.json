@@ -4,6 +4,7 @@
     {"c": "USD", "t": "Federal Funds Rate", "tz": "America/New_York", "time": "14:00", "dates": ["2026-01-28", "2026-03-18", "2026-04-29", "2026-06-17", "2026-07-29", "2026-09-16", "2026-10-28", "2026-12-09"]},
     {"c": "EUR", "t": "Main Refinancing Rate", "tz": "Europe/Berlin", "time": "14:15", "dates": ["2026-07-23", "2026-09-10", "2026-10-29", "2026-12-17"]},
     {"c": "GBP", "t": "Official Bank Rate", "tz": "Europe/London", "time": "12:00", "dates": ["2026-07-30", "2026-09-17", "2026-11-05", "2026-12-17"]},
+    {"c": "USD", "t": ["Core PCE Price Index m/m"], "tz": "America/New_York", "time": "08:30", "dates": ["2026-09-30", "2026-10-29"], "nguon": "BEA – Personal Income and Outlays"},
     {"c": "JPY", "t": "BOJ Policy Rate", "tz": "Asia/Tokyo", "time": "12:00", "dates": ["2026-07-31", "2026-09-18", "2026-10-30", "2026-12-18"]}
   ],
   "vn": {"t": "CPI y/y", "note": "Cục Thống kê công bố số liệu kinh tế – xã hội tháng (CPI, sản xuất công nghiệp, bán lẻ, xuất nhập khẩu) ngày 6 hằng tháng; tháng 1, 4, 7, 10 kèm GDP quý", "tz": "Asia/Ho_Chi_Minh", "time": "09:30", "day": 6}
