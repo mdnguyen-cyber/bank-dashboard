@@ -123,8 +123,6 @@
     });
     if (!nowDone) html += '<div class="cal-now"><span>Bây giờ ' + hm(n) + '</span></div>';
     if (!VIEW.length) html = '<p class="cal-empty">Không có tin nào trong khoảng và bộ lọc đã chọn.</p>';
-    const ff0 = CAL.ff0 ? Date.parse(CAL.ff0.replace('Z', ':00Z')) : null;
-    if (ff0 && a < ff0) html = `<p class="cal-note">Lịch đầy đủ kèm dự báo (consensus) được lưu từ tuần ${dkey(ff0).slice(0, 5)}. Trước đó và từ tuần sau trở đi chỉ có các tin lớn theo lịch chính thức (BLS, Fed, ECB, BoE, BOJ, Cục Thống kê): có số thực tế và kỳ trước, chưa có dự báo.</p>` + html;
     list.innerHTML = html;
     dr.querySelectorAll('[data-k="range"] button').forEach(x => x.classList.toggle('on', x.dataset.v === st.range));
     dr.querySelector('.cal-custom').hidden = st.range !== 'c';
