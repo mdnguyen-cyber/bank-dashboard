@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-23T01:50:16Z",
+ "fetched": "2026-10-23T02:08:21Z",
  "report": {
   "us_cpi": [
    {
@@ -799,22 +799,22 @@
   "jp_cpi_idx": [
    {
     "id": "dbn:STATJP/CPIm/001",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "jp_cpi_xff_idx": [
    {
     "id": "dbn:STATJP/CPIm/733",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "jp_cpi_xffe_idx": [
    {
     "id": "dbn:STATJP/CPIm/740",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "jp_cpi": [
