@@ -1392,12 +1392,19 @@ function subFxIntl() {
   <h3 class="sec2">Nhóm trú ẩn an toàn — so với DXY (nét đứt, trục phải)</h3>
   <div class="grid g2 gap">
     ${SAFE.map(([id, t, k, u]) => card({ id: 'fxS_' + id, title: t, h: 'tall', sub: `${u} theo ngày (trục trái) · nét đứt xám = DXY (trục phải) để tham chiếu sức mạnh đồng USD`,
-      insight: safeIns(id), src: { jpy: 'ECB · can thiệp: Bộ Tài chính Nhật (FEIO), tháng 7–8/2026 ước tính', chf: 'ECB', xau: 'Stooq (XAU/USD) hoặc WiData 74407 (CME)', oil: 'EIA qua FRED (Brent giao ngay)' }[id] + ' · DXY tính theo công thức ICE từ tỷ giá ECB' })).join('')}
+      insight: safeIns(id), src: { jpy: 'ECB · can thiệp: Bộ Tài chính Nhật (FEIO), tháng 7–8/2026 ước tính', chf: 'ECB', xau: 'Stooq (XAU/USD) hoặc WiData 74407 (CME)', oil: 'EIA qua FRED (Brent và WTI giao ngay)' }[id] + ' · DXY tính theo công thức ICE từ tỷ giá ECB' })).join('')}
 </div>`;
 }
-const SAFE = [['jpy', 'USD/JPY', 'usdjpy_d', 'JPY cho 1 USD'], ['xau', 'Vàng XAU/USD', 'gold', 'USD/ounce'], ['chf', 'USD/CHF', 'usdchf_d', 'CHF cho 1 USD'], ['oil', 'Dầu Brent', 'us_brent_d', 'USD/thùng']];
+const SAFE = [['jpy', 'USD/JPY', 'usdjpy_d', 'JPY cho 1 USD'], ['xau', 'Vàng XAU/USD', 'gold', 'USD/ounce'], ['chf', 'USD/CHF', 'usdchf_d', 'CHF cho 1 USD'], ['oil', 'Dầu Brent và WTI', 'us_brent_d', 'USD/thùng']];
 function corr(a, b) { const n = a.length; if (n < 10) return null; const ma = a.reduce((x, y) => x + y, 0) / n, mb = b.reduce((x, y) => x + y, 0) / n;
   let c = 0, va = 0, vb = 0; for (let i = 0; i < n; i++) { c += (a[i] - ma) * (b[i] - mb); va += (a[i] - ma) ** 2; vb += (b[i] - mb) ** 2; } return va && vb ? c / Math.sqrt(va * vb) : null; }
+function bwIns() {   // chênh lệch Brent − WTI
+  const B = gs('us_brent_d'), W = gs('us_wti_d'), wm = new Map(W.d.map((d, i) => [d, W.v[i]]));
+  const sp = B.d.map((d, i) => [d, B.v[i] != null && wm.get(d) != null ? B.v[i] - wm.get(d) : null]).filter(x => x[1] != null); if (!sp.length) return '';
+  const [d0, now] = sp[sp.length - 1], wl = wm.get(d0), avg = from => { const r = sp.filter(x => x[0] >= from); return r.length ? r.reduce((a, x) => a + x[1], 0) / r.length : null; };
+  const back = n => new Date(new Date(d0) - n * 864e5).toISOString().slice(0, 10), m1 = avg(back(30)), y1 = avg(back(365)), y5 = avg(back(1826));
+  return ` WTI <b>${nf(wl, 2)} USD/thùng</b>; chênh lệch Brent − WTI <b>${sg(now, 2, ' USD')}</b> (bình quân 1 tháng ${nf(m1, 2)}, 1 năm ${nf(y1, 2)}, 5 năm ${nf(y5, 2)} USD)${m1 != null && Math.abs(now - m1) > 2 ? ` — ${now < m1 ? '<b>thu hẹp mạnh</b>' : '<b>nới rộng mạnh</b>'} so với bình quân 1 tháng` : ''}. ${now > y5 + 1.5 ? 'Chênh lệch đang rộng hơn bình thường: rủi ro nằm ở nguồn cung đường biển (Trung Đông, eo Hormuz, Biển Đỏ) hơn là thị trường nội địa Mỹ.' : now < y5 - 1.5 ? 'Chênh lệch hẹp hơn bình thường: thị trường Mỹ đang căng hơn (tồn kho tại Cushing thấp hoặc xuất khẩu dầu Mỹ tăng mạnh).' : 'Chênh lệch quanh mức bình thường: hai loại dầu đang cùng chịu một lực chung về cung cầu toàn cầu.'}`;
+}
 function safeIns(id) {
   const [, t, k, u] = SAFE.find(x => x[0] === id), l = fxLast(k); if (l.v == null) return 'Đang nạp số liệu.';
   const lv = b => { const r = fxRaw(k); let n = r.v.length - 1; while (n >= 0 && r.v[n] == null) n--; const tgt = b === 'ytd' ? r.d[n].slice(0, 4) + '-01-01' : new Date(new Date(r.d[n]) - b * 864e5).toISOString().slice(0, 10);
@@ -1409,8 +1416,9 @@ function safeIns(id) {
   const read = { jpy: `USD/JPY ${y > 0 ? 'tăng' : 'giảm'} = JPY ${y > 0 ? 'yếu đi' : 'mạnh lên'} so với USD. JPY chỉ đóng vai trò trú ẩn khi chênh lợi suất Mỹ – Nhật thu hẹp; khi lợi suất Mỹ ở mức cao, JPY thường yếu dù thị trường căng thẳng.`,
     chf: `USD/CHF ${y > 0 ? 'tăng' : 'giảm'} = CHF ${y > 0 ? 'yếu đi' : 'mạnh lên'} so với USD. CHF mạnh lên cùng lúc DXY tăng là dấu hiệu dòng tiền phòng thủ thật sự, không chỉ do USD.`,
     xau: 'Vàng thường đi ngược DXY và lợi suất thực của Mỹ; vàng tăng trong khi DXY cũng tăng cho thấy nhu cầu trú ẩn vượt trội hơn tác động của USD mạnh.',
-    oil: 'Dầu không phải tài sản trú ẩn nhưng là nguồn rủi ro lạm phát: dầu tăng cùng USD mạnh làm chi phí nhập khẩu của các nước châu Á (gồm Việt Nam) tăng gấp đôi, tạo áp lực lên tỷ giá và CPI.' }[id];
+    oil: 'Brent (dầu Biển Bắc, giao bằng tàu biển) là giá chuẩn cho khoảng 2/3 giao dịch dầu thế giới và phản ánh rủi ro địa chính trị trên tuyến vận tải biển; WTI (giao tại Cushing, Oklahoma) phản ánh cung cầu nội địa Mỹ: sản lượng dầu đá phiến, tồn kho và năng lực đường ống. Brent thường cao hơn WTI vài USD do chi phí vận chuyển dầu Mỹ ra cảng xuất khẩu. Việt Nam và châu Á nhập khẩu theo giá Brent/Dubai nên Brent sát hơn với chi phí xăng dầu và CPI trong nước. Dầu không phải tài sản trú ẩn nhưng là nguồn rủi ro lạm phát: dầu tăng cùng USD mạnh làm chi phí nhập khẩu tăng gấp đôi, tạo áp lực lên tỷ giá và CPI.' }[id];
   let zt = '';
+  if (id === 'oil') zt = bwIns();
   if (id === 'jpy') { const dd = fxAxis(), z = jpiZone(jpiPts(dd, fxAlign(k, false, dd)));
     if (z) zt = ` Trong 12 tháng qua Nhật can thiệp <b>${z.n} lần</b> (${dvn(z.d0)}–${dvn(z.d1)}), tổng ~¥${nf(z.t, 1)} nghìn tỷ ≈ <b>US$${nf(z.usd, 0)} tỷ</b>, khi USD/JPY ở vùng <b>${nf(z.lo, 1)}–${nf(z.hi, 1)}</b> (vùng tô xanh). Mức hiện tại ${l.v > z.hi ? `<b>đã vượt đỉnh vùng</b> ${nf(l.v - z.hi, 1)} yên → rủi ro can thiệp rất cao` : l.v >= z.lo ? `<b>nằm trong vùng</b>, cách đỉnh ${nf(z.hi - l.v, 1)} yên → càng tiến gần đỉnh, khả năng Nhật ra tay càng lớn` : `thấp hơn đáy vùng ${nf(z.lo - l.v, 1)} yên → áp lực can thiệp chưa lớn`}.`; }
   return `${dvn(l.d)}: <b>${nf(l.v, id === 'xau' ? 0 : 2)} ${u}</b> — ${sg(m, 1)} 1 tháng, <b>${sg(y, 1)}</b> từ đầu năm (DXY ${sg(dm, 1)} và ${sg(dy, 1)}).${r != null ? ` Tương quan biến động ngày với DXY trong 60 phiên: <b>${nf(r, 2)}</b> (${Math.abs(r) < 0.2 ? 'gần như không liên quan' : r > 0 ? 'cùng chiều' : 'ngược chiều'}).` : ''}${zt}` + how(read + (id === 'jpy' ? ' Chấm xanh đậm là ngày Bộ Tài chính Nhật bán USD mua JPY (số liệu công bố chính thức; tháng 7–8/2026 là ước tính vì chưa có số theo ngày); số USD quy đổi theo tỷ giá đóng cửa ngày đó.' : ''));
@@ -1443,13 +1451,14 @@ function chSafe() {
   const dxy = fxAlign('dxy_d', false, days);
   SAFE.forEach(([id, t, k, u]) => { if (!document.getElementById('fxS_' + id)) return;
     const lv = fxAlign(k, false, days), ex = [], pl = {};
+    if (id === 'oil') ex.push(L('Dầu WTI', fxAlign('us_wti_d', false, days), '#D9822B', { borderWidth: 1.8, dp: 2, unit: '', yAxisID: 'y' }));
     if (id === 'jpy') { const P = jpiPts(days, lv), z = jpiZone(P), m = new Map(P.map(p => [p.i, p]));
       ex.push(L('Can thiệp của Nhật', days.map((_, i) => m.has(i) ? m.get(i).v : null), C.navy, { showLine: false, pointRadius: 5, pointHoverRadius: 7, pointStyle: 'circle', backgroundColor: C.navy, pointBorderColor: '#fff', pointBorderWidth: 1.5, pointHoverBorderWidth: 1.5, yAxisID: 'y', dp: 2, unit: '',
         $tip: i => { const p = m.get(i); return p ? [`Can thiệp ${dvn(p.d)}${p.e ? ' (ước tính)' : ''}: ~¥${nf(p.t, 2)} nghìn tỷ ≈ US$${nf(p.usd, 1)} tỷ`, `USD/JPY đóng cửa ${nf(p.v, 2)}`, ...(p.e ? [p.e] : [])] : ''; } }));
       if (z) pl.jpiBand = z;
       const lp = P[P.length - 1]; if (lp) pl.refLines = { lines: [{ value: lp.v, axis: 'y', color: C.red, width: 1.6, dash: [6, 4], label: `Can thiệp gần nhất ${dvn(lp.d)}: ${nf(lp.v, 2)}` }] }; }
     mk('fxS_' + id, { type: 'line', plugins: id === 'jpy' ? [jpiBand] : [], data: { labels: days.map(dvn), datasets: [
-        L(t, lv, FXC[{ jpy: 'JPY', xau: 'XAU', chf: 'CHF', oil: 'OIL' }[id]], { borderWidth: 2, dp: id === 'xau' ? 0 : 2, unit: '', yAxisID: 'y' }), ...ex,
+        L(id === 'oil' ? 'Dầu Brent' : t, lv, FXC[{ jpy: 'JPY', xau: 'XAU', chf: 'CHF', oil: 'OIL' }[id]], { borderWidth: 2, dp: id === 'xau' ? 0 : 2, unit: '', yAxisID: 'y' }), ...ex,
         L('DXY (tham chiếu)', dxy, C.grey, { borderWidth: 1.4, borderDash: [5, 4], dp: 2, unit: '', yAxisID: 'y1' })] },
       options: { plugins: pl, scales: { x: { ticks: { maxTicksLimit: 10 } }, y: numAxis(u, { beginAtZero: false, ticks: { callback: v => nf(v, id === 'chf' ? 3 : id === 'xau' ? 0 : 1) } }), y1: numAxis('DXY', { position: 'right', beginAtZero: false, grid: { display: false } }) } } }, { win: 12 });
   });
