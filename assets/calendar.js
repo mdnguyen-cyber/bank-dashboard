@@ -103,7 +103,7 @@
     const open = st.exp === k;
     return `<div class="cal-ev${past ? ' past' : ''}${open ? ' open' : ''}" data-k="${k}">
       <button type="button" class="cal-row" aria-expanded="${open}">
-        <span class="cal-t">${hm(e.ts)}${e.est ? '<em>dự kiến</em>' : ''}</span>
+        <span class="cal-t">${hm(e.ts)}${e.est && !past ? '<em>dự kiến</em>' : ''}</span>
         <span class="cal-c" title="${esc(cc[1])}">${esc(cc[0])}</span>
         <span class="cal-n"><i class="cal-dot ${e.i}"></i>${esc(name)}${left(e.ts) ? `<small class="cal-left">${left(e.ts)}</small>` : ''}</span>
         <span class="cal-v"><span><small>Thực tế</small><b>${e.a ? vn(e.a) + (e.ap ? '<sup title="Theo số kỳ trước của lần công bố sau, có thể đã điều chỉnh">*</sup>' : '') + cmp(e) : '–'}</b></span><span><small>Dự báo</small>${vn(e.f) || '–'}</span><span><small>Kỳ trước</small>${vn(e.p) || '–'}</span></span>
@@ -123,6 +123,8 @@
     });
     if (!nowDone) html += '<div class="cal-now"><span>Bây giờ ' + hm(n) + '</span></div>';
     if (!VIEW.length) html = '<p class="cal-empty">Không có tin nào trong khoảng và bộ lọc đã chọn.</p>';
+    const ff0 = CAL.ff0 ? Date.parse(CAL.ff0.replace('Z', ':00Z')) : null;
+    if (ff0 && a < ff0) html = `<p class="cal-note">Lịch đầy đủ kèm dự báo (consensus) được lưu từ tuần ${dkey(ff0).slice(0, 5)}. Trước đó và từ tuần sau trở đi chỉ có các tin lớn theo lịch chính thức (BLS, Fed, ECB, BoE, BOJ, Cục Thống kê): có số thực tế và kỳ trước, chưa có dự báo.</p>` + html;
     list.innerHTML = html;
     dr.querySelectorAll('[data-k="range"] button').forEach(x => x.classList.toggle('on', x.dataset.v === st.range));
     dr.querySelector('.cal-custom').hidden = st.range !== 'c';

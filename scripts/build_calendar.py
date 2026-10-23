@@ -32,7 +32,7 @@ def prev_month(d, n=1):
 
 
 def pct(v, dp=1):
-    return None if v is None else f'{v:.{dp}f}%'
+    return None if v is None else f'{v:.{dp}f}%'.replace('-0.0%', '0.0%').replace('-0.00%', '0.00%')
 
 
 def to_utc(day, hhmm, tz):
@@ -62,6 +62,13 @@ def main():
         for day in cb['dates']:
             for t in (cb['t'] if isinstance(cb['t'], list) else [cb['t']]):
                 add({'c': cb['c'], 't': t, 'd': to_utc(day, cb['time'], cb['tz']), 'i': 'H', 'f': '', 'p': '', 'est': 1, 'src': 'man'})
+    # lịch công bố BLS (quá khứ và tương lai) — FF ghi đè khi tới tuần đó
+    BT = {'cpi': ['CPI m/m', 'CPI y/y', 'Core CPI m/m'], 'nfp': ['Non-Farm Employment Change', 'Unemployment Rate'], 'ppi': ['PPI m/m', 'Core PPI m/m'], 'jolts': ['JOLTS Job Openings']}
+    bp = CAL / 'bls.json'
+    if bp.exists():
+        for r in json.loads(bp.read_text(encoding='utf-8'))['ev']:
+            for t in BT[r['k']]:
+                add({'c': 'USD', 't': t, 'd': to_utc(r['d'], r['time'], 'America/New_York'), 'i': 'H', 'f': '', 'p': '', 'src': 'bls'})
     # FOMC: ngày họp và dự báo theo xác suất CME FedWatch
     fw = G.get('fedwatch') or {}
     tgt = fw.get('target') or []
@@ -148,7 +155,8 @@ def main():
     ev.sort(key=lambda e: (e['d'], e['c'], e['t']))
     for e in ev:
         e.pop('seen', None)
-    out = {'built': now, 'ev': ev}
+    ffs = [e['d'] for e in ev if e.get('src') == 'ff']
+    out = {'built': now, 'ff0': min(ffs) if ffs else None, 'ev': ev}
     (ROOT / 'data/calendar-data.js').write_text('window.CAL_DATA = ' + json.dumps(out, ensure_ascii=False, separators=(',', ':')) + ';\n', encoding='utf-8')
     print(f'Lịch kinh tế: {len(ev)} tin ({sum(1 for e in ev if e.get("a"))} có số thực tế)')
 

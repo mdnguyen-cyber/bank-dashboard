@@ -39,5 +39,29 @@ def main():
     return 0
 
 
+BLS_KEYS = {'Consumer Price Index': 'cpi', 'Employment Situation': 'nfp', 'Producer Price Index': 'ppi', 'Job Openings and Labor Turnover Survey': 'jolts'}
+
+
+def bls():
+    """Làm mới lịch công bố của BLS (file iCalendar chính thức); lỗi thì giữ bản đã lưu."""
+    import re
+    req = urllib.request.Request('https://www.bls.gov/schedule/news_release/bls.ics', headers={'User-Agent': 'Mozilla/5.0 (fs-bank-dashboard; research use)', 'Accept': 'text/calendar,*/*'})
+    try:
+        t = urllib.request.urlopen(req, timeout=30).read().decode('utf-8', 'replace')
+    except Exception as e:
+        print('Không tải được lịch BLS (giữ bản cũ):', e); return
+    out = []
+    for b in t.split('BEGIN:VEVENT')[1:]:
+        d = re.search(r'DTSTART[^:]*:(\d{8})T(\d{4})', b); sm = re.search(r'SUMMARY:(.*)', b)
+        if not d or not sm or sm.group(1).strip() not in BLS_KEYS or d.group(1) < '20260201':
+            continue
+        x = d.group(1); out.append({'k': BLS_KEYS[sm.group(1).strip()], 'd': f'{x[:4]}-{x[4:6]}-{x[6:]}', 'time': f'{d.group(2)[:2]}:{d.group(2)[2:]}'})
+    if out:
+        p = ROOT / 'data/calendar/bls.json'; j = json.loads(p.read_text(encoding='utf-8')) if p.exists() else {}
+        j['ev'] = out; p.write_text(json.dumps(j, ensure_ascii=False, indent=0), encoding='utf-8')
+        print('Lịch BLS:', len(out), 'kỳ công bố')
+
+
 if __name__ == '__main__':
+    bls()
     sys.exit(main())
