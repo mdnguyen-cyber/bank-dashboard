@@ -83,7 +83,7 @@ const charts = {};
 /* ---------- Chart book: mk() lưu cấu hình từng chart theo id để vẽ lại ở Chart book / Cập nhật nhanh ---------- */
 const SPEC = {};
 const cl = o => Array.isArray(o) ? o.map(cl) : (o && Object.getPrototypeOf(o) === Object.prototype) ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cl(v)])) : o;
-const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', mm: 'Tỷ giá USD/VND', bank: 'Ngân hàng', peer: 'So sánh ngân hàng', idx: 'Kịch bản IDX' };
+const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: 'Nội địa', mm: 'Tỷ giá', bank: 'Ngân hàng', peer: 'So sánh ngân hàng', idx: 'Kịch bản IDX' };
 function cardMeta(el) {
   const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane'), cc = el.closest('[data-cc]');
   const h = c && c.querySelector(':scope > h3.sub'), one = sel => { const e = c && c.querySelector(':scope > ' + sel); return e ? e.innerHTML : ''; };
@@ -197,7 +197,7 @@ function paneOverview() {
   const go = (p, l) => `<button type="button" class="lnk" data-gop="${p}">${l} →</button>`;
   const DRV = [
     ['Lãi suất điều hành & thanh khoản', 'NHNN dùng lãi suất tái cấp vốn, tái chiết khấu (trần, sàn của lãi suất liên ngân hàng), nghiệp vụ thị trường mở OMO (bơm, hút tiền hằng ngày), tín phiếu NHNN, dự trữ bắt buộc và trần lãi suất tiền gửi kỳ hạn dưới 6 tháng.',
-      'NHNN bơm tiền → lãi suất liên ngân hàng giảm → chi phí vốn (COF) giảm sau vài tháng. NHNN hút tiền → điều ngược lại, ngân hàng phải tăng lãi suất huy động.', ['mm', 'Tỷ giá USD/VND'], 'NIM · COF'],
+      'NHNN bơm tiền → lãi suất liên ngân hàng giảm → chi phí vốn (COF) giảm sau vài tháng. NHNN hút tiền → điều ngược lại, ngân hàng phải tăng lãi suất huy động.', ['mm', 'Tỷ giá'], 'NIM · COF'],
     ['Room tín dụng', 'Mỗi năm NHNN đặt chỉ tiêu tăng trưởng tín dụng toàn hệ thống rồi giao hạn mức (room) cho từng ngân hàng, dựa trên kết quả xếp hạng (TT 21/2025).',
       'Room quyết định ngân hàng được lớn thêm bao nhiêu. Ngân hàng xếp hạng cao, nợ xấu thấp được room rộng hơn; room hẹp thì dù có khách hàng cũng không cho vay thêm được.', ['camel', 'Xếp hạng TT21 & room'], 'Tăng trưởng tín dụng'],
     ['Tỷ giá USD/VND', 'NHNN công bố tỷ giá trung tâm mỗi ngày; ngân hàng chỉ được giao dịch trong biên độ ±5%. Khi USD mạnh lên (Fed tăng lãi suất, DXY tăng) hoặc cầu ngoại tệ trong nước tăng, NHNN bán USD từ dự trữ.',
@@ -494,7 +494,7 @@ function drawTable(k, dir) {
 /* =====================================================================
    TAB 2 · BỨC TRANH NGÀNH (Quốc tế → Nội địa → Ngân hàng → Kịch bản IDX)
 ===================================================================== */
-const PSUB = [['dom', 'Nội địa'], ['mm', 'Tỷ giá USD/VND'], ['bank', 'Ngân hàng'], ['peer', 'So sánh ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['intl', 'Quốc tế'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
+const PSUB = [['dom', 'Nội địa'], ['mm', 'Tỷ giá'], ['bank', 'Ngân hàng'], ['peer', 'So sánh ngân hàng'], ['camel', 'Xếp hạng TT21 & room'], ['intl', 'Quốc tế'], ['idx', 'Kịch bản IDX-FX × IDX-LIQ']];
 const pDone = {};
 function panePicture() {
   $('#picture').innerHTML = `
@@ -907,7 +907,7 @@ function drGL() {
   wireTf('glY', drY('gGlY10', Y10D, '2021-01-01'));
   wireTf('glA', drY('gGlAsia', Y10A, '2021-01-01'));
   wireTf('glM', k => { const S = Y10M[k || 'eu'].filter(([kk]) => gs(kk).v.length); mk('gGlY10m', { type: 'line', data: gLines(S.map(x => x[0]), S.map(x => x[1]), PAL2, { from: '2021-01', dp: 2 }), options: { scales: { y: pctAxis('') } } }); });
-  const UC = GD.ustCurve; if (UC) mk('gGlCurve', { type: 'line', data: { labels: UC.t, datasets: UC.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.tealInk, C.red, C.grey][i], { pointRadius: 3, borderWidth: i ? 1.6 : 2.6, borderDash: i === 3 ? [4, 3] : [], dp: 2 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
+  const UC = GD.ustCurve; if (UC) mk('gGlCurve', { type: 'line', data: { labels: UC.t, datasets: UC.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.teal, C.tealInk, C.red, C.grey][i] || C.grey, { pointRadius: 3, borderWidth: i ? 1.6 : 2.6, borderDash: i === 1 ? [2, 2] : i === 4 ? [4, 3] : [], dp: 2 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
   mk('gGlOil', { type: 'line', data: gLines(['us_wti_d', 'us_brent_d'], ['WTI', 'Brent'], [C.navy, C.gold], { unit: ' USD', dp: 2, from: '2021-01-01' }), options: { scales: { y: numAxis('USD/thùng', { beginAtZero: false }) } } });
 }
 /* -------- Mỹ -------- */
@@ -1300,7 +1300,8 @@ function subMM() {
     const dv = (a, b) => a == null || b == null ? '—' : sg((a - b) * 100, 0, '');
     return `<tr><td><b>${t}</b></td><td class="n">${nf(v, 2)}</td><td class="n">${dv(v, mmV('vnd', t, i - 1))}</td><td class="n">${dv(v, mmV('vnd', t, w))}</td><td class="n">${nf(u, 2)}</td><td class="n">${dv(u, mmV('usd', t, w))}</td><td class="n">${nf(so, 2)}</td><td class="n"><b>${s == null ? '—' : sg(s, 2, '')}</b></td><td class="n">${dv(s, sw)}</td><td class="n">${dv(s, sm)}</td></tr>`; }).join('');
   const many = VR.d.length >= 20;
-  return `<div class="banner chain">Giữ VND hay USD? So lãi suất liên ngân hàng VND (VNIBOR VND) với USD trong nước (VNIBOR USD) và quốc tế (SOFR) ở từng kỳ hạn · chênh VND − USD phải lớn hơn mức VND mất giá kỳ vọng thì giữ VND mới có lời</div>
+  return `<h3 class="ovh dsec" id="m-vnd">Tỷ giá VND</h3>
+  <div class="banner chain">Giữ VND hay USD? So lãi suất liên ngân hàng VND (VNIBOR VND) với USD trong nước (VNIBOR USD) và quốc tế (SOFR) ở từng kỳ hạn · chênh VND − USD phải lớn hơn mức VND mất giá kỳ vọng thì giữ VND mới có lời</div>
   <p class="muted" style="margin:-4px 0 12px">Số liệu phiên ${dvn(d)} · ${VR.d.length} phiên trong kho (từ ${dvn(VR.d[0])}) · tự đọc từ bảng VIRA Market Watch mỗi chiều ngày làm việc, mỗi dòng được kiểm tra chéo bằng đỉnh/đáy 52 tuần trong chính bảng.</p>
   <div class="kpis">
     ${kpi('VNIBOR VND qua đêm', pc(mmV('vnd', 'ON', i), 2), `1W ${pc(mmV('vnd', '1W', i), 2)} · ${sg((mmV('vnd', 'ON', i) - mmV('vnd', 'ON', w)) * 100, 0, ' bps')} 1 tuần`)}
@@ -1320,12 +1321,103 @@ function subMM() {
     ${card({ id: 'mmFx', title: 'Tỷ giá USD/VND Vietcombank theo ngày', sub: 'VND · giá mua tiền mặt và bán ra · tích luỹ mỗi ngày làm việc từ 16/10/2026', src: 'Vietcombank (tỷ giá công bố)' })}
     ${card({ id: 'mmLvTs', title: 'VNIBOR VND, VNIBOR USD và SOFR theo thời gian', sub: '%/năm, theo phiên · VND qua đêm, 1M, 3M, 1Y; USD 3M; SOFR 3M', h: 'tall',
       src: 'Nguồn: VIRA Market Watch' })}
+    ${card({ id: 'mmUsCurve', title: 'Đường cong lợi suất trái phiếu Kho bạc Mỹ', h: 'tall', sub: '%/năm theo kỳ hạn 1 tháng – 30 năm · hôm nay so với 1 tuần, 1 tháng trước, đầu năm và 1 năm trước',
+      insight: usCurveIns(), src: 'U.S. Treasury (Daily Treasury Par Yield Curve)' })}
   </div>
   <article class="card"><h3 class="sub">Bảng kỳ hạn · phiên ${dvn(d)}</h3><p class="chart-sub">%/năm · thay đổi tính bằng bps · "1T" = so với phiên gần nhất cách 1 tuần, "1Th" = 1 tháng</p>
     <div class="tscroll"><table><thead><tr><th>Kỳ hạn</th><th class="n">VND</th><th class="n">Δ phiên</th><th class="n">Δ 1T</th><th class="n">USD</th><th class="n">Δ 1T</th><th class="n">SOFR</th><th class="n">VND − USD</th><th class="n">Δ 1T</th><th class="n">Δ 1Th</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div class="src">Nguồn: VIRA Market Watch · ${mmLink()}</div></article>
-  <p class="muted">Cách đọc: chênh VND − USD dương và lớn hơn mức VND mất giá kỳ vọng → nắm giữ VND có lợi hơn (đường đỏ dùng mức thay đổi tỷ giá 12 tháng qua làm mốc tham chiếu, không phải dự báo) (tiền chảy vào VND, đỡ tỷ giá). Chênh co lại hoặc thấp hơn mức mất giá → động cơ giữ USD tăng, áp lực lên tỷ giá. VNIBOR USD cao hơn SOFR = USD trong nước khan hơn quốc tế.${prem != null ? ` Hiện VNIBOR USD 3M ${prem >= 0 ? 'cao' : 'thấp'} hơn SOFR 3M <b>${nf(Math.abs(prem) * 100, 0)} bps</b>.` : ''}</p>`;
+  <p class="muted">Cách đọc: chênh VND − USD dương và lớn hơn mức VND mất giá kỳ vọng → nắm giữ VND có lợi hơn (đường đỏ dùng mức thay đổi tỷ giá 12 tháng qua làm mốc tham chiếu, không phải dự báo) (tiền chảy vào VND, đỡ tỷ giá). Chênh co lại hoặc thấp hơn mức mất giá → động cơ giữ USD tăng, áp lực lên tỷ giá. VNIBOR USD cao hơn SOFR = USD trong nước khan hơn quốc tế.${prem != null ? ` Hiện VNIBOR USD 3M ${prem >= 0 ? 'cao' : 'thấp'} hơn SOFR 3M <b>${nf(Math.abs(prem) * 100, 0)} bps</b>.` : ''}</p>
+  ${subFxIntl()}`;
 }
+/* ---------- Tỷ giá quốc tế (ECB theo ngày; vàng Stooq, dự phòng WiData) ---------- */
+// [mã, tên, chuỗi, đảo (USD/xxx → giá trị đồng tiền tính bằng USD), cách niêm yết]
+const FXG = {
+  g7: { t: 'Nhóm G7', s: [['EUR', 'EUR', 'eurusd_d', false, 'EUR/USD'], ['JPY', 'JPY', 'usdjpy_d', true, 'USD/JPY'], ['GBP', 'GBP', 'gbpusd_d', false, 'GBP/USD'], ['CAD', 'CAD', 'usdcad_d', true, 'USD/CAD'], ['USD', 'USD (DXY)', 'dxy_d', false, 'DXY']] },
+  safe: { t: 'Nhóm trú ẩn an toàn', s: [['USD', 'USD (DXY)', 'dxy_d', false, 'DXY'], ['JPY', 'JPY', 'usdjpy_d', true, 'USD/JPY'], ['CHF', 'CHF', 'usdchf_d', true, 'USD/CHF'], ['XAU', 'Vàng', 'gold', false, 'XAU/USD']] },
+  apac: { t: 'Nhóm châu Á – Thái Bình Dương', s: [['CNY', 'CNY', 'usdcny_d', true, 'USD/CNY'], ['INR', 'INR', 'usdinr_d', true, 'USD/INR'], ['SGD', 'SGD', 'usdsgd_d', true, 'USD/SGD'], ['VND', 'VND', 'vnd', true, 'USD/VND']] } };
+const FXC = { EUR: C.navy, JPY: C.red, GBP: C.purple, CAD: C.tealInk, USD: C.grey, CHF: '#7a5bb5', XAU: C.gold, CNY: C.red, INR: '#e07b39', SGD: C.tealInk, VND: C.navy };
+function fxRaw(key) {   // {d:[], v:[]} theo ngày, giá niêm yết gốc
+  if (key === 'gold') { const g = gs('gold_d'); if (g.d.length > 200) return g; const w = D.goldWi || []; return { d: w.map(p => p.d), v: w.map(p => p.v) }; }
+  if (key === 'vnd') { const a = (dom.nhtmD && dom.nhtmD.length ? dom.nhtmD : dom.nhtmSell || []); return { d: a.map(p => p.d), v: a.map(p => p.v) }; }
+  return gs(key);
+}
+function fxAxis(keys) {   // trục ngày chung (ngày có số ECB/DXY), từ 2021
+  const base = gs('eurusd_d').d.length ? gs('eurusd_d') : gs('dxy_d');
+  return base.d.filter(d => d >= '2021-01-01');
+}
+function fxAlign(key, inv, days) {
+  if (key === 'gold' && gs('gold_d').d.length <= 200) {   // vàng từ WiData (tháng/tuần/ngày): nội suy tuyến tính giữa các điểm có số
+    const r = fxRaw('gold'), t = r.d.map(d => +new Date(d)); let j = 0;
+    return days.map(d => { const x = +new Date(d); while (j + 1 < t.length && t[j + 1] <= x) j++;
+      if (!t.length || x < t[0]) return null; if (j + 1 >= t.length) return x - t[j] <= 5 * 864e5 ? r.v[j] : null;
+      return r.v[j] + (r.v[j + 1] - r.v[j]) * (x - t[j]) / (t[j + 1] - t[j]); });
+  }   // giá trị đồng tiền tính theo USD (đảo nếu cần), lấp ngày thiếu bằng số gần nhất (tối đa 8 ngày; vàng tháng tối đa 40)
+  const r = fxRaw(key), out = [], maxGap = key === 'gold' && gs('gold_d').d.length <= 200 ? 40 : key === 'vnd' ? 10 : 8; let j = -1;
+  for (const d of days) { while (j + 1 < r.d.length && r.d[j + 1] <= d) j++;
+    const ok = j >= 0 && r.v[j] != null && (new Date(d) - new Date(r.d[j])) / 864e5 <= maxGap; out.push(ok ? (inv ? 1 / r.v[j] : r.v[j]) : null); }
+  return out;
+}
+function fxChg(key, inv, back) {   // % thay đổi giá trị đồng tiền so với USD (dương = mạnh lên) trong khoảng 'back' ngày hoặc từ đầu năm
+  const r = fxRaw(key); if (!r.d.length) return null; let n = r.v.length - 1; while (n >= 0 && r.v[n] == null) n--; if (n < 0) return null;
+  const tgt = back === 'ytd' ? r.d[n].slice(0, 4) + '-01-01' : new Date(new Date(r.d[n]) - back * 864e5).toISOString().slice(0, 10);
+  let i = back === 'ytd' ? r.d.findIndex(d => d >= tgt) - 1 : r.d.findIndex(d => d > tgt) - 1; if (i < 0) i = back === 'ytd' ? r.d.findIndex(d => d >= tgt) : 0; if (i < 0 || r.v[i] == null) return null;
+  const a = inv ? 1 / r.v[i] : r.v[i], b = inv ? 1 / r.v[n] : r.v[n]; return (b / a - 1) * 100;
+}
+const fxLast = key => { const r = fxRaw(key); let n = r.v.length - 1; while (n >= 0 && r.v[n] == null) n--; return n < 0 ? { d: null, v: null } : { d: r.d[n], v: r.v[n] }; };
+function fxIns(g) {
+  const S = FXG[g].s.map(([c, n, k, inv]) => ({ c, n, y: fxChg(k, inv, 'ytd'), m: fxChg(k, inv, 30) })).filter(x => x.y != null);
+  if (!S.length) return 'Đang nạp số liệu.';
+  const o = S.slice().sort((a, b) => b.y - a.y), hi = o[0], lo = o[o.length - 1];
+  const tail = { g7: 'USD (DXY) tăng là đồng USD mạnh lên so với rổ 6 đồng tiền; các đồng còn lại dương = mạnh lên so với USD.',
+    safe: 'Khi rủi ro toàn cầu tăng, dòng tiền thường tìm đến USD, JPY, CHF và vàng; cả nhóm cùng tăng là tín hiệu tâm lý phòng thủ. Vàng tăng mạnh hơn USD cho thấy nhu cầu trú ẩn ngoài hệ thống USD.',
+    apac: 'CNY là neo của các đồng tiền châu Á và có ảnh hưởng trực tiếp tới VND qua thương mại; CNY và SGD yếu đi cùng lúc thường làm tăng áp lực lên USD/VND.' }[g];
+  return `Từ đầu năm: ${o.map(x => `${x.n} <b>${sg(x.y, 1)}</b>`).join(', ')}. Mạnh nhất <b>${hi.n}</b>, yếu nhất <b>${lo.n}</b>; 1 tháng qua ${S.map(x => `${x.n} ${sg(x.m, 1)}`).join(', ')}.` + how(tail);
+}
+function subFxIntl() {
+  const rows = [];
+  const seen = new Set();
+  Object.values(FXG).forEach(G => G.s.forEach(([c, n, k, inv, q]) => { if (seen.has(q)) return; seen.add(q); const l = fxLast(k);
+    rows.push(`<tr><td><b>${q}</b></td><td class="n">${l.v == null ? '—' : nf(l.v, k === 'gold' || k === 'vnd' ? 0 : k === 'dxy_d' || k === 'usdjpy_d' || k === 'usdinr_d' ? 2 : 4)}</td>${[7, 30, 'ytd', 365].map(b => { const v = fxChg(k, inv, b); return `<td class="n" style="color:${v == null ? '' : (k === 'dxy_d' ? v < 0 : v > 0) ? '#1e8f5a' : '#c0392b'}">${v == null ? '—' : sg(v, 1)}</td>`; }).join('')}<td class="muted">${l.d ? dvn(l.d) : ''}</td></tr>`); }));
+  return `<h3 class="ovh dsec" id="m-intl">Tỷ giá quốc tế</h3>
+  <article class="card"><h3 class="sub">Bảng tỷ giá quốc tế</h3><p class="chart-sub">giá niêm yết gần nhất · % thay đổi giá trị đồng tiền so với USD (xanh = mạnh lên so với USD; riêng DXY xanh = USD yếu đi, vàng = giá vàng tăng)</p>
+    <div class="tscroll"><table><thead><tr><th>Cặp</th><th class="n">Hiện tại</th><th class="n">1 tuần</th><th class="n">1 tháng</th><th class="n">Từ đầu năm</th><th class="n">1 năm</th><th>Ngày</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>
+    <div class="src">Nguồn: ECB (tỷ giá tham chiếu, tính chéo theo USD); DXY theo công thức ICE; vàng: Stooq (XAU/USD) hoặc WiData 74407 (CME); USD/VND: NHTM bán ra.</div></article>
+  <div class="grid g2 gap">
+    ${['g7', 'safe', 'apac'].map(g => card({ id: 'fxI_' + g, title: FXG[g].t + ': ' + FXG[g].s.map(x => x[1]).join(', '), h: 'tall',
+      sub: '% thay đổi từ đầu khung đang xem, theo ngày · dương = đồng tiền mạnh lên so với USD (USD theo DXY; vàng theo giá USD/ounce) · đổi khung bằng nút 1M–5Y',
+      insight: fxIns(g), src: 'ECB · DXY tính theo công thức ICE' + (g === 'safe' ? ' · vàng: Stooq / WiData' : g === 'apac' ? ' · USD/VND: NHTM bán ra (WiData)' : '') })).join('')}
+  </div>`;
+}
+const fxRebase = { id: 'fxRebase', beforeUpdate(ch) {   // quy về % thay đổi so với điểm đầu khung đang xem
+  const lo = Math.max(0, Math.round((ch.options.scales.x || {}).min ?? 0));
+  ch.data.datasets.forEach(d => { const r = d.$raw; if (!r) return; let i = lo; while (i < r.length && r[i] == null) i++;
+    d.data = r.map((v, j) => v == null || j < i || i >= r.length ? null : +((v / r[i] - 1) * 100).toFixed(3)); });
+} };
+function chFxIntl() {
+  const days = fxAxis(); if (!days.length) return;
+  ['g7', 'safe', 'apac'].forEach(g => {
+    if (!document.getElementById('fxI_' + g)) return;
+    mk('fxI_' + g, { type: 'line', plugins: [fxRebase], data: { labels: days.map(dvn), datasets: FXG[g].s.map(([c, n, k, inv]) => ({ label: n, $raw: fxAlign(k, inv, days), data: [],
+        borderColor: FXC[c], backgroundColor: FXC[c], borderWidth: c === 'USD' ? 2.4 : c === 'VND' ? 2.4 : 1.6, borderDash: c === 'USD' && g !== 'safe' ? [5, 4] : [], pointRadius: 0, spanGaps: true, dp: 2, unit: '%' })) },
+      options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: { ticks: { callback: v => nf(v, 0) + '%' }, grid: { color: '#eef0f4' } } }, plugins: { refLines: { lines: [{ value: 0, label: '', color: C.grey }] } } } }, { win: 12 });
+  });
+}
+function drUsCurve(id) {
+  const U = GD.ustCurve; if (!U || !document.getElementById(id)) return;
+  mk(id, { type: 'line', data: { labels: U.t, datasets: U.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.teal, C.tealInk, C.red, C.grey][i] || C.grey,
+    { pointRadius: i ? 2 : 3, borderWidth: i ? 1.6 : 2.8, borderDash: i === 1 ? [2, 2] : i === 4 ? [5, 4] : [], dp: 2 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
+}
+function usCurveIns() {
+  const U = GD.ustCurve; if (!U) return '';
+  const iy = t => U.t.indexOf(t), c = n => U.c.find(x => x.n === n), cur = U.c[0];
+  const d = (a, t) => a && a.v[iy(t)] != null && cur.v[iy(t)] != null ? (cur.v[iy(t)] - a.v[iy(t)]) * 100 : null;
+  const w = c('1 tuần trước'), m = c('1 tháng trước'), y = c('Đầu năm'), y1 = c('1 năm trước');
+  const s210 = cur.v[iy('10Y')] - cur.v[iy('2Y')], s3m = cur.v[iy('10Y')] - cur.v[iy('3M')];
+  return `${dvn(cur.d)}: 2 năm <b>${pc(cur.v[iy('2Y')], 2)}</b>, 10 năm <b>${pc(cur.v[iy('10Y')], 2)}</b>, 30 năm ${pc(cur.v[iy('30Y')], 2)}. Thay đổi 10 năm: ${sg(d(w, '10Y'), 0, ' bps')} 1 tuần, ${sg(d(m, '10Y'), 0, ' bps')} 1 tháng, ${sg(d(y, '10Y'), 0, ' bps')} từ đầu năm, ${sg(d(y1, '10Y'), 0, ' bps')} 1 năm; 2 năm ${sg(d(y, '2Y'), 0, ' bps')} từ đầu năm. Độ dốc 10 năm − 2 năm <b>${sg(s210 * 100, 0, ' bps')}</b>, 10 năm − 3 tháng ${sg(s3m * 100, 0, ' bps')}.`
+    + how('Đầu dài (10–30 năm) tăng nhanh hơn đầu ngắn là dấu hiệu nhà đầu tư đòi bù rủi ro kỳ hạn cao hơn (lạm phát, thâm hụt ngân sách), không chỉ do kỳ vọng Fed. Lợi suất USD cao giữ chênh lệch lãi suất VND − USD hẹp, hạn chế dư địa NHNN hạ lãi suất.');
+}
+
 function mmLink() { const k = VR.d[VR.d.length - 1], u = VR.src && VR.src[k]; return u ? `<a href="${esc(u)}" target="_blank" rel="noopener">số ${dvn(k)}</a>` : ''; }
 function drMmCurve(id) {
   if (!VR.d.length || !document.getElementById(id)) return;
@@ -1349,6 +1441,8 @@ function mmSpreadIns(i, dep) {
   return `Chênh lớn nhất ở kỳ hạn <b>${mx[0]}</b> (${sg(mx[1], 2, ' điểm %')}), nhỏ nhất ở <b>${mn[0]}</b> (${sg(mn[1], 2, '')}). USD/VND (NHTM bán ra) ${sg(be, 2)} trong 12 tháng, ${sg(dep.m3, 1)} quy năm 3 tháng gần nhất. ${be < 0 ? `VND còn <b>tăng giá</b>, nên cả lãi suất lẫn tỷ giá đều nghiêng về giữ VND ở ${above.length ? 'các kỳ hạn ' + above.join(', ') : 'mọi kỳ hạn chênh dương'}; rủi ro là tỷ giá đảo chiều (Fed tăng lãi suất, cuối năm cầu USD nhập khẩu).` : above.length ? `Ở các kỳ hạn ${above.join(', ')} chênh lãi suất đã bù được mức mất giá này → giữ VND có lời nếu tỷ giá không tăng nhanh hơn.` : 'Chưa kỳ hạn nào bù được mức mất giá 12 tháng → động cơ giữ USD vẫn còn.'} ${mn[1] < 0 ? `Kỳ hạn ${mn[0]} chênh âm: vay VND rẻ hơn vay USD — dễ phát sinh vay VND mua USD.` : ''}`;
 }
 function chMM() {
+  collapsify($('#picture [data-pp="mm"]'), 'mm2', ['m-vnd', 'm-intl'], 'h3.dsec');
+  drUsCurve('mmUsCurve'); chFxIntl();
   if (!VR.d.length) return;
   const i = mmIdx(), w = mmIdx(7), m = mmIdx(30), dep = mmDep();
   drMmCurve('mmCurve');
@@ -2050,7 +2144,7 @@ function paneHot() {
     <article class="card hot"><h3 class="sub">3 · Fed nghiêng về tăng + dầu ~110 USD: NHNN còn dư địa nới?</h3>
       <p>UST 10 năm <b>${pc(glast('us_10y_d').v ?? lastv(intl.ust10).v, 2)}</b> (${dvn(glast('us_10y_d').d)}), Brent <b>${nf(lastv(intl.brent).v, 0)} USD</b> (${sg(yoyAt(intl.brent, lastv(intl.brent).d), 0)} YoY)${fwD && top(fwD) ? `; hợp đồng tương lai lãi suất quỹ liên bang ngụ ý <b>${nf(top(fwD)[1], 1)}%</b> khả năng mức ${top(fwD)[0].replace(/\./g, ',').replace('-', '–')}% sau phiên ${dvn(fwD.date)}` : ''}. Trong nước CPI <b>${pc(lastv(dom.cpi).v, 2)}</b>, lõi ${pc(lastv(dom.cpiCore).v, 2)} — vượt mục tiêu 4,5–5%.</p>
       <p><b>Nhận định:</b> R-02 và R-06 cùng bật, NHNN khó hạ lãi suất điều hành mạnh tay; điểm đỡ là tỷ giá NHTM và tự do đều thấp hơn đầu năm. Đổi chiều nếu Fed giữ nguyên ngày 9/12 và Brent về dưới 90 USD.</p>
-      <div class="src">Xem: Bức tranh ngành › Quốc tế (Mỹ), Tỷ giá USD/VND; Catalyst · Risk (R-02, R-06)</div></article>
+      <div class="src">Xem: Bức tranh ngành › Quốc tế (Mỹ), Tỷ giá; Catalyst · Risk (R-02, R-06)</div></article>
     <article class="card hot"><h3 class="sub">4 · Mùa KQKD Q3: lợi nhuận tốt nhưng phản ánh giai đoạn trước chỉ đạo</h3>
       <p>Techcombank LNST công ty mẹ Q3 <b>7.943 tỷ</b> (+23,7% YoY, kỷ lục, thu dịch vụ +40%), VPBank 8.644 tỷ (+18,8%, tín dụng bất động sản +40%), LPBank 3.562 tỷ (+28,9%; 9 tháng hơn 10.400 tỷ). P/B ngành <b>${x(SV.now.pb)}</b>.</p>
       <p><b>Nhận định:</b> Q3 chưa chịu tác động của đợt giảm lãi suất cho vay từ 20/10; rủi ro điều chỉnh dự phóng nằm ở Q4/2026 – 2027. Ưu tiên ngân hàng CASA cao, ít phụ thuộc chứng chỉ tiền gửi.</p>

@@ -449,6 +449,17 @@ def main():
                              'sym': x.get('symbol') or []})
     D['news'] = news
 
+    # ------------------------------------------------ giá vàng thế giới (WiData 74407, CME, USD/ounce): tháng → tuần → ngày tuỳ độ dài mỗi lần kéo; dự phòng khi chưa có chuỗi ngày Stooq
+    gold = {}
+    for d in raw:
+        if d['tool'] == 'wi_data_commodity':
+            for x in (d['response'].get('data') or []):
+                if isinstance(x, dict) and x.get('indicator_id') == 74407:
+                    for v in x.get('values', []):
+                        if v.get('value') is not None:
+                            gold[v['date']] = v['value']
+    D['goldWi'] = [{'d': k, 'v': gold[k]} for k in sorted(gold) if k >= '2021-01-01']
+
     # ------------------------------------------------ LDR: độ nhạy theo hệ số tiền gửi KBNN (Q2/2026)
     def latest_rows(endpoint, need):
         """Gộp mọi lần kéo nhiều mã của endpoint (khác năm/kỳ), lần kéo sau ghi đè cùng (mã, năm, quý)."""

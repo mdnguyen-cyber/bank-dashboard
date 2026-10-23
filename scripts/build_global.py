@@ -312,6 +312,9 @@ if DP.exists():
     merge_d('eurusd_d', {d: x.get('eurusd') for d, x in e.items()}, 4)
     merge_d('usdcny_d', {d: x.get('usdcny') for d, x in e.items()}, 4)
     put('dxy_d', {d: x['dxy'] for d, x in e.items() if x.get('dxy') and d >= DAILY_FROM}, 2)
+    for k in ['gbpusd', 'usdcad', 'usdchf', 'usdinr', 'usdsgd']:   # tỷ giá quốc tế theo ngày (ECB)
+        put(k + '_d', {d: x[k] for d, x in e.items() if x.get(k) and d >= DAILY_FROM}, 4)
+    put('gold_d', {d: v for d, v in DY.get('gold', {}).items() if v and d >= DAILY_FROM}, 2)
     for k in ['central', 'ceil', 'floor', 'buy', 'sell']:
         put(f'vn_sbv_{k}_d', {d: x[k] for d, x in DY.get('sbv', {}).items() if x.get(k)}, 0)
     if DY.get('sfpce'):
@@ -360,7 +363,7 @@ if DP.exists():
         last = ds[-1]
         from datetime import date as _d, timedelta as _t
         ld = _d.fromisoformat(last)
-        snaps = [('Hiện tại', last), ('1 tháng trước', at((ld - _t(days=30)).isoformat())), ('Đầu năm', next((d for d in ds if d >= f'{ld.year}-01-01'), None)), ('1 năm trước', at((ld - _t(days=365)).isoformat()))]
+        snaps = [('Hiện tại', last), ('1 tuần trước', at((ld - _t(days=7)).isoformat())), ('1 tháng trước', at((ld - _t(days=30)).isoformat())), ('Đầu năm', next((d for d in ds if d >= f'{ld.year}-01-01'), None)), ('1 năm trước', at((ld - _t(days=365)).isoformat()))]
         G['ustCurve'] = {'t': TEN, 'c': [{'n': n, 'd': d, 'v': [U[d].get(t) for t in TEN]} for n, d in snaps if d]}
 
 # kỳ vọng lãi suất Fed theo phiên FOMC (scripts/fetch_fedwatch.py)

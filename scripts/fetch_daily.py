@@ -2,7 +2,8 @@
 
 - U.S. Treasury: lợi suất par curve hằng ngày (1M…30Y), công bố cuối mỗi ngày giao dịch.
 - MOF Nhật: lợi suất JGB theo kỳ hạn hằng ngày (jgbcme.csv + jgbcme_all.csv).
-- ECB: tỷ giá tham chiếu 16:00 CET (EUR/USD, EUR/JPY, EUR/CNY → USD/JPY, USD/CNY chéo).
+- ECB: tỷ giá tham chiếu 16:00 CET (EUR/USD, EUR/JPY, GBP, CAD, CHF, CNY, INR, SGD → tỷ giá chéo theo USD).
+- Stooq: giá vàng XAU/USD theo ngày.
 - Vietcombank: tỷ giá USD/VND mua, chuyển khoản, bán (ảnh chụp mỗi lần chạy, tích luỹ thành chuỗi).
 """
 import csv, io, json, re, sys, time, urllib.parse, urllib.request
@@ -84,18 +85,32 @@ def jgb():
 
 def ecb():
     res = {}
-    for cur in ['USD', 'JPY', 'CNY', 'GBP', 'CAD', 'SEK', 'CHF']:
+    for cur in ['USD', 'JPY', 'CNY', 'GBP', 'CAD', 'SEK', 'CHF', 'INR', 'SGD']:
         txt = get(f'https://data-api.ecb.europa.eu/service/data/EXR/D.{cur}.EUR.SP00.A?format=csvdata&startPeriod={FROM}')
         res[cur] = {r['TIME_PERIOD']: fnum(r['OBS_VALUE']) for r in csv.DictReader(io.StringIO(txt)) if r.get('OBS_VALUE')}
     out = {}
     for d, usd in res['USD'].items():
         if usd:
             out[d] = {'eurusd': usd, 'usdjpy': round(res['JPY'][d] / usd, 3) if res['JPY'].get(d) else None,
-                      'usdcny': round(res['CNY'][d] / usd, 4) if res['CNY'].get(d) else None}
+                      'usdcny': round(res['CNY'][d] / usd, 4) if res['CNY'].get(d) else None,
+                      'gbpusd': round(usd / res['GBP'][d], 4) if res['GBP'].get(d) else None,
+                      'usdcad': round(res['CAD'][d] / usd, 4) if res['CAD'].get(d) else None,
+                      'usdchf': round(res['CHF'][d] / usd, 4) if res['CHF'].get(d) else None,
+                      'usdinr': round(res['INR'][d] / usd, 3) if res['INR'].get(d) else None,
+                      'usdsgd': round(res['SGD'][d] / usd, 4) if res['SGD'].get(d) else None}
             g = {c: res[c].get(d) for c in ['JPY', 'GBP', 'CAD', 'SEK', 'CHF']}
             if all(g.values()):   # DXY theo công thức ICE: 50,14348112 × EURUSD^−0,576 × USDJPY^0,136 × GBPUSD^−0,119 × USDCAD^0,091 × USDSEK^0,042 × USDCHF^0,036
                 out[d]['dxy'] = round(50.14348112 * usd ** -0.576 * (g['JPY'] / usd) ** 0.136 * (usd / g['GBP']) ** -0.119 * (g['CAD'] / usd) ** 0.091
                                       * (g['SEK'] / usd) ** 0.042 * (g['CHF'] / usd) ** 0.036, 3)
+    return dict(sorted(out.items()))
+
+
+def gold():
+    """Giá vàng giao ngay XAU/USD theo ngày (Stooq, giá đóng cửa)."""
+    txt = get('https://stooq.com/q/d/l/?s=xauusd&i=d')
+    out = {r['Date']: fnum(r['Close']) for r in csv.DictReader(io.StringIO(txt)) if r.get('Date', '') >= FROM and r.get('Close')}
+    if len(out) < 100:
+        raise ValueError('Stooq trả ít dữ liệu vàng')
     return dict(sorted(out.items()))
 
 
@@ -258,7 +273,7 @@ def vcb(old):
 def main():
     old = json.loads(P.read_text(encoding='utf-8')) if P.exists() else {}
     res, rep = {}, {}
-    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('sg', sg), ('tw', lambda: tw(old.get('tw'))), ('kr', lambda: kr(old.get('kr'))), ('sbv', sbv), ('sfpce', sfpce), ('vcb', lambda: vcb(old.get('vcb')))]:
+    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('gold', gold), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('sg', sg), ('tw', lambda: tw(old.get('tw'))), ('kr', lambda: kr(old.get('kr'))), ('sbv', sbv), ('sfpce', sfpce), ('vcb', lambda: vcb(old.get('vcb')))]:
         try:
             v = fn()
             if not v:
