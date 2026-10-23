@@ -26,9 +26,11 @@ jobs:
           python scripts/fetch_jp.py || echo "fetch_jp lỗi"
           python scripts/fetch_daily.py || echo "fetch_daily lỗi"
           python scripts/fetch_fedwatch.py || echo "fetch_fedwatch lỗi"
+          python scripts/fetch_calendar.py || echo "fetch_calendar lỗi"
       - name: Dựng dữ liệu cho trang
         run: |
           if [ -f scripts/build_global.py ]; then python scripts/build_global.py; fi
+          python scripts/build_calendar.py || echo "build_calendar lỗi"
       - name: Commit nếu có số mới và deploy lại trang
         env:
           GH_TOKEN: ${{ github.token }}
@@ -38,6 +40,7 @@ jobs:
           git add -A data/global
           [ -f data/global-data.js ] && git add data/global-data.js
           [ -f data/fx-daily.js ] && git add data/fx-daily.js
+          git add -A data/calendar; [ -f data/calendar-data.js ] && git add data/calendar-data.js
           if git diff --cached --quiet; then echo "Không có số mới"; exit 0; fi
           git commit -m "Số liệu quốc tế $(date -u +%Y-%m-%d) (tự động)"
           for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done

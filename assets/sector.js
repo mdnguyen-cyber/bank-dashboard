@@ -1018,7 +1018,9 @@ function stk(id, labels, obj, o = {}) {   // obj = {tên: [giá trị]}; o.pct =
     return o.type === 'line' ? { type: 'line', label: k, data, borderColor: col, backgroundColor: col + 'cc', fill: j ? '-1' : 'origin', pointRadius: 0, borderWidth: 1, stack: 's', unit: o.pct ? '%' : (o.unit ?? ''), dp: o.dp ?? 0 }
       : { type: 'bar', label: k, data, backgroundColor: col, stack: 's', unit: o.pct ? '%' : (o.unit ?? ''), dp: o.dp ?? 0 };
   });
-  const extra = o.extra || [];
+  const extra = [...(o.extra || [])];
+  if (o.total) extra.push({ type: 'line', label: 'Tổng', data: labels.map((_, i) => { let t = 0, any = false; names.forEach(k => { const v = obj[k][i]; if (v != null) { t += v; any = true; } }); return any ? +t.toFixed(o.dp ?? 0) : null; }),
+    borderColor: '#1f2433', backgroundColor: '#1f2433', borderWidth: 2.2, pointRadius: 0, fill: false, stack: 'tot', unit: o.unit ?? '', dp: o.dp ?? 0, spanGaps: true });
   return mk(id, { type: o.type === 'line' ? 'line' : 'bar', data: { labels, datasets: [...ds, ...extra] }, options: Object.assign({
     plugins: { tooltip: { callbacks: { footer: o.pct ? undefined : items => { const t = items.filter(x => x.dataset.stack === 's').reduce((a, x) => a + (x.raw || 0), 0); return 'Tổng: ' + nf(t, o.dp ?? 0) + (o.unit || ''); } } } },
     scales: Object.assign({ x: { stacked: true }, y: Object.assign({ stacked: true, beginAtZero: true, ticks: { callback: v => nf(v, 0) + (o.pct ? '%' : '') }, grid: { color: '#eef0f4' } }, o.pct ? { min: 0, max: 100 } : {}, o.y || {}) }, o.scales || {}) }, o.options || {}) });
@@ -1088,8 +1090,8 @@ function gUSFlow() {
 function drUSFlow() {
   const F = GD.fedbs, H = GD.ustHold, M = GD.mspd, A = GD.auct, ni = GD.netIss;
   if (!F || !H || !M || !A) return;
-  stk('gUsFedA', F.d.map(dvn), F.a, { type: 'line', unit: ' tỷ USD' });
-  stk('gUsFedL', F.d.map(dvn), F.l, { type: 'line', unit: ' tỷ USD' });
+  stk('gUsFedA', F.d.map(dvn), F.a, { type: 'line', total: true, unit: ' tỷ USD' });
+  stk('gUsFedL', F.d.map(dvn), F.l, { type: 'line', total: true, unit: ' tỷ USD' });
   const mf = M.d.findIndex(d => d >= '2018-01'), md = M.d.slice(mf);
   const debt = Object.fromEntries(Object.entries(M.c).map(([k, v]) => [k, v.slice(mf).map(x => x == null ? null : +(x / 1000).toFixed(2))]));
   stk('gUsDebt', md.map(mvn), debt, { unit: ' nghìn tỷ', dp: 2, extra: [L('Tỷ trọng tín phiếu', M.billShare.slice(mf), C.red, { yAxisID: 'y1', borderWidth: 2.4, dp: 1 })],
@@ -1216,8 +1218,8 @@ function drJP() {
   }
   const B = GD.bojbs, H = GD.jgbHold;
   if (B) { const f = B.d.findIndex(d => d >= '2016-01'), cut = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, v.slice(f)]));
-    stk('gJpBsA', B.d.slice(f).map(mvn), cut(B.a), { type: 'line', unit: ' nghìn tỷ JPY' });
-    stk('gJpBsL', B.d.slice(f).map(mvn), cut(B.l), { type: 'line', unit: ' nghìn tỷ JPY' }); }
+    stk('gJpBsA', B.d.slice(f).map(mvn), cut(B.a), { type: 'line', total: true, unit: ' nghìn tỷ JPY' });
+    stk('gJpBsL', B.d.slice(f).map(mvn), cut(B.l), { type: 'line', total: true, unit: ' nghìn tỷ JPY' }); }
   if (H) { stk('gJpHold', H.d.map(qLab), H.h, { type: 'line', pct: true });
     const rows = deltaBars('gJpAbs', H.d.map(qLab), H.h, 4, { unit: ' nghìn tỷ JPY', dp: 1, skip: ['Khác'] }), n = H.total.length - 1, tc = H.total[n] - H.total[n - 4];
     $('#gJpAbsIns').innerHTML = `${qLab(H.d[n - 4])} → ${qLab(H.d[n])}: tổng JGB + tín phiếu ${sg(tc, 1, ' nghìn tỷ JPY')}. ${rows.filter(r => r[1] > 0).slice(0, 3).map(r => `<b>${esc(r[0])}</b> ${sg(r[1], 1, '')}`).join(', ')} tăng nắm giữ; ${rows.filter(r => r[1] < 0).map(r => `<b>${esc(r[0])}</b> ${sg(r[1], 1, '')}`).join(', ') || 'không nhóm nào giảm'}. BoJ rút khỏi thị trường JGB → lợi suất dài hạn Nhật phải đủ cao để nhà đầu tư trong nước (và tổ chức Nhật đang nắm UST) chuyển vốn về.`; }
@@ -2520,4 +2522,5 @@ header(); footer();
 decorate();
 try { history.scrollRestoration = 'manual'; } catch (e) {}
 scrollTo(0, 0); addEventListener('load', () => setTimeout(() => scrollTo(0, 0), 0));
+window.FSNAV = { show, openP, openC };   // cho lịch kinh tế đi tới chart liên quan
 })();

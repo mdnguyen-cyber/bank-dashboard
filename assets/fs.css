@@ -498,3 +498,68 @@ body.fss-open{overflow:hidden}
 .fss-txt[hidden]{display:none}
 .fss-txt textarea{width:240px;border:0;outline:none;font:13px Arial,sans-serif;resize:none}
 @media (max-width:820px){.fss-body{grid-template-columns:1fr}.fss-stage canvas{max-height:50vh}}
+/* lịch kinh tế */
+.cal-rail{position:fixed;right:0;top:38%;z-index:70;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 7px;border:1px solid #c9cfe6;border-right:0;border-radius:10px 0 0 10px;background:var(--navy);color:#fff;cursor:pointer;box-shadow:-3px 4px 14px rgba(20,30,70,.18);font:700 12px Arial,sans-serif}
+.cal-rail:hover{padding-right:10px}
+.cal-ico{font-size:15px;line-height:1}
+.cal-rl{writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.04em}
+.cal-badge{min-width:18px;height:18px;border-radius:9px;background:#e0533d;color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px}
+.cal-badge[hidden]{display:none}
+body.cal-open .cal-rail{display:none}
+.cal-drawer{position:fixed;top:0;right:0;bottom:0;width:420px;z-index:80;background:#fff;border-left:1px solid #dfe3ea;box-shadow:-8px 0 24px rgba(20,30,70,.12);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease;font-family:Arial,sans-serif;color:#1f2433;visibility:hidden}
+body.cal-open .cal-drawer{transform:none;visibility:visible}
+body{transition:padding-right .25s ease}
+@media (min-width:901px){body.cal-open{padding-right:420px}body.cal-open .aibot,body.cal-open .totop{right:438px}}
+.cal-hd{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;border-bottom:1px solid #e8ebf2}
+.cal-hd b{display:block;color:var(--navy);font-size:16px}.cal-hd small{color:#6b7385;font-size:11.5px}
+.cal-x{border:1px solid #d5d9e5;background:#fff;border-radius:6px;width:30px;height:30px;font-size:18px;cursor:pointer;color:var(--navy)}
+.cal-ctl{padding:10px 16px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #e8ebf2}
+.cal-chips{display:flex;flex-wrap:wrap;gap:6px}
+.cal-chips button{border:1px solid #d5d9e5;background:#fff;border-radius:99px;padding:5px 11px;font:700 12px Arial,sans-serif;color:#4a5263;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.cal-chips.sm button{padding:3px 9px;font-size:11.5px}
+.cal-chips button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.cal-custom{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:#4a5263}
+.cal-custom[hidden]{display:none}
+.cal-custom input{border:1px solid #d5d9e5;border-radius:6px;padding:3px 6px;font:12px Arial,sans-serif;margin-left:4px}
+.cal-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
+.cal-dot.H{background:#e0533d}.cal-dot.M{background:#f0a23b}
+.cal-list{flex:1;overflow:auto;padding:0 0 20px;position:relative}
+.cal-day{position:sticky;top:0;z-index:2;background:#f3f5fa;padding:6px 16px;font-size:11.5px;font-weight:700;color:#4a5263;text-transform:capitalize;border-bottom:1px solid #e8ebf2}
+.cal-day.today{color:var(--navy);background:#e7ecfa}
+.cal-now{display:flex;align-items:center;gap:8px;padding:4px 16px;color:#e0533d;font-size:11px;font-weight:700}
+.cal-now:after{content:"";flex:1;height:2px;background:#e0533d;border-radius:2px}
+.cal-ev{border-bottom:1px solid #eef0f5}
+.cal-ev.past .cal-row{opacity:.82}
+.cal-row{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:44px 30px minmax(0,1fr);grid-template-rows:auto auto;column-gap:8px;row-gap:4px;padding:8px 16px;cursor:pointer}
+.cal-row:hover,.cal-ev.open .cal-row{background:#f7f8fc}
+.cal-row:focus-visible{outline:2px solid var(--navy);outline-offset:-2px}
+.cal-t{font-size:12px;font-weight:700;color:#1f2433;display:flex;flex-direction:column}
+.cal-t em{font-style:normal;font-size:9.5px;font-weight:600;color:#8a92a6}
+.cal-c{font-size:10.5px;font-weight:700;color:var(--navy);background:#eef1fb;border-radius:4px;text-align:center;align-self:start;padding:2px 0}
+.cal-n{font-size:12.5px;font-weight:700;line-height:1.35;display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}
+.cal-n .cal-dot{transform:translateY(-1px)}
+.cal-left{font-size:10.5px;font-weight:700;color:#e0533d;background:#fdecea;border-radius:4px;padding:1px 5px}
+.cal-v{grid-column:3;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:12px;color:#4a5263}
+.cal-v small{display:block;font-size:9.5px;color:#8a92a6;text-transform:uppercase;letter-spacing:.04em}
+.cal-v b{color:#1f2433}
+.cal-up{color:#1b8a8f;font-size:10px;margin-left:3px}.cal-dn{color:#861C52;font-size:10px;margin-left:3px}
+.cal-more{padding:2px 16px 12px 98px;font-size:12px;line-height:1.5;color:#3f4656}
+.cal-more p{margin:0 0 6px}
+.cal-orig{color:#8a92a6;font-size:11px}
+.cal-spark{width:100%;height:70px;display:block;margin:4px 0}
+.cal-spark .a{fill:none;stroke:var(--navy);stroke-width:2}.cal-spark .ad{fill:var(--navy)}.cal-spark .f{fill:#fff;stroke:#f0a23b;stroke-width:1.6}
+.cal-leg{display:flex;gap:12px;flex-wrap:wrap;font-size:10.5px;color:#6b7385;margin-bottom:6px}
+.cal-leg i{display:inline-block;width:10px;height:3px;margin-right:4px;vertical-align:middle}
+.cal-leg .la{background:var(--navy)}.cal-leg .lf{height:8px;width:8px;border-radius:50%;border:1.5px solid #f0a23b}
+.cal-go{border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:7px;padding:6px 10px;font:700 12px Arial,sans-serif;cursor:pointer}
+.cal-go:hover{background:var(--navy);color:#fff}
+.cal-empty{padding:24px 16px;color:#6b7385;font-size:13px}
+.cal-ft{padding:8px 16px;border-top:1px solid #e8ebf2;font-size:10.5px;color:#8a92a6;line-height:1.4}
+@media (max-width:900px){
+  .cal-rail{top:auto;bottom:calc(140px + env(safe-area-inset-bottom,0px))}
+  .cal-drawer{top:auto;left:0;width:auto;height:82vh;border-left:0;border-top:1px solid #dfe3ea;border-radius:14px 14px 0 0;transform:translateY(100%);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .cal-more{padding-left:16px}
+}
+@media print{.cal-rail,.cal-drawer{display:none!important}body.cal-open{padding-right:0!important}}
+body.print-all .cal-rail,body.print-all .cal-drawer,body.pdf-cap .cal-rail,body.pdf-cap .cal-drawer{display:none!important}
+body.print-all.cal-open,body.pdf-cap.cal-open{padding-right:0!important}
