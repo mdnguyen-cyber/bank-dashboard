@@ -36,7 +36,8 @@
     const sub = txt(c.querySelector(':scope > .chart-sub'));
     const src = cleanSrc(txt(c.querySelector(':scope > .src')));
     const labs = (ch.data.labels || []).filter(x => x != null && x !== ''), max = ch.options.scales && ch.options.scales.x && ch.options.scales.x.max;
-    const last = labs.length ? String(labs[Math.min(labs.length - 1, typeof max === 'number' ? Math.round(max) : labs.length - 1)]) : '';
+    let last = labs.length ? String(labs[Math.min(labs.length - 1, typeof max === 'number' ? Math.round(max) : labs.length - 1)]) : '';
+    if (!/\d{4}|\d{1,2}\/\d{1,2}|Q\d/.test(last)) last = '';   // trục không phải thời gian (kỳ hạn, tên nước…) thì không ghi kỳ dữ liệu
     const page = txt(document.querySelector('.site-nav a.on')) || (document.title || '').split('·')[0].trim() || 'FinSuccess';
     const ins = txt(c.querySelector(':scope > .insight')).replace(/Hàm ý:.*/s, '').slice(0, 420);
     return { ch, cv, title, sub, src, last, page, ins };
@@ -59,9 +60,18 @@
     if (logo) { const lw = logo.width / logo.height * lh; x.drawImage(logo, P, y, lw, lh); }
     x.font = font('700', 17); x.fillStyle = FIN.grey; x.textAlign = 'right'; x.textBaseline = 'middle'; x.fillText(m.page, W - P, y + lh / 2); x.textAlign = 'left';
     y += lh + Math.round(16 * k); x.fillStyle = FIN.line; x.fillRect(P, y, W - 2 * P, 2); y += Math.round(26 * k);
-    x.textBaseline = 'top'; x.fillStyle = FIN.navy; x.font = font('700', 34);
-    wrap(x, m.title, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(42 * k); });
-    if (m.sub) { x.fillStyle = FIN.grey; x.font = font('400', 18); wrap(x, m.sub, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(24 * k); }); }
+    x.textBaseline = 'top';
+    if (st.key) {   // kiểu slide: thông điệp chính to nhất, tên chart và mô tả nhỏ, xám bên dưới
+      x.fillStyle = FIN.navy; x.font = font('700', 36);
+      wrap(x, st.key, W - 2 * P, 3).forEach(l => { x.fillText(l, P, y); y += Math.round(44 * k); });
+      y += Math.round(4 * k); x.fillStyle = FIN.grey; x.font = font('700', 18);
+      wrap(x, m.title, W - 2 * P, 1).forEach(l => { x.fillText(l, P, y); y += Math.round(24 * k); });
+      if (m.sub) { x.font = font('400', 16); wrap(x, m.sub, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(21 * k); }); }
+    } else {
+      x.fillStyle = FIN.navy; x.font = font('700', 34);
+      wrap(x, m.title, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(42 * k); });
+      if (m.sub) { x.fillStyle = FIN.grey; x.font = font('400', 18); wrap(x, m.sub, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(24 * k); }); }
+    }
     y += Math.round(10 * k);
     x.font = font('400', 16); const foot = wrap(x, (m.last ? 'Kỳ dữ liệu: ' + m.last + ' · ' : '') + 'Nguồn: ' + m.src, W - 2 * P - Math.round(260 * k), 2);
     const fh = foot.length * Math.round(22 * k) + Math.round(34 * k), cy1 = H - fh;
@@ -121,7 +131,8 @@
       <p class="fss-hint">Kéo trên ảnh để vẽ. Chữ: chọn T rồi bấm vào vị trí cần ghi.</p></div>
     <div class="fss-right">
       <div class="fss-fmt">${Object.entries(FMT).map(([k, f]) => `<button type="button" data-fmt="${k}"><b>${f.t}</b><small>${f.s}</small></button>`).join('')}</div>
-      <label class="fss-lab">CAPTION<textarea class="fss-cap" rows="8"></textarea></label>
+      <label class="fss-lab">THÔNG ĐIỆP CHÍNH <small>tuỳ chọn · thành tiêu đề lớn trên ảnh, tên chart thu nhỏ màu xám</small><textarea class="fss-key" rows="2" placeholder="VD: Lợi suất TPCP tăng ở mọi kỳ hạn, kỳ hạn ngắn tăng mạnh nhất so với đầu năm"></textarea></label>
+      <label class="fss-lab">CAPTION<textarea class="fss-cap" rows="7"></textarea></label>
       <button type="button" class="fss-main" data-act="share">⇪ Chia sẻ…</button>
       <div class="fss-row"><button type="button" data-act="dl">Tải ảnh</button><button type="button" data-act="copy">Chép ảnh</button></div>
       <button type="button" data-act="cap" class="fss-capbtn">Chép caption</button>
@@ -147,10 +158,10 @@
     }, 30);
   }
   function caption(m) {
-    return [m.page, '', m.title + (m.sub ? ' (' + m.sub + ')' : ''), m.ins ? '\n' + m.ins : '', '', (m.last ? 'Kỳ dữ liệu: ' + m.last + '\n' : '') + 'Nguồn: ' + m.src, 'Xem đầy đủ: ' + location.href.split('?')[0].split('#')[0]].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
+    return [...(st.key ? [st.key, ''] : []), m.page, '', m.title + (m.sub ? ' (' + m.sub + ')' : ''), m.ins ? '\n' + m.ins : '', '', (m.last ? 'Kỳ dữ liệu: ' + m.last + '\n' : '') + 'Nguồn: ' + m.src, 'Xem đầy đủ: ' + location.href.split('?')[0].split('#')[0]].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
   }
   function open(c) {
-    st.card = c; st.meta = meta(c); st.shapes = []; st.base = null; st.tool = 'arrow'; st.color = 'navy'; st.picked = false; msg('');
+    st.card = c; st.meta = meta(c); st.shapes = []; st.base = null; st.key = ''; M.querySelector('.fss-key').value = ''; st.tool = 'arrow'; st.color = 'navy'; st.picked = false; msg('');
     M.querySelector('.fss-cap').value = caption(st.meta); M.hidden = false; document.body.classList.add('fss-open'); syncUi(); build();
   }
   function close() { M.hidden = true; document.body.classList.remove('fss-open'); M.querySelector('.fss-txt').hidden = true; }
@@ -178,6 +189,8 @@
     const f = e.target.closest('[data-fmt]'); if (f && f.dataset.fmt !== st.fmt) { st.fmt = f.dataset.fmt; syncUi(); return build(); }
     const a = e.target.closest('[data-act]'); if (a) act(a.dataset.act);
   });
+  let keyT = null;
+  M.querySelector('.fss-key').addEventListener('input', e => { clearTimeout(keyT); keyT = setTimeout(() => { st.key = e.target.value.trim(); M.querySelector('.fss-cap').value = caption(st.meta); build(); }, 450); });
   document.addEventListener('keydown', e => { if (M.hidden) return; if (e.key === 'Escape' && M.querySelector('.fss-txt').hidden) close(); if ((e.ctrlKey || e.metaKey) && e.key === 'z' && document.activeElement.tagName !== 'TEXTAREA') { e.preventDefault(); act('undo'); } });
   const cv = M.querySelector('.fss-cv');
   cv.addEventListener('pointerdown', e => {
