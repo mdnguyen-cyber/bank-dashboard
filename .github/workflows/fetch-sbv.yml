@@ -1,0 +1,33 @@
+name: Cập nhật chỉ tiêu ngân hàng toàn hệ thống (NHNN)
+on:
+  schedule:
+    - cron: '23 2 * * *'   # 09:23 giờ Việt Nam mỗi ngày (NHNN chỉ hiện tháng mới nhất → chạy hằng ngày để không lỡ tháng)
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: fetch-sbv
+  cancel-in-progress: false
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Cài thư viện (đọc HTML, trình duyệt headless cho trang dựng bằng JavaScript)
+        run: |
+          pip install -q beautifulsoup4 lxml playwright
+          python -m playwright install --with-deps chromium > /dev/null
+      - name: Tải số NHNN
+        run: python scripts/fetch_sbv.py
+      - name: Commit nếu có số mới
+        run: |
+          git config user.name "fs-data-bot"
+          git config user.email "fs-data-bot@users.noreply.github.com"
+          git add data/vn/sbv.json
+          if git diff --cached --quiet; then echo "Không có số mới"; exit 0; fi
+          git commit -m "Chỉ tiêu ngân hàng NHNN $(date -u +%Y-%m-%d) (tự động)"
+          for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
