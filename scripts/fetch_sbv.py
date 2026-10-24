@@ -114,6 +114,10 @@ def main():
         except Exception as e:  # noqa: BLE001
             rep[pid] = 'lỗi: ' + str(e)[:160]
         time.sleep(GAP)
+    for pg in pages.values():   # dọn dòng rác của bảng bọc ngoài từ các lần chạy trước
+        for per in pg.values():
+            for k in [k for k, v in per.items() if len(k) > 120 or len(v) > 4]:
+                del per[k]
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({'fetched': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ'), 'report': rep, 'pages': pages}, ensure_ascii=False, indent=0), encoding='utf-8')
     for k, v in rep.items():

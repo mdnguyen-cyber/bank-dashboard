@@ -26,30 +26,6 @@
 },
 "credit": {
 "2025-10": {
-"DƯ NỢ TÍN DỤNG ĐỐI VỚI NỀN KINH TẾ VÀ TỐC ĐỘ TĂNG TRƯỞNG (Tháng 10 Năm 2025) STT Chỉ tiêu Số dư (Tỷ đồng) Tốc độ tăng (Giảm) so với cuối năm 2024 (%) 1 Nông nghiệp, lâm nghiệp và thuỷ sản 1.106.909,62 8,26 2 Công nghiệp và xây dựng 4.314.295,34 11,35 - Công nghiệp 2.968.266,73 10,85 - Xây dựng 1.346.028,61 12,47 3 Hoạt động Thương mại, Vận tải và Viễn thông 4.793.564,4 8,8 - Thương mại 4.341.914,71 7,89 - Vận tải và Viễn thông 451.649,69 18,35 4 Các hoạt động dịch vụ khác 7.792.767,4 23,43 TỔNG CỘNG 18.007.536,76 15,31 Ghi chú: null": [
-1.0,
-1106909.62,
-8.26,
-2.0,
-4314295.34,
-11.35,
-2968266.73,
-10.85,
-1346028.61,
-12.47,
-3.0,
-4793564.4,
-8.8,
-4341914.71,
-7.89,
-451649.69,
-18.35,
-4.0,
-7792767.4,
-23.43,
-18007536.76,
-15.31
-],
 "Nông nghiệp, lâm nghiệp và thuỷ sản": [
 1106909.62,
 8.26
@@ -128,18 +104,6 @@
 },
 "ldr": {
 "2024-06": {
-"THÁNG 06 NĂM 2024 STT Loại hình TCTD Tỷ lệ cấp tín dụng so với nguồn vốn huy động (%) 1 NHTM Nhà nước 82,62 2 NHTM cổ phần 80,78 3 NH Liên doanh, nước ngoài 42,23 4 Tổ chức tín dụng hợp tác 50,82 5 Toàn hệ thống 78,25 Ghi chú : Ghi chú: Nguồn số liệu dựa trên Báo cáo cân đối tài khoản kế toán, báo cáo thống kê tháng 6/2024 của Tổ chức tín dụng, chi nhánh ngân hàng nước ngoài (Không bao gồm Tổ chức tài chính vi mô). - Khối NHTM Nhà nước bao gồm: Ngân hàng Nông nghiệp và Phát triển nông thôn Việt Nam, Ngân hàng Thương mại Cổ phần Công thương Việt Nam, Ngân hàng Thương mại Cổ phần Ngoại thương Việt Nam, Ngân hàng Thương mại Cổ phần Đầu tư và Phát triển Việt Nam, Ngân hàng thương mại TNHH MTV Xây dựng Việt Nam, Ngân hàng TM TNHH MTV Dầu Khí Toàn Cầu, Ngân hàng thương mại TNHH một thành viên Đại Dương; - Tổ chức tín dụng hợp tác xã là ngân hàng hợp tác xã.": [
-1.0,
-82.62,
-2.0,
-80.78,
-3.0,
-42.23,
-4.0,
-50.82,
-5.0,
-78.25
-],
 "NHTM Nhà nước": [
 82.62
 ],
