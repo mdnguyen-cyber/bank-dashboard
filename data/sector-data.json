@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-23T14:40Z"
+  "auto": "2026-10-24T01:48Z"
  },
  "idx": {
   "now": {
@@ -44415,6 +44415,62 @@
  },
  "news": [
   {
+   "d": "2026-10-24",
+   "t": "Công an sẽ điều tra khi phát hiện tài khoản ngân hàng có giao dịch nhận tiền, chuyển tiền như sau",
+   "src": "CafeF",
+   "url": "https://cafef.vn/cong-an-se-dieu-tra-khi-phat-hien-tai-khoan-ngan-hang-co-giao-dich-nhan-tien-chuyen-tien-nhu-sau-188261022153139678.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Đất ngân hàng đang xử lý nợ có đánh thuế như đất bỏ hoang?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/dat-ngan-hang-dang-xu-ly-no-co-danh-thue-nhu-dat-bo-hoang-188261024083556793.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Ngày 24/10, gửi 50 triệu đồng tại MB, VPBank, Techcombank, Sacombank, SHB, HDBank và ACB nhận bao nhiêu tiền lãi sau 12 tháng?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngay-24-10-gui-50-trieu-dong-tai-mb-vpbank-techcombank-sacombank-shb-hdbank-va-acb-nhan-bao-nhieu-tien-lai-sau-12-thang-188261024081430114.chn",
+   "sym": [
+    "TCB",
+    "ACB",
+    "VPB",
+    "HDB",
+    "SHB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Lãi suất vay ngân hàng hơn 10%/năm, doanh nghiệp khó làm ăn có lãi",
+   "src": "CafeF",
+   "url": "https://cafef.vn/lai-suat-vay-ngan-hang-hon-10-nam-doanh-nghiep-kho-lam-an-co-lai-18826102322111483.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Giá vàng miếng, vàng nhẫn sáng 24/10 tại SJC, PNJ, DOJI, Bảo Tín Minh Châu và Bảo Tín Mạnh Hải",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-sang-24-10-tai-sjc-pnj-doji-bao-tin-minh-chau-va-bao-tin-manh-hai-188261023214427223.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Ngân hàng đầu tiên báo lãi quý 3 tăng trưởng âm",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngan-hang-dau-tien-bao-lai-quy-3-tang-truong-am-188261023203732713.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Agribank giảm lãi suất cho vay hỗ trợ phát triển sản xuất kinh doanh",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/agribank-giam-lai-suat-cho-vay-ho-tro-phat-trien-san-xuat-kinh-doanh-5136224.html",
+   "sym": []
+  },
+  {
    "d": "2026-10-23",
    "t": "Agribank rao bán khoản nợ của ông Trần Văn Thạnh và bà Nguyễn Thị Hồng Vân, tài sản thế chấp là 2 xe Lexus LX570 và nhà đất tại TP.HCM",
    "src": "CafeF",
@@ -44566,6 +44622,13 @@
    "t": "Lãi suất tiết kiệm đã tăng 11 tháng liên tiếp",
    "src": "VnExpress",
    "url": "https://vnexpress.net/lai-suat-tiet-kiem-da-tang-11-thang-lien-tiep-5135955.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-23",
+   "t": "Công an xác minh giao dịch chuyển khoản 41 triệu đồng của một nhân viên tiệm vàng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/cong-an-xac-minh-giao-dich-chuyen-khoan-41-trieu-dong-cua-mot-nhan-vien-tiem-vang-188261023143546868.chn",
    "sym": []
   },
   {
