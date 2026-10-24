@@ -68,8 +68,9 @@ def parse(html):
             p = period(node.get_text(' ')) if node is not None else None
         p = p or page_p
         for r in rows:
-            label = next((c for c in r if c and num(c) is None and not re.fullmatch(r'[IVX\d.]+', c)), None)
-            vals = [num(c) for c in r if num(c) is not None]
+            li = next((i for i, c in enumerate(r) if c and num(c) is None and not re.fullmatch(r'[IVX\d.]+', c)), None)
+            label = r[li] if li is not None else None
+            vals = [num(c) for c in r[li + 1:] if num(c) is not None] if li is not None else []   # bỏ cột STT trước tên dòng
             if not label or not vals or fold(label).startswith(('stt', 'chi tieu')):
                 continue
             key = (p, label, tuple(vals))
