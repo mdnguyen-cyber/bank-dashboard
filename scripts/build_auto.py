@@ -126,6 +126,13 @@ def main():
         except Exception as e:  # noqa: BLE001
             rep['dom.' + key] = 'lỗi ' + str(e)[:80]
 
+    # OMO và tín phiếu đang lưu hành theo phiên (NHNN qua dulieukinhte): chuỗi mới, ghi đè toàn bộ từ nguồn
+    for key, name in [('omoOut', 'Tổng OMO đang lưu hành'), ('tpOut', 'Tổng tín phiếu đang lưu hành')]:
+        rw = next((x for x in (pages.get('sbv-bomhut-tien-334') or {}).values() if x.get('n') == name), None)
+        if rw and rw['d']:
+            S.setdefault('dom', {})[key] = [{'d': d, 'v': round(v, 1)} for d, v in zip(rw['d'], rw['v'])]
+            rep['dom.' + key] = f"{len(rw['d'])} phiên, đến {rw['d'][-1]}"
+
     S.setdefault('meta', {})['auto'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ')
     (ROOT / 'data/sector-data.json').write_text(json.dumps(S, ensure_ascii=False, indent=1), encoding='utf-8')
     (ROOT / 'data/sector-data.js').write_text('window.SECTOR_DATA = ' + json.dumps(S, ensure_ascii=False, separators=(',', ':')) + ';\n', encoding='utf-8')

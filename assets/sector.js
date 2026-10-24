@@ -96,12 +96,26 @@ function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình c
   ['intl', 'dom', 'mm', 'bank', 'peer', 'camel', 'idx'].forEach(k => { if (!pDone[k]) { ({ intl: chIntl, dom: () => { chDom(); chBond(); }, mm: chMM, bank: chBank, peer: chPeer, camel: chCamel, idx: chIdx })[k](); pDone[k] = true; } });
   GCOUNTRY.forEach(([k]) => { if (!gDone[k]) { gDone[k] = true; ({ gl: drGL, us: drUS, ea: drEA, jp: drJP, cn: drCN, ov: chIntlOverview })[k](); } });
 }
-function drawSpec(src, cid, last) {   // vẽ lại chart `src` vào canvas `cid`; last = mở sẵn khung N điểm cuối (vẫn kéo/chọn lại được)
+function drawSpec(src, cid, last, o = {}) {   // vẽ lại chart `src` vào canvas `cid`; last = mở sẵn khung N điểm cuối; o.win = khung N tháng; o.marks = [{d, t}] vạch mốc (chỉ ở bản vẽ lại này)
   const sp = SPEC[src]; if (!sp) return false;
   const cfg = cl(sp.cfg);
   if (cfg.options) { delete cfg.options.onClick; if (cfg.options.scales && cfg.options.scales.x) { delete cfg.options.scales.x.min; delete cfg.options.scales.x.max; } }
-  mk(cid, cfg, { last }); return true;
+  if (o.marks && o.marks.length) { cfg.plugins = [...(cfg.plugins || []), markPlug]; cfg.options.plugins = cfg.options.plugins || {}; cfg.options.plugins.qMarks = { marks: o.marks }; }
+  mk(cid, cfg, { last: o.win ? undefined : last, win: o.win }); return true;
 }
+const markPlug = { id: 'qMarks', afterDatasetsDraw(ch, _a, o) {   // vạch dọc tại mốc sự kiện; trục ngày (dd/mm/yyyy) hoặc tháng (mm/yyyy)
+  const ms = o && o.marks; if (!ms) return; const { ctx, chartArea: A, scales: { x } } = ch; const L = ch.data.labels || [];
+  const key = l => { const m = String(l).match(/^(\d{2})\/(\d{2})\/(\d{4})$/); if (m) return `${m[3]}-${m[2]}-${m[1]}`; const n = String(l).match(/^(\d{2})\/(\d{4})$/); return n ? `${n[2]}-${n[1]}-99` : null; };
+  const ks = L.map(key);
+  ms.forEach((mk_, j) => {
+    let i = ks.findIndex(k => k && k >= mk_.d); if (i < 0) return;
+    if (ks[i].endsWith('-99') && ks[i].slice(0, 7) !== mk_.d.slice(0, 7)) return;
+    const px = x.getPixelForValue(i); if (px < A.left - 1 || px > A.right + 1) return;
+    ctx.save(); ctx.strokeStyle = '#861C52'; ctx.lineWidth = 1.4; ctx.setLineDash([4, 3]); ctx.beginPath(); ctx.moveTo(px, A.top); ctx.lineTo(px, A.bottom); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font = '700 10px Arial, sans-serif'; const w = ctx.measureText(mk_.t).width + 8, y = A.top + 2 + j * 17, bx = px + w + 4 > A.right ? px - w - 3 : px + 3;
+    ctx.fillStyle = 'rgba(255,255,255,.92)'; ctx.fillRect(bx, y, w, 15); ctx.fillStyle = '#861C52'; ctx.textBaseline = 'middle'; ctx.fillText(mk_.t, bx + 4, y + 7.5); ctx.restore();
+  });
+} };
 function chartBox(src, cid, h = '') { return `<div class="cbox ${h}"><canvas id="${cid}" role="img" aria-label="${esc(SPEC[src] ? cardMeta(SPEC[src].el).title : src)}"></canvas></div>`; }
 
 function mk(id, cfg, opt = {}) {
@@ -910,6 +924,12 @@ function usInfExpIns() {
   return `Kỳ vọng lạm phát 1 năm <b>${pc(e1.v, 1)}</b>, 5–10 năm <b>${pc(e5.v, 1)}</b> (${mvn(e1.d)}); CPI thực tế ${pc(c.v, 1)} (${mvn(c.d)}).`
     + how('Kỳ vọng dài hạn (5–10 năm) là thước đo Fed theo dõi để biết lạm phát có "neo" hay không; kỳ vọng dài hạn tăng lên trên 3% là rủi ro lạm phát ngấm vào đòi hỏi tiền lương, khiến Fed khó hạ lãi suất.');
 }
+function omoOutIns() {
+  const O = dom.omoOut || []; if (!O.length) return ''; const l = O[O.length - 1], mx = O.filter(p => p.d >= (+l.d.slice(0, 4) - 1) + l.d.slice(4)).reduce((m, p) => p.v > m.v ? p : m);
+  const w = O.find(p => p.d >= new Date(new Date(l.d) - 30 * 864e5).toISOString().slice(0, 10)) || O[0];
+  return `${dvn(l.d)}: OMO lưu hành <b>${nf(l.v / 1000, 1)} nghìn tỷ</b>, ${sg((l.v - w.v) / 1000, 1, ' nghìn tỷ')} trong 1 tháng; đỉnh 12 tháng ${nf(mx.v / 1000, 1)} nghìn tỷ (${dvn(mx.d)}).`
+    + how('OMO lưu hành là lượng tiền NHNN đang cho ngân hàng vay có kỳ hạn qua thị trường mở. Lãi suất liên ngân hàng giảm trong lúc OMO lưu hành cũng giảm thì thanh khoản cải thiện không đến từ NHNN bơm tiền mà từ nguồn khác (tiền gửi Kho bạc, mua ngoại tệ, cầu vốn giảm).');
+}
 function gGL() {
   const u = glast('us_10y_d'), de = glast('de_10y_d'), jp = glast('jp_10y_d'), ea = glast('ea_all_10y_d'), w = glast('us_wti_d');
   const ytd = k => { const a = glast(k).v, b = yStart(k); return a != null && b != null ? (a - b) * 100 : null; };
@@ -1636,6 +1656,7 @@ function subDom() {
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động <b>${nf(Math.min(...on3(dom.onDaily)), 2)}–${nf(Math.max(...on3(dom.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...dom.onDaily.map(p => p.v)), 2)}% ngày ${dvn(dom.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh rơi vào cuối tháng. OMO lưu hành giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9 xuống 110,9 nghìn tỷ (14/10) — NHNN rút bớt tiền khi áp lực tỷ giá tăng. R-10: OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR.`,
       src: 'WiData 82237, 81522, 82268; ai_news 14/10/2026' })}
+    ${dom.omoOut ? card({ id: 'chOmoOut', title: 'OMO và tín phiếu NHNN đang lưu hành', h: 'tall', sub: 'nghìn tỷ đồng, theo phiên (cột) · đường = lãi suất LNH qua đêm (trục phải) · OMO lưu hành giảm = NHNN rút tiền khỏi TT2', insight: omoOutIns(), src: 'NHNN (kết quả đấu thầu thị trường mở) qua dulieukinhte.com; LNH qua đêm: NHNN' }) : ''}
     ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · cuối tháng · NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác', ctl: true,
       insight: depIns(),
       src: 'WiData 202886, 202874, 202880' })}
@@ -1675,6 +1696,12 @@ function chDom() {
     L('LNH qua đêm', dom.onDaily.map(p => p.v), C.navy, { yAxisID: 'y' }), L('Lãi suất OMO', omoD, C.teal, { borderDash: [5, 4], yAxisID: 'y' }),
     { label: 'Bơm/hút ròng (tỷ)', data: netD, backgroundColor: netD.map(v => (v ?? 0) >= 0 ? 'rgba(41,56,168,.35)' : 'rgba(192,57,43,.35)'), yAxisID: 'y1', dp: 0, unit: '' }] },
     options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis('%'), y1: numAxis('tỷ đồng', { position: 'right', grid: { display: false } }) } } }, { win: 3 });
+  if (dom.omoOut) { const O = dom.omoOut, T = Object.fromEntries((dom.tpOut || []).map(p => [p.d, p.v])), onM = Object.fromEntries(dom.onDaily.map(p => [p.d, p.v]));
+    mk('chOmoOut', { type: 'bar', data: { labels: O.map(p => dvn(p.d)), datasets: [
+      { label: 'OMO lưu hành', data: O.map(p => +(p.v / 1000).toFixed(1)), backgroundColor: 'rgba(29,38,120,.55)', stack: 's', dp: 1, unit: ' nghìn tỷ', yAxisID: 'y' },
+      { label: 'Tín phiếu lưu hành (hút)', data: O.map(p => T[p.d] ? -(T[p.d] / 1000).toFixed(1) : 0), backgroundColor: 'rgba(192,57,43,.55)', stack: 's', dp: 1, unit: ' nghìn tỷ', yAxisID: 'y' },
+      L('LNH qua đêm', O.map(p => onM[p.d] ?? null), C.gold, { yAxisID: 'y1', borderWidth: 2, type: 'line' })] },
+      options: { scales: { x: { stacked: true, ticks: { maxTicksLimit: 10 } }, y: numAxis('nghìn tỷ', { stacked: true }), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } }, { win: 12 }); }
   mk('chDep', { type: 'line', data: { labels: labs.map(mvn), datasets: [L('NHTM Nhà nước', al(dom.dep12State, labs), C.navy, { borderWidth: 2.4 }), L('NHTM lớn', al(dom.dep12Large, labs), C.tealInk), L('NHTM khác', al(dom.dep12Other, labs), C.purple)] },
     options: { scales: { y: pctAxis() } } }, { switch: 'line' });
   const l19 = monthsFrom('2019-01', TODAY.slice(0, 7));
@@ -2420,7 +2447,7 @@ function paneQuick() {
     </tbody></table></div>
     <p class="note keep">Cách cập nhật: (1) chuyên viên bấm <b>✎ Chỉnh sửa</b> để sửa vài đoạn của bản đang xem → lưu thành bản mới mang tên mình (đoạn đã sửa có vạch vàng); hoặc (2) nhắn AI <i>"Cập nhật nhanh ngành ngân hàng"</i> — AI đọc các bản trước, ưu tiên bản gần nhất của chuyên viên, rồi viết tiếp.</p>
   </article>`;
-  u.concerns.forEach((c, i) => qCharts(c).forEach((g, j) => drawSpec(g.id, `qu-${i}-${j}-${g.id}`, g.last)));
+  u.concerns.forEach((c, i) => qCharts(c).forEach((g, j) => drawSpec(g.id, `qu-${i}-${j}-${g.id}`, g.last, { win: g.win, marks: g.marks })));
   if (!E) $$('#quick section.qc > .qc-h').forEach(h => { h.classList.add('coll'); h.title = 'Bấm để thu gọn / mở'; h.onclick = e => { if (e.target.closest('select,[contenteditable]')) return; h.parentElement.classList.toggle('qshut'); }; });
   $$('#quick [data-qv]').forEach(b => b.onclick = () => { quSel = +b.dataset.qv; quEdit = false; paneQuick(); window.scrollTo({ top: 0 }); });
   $$('#quick [data-book]').forEach(b => b.onclick = () => openBook(b.dataset.book));

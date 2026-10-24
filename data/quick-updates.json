@@ -2,6 +2,127 @@
  "note": "Mỗi bản cập nhật là một phần tử trong updates. Bản mới thêm vào, không sửa bản cũ. author.type = 'AI' hoặc 'Chuyên viên'. follows = id bản trước mà bản này viết tiếp. concerns[].status: mới | nóng lên | tiếp diễn | hạ nhiệt. charts[].id = mã chart trong Chart book (python3 scripts/chart_ids.py), last = chỉ hiện N điểm gần nhất. Quy trình: docs/cap-nhat-nhanh.md",
  "updates": [
   {
+   "id": "QU-2026-10-24-AI",
+   "date": "2026-10-24",
+   "author": {
+    "type": "AI",
+    "name": "Claude",
+    "requestedBy": "Minh Đức"
+   },
+   "follows": "QU-2026-10-22-AI",
+   "vsPrev": "Thêm số liên ngân hàng và OMO đến 22–23/10: lãi suất qua đêm bật lại 4,31% (22/10) sau đáy 3,39% (21/10), kỳ hạn 1–3 tháng tiếp tục giảm; NHNN hút ròng qua OMO 8 phiên liên tiếp, OMO lưu hành còn 95,1 nghìn tỷ (23/10).",
+   "headline": "Hai công văn hạ chi phí vốn ở TT1 nhanh hơn TT2: tiết kiệm 12 tháng Big 4 −50 bps, còn TT2 dịu ở kỳ hạn 1–3 tháng nhưng không nhờ OMO — NHNN vẫn hút ròng",
+   "summary": [
+    "Hai công văn <b>9608/NHNN-CSTT</b> (18/10) và <b>9736/NHNN-CSTT</b> (21/10): giảm tối thiểu <b>0,5 điểm %</b> lãi suất tiền gửi bình quân của giao dịch mới kỳ hạn từ 6 tháng (so với 11–20/10 của chính ngân hàng, NHNN theo dõi qua báo cáo thống kê), giảm lãi suất cho vay <b>1,5–2%/năm</b> cho sản xuất kinh doanh và lĩnh vực ưu tiên, kể cả khách hàng hiện hữu.",
+    "<b>TT1 (huy động từ dân cư, tổ chức kinh tế):</b> lãi suất tiết kiệm 12 tháng NHTM Nhà nước <b>5,90% → 5,40%</b> (30/9 → 22/10), NHTM lớn 5,91% → 5,81%, nhóm còn lại 5,99% → 5,65%. Vietcombank 12 tháng 5,4%, 6 tháng 3,0% (20/10).",
+    "<b>TT2 (liên ngân hàng):</b> qua đêm 4,42% (19/10) → <b>3,39%</b> (21/10) rồi bật lại <b>4,31%</b> (22/10); 1 tháng 5,52% → 5,11%, 3 tháng 7,30% → <b>6,93%</b> (19/10 → 22/10).",
+    "<b>OMO:</b> NHNN hút ròng 8 phiên liên tiếp (14/10–23/10), OMO lưu hành giảm từ <b>111,7 nghìn tỷ</b> (13/10) xuống <b>95,1 nghìn tỷ</b> (23/10); lãi suất OMO giữ 4,5%, không phát hành tín phiếu.",
+    "<b>Nhận định:</b> phần cải thiện ở TT2 không đến từ OMO. Kỳ hạn 1–3 tháng giảm đều là dấu hiệu nhu cầu vốn kỳ hạn của các ngân hàng giảm sau khi huy động TT1 rẻ hơn; qua đêm bật lại cho thấy thanh khoản ngắn vẫn mỏng khi NHNN không bơm thêm."
+   ],
+   "kpis": [
+    {
+     "l": "Tiết kiệm 12T NHTM Nhà nước",
+     "v": "5,40%",
+     "s": "22/10 · −50 bps so với 30/9",
+     "cls": "pos"
+    },
+    {
+     "l": "LNH qua đêm",
+     "v": "4,31%",
+     "s": "22/10 · 21/10: 3,39%",
+     "cls": "neg"
+    },
+    {
+     "l": "LNH 3 tháng",
+     "v": "6,93%",
+     "s": "22/10 · 19/10: 7,30%",
+     "cls": "pos"
+    },
+    {
+     "l": "OMO lưu hành",
+     "v": "95,1 nghìn tỷ",
+     "s": "23/10 · 13/10: 111,7 nghìn tỷ",
+     "cls": ""
+    },
+    {
+     "l": "Chi phí vốn ngành (COF)",
+     "v": "4,21%",
+     "s": "Q2/2026 · Q4/2025: 3,69%",
+     "cls": "neg"
+    }
+   ],
+   "concerns": [
+    {
+     "title": "TT1: tiết kiệm giảm nhanh ở Big 4, chậm ở nhóm tư nhân lớn",
+     "scope": "nganh",
+     "status": "nóng lên",
+     "note": "Sau hai công văn, lãi suất tiết kiệm 12 tháng NHTM Nhà nước giảm <b>50 bps</b> về 5,40%, nhóm NHTM khác giảm <b>34 bps</b> về 5,65%, nhưng NHTM lớn (MBB, ACB, TCB, VPB) chỉ giảm <b>10 bps</b> về 5,81% (30/9 → 22/10). Mức giảm bắt buộc tính trên <b>giao dịch mới</b>, nên chi phí vốn (COF) chỉ hạ dần theo nhịp tiền gửi cũ đáo hạn. Ước tính: (a) giả định tiền gửi kỳ hạn từ 6 tháng chiếm khoảng một nửa tiền gửi khách hàng, (b) kỳ hạn bình quân khoảng 12 tháng nên mỗi tháng khoảng 1/12 phần này đáo hạn và tái tục ở mức thấp hơn 0,5 điểm %; khi đó COF ngành (4,21% ở Q2/2026) giảm khoảng <b>2 bps mỗi tháng</b>, tối đa khoảng <b>25 bps</b> sau 12 tháng. <b>Nhận định:</b> lãi suất cho vay phải giảm 1,5–2%/năm ngay, kể cả dư nợ hiện hữu, nên NIM bị ép trước khi COF kịp hạ; nhóm tư nhân lớn giảm huy động ít nhất là nhóm còn biên an toàn mỏng hơn về LDR (90,7% ở Q2/2026).",
+     "change": "Có số đến 22/10 cho cả ba nhóm; NHTM lớn mới giảm 10 bps so với cuối tháng 9.",
+     "charts": [
+      {
+       "id": "chDep",
+       "win": 24,
+       "marks": [
+        {
+         "d": "2026-10-18",
+         "t": "CV 9608 (18/10)"
+        },
+        {
+         "d": "2026-10-21",
+         "t": "CV 9736 (21/10)"
+        }
+       ],
+       "caption": "Lãi suất tiết kiệm 12 tháng theo nhóm, 2 năm: lần giảm đầu tiên của NHTM Nhà nước kể từ khi tăng từ 5,2% lên 5,9% hồi tháng 3."
+      },
+      {
+       "id": "chNimDep",
+       "win": 24,
+       "caption": "COF ngành tăng liên tục từ cuối 2025 lên 4,21% (Q2/2026) trong khi NIM đi ngang quanh 3,1% — dư địa giảm lãi suất cho vay 1,5–2% rất hẹp."
+      }
+     ]
+    },
+    {
+     "title": "TT2: lãi suất kỳ hạn dịu, nhưng không phải nhờ OMO",
+     "scope": "noi",
+     "status": "tiếp diễn",
+     "note": "Qua đêm giảm từ 4,42% (19/10) xuống <b>3,39%</b> (21/10) rồi bật lại <b>4,31%</b> (22/10); kỳ hạn 1 tháng giảm 41 bps về 5,11%, 3 tháng giảm 37 bps về <b>6,93%</b>. Cùng lúc, NHNN <b>hút ròng 8 phiên liên tiếp</b>: OMO lưu hành từ 111,7 nghìn tỷ (13/10) xuống <b>95,1 nghìn tỷ</b> (23/10), thấp hơn nhiều mức đỉnh <b>255,2 nghìn tỷ</b> (9/9); lãi suất OMO giữ 4,5%. <b>Nhận định:</b> TT2 dịu ở kỳ hạn 1–3 tháng trong lúc NHNN rút tiền, nên phần cải thiện đến từ việc các ngân hàng bớt vay kỳ hạn sau khi huy động TT1 rẻ hơn, không phải từ NHNN bơm thêm. Qua đêm vẫn dao động mạnh quanh lãi suất OMO 4,5%, cho thấy thanh khoản ngắn chưa dồi dào; nếu NHNN tiếp tục hút trong khi phải giữ tỷ giá, TT2 có thể căng lại vào cuối tháng.",
+     "change": "Có số TT2 đến 22/10 và OMO đến 23/10: qua đêm bật lại, kỳ hạn 1–3 tháng tiếp tục giảm, NHNN chưa bơm ròng phiên nào kể từ 14/10.",
+     "charts": [
+      {
+       "id": "chOn",
+       "win": 12,
+       "marks": [
+        {
+         "d": "2026-10-18",
+         "t": "CV 9608"
+        },
+        {
+         "d": "2026-10-21",
+         "t": "CV 9736"
+        }
+       ],
+       "caption": "Liên ngân hàng qua đêm và bơm/hút ròng OMO, 1 năm: qua đêm giảm sau hai công văn khi cột OMO vẫn âm."
+      },
+      {
+       "id": "chOmoOut",
+       "win": 12,
+       "marks": [
+        {
+         "d": "2026-10-18",
+         "t": "CV 9608"
+        },
+        {
+         "d": "2026-10-21",
+         "t": "CV 9736"
+        }
+       ],
+       "caption": "OMO lưu hành giảm từ đỉnh 255,2 nghìn tỷ (9/9) xuống 95,1 nghìn tỷ (23/10): NHNN rút tiền, không bơm thêm."
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "QU-2026-10-22-AI",
    "date": "2026-10-22",
    "author": {
