@@ -451,7 +451,7 @@ function paneMacro() {
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động mạnh <b>${nf(Math.min(...on3(MA.onDaily)), 2)}–${nf(Math.max(...on3(MA.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...MA.onDaily.map(v => v.v)), 2)}% ngày ${dvn(MA.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh thường rơi vào cuối tháng (căng mùa vụ) và NHNN bơm OMO đúng các phiên đó. Theo deck (R-10), OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR — nên TT2 hạ không tự kéo lãi suất huy động TT1 xuống.`,
       src: 'WiData macro 82237, 81522, 82268' })}
-    ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · cuối tháng · NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác · đường vàng = ' + T + ' niêm yết', ctl: true,
+    ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · theo ngày từ 10/2024 · bình quân niêm yết NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác · đường vàng = ' + T + ' niêm yết',
       insight: (() => { const st = lastv(SD.dep12State), lg = lastv(SD.dep12Large), ot = lastv(SD.dep12Other), b = lastv(depB);
         return `Lãi suất 12T của ${T} <b>${pc(b.v, 2)}</b> (${dvn(b.d)}) so với bình quân NHTM Nhà nước <b>${pc(st.v, 2)}</b>, NHTM lớn ${pc(lg.v, 2)}, NHTM khác ${pc(ot.v, 2)} (${mvn(st.d)}). ${(() => { const [gn, g] = ['CTG', 'VCB', 'BID', 'AGR'].includes(T) ? ['NHTM Nhà nước', st] : ['MBB', 'ACB', 'TCB', 'VPB'].includes(T) ? ['NHTM lớn', lg] : ['NHTM khác', ot], dd = b.v - g.v;
           return Math.abs(dd) < 0.05 ? `${T} ngang bình quân nhóm ${gn}.` : `${T} ${dd > 0 ? 'cao' : 'thấp'} hơn bình quân nhóm ${gn} <b>${nf(Math.abs(dd), 2)} điểm %</b>${dd > 0 ? ' — trả giá cao hơn để giữ tiền gửi' : ''}.`; })()} Theo R-13, COF thực tế đi sau lãi suất niêm yết 1–3 quý — xem COF ở tab Tài chính › Biên lãi.`; })(),
@@ -496,9 +496,11 @@ function paneMacro() {
   ] }, options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis('%'), y1: numAxis('tỷ đồng', { position: 'right', grid: { display: false } }) } } }, { win: 3 });
   // Cùng dữ liệu và cách vẽ với dashboard ngành (Nội địa), thêm đường của ngân hàng đang xem
   const LN = (label, data, color, o = {}) => Object.assign({ label, data, borderColor: color, backgroundColor: color, borderWidth: 2, pointRadius: 0, dp: 2, unit: '%', spanGaps: true }, o);
-  const l21 = monthsFrom('2021-01', lastv(SD.dep12State).d.slice(0, 7));
-  mk('chDep', { type: 'line', data: { labels: l21.map(mvn), datasets: [LN('NHTM Nhà nước', alM(SD.dep12State, l21), C.navy, { borderWidth: 2.4 }), LN('NHTM lớn', alM(SD.dep12Large, l21), '#1f8a8d'), LN('NHTM khác', alM(SD.dep12Other, l21), C.purple), LN(T + ' niêm yết', alM(depB, l21), C.gold, { borderWidth: 2.4 })] },
-    options: { scales: { y: pctAxis() } } }, { switch: 'line' });
+  { const G = [['dep12StateD', 'NHTM Nhà nước', C.navy, 2.4], ['dep12LargeD', 'NHTM lớn', '#1f8a8d', 2], ['dep12OtherD', 'NHTM khác', C.purple, 2]].filter(([k]) => (SD[k] || []).length);
+    const days = [...new Set(G.flatMap(([k]) => SD[k].map(p => p.d)))].sort();
+    const ffm = arr => { const s_ = [...arr].sort((a, b) => a.d < b.d ? -1 : 1); let i = -1; return days.map(d => { while (i + 1 < s_.length && s_[i + 1].d <= d) i++; return i >= 0 ? s_[i].v : null; }); };
+    mk('chDep', { type: 'line', data: { labels: days.map(dvn), datasets: [...G.map(([k, n, c, w]) => LN(n, ffm(SD[k]), c, { borderWidth: w, stepped: true })), LN(T + ' niêm yết', ffm(depB), C.gold, { borderWidth: 2.4, stepped: true })] },
+      options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis() } } }, { win: 12 }); }
   const yrs = [...new Set(CY.map(v => v.d.slice(0, 4)))].slice(-4);
   mk('chCredit', { type: 'line', data: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'], datasets: yrs.map((y, i) => ({
     label: y, data: Array.from({ length: 12 }, (_, m) => { const f = CY.find(v => v.d.startsWith(`${y}-${String(m + 1).padStart(2, '0')}`)); return f ? f.v : null; }),

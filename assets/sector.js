@@ -924,6 +924,13 @@ function usInfExpIns() {
   return `Kỳ vọng lạm phát 1 năm <b>${pc(e1.v, 1)}</b>, 5–10 năm <b>${pc(e5.v, 1)}</b> (${mvn(e1.d)}); CPI thực tế ${pc(c.v, 1)} (${mvn(c.d)}).`
     + how('Kỳ vọng dài hạn (5–10 năm) là thước đo Fed theo dõi để biết lạm phát có "neo" hay không; kỳ vọng dài hạn tăng lên trên 3% là rủi ro lạm phát ngấm vào đòi hỏi tiền lương, khiến Fed khó hạ lãi suất.');
 }
+const LNH_T = [['ON', 'Qua đêm', C.navy], ['1W', '1 tuần', C.blue], ['1M', '1 tháng', C.tealInk], ['3M', '3 tháng', C.gold], ['6M', '6 tháng', C.purple], ['9M', '9 tháng', C.red]];
+function lnhIns() {
+  const X = dom.lnh; if (!X) return ''; const l = t => (X[t] || []).slice(-1)[0], b = (t, n) => { const a = X[t] || []; return a[Math.max(0, a.length - 1 - n)]; };
+  const ch = t => l(t) && b(t, 5) ? (l(t).v - b(t, 5).v) * 100 : null;
+  return `${dvn(l('ON').d)}: ${LNH_T.map(([t, n]) => `${n} <b>${pc(l(t) && l(t).v, 2)}</b>`).join(', ')}. So với 5 phiên trước: qua đêm ${sg(ch('ON'), 0, ' bps')}, 3 tháng ${sg(ch('3M'), 0, ' bps')}, 6 tháng ${sg(ch('6M'), 0, ' bps')}, 9 tháng ${sg(ch('9M'), 0, ' bps')}.`
+    + how('Chi phí vốn trên TT2 không chỉ là qua đêm: ngân hàng thiếu vốn kỳ hạn phải vay 3–9 tháng, và mức này cao hơn nhiều so với lãi suất OMO 4,5%. Kỳ hạn dài giảm mới là dấu hiệu chi phí vốn liên ngân hàng hạ thật; khối lượng giao dịch kỳ hạn dài nhỏ nên số dao động mạnh.');
+}
 function omoOutIns() {
   const O = dom.omoOut || []; if (!O.length) return ''; const l = O[O.length - 1], mx = O.filter(p => p.d >= (+l.d.slice(0, 4) - 1) + l.d.slice(4)).reduce((m, p) => p.v > m.v ? p : m);
   const w = O.find(p => p.d >= new Date(new Date(l.d) - 30 * 864e5).toISOString().slice(0, 10)) || O[0];
@@ -1656,8 +1663,9 @@ function subDom() {
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động <b>${nf(Math.min(...on3(dom.onDaily)), 2)}–${nf(Math.max(...on3(dom.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...dom.onDaily.map(p => p.v)), 2)}% ngày ${dvn(dom.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh rơi vào cuối tháng. OMO lưu hành giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9 xuống 110,9 nghìn tỷ (14/10) — NHNN rút bớt tiền khi áp lực tỷ giá tăng. R-10: OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR.`,
       src: 'WiData 82237, 81522, 82268; ai_news 14/10/2026' })}
+    ${dom.lnh ? card({ id: 'chLnhTen', title: 'Lãi suất liên ngân hàng theo kỳ hạn (TT2)', h: 'tall', sub: '%/năm, theo phiên · bình quân liên ngân hàng NHNN công bố: qua đêm, 1 tuần, 1, 3, 6, 9 tháng · nét đứt = lãi suất OMO', insight: lnhIns(), src: 'NHNN (lãi suất bình quân liên ngân hàng) qua dulieukinhte.com' }) : ''}
     ${dom.omoOut ? card({ id: 'chOmoOut', title: 'OMO và tín phiếu NHNN đang lưu hành', h: 'tall', sub: 'nghìn tỷ đồng, theo phiên (cột) · đường = lãi suất LNH qua đêm (trục phải) · OMO lưu hành giảm = NHNN rút tiền khỏi TT2', insight: omoOutIns(), src: 'NHNN (kết quả đấu thầu thị trường mở) qua dulieukinhte.com; LNH qua đêm: NHNN' }) : ''}
-    ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · cuối tháng · NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác', ctl: true,
+    ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · theo ngày từ 10/2024 · bình quân niêm yết NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác',
       insight: depIns(),
       src: 'WiData 202886, 202874, 202880' })}
     ${card({ id: 'bBig4', title: 'Lợi suất trái phiếu Big 4 khi phát hành', sub: '%/năm · lãi suất coupon tại thời điểm phát hành, bình quân gia quyền theo giá trị trong tháng · điểm = từng ngân hàng · đường đỏ = huy động 12T Big 4 · đường xám = TPCP 10 năm (cuối tháng)', insight: bBig4Ins(), src: BD.src.big4 + '; ' + BD.src.curve })}
@@ -1696,14 +1704,21 @@ function chDom() {
     L('LNH qua đêm', dom.onDaily.map(p => p.v), C.navy, { yAxisID: 'y' }), L('Lãi suất OMO', omoD, C.teal, { borderDash: [5, 4], yAxisID: 'y' }),
     { label: 'Bơm/hút ròng (tỷ)', data: netD, backgroundColor: netD.map(v => (v ?? 0) >= 0 ? 'rgba(41,56,168,.35)' : 'rgba(192,57,43,.35)'), yAxisID: 'y1', dp: 0, unit: '' }] },
     options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis('%'), y1: numAxis('tỷ đồng', { position: 'right', grid: { display: false } }) } } }, { win: 3 });
+  if (dom.lnh) { const X = dom.lnh, days = [...new Set(Object.values(X).flatMap(a => a.map(p => p.d)))].sort(), om = Object.fromEntries((dom.omoDaily || []).map(p => [p.d, p.v]));
+    let lo = null; const omo = days.map(d => (om[d] != null ? (lo = om[d]) : lo));
+    mk('chLnhTen', { type: 'line', data: { labels: days.map(dvn), datasets: [...LNH_T.filter(([t]) => X[t]).map(([t, n, c]) => { const m = Object.fromEntries(X[t].map(p => [p.d, p.v])); return L(n, days.map(d => m[d] ?? null), c, { borderWidth: t === 'ON' || t === '3M' ? 2.2 : 1.5 }); }),
+      L('Lãi suất OMO', omo, C.grey, { borderDash: [5, 4], borderWidth: 1.4 })] }, options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis('') } } }, { win: 12 }); }
   if (dom.omoOut) { const O = dom.omoOut, T = Object.fromEntries((dom.tpOut || []).map(p => [p.d, p.v])), onM = Object.fromEntries(dom.onDaily.map(p => [p.d, p.v]));
     mk('chOmoOut', { type: 'bar', data: { labels: O.map(p => dvn(p.d)), datasets: [
       { label: 'OMO lưu hành', data: O.map(p => +(p.v / 1000).toFixed(1)), backgroundColor: 'rgba(29,38,120,.55)', stack: 's', dp: 1, unit: ' nghìn tỷ', yAxisID: 'y' },
       { label: 'Tín phiếu lưu hành (hút)', data: O.map(p => T[p.d] ? -(T[p.d] / 1000).toFixed(1) : 0), backgroundColor: 'rgba(192,57,43,.55)', stack: 's', dp: 1, unit: ' nghìn tỷ', yAxisID: 'y' },
       L('LNH qua đêm', O.map(p => onM[p.d] ?? null), C.gold, { yAxisID: 'y1', borderWidth: 2, type: 'line' })] },
       options: { scales: { x: { stacked: true, ticks: { maxTicksLimit: 10 } }, y: numAxis('nghìn tỷ', { stacked: true }), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } }, { win: 12 }); }
-  mk('chDep', { type: 'line', data: { labels: labs.map(mvn), datasets: [L('NHTM Nhà nước', al(dom.dep12State, labs), C.navy, { borderWidth: 2.4 }), L('NHTM lớn', al(dom.dep12Large, labs), C.tealInk), L('NHTM khác', al(dom.dep12Other, labs), C.purple)] },
-    options: { scales: { y: pctAxis() } } }, { switch: 'line' });
+  { const G = [['dep12StateD', 'NHTM Nhà nước', C.navy, 2.4], ['dep12LargeD', 'NHTM lớn', C.tealInk, 2], ['dep12OtherD', 'NHTM khác', C.purple, 2]].filter(([k]) => (dom[k] || []).length);
+    const days = [...new Set(G.flatMap(([k]) => dom[k].map(p => p.d)))].sort();
+    const ff = k => { const m = Object.fromEntries(dom[k].map(p => [p.d, p.v])); let last = null; return days.map(d => (m[d] != null ? (last = m[d]) : last)); };
+    mk('chDep', { type: 'line', data: { labels: days.map(dvn), datasets: G.map(([k, n, c, w]) => L(n, ff(k), c, { borderWidth: w, stepped: true })) },
+      options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: pctAxis() } } }, { win: 12 }); }
   const l19 = monthsFrom('2019-01', TODAY.slice(0, 7));
   mk('chMoney', { type: 'line', data: { labels: l19.map(mvn), datasets: [L('Tín dụng YoY', al(dom.creditYoY, l19), C.navy, { dp: 1, borderWidth: 2.4 }), L('Tiền gửi YoY', al(dom.depYoY, l19), C.teal, { dp: 1 }), L('M2 YoY', al(dom.m2, l19), C.gold, { dp: 1, borderDash: [4, 3] })] },
     options: { scales: { y: pctAxis() } } }, { switch: 'line' });

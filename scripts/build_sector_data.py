@@ -265,6 +265,8 @@ def main():
     D['dom']['netDaily'] = daily_merged(raw, 82268)
     D['dom']['onDaily'] = daily_merged(raw, 82237)
     D['dom']['omoDaily'] = daily_merged(raw, 81522)
+    for _k, _iid in [('dep12StateD', 202886), ('dep12LargeD', 202874), ('dep12OtherD', 202880)]:   # lãi suất huy động 12T theo ngày (từ 10/2024)
+        D['dom'][_k] = [p for p in daily_merged(raw, _iid) if p['d'] >= '2024-10-01']
 
     # ------------------------------------------------ ngân hàng
     def bank_rows(endpoint, cols):

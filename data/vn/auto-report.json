@@ -1,5 +1,5 @@
 {
- "at": "2026-10-24T07:05Z",
+ "at": "2026-10-24T07:20Z",
  "report": {
   "banks": "26/26 ngân hàng, giá đến 2026-10-23",
   "secVal": "P/B ngành 1.46 ngày 2026-10-23",
@@ -9,6 +9,7 @@
   "dom.freeD": "nối 0 điểm",
   "dom.dep12State": "nối 0 điểm",
   "dom.trade": "nối 0 điểm",
+  "dom.lnh": "6 kỳ hạn, đến 2026-10-22",
   "dom.omoOut": "170 phiên, đến 2026-10-23",
   "dom.tpOut": "700 phiên, đến 2026-10-23"
  }

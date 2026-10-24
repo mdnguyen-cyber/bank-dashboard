@@ -126,6 +126,17 @@ def main():
         except Exception as e:  # noqa: BLE001
             rep['dom.' + key] = 'lỗi ' + str(e)[:80]
 
+    # lãi suất liên ngân hàng bình quân theo kỳ hạn (NHNN công bố, qua dulieukinhte), từ 2021
+    pg = pages.get('lai-suat-dieu-hanh-lien-ngan-hang-391') or {}
+    lnh = {}
+    for t, name in [('ON', 'Qua đêm'), ('1W', '1 Tuần'), ('1M', '1 Tháng'), ('3M', '3 Tháng'), ('6M', '6 Tháng'), ('9M', '9 Tháng')]:
+        rw = next((x for x in pg.values() if x.get('n') == name), None)
+        if rw:
+            lnh[t] = [{'d': d, 'v': v} for d, v in zip(rw['d'], rw['v']) if d >= '2021-01-01']
+    if lnh:
+        S.setdefault('dom', {})['lnh'] = lnh
+        rep['dom.lnh'] = f"{len(lnh)} kỳ hạn, đến {max(x[-1]['d'] for x in lnh.values() if x)}"
+
     # OMO và tín phiếu đang lưu hành theo phiên (NHNN qua dulieukinhte): chuỗi mới, ghi đè toàn bộ từ nguồn
     for key, name in [('omoOut', 'Tổng OMO đang lưu hành'), ('tpOut', 'Tổng tín phiếu đang lưu hành')]:
         rw = next((x for x in (pages.get('sbv-bomhut-tien-334') or {}).values() if x.get('n') == name), None)
