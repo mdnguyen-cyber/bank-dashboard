@@ -71,7 +71,7 @@ def parse(html):
             li = next((i for i, c in enumerate(r) if c and num(c) is None and not re.fullmatch(r'[IVX\d.]+', c)), None)
             label = r[li] if li is not None else None
             vals = [num(c) for c in r[li + 1:] if num(c) is not None] if li is not None else []   # bỏ cột STT trước tên dòng
-            if not label or not vals or fold(label).startswith(('stt', 'chi tieu')):
+            if not label or not vals or len(label) > 120 or len(vals) > 4 or fold(label).startswith(('stt', 'chi tieu', 'ghi chu')):   # bỏ dòng của bảng bọc ngoài
                 continue
             key = (p, label, tuple(vals))
             if key in seen:
@@ -93,8 +93,8 @@ def get_rendered(slug):
     with sync_playwright() as pw:
         b = pw.chromium.launch()
         pg = b.new_page(user_agent=UA)
-        pg.goto(BASE + slug, wait_until='networkidle', timeout=90000)
-        pg.wait_for_timeout(3000)
+        pg.goto(BASE + slug, wait_until='domcontentloaded', timeout=90000)
+        pg.wait_for_timeout(10000)
         h = pg.content(); b.close()
     if 'Request Rejected' in h:
         raise RuntimeError('NHNN từ chối (tường lửa)')
