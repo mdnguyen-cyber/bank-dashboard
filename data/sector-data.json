@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-24T07:20Z"
+  "auto": "2026-10-25T01:24Z"
  },
  "idx": {
   "now": {
@@ -89003,6 +89003,13 @@
  },
  "news": [
   {
+   "d": "2026-10-25",
+   "t": "Giá vàng miếng, vàng nhẫn sáng 25/10 tại SJC, DOJI, PNJ, Bảo Tín Minh Châu và Phú Quý",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-sang-25-10-tai-sjc-doji-pnj-bao-tin-minh-chau-va-phu-quy-188261024225039643.chn",
+   "sym": []
+  },
+  {
    "d": "2026-10-24",
    "t": "Công an sẽ điều tra khi phát hiện tài khoản ngân hàng có giao dịch nhận tiền, chuyển tiền như sau",
    "src": "CafeF",
@@ -89057,6 +89064,92 @@
    "src": "VnExpress",
    "url": "https://vnexpress.net/agribank-giam-lai-suat-cho-vay-ho-tro-phat-trien-san-xuat-kinh-doanh-5136224.html",
    "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Chính thức khai mạc Sóng Festival 2026 tại Hà Nội: 31 ngân hàng, tổ chức tài chính, tổ chức thẻ quốc tế tham gia",
+   "src": "CafeF",
+   "url": "https://cafef.vn/chinh-thuc-khai-mac-song-festival-2026-tai-ha-noi-31-ngan-hang-to-chuc-tai-chinh-to-chuc-the-quoc-te-tham-gia-188261024214012162.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Các ngân hàng vừa thống nhất \"bơm\" 230 nghìn tỷ đồng cho doanh nghiệp và các dự án: Đâu là những cái tên chú ý?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/cac-ngan-hang-vua-thong-nhat-bom-230-nghin-ty-dong-cho-doanh-nghiep-va-cac-du-an-dau-la-nhung-cai-ten-chu-y-188261024211526717.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Hà Nội: Tòa kêu gọi cựu Giám đốc SeABank Hai Bà Trưng đầu thú trước ngày xét xử vắng mặt",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ha-noi-toa-keu-goi-cuu-giam-doc-seabank-hai-ba-trung-dau-thu-truoc-ngay-xet-xu-vang-mat-188261024205500847.chn",
+   "sym": [
+    "SSB"
+   ]
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Lãi suất ngày 24/10 tại Agribank, Vietcombank, BIDV, VietinBank, MB, VPBank, Techcombank, Sacombank, HDBank,...",
+   "src": "CafeF",
+   "url": "https://cafef.vn/lai-suat-ngay-24-10-tai-agribank-vietcombank-bidv-vietinbank-mb-vpbank-techcombank-sacombank-hdbank-188261024203010563.chn",
+   "sym": [
+    "VCB",
+    "BID",
+    "CTG",
+    "TCB",
+    "VPB",
+    "HDB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-24",
+   "t": "BIDV đề xuất giải pháp thúc đẩy tăng trưởng vùng Đông Nam Bộ",
+   "src": "CafeF",
+   "url": "https://cafef.vn/bidv-de-xuat-giai-phap-thuc-day-tang-truong-vung-dong-nam-bo-188261024154559365.chn",
+   "sym": [
+    "BID"
+   ]
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Giá vàng miếng, vàng nhẫn chiều 24/10 tại SJC, PNJ, DOJI, Bảo Tín Minh Châu và Bảo Tín Mạnh Hải",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-chieu-24-10-tai-sjc-pnj-doji-bao-tin-minh-chau-va-bao-tin-manh-hai-188261023214427223.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Thay đổi lớn trong hoạt động kinh doanh vàng ở Việt Nam",
+   "src": "CafeF",
+   "url": "https://cafef.vn/thay-doi-lon-trong-hoat-dong-kinh-doanh-vang-o-viet-nam-188261024113524273.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "BIDV SmartBanking tiên phong thiết kế giao diện riêng cho iPhone Duo",
+   "src": "CafeF",
+   "url": "https://cafef.vn/bidv-smartbanking-tien-phong-thiet-ke-giao-dien-rieng-cho-iphone-duo-188261024121125589.chn",
+   "sym": [
+    "BID"
+   ]
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Tuần tới, một ngân hàng lăn chốt trả cổ tức 50% - mức cao nhất ngành trong năm 2026",
+   "src": "CafeF",
+   "url": "https://cafef.vn/tuan-toi-mot-ngan-hang-lan-chot-tra-co-tuc-50-muc-cao-nhat-nganh-trong-nam-2026-188261024092318197.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-24",
+   "t": "Con gái 24 tuổi của chủ tịch Nam A Bank làm tổng giám đốc hãng dược",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/con-gai-24-tuoi-cua-chu-tich-nam-a-bank-lam-tong-giam-doc-hang-duoc-5136393.html",
+   "sym": [
+    "NAB"
+   ]
   },
   {
    "d": "2026-10-23",
