@@ -21,6 +21,7 @@ OLD_BASE = 'https://www.mof.go.jp/english/jgbs/auction/calendar/'
 UA = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36'}
 START = (2021, 1)
 TENORS = {2, 5, 10, 20, 30, 40}
+VER = 2
 
 
 def get(url):
@@ -56,30 +57,48 @@ def field(t, label):
     return num(m.group(1)) if m else None
 
 
+def cells(row):
+    return [re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', c))).strip() for c in re.findall(r'<t[hd][^>]*>(.*?)</t[hd]>', row, re.S | re.I)]
+
+
+def norm(lbl):
+    return re.sub(r'\s+', ' ', re.sub(r'\([^)]*\)', ' ', lbl)).strip().lower()
+
+
 def parse(h):
-    t = text(h)
-    sec = re.search(r'(\d+)-Year\s+(?:JGBs?|Japanese Government Bonds?)', t)
-    if not sec or re.search(r'Inflation|Climate|Liquidity Enhancement|Treasury Discount', t[:600], re.I):
+    """Bảng kết quả nằm ngang: một hàng tiêu đề (Security, Auction Date, …) và một hàng giá trị bên dưới."""
+    head = text(h)[:800]
+    if re.search(r'Inflation|Climate|Liquidity Enhancement|Treasury Discount|T-Bill', head, re.I):
         return None
-    ten = int(sec.group(1))
-    if ten not in TENORS:
-        return None
-    m = re.search(r'Auction Date\s*\n?\s*(\d{1,2})/(\d{1,2})/(\d{4})', t)
-    if not m:
-        return None
-    d = f'{m.group(3)}-{int(m.group(1)):02d}-{int(m.group(2)):02d}'
-    bids, acc = field(t, 'Amounts of Competitive Bids'), field(t, 'Amounts of Bids Accepted')
-    low, avg = field(t, 'Lowest Accepted Price'), field(t, 'Weighted Average Price')
-    y_low, y_avg = field(t, 'Yield at the Lowest Accepted Price'), field(t, 'Yield at the Average Price')
-    if not bids or not acc:
-        return None
-    return {'d': d, 't': f'{ten}Y', 'bids': bids, 'acc': acc, 'btc': round(bids / acc, 2),
-            'low': low, 'avg': avg, 'tail': round(avg - low, 3) if low and avg else None, 'y_low': y_low, 'y_avg': y_avg}
+    for tb in re.findall(r'<table.*?</table>', h, re.S | re.I):
+        rows = [cells(r) for r in re.findall(r'<tr[^>]*>(.*?)</tr>', tb, re.S | re.I)]
+        rows = [r for r in rows if r]
+        for k, r in enumerate(rows):
+            lab = [norm(x) for x in r]
+            if 'auction date' in lab and k + 1 < len(rows) and len(rows[k + 1]) >= len(r):
+                v = dict(zip(lab, rows[k + 1]))
+                g = lambda key: num(v.get(key))
+                m = re.match(r'(\d+)-Year', v.get('security', ''))
+                if not m or int(m.group(1)) not in TENORS:
+                    return None
+                dm = re.match(r'(\d{1,2})/(\d{1,2})/(\d{4})', v.get('auction date', ''))
+                if not dm:
+                    return None
+                bids, acc = g('amounts of competitive bids'), g('amounts of bids accepted')
+                low, avg = g('lowest accepted price'), g('weighted average price')
+                if not bids or not acc:
+                    return None
+                return {'d': f'{dm.group(3)}-{int(dm.group(1)):02d}-{int(dm.group(2)):02d}', 't': f'{int(m.group(1))}Y', 'bids': bids, 'acc': acc,
+                        'btc': round(bids / acc, 2), 'low': low, 'avg': avg, 'tail': round(avg - low, 3) if low and avg else None,
+                        'y_low': g('yield at the lowest accepted price'), 'y_avg': g('yield at the average price')}
+    return None
 
 
 def main():
     old = json.loads(OUT.read_text(encoding='utf-8')) if OUT.exists() else {}
     pages = old.get('pages', {})   # url → kết quả (None = không phải JGB coupon cần giữ)
+    if old.get('ver') != VER:
+        pages = {u: r for u, r in pages.items() if r}   # đổi cách đọc trang → đọc lại các trang chưa lấy được số
     seen_cal = old.get('cal', {})
     today = date.today()
     y, m = START
@@ -108,7 +127,18 @@ def main():
         m += 1
         if m > 12:
             y, m = y + 1, 1
+    # 2021–2022: lịch tháng không còn trên trang MOF → thử trực tiếp trang kết quả theo ngày làm việc (đường dẫn cũ và mới)
+    probe = old.get('probe', {})
+    d0 = date(2021, 1, 4)
+    while d0 < date(2023, 1, 1):
+        if d0.weekday() < 5:
+            for b in ('https://www.mof.go.jp/english/jgbs/auction/calendar/eresul/', BASE + 'eresul/'):
+                for suf in ('', 'a'):
+                    links.add(f'{b}eresul{d0:%Y%m%d}{suf}.htm')
+        d0 = date.fromordinal(d0.toordinal() + 1)
     for u in sorted(links):
+        if 'etbill' in u:
+            continue
         if u in pages:
             continue
         try:
@@ -119,7 +149,7 @@ def main():
         time.sleep(0.3)
     rows = sorted((r for r in pages.values() if r), key=lambda r: (r['d'], r['t']))
     rep['rows'] = len(rows); rep['err'] = rep['err'][:20]
-    OUT.write_text(json.dumps({'fetched': today.isoformat(), 'report': rep, 'cal': seen_cal, 'pages': pages, 'rows': rows}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    OUT.write_text(json.dumps({'fetched': today.isoformat(), 'ver': VER, 'report': rep, 'cal': seen_cal, 'pages': pages, 'rows': rows}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     print('JGB đấu thầu:', rep)
     return 0
 
