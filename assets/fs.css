@@ -618,3 +618,8 @@ body.print-all.cal-open,body.pdf-cap.cal-open{padding-right:0!important}
 #overview .ts{display:none}
 #overview.ovs-on .ts{display:revert}#overview.ovs-on .tl,#overview.ovs-on .lo{display:none!important}
 @media (max-width:600px){.ovmode{display:flex}.ovmode button{flex:1}}
+
+.fss-rng{display:flex;align-items:center;gap:8px;font:700 11px Arial,sans-serif;letter-spacing:.04em;color:#6b7385}
+.fss-rg{flex:1;border:1px solid #d5d9e5;border-radius:8px;padding:6px;font:600 12px Arial,sans-serif;color:#1D2678;background:#fff}
+.fss-ir{display:flex;gap:6px}.fss-ir .fss-inote{flex:1;min-width:0}
+.fss-irg{flex:none;max-width:120px;border:1px solid #d5d9e5;border-radius:6px;font:600 11.5px Arial,sans-serif;color:#1D2678;background:#fff}

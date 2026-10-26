@@ -301,7 +301,7 @@
   }
   function wireFee(id, draw) { const box = document.querySelector(`[data-feem="${id}"]`); const bs = box ? [...box.querySelectorAll('button')] : []; bs.forEach(b => b.onclick = () => { bs.forEach(x => x.classList.toggle('on', x === b)); draw(b.dataset.k); }); draw('net'); }
 
-  window.FSK = { prep, reorder, enhance, dates, sortable, cardSortAll, feePicker, feeCfg, wireFee };
+  window.FSK = { prep, reorder, enhance, dates, windowFor, sortable, cardSortAll, feePicker, feeCfg, wireFee };
 })();
 
 /* Nút lên đầu trang: hiện khi cuộn quá 1 màn hình */

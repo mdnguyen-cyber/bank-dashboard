@@ -8,7 +8,8 @@
   const TOOLS = [['none', '↖', 'Không vẽ'], ['arrow', '➝', 'Mũi tên'], ['darrow', '⇢', 'Mũi tên đứt'], ['hl', '▬', 'Tô sáng'], ['box', '▢', 'Khung'], ['ring', '◯', 'Khoanh tròn'], ['text', 'T', 'Chữ']];
   const FMT = { wide: { w: 1600, h: 900, t: 'Ngang 16:9', s: 'X · Telegram · Zalo' }, tall: { w: 1080, h: 1350, t: 'Dọc 4:5', s: 'Facebook · Instagram' } };
   const MAXN = 6, LAY = [['auto', 'Tự động'], ['1', '1 cột'], ['2', '2 cột'], ['3', '3 cột']];
-  const st = { items: [], fmt: 'wide', lay: 'auto', base: null, shapes: [], tool: 'arrow', color: 'navy', picked: false, drag: null, key: '' };
+  const RNG = [['cur', 'Như trên chart'], ['match', 'Khớp chart ngắn nhất'], ['1', '1M'], ['3', '3M'], ['6', '6M'], ['ytd', 'YTD'], ['12', '1Y'], ['36', '3Y'], ['60', '5Y'], ['0', 'Tất cả']];
+  const st = { items: [], fmt: 'wide', lay: 'auto', rng: 'cur', base: null, shapes: [], tool: 'arrow', color: 'navy', picked: false, drag: null, key: '' };
   const basket = [];   // thẻ chart đã bấm "＋ Ghép"
   const first = () => st.items[0] && st.items[0].meta;
   let logo = null; { const im = new Image(); im.onload = () => { logo = im; }; im.src = 'assets/fin-success-logo.png'; }
@@ -81,11 +82,38 @@
     if (out.length > maxLines) { out.length = maxLines; out[maxLines - 1] = out[maxLines - 1].replace(/\s*\S*$/, '') + '…'; }
     return out;
   }
-  function snap(x, ch, X, Y, w, h, zs) {   // vẽ lại chart đúng khung ở độ phân giải cao rồi trả về như cũ
+  /* ---------- khung thời gian khi ghép ảnh ---------- */
+  const tdates = ch => (window.FSK && FSK.dates && (ch.data.labels || []).length >= 6) ? FSK.dates(ch.data.labels) : null;
+  const curWin = ch => { const x = (ch.options.scales && ch.options.scales.x) || {}, n = (ch.data.labels || []).length; return [typeof x.min === 'number' ? x.min : 0, typeof x.max === 'number' ? x.max : n - 1]; };
+  function winOf(it) {   // [i0, i1] cần hiện cho chart này, hoặc null = giữ như trên chart
+    const k = it.rng || st.rng, ch = it.meta.ch, ds = tdates(ch);
+    if (!ds || k === 'cur') return null;
+    if (k === 'match') {   // ngày bắt đầu muộn nhất trong các chart chuỗi thời gian đang ghép (theo khung đang hiện của từng chart)
+      let from = null;
+      st.items.forEach(o => { const d2 = tdates(o.meta.ch); if (d2) { const s0 = d2[curWin(o.meta.ch)[0]]; if (!from || s0 > from) from = s0; } });
+      if (!from) return null;
+      let i0 = ds.findIndex(d => d >= from); if (i0 < 0) i0 = ds.length - 1;
+      return [i0, curWin(ch)[1]];
+    }
+    const kk = k === 'ytd' ? 'ytd' : +k;
+    return FSK.windowFor(ds, kk);
+  }
+  function snap(x, ch, X, Y, w, h, zs, win) {   // vẽ lại chart đúng khung ở độ phân giải cao (và khung thời gian đã chọn) rồi trả về như cũ
     const old = ch.options.devicePixelRatio, oldA = ch.options.animation;
+    const sx = ch.options.scales && ch.options.scales.x, keep = sx ? { min: sx.min, max: sx.max } : null;
+    if (win && sx) { const n = (ch.data.labels || []).length; if (win[0] <= 0 && win[1] >= n - 1) { delete sx.min; delete sx.max; } else { sx.min = win[0]; sx.max = win[1]; } }
     ch.options.devicePixelRatio = 2 * zs; ch.options.animation = false; ch.resize(Math.round(w / zs), Math.round(h / zs)); ch.update('none');
     x.drawImage(ch.canvas, X, Y, w, h);
+    if (win && sx) { ['min', 'max'].forEach(k => { if (keep[k] === undefined) delete sx[k]; else sx[k] = keep[k]; }); }
     ch.options.devicePixelRatio = old; ch.options.animation = oldA; ch.resize(); ch.update('none');
+  }
+  function lastLab(it) {   // kỳ dữ liệu cuối theo khung sẽ vẽ
+    const w = winOf(it); if (!w) return it.meta.last; const l = String((it.meta.ch.data.labels || [])[w[1]] || '');
+    return /\d{4}|\d{1,2}\/\d{1,2}|Q\d/.test(l) ? l : it.meta.last;
+  }
+  function firstLab(it) {
+    const w = winOf(it) || curWin(it.meta.ch); const l = String((it.meta.ch.data.labels || [])[w[0]] || '');
+    return tdates(it.meta.ch) ? l : '';
   }
   const uniq = a => [...new Set(a.filter(Boolean))];
   function srcAll() {   // gộp nguồn của các chart, bỏ trùng
@@ -127,9 +155,9 @@
     }
     y += Math.round(10 * k);
     x.font = font('400', 16);
-    const foot = wrap(x, (n === 1 && m.last ? 'Kỳ dữ liệu: ' + m.last + ' · ' : '') + 'Nguồn: ' + (n === 1 ? m.src : srcAll()), W - 2 * P - Math.round(260 * k), n === 1 ? 2 : 3);
+    const foot = wrap(x, (n === 1 && lastLab(st.items[0]) ? 'Kỳ dữ liệu: ' + lastLab(st.items[0]) + ' · ' : '') + 'Nguồn: ' + (n === 1 ? m.src : srcAll()), W - 2 * P - Math.round(260 * k), n === 1 ? 2 : 3);
     const fh = foot.length * Math.round(22 * k) + Math.round(34 * k), cy1 = H - fh;
-    if (n === 1) snap(x, m.ch, P, y, W - 2 * P, cy1 - y, st.fmt === 'tall' ? 1.3 : 1.6);
+    if (n === 1) snap(x, m.ch, P, y, W - 2 * P, cy1 - y, st.fmt === 'tall' ? 1.3 : 1.6, winOf(st.items[0]));
     else {   // lưới chart: mỗi ô có tên chart, nhận định ngắn (nếu có), mô tả và kỳ dữ liệu
       const C = cols(n), R = Math.ceil(n / C), g = Math.round(28 * k), gy = Math.round(22 * k);
       const cw = (W - 2 * P - (C - 1) * g) / C, chh = (cy1 - Math.round(12 * k) - y - (R - 1) * gy) / R;
@@ -140,10 +168,11 @@
         x.fillStyle = FIN.navy; x.font = font('700', small ? 17 : 20);
         x.fillStyle = FIN.navy; wrap(x, `${i + 1}. ${mm.title}`, cw, 2).forEach(l => { x.fillText(l, X, yy); yy += Math.round((small ? 21 : 25) * k); });
         if (it.note) { x.fillStyle = FIN.purple; x.font = font('700', small ? 15 : 16.5); wrap(x, it.note, cw, 2).forEach(l => { x.fillText(l, X, yy); yy += Math.round((small ? 19 : 21) * k); }); }
-        const sub = [mm.sub, mm.last ? 'đến ' + mm.last : ''].filter(Boolean).join(' · ');
+        const f0 = firstLab(it), l1 = lastLab(it);
+        const sub = [mm.sub, l1 ? (f0 && f0 !== l1 ? f0 + ' – ' + l1 : 'đến ' + l1) : ''].filter(Boolean).join(' · ');
         if (sub) { x.fillStyle = FIN.grey; x.font = font('400', small ? 12.5 : 13.5); wrap(x, sub, cw, 1).forEach(l => { x.fillText(l, X, yy); yy += Math.round(18 * k); }); }
         yy += Math.round(4 * k);
-        const hh = Y + chh - yy; if (hh > 40) snap(x, mm.ch, X, yy, cw, hh, Math.max(1, Math.min(1.5, cw / 640)));
+        const hh = Y + chh - yy; if (hh > 40) snap(x, mm.ch, X, yy, cw, hh, Math.max(1, Math.min(1.5, cw / 640)), winOf(it));
         if (c < inRow - 1) { x.fillStyle = FIN.line; x.fillRect(X + cw + g / 2, Y, 1, chh); }
       });
     }
@@ -200,6 +229,7 @@
       <div class="fss-lab">CHART TRONG ẢNH <small>tối đa ${MAXN} · nhận định ngắn hiện ngay dưới tên chart</small></div>
       <ol class="fss-items"></ol>
       <div class="fss-row"><button type="button" data-act="add">＋ Thêm chart</button><select class="fss-lay" aria-label="Bố cục">${LAY.map(([k, l]) => `<option value="${k}">Bố cục: ${l}</option>`).join('')}</select></div>
+      <label class="fss-rng">Khung thời gian chung <select class="fss-rg">${RNG.map(([k, l]) => `<option value="${k}">${l}</option>`).join('')}</select></label>
       <label class="fss-lab">THÔNG ĐIỆP CHÍNH <small>tuỳ chọn · thành tiêu đề lớn trên ảnh, tên chart thu nhỏ màu xám</small><textarea class="fss-key" rows="2" placeholder="VD: Lợi suất TPCP tăng ở mọi kỳ hạn, kỳ hạn ngắn tăng mạnh nhất so với đầu năm"></textarea></label>
       <label class="fss-lab">CAPTION<textarea class="fss-cap" rows="7"></textarea></label>
       <button type="button" class="fss-main" data-act="share">⇪ Chia sẻ…</button>
@@ -235,25 +265,27 @@
   function caption() {
     const m = first(), n = st.items.length, url = 'Xem đầy đủ: ' + location.href.split('?')[0].split('#')[0];
     if (n === 1) return [...(st.key ? [st.key, ''] : []), ...(st.items[0].note ? [st.items[0].note, ''] : []), m.page, '', m.title + (m.sub ? ' (' + m.sub + ')' : ''), m.ins ? '\n' + m.ins : '', '', (m.last ? 'Kỳ dữ liệu: ' + m.last + '\n' : '') + 'Nguồn: ' + m.src, url].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
-    return [...(st.key ? [st.key, ''] : []), m.page, '', ...st.items.map((it, i) => `${i + 1}. ${it.meta.title}${it.meta.last ? ' (đến ' + it.meta.last + ')' : ''}${it.note ? '\n' + it.note : ''}`), '', 'Nguồn: ' + srcAll(), url].join('\n');
+    return [...(st.key ? [st.key, ''] : []), m.page, '', ...st.items.map((it, i) => `${i + 1}. ${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}${it.note ? '\n' + it.note : ''}`), '', 'Nguồn: ' + srcAll(), url].join('\n');
   }
   function setItems(cards, keepNotes) {
     const old = new Map(st.items.map(it => [it.card, it.note]));
     const before = st.items.map(it => it.card).join();
-    st.items = cards.filter(c => document.body.contains(c)).slice(0, MAXN).map(c => ({ card: c, meta: meta(c), note: keepNotes ? old.get(c) || '' : '' }));
+    const oldR = new Map(st.items.map(it => [it.card, it.rng]));
+    st.items = cards.filter(c => document.body.contains(c)).slice(0, MAXN).map(c => ({ card: c, meta: meta(c), note: keepNotes ? old.get(c) || '' : '', rng: keepNotes ? oldR.get(c) || '' : '' }));
     if (st.shapes.length && before !== st.items.map(it => it.card).join()) { st.shapes = []; msg('Bố cục thay đổi nên hình vẽ đã được xoá.'); }
   }
   function drawItems() {
     const ol = M.querySelector('.fss-items'), n = st.items.length;
     ol.innerHTML = st.items.map((it, i) => `<li><div class="fss-it"><span class="fss-in">${i + 1}</span><span class="fss-tt" title="${esc(it.meta.path.join(' › '))}">${esc(it.meta.title)}</span>
       <button type="button" data-mv="-1" data-i="${i}" title="Lên" ${i ? '' : 'disabled'}>↑</button><button type="button" data-mv="1" data-i="${i}" title="Xuống" ${i < n - 1 ? '' : 'disabled'}>↓</button><button type="button" data-rm="${i}" title="Bỏ chart này" ${n > 1 ? '' : 'disabled'}>×</button></div>
-      <input class="fss-inote" data-i="${i}" value="${esc(it.note)}" placeholder="Nhận định ngắn cho chart này (tuỳ chọn)"></li>`).join('');
+      <div class="fss-ir"><input class="fss-inote" data-i="${i}" value="${esc(it.note)}" placeholder="Nhận định ngắn cho chart này (tuỳ chọn)">${tdates(it.meta.ch) ? `<select class="fss-irg" data-i="${i}" title="Khung thời gian của chart này"><option value="">Theo khung chung</option>${RNG.filter(r => r[0] !== 'match').map(([k, l]) => `<option value="${k}"${it.rng === k ? ' selected' : ''}>${l}</option>`).join('')}</select>` : ''}</div></li>`).join('');
     M.querySelector('.fss-lay').hidden = n < 2; M.querySelector('.fss-lay').value = st.lay;
+    M.querySelector('.fss-rg').value = st.rng;
   }
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   function refresh() { drawItems(); M.querySelector('.fss-cap').value = caption(); build(); }
   function open(cards) {
-    st.shapes = []; st.base = null; st.key = ''; M.querySelector('.fss-key').value = ''; st.tool = 'arrow'; st.color = 'navy'; st.picked = false; msg('');
+    st.shapes = []; st.base = null; st.key = ''; st.rng = 'cur'; M.querySelector('.fss-key').value = ''; st.tool = 'arrow'; st.color = 'navy'; st.picked = false; msg('');
     setItems(cards, false); if (!st.items.length) return;
     M.hidden = false; document.body.classList.add('fss-open'); syncUi(); refresh();
   }
@@ -284,6 +316,8 @@
     const rm = e.target.closest('[data-rm]'); if (rm) { setItems(st.items.filter((_, i) => i !== +rm.dataset.rm).map(it => it.card), true); return refresh(); }
     const a = e.target.closest('[data-act]'); if (a) { if (a.dataset.act === 'add') return openPick(); act(a.dataset.act); }
   });
+  M.querySelector('.fss-rg').addEventListener('change', e => { st.rng = e.target.value; st.items.forEach(it => { it.rng = ''; }); drawItems(); M.querySelector('.fss-cap').value = caption(); build(); });
+  M.querySelector('.fss-items').addEventListener('change', e => { const t = e.target.closest('.fss-irg'); if (!t) return; st.items[+t.dataset.i].rng = t.value; M.querySelector('.fss-cap').value = caption(); build(); });
   M.querySelector('.fss-lay').addEventListener('change', e => { st.lay = e.target.value; if (st.shapes.length) { st.shapes = []; msg('Bố cục thay đổi nên hình vẽ đã được xoá.'); } build(); });
   let noteT = null;
   M.querySelector('.fss-items').addEventListener('input', e => { const t = e.target.closest('.fss-inote'); if (!t) return; st.items[+t.dataset.i].note = t.value.trim(); clearTimeout(noteT); noteT = setTimeout(() => { M.querySelector('.fss-cap').value = caption(); build(); }, 450); });
