@@ -99,7 +99,7 @@ function buildAll() {   // dựng mọi tab (ẩn) để có đủ cấu hình c
   vmxBuild();
   GCOUNTRY.forEach(([k]) => { if (!gDone[k] && document.querySelector(`[data-cc="${k}"]`)) { gDone[k] = true; ({ gl: drGL, us: drUS, ea: drEA, jp: drJP, cn: drCN, ov: chIntlOverview })[k](); } });
 }
-/* Trang Ngành: các chart vĩ mô (đã chuyển sang trang Vĩ mô) vẫn được dựng ẩn để Báo cáo vĩ mô, Chart book và hộp chia sẻ dùng được */
+/* Trang Ngành: các chart vĩ mô (đã chuyển sang trang Vĩ mô) vẫn được dựng ẩn để Nhật ký chuyên viên, Chart book và hộp chia sẻ dùng được */
 function vmxBuild() {
   if (PAGE !== 'nganh' || $('#vmx')) return;
   const d = document.createElement('section'); d.className = 'pane'; d.id = 'vmx'; d.hidden = true;
@@ -314,9 +314,9 @@ function paneOverview() {
   ];
   const rp = D.regRef;
   $('#overview').innerHTML = `
-  ${qu ? `<button type="button" class="qbar" id="goQuick"><span class="qdate">Báo cáo vĩ mô ${dvn(qu.date)}</span><span class="who ${qu.author.type === 'AI' ? 'ai' : 'cv'}">${qu.author.type === 'AI' ? 'AI' : 'Chuyên viên'}</span><span class="qbar-t">${esc(qu.headline)}</span><span class="qbar-go">Xem →</span></button>` : ''}
+  ${qu ? `<button type="button" class="qbar" id="goQuick"><span class="qdate">Nhật ký chuyên viên ${dvn(qu.date)}</span><span class="who ${qu.author.type === 'AI' ? 'ai' : 'cv'}">${qu.author.type === 'AI' ? 'AI' : 'Chuyên viên'}</span><span class="qbar-t">${esc(qu.headline)}</span><span class="qbar-go">Xem →</span></button>` : ''}
   <h2 class="sec">Tổng quan ngành ngân hàng Việt Nam</h2>
-  <p class="sec-sub">${S('Phần nền tảng, ít thay đổi theo thời gian: ngân hàng làm gì trong nền kinh tế, vốn đến từ đâu và đi về đâu, chịu tác động của những yếu tố nào và bị quản lý bằng những tỷ lệ nào. Diễn biến và số liệu mới nhất nằm ở Bức tranh ngành, Báo cáo vĩ mô và trang Vĩ mô.', 'Kiến thức nền về ngành. Số liệu mới nhất xem ở Bức tranh ngành và trang Vĩ mô.')}</p>
+  <p class="sec-sub">${S('Phần nền tảng, ít thay đổi theo thời gian: ngân hàng làm gì trong nền kinh tế, vốn đến từ đâu và đi về đâu, chịu tác động của những yếu tố nào và bị quản lý bằng những tỷ lệ nào. Diễn biến và số liệu mới nhất nằm ở Bức tranh ngành, Nhật ký chuyên viên và trang Vĩ mô.', 'Kiến thức nền về ngành. Số liệu mới nhất xem ở Bức tranh ngành và trang Vĩ mô.')}</p>
   <div class="ovmode" role="tablist" aria-label="Độ dài câu chữ"><button type="button" role="tab" data-ovm="short">Ngắn gọn <small>ít chữ, dễ đọc</small></button><button type="button" role="tab" data-ovm="long">Đầy đủ <small>giải thích chi tiết, có số liệu</small></button></div>
   <nav class="ovnav">${[['ov1', '1 · Vai trò'], ['ov2', '2 · Chuỗi giá trị'], ['ov4', '3 · Cấu trúc ngành'], ['ov5', '4 · Yếu tố tác động'], ['ov6', '5 · Chu kỳ ngành'], ['ov7', '6 · Khung pháp lý'], ['ov8', '7 · Thuật ngữ']].map(([a, l]) => `<a href="#${a}" data-ov="${a}">${l}</a>`).join('')}</nav>
 
@@ -1569,7 +1569,7 @@ function chIntl() {
   $$('.cty button').forEach(b => b.onclick = () => openC(b.dataset.c));
   Object.keys(gDone).filter(k => k !== 'gl').forEach(k => delete gDone[k]);
   FSK.sortable($('.cty'), 'intl-country', 'c');
-  if (!gDone.gl && $('.csub[data-cc="gl"]')) { gDone.gl = true; drGL(); }   // trang Ngành: lợi suất & lạm phát toàn cầu dựng ẩn cho Chart book và Báo cáo vĩ mô (trang Vĩ mô: tab Việt Nam & Thế giới)
+  if (!gDone.gl && $('.csub[data-cc="gl"]')) { gDone.gl = true; drGL(); }   // trang Ngành: lợi suất & lạm phát toàn cầu dựng ẩn cho Chart book và Nhật ký chuyên viên (trang Vĩ mô: tab Việt Nam & Thế giới)
   openC($('.cty button').dataset.c);
 }
 function chIntlOverview() {
@@ -3161,14 +3161,14 @@ const QSCOPE = { nganh: 'Ngành ngân hàng', noi: 'Kinh tế trong nước', qt
 function paneQuick() {
   buildAll();
   const U = quList();
-  if (!U.length) { $('#quick').innerHTML = '<h2 class="sec">Báo cáo vĩ mô</h2><p class="sec-sub">Chưa có bản báo cáo nào.</p>'; return; }
+  if (!U.length) { $('#quick').innerHTML = '<h2 class="sec">Nhật ký chuyên viên</h2><p class="sec-sub">Chưa có bản báo cáo nào.</p>'; return; }
   if (quSel >= U.length) quSel = 0;
   const u = U[quSel], prev = u.follows ? U.find(x => x.id === u.follows) : null;
   const ed = new Set(u.edited || []), E = quEdit;
   const f = (key, html, tag = 'span', cls = '') => `<${tag} class="${cls}${ed.has(key) ? ' ed' : ''}" data-f="${key}"${E ? ' contenteditable="true"' : ''}${ed.has(key) ? ' title="Chuyên viên đã sửa"' : ''}>${html}</${tag}>`;
   let who = 'Minh Đức'; try { who = localStorage.getItem('quWho') || who; } catch (e) {}
   $('#quick').innerHTML = `
-  <h2 class="sec">Báo cáo vĩ mô<span class="qprint-date"></span></h2>
+  <h2 class="sec">Nhật ký chuyên viên<span class="qprint-date"></span></h2>
   ${u._draft ? `<div class="qdraft"><b>Bản nháp trên máy bạn — chưa đăng lên web.</b> Bấm "Sao chép để đăng" rồi dán vào chat với AI kèm câu "đăng bản cập nhật này".
     <span class="qbtns"><button type="button" class="btn" id="quCopy">Sao chép để đăng</button><button type="button" class="btn ghost" id="quDrop">Xoá nháp</button></span><textarea id="quJson" readonly hidden></textarea><span id="quMsg" class="muted"></span></div>` : ''}
   <div class="qhead card${E ? ' editing' : ''}">
@@ -3256,7 +3256,7 @@ function paneBook() {
   const groups = [...new Set(ids.map(id => M[id].group))];
   $('#book').innerHTML = `
   <h2 class="sec">Chart book</h2>
-  <p class="sec-sub">${ids.length} chart của dashboard ở một chỗ, luôn theo dữ liệu mới nhất. Mã chart (vd. <code>chOn</code>) dùng để gọi trong Báo cáo vĩ mô hoặc nhắn AI.</p>
+  <p class="sec-sub">${ids.length} chart của dashboard ở một chỗ, luôn theo dữ liệu mới nhất. Mã chart (vd. <code>chOn</code>) dùng để gọi trong Nhật ký chuyên viên hoặc nhắn AI.</p>
   <div class="picker" id="bkG"><button type="button" data-k="">Tất cả <small>${ids.length}</small></button>${groups.map(g => `<button type="button" data-k="${g}">${g} <small>${ids.filter(id => M[id].group === g).length}</small></button>`).join('')}</div>
   <div class="bk-bar"><input id="bkQ" type="search" placeholder="Tìm chart: tỷ giá, LNH, NIM, P/B…" aria-label="Tìm chart"><span class="muted">Mỗi chart có nút 1M…5Y và kéo chuột để zoom; nhấp đúp để về toàn bộ.</span></div>
   <div class="grid g2 gap" id="bkGrid">${ids.map(id => { const m = M[id]; return `
