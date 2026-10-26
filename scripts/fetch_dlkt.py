@@ -67,6 +67,16 @@ def main():
             if slug in old:
                 data[slug] = old[slug]
         time.sleep(1)
+    try:   # danh mục trang dữ liệu của nguồn, để chọn thêm chỉ tiêu (đầu tư công, FDI thực hiện…)
+        idx = set()
+        for u in [f'{BASE}/du-lieu', f'{BASE}/', f'{BASE}/sitemap.xml']:
+            try:
+                idx.update(re.findall(r'/du-lieu/([a-z0-9-]+-\d+)', get(u)))
+            except Exception:  # noqa: BLE001
+                pass
+        (ROOT / 'data/vn/dlkt_index.json').write_text(json.dumps(sorted(idx), ensure_ascii=False, indent=0), encoding='utf-8')
+    except Exception:  # noqa: BLE001
+        pass
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({'fetched': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ'), 'report': rep, 'pages': data}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     for k, v in rep.items():
