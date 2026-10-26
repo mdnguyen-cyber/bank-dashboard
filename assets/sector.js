@@ -1031,7 +1031,7 @@ function openC(k) {
   if (!gDone[k]) { gDone[k] = true; ({ gl: drGL, us: drUS, ea: drEA, jp: drJP, cn: drCN, ov: chIntlOverview })[k](); }
 }
 /* -------- Toàn cầu: lợi suất trái phiếu chính phủ và lạm phát -------- */
-const Y10D = [['us_10y_d', 'Mỹ', C.navy], ['de_10y_d', 'Đức', C.gold], ['ea_all_10y_d', 'Khu vực euro (toàn bộ TPCP)', C.tealInk], ['jp_10y_d', 'Nhật Bản', C.red]];
+const Y10D = [['us_10y_d', 'Mỹ', C.navy], ['de_10y_d', 'Đức', C.gold], ['ea_all_10y_d', 'Khu vực euro (toàn bộ TPCP)', C.tealInk], ['jp_10y_d', 'Nhật Bản', C.red], ['gb_10y_d', 'Anh', C.purple]];
 const Y10A = [['us_10y_d', 'Mỹ', C.navy], ['jp_10y_d', 'Nhật Bản', C.red], ['cn_10y_d', 'Trung Quốc', C.gold], ['kr_10y_d', 'Hàn Quốc', C.tealInk], ['tw_10y_d', 'Đài Loan', C.grey], ['sg_10y_d', 'Singapore', '#7a5bb5']];
 const Y10M = { eu: [['y10_de_m', 'Đức'], ['y10_fr_m', 'Pháp'], ['y10_it_m', 'Ý'], ['y10_es_m', 'Tây Ban Nha'], ['y10_nl_m', 'Hà Lan'], ['y10_gb_m', 'Anh']],
   ap: [['jp_10y_m', 'Nhật Bản'], ['y10_kr_m', 'Hàn Quốc'], ['y10_au_m', 'Úc'], ['y10_ca_m', 'Canada'], ['us_10y_m', 'Mỹ']] };
@@ -1136,17 +1136,18 @@ function omoOutIns() {
     + how('OMO lưu hành là lượng tiền NHNN đang cho ngân hàng vay có kỳ hạn qua thị trường mở. Lãi suất liên ngân hàng giảm trong lúc OMO lưu hành cũng giảm thì thanh khoản cải thiện không đến từ NHNN bơm tiền mà từ nguồn khác (tiền gửi Kho bạc, mua ngoại tệ, cầu vốn giảm).');
 }
 function gGL() {
-  const u = glast('us_10y_d'), de = glast('de_10y_d'), jp = glast('jp_10y_d'), ea = glast('ea_all_10y_d'), w = glast('us_wti_d');
+  const u = glast('us_10y_d'), de = glast('de_10y_d'), jp = glast('jp_10y_d'), ea = glast('ea_all_10y_d'), gb = glast('gb_10y_d'), w = glast('us_wti_d');
   const ytd = k => { const a = glast(k).v, b = yStart(k); return a != null && b != null ? (a - b) * 100 : null; };
   return `<div class="kpis">
     ${kpi('UST 10 năm', pc(u.v, 2), `${sg(ytd('us_10y_d'), 0, ' bps')} từ đầu năm · ${dvn(u.d)}`, ytd('us_10y_d') > 0 ? 'neg' : '')}
     ${kpi('Bund Đức 10 năm', pc(de.v, 2), `${sg(ytd('de_10y_d'), 0, ' bps')} từ đầu năm · ${dvn(de.d)}`, ytd('de_10y_d') > 0 ? 'neg' : '')}
     ${kpi('TPCP khu vực euro 10 năm', pc(ea.v, 2), `${sg(ytd('ea_all_10y_d'), 0, ' bps')} từ đầu năm · ECB`)}
     ${kpi('JGB 10 năm', pc(jp.v, 3), `${sg(ytd('jp_10y_d'), 0, ' bps')} từ đầu năm · ${dvn(jp.d)}`, ytd('jp_10y_d') > 0 ? 'neg' : '')}
+    ${gb.v != null ? kpi('Gilt Anh 10 năm', pc(gb.v, 2), `${sg(ytd('gb_10y_d'), 0, ' bps')} từ đầu năm · ${dvn(gb.d)}`, ytd('gb_10y_d') > 0 ? 'neg' : '') : (gm => kpi('Gilt Anh 10 năm', pc(gm.v, 2), `bình quân tháng ${mvn(gm.d)}`))(glast('y10_gb_m'))}
     ${kpi('Dầu WTI', nf(w.v, 1) + ' USD', `${dvn(w.d)} · Brent ${nf(glast('us_brent_d').v, 1)}`)}
   </div>
   <div class="grid g2 gap">
-    ${card({ id: 'gGlY10', title: 'Lợi suất TPCP 10 năm theo ngày: Mỹ, Đức, khu vực euro, Nhật', h: 'tall', sub: 'chọn: mức lợi suất · chỉ số (phiên đầu năm = 1, như slide) · thay đổi từ đầu năm (bps)', body: tfPick('glY', [['chg', 'Thay đổi từ đầu năm (bps)'], ['idx', 'Chỉ số đầu năm = 1'], ['lvl', 'Mức %']]), src: 'U.S. Treasury; Deutsche Bundesbank; ECB (đường cong lợi suất khu vực euro); Bộ Tài chính Nhật Bản' })}
+    ${card({ id: 'gGlY10', title: 'Lợi suất TPCP 10 năm theo ngày: Mỹ, Đức, khu vực euro, Nhật, Anh', h: 'tall', sub: 'chọn: mức lợi suất · chỉ số (phiên đầu năm = 1, như slide) · thay đổi từ đầu năm (bps)', body: tfPick('glY', [['chg', 'Thay đổi từ đầu năm (bps)'], ['idx', 'Chỉ số đầu năm = 1'], ['lvl', 'Mức %']]), src: 'U.S. Treasury; Deutsche Bundesbank; ECB (đường cong lợi suất khu vực euro); Bộ Tài chính Nhật Bản; Ngân hàng Trung ương Anh' })}
     ${card({ id: 'gGlAsia', title: 'Lợi suất TPCP 10 năm châu Á theo ngày: Trung Quốc, Đài Loan, Hàn Quốc, Singapore, Nhật (so với Mỹ)', h: 'tall', sub: 'chọn: thay đổi từ đầu năm (bps) · chỉ số đầu năm = 1 · mức %', body: tfPick('glA', [['chg', 'Thay đổi từ đầu năm (bps)'], ['idx', 'Chỉ số đầu năm = 1'], ['lvl', 'Mức %']]), src: 'ChinaBond (Trung Quốc); Sở Giao dịch Đài Bắc TPEx (Đài Loan); Ngân hàng Trung ương Hàn Quốc (ECOS); MAS (Singapore); Bộ Tài chính Nhật Bản; U.S. Treasury' })}
     ${card({ id: 'gGlY10m', title: 'Lợi suất 10 năm theo tháng: châu Âu và các nước phát triển khác', h: 'tall', sub: '%/năm, bình quân tháng · ECB (lãi suất dài hạn hội tụ) và OECD', body: tfPick('glM', [['eu', 'Châu Âu'], ['ap', 'Mỹ, Nhật, Hàn, Úc, Canada']]), src: 'ECB; OECD qua FRED' })}
     ${card({ id: 'gGlCurve', title: 'Đường cong lợi suất TPCP Mỹ', h: 'tall', sub: '%/năm theo kỳ hạn · hiện tại so với 1 tháng trước, đầu năm và 1 năm trước', src: 'U.S. Treasury (Daily Treasury Par Yield Curve)' })}
@@ -2218,7 +2219,7 @@ const vnFxAt = m => mEnd(dom.nhtmD, m) ?? byM(dom.nhtmSell)[m];
 const vnFxYtd = m => { const y0 = vnFxAt(`${+m.slice(0, 4) - 1}-12`), v = vnFxAt(m); return y0 == null || v == null ? null : (y0 / v - 1) * 100; };
 // [mã, tên, CPI key, policy key, 10Y key, FX (key, đảo), PMI key]
 const HM_C = [['vn', 'Việt Nam', 'vn', 'vn', 'vn', 'vn', 'vn_pmi'], ['us', 'Mỹ', 'us_cpi_yoy', 'pol_us', 'us_10y_d', null, 'us_ism_mfg'], ['ea', 'Khu vực euro', 'ea_hicp', 'pol_xm', 'de_10y_d', ['eurusd_d', 0], 'ea_pmi_mfg'],
-  ['jp', 'Nhật Bản', 'jp_cpi_main', 'pol_jp', 'jp_10y_d', ['usdjpy_d', 1], null], ['cn', 'Trung Quốc', 'cn_cpi', 'pol_cn', 'cn_10y_d', ['usdcny_d', 1], 'cn_pmi_mfg'], ['gb', 'Anh', 'cpi_gb', 'pol_gb', 'y10_gb_m', ['gbpusd_d', 0], null],
+  ['jp', 'Nhật Bản', 'jp_cpi_main', 'pol_jp', 'jp_10y_d', ['usdjpy_d', 1], null], ['cn', 'Trung Quốc', 'cn_cpi', 'pol_cn', 'cn_10y_d', ['usdcny_d', 1], 'cn_pmi_mfg'], ['gb', 'Anh', 'cpi_gb', 'pol_gb', 'gb_10y_d', ['gbpusd_d', 0], null],
   ['kr', 'Hàn Quốc', 'cpi_kr', 'pol_kr', 'kr_10y_d', null, null], ['ca', 'Canada', 'cpi_ca', 'pol_ca', 'y10_ca_m', ['usdcad_d', 1], null], ['au', 'Úc', 'cpi_au', 'pol_au', 'y10_au_m', null, null],
   ['nz', 'New Zealand', 'cpi_nz', 'pol_nz', null, null, null], ['ch', 'Thụy Sĩ', null, 'pol_ch', null, ['usdchf_d', 1], null], ['in', 'Ấn Độ', 'cpi_in', 'pol_in', null, ['usdinr_d', 1], null],
   ['id', 'Indonesia', 'cpi_id', 'pol_id', null, ['usdidr_d', 1], null], ['th', 'Thái Lan', 'cpi_th', 'pol_th', null, null, null], ['my', 'Malaysia', 'cpi_my', 'pol_my', null, null, null],

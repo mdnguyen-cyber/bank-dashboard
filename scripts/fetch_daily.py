@@ -138,6 +138,27 @@ def bund():
     return dict(sorted(out.items()))
 
 
+def gilt():
+    """Ngân hàng Trung ương Anh (BoE): lợi suất danh nghĩa trái phiếu Chính phủ Anh (gilt) 10 năm, theo ngày (IUDMNPY)."""
+    from datetime import datetime
+    q = urllib.parse.urlencode({'csv.x': 'yes', 'Datefrom': date.fromisoformat(FROM).strftime('%d/%b/%Y'), 'Dateto': 'now', 'SeriesCodes': 'IUDMNPY',
+                                'CSVF': 'TN', 'UsingCodes': 'Y', 'VPD': 'Y', 'VFD': 'N'})
+    url = 'https://www.bankofengland.co.uk/boeapps/database/_iadb-fromshowcolumns.asp?' + q
+    req = urllib.request.Request(url, headers={**UA, 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 (FinSuccess dashboard)', 'Accept': 'text/csv,*/*'})
+    with urllib.request.urlopen(req, timeout=90) as r:
+        txt = r.read().decode('utf-8', 'replace')
+    out = {}
+    for row in csv.reader(io.StringIO(txt)):
+        if len(row) >= 2:
+            try:
+                out[datetime.strptime(row[0].strip(), '%d %b %Y').date().isoformat()] = float(row[1])
+            except ValueError:
+                pass
+    if len(out) < 100:
+        raise ValueError('BoE trả ít dữ liệu: ' + txt[:120].replace('\n', ' '))
+    return dict(sorted(out.items()))
+
+
 def ecb_yc():
     """ECB: đường cong lợi suất khu vực euro 10 năm — trái phiếu xếp hạng AAA và toàn bộ trái phiếu chính phủ."""
     out = {}
@@ -285,7 +306,7 @@ def vcb(old):
 def main():
     old = json.loads(P.read_text(encoding='utf-8')) if P.exists() else {}
     res, rep = {}, {}
-    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('gold', gold), ('bund', bund), ('ecbyc', ecb_yc), ('cn', cn), ('sg', sg), ('tw', lambda: tw(old.get('tw'))), ('kr', lambda: kr(old.get('kr'))), ('sbv', sbv), ('sfpce', sfpce), ('vcb', lambda: vcb(old.get('vcb')))]:
+    for name, fn in [('ust', ust), ('jgb', jgb), ('ecb', ecb), ('gold', gold), ('bund', bund), ('gilt', gilt), ('ecbyc', ecb_yc), ('cn', cn), ('sg', sg), ('tw', lambda: tw(old.get('tw'))), ('kr', lambda: kr(old.get('kr'))), ('sbv', sbv), ('sfpce', sfpce), ('vcb', lambda: vcb(old.get('vcb')))]:
         try:
             v = fn()
             if not v:

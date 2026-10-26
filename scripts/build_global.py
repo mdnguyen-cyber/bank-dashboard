@@ -422,6 +422,7 @@ for k in ['us_wti', 'us_brent']:
         put(k + '_d', {d: v for d, v in obs(k) if d >= DAILY_FROM}, 2)
 if DP.exists():
     put('de_10y_d', {d: v for d, v in DY.get('bund', {}).items() if d >= DAILY_FROM}, 3)
+    put('gb_10y_d', {d: v for d, v in DY.get('gilt', {}).items() if d >= DAILY_FROM}, 3)
     yc = DY.get('ecbyc', {})
     put('ea_aaa_10y_d', {d: x['aaa'] for d, x in yc.items() if x.get('aaa') is not None and d >= DAILY_FROM}, 3)
     put('ea_all_10y_d', {d: x['all'] for d, x in yc.items() if x.get('all') is not None and d >= DAILY_FROM}, 3)
