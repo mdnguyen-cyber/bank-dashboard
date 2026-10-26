@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-26T03:25Z"
+  "auto": "2026-10-26T03:28Z"
  },
  "idx": {
   "now": {
@@ -117488,7 +117488,7 @@
      {
       "l": "Fed tăng ngày 9/12",
       "v": "78%",
-      "s": "xác suất ngụ ý · giữ ngày 28/10: 90%",
+      "s": "xác suất ngụ ý · 21/10: 89% · giữ ngày 28/10: 90%",
       "cls": "neg"
      }
     ],
@@ -117497,7 +117497,7 @@
       "title": "Lợi suất UST: rời đỉnh 5,31% nhưng vẫn cao hơn đầu năm 81 bps",
       "scope": "qt",
       "status": "hạ nhiệt",
-      "note": "UST 10 năm tăng từ <b>4,19%</b> (2/1) lên đỉnh <b>5,31%</b> (5/10), rồi hạ về <b>5,00%</b> (23/10). Phiên 22/10 giảm <b>17 bps</b> (5,13% → 4,96%), mức giảm một phiên lớn nhất từ 8/2024, khi cổ phiếu công nghệ bị bán mạnh và căng thẳng Trung Đông đẩy dòng tiền sang tài sản an toàn. Phân rã phần tăng từ đầu năm: (a) kỳ hạn 2 năm tăng <b>122 bps</b>, phản ánh Fed đã tăng lãi suất (9/2026) và thị trường đặt khoảng 78% khả năng tăng tiếp ngày 9/12; (b) lạm phát kỳ vọng 5 năm chỉ tăng khoảng <b>20 bps</b> (2,28% → 2,48%), nên phần lớn mức tăng 81 bps của 10 năm là lợi suất thực, gồm lộ trình Fed cao hơn và phần bù kỳ hạn; (c) riêng từ tháng 8, 10 năm tăng 25 bps (4,75% → 5,00%) gần bằng mức tăng của lạm phát kỳ vọng (+22 bps), tức giai đoạn gần đây chủ yếu do giá dầu đẩy kỳ vọng lạm phát. Đường cong dốc ít hơn: 10 năm − 2 năm từ 72 xuống <b>31 bps</b>. <b>Nhận định:</b> mức hạ tuần qua đến từ tâm lý tránh rủi ro, chưa phải do kỳ vọng Fed đổi hướng (xác suất tăng tháng 12 vẫn khoảng 78%), nên chưa đủ để coi là đảo chiều xu hướng.",
+      "note": "UST 10 năm tăng từ <b>4,19%</b> (2/1) lên đỉnh <b>5,31%</b> (5/10), rồi hạ về <b>5,00%</b> (23/10). Phiên 22/10 giảm <b>17 bps</b> (5,13% → 4,96%), mức giảm một phiên lớn nhất từ 8/2024, khi cổ phiếu công nghệ bị bán mạnh và căng thẳng Trung Đông đẩy dòng tiền sang tài sản an toàn. Phân rã phần tăng từ đầu năm: (a) kỳ hạn 2 năm tăng <b>122 bps</b>, phản ánh Fed đã tăng lãi suất (9/2026) và thị trường đặt khoảng 78% khả năng tăng tiếp ngày 9/12; (b) lạm phát kỳ vọng 5 năm chỉ tăng khoảng <b>20 bps</b> (2,28% → 2,48%), nên phần lớn mức tăng 81 bps của 10 năm là lợi suất thực, gồm lộ trình Fed cao hơn và phần bù kỳ hạn; (c) riêng từ tháng 8, 10 năm tăng 25 bps (4,75% → 5,00%) gần bằng mức tăng của lạm phát kỳ vọng (+22 bps), tức giai đoạn gần đây chủ yếu do giá dầu đẩy kỳ vọng lạm phát. Đường cong dốc ít hơn: 10 năm − 2 năm từ 72 xuống <b>31 bps</b>. <b>Nhận định:</b> mức hạ tuần qua đến từ tâm lý tránh rủi ro cộng với kỳ vọng Fed bớt cứng rắn một phần: 2 năm giảm 16 bps cùng phiên 22/10, xác suất tăng ngày 9/12 giảm từ khoảng <b>89%</b> (21/10) xuống khoảng <b>78%</b>. Tăng lãi suất tháng 12 vẫn là kịch bản chính, nên chưa đủ để coi là đảo chiều xu hướng.",
       "change": "10 năm 5,13% (21/10) → 5,00% (23/10); 2 năm 4,81% → 4,69%; DXY 101,65 → 101,80.",
       "charts": [
        {
