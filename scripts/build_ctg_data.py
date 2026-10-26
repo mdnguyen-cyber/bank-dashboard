@@ -189,7 +189,9 @@ def build(raw):
     macro = {}
     for d in raw:
         if d['tool'] == 'wi_data_macro':
-            for s in d['response']['data']:
+            for s in (d['response'].get('data') or []):
+                if not isinstance(s, dict) or 'indicator_id' not in s or 'values' not in s:
+                    continue
                 key = (s['indicator_id'], s.get('time_type'))
                 macro[key] = sorted(s['values'], key=lambda v: v['date'])
 
@@ -345,6 +347,56 @@ def build(raw):
                     'bySector': {k: pct(r.get(f'pct_loans_{k}'), 1) for k in ['wholesale_retail', 'manufacturing', 'trade_services', 'household_activities', 'utilities', 'construction_realestate', 'agriculture', 'transport_storage']},
                     'byTenor': {k: pct(r.get(f'pct_loans_{k}'), 1) for k in ['short_term', 'medium_term', 'long_term']}})
     D['loanMix'] = mix
+
+    # ------------------------------------------------ cơ cấu cho vay / huy động / GTCG theo thuyết minh BCTC (fs_bank_notes, tỷ VND)
+    try:
+        notes = sort_q(merged(raw, 'wi_data_companies', 'fs_bank_notes', lambda q: TICKER in syms(q) and 'fnx112' in q.get('columns', ''), TICKER))
+    except SystemExit:
+        notes = []
+    G = lambda r, k: ty(r.get(f'fnx{k}'))
+    def grp(r, spec, need=0.9):
+        """spec: [(nhãn, [mã fnx])]; trả {nhãn: tỷ} nếu tổng ≥ need × tổng dư nợ/huy động, ngược lại None."""
+        out = {lab: round(sum((r.get(f'fnx{k}') or 0) for k in ks) / 1e9, 1) for lab, ks in spec}
+        out = {k: v for k, v in out.items() if v}
+        return out or None
+    SECT = [('Bán buôn, bán lẻ', [62]), ('Công nghiệp chế biến, chế tạo', [52]), ('Bất động sản', [65]), ('Xây dựng', [54]),
+            ('Điện, khí đốt, nước', [53, 63]), ('Vận tải, kho bãi, thông tin', [55]), ('Nông, lâm, thủy sản', [59]), ('Khai khoáng', [58]),
+            ('Tài chính, bảo hiểm', [61]), ('Hộ gia đình, cá nhân', [64, 75]), ('Dịch vụ khác', [60, 66, 67, 68, 69, 70, 71, 74]), ('Khác', [76])]
+    CUST = [('Doanh nghiệp nhà nước', [38]), ('Doanh nghiệp tư nhân', [39]), ('Doanh nghiệp FDI', [44]), ('Cá nhân, hộ kinh doanh', [45]),
+            ('Khác', [46, 47, 48, 50])]
+    mixq = []
+    for r in notes:
+        tot = (r.get('fnx13') or 0)
+        if not tot:
+            continue
+        sec, cus = grp(r, SECT), grp(r, CUST)
+        if sec and sum(sec.values()) < 0.9 * tot / 1e9: sec = None   # noqa: E701
+        if cus and sum(cus.values()) < 0.9 * tot / 1e9: cus = None   # noqa: E701
+        dep = grp(r, [('Không kỳ hạn', [112]), ('Có kỳ hạn', [113]), ('Vốn chuyên dùng', [114]), ('Ký quỹ', [115]), ('Khác', [116])])
+        mixq.append({'q': qlabel(r['year'], r['quarter']), 'loans': ty(tot),
+                     'tenor': grp(r, [('Ngắn hạn', [33]), ('Trung hạn', [34]), ('Dài hạn', [35])]),
+                     'sector': sec, 'cust': cus, 'dep': dep,
+                     'depCust': grp(r, [('Tổ chức kinh tế', [118]), ('Cá nhân', [119])]),
+                     'gov': {'sbvBorrow': G(r, 104), 'kbnn': G(r, 107)},
+                     'gtcg': grp(r, [('Chứng chỉ tiền gửi', [121]), ('Trái phiếu', [122]), ('Khác', [123])]),
+                     'gtcgTenor': grp(r, [('Dưới 12 tháng', [125]), ('12 tháng – 5 năm', [126]), ('Trên 5 năm', [127])])})
+    _bf = ROOT / 'data/backfill/notes_mix.json'   # bản dẫn xuất đã commit: build ở máy không có raw vẫn giữ được lịch sử
+    _all = json.loads(_bf.read_text(encoding='utf-8')) if _bf.exists() else {}
+    _m = {r['q']: r for r in _all.get(TICKER, [])}
+    _m.update({r['q']: r for r in mixq})
+    mixq = sorted(_m.values(), key=lambda r: (int(r['q'][3:]), int(r['q'][1])))
+    _all[TICKER] = mixq
+    _bf.write_text(json.dumps(_all, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    D['mixQ'] = mixq
+    _ir = ROOT / f'data/backfill/{TICKER.lower()}_ir_segments.json'   # phân khúc khách hàng theo cách ngân hàng tự trình bày (tài liệu nhà đầu tư)
+    if _ir.exists():
+        _j = json.loads(_ir.read_text(encoding='utf-8'))
+        _qs = sorted(set(_j['loans']) | set(_j['deposits']), key=lambda q: (int(q[3:]), int(q[1])))
+        D['irSeg'] = {'src': _j['_src'], 'depNote': _j.get('depNote'),
+                      'rows': [{'q': q, 'loans': dict(zip(_j['segs'], [v * 1000 for v in _j['loans'][q]])) if q in _j['loans'] else None,
+                                'deps': dict(zip(_j['segs'], [v * 1000 for v in _j['deposits'][q]])) if q in _j['deposits'] else None} for q in _qs]}
+    D['mixNote'] = ('Thuyết minh BCTC hợp nhất: dư nợ theo kỳ hạn, ngành, loại khách hàng; tiền gửi theo loại và đối tượng; '
+                    'giấy tờ có giá phát hành. Nhiều ngân hàng chỉ công bố cơ cấu ngành và khách hàng ở BCTC bán niên, năm.')
 
     # ------------------------------------------------ CAR (TT41, bán niên/năm)
     D['car'] = [{'period': (f"6T/{r['year']}" if r['quarter'] == 2 else f"{r['year']}"), 'y': r['year'], 'h': r['quarter'],
@@ -523,7 +575,7 @@ def build(raw):
     # mốc 'pending' đã qua ngày cập nhật mà chưa xác nhận → giữ là mốc theo dõi (không tự đổi trạng thái)
     D['events'] = sorted(ev, key=lambda e: e['d'], reverse=True)
 
-    # ------------------------------------------------ macro (tab Vĩ mô & Tỉ lệ an toàn)
+    # ------------------------------------------------ macro (lãi suất niêm yết, tỷ giá: dùng cho COF và bảng rủi ro)
     def ser(iid, tt='monthly'):   # gộp mọi lần kéo theo tháng (từ 2019); trùng tháng lấy ngày muộn nhất
         bym = {}
         for d in raw:
@@ -629,7 +681,7 @@ def build(raw):
                    for r in sorted(rws, key=lambda r: -(r['share'] or 0))[:3]) + f"; tăng nhanh nhất: {top['name'].split(' (')[0].lower()}")
     room_ok = (qn['ldr'] or 99) < 85 - 1 and car_last['car'] >= 9.5
     D['thesisPillars'] = [
-        {'id': 'p1', 'go': {'sub': 'room', 'card': 'chLdrQ'}, 'step': 'Bước 2–3, 7 · Nguồn vốn, an toàn vốn', 't': 'Room tăng trưởng: LDR và an toàn vốn',
+        {'id': 'p1', 'go': {'sub': 'safe', 'card': 'chLdrQ'}, 'step': 'Bước 2–3, 7 · Nguồn vốn, an toàn vốn', 't': 'Room tăng trưởng: LDR và an toàn vốn',
          'evidence': (f"LDR {qn['ldr']}% ({qn['q']}, trần 85% theo TT22)" + (f"; theo TT50 (TGKB tính 20%) {_ls['ldr20']}%" if _ls else '')
                       + f"; CAR {car_last['car']}%, vốn cấp 1 {car_last['tier1']}% ({car_last['period']}); tín dụng YoY {qn['creditYoY']}% vs huy động {qn['fundingYoY']}%"
                       + (f"; room ngụ ý theo xếp hạng TT21 {_cm['room']}%" if _cm else '')),
@@ -644,7 +696,7 @@ def build(raw):
         {'id': 'p4', 'go': {'sub': 'nfi', 'card': 'chFee'}, 'step': 'Bước 6 · Thu nhập ngoài lãi', 't': 'Thu nhập phí (NFI) bù đắp NIM',
          'evidence': (f"NFI TTM {nf(nfi_ttm / 1000, 1)} nghìn tỷ = {round(nfi_ttm / toi_ttm * 100, 1)}% TOI" + (f", {yoy(nfi_ttm, nfi_ttm0):+.1f}% YoY" if nfi_ttm0 else '') + fee_txt),
          'status': 'holding' if nfi_ttm0 and nfi_ttm > nfi_ttm0 else 'watch'},
-        {'id': 'p5', 'go': {'sub': 'val', 'card': 'chVal'}, 'step': 'Bước 8 · Định giá', 't': 'Định giá chưa phản ánh ROE',
+        {'id': 'p5', 'go': {'sub': 'pv', 'card': 'chValF'}, 'step': 'Bước 8 · Định giá', 't': 'Định giá chưa phản ánh ROE',
          'evidence': f"P/B {D['meta']['pb']}x ({D['meta']['priceDate']}) vs trung bình 5 năm {pb['mean']}x (±1σ {pb['lo']}–{pb['hi']}x); ROE TTM {qn['roe']}%",
          'status': 'holding' if D['meta']['pb'] < pb['mean'] else 'watch'},
     ]

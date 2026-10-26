@@ -673,3 +673,6 @@ details.morex{margin:0 0 14px}details.morex>summary{cursor:pointer;color:var(--b
 
 .hmt tr.hm-lk{cursor:pointer}.hmt tr.hm-lk:hover td.hm-n{text-decoration:underline}
 .hmt tr.hm-sel td.hm-n{background:#fff4cc;box-shadow:inset 3px 0 0 var(--navy)}
+h3.grp-h{margin:22px 0 10px;font-size:15px;font-weight:700;color:var(--navy);border-left:4px solid var(--teal);padding-left:10px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h3.grp-h small{font-size:12px;font-weight:400;color:#8a93a3}
+.sub > h3.grp-h:first-child{margin-top:4px}

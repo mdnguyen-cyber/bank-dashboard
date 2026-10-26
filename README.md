@@ -8,7 +8,7 @@ Dashboard ngân hàng theo chuẩn layout FinSuccess. Xem online (tự deploy qu
 
 ## Lộ trình
 1. **CTG v1** (bản này) — dashboard cổ phiếu theo khung 6 tab của Stock dashboard (MWG Tracker).
-2. **CSTT + Ngành Ngân hàng** (`nganh.html`) — layout dashboard ngành của công ty (bản Dầu khí), 9 tab: Tổng quan ngành (kèm 💎 Nhận định FinSuccess) · **Cập nhật nhanh** (mối quan tâm hiện tại + chart chứng minh, ghi rõ chuyên viên hay AI cập nhật, có lịch sử; dữ liệu `data/quick-updates.json`, quy trình `docs/cap-nhat-nhanh.md`) · Bức tranh ngành (Quốc tế → Nội địa → Ngân hàng → **Xếp hạng TT21 & room**: mô phỏng điểm CAMELS theo TT 21/2025 cho 26 NH, room ngụ ý = điểm × 2,6%, `scripts/camel_tt21.py` → Kịch bản IDX-FX × IDX-LIQ) · Chính sách · Quy định (mức điều hành hiện hành, nhật ký điều hành NHNN biên tập tay ở `data/sbv-log.json` kèm link nguồn gốc từng dòng, độ nhạy LDR theo hệ số KBNN) · Catalyst · Risk (R-01…R-16) · Consensus CTCK · Chủ đề nóng · **Chart book** (mọi chart của dashboard, lọc theo nhóm/tìm kiếm, mã chart xem bằng `python3 scripts/chart_ids.py`) · Sources. Ô kịch bản ở tab Vĩ mô của CTG đọc kết quả IDX từ đây.
+2. **CSTT + Ngành Ngân hàng** (`nganh.html`) — layout dashboard ngành của công ty (bản Dầu khí), 9 tab: Tổng quan ngành (kèm 💎 Nhận định FinSuccess) · **Cập nhật nhanh** (mối quan tâm hiện tại + chart chứng minh, ghi rõ chuyên viên hay AI cập nhật, có lịch sử; dữ liệu `data/quick-updates.json`, quy trình `docs/cap-nhat-nhanh.md`) · Bức tranh ngành (Quốc tế → Nội địa → Ngân hàng → **Xếp hạng TT21 & room**: mô phỏng điểm CAMELS theo TT 21/2025 cho 26 NH, room ngụ ý = điểm × 2,6%, `scripts/camel_tt21.py` → Kịch bản IDX-FX × IDX-LIQ) · Chính sách · Quy định (mức điều hành hiện hành, nhật ký điều hành NHNN biên tập tay ở `data/sbv-log.json` kèm link nguồn gốc từng dòng, độ nhạy LDR theo hệ số KBNN) · Catalyst · Risk (R-01…R-16) · Consensus CTCK · Chủ đề nóng · **Chart book** (mọi chart của dashboard, lọc theo nhóm/tìm kiếm, mã chart xem bằng `python3 scripts/chart_ids.py`) · Sources. 
    - Dữ liệu: `scripts/build_sector_data.py` → `data/sector-data.js` (`window.SECTOR_DATA`); test `tests/test_sector_data.py`.
    - IDX-FX, IDX-LIQ theo công thức slide 52 (z-score 36 tháng), tính theo tháng; chỗ thay thế thành phần ghi ở tab Sources. Backtest bản trọng số bằng nhau đúng hướng ~43–45% → **chưa đạt ngưỡng 60%**, cần hiệu chỉnh trọng số.
 
@@ -16,12 +16,11 @@ Dashboard ngân hàng theo chuẩn layout FinSuccess. Xem online (tự deploy qu
 - Công tắc **Gọn / Chi tiết** ở góc phải trên (mặc định Gọn, nhớ theo trình duyệt). Gọn ẩn lời đọc dưới chart, chú thích và nguồn.
 - Nút **(i)** cạnh tiêu đề: mô tả chart (đơn vị, kỳ, cách đọc). Ở chế độ Gọn, cuối mỗi thẻ có **ⓘ Insight** và **ⓘ Nguồn** để mở phần đã ẩn.
 
-## 6 tab CTG
+## 5 tab trang cổ phiếu ngân hàng
 | Tab | Nội dung | Ánh xạ deck |
 |---|---|---|
 | Tổng quan | KPI, thông tin DN, giá 1 năm (52W), 5 trụ luận điểm, checklist mua, tin ±45 ngày, quản trị & sở hữu | Bước 1, 8 |
-| Vĩ mô & Tỉ lệ an toàn *(tab tùy biến)* | Ma trận kịch bản, tín hiệu R-01/09/10/13/14, tỷ giá (NHTM, tự do, trung tâm, trần, NHNN bán), LNH–OMO, LS huy động, tín dụng, LDR, CAR, cơ cấu dư nợ, ánh xạ vĩ mô → CTG, bảng REG | Slide 35–39, 50–54 |
-| Tài chính | Bảng cân đối (waterfall), KQKD (năm + KH/YTD), biên lãi, chất lượng tài sản, hiệu quả & vốn, so sánh nhóm, CAMEL | Bước 2–7, BNK-01…17 |
+| Tài chính | 6 tab con: **Tổng quan** (cơ cấu tài sản/nguồn vốn dạng % kèm số tỷ khi di chuột, tài sản/nguồn vốn theo quý, cho vay theo ngành/loại khách hàng/kỳ hạn và tiền gửi theo loại/đối tượng từ thuyết minh `fs_bank_notes` → `D.mixQ`; riêng CTG thêm phân khúc bán lẻ/SME/KHDN lớn/FDI từ Điểm tin BCTC của VietinBank, `data/backfill/ctg_ir_segments.json` → `D.irSeg`; KQKD) · **Biên lãi** (tăng trưởng, NIM/COF, khe hở lãi suất, CIR, ROE/ROA) · **Chất lượng tài sản** (nợ xấu, dự phòng, CAR, VCSH và đòn bẩy) · **Thu nhập ngoài lãi** · **Các tỉ lệ an toàn** (LDR TT22, LDR thô và kịch bản hệ số KBNN, room/TT50, CAR so với tăng trưởng, lịch REG, CAMEL + TT21) · **Định giá & so sánh nhóm** (P/B–P/E lịch sử, P/B theo ROE 26 NH, cổ tức, hoàn thành KH, so sánh nhóm) | Bước 2–8, BNK-01…17 |
 | Catalyst & Sự kiện | Sắp tới + dòng sự kiện có bộ lọc, dấu ± | — |
 | Consensus CTCK | Lollipop TP, LNST 2026F vs KH ĐHĐCĐ & run-rate, implied H2, P/E–P/B forward | BNK-18 |
 | 💎 FinSuccess | Quyết định (mỗi mức giá kèm P/B, P/B fwd), dải P/B–P/E ±1σ, định giá thu nhập thặng dư theo 4 kịch bản lãi suất, rủi ro, thesis tracker, nhật ký | Bước 8 |
