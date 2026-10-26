@@ -1,14 +1,14 @@
 {
- "at": "2026-10-26T11:33Z",
+ "at": "2026-10-26T13:53Z",
  "report": {
   "banks": "26/26 ngân hàng, giá đến 2026-10-26",
   "gold": "nối 0 điểm",
-  "news": "thêm 0 tin",
+  "news": "thêm 1 tin",
   "dom.creditYtd": "nối 0 điểm",
-  "dom.freeD": "nối 0 điểm",
+  "dom.freeD": "nối 1 điểm",
   "dom.dep12State": "nối 0 điểm",
   "dom.trade": "nối 0 điểm",
-  "dom.lnh": "6 kỳ hạn, đến 2026-10-22",
+  "dom.lnh": "6 kỳ hạn, đến 2026-10-23",
   "dom.omoOut": "171 phiên, đến 2026-10-26",
   "dom.tpOut": "701 phiên, đến 2026-10-26"
  }

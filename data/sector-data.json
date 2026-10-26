@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-26T11:33Z"
+  "auto": "2026-10-26T13:53Z"
  },
  "idx": {
   "now": {
@@ -6536,6 +6536,10 @@
    {
     "d": "2026-10-25",
     "v": 26410.0
+   },
+   {
+    "d": "2026-10-26",
+    "v": 26500.0
    }
   ],
   "nhtmD": [
@@ -41437,6 +41441,10 @@
     {
      "d": "2026-10-22",
      "v": 4.31
+    },
+    {
+     "d": "2026-10-23",
+     "v": 3.95
     }
    ],
    "1W": [
@@ -47223,6 +47231,10 @@
     {
      "d": "2026-10-22",
      "v": 4.35
+    },
+    {
+     "d": "2026-10-23",
+     "v": 4.08
     }
    ],
    "1M": [
@@ -53009,6 +53021,10 @@
     {
      "d": "2026-10-22",
      "v": 5.11
+    },
+    {
+     "d": "2026-10-23",
+     "v": 5.25
     }
    ],
    "3M": [
@@ -58795,6 +58811,10 @@
     {
      "d": "2026-10-22",
      "v": 6.93
+    },
+    {
+     "d": "2026-10-23",
+     "v": 6.9
     }
    ],
    "6M": [
@@ -64581,6 +64601,10 @@
     {
      "d": "2026-10-22",
      "v": 7.69
+    },
+    {
+     "d": "2026-10-23",
+     "v": 8.02
     }
    ],
    "9M": [
@@ -70366,6 +70390,10 @@
     },
     {
      "d": "2026-10-22",
+     "v": 8.7
+    },
+    {
+     "d": "2026-10-23",
      "v": 8.7
     }
    ]
@@ -89185,6 +89213,13 @@
    ]
   },
   {
+   "d": "2026-10-26",
+   "t": "Quy định đặc thù về cơ chế quản lý tài chính đối với doanh nghiệp kinh doanh xổ số",
+   "src": "CafeF",
+   "url": "https://cafef.vn/quy-dinh-dac-thu-ve-co-che-quan-ly-tai-chinh-doi-voi-doanh-nghiep-kinh-doanh-xo-so-188261026134252704.chn",
+   "sym": []
+  },
+  {
    "d": "2026-10-25",
    "t": "Bộ Xây dựng: Phí ví điện tử không phải phí duy trì tài khoản giao thông",
    "src": "CafeF",
@@ -90767,15 +90802,6 @@
     "SSB",
     "STB",
     "TPB",
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-13",
-   "t": "Tự doanh mua ròng hơn 3.000 tỷ đồng một cổ phiếu ngân hàng được 'gã khổng lồ' Nhật Bản nhắm tới",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/tu-doanh-mua-rong-hon-3-000-ty-dong-mot-co-phieu-ngan-hang-duoc-ga-khong-lo-nhat-ban-nham-toi-1470456.html",
-   "sym": [
     "VPB"
    ]
   }
