@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-25T01:19:10Z",
+ "fetched": "2026-10-26T01:18:44Z",
  "report": {
   "us_cpi": [
    {
@@ -224,15 +224,15 @@
   "us_fedtgt_up": [
    {
     "id": "fred:DFEDTARU",
-    "n": 6141,
-    "last": "2026-10-24"
+    "n": 6142,
+    "last": "2026-10-25"
    }
   ],
   "us_fedtgt_lo": [
    {
     "id": "fred:DFEDTARL",
-    "n": 6141,
-    "last": "2026-10-24"
+    "n": 6142,
+    "last": "2026-10-25"
    }
   ],
   "us_iorb": [

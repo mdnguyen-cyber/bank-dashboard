@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-25T01:24Z"
+  "auto": "2026-10-26T01:23Z"
  },
  "idx": {
   "now": {
@@ -6532,6 +6532,10 @@
    {
     "d": "2026-10-22",
     "v": 26080
+   },
+   {
+    "d": "2026-10-25",
+    "v": 26410.0
    }
   ],
   "nhtmD": [
@@ -84735,7 +84739,7 @@
  },
  "latest": {
   "quarter": "Q2/2026",
-  "priceDate": "2026-10-23",
+  "priceDate": "2026-10-26",
   "rows": [
    {
     "s": "VCB",
@@ -85388,10 +85392,10 @@
    {
     "s": "SGB",
     "group": "Tư nhân nhỏ",
-    "price": 12900,
-    "pb": 1.22,
-    "pe": 228.91,
-    "mcap": 4655,
+    "price": 13000,
+    "pb": 1.23,
+    "pe": 230.68,
+    "mcap": 4691,
     "bvps": 10561.0,
     "nim": 1.96,
     "cof": 5.39,
@@ -85408,7 +85412,7 @@
     "npYoY": -76.53,
     "credit": 22205.0,
     "ppop": 157.0,
-    "pppop": 29.73,
+    "pppop": 29.96,
     "provRatio": 84.5,
     "ppopYoY": -56.0
    },
@@ -87274,7 +87278,7 @@
     "pppop": 4.92
    },
    {
-    "d": "2026-10-23",
+    "d": "2026-10-26",
     "pb": 1.46,
     "pe": 8.65,
     "mcap": 2714,
@@ -87283,7 +87287,7 @@
   ],
   "from": "2021-01-29",
   "now": {
-   "d": "2026-10-23",
+   "d": "2026-10-26",
    "pb": 1.46,
    "pe": 8.65,
    "mcap": 2714,
@@ -89003,11 +89007,165 @@
  },
  "news": [
   {
+   "d": "2026-10-26",
+   "t": "VCBNeo nâng cao năng lực vận hành nhờ chiến lược số hóa toàn diện",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vcbneo-nang-cao-nang-luc-van-hanh-nho-chien-luoc-so-hoa-toan-dien-188261024121050195.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
+   "t": "SFinance trở thành công ty do Krungsri Thái Lan sở hữu 100% vốn",
+   "src": "CafeF",
+   "url": "https://cafef.vn/sfinance-tro-thanh-cong-ty-do-krungsri-thai-lan-so-huu-100-von-188261024100507751.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
+   "t": "BIDV thu giữ biệt thự tại Vinhomes Riverside của bà Đặng Thị Hương Lan",
+   "src": "CafeF",
+   "url": "https://cafef.vn/bidv-thu-giu-biet-thu-tai-vinhomes-riverside-cua-ba-dang-thi-huong-lan-188261025215011864.chn",
+   "sym": [
+    "BID"
+   ]
+  },
+  {
+   "d": "2026-10-26",
+   "t": "Giá vàng miếng, vàng nhẫn sáng 26/10 tại SJC, DOJI, PNJ, Bảo Tín Minh Châu và Phú Quý",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-sang-26-10-tai-sjc-doji-pnj-bao-tin-minh-chau-va-phu-quy-188261026070950025.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
+   "t": "Ngày 26/10, gửi 100 triệu đồng 18 tháng tại Sacombank, SHB, HDBank, MB, VPBank, Techcombank và ACB nhận bao nhiêu tiền lãi?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngay-26-10-gui-100-trieu-dong-18-thang-tai-sacombank-shb-hdbank-mb-vpbank-techcombank-va-acb-nhan-bao-nhieu-tien-lai-18826102607081792.chn",
+   "sym": [
+    "TCB",
+    "ACB",
+    "VPB",
+    "HDB",
+    "SHB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-26",
+   "t": "Doanh nghiệp thép bị mở thủ tục phá sản, MB rao bán nhà máy luyện gang rộng hơn 12 ha tại Hải Phòng để thu hồi nợ, giá khởi điểm hơn 300 tỷ đồng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/doanh-nghiep-thep-bi-mo-thu-tuc-pha-san-mb-rao-ban-nha-may-luyen-gang-rong-hon-12-ha-tai-hai-phong-de-thu-hoi-no-gia-khoi-diem-hon-300-ty-dong-188261025215307863.chn",
+   "sym": []
+  },
+  {
    "d": "2026-10-25",
    "t": "Giá vàng miếng, vàng nhẫn sáng 25/10 tại SJC, DOJI, PNJ, Bảo Tín Minh Châu và Phú Quý",
    "src": "CafeF",
    "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-sang-25-10-tai-sjc-doji-pnj-bao-tin-minh-chau-va-phu-quy-188261024225039643.chn",
    "sym": []
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Bộ Xây dựng: Phí ví điện tử không phải phí duy trì tài khoản giao thông",
+   "src": "CafeF",
+   "url": "https://cafef.vn/bo-xay-dung-phi-vi-dien-tu-khong-phai-phi-duy-tri-tai-khoan-giao-thong-188261021095737062.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Hàng nghìn người săn quà từ các ngân hàng tại Sóng Festival 2026",
+   "src": "CafeF",
+   "url": "https://cafef.vn/hang-nghin-nguoi-san-qua-tu-cac-ngan-hang-tai-song-festival-2026-188261025192204472.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Lãi suất ngày 25/10 tại Agribank, Vietcombank, BIDV, VietinBank, MB, VPBank, Techcombank, Sacombank, HDBank,...",
+   "src": "CafeF",
+   "url": "https://cafef.vn/lai-suat-ngay-25-10-tai-agribank-vietcombank-bidv-vietinbank-mb-vpbank-techcombank-sacombank-hdbank-188261025165215352.chn",
+   "sym": [
+    "VCB",
+    "BID",
+    "CTG",
+    "TCB",
+    "VPB",
+    "HDB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Giá vàng miếng, vàng nhẫn chiều 25/10 tại SJC, DOJI, PNJ, Bảo Tín Minh Châu và Phú Quý",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-chieu-25-10-tai-sjc-doji-pnj-bao-tin-minh-chau-va-phu-quy-188261024225039643.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Ngân hàng Nhà nước đã có cơ chế loại trừ 1,7 triệu tỷ đồng ra khỏi room tín dụng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngan-hang-nha-nuoc-da-co-co-che-loai-tru-17-trieu-ty-dong-ra-khoi-room-tin-dung-188261025124958826.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Làn sóng giảm lãi suất ngày càng sôi động, có ngân hàng đã hạ nhiều lần",
+   "src": "CafeF",
+   "url": "https://cafef.vn/lan-song-giam-lai-suat-ngay-cang-soi-dong-co-ngan-hang-da-ha-nhieu-lan-188261025142313545.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Ngân hàng rao bán biệt thự Ciputra, xe sang Rolls-Royce, Mercedes,... để thu hồi nợ",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngan-hang-rao-ban-biet-thu-ciputra-xe-sang-rolls-royce-mercedes-de-thu-hoi-no-188261025100521553.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Lần đầu tiên trong lịch sử, người Việt tiêu tới hơn 1 triệu tỷ đồng mỗi ngày mà không cần tiền mặt",
+   "src": "CafeF",
+   "url": "https://cafef.vn/lan-dau-tien-trong-lich-su-nguoi-viet-tieu-toi-hon-1-trieu-ty-dong-moi-ngay-ma-khong-can-tien-mat-188261025082955778.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Ngày 25/10, gửi 100 triệu đồng 3 tháng tại Sacombank, SHB, HDBank, MB, VPBank, Techcombank và ACB nhận bao nhiêu tiền lãi?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngay-25-10-gui-100-trieu-dong-3-thang-tai-sacombank-shb-hdbank-mb-vpbank-techcombank-va-acb-nhan-bao-nhieu-tien-lai-18826102508421061.chn",
+   "sym": [
+    "TCB",
+    "ACB",
+    "VPB",
+    "HDB",
+    "SHB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Giá vàng liên tục lao dốc, nhà đầu tư nên làm gì?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-lien-tuc-lao-doc-nha-dau-tu-nen-lam-gi-18826102508262658.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Techcombank lãi lớn từ bán bảo hiểm",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/techcombank-lai-lon-tu-ban-bao-hiem-5136656.html",
+   "sym": [
+    "TCB"
+   ]
+  },
+  {
+   "d": "2026-10-25",
+   "t": "Saigonbank giảm cả cho vay và huy động",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/saigonbank-giam-ca-cho-vay-va-huy-dong-5136587.html",
+   "sym": [
+    "SGB"
+   ]
   },
   {
    "d": "2026-10-24",
@@ -89310,6 +89468,13 @@
    "t": "Giá vàng miếng, vàng nhẫn sáng 23/10 đồng loạt giảm",
    "src": "CafeF",
    "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-sang-23-10-dong-loat-giam-188261023082632015.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-23",
+   "t": "Agribank rao bán khoản nợ gần 80 tỷ đồng, tài sản bảo đảm là khu đất tại Quận 7",
+   "src": "CafeF",
+   "url": "https://cafef.vn/agribank-rao-ban-khoan-no-gan-80-ty-dong-tai-san-bao-dam-la-khu-dat-tai-quan-7-188261023153922314.chn",
    "sym": []
   },
   {
@@ -90625,38 +90790,6 @@
    "src": "Báo Hải Phòng",
    "url": "https://baohaiphong.vn/bo-tai-chinh-yeu-cau-day-nhanh-giai-quyet-thu-tuc-giai-the-doanh-nghiep-555617.html",
    "sym": []
-  },
-  {
-   "d": "2026-10-12",
-   "t": "Khơi thông tín dụng vào lĩnh vực thế mạnh của Điện Biên, Lai Châu, Sơn La",
-   "src": "Hiệp hội Ngân hàng Việt Nam",
-   "url": "https://vnba.org.vn/vi/khoi-thong-tin-dung-vao-linh-vuc-the-manh-cua-dien-bien--lai-chau--son-la-23895.htm",
-   "sym": []
-  },
-  {
-   "d": "2026-10-12",
-   "t": "NHNN công bố quyết định điều động, bổ nhiệm Phó Giám đốc NHNN Chi nhánh Khu vực 3",
-   "src": "Hiệp hội Ngân hàng Việt Nam",
-   "url": "https://vnba.org.vn/vi/nhnn-cong-bo-quyet-dinh-dieu-dong--bo-nhiem-pho-giam-doc-nhnn-chi-nhanh-khu-vuc-3-23894.htm",
-   "sym": [
-    "BID",
-    "CTG",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-12",
-   "t": "NHNN tổ chức Hội nghị tập huấn Thông tư số 50/2026/TT-NHNN về các giới hạn, tỷ lệ bảo đảm an toàn trong hoạt động ngân hàng",
-   "src": "Hiệp hội Ngân hàng Việt Nam",
-   "url": "https://vnba.org.vn/vi/nhnn-to-chuc-hoi-nghi-tap-huan-thong-tu-so-50-2026-tt-nhnn-ve-cac-gioi-han--ty-le-bao-dam-an-toan-trong-hoat-dong-ngan-hang-23896.htm",
-   "sym": []
-  },
-  {
-   "d": "2026-10-12",
-   "t": "Ngân hàng Nhà nước Việt Nam tích cực hưởng ứng Phong trào “Mỗi người dân lựa chọn ít nhất một môn thể thao phù hợp để tập luyện thường xuyên”",
-   "src": "Hiệp hội Ngân hàng Việt Nam",
-   "url": "https://vnba.org.vn/vi/ngan-hang-nha-nuoc-viet-nam-tich-cuc-huong-ung-phong-trao--moi-nguoi-dan-lua-chon-it-nhat-mot-mon-the-thao-phu-hop-de-tap-luyen-thuong-xuyen-23898.htm",
-   "sym": []
   }
  ],
  "goldWi": [
@@ -91199,6 +91332,10 @@
   {
    "d": "2026-10-23",
    "v": 4043.3
+  },
+  {
+   "d": "2026-10-25",
+   "v": 4008.4
   }
  ],
  "fee": {
