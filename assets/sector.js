@@ -235,25 +235,39 @@ function paneOverview() {
   const tk = g => M.banks.filter(s => (D.meta.groups || {})[s] === g);
   const S = (l, sh) => `<span class="tl">${l}</span><span class="ts">${sh}</span>`;   // bản đầy đủ / bản ngắn của cùng một đoạn
   const T = x => Array.isArray(x) ? S(x[0], x[1]) : x;
-  const box = (h, b, cls = '', lim = '') => `<div class="vbox ${cls}"><b>${h}</b>${b ? `<span>${T(b)}</span>` : ''}${lim ? `<em class="vlim">Giới hạn: ${lim}</em>` : ''}</div>`;
+  const sz = (t, c = '') => `<em class="vsz ${c}">${t}</em>`;   // nhãn quy mô của một nguồn vốn / khoản sử dụng vốn
+  const box = (h, b, cls = '', lim = '', tag = '') => `<div class="vbox ${cls}"><b>${h}${tag}</b>${b ? `<span>${T(b)}</span>` : ''}${lim ? `<em class="vlim">Giới hạn: ${lim}</em>` : ''}</div>`;
   const go = (p, l) => `<button type="button" class="lnk" data-gop="${p}">${l} →</button>`;
+  /* Các yếu tố tác động, gom 4 nhóm: [tên nhóm, mô tả nhóm, [[yếu tố, cơ chế, tác động, [tab, nhãn], chỉ số]]] */
   const DRV = [
-    ['Lãi suất điều hành & thanh khoản', ['NHNN dùng lãi suất tái cấp vốn, tái chiết khấu (trần, sàn của lãi suất liên ngân hàng), nghiệp vụ thị trường mở OMO (bơm, hút tiền hằng ngày), tín phiếu NHNN, dự trữ bắt buộc và trần lãi suất tiền gửi kỳ hạn dưới 6 tháng.', 'NHNN bơm hoặc hút tiền mỗi ngày (OMO, tín phiếu) và đặt trần, sàn cho lãi suất liên ngân hàng.'],
-      ['NHNN bơm tiền → lãi suất liên ngân hàng giảm → chi phí vốn (COF) giảm sau vài tháng. NHNN hút tiền → điều ngược lại, ngân hàng phải tăng lãi suất huy động.', 'Bơm tiền → vốn rẻ hơn sau vài tháng. Hút tiền → ngân hàng phải tăng lãi suất huy động.'], ['mm', 'Tỷ giá'], 'NIM · COF'],
-    ['Room tín dụng', ['Mỗi năm NHNN đặt chỉ tiêu tăng trưởng tín dụng toàn hệ thống rồi giao hạn mức (room) cho từng ngân hàng, dựa trên kết quả xếp hạng (TT 21/2025).', 'NHNN giao hạn mức tăng tín dụng (room) cho từng ngân hàng mỗi năm, theo xếp hạng.'],
-      ['Room quyết định ngân hàng được lớn thêm bao nhiêu. Ngân hàng xếp hạng cao, nợ xấu thấp được room rộng hơn; room hẹp thì dù có khách hàng cũng không cho vay thêm được.', 'Room quyết định ngân hàng được cho vay thêm bao nhiêu; ngân hàng tốt được room rộng hơn.'], ['camel', 'Xếp hạng TT21 & room'], 'Tăng trưởng tín dụng'],
-    ['Tỷ giá USD/VND', ['NHNN công bố tỷ giá trung tâm mỗi ngày; ngân hàng chỉ được giao dịch trong biên độ ±5%. Khi USD mạnh lên (Fed tăng lãi suất, DXY tăng) hoặc cầu ngoại tệ trong nước tăng, NHNN bán USD từ dự trữ.', 'USD mạnh lên thì NHNN bán USD dự trữ để giữ tỷ giá.'],
-      ['Bán USD = rút VND khỏi hệ thống → thanh khoản căng, lãi suất tăng. Áp lực tỷ giá cao khiến NHNN khó hạ lãi suất dù kinh tế cần vốn rẻ. Đây là kênh chính để Fed và USD ảnh hưởng tới ngân hàng Việt Nam.', 'Bán USD là rút VND khỏi hệ thống → lãi suất tăng, NHNN khó hạ lãi suất.'], ['dom', 'Nội địa'], 'COF · thanh khoản'],
-    ['Lạm phát', ['Quốc hội giao mục tiêu lạm phát hằng năm (quanh 4–4,5%). Giá xăng dầu, lương thực, dịch vụ công và tỷ giá là các nguồn chính.', 'Mục tiêu khoảng 4–4,5%/năm; xăng dầu, lương thực, tỷ giá là nguồn chính.'],
-      ['Lạm phát vượt mục tiêu → NHNN ưu tiên giữ giá, không nới lãi suất; người gửi tiền đòi lãi suất cao hơn để bù trượt giá → COF tăng.', 'Lạm phát cao → NHNN không nới lãi suất, chi phí vốn tăng.'], ['dom', 'Nội địa'], 'Lãi suất · COF'],
-    ['Tăng trưởng kinh tế & doanh nghiệp', ['Xuất khẩu, FDI, đầu tư công và tiêu dùng tạo nhu cầu vay vốn; dòng tiền của doanh nghiệp, hộ gia đình quyết định khả năng trả nợ.', 'Xuất khẩu, FDI, đầu tư công, tiêu dùng tạo nhu cầu vay.'],
-      ['Kinh tế tốt → tín dụng tăng, nợ xấu giảm. Kinh tế chậm lại → nợ quá hạn tăng, thường thể hiện trong nợ xấu sau 2–4 quý.', 'Kinh tế tốt → cho vay tăng, nợ xấu giảm; chậm lại → nợ xấu tăng sau 2–4 quý.'], ['dom', 'Nội địa'], 'Tín dụng · NPL'],
-    ['Bất động sản', ['Bất động sản là tài sản bảo đảm phổ biến nhất của khoản vay; ngân hàng còn cho chủ đầu tư vay, cho người mua nhà vay và từng nắm trái phiếu doanh nghiệp BĐS.', 'Bất động sản là tài sản thế chấp phổ biến nhất.'],
-      ['Thị trường BĐS trầm lắng → khó bán tài sản bảo đảm, nợ xấu xử lý chậm, trích lập dự phòng tăng. NHNN giới hạn riêng room cho vay kinh doanh BĐS.', 'BĐS trầm lắng → khó xử lý nợ xấu, dự phòng tăng.'], ['bank', 'Ngân hàng'], 'NPL · dự phòng'],
-    ['Tài khoá & Kho bạc', ['Kho bạc Nhà nước gửi tiền tại ngân hàng (chủ yếu nhóm Nhà nước), giải ngân đầu tư công và phát hành trái phiếu Chính phủ.', 'Kho bạc gửi tiền ở ngân hàng, giải ngân đầu tư công, phát hành TPCP.'],
-      ['Tiền gửi Kho bạc là nguồn vốn rẻ, một phần được tính vào LDR. Giải ngân đầu tư công bơm tiền ra hệ thống; phát hành TPCP hút tiền vào. TPCP cũng là tài sản thanh khoản ngân hàng nắm giữ.', 'Tiền gửi Kho bạc là vốn rẻ; giải ngân bơm tiền ra, phát hành TPCP hút tiền vào.'], ['dom', 'Nội địa'], 'COF · LDR'],
-    ['Quy định an toàn', ['Hệ số an toàn vốn CAR (chuẩn Basel), giới hạn tỷ lệ cho vay/huy động (LDR, sang LCR/NSFR theo TT 50/2026), giới hạn cấp tín dụng một khách hàng, phân loại nợ và trích lập dự phòng.', 'Vốn tối thiểu (CAR), giới hạn cho vay so với huy động, phân loại nợ và dự phòng.'],
-      ['Quy định chặt hơn buộc ngân hàng tăng vốn (phát hành, giữ lại lợi nhuận, hạn chế chia cổ tức tiền mặt), giữ nhiều tài sản thanh khoản hơn, tăng trưởng chậm lại.', 'Quy định chặt hơn → phải tăng vốn, tăng trưởng chậm lại.'], ['policy', 'tab Chính sách'], 'CAR · LDR'],
+    ['Vĩ mô tiền tệ', ['Nhóm quyết định giá vốn và lượng tiền trong hệ thống. Tác động nhanh nhất (vài tuần đến vài tháng) và trực tiếp nhất lên chi phí vốn, thanh khoản và định giá cổ phiếu ngân hàng.', 'Quyết định giá vốn và thanh khoản; tác động nhanh nhất.'], [
+      ['Lãi suất điều hành và thanh khoản', ['NHNN dùng nghiệp vụ thị trường mở (OMO) và tín phiếu để bơm, hút tiền hằng ngày; lãi suất tái cấp vốn, tái chiết khấu làm trần, sàn cho lãi suất liên ngân hàng; thêm dự trữ bắt buộc và trần lãi suất tiền gửi dưới 6 tháng.', 'NHNN bơm, hút tiền hằng ngày và đặt trần, sàn cho lãi suất liên ngân hàng.'],
+        ['Bơm tiền → lãi suất liên ngân hàng giảm → lãi suất huy động và chi phí vốn (COF) giảm sau 1–3 quý. Hút tiền → ngược lại; ngân hàng thiếu vốn phải tăng lãi suất huy động.', 'Bơm tiền → vốn rẻ hơn sau vài tháng; hút tiền → ngược lại.'], ['dom', 'Vĩ mô tiền tệ'], 'COF · NIM'],
+      ['Tỷ giá USD/VND', ['NHNN công bố tỷ giá trung tâm mỗi ngày, ngân hàng giao dịch trong biên độ ±5%. Khi USD mạnh lên hoặc cầu ngoại tệ trong nước tăng, NHNN bán USD dự trữ và rút VND về.', 'USD mạnh lên thì NHNN bán USD dự trữ, rút VND về.'],
+        ['Bán USD là hút VND khỏi hệ thống → thanh khoản căng, lãi suất tăng; áp lực tỷ giá khiến NHNN khó hạ lãi suất dù kinh tế cần vốn rẻ.', 'Áp lực tỷ giá → lãi suất tăng, NHNN khó nới.'], ['dom', 'Vĩ mô tiền tệ'], 'COF · thanh khoản'],
+      ['Fed và đồng USD', ['Lãi suất Fed và lợi suất trái phiếu Mỹ quyết định mặt bằng lãi suất USD; chênh lệch lãi suất VND − USD quyết định động cơ giữ VND hay USD.', 'Lãi suất Mỹ cao kéo USD mạnh, ép chênh lệch lãi suất VND − USD.'],
+        ['Fed giữ lãi suất cao hoặc tăng → chênh lệch VND − USD hẹp → áp lực tỷ giá → NHNN giữ lãi suất cao. Đây là kênh chính để bên ngoài tác động tới ngân hàng Việt Nam.', 'Fed tăng → áp lực tỷ giá → lãi suất trong nước khó giảm.'], ['intl', 'Vĩ mô › Quốc tế'], 'Tỷ giá · COF']]],
+    ['Sức khoẻ nền kinh tế', ['Nhóm quyết định nhu cầu vay và khả năng trả nợ. Tác động chậm hơn (2–4 quý) nhưng quyết định tăng trưởng tín dụng và nợ xấu.', 'Quyết định nhu cầu vay và khả năng trả nợ; tác động chậm hơn.'], [
+      ['Tăng trưởng kinh tế và doanh nghiệp', ['Sản xuất, xuất khẩu, FDI, đầu tư công và tiêu dùng tạo nhu cầu vay vốn; dòng tiền của doanh nghiệp, hộ gia đình quyết định khả năng trả nợ.', 'Sản xuất, xuất khẩu, đầu tư, tiêu dùng tạo nhu cầu vay.'],
+        ['Kinh tế tốt → tín dụng tăng, nợ xấu giảm. Kinh tế chậm lại → nợ quá hạn tăng và thể hiện trong nợ xấu sau 2–4 quý.', 'Kinh tế tốt → cho vay tăng, nợ xấu giảm.'], ['eco', 'Vĩ mô › Kinh tế'], 'Tín dụng · NPL'],
+      ['Lạm phát', ['Quốc hội giao mục tiêu lạm phát hằng năm (quanh 4–4,5%); giá xăng dầu, lương thực, dịch vụ do Nhà nước quản lý và tỷ giá là các nguồn chính.', 'Mục tiêu khoảng 4–4,5%/năm.'],
+        ['Lạm phát vượt mục tiêu → NHNN ưu tiên giữ giá, không nới lãi suất; người gửi tiền đòi lãi suất cao hơn để bù trượt giá → COF tăng.', 'Lạm phát cao → không nới lãi suất, chi phí vốn tăng.'], ['eco', 'Vĩ mô › Kinh tế'], 'Lãi suất · COF'],
+      ['Bất động sản', ['Khoảng 1/4 dư nợ toàn hệ thống là tín dụng bất động sản, và nhà đất là tài sản bảo đảm phổ biến nhất của cả các khoản vay khác.', 'Khoảng 1/4 dư nợ; tài sản thế chấp phổ biến nhất.'],
+        ['Thị trường trầm lắng → khó bán tài sản bảo đảm, nợ xấu xử lý chậm, dự phòng tăng; thị trường sôi động → tín dụng mua nhà, kinh doanh BĐS tăng nhanh.', 'BĐS trầm lắng → khó xử lý nợ xấu, dự phòng tăng.'], ['bank', 'Ngân hàng'], 'NPL · dự phòng'],
+      ['Tài khoá và Kho bạc', ['Kho bạc Nhà nước gửi tiền tại ngân hàng (tiền gửi có kỳ hạn chỉ ở nhóm Nhà nước), giải ngân đầu tư công và phát hành trái phiếu Chính phủ.', 'Kho bạc gửi tiền, giải ngân đầu tư công, phát hành TPCP.'],
+        ['Giải ngân đầu tư công bơm tiền ra hệ thống và tạo nhu cầu vay của nhà thầu; phát hành TPCP hút tiền vào. Tiền gửi Kho bạc là vốn rẻ của Big 4.', 'Giải ngân bơm tiền ra; phát hành TPCP hút tiền vào.'], ['eco', 'Vĩ mô › Kinh tế'], 'COF · thanh khoản']]],
+    ['Định hướng chính sách', ['Ở Việt Nam, Nhà nước không chỉ đặt luật chơi mà còn trực tiếp định lượng: giao hạn mức tín dụng, kêu gọi giảm lãi suất, chỉ định ngân hàng nhận chuyển giao. Các quyết định này có thể làm lệch kết quả kinh doanh so với chu kỳ thị trường.', 'Nhà nước giao room, định hướng lãi suất, tái cơ cấu ngân hàng yếu.'], [
+      ['Room tín dụng', ['Mỗi năm NHNN đặt chỉ tiêu tăng trưởng tín dụng toàn hệ thống (2026: khoảng 15%) rồi giao hạn mức cho từng ngân hàng theo kết quả xếp hạng (TT 21/2025).', 'NHNN giao hạn mức tăng tín dụng theo xếp hạng.'],
+        ['Room quyết định ngân hàng được lớn thêm bao nhiêu: ngân hàng xếp hạng cao được room rộng; room hẹp thì dù có khách hàng cũng không cho vay thêm được.', 'Room quyết định quy mô cho vay thêm.'], ['camel', 'Xếp hạng TT21 & room'], 'Tăng trưởng tín dụng'],
+      ['Chủ trương lãi suất và tín dụng ưu tiên', ['NHNN và Chính phủ thường yêu cầu ngân hàng giảm lãi suất cho vay, cơ cấu nợ, mở gói tín dụng ưu đãi (nhà ở xã hội, nông nghiệp, hạ tầng).', 'Yêu cầu giảm lãi suất, gói tín dụng ưu đãi.'],
+        ['Hỗ trợ tăng trưởng nhưng ép biên lãi (NIM), nhất là với nhóm ngân hàng Nhà nước đi đầu thực hiện; cơ cấu nợ làm chậm việc ghi nhận nợ xấu.', 'Ép biên lãi, nhất là nhóm Nhà nước.'], ['policy', 'tab Chính sách'], 'NIM · NPL'],
+      ['Tái cơ cấu và xử lý nợ xấu', ['Chuyển giao bắt buộc ngân hàng yếu kém, khung pháp lý xử lý nợ xấu và tài sản bảo đảm (Luật Các TCTD 2024).', 'Chuyển giao ngân hàng yếu, khung xử lý nợ xấu.'],
+        ['Ngân hàng nhận chuyển giao được ưu đãi room; khung xử lý tài sản bảo đảm rõ ràng giúp thu hồi nợ nhanh hơn, giảm dự phòng.', 'Ưu đãi room cho bên nhận chuyển giao.'], ['policy', 'tab Chính sách'], 'Room · dự phòng']]],
+    ['Tỷ lệ an toàn', ['Các giới hạn định lượng bắt buộc. Chúng không thay đổi theo ngày nhưng khi bị chạm sẽ chặn tăng trưởng ngay lập tức, và khi văn bản đổi cách tính (như TT 50/2026) thì dư địa của từng ngân hàng thay đổi. Chi tiết ở mục 6.', 'Giới hạn bắt buộc; khi bị chạm sẽ chặn tăng trưởng. Chi tiết mục 6.'], [
+      ['Tỷ lệ thanh khoản: LDR, vốn ngắn hạn cho vay dài hạn, LCR, NSFR', ['Giới hạn cho vay so với vốn huy động, vốn ngắn hạn dùng cho vay dài hạn, và (từ TT 50) tài sản thanh khoản phải đủ cho 30 ngày căng thẳng, tài sản dài hạn phải đi với vốn ổn định.', 'Giới hạn cho vay so với huy động và thanh khoản.'],
+        ['Ngân hàng sát trần LDR hoặc thiếu vốn ổn định phải tăng huy động (thường bằng lãi suất cao hơn) hoặc chậm cho vay.', 'Sát trần → phải huy động đắt hơn hoặc chậm cho vay.'], ['peer', 'So sánh ngân hàng'], 'LDR · COF'],
+      ['Vốn (CAR), giới hạn cấp tín dụng, phân loại nợ', ['Hệ số an toàn vốn tối thiểu 8% cộng đệm (TT 14/2025); dư nợ một khách hàng, nhóm khách hàng liên quan bị giới hạn theo vốn tự có; nợ phân 5 nhóm, trích dự phòng theo nhóm.', 'Vốn tối thiểu, giới hạn một khách hàng, phân loại nợ.'],
+        ['Thiếu vốn → phải tăng vốn (phát hành, giữ lại lợi nhuận, hạn chế cổ tức tiền mặt) và tăng trưởng chậm lại.', 'Thiếu vốn → phải tăng vốn, tăng trưởng chậm lại.'], ['policy', 'tab Chính sách'], 'CAR · ROE']]],
   ];
   const CYC = [
     ['Nới lỏng', ['NHNN hạ lãi suất, bơm tiền', 'Giảm, bơm tiền'], ['Tăng dần khi room nới', 'Tăng dần'], ['Thường mở rộng: COF giảm nhanh hơn lãi suất cho vay', 'Mở rộng'], ['Giảm dần nhờ doanh nghiệp dễ vay đảo nợ', 'Giảm dần'], ['Thường tăng sớm nhất', 'Tăng sớm nhất']],
@@ -266,6 +280,8 @@ function paneOverview() {
     ['COF', 'Chi phí vốn', 'Chi phí lãi / nguồn vốn chịu lãi bình quân', 'Thấp = huy động rẻ (CASA cao, tiền gửi Kho bạc)'],
     ['CASA', 'Tiền gửi không kỳ hạn', 'Tiền gửi thanh toán / tổng tiền gửi khách hàng', 'Cao = nguồn vốn gần như miễn phí, ít nhạy với lãi suất'],
     ['LDR', 'Tỷ lệ cho vay / huy động', 'Dư nợ cho vay / tiền gửi (theo công thức NHNN)', 'Sát trần = khó tăng cho vay nếu không huy động thêm'],
+    ['LCR', 'Tỷ lệ bao phủ thanh khoản', 'Tài sản thanh khoản cao / dòng tiền ra ròng 30 ngày căng thẳng', 'Từ 100% = đủ tài sản bán ngay để chi trả 30 ngày'],
+    ['NSFR', 'Tỷ lệ nguồn vốn ổn định ròng', 'Nguồn vốn ổn định sẵn có / nguồn vốn ổn định yêu cầu', 'Từ 100% = tài sản dài hạn được tài trợ bằng vốn ở lại lâu'],
     ['CAR', 'Hệ số an toàn vốn', 'Vốn tự có / tài sản có rủi ro', 'Cao = đủ đệm vốn để tăng trưởng, chịu lỗ'],
     ['NPL', 'Tỷ lệ nợ xấu', 'Nợ nhóm 3–5 / tổng dư nợ', 'Thấp; nhóm 2 (quá hạn 10–90 ngày) là chỉ báo sớm'],
     ['LLR', 'Tỷ lệ bao phủ nợ xấu', 'Dự phòng rủi ro tín dụng / nợ xấu', 'Cao = đệm dày, lợi nhuận tương lai ít bị ăn mòn'],
@@ -273,21 +289,40 @@ function paneOverview() {
     ['ROE', 'Lợi nhuận / vốn chủ', 'LNST / vốn chủ sở hữu bình quân', 'Cao bền vững = được định giá P/B cao hơn'],
     ['P/B', 'Giá / giá trị sổ sách', 'Vốn hoá / vốn chủ sở hữu', 'Thước đo định giá chính của ngân hàng, đi cùng ROE'],
   ];
+  /* Khung pháp lý: các tỷ lệ chính, so TT 22/2019 (đang áp dụng) với TT 50/2026 */
+  const RAT = [
+    ['LDR', 'Tỷ lệ dư nợ cho vay so với tổng tiền gửi',
+      ['Dư nợ cho vay (L) / tiền gửi và nguồn vốn được tính (D). Cho biết ngân hàng đã dùng bao nhiêu vốn huy động để cho vay; sát trần thì muốn cho vay thêm phải huy động thêm.', 'Cho vay / huy động; sát trần thì phải huy động thêm mới cho vay được.'],
+      ['Tối đa <b>85%</b> (Điều 20 TT 22/2019, sửa đổi bởi TT 26/2022, TT 09/2024, TT 25/2026). Tiền gửi có kỳ hạn của Kho bạc tính 20% vào D (TT 25/2026). 27 ngân hàng niêm yết ở khoảng 83% (06/2026), dư địa cho vay khoảng 320 nghìn tỷ.', 'Trần <b>85%</b> (TT 22/2019); toàn nhóm khoảng 83%.'],
+      ['Trần lên <b>95%</b> (Điều 12). D được cộng vốn chủ sở hữu trừ tài sản cố định, vị thế vay ròng liên ngân hàng và vốn vay nước ngoài; bị loại tiền gửi của TCTD khác, trái phiếu thường do ngân hàng phát hành, chứng chỉ tiền gửi mua chéo và trừ phần đầu tư trái phiếu doanh nghiệp. Ước tính toàn nhóm 86–97%, kịch bản trung tâm 90–91%.', 'Trần <b>95%</b>; D tính lại: cộng vốn chủ, loại tiền gửi liên ngân hàng.'],
+      ['<b>Không còn phải tuân thủ</b> khi ngân hàng đạt 100% cả LCR và NSFR (chỉ báo cáo): sớm nhất từ 01/01/2027 nếu đăng ký ngưỡng 100%; với mọi ngân hàng từ 01/10/2033.', 'Bỏ LDR khi đạt 100% cả LCR và NSFR.']],
+    ['Vốn ngắn hạn cho vay trung, dài hạn', 'Tỷ lệ tối đa nguồn vốn ngắn hạn được dùng để cho vay trung hạn, dài hạn',
+      ['(Dư nợ trung dài hạn − nguồn vốn trung dài hạn) / nguồn vốn ngắn hạn. Đo rủi ro kỳ hạn: huy động ngắn để cho vay dài thì khi lãi suất tăng, chi phí vốn tăng trước thu nhập.', 'Đo rủi ro huy động ngắn, cho vay dài.'],
+      ['Tối đa <b>40%</b> từ 01/07/2026 (TT 25/2026 nới từ 30%); tiền gửi Kho bạc bị loại toàn bộ khỏi nguồn vốn ngắn hạn.', 'Trần <b>40%</b> từ 07/2026 (nới từ 30%).'],
+      ['Được thay bằng <b>NSFR</b> (dưới đây). Tỷ lệ cũ thực chất là NSFR rút gọn với hai hệ số: vốn trên 1 năm tính 100%, vốn đến 1 năm tính 40%; tài sản trên 1 năm cần 100% vốn ổn định.', 'Thay bằng <b>NSFR</b>.'],
+      ['Việc nới lên 40% năm 2026 là bước đệm trước khi chuyển sang NSFR.', 'Nới 40% là bước đệm.']],
+    ['NSFR', 'Tỷ lệ nguồn vốn ổn định ròng (mới, Điều 22–26 TT 50)',
+      ['Nguồn vốn ổn định sẵn có (ASF) / nguồn vốn ổn định yêu cầu (RSF). Hỏi: tài sản khó thu hồi trong một năm có được tài trợ bằng nguồn vốn ở lại với ngân hàng trong một năm không.', 'Tài sản dài hạn có đi cùng vốn ở lại lâu không.'],
+      ['Chưa áp dụng; đang dùng tỷ lệ vốn ngắn hạn cho vay trung, dài hạn (trên).', 'Chưa áp dụng.'],
+      ['Tối thiểu <b>90%</b> năm đầu, 95%, rồi <b>100%</b> (bắt buộc 100% từ 01/10/2030). Nới: tiền gửi cá nhân dưới 1 năm tính 90–95% là vốn ổn định (cách cũ 40%); cho vay dài hạn chỉ cần 65–85% (cũ 100%). Thắt: cho vay ngắn hạn cần 50% (cũ 0%); vốn từ tổ chức tài chính dưới 6 tháng tính 0%.', 'Từ <b>90%</b> lên <b>100%</b> (10/2030); tiền gửi cá nhân được tính 90–95%.'],
+      ['Có lợi cho ngân hàng có nhiều tiền gửi cá nhân; bất lợi cho ngân hàng cho vay dài hạn nhiều trên nền vốn ổn định thấp.', 'Lợi cho ngân hàng bán lẻ.']],
+    ['LCR', 'Tỷ lệ bao phủ thanh khoản (thay hai tỷ lệ thanh khoản cũ)',
+      ['TT 22/2019 dùng hai tỷ lệ: <b>dự trữ thanh khoản</b> = tài sản thanh khoản cao / tổng nợ phải trả ≥ 10%; <b>khả năng chi trả 30 ngày</b> = tài sản thanh khoản cao / (dòng ra − dòng vào theo hợp đồng trong 30 ngày) ≥ 50% với VND. Tài sản thanh khoản gồm cả tiền gửi tại TCTD khác và vàng.', 'Cũ: dự trữ thanh khoản ≥ 10%, khả năng chi trả 30 ngày ≥ 50%.'],
+      ['Đang áp dụng hai tỷ lệ trên cho tới khi ngân hàng chuyển sang LCR (đăng ký sớm hoặc bắt buộc từ 01/10/2028).', 'Đang áp dụng đến khi chuyển sang LCR.'],
+      ['<b>LCR = tài sản thanh khoản cao (HQLA) / [dòng ra − min(dòng vào; 75% dòng ra)]</b> trong 30 ngày căng thẳng. Ngưỡng 50% năm đầu, mỗi năm +10 điểm, <b>100% từ 01/10/2033</b>. Tử số chia cấp: cấp 1 (tiền, tiền gửi NHNN, TPCP) tính 100%; cấp 2A (trái phiếu doanh nghiệp từ AA−) 85%; cấp 2B (BBB− đến A+, cổ phiếu VN30) 50–75%; tiền gửi tại TCTD khác và vàng bị loại. Mẫu số chấm theo người gửi: tiền gửi cá nhân tính rút 5–10%, tổ chức kinh tế 25–40%, tổ chức tài chính 100%; nợ vay đến hạn chỉ tính 50% dòng vào.', 'HQLA / dòng tiền ra ròng 30 ngày; 50% → <b>100%</b> (2033); loại tiền gửi liên ngân hàng khỏi tử số.'],
+      ['Tài sản cấp 1 của 27 ngân hàng niêm yết chỉ khoảng 1.472 nghìn tỷ (6,5% tổng tài sản), so với 22,8% nếu tính cả gửi, cho vay liên ngân hàng như cách cũ: tử số hẹp lại mạnh. Ngân hàng dựa vào vốn TCTD khác (trên 30% nguồn vốn) chịu áp lực nhất.', 'Tử số hẹp lại mạnh; ngân hàng dựa vốn liên ngân hàng chịu áp lực.']],
+  ];
+  const rp = D.regRef;
   $('#overview').innerHTML = `
   ${qu ? `<button type="button" class="qbar" id="goQuick"><span class="qdate">Báo cáo vĩ mô ${dvn(qu.date)}</span><span class="who ${qu.author.type === 'AI' ? 'ai' : 'cv'}">${qu.author.type === 'AI' ? 'AI' : 'Chuyên viên'}</span><span class="qbar-t">${esc(qu.headline)}</span><span class="qbar-go">Xem →</span></button>` : ''}
   <h2 class="sec">Tổng quan ngành ngân hàng Việt Nam</h2>
-  <p class="sec-sub">${S('Phần nền tảng, ít thay đổi theo thời gian: ngân hàng đứng ở đâu trong nền kinh tế, kiếm tiền bằng cách nào và chịu tác động của những yếu tố nào. Diễn biến và số liệu mới nhất nằm ở Bức tranh ngành và Báo cáo vĩ mô.', 'Kiến thức nền về ngành: vai trò, cách kiếm tiền, các yếu tố tác động. Số liệu mới nhất xem ở Bức tranh ngành và Báo cáo vĩ mô.')}</p>
+  <p class="sec-sub">${S('Phần nền tảng, ít thay đổi theo thời gian: ngân hàng làm gì trong nền kinh tế, vốn đến từ đâu và đi về đâu, chịu tác động của những yếu tố nào và bị quản lý bằng những tỷ lệ nào. Diễn biến và số liệu mới nhất nằm ở Bức tranh ngành, Báo cáo vĩ mô và trang Vĩ mô.', 'Kiến thức nền về ngành. Số liệu mới nhất xem ở Bức tranh ngành và trang Vĩ mô.')}</p>
   <div class="ovmode" role="tablist" aria-label="Độ dài câu chữ"><button type="button" role="tab" data-ovm="short">Ngắn gọn <small>ít chữ, dễ đọc</small></button><button type="button" role="tab" data-ovm="long">Đầy đủ <small>giải thích chi tiết, có số liệu</small></button></div>
-  <nav class="ovnav">${[['ov1', '1 · Vai trò'], ['ov2', '2 · Chuỗi giá trị'], ['ov3', '3 · Kiếm tiền thế nào'], ['ov4', '4 · Cấu trúc ngành'], ['ov5', '5 · Yếu tố tác động'], ['ov6', '6 · Chu kỳ ngành'], ['ov7', '7 · Khung pháp lý'], ['ov8', '8 · Thuật ngữ']].map(([a, l]) => `<a href="#${a}" data-ov="${a}">${l}</a>`).join('')}</nav>
+  <nav class="ovnav">${[['ov1', '1 · Vai trò'], ['ov2', '2 · Chuỗi giá trị'], ['ov4', '3 · Cấu trúc ngành'], ['ov5', '4 · Yếu tố tác động'], ['ov6', '5 · Chu kỳ ngành'], ['ov7', '6 · Khung pháp lý'], ['ov8', '7 · Thuật ngữ']].map(([a, l]) => `<a href="#${a}" data-ov="${a}">${l}</a>`).join('')}</nav>
 
-  <h3 class="ovh" id="ov1">1 · Ngân hàng trong nền kinh tế Việt Nam</h3>
-  <div class="grid g3 gap ovrole">
-    <article class="card"><h4>Kênh dẫn vốn chính</h4>${S(`<p>Doanh nghiệp và hộ gia đình vay vốn chủ yếu qua ngân hàng; dư nợ tín dụng lớn hơn cả GDP. Năm 2025, tín dụng ngân hàng cung cấp <b>~45 tỷ USD</b> vốn trung, dài hạn (<b>38%</b>), trái phiếu doanh nghiệp ~8 tỷ USD (7%).</p>
-      <p>Ngân hàng cũng tham gia kênh trái phiếu: tự phát hành, đầu tư và qua công ty chứng khoán trong hệ sinh thái (như TCBS) tư vấn, phân phối. Trái phiếu doanh nghiệp dự phóng lên <b>~37 tỷ USD</b> năm 2030 (15%), chia bớt gánh nặng vốn dài hạn của ngân hàng. <span class="muted">Nguồn: FiinGroup</span></p>`, '<p>Doanh nghiệp và hộ gia đình vay vốn chủ yếu qua ngân hàng; dư nợ tín dụng lớn hơn cả GDP.</p>')}</article>
-    <article class="card"><h4>Ngành chịu quản lý chặt nhất</h4><p>${S('Ngân hàng Nhà nước (NHNN) vừa điều hành chính sách tiền tệ, vừa cấp phép, thanh tra, giao hạn mức tăng trưởng tín dụng cho từng ngân hàng. Lợi nhuận ngân hàng vì thế phụ thuộc nhiều vào chính sách, không chỉ vào năng lực kinh doanh.', 'NHNN điều hành lãi suất và quyết định mỗi ngân hàng được cho vay thêm bao nhiêu, nên lợi nhuận phụ thuộc nhiều vào chính sách.')}</p></article>
-    <article class="card"><h4>Nhóm vốn hoá lớn nhất sàn chứng khoán</h4>${S(`<p>Cổ phiếu ngân hàng chiếm tỷ trọng lớn nhất trong VN-Index. Định giá ngành thường đo bằng P/B (giá so với vốn chủ) vì tài sản và nợ của ngân hàng chủ yếu là tiền, ghi gần sát giá trị thật.</p>
-      <p>P/E (giá so với lợi nhuận) bổ sung một góc nhìn khác: thị trường đang trả bao nhiêu cho mỗi đồng lợi nhuận hiện tại. Lợi nhuận ngân hàng biến động theo chu kỳ — chi phí dự phòng có thể làm lợi nhuận giảm mạnh ở đáy và tăng vọt khi hoàn nhập.</p>`, '<p>Ngân hàng chiếm tỷ trọng lớn nhất VN-Index. Định giá chủ yếu bằng P/B (giá so với vốn chủ).</p>')}</article>
-  </div>
+  <h3 class="ovh" id="ov1">1 · Ngân hàng trong nền kinh tế</h3>
+  <article class="card ovlead"><p>${S(`Ngân hàng làm trung gian giữa người có tiền nhàn rỗi và người cần vốn: <b>nhận tiền gửi</b> của dân cư, doanh nghiệp rồi <b>cho vay lại</b>, hưởng chênh lệch lãi suất; đồng thời cung cấp <b>dịch vụ tài chính</b> như thanh toán, thẻ, ngoại hối, bảo lãnh, bảo hiểm qua ngân hàng. Ở Việt Nam, tín dụng ngân hàng là kênh vốn chính của nền kinh tế: dư nợ gần 20 triệu tỷ đồng (06/2026), lớn hơn GDP một năm, trong khi thị trường trái phiếu doanh nghiệp và cổ phiếu còn nhỏ.`, 'Ngân hàng <b>nhận tiền gửi để cho vay</b>, hưởng chênh lệch lãi suất, và cung cấp <b>dịch vụ tài chính</b> (thanh toán, thẻ, ngoại hối). Ở Việt Nam đây là kênh vốn chính của nền kinh tế.')}</p>
+    <p>${S(`Ngân hàng dùng đòn bẩy rất cao (vốn chủ chỉ khoảng 8,5% tổng tài sản của 27 ngân hàng niêm yết) và giữ tiền gửi của cả xã hội, nên một ngân hàng mất khả năng chi trả có thể lan sang ngân hàng khác qua thị trường liên ngân hàng và tâm lý rút tiền: đó là <b>rủi ro hệ thống</b>. Vì vậy đây là ngành bị quản lý chặt nhất. Ngoài điều hành lãi suất và giao hạn mức tín dụng, NHNN giới hạn bảng cân đối của từng ngân hàng bằng các tỷ lệ an toàn: cho vay so với huy động (LDR), vốn ngắn hạn cho vay dài hạn, thanh khoản (LCR, NSFR theo TT 50/2026) và vốn tối thiểu (CAR); chi tiết ở mục 6.`, `Đòn bẩy cao và giữ tiền của cả xã hội nên một ngân hàng đổ vỡ có thể lan ra toàn hệ thống (<b>rủi ro hệ thống</b>). Vì vậy NHNN quản lý rất chặt bằng các tỷ lệ an toàn như LDR, LCR, NSFR, CAR (mục 6).`)}</p></article>
 
   <h3 class="ovh" id="ov2">2 · Chuỗi giá trị</h3>
   <article class="card vcard vshort" id="vcCard">
@@ -295,57 +330,38 @@ function paneOverview() {
     <div class="vreg">${box('Ngân hàng Nhà nước (NHNN)', ['lãi suất điều hành · OMO · room tín dụng · tỷ giá trung tâm · dự trữ bắt buộc · tỷ lệ an toàn · thanh tra, giám sát', 'lãi suất · room tín dụng · tỷ giá · an toàn'], 'reg')}</div>
     <div class="vflow">
       <div class="vcol c1"><h4>Nguồn vốn</h4>
-        ${box('Tiền gửi dân cư & doanh nghiệp', 'không kỳ hạn (CASA) · có kỳ hạn')}
-        ${box('Tiền gửi Kho bạc Nhà nước', ['nguồn vốn rẻ, tập trung ở nhóm Nhà nước', 'vốn rẻ'])}
-        ${box('Liên ngân hàng & NHNN', ['vay, gửi giữa các ngân hàng · OMO · tái cấp vốn', 'vay giữa các ngân hàng'])}
-        ${box('Giấy tờ có giá & vốn chủ', ['chứng chỉ tiền gửi · trái phiếu ngân hàng · vốn vay quốc tế · vốn cổ phần', 'trái phiếu · vốn cổ phần'])}</div>
+        ${box('Tiền gửi dân cư và doanh nghiệp', ['<b>Có kỳ hạn</b>: phần lớn tiền gửi, chi phí cao (12 tháng khoảng 5–6%/năm), nhạy với lãi suất thị trường. <b>Không kỳ hạn (CASA)</b>: gần như miễn phí, quyết định ngân hàng nào có vốn rẻ. Khoảng 73% nguồn huy động; dân cư chiếm khoảng một nửa, tổ chức kinh tế khoảng 1/4.', 'có kỳ hạn: đắt · không kỳ hạn (CASA): rẻ'], 'core', '', sz('lớn nhất', 'big'))}
+        ${box('Tiền gửi, vay các TCTD khác (liên ngân hàng)', ['Ngân hàng gửi, cho vay lẫn nhau kỳ hạn rất ngắn để điều hoà thanh khoản; chi phí theo lãi suất liên ngân hàng. Khoảng 16% nguồn huy động: <b>quy mô bất thường lớn</b> so với thông lệ, nhiều ngân hàng nhỏ dựa vào kênh này. TT 50 không còn tính khoản này vào mẫu số LDR.', 'vay giữa các ngân hàng, kỳ hạn ngắn; lớn bất thường'], '', '', sz('lớn, bất thường', 'odd'))}
+        ${box('Giấy tờ có giá', ['Chứng chỉ tiền gửi và trái phiếu do ngân hàng phát hành, khoảng 11% nguồn huy động. Đắt hơn tiền gửi (trái phiếu 1–3 năm khoảng 7,5–8%/năm) nhưng kỳ hạn dài, giúp đạt tỷ lệ vốn trung, dài hạn.', 'chứng chỉ tiền gửi, trái phiếu: đắt, kỳ hạn dài'], '', '', sz('vừa'))}
+        ${box('Tiền gửi Kho bạc Nhà nước', ['Tiền gửi có kỳ hạn của Kho bạc <b>chỉ gửi tại nhóm ngân hàng Nhà nước</b> (Vietcombank, BIDV, VietinBank, Agribank): nguồn vốn rẻ, quy mô lớn với Big 4 nhưng nhỏ với toàn ngành; chỉ 20% được tính vào mẫu số LDR.', 'chỉ ở Big 4; rẻ'], '', '', sz('đặc thù Big 4', 'odd'))}
+        ${box('Vốn chủ sở hữu, vay NHNN', ['Vốn chủ khoảng 8,5% tổng tài sản: đệm chịu lỗ, quyết định CAR. Vay NHNN (OMO, tái cấp vốn) chỉ dùng khi thiếu thanh khoản ngắn hạn.', 'vốn chủ: đệm chịu lỗ · vay NHNN khi thiếu tiền'], '', '', sz('nhỏ'))}</div>
       <div class="varr" aria-hidden="true"></div>
       <div class="vcol c2"><h4>Ngân hàng</h4>
-        ${box('Chuyển hoá vốn', ['gom tiền nhàn rỗi, phần lớn ngắn hạn → cho vay, đầu tư dài hơn · thu chênh lệch lãi suất', 'nhận tiền gửi ngắn → cho vay dài, ăn chênh lệch lãi suất'], 'core')}
-        ${box('Huy động & quản lý nguồn vốn', ['định giá lãi suất tiền gửi · cân đối kỳ hạn tài sản và nguồn vốn (ALM) · giữ chi phí vốn thấp', 'giữ chi phí vốn thấp'], '', 'LDR ≤ 85% (TT 22; 95% theo cách tính mới TT 50 từ 10/2028) · vốn ngắn hạn cho vay trung, dài hạn ≤ 40% · trần lãi suất tiền gửi dưới 6 tháng · dự trữ bắt buộc')}
-        ${box('Thẩm định & cấp tín dụng', ['đánh giá khả năng trả nợ, tài sản bảo đảm · định giá khoản vay theo rủi ro · phân bổ room', 'chọn người vay, định giá khoản vay'], '', 'room tín dụng NHNN giao theo xếp hạng · 1 khách hàng ≤ 13%, khách hàng và người liên quan ≤ 21% vốn tự có (2026, giảm dần tới 10% / 15%)')}
-        ${box('Quản trị rủi ro & tuân thủ', ['phân loại nợ, trích lập dự phòng · xử lý, thu hồi nợ xấu · giữ đủ vốn', 'phân loại nợ, trích dự phòng'], '', 'CAR ≥ 8% cộng đệm bảo toàn vốn · dự phòng cụ thể 0–100% theo nhóm nợ + 0,75% dự phòng chung')}
-        ${box('Kinh doanh vốn & ngoại hối', ['điều hoà thanh khoản liên ngân hàng · đầu tư trái phiếu · mua bán ngoại tệ cho khách hàng', 'điều hoà thanh khoản, mua bán ngoại tệ'], '', 'tỷ lệ dự trữ thanh khoản, khả năng chi trả 30 ngày (TT 22) → LCR ≥ 50%, NSFR ≥ 90% (TT 50, từ 10/2028) · tỷ giá trong biên độ ±5% quanh tỷ giá trung tâm')}
-        ${box('Thanh toán & dịch vụ', ['tài khoản, ngân hàng số, thẻ · thu phí, bán chéo bảo hiểm · tạo tiền gửi không kỳ hạn (CASA)', 'tài khoản, thẻ, thu phí'])}</div>
+        ${box('Huy động và quản lý nguồn vốn', ['định giá lãi suất tiền gửi · cân đối kỳ hạn tài sản và nguồn vốn · giữ chi phí vốn thấp', 'giữ chi phí vốn thấp'], 'core', 'LDR ≤ 85% (TT 22; 95% theo TT 50) · vốn ngắn hạn cho vay trung, dài hạn ≤ 40% · LCR, NSFR theo TT 50 · dự trữ bắt buộc')}
+        ${box('Thẩm định và cấp tín dụng', ['chọn người vay · định giá khoản vay theo rủi ro · phân bổ room', 'chọn người vay, định giá khoản vay'], 'core', 'room tín dụng NHNN giao theo xếp hạng · một khách hàng, nhóm liên quan giới hạn theo vốn tự có')}
+        ${box('Quản trị rủi ro', ['phân loại nợ, trích lập dự phòng · xử lý nợ xấu · giữ đủ vốn', 'phân loại nợ, dự phòng, giữ đủ vốn'], '', 'CAR ≥ 8% cộng đệm bảo toàn vốn · dự phòng theo nhóm nợ')}
+        ${box('Thanh toán và dịch vụ', ['tài khoản, ngân hàng số, thẻ, ngoại hối · thu phí · tạo tiền gửi không kỳ hạn', 'tài khoản, thẻ, thu phí'])}</div>
       <div class="varr" aria-hidden="true"></div>
-      <div class="vcol c3"><h4>Sử dụng vốn · khách hàng</h4>
-        ${box('Cho vay doanh nghiệp', ['vốn lưu động · dự án · kinh doanh bất động sản', 'vốn lưu động · dự án'])}
-        ${box('Cho vay cá nhân', ['mua nhà · tiêu dùng · hộ kinh doanh', 'mua nhà · tiêu dùng'])}
-        ${box('Đầu tư chứng khoán', ['trái phiếu Chính phủ · trái phiếu doanh nghiệp · tín phiếu NHNN', 'chủ yếu trái phiếu Chính phủ'])}
-        ${box('Liên ngân hàng & dự trữ', ['tiền gửi, cho vay ngân hàng khác · tiền gửi tại NHNN', 'gửi, cho vay ngân hàng khác'])}
-        ${box('Dịch vụ', ['thanh toán · thẻ · ngoại hối · bảo hiểm qua ngân hàng (bancassurance)', 'thanh toán · thẻ · bảo hiểm'])}</div>
+      <div class="vcol c3"><h4>Sử dụng vốn: cho vay theo mục đích</h4>
+        ${box('Cho vay sản xuất, kinh doanh', ['Khoảng <b>78%</b> dư nợ. Theo ngành: thương mại, dịch vụ khoảng 70%; công nghiệp, xây dựng 24%; nông, lâm, thuỷ sản 6% (09/2025). Khoảng một nửa dư nợ toàn ngành là ngắn hạn (vốn lưu động), phần còn lại là trung, dài hạn (dự án, máy móc).', 'khoảng 78% dư nợ: vốn lưu động, dự án'], 'core', '', sz('lớn nhất', 'big'))}
+        ${box('Cho vay tiêu dùng, đời sống', ['Khoảng <b>22%</b> dư nợ: phần lớn là vay mua nhà để ở; còn lại vay tiêu dùng, thẻ tín dụng, mua xe.', 'khoảng 22%: chủ yếu vay mua nhà'], '', '', sz('vừa'))}
+        ${box('Trong đó: bất động sản', ['Tính chung cả hai nhóm trên, tín dụng bất động sản khoảng <b>5,2 triệu tỷ đồng, 25% tổng dư nợ</b> (31/08/2026): một nửa cho vay kinh doanh bất động sản (tăng 19,6% từ đầu năm), một nửa cho vay mua nhà để ở (tăng 1%).', 'khoảng 25% tổng dư nợ'], 'odd', '', sz('khoảng 1/4', 'odd'))}
+        ${box('Dịch vụ', ['thanh toán · thẻ · ngoại hối · bảo hiểm qua ngân hàng: không dùng vốn, tạo thu phí', 'thanh toán · thẻ · bảo hiểm'])}</div>
     </div>
-    <div class="vinfra">${S('<b>Hạ tầng & bên liên quan:</b> NAPAS (chuyển mạch thanh toán) · CIC (thông tin tín dụng) · Bảo hiểm tiền gửi Việt Nam · VAMC và công ty quản lý nợ (xử lý nợ xấu) · công ty bảo hiểm (đối tác bancassurance) · công ty chứng khoán, quỹ (cạnh tranh dòng tiền gửi) · công ty tài chính tiêu dùng (nhiều công ty thuộc ngân hàng mẹ)', '<b>Hạ tầng:</b> NAPAS · CIC · Bảo hiểm tiền gửi · VAMC')}</div>
-    <p class="vnote">${S('Mũi tên: dòng vốn đi từ người gửi tiền, qua ngân hàng, tới người vay. Ô trên cùng là cơ quan điều tiết, tác động lên mọi khâu. Sơ đồ không biểu thị tỷ trọng.', 'Dòng vốn: người gửi tiền → ngân hàng → người vay.')}</p>
+    <div class="vinfra">${S('<b>Hạ tầng và bên liên quan:</b> NAPAS (chuyển mạch thanh toán) · CIC (thông tin tín dụng) · Bảo hiểm tiền gửi Việt Nam · VAMC và công ty quản lý nợ · công ty bảo hiểm (bancassurance) · công ty chứng khoán, quỹ (cạnh tranh dòng tiền gửi) · công ty tài chính tiêu dùng', '<b>Hạ tầng:</b> NAPAS · CIC · Bảo hiểm tiền gửi · VAMC')}</div>
+    <p class="vnote">${S('Tỷ trọng nguồn vốn tính trên tiền gửi khách hàng, tiền gửi TCTD khác và giấy tờ có giá của 27 ngân hàng niêm yết tại 30/06/2026 (FinSuccess tổng hợp từ BCTC). Cơ cấu cho vay: NHNN (09/2025, 08/2026). Các khoản ngân hàng gửi, cho vay lẫn nhau, dự trữ tại NHNN và danh mục chứng khoán không vẽ ở cột sử dụng vốn vì không phải nơi vốn đến với nền kinh tế.', 'Nguồn: BCTC 27 ngân hàng niêm yết (06/2026), NHNN.')}</p>
   </article>
-  <div class="grid g3 gap">
-    <article class="card"><h4>Đầu vào: chi phí vốn</h4><p>${S('Ngân hàng nào có nhiều tiền gửi không kỳ hạn (CASA) và tiền gửi Kho bạc thì vốn rẻ. Khi lãi suất thị trường tăng, ngân hàng phụ thuộc tiền gửi có kỳ hạn và vay liên ngân hàng chịu thiệt trước.', 'Nhiều tiền gửi không kỳ hạn (CASA) và tiền gửi Kho bạc thì vốn rẻ.')}</p></article>
-    <article class="card"><h4>Chuyển hoá: hai rủi ro cốt lõi</h4><p>${S('<b>Rủi ro kỳ hạn:</b> huy động ngắn, cho vay dài — lãi suất tăng nhanh thì chi phí vốn tăng trước thu nhập. <b>Rủi ro tín dụng:</b> người vay không trả được nợ, ngân hàng phải trích lập dự phòng, ăn vào lợi nhuận.', 'Huy động ngắn, cho vay dài; và người vay không trả được nợ.')}</p></article>
-    <article class="card"><h4>Đầu ra: thu nhập</h4><p>${S('Chênh lệch lãi suất cho vay và huy động là nguồn thu chính. Phí dịch vụ (thanh toán, thẻ, bảo hiểm), kinh doanh ngoại hối, chứng khoán và thu hồi nợ đã xử lý bổ sung, giúp lợi nhuận bớt phụ thuộc vào chu kỳ lãi suất.', 'Chủ yếu từ chênh lệch lãi suất; phí dịch vụ bổ sung thêm.')}</p></article>
-  </div>
-
-  <h3 class="ovh" id="ov3">3 · Ngân hàng kiếm tiền thế nào</h3>
   <div class="grid g2 gap">
-    <article class="card"><h3 class="sub">Bảng cân đối điển hình</h3><p class="chart-sub">${S('Tài sản = nơi ngân hàng dùng tiền; nguồn vốn = nơi tiền đến. Vốn chủ thường chỉ khoảng 1/10 tổng tài sản — ngân hàng dùng đòn bẩy cao.', 'Vốn chủ chỉ khoảng 1/10 tổng tài sản.')}</p>
-      <div class="tscroll"><table class="bsx"><thead><tr><th>Tài sản</th><th>Nguồn vốn</th></tr></thead><tbody>
-        <tr><td><b>Cho vay khách hàng</b>${S(' — khoản mục lớn nhất, sinh lãi cao nhất, rủi ro lớn nhất', ' — lớn nhất')}</td><td><b>Tiền gửi khách hàng</b>${S(' — nguồn lớn nhất; CASA rẻ nhất', ' — lớn nhất')}</td></tr>
-        <tr><td><b>Chứng khoán đầu tư</b>${S(' — chủ yếu TPCP, giữ để thanh khoản', '')}</td><td><b>Tiền gửi, vay các TCTD khác</b>${S(' — bổ sung khi thiếu vốn, nhạy với lãi suất liên ngân hàng', '')}</td></tr>
-        <tr><td><b>Tiền gửi, cho vay TCTD khác</b>${S(' — điều hoà thanh khoản', '')}</td><td><b>Giấy tờ có giá</b>${S(' — vốn dài hạn, chi phí cao hơn tiền gửi', '')}</td></tr>
-        <tr><td><b>Tiền mặt, tiền gửi tại NHNN</b>${S(' — dự trữ bắt buộc, thanh toán', '')}</td><td><b>Vốn chủ sở hữu</b>${S(' — đệm chịu lỗ, quyết định CAR', ' — đệm chịu lỗ')}</td></tr>
-      </tbody></table></div></article>
-    <article class="card"><h3 class="sub">Từ thu nhập tới lợi nhuận</h3><p class="chart-sub">${S('Thứ tự các dòng trên báo cáo kết quả kinh doanh ngân hàng', 'Thứ tự trên báo cáo kết quả kinh doanh')}</p>
-      <ol class="pnl">
-        <li><b>Thu nhập lãi thuần (NII)</b>${S(' = lãi thu từ cho vay, đầu tư − lãi trả cho tiền gửi, vốn vay. Chiếm phần lớn thu nhập; quy mô × NIM.', ' = lãi thu − lãi trả')}</li>
-        <li><b>+ Thu nhập ngoài lãi</b>${S(': phí dịch vụ, bancassurance, ngoại hối, chứng khoán, thu hồi nợ đã xử lý.', ': phí dịch vụ, ngoại hối…')}</li>
-        <li><b>= Tổng thu nhập hoạt động (TOI)</b></li>
-        <li><b>− Chi phí hoạt động</b>${S(': nhân sự, mạng lưới, công nghệ. Đo bằng CIR.', '')}</li>
-        <li><b>= Lợi nhuận trước dự phòng</b>${S(' — sức khoẻ kinh doanh cốt lõi.', '')}</li>
-        <li><b>− Chi phí dự phòng rủi ro tín dụng</b>${S(': trích theo nhóm nợ; biến động mạnh nhất qua chu kỳ.', ' — biến động mạnh nhất')}</li>
-        <li><b>= Lợi nhuận trước thuế</b>${S(' → thuế TNDN 20% → LNST → ROE = ROA × đòn bẩy (tài sản / vốn chủ).', ' → thuế 20% → lợi nhuận sau thuế')}</li>
-      </ol></article>
+    <article class="card"><h4>Vì sao bất động sản chiếm tỷ trọng lớn trong tín dụng Việt Nam</h4>${S(`<ul class="ovul">
+      <li><b>Tài sản bảo đảm được ưa chuộng nhất.</b> Nhà đất giữ giá tốt và dễ xử lý pháp lý hơn máy móc, hàng tồn kho, nên ngân hàng ưu tiên cho vay có thế chấp bất động sản, kể cả khoản vay sản xuất, kinh doanh.</li>
+      <li><b>Thị trường vốn còn mỏng.</b> Trái phiếu doanh nghiệp và cổ phiếu chưa đủ sâu, nhất là sau khủng hoảng trái phiếu 2022, nên chủ đầu tư dựa chủ yếu vào vốn vay ngân hàng.</li>
+      <li><b>Nhu cầu nhà ở và tài sản hộ gia đình.</b> Đô thị hoá nhanh, tài sản của hộ gia đình tập trung vào nhà đất; khoản vay mua nhà có giá trị lớn và kỳ hạn dài nên chiếm nhiều dư nợ.</li>
+      <li><b>Lãi suất cao, hấp dẫn ngân hàng tư nhân.</b> Tỷ trọng cho vay kinh doanh bất động sản chênh lệch lớn: khoảng 30–50% ở một số ngân hàng tư nhân, dưới 6% ở Vietcombank, VietinBank, ACB (cuối 2025).</li></ul>
+      <p class="muted">Hệ quả: chu kỳ bất động sản là nguồn rủi ro nợ xấu lớn nhất; NHNN theo dõi riêng và áp hệ số rủi ro cao hơn cho mảng này.</p>`, '<p>Nhà đất là tài sản thế chấp được ưa chuộng nhất, thị trường vốn còn mỏng nên chủ đầu tư dựa vào ngân hàng, và khoản vay mua nhà có giá trị lớn, kỳ hạn dài. Chu kỳ bất động sản vì thế là nguồn rủi ro nợ xấu lớn nhất.</p>')}</article>
+    <article class="card"><h4>Hai rủi ro cốt lõi của mô hình</h4><p>${S('<b>Rủi ro kỳ hạn:</b> huy động ngắn, cho vay dài nên khi lãi suất tăng nhanh, chi phí vốn tăng trước thu nhập. <b>Rủi ro tín dụng:</b> người vay không trả được nợ, ngân hàng phải trích lập dự phòng, ăn vào lợi nhuận. Phí dịch vụ (thanh toán, thẻ, bảo hiểm) giúp lợi nhuận bớt phụ thuộc vào hai rủi ro này.', 'Huy động ngắn, cho vay dài (rủi ro kỳ hạn) và người vay không trả được nợ (rủi ro tín dụng).')}</p></article>
   </div>
 
-  <h3 class="ovh" id="ov4">4 · Cấu trúc ngành</h3>
+  <h3 class="ovh" id="ov4">3 · Cấu trúc ngành</h3>
   <article class="card"><h3 class="sub">Các loại tổ chức tín dụng${S(' (Luật Các tổ chức tín dụng 2024)', '')}</h3>
     <div class="tscroll"><table><thead><tr><th>Loại hình</th><th>Đại diện</th><th>Đặc điểm kinh doanh</th></tr></thead><tbody>
       <tr><td><b>NHTM Nhà nước</b></td><td>${S('Agribank (100% vốn Nhà nước); VCB, BID, CTG (Nhà nước nắm chi phối, niêm yết)', 'Agribank, VCB, BID, CTG')}</td><td>${S('Mạng lưới lớn nhất, giữ tiền gửi Kho bạc và doanh nghiệp Nhà nước, cho vay dự án hạ tầng; thực hiện chủ trương của NHNN (giảm lãi suất, hỗ trợ ngành ưu tiên). Tăng vốn phụ thuộc phê duyệt của Nhà nước.', 'Lớn nhất, vốn rẻ, đi đầu thực hiện chủ trương của NHNN.')}</td></tr>
@@ -358,28 +374,42 @@ function paneOverview() {
   <div class="gcards gap">${GROUPS.map(g => `<div class="gcard" style="--gc:${GC[g]}"><h4>${g}</h4><small>${tk(g).join(' · ')}</small><p>${S(GDESC[g], GDESC[g].split(';')[0] + '.')}</p></div>`).join('')}</div>
   <p class="muted">Số liệu so sánh từng ngân hàng (NIM, CASA, nợ xấu, ROE, P/B…) xem ở ${go('peer', 'Bức tranh ngành › So sánh ngân hàng')}</p>
 
-  <h3 class="ovh" id="ov5">5 · Các yếu tố tác động</h3>
+  <h3 class="ovh" id="ov5">4 · Các yếu tố tác động</h3>
   <div class="banner chain">${S('Fed, USD, giá dầu → Tỷ giá → NHNN điều hành → Lãi suất liên ngân hàng → Lãi suất huy động, cho vay → NIM, nợ xấu, tăng trưởng → Lợi nhuận → P/B ngân hàng', 'Fed, USD → Tỷ giá → NHNN → Lãi suất → NIM, nợ xấu → Lợi nhuận → P/B')}</div>
-  <div class="drv gap">${DRV.map(([t, how, imp, [p, l], m], i) => `<article class="card dcard"><div class="dh"><span class="dn">${i + 1}</span><h4>${t}</h4><span class="pill">${m}</span></div>
-    <p><b>Cơ chế:</b> ${T(how)}</p><p><b>Tác động đến ngân hàng:</b> ${T(imp)}</p><p class="dgo">Theo dõi: ${go(p, l)}</p></article>`).join('')}</div>
+  ${DRV.map(([gname, gdesc, items], gi) => `<section class="dgrp"><div class="dgh"><span class="dn">${String.fromCharCode(65 + gi)}</span><div><h4>${gname}</h4><p>${T(gdesc)}</p></div></div>
+    <div class="drv gap">${items.map(([t, how, imp, [p, l], m]) => `<article class="card dcard"><div class="dh"><h4>${t}</h4><span class="pill">${m}</span></div>
+      <p><b>Cơ chế:</b> ${T(how)}</p><p><b>Tác động đến ngân hàng:</b> ${T(imp)}</p><p class="dgo">Theo dõi: ${go(p, l)}</p></article>`).join('')}</div></section>`).join('')}
 
-  <h3 class="ovh" id="ov6">6 · Chu kỳ ngành</h3>
+  <h3 class="ovh" id="ov6">5 · Chu kỳ ngành</h3>
+  ${card({ id: 'ovCycle', title: 'Chỉ số giá cổ phiếu ngân hàng qua các chu kỳ', h: 'xl', sub: 'chỉ số giá ngành Ngân hàng (20/03/2012 = 100, cuối tháng, trục trái, thang log) · nét đứt = tăng trưởng tín dụng toàn hệ thống so cùng kỳ (%, trục phải) · nền màu = giai đoạn chu kỳ theo FinSuccess', insight: cycleIns(), src: 'Chỉ số giá ngành Ngân hàng; NHNN (tăng trưởng tín dụng); phân giai đoạn: FinSuccess' })}
   <div class="grid g2 gap">
     <article class="card"><h3 class="sub">Ngân hàng đi theo chu kỳ lãi suất và tín dụng</h3><p class="chart-sub">${S('Mô tả xu hướng điển hình; mỗi chu kỳ có khác biệt về độ trễ', 'Xu hướng điển hình')}</p>
       <div class="tscroll"><table><thead><tr><th>Giai đoạn</th><th>Lãi suất</th><th>Tín dụng</th><th>NIM</th><th>Nợ xấu</th><th>P/B</th></tr></thead>
       <tbody>${CYC.map(r => `<tr>${r.map((c, j) => `<td>${j ? T(c) : `<b>${c}</b>`}</td>`).join('')}</tr>`).join('')}</tbody></table></div></article>
     <article class="card"><h3 class="sub">Khung bốn kịch bản: áp lực tỷ giá × thanh khoản</h3>
-      <p class="chart-sub">${S('Hai biến quyết định NHNN nới hay siết. Ô sáng là vị trí hiện tại; bấm (i) ở góc bảng để xem từng biến đo gì. Cách tính chi tiết ở tab Bức tranh ngành › Kịch bản IDX-FX × IDX-LIQ.', 'Ô sáng là vị trí hiện tại.')}</p>
+      <p class="chart-sub">${S('Hai biến quyết định NHNN nới hay siết. Ô sáng là vị trí hiện tại; bấm (i) để xem từng biến đo gì. Cách tính chi tiết ở trang Vĩ mô › Quốc tế › Kịch bản IDX-FX × IDX-LIQ.', 'Ô sáng là vị trí hiện tại.')}</p>
       ${miniMatrix()}</article>
   </div>
 
-  <h3 class="ovh" id="ov7">7 · Khung pháp lý chủ chốt</h3>
-  <article class="card"><p class="chart-sub">${S(`Văn bản mới nhất lên trước · nhãn <span class="pill rs-soon">Chưa hiệu lực</span> = đã ban hành nhưng chưa bắt buộc áp dụng${D.regRef ? ` · phân tích chi tiết Thông tư 50: <a href="${D.regRef.u}" target="_blank" rel="noopener">${esc(D.regRef.t)}</a>` : ''}`, 'Mới nhất lên trước.')}</p>
+  <h3 class="ovh" id="ov7">6 · Khung pháp lý chủ chốt: các tỷ lệ an toàn</h3>
+  <p class="ovintro">${S(`Thông tư 50/2026/TT-NHNN thay Thông tư 22/2019 từ 01/12/2026: chuyển cách giám sát thanh khoản từ kỳ hạn hợp đồng sang chất lượng tài sản và độ ổn định của nguồn vốn. LCR và NSFR bắt buộc từ 01/10/2028; ngân hàng được đăng ký áp dụng sớm từ 01/01/2027.${rp ? ` Phân tích đầy đủ: <a href="${rp.u}" target="_blank" rel="noopener">${esc(rp.t)}</a>.` : ''}`, `TT 50/2026 thay TT 22/2019 từ 01/12/2026; LCR, NSFR bắt buộc từ 10/2028.${rp ? ` <a href="${rp.u}" target="_blank" rel="noopener">Phân tích đầy đủ</a>` : ''}`)}</p>
+  <div class="ratg gap">${RAT.map(([k, n, what, now, tt50, imp]) => `<article class="card rcard"><div class="rh"><b>${k}</b><span>${n}</span></div>
+    <dl><dt>Đo gì</dt><dd>${T(what)}</dd><dt>Đang áp dụng</dt><dd>${T(now)}</dd><dt>Theo TT 50/2026</dt><dd>${T(tt50)}</dd><dt>Hàm ý</dt><dd>${T(imp)}</dd></dl></article>`).join('')}</div>
+  <article class="card"><h3 class="sub">Lộ trình áp dụng: ba lựa chọn của mỗi ngân hàng</h3>
+    <div class="tscroll"><table><thead><tr><th>Lộ trình</th><th>Bắt đầu</th><th>LCR</th><th>NSFR</th><th>LDR</th></tr></thead><tbody>
+      <tr><td><b>1. Bắt buộc</b> (không đăng ký)</td><td>01/10/2028</td><td>50%, +10 điểm/năm, 100% từ 01/10/2033</td><td>90%, 95%, 100% từ 01/10/2030</td><td>85% (cách cũ) đến 30/09/2028; 95% (cách mới); bỏ từ 10/2033</td></tr>
+      <tr><td><b>2. Đăng ký sớm theo lộ trình</b> (trước 01/01/2028)</td><td>sớm nhất 01/01/2027</td><td>50% → 100% trong 5 năm</td><td>90% → 100% trong 2 năm</td><td>95% ngay; bỏ khi LCR đạt 100%</td></tr>
+      <tr><td><b>3. Đăng ký ngưỡng 100%</b></td><td>sớm nhất 01/01/2027</td><td>100% ngay</td><td>100% ngay</td><td>Không phải tuân thủ (chỉ báo cáo)</td></tr>
+    </tbody></table></div>
+    <div class="insight">${S('Ba tỷ lệ cùng ưu ái <b>tiền gửi cá nhân có kỳ hạn</b>: được tính đủ vào mẫu số LDR, chỉ bị tính rút 5–10% trong LCR và được coi là 90–95% ổn định trong NSFR. Cạnh tranh huy động dân cư vì vậy sẽ tăng và biên lãi chịu sức ép. Ngân hàng hưởng lợi là nhóm có nền tiền gửi cá nhân lớn, vốn chủ dày và nhiều tài sản cấp 1; chịu áp lực là nhóm dựa vào vốn liên ngân hàng, tài sản cấp 1 mỏng hoặc giữ nhiều trái phiếu doanh nghiệp chưa xếp hạng. Nhóm ngân hàng lớn có nền tiền gửi dân cư mạnh nhiều khả năng đăng ký ngưỡng 100% để thoát trần LDR.', 'Ba tỷ lệ cùng ưu ái tiền gửi cá nhân có kỳ hạn → cạnh tranh huy động dân cư tăng. Lợi cho ngân hàng bán lẻ, vốn dày; bất lợi cho ngân hàng dựa vốn liên ngân hàng.')}</div>
+    <div class="src">Nguồn: Thông tư 50/2026/TT-NHNN; Thông tư 22/2019/TT-NHNN (văn bản hợp nhất); Thông tư 25/2026/TT-NHNN; số liệu 27 ngân hàng niêm yết 30/06/2026 do FinSuccess tổng hợp.</div></article>
+  <details class="morex"><summary>Toàn bộ các quy định khác (CAR, giới hạn cấp tín dụng, dự phòng…)</summary>
+  <article class="card"><p class="chart-sub">Văn bản mới nhất lên trước · nhãn <span class="pill rs-soon">Chưa hiệu lực</span> = đã ban hành nhưng chưa bắt buộc áp dụng</p>
   <div class="tscroll"><table class="regt"><thead><tr><th>Trạng thái</th><th>Quy định</th><th>Mức</th><th class="lo">Văn bản</th><th class="lo">Lộ trình</th></tr></thead><tbody>
     ${(D.reg || []).map(r => `<tr class="${r.eff > TODAY ? 'soon' : ''}"><td style="white-space:nowrap">${regSt(r)}</td><td><b>${esc(r.rule)}</b></td><td>${esc(r.level)}</td><td class="lo">${regDoc(r, D.regRef)}</td><td class="lo">${esc(r.path || '')}</td></tr>`).join('')}
-  </tbody></table></div><div class="src">Nguồn: văn bản pháp luật của Quốc hội, Chính phủ, NHNN.${S(' Quy định cập nhật khi có văn bản mới; diễn giải chi tiết ở tab Chính sách.', '')}</div></article>
+  </tbody></table></div><div class="src">Nguồn: văn bản pháp luật của Quốc hội, Chính phủ, NHNN.</div></article></details>
 
-  <h3 class="ovh" id="ov8">8 · Thuật ngữ & chỉ số cần biết</h3>
+  <h3 class="ovh" id="ov8">7 · Thuật ngữ và chỉ số cần biết</h3>
   <article class="card"><div class="tscroll"><table><thead><tr><th>Viết tắt</th><th>Tên</th><th class="lo">Cách tính</th><th>Đọc thế nào</th></tr></thead>
     <tbody>${GL.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td class="lo">${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div></article>`;
   const ovm = m => { $('#overview').classList.toggle('ovs-on', m === 'short'); $$('#overview [data-ovm]').forEach(b => { const on = b.dataset.ovm === m; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); try { localStorage.setItem('fs-ov-mode', m); } catch (e) {} };
@@ -392,8 +422,44 @@ function paneOverview() {
   $('#vmSw').onchange = e => vm(e.target.checked ? 'long' : 'short');
   try { vm(localStorage.getItem('fs-vc-mode') || 'short'); } catch (e) { vm('short'); }
   $$('#overview [data-gop]').forEach(b => b.onclick = () => { const p = b.dataset.gop; if (p === 'policy') { show('policy'); } else { openP(p); } window.scrollTo({ top: 0 }); });
-  collapsify($('#overview'), 'ov', ['ov1', 'ov2']);
+  collapsify($('#overview'), 'ov2', ['ov1', 'ov2']);
   $$('#overview [data-ov]').forEach(a => a.onclick = e => { e.preventDefault(); const t = document.getElementById(a.dataset.ov); if (t) { if (t.classList.contains('shut')) t.click(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+  drCycle();
+}
+/* ---- Chu kỳ ngành: chỉ số giá ngân hàng + tăng trưởng tín dụng, nền màu theo giai đoạn ---- */
+const CYCLES = [['2012-03', '2013-12', 'Xử lý nợ xấu', 'x'], ['2014-01', '2017-06', 'Phục hồi', 'r'], ['2017-07', '2018-04', 'Tăng tốc', 'e'], ['2018-05', '2019-12', 'Siết room, chuẩn hoá vốn', 't'],
+  ['2020-01', '2021-12', 'Nới lỏng (COVID)', 'e'], ['2022-01', '2022-12', 'Thắt chặt (lạm phát, trái phiếu)', 't'], ['2023-01', '2024-12', 'Nới lỏng, xử lý nợ', 'x'], ['2025-01', '2025-08', 'Phục hồi', 'r'], ['2025-09', '2099-12', 'Thắt chặt (lãi suất huy động, Fed)', 't']];
+const CYC_COL = { e: 'rgba(31,138,141,.10)', r: 'rgba(41,56,168,.07)', t: 'rgba(192,57,43,.09)', x: 'rgba(217,164,0,.11)' };
+function cycleSer() {   // chỉ số cuối tháng; sau tháng cuối của chuỗi chỉ số thì nối theo biến động vốn hoá ngành
+  const B = (ECO && ECO.bankIdx) || {}, ms = Object.keys(B).sort(); if (!ms.length) return null;
+  const lastM = ms[ms.length - 1], mc = Object.fromEntries((SV.monthly || []).map(p => [p.d.slice(0, 7), p.mcap])), out = ms.map(m => [m, B[m]]);
+  const tail = Object.keys(mc).filter(m => m > lastM).sort(); if (tail.length && mc[lastM]) tail.forEach(m => out.push([m, B[lastM] * mc[m] / mc[lastM]]));
+  return out;
+}
+function cycleIns() {
+  const S2 = cycleSer(); if (!S2) return '';
+  const idx = Object.fromEntries(S2), C2 = (ECO && ECO.credY) || {};
+  const ms = S2.map(x => x[0]).filter(m => C2[m] != null), r12 = m => { const y = (+m.slice(0, 4) - 1) + m.slice(4); return idx[y] ? (idx[m] / idx[y] - 1) * 100 : null; };
+  const pr = ms.map(m => [r12(m), C2[m]]).filter(([a, b]) => a != null && b != null), cr = pr.length > 24 ? corr(pr.map(p => p[0]), pr.map(p => p[1])) : null;
+  const last = S2[S2.length - 1], pk = S2.reduce((a, b) => b[1] > a[1] ? b : a);
+  return `Chỉ số ngành tăng khoảng ${nf(last[1] / 100, 1)} lần từ 03/2012, mạnh nhất ở các giai đoạn nới lỏng (2017 – đầu 2018, 2020–2021) và giảm sâu khi thắt chặt (giữa 2018, 2022). Đỉnh cao nhất ${mvn(pk[0])}; hiện thấp hơn đỉnh ${pc((1 - last[1] / pk[1]) * 100, 0)}.${cr != null ? ` Tương quan giữa mức thay đổi 12 tháng của chỉ số và tăng trưởng tín dụng so cùng kỳ là <b>${nf(cr, 2)}</b>.` : ''}`
+    + how('Giá cổ phiếu ngân hàng thường đi trước lợi nhuận: tăng khi NHNN bắt đầu nới lỏng (vốn rẻ, room rộng) dù nợ xấu chưa giảm, và giảm khi lãi suất huy động bắt đầu tăng, trước khi nợ xấu tăng 2–4 quý. Tăng trưởng tín dụng xác nhận chu kỳ nhưng thường đi sau giá cổ phiếu.');
+}
+const cycBand = { id: 'cycBand', beforeDatasetsDraw(ch, _a, o) {
+  const B = o && o.bands; if (!B) return; const { ctx, chartArea: A, scales: { x } } = ch, L = ch.data.labels;
+  ctx.save(); ctx.font = '600 10px Arial, sans-serif'; ctx.textBaseline = 'top';
+  B.forEach(([a, b, t, k]) => { const i0 = L.indexOf(mvn(a)), i1 = (() => { let j = -1; L.forEach((l, i) => { const m = l.slice(3) + '-' + l.slice(0, 2); if (m <= b) j = i; }); return j; })(); if (i0 < 0 && i1 < 0) return;
+    const j1 = Math.max(i0, i1), x0 = Math.max(A.left, x.getPixelForValue(Math.max(0, i0))), x1 = Math.min(A.right, j1 + 1 < L.length ? x.getPixelForValue(j1 + 1) : A.right); if (x1 <= x0) return;
+    ctx.fillStyle = CYC_COL[k]; ctx.fillRect(x0, A.top, x1 - x0, A.bottom - A.top);
+    if (x1 - x0 > 34) { ctx.fillStyle = '#3f4656'; const w = x1 - x0 - 6; let s = t; while (ctx.measureText(s).width > w && s.length > 4) s = s.slice(0, -2); if (s !== t) s = s.replace(/\s*\S?$/, '') + '…'; ctx.fillText(s, x0 + 3, A.top + 3); } });
+  ctx.restore(); } };
+function drCycle() {
+  const S2 = cycleSer(); if (!S2 || !document.getElementById('ovCycle')) return;
+  const C2 = (ECO && ECO.credY) || {}, labs = S2.map(x => mvn(x[0]));
+  mk('ovCycle', { type: 'line', data: { labels: labs, datasets: [L('Chỉ số giá ngành Ngân hàng', S2.map(x => +x[1].toFixed(1)), C.navy, { unit: '', dp: 1, borderWidth: 2.4 }),
+    L('Tín dụng so cùng kỳ', S2.map(x => C2[x[0]] ?? null), C.red, { yAxisID: 'y1', dp: 1, borderDash: [5, 4], borderWidth: 1.6 })] },
+    options: { plugins: { cycBand: { bands: CYCLES } }, scales: { x: { ticks: { maxTicksLimit: 14 } }, y: { type: 'logarithmic', title: { display: true, text: 'chỉ số (log)' }, ticks: { callback: v => [80, 100, 150, 200, 300, 400, 500, 600].includes(Math.round(v)) ? nf(v, 0) : '' }, grid: { color: '#eef0f4' } }, y1: pctAxis('', { position: 'right', grid: { display: false } }) } },
+    plugins: [cycBand] });
 }
 function ppopBurdenIns() {
   const P = D.ppopSector, n = P.ppop.length - 1, rt = i => P.prov[i] / P.ppop[i] * 100, i0 = P.end.indexOf('2022-12');

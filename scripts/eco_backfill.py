@@ -11,7 +11,7 @@ OUT = ROOT / 'data/backfill/eco_wi.json'
 IDS = {75701: 'cpi', 75702: 'cpi_food', 75706: 'cpi_bev', 75707: 'cpi_cloth', 75708: 'cpi_house', 75709: 'cpi_equip', 75710: 'cpi_health',
        75712: 'cpi_trans', 75713: 'cpi_post', 75714: 'cpi_edu', 75716: 'cpi_cult', 75717: 'cpi_other', 202889: 'cpi_core',
        76951: 'fdi_real', 76887: 'fdi_real_yoy', 76952: 'fdi_reg', 76888: 'fdi_reg_yoy', 76903: 'fdi_real_ytd', 76911: 'fdi_real_ytd_yoy',
-       76904: 'fdi_reg_ytd', 76912: 'fdi_reg_ytd_yoy', 76847: 'pub', 76717: 'pub_yoy', 76751: 'pub_ytd', 76767: 'pub_ytd_yoy', 80042: 'gdp_q'}
+       76904: 'fdi_reg_ytd', 76912: 'fdi_reg_ytd_yoy', 76847: 'pub', 76717: 'pub_yoy', 76751: 'pub_ytd', 76767: 'pub_ytd_yoy', 80042: 'gdp_q', 75847: 'credit_yoy'}
 
 
 def rows(resp):

@@ -647,3 +647,21 @@ body.pdf-cap .pdf-hide{display:none!important}
 @media (max-width:700px){.hmt .hm-n{min-width:120px;font-size:12px}.cbox.xl{height:520px}}
 #cmpTable tr.rp-on td{background:#fff7dc}
 #cmpTable input[type=checkbox]{cursor:pointer}
+
+/* ---- Tổng quan ngành (bản đại tu) ---- */
+.ovlead p{font-size:14px;line-height:1.6;margin:0 0 8px}
+.vsz{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;font:700 10.5px Arial;font-style:normal;background:#eef0f4;color:#4b5263;vertical-align:1px}
+.vsz.big{background:#dff3ee;color:#17614f}.vsz.odd{background:#fff1d6;color:#8a5a00}
+.vbox.odd{border-color:#e9c96a;background:#fffbef}
+.ovul{margin:6px 0 6px 18px;padding:0;font-size:13px;line-height:1.55}.ovul li{margin:0 0 6px}
+.dgrp{margin:0 0 18px}
+.dgh{display:flex;gap:10px;align-items:flex-start;margin:4px 0 10px}
+.dgh .dn{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font:700 13px Arial;display:flex;align-items:center;justify-content:center}
+.dgh h4{margin:2px 0 2px;color:var(--navy);font-size:15px}.dgh p{margin:0;font-size:13px;color:var(--ink2)}
+.ratg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.rcard .rh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px}.rcard .rh b{font-size:18px;color:var(--navy)}.rcard .rh span{font-size:12.5px;color:var(--ink2)}
+.rcard dl{margin:0;display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 10px;font-size:13px;line-height:1.5}
+.rcard dt{font-weight:700;color:var(--teal-ink)}.rcard dd{margin:0}
+@media (max-width:900px){.ratg{grid-template-columns:1fr}.rcard dl{grid-template-columns:1fr}.rcard dt{margin-top:4px}}
+.ovintro{font-size:13.5px;line-height:1.55;color:var(--ink2);margin:0 0 12px}
+details.morex{margin:0 0 14px}details.morex>summary{cursor:pointer;color:var(--blue);font-size:13px;margin:4px 0 10px}

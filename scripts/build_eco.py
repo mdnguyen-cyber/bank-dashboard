@@ -104,7 +104,7 @@ def main():
     qs = sorted({m for v in Q.values() for m in v if m >= FROM})
     out = {'upd': datetime.now(timezone.utc).strftime('%Y-%m-%d'), 'm': M, 's': {k: al(v) for k, v in S.items()},
            'q': qs, 'gq': {k: [v.get(m) for m in qs] for k, v in Q.items()}, 'iipSub': sorted(sub, key=lambda r: -(r[2] or -99)),
-           'fc': BF.get('cpiFc'), 'dlkt': (J('data/vn/dlkt.json') or {}).get('fetched')}
+           'fc': BF.get('cpiFc'), 'bankIdx': (J('data/backfill/bank_index.json') or {}).get('m'), 'credY': {m: v for m, v in B.get('credit_yoy', {}).items() if m >= '2011'}, 'dlkt': (J('data/vn/dlkt.json') or {}).get('fetched')}
     (ROOT / 'data/eco-data.js').write_text('window.ECO_DATA=' + json.dumps(out, ensure_ascii=False, separators=(',', ':')) + ';\n', encoding='utf-8')
     print('eco:', len(M), 'tháng đến', last, '·', len(qs), 'quý ·', {k: max(v) if v else None for k, v in S.items() if k in ('pmi', 'iip', 'ret', 'cpi', 'xk', 'fdi_real', 'pub')})
 
