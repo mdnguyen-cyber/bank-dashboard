@@ -15,7 +15,7 @@ PAGES = ['pmi-271', 'chi-so-gia-tieu-dung-cpi-272', 'sbv-bomhut-tien-334', 'tang
          'lai-suat-dieu-hanh-lien-ngan-hang-391', 'lai-suat-cho-vay-binh-quan-ngan-hang-700', 'lai-suat-huy-dong-vietcombank-376',
          'ty-gia-usdvnd-cua-nhnn-427', 'ty-gia-cho-den-719', 'ty-gia-ngoai-te-vietcombank-379', 'gia-vang-407', 'can-can-thanh-toan-361',
          'tong-xuat-khau-292', 'tong-nhap-khau-293', 'von-fdi-dang-ky-cap-moi-405', 'gdp-so-sanh-theo-quy-269', 'iip-277', 'ban-le-hang-hoa-va-dich-vu-273',
-         'gia-xang-dau-406']
+         'gia-xang-dau-406', 'cpi-so-cung-ky-319', 'von-dau-tu-tu-nsnn-317', 'khach-quoc-te-theo-loai-hinh-295', 'von-dau-tu-phat-trien-xa-hoi-275']
 TZ = timezone(timedelta(hours=7))
 
 
