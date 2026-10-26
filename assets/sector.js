@@ -2525,7 +2525,7 @@ function paneQuick() {
   ${u.watch && u.watch.length ? `<article class="card"><h3 class="sub">Theo dõi tiếp</h3><div class="tscroll"><table><thead><tr><th>Ngày</th><th>Sự kiện</th><th>Vì sao quan trọng</th></tr></thead><tbody>
     ${u.watch.map((w, k) => `<tr><td style="white-space:nowrap">${dvn(w.d)}</td><td><b>${esc(w.t)}</b></td><td>${f(`watch.${k}.why`, esc(w.why))}</td></tr>`).join('')}</tbody></table></div></article>` : ''}
   ${u.sources && u.sources.length ? `<p class="qsrc">Nguồn: ${u.sources.map(esc).join(' · ')}</p>` : ''}
-  <article class="card"><h3 class="sub">Lịch sử cập nhật</h3>
+  <article class="card pdf-hide qhist-card"><h3 class="sub">Lịch sử cập nhật</h3>
     <div class="tscroll"><table class="qhist"><thead><tr><th>Ngày</th><th>Người cập nhật</th><th>Nội dung chính</th><th></th></tr></thead><tbody>
     ${U.map((x, k) => `<tr class="${k === quSel ? 'hl' : ''}"><td style="white-space:nowrap">${dvn(x.date)}${x._draft ? ' <span class="pill watch">nháp</span>' : ''}</td><td>${byLine(x.author)}</td><td>${esc(x.headline)}${x.edited && x.edited.length ? ` <span class="muted">· sửa ${x.edited.length} chỗ</span>` : ''}</td><td>${k === quSel ? 'đang xem' : `<button type="button" class="lnk" data-qv="${k}">Xem</button>`}</td></tr>`).join('')}
     </tbody></table></div>

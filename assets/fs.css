@@ -623,3 +623,6 @@ body.print-all.cal-open,body.pdf-cap.cal-open{padding-right:0!important}
 .fss-rg{flex:1;border:1px solid #d5d9e5;border-radius:8px;padding:6px;font:600 12px Arial,sans-serif;color:#1D2678;background:#fff}
 .fss-ir{display:flex;gap:6px}.fss-ir .fss-inote{flex:1;min-width:0}
 .fss-irg{flex:none;max-width:120px;border:1px solid #d5d9e5;border-radius:6px;font:600 11.5px Arial,sans-serif;color:#1D2678;background:#fff}
+
+body.pdf-cap .pdf-hide{display:none!important}
+@media print{.qhist-card{display:none!important}}
