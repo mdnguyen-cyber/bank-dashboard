@@ -12,4 +12,6 @@ V=${GITHUB_SHA::7}
 for f in _site/*.html; do
   sed -i -E "s#(data/[a-z0-9-]+\.js|assets/[a-z0-9-]+\.js|assets/fs\.css)\"#\1?v=$V\"#g" "$f"
 done
+sed -i "s#__BUILD__#$V#g" _site/*.html
+echo "{\"v\":\"$V\"}" > _site/version.json
 grep -c "?v=" _site/*.html

@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="vi">
 <head>
+<script>/* bản mới: trình duyệt có thể giữ trang cũ ~10 phút; nếu máy chủ đã có bản mới hơn thì tải lại ngay */
+(function(){var V='__BUILD__';if(V.indexOf('BUILD')>0)return;try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(j&&j.v&&j.v!==V&&location.search.indexOf('_v='+j.v)<0){var u=new URL(location.href);u.searchParams.set('_v',j.v);location.replace(u.toString())}}).catch(function(){})}catch(e){}})();</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TCB Tracker · FinSuccess</title>
