@@ -250,6 +250,9 @@ function paneOverview() {
   ${qu ? `<button type="button" class="qbar" id="goQuick"><span class="qdate">Báo cáo vĩ mô ${dvn(qu.date)}</span><span class="who ${qu.author.type === 'AI' ? 'ai' : 'cv'}">${qu.author.type === 'AI' ? 'AI' : 'Chuyên viên'}</span><span class="qbar-t">${esc(qu.headline)}</span><span class="qbar-go">Xem →</span></button>` : ''}
   <h2 class="sec">Tổng quan ngành ngân hàng Việt Nam</h2>
   <p class="sec-sub">Phần nền tảng, ít thay đổi theo thời gian: ngân hàng đứng ở đâu trong nền kinh tế, kiếm tiền bằng cách nào và chịu tác động của những yếu tố nào. Diễn biến và số liệu mới nhất nằm ở Bức tranh ngành và Báo cáo vĩ mô.</p>
+  <div class="ovmode" role="tablist" aria-label="Độ dài phần tổng quan"><button type="button" role="tab" data-ovm="short">Bản ngắn <small>đọc khoảng 2 phút</small></button><button type="button" role="tab" data-ovm="long">Bản đầy đủ <small>8 phần, có sơ đồ và bảng</small></button></div>
+  <div id="ovShort">${ovShort(tk)}</div>
+  <div id="ovLong">
   <nav class="ovnav">${[['ov1', '1 · Vai trò'], ['ov2', '2 · Chuỗi giá trị'], ['ov3', '3 · Kiếm tiền thế nào'], ['ov4', '4 · Cấu trúc ngành'], ['ov5', '5 · Yếu tố tác động'], ['ov6', '6 · Chu kỳ ngành'], ['ov7', '7 · Khung pháp lý'], ['ov8', '8 · Thuật ngữ']].map(([a, l]) => `<a href="#${a}" data-ov="${a}">${l}</a>`).join('')}</nav>
 
   <h3 class="ovh" id="ov1">1 · Ngân hàng trong nền kinh tế Việt Nam</h3>
@@ -353,14 +356,20 @@ function paneOverview() {
 
   <h3 class="ovh" id="ov8">8 · Thuật ngữ & chỉ số cần biết</h3>
   <article class="card"><div class="tscroll"><table><thead><tr><th>Viết tắt</th><th>Tên</th><th>Cách tính</th><th>Đọc thế nào</th></tr></thead>
-    <tbody>${GL.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div></article>`;
+    <tbody>${GL.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div></article>
+  </div>`;
+  const ovm = m => { $('#ovShort').hidden = m !== 'short'; $('#ovLong').hidden = m === 'short'; $$('#overview [data-ovm]').forEach(b => { const on = b.dataset.ovm === m; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); try { localStorage.setItem('fs-ov-mode', m); } catch (e) {} };
+  $$('#overview [data-ovm]').forEach(b => b.onclick = () => ovm(b.dataset.ovm));
+  let ovm0 = 'short'; try { ovm0 = localStorage.getItem('fs-ov-mode') || 'short'; } catch (e) {}
+  ovm(ovm0);
+  $$('#ovShort [data-ovm-go]').forEach(b => b.onclick = () => { ovm('long'); const t = document.getElementById(b.dataset.ovmGo); if (t) { if (t.classList.contains('shut')) t.click(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
 
   const gq = $('#goQuick'); if (gq) gq.onclick = () => { show('quick'); window.scrollTo({ top: 0 }); };
   const vm = m => { $('#vcCard').classList.toggle('vshort', m !== 'long'); $('#vmSw').checked = m === 'long'; try { localStorage.setItem('fs-vc-mode', m); } catch (e) {} };
   $('#vmSw').onchange = e => vm(e.target.checked ? 'long' : 'short');
   try { vm(localStorage.getItem('fs-vc-mode') || 'short'); } catch (e) { vm('short'); }
   $$('#overview [data-gop]').forEach(b => b.onclick = () => { const p = b.dataset.gop; if (p === 'policy') { show('policy'); } else { show('picture'); openP(p); } window.scrollTo({ top: 0 }); });
-  collapsify($('#overview'), 'ov', ['ov1', 'ov2']);
+  collapsify($('#ovLong'), 'ov', ['ov1', 'ov2']);
   $$('#overview [data-ov]').forEach(a => a.onclick = e => { e.preventDefault(); const t = document.getElementById(a.dataset.ov); if (t) { if (t.classList.contains('shut')) t.click(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
 }
 function ppopBurdenIns() {
@@ -456,6 +465,28 @@ function idxTip(kind) {
     : 'Đo độ dồi dào của tiền VND trong hệ thống ngân hàng: cung tiền M2, lãi suất liên ngân hàng qua đêm (cao = thiếu tiền), tiền gửi tăng nhanh hay chậm hơn tín dụng, và Kho bạc đang bơm (chi > thu) hay hút tiền.'}
   Mỗi thành phần tính bằng độ lệch so với trung bình 36 tháng (z-score) rồi cộng trung bình. ${fx ? '&gt; 0 = áp lực cao hơn bình thường' : '&gt; 0 = dồi dào hơn bình thường, &lt; 0 = thiếu'}; vượt ±1 là mức mạnh.</p>
   <p><b>Hiện tại ${sg(v, 2, '')}</b> (${mvn(NOW.m)}). ${up.length ? 'Đẩy lên: ' + up.map(row).join('; ') + '. ' : ''}${dn.length ? 'Kéo xuống: ' + dn.map(row).join('; ') + '.' : ''}</p>${fxNote}`;
+}
+function ovShort(tk) {   // bản ngắn của tab Tổng quan: 6 thẻ, mỗi thẻ vài gạch đầu dòng
+  const more = id => `<button type="button" class="lnk" data-ovm-go="${id}">Đọc thêm →</button>`;
+  const pb = SV && SV.now ? SV.now.pb : null, sc = NOW && SCN[NOW.q];
+  const C_ = (t, items, id) => `<article class="card ovs"><h4>${t}</h4><ul>${items.map(x => `<li>${x}</li>`).join('')}</ul>${id ? more(id) : ''}</article>`;
+  return `<div class="grid g3 gap ovsg">
+    ${C_('Ngân hàng trong nền kinh tế', ['<b>Kênh dẫn vốn chính:</b> dư nợ tín dụng lớn hơn cả GDP; doanh nghiệp và hộ gia đình vay chủ yếu qua ngân hàng.',
+      '<b>Ngành chịu quản lý chặt nhất:</b> NHNN điều hành lãi suất, tỷ giá và giao hạn mức tín dụng (room) cho từng ngân hàng.',
+      '<b>Nhóm vốn hoá lớn nhất VN-Index;</b> định giá chủ yếu bằng P/B.'], 'ov1')}
+    ${C_('Ngân hàng kiếm tiền thế nào', ['<b>Lợi nhuận ≈ dư nợ × biên lãi (NIM) + phí dịch vụ − chi phí vận hành − dự phòng nợ xấu.</b>',
+      '<b>Đầu vào:</b> vốn rẻ (tiền gửi không kỳ hạn CASA, tiền gửi Kho bạc) là lợi thế lớn nhất.',
+      '<b>Rủi ro chính:</b> huy động ngắn, cho vay dài (lãi suất tăng thì chi phí vốn tăng trước) và người vay không trả được nợ.'], 'ov3')}
+    ${C_('Yếu tố tác động', ['<b>Chuỗi truyền dẫn:</b> Fed, USD, giá dầu → tỷ giá → NHNN điều hành → lãi suất liên ngân hàng → lãi suất huy động, cho vay → NIM, nợ xấu → lợi nhuận → P/B.',
+      '<b>Tỷ giá và lạm phát</b> quyết định NHNN có hạ được lãi suất hay không.',
+      '<b>Room tín dụng</b> quyết định ngân hàng được lớn thêm bao nhiêu; <b>bất động sản</b> quyết định chất lượng tài sản bảo đảm.'], 'ov5')}
+    ${C_('Chu kỳ ngành', ['<b>Nới lỏng:</b> lãi suất giảm, NIM mở rộng, cổ phiếu thường tăng sớm nhất.',
+      '<b>Thắt chặt:</b> chi phí vốn tăng trước lãi suất cho vay, NIM bị ép; nợ xấu tăng sau 2–4 quý.',
+      `<b>Hiện tại:</b> ${sc ? `kịch bản <b>${esc(sc.t)}</b> (${esc(sc.rate.toLowerCase())}, ${esc(sc.bank.toLowerCase())})` : 'xem ma trận kịch bản'}${pb ? `; P/B ngành <b>${nf(pb, 2)}x</b>` : ''}.`], 'ov6')}
+    ${C_('5 chỉ số cần nhớ', ['<b>NIM</b> (biên lãi thuần): cao = cho vay sinh lời tốt hoặc vốn rẻ.', '<b>CASA</b> (tiền gửi không kỳ hạn): cao = nguồn vốn gần như miễn phí.',
+      '<b>NPL</b> (nợ xấu) và <b>LLR</b> (bao phủ nợ xấu): nợ xấu thấp, dự phòng dày là an toàn.', '<b>CAR</b> (an toàn vốn): đệm vốn để tăng trưởng và chịu lỗ.', '<b>ROE</b> và <b>P/B</b>: ROE cao bền vững thì được định giá P/B cao hơn.'], 'ov8')}
+    ${C_(`${M.banks.length} ngân hàng niêm yết, 4 nhóm`, GROUPS.map(g => `<b>${g}</b> (${tk(g).slice(0, 6).join(', ')}${tk(g).length > 6 ? '…' : ''}): ${GDESC[g].split(';')[0]}.`), 'ov4')}
+  </div>`;
 }
 function miniMatrix() {
   const cell = k => `<div class="cell ${NOW.q === k ? 'on' : ''}"><b>${SCN[k].t}</b>${SCN[k].rate} → ${SCN[k].bank}${NOW.q === k ? '<br><span class="now">Hiện tại</span>' : ''}</div>`;
