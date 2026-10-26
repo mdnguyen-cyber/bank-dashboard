@@ -21,7 +21,7 @@ OLD_BASE = 'https://www.mof.go.jp/english/jgbs/auction/calendar/'
 UA = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36'}
 START = (2021, 1)
 TENORS = {2, 5, 10, 20, 30, 40}
-VER = 5
+VER = 6
 
 
 def get(url):
@@ -88,8 +88,9 @@ def parse(h):
                 bids, acc = g('amounts of competitive bids'), g('amounts of bids accepted')
                 low, avg = g('lowest accepted price'), g('weighted average price')
                 yl, ya = g('yield at the lowest accepted price'), g('yield at the average price')
-                if yl is None:   # 40Y đấu thầu theo lợi suất
-                    yl, ya = g('highest accepted yield'), g('weighted average yield')
+                if yl is None:   # 40Y đấu thầu theo lợi suất: tên cột có thể khác đôi chút
+                    fk = lambda *ws: next((k for k in v if all(w in k for w in ws)), None)
+                    yl, ya = num(v.get(fk('highest', 'yield'))), num(v.get(fk('average', 'yield')))
                 if not bids or not acc:
                     return None
                 return {'d': f'{dm.group(3)}-{int(dm.group(1)):02d}-{int(dm.group(2)):02d}', 't': f'{int(m.group(1))}Y', 'bids': bids, 'acc': acc,
@@ -158,6 +159,22 @@ def main():
         if r:
             uniq[(r['d'], r['t'])] = r   # cùng một phiên có thể có 2 đường dẫn (cũ, mới)
     rows = sorted(uniq.values(), key=lambda r: (r['d'], r['t']))
+    # dữ liệu lịch sử MOF (2021–2022 không còn trang kết quả riêng): tìm file tải về ở trang Historical Data of Auction Results
+    try:
+        idx_u = 'https://www.mof.go.jp/english/policy/jgbs/auction/past_auction_results/index.html'
+        hi = get(idx_u) or ''
+        files = sorted({urljoin(idx_u, u) for u in re.findall(r'href="([^"]+\.(?:xlsx?|csv))"', hi, re.I)})
+        rep['hist_files'] = files[:40]
+        rawd = ROOT / 'data/global/jgb_hist_raw'; rawd.mkdir(parents=True, exist_ok=True)
+        for u in files[:6]:
+            fn = rawd / u.rsplit('/', 1)[1]
+            if not fn.exists():
+                with urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=60) as r_:
+                    fn.write_bytes(r_.read())
+        if not files:
+            (ROOT / 'data/global/jgb_hist_index.html').write_text(hi[:30000], encoding='utf-8')
+    except Exception as e:  # noqa: BLE001
+        rep['hist_err'] = str(e)[:200]
     rep['rows'] = len(rows); rep['err'] = rep['err'][:20]
     OUT.write_text(json.dumps({'fetched': today.isoformat(), 'ver': VER, 'report': rep, 'cal': seen_cal, 'pages': pages, 'rows': rows}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     print('JGB đấu thầu:', rep)
