@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-26T13:53Z"
+  "auto": "2026-10-26T14:16Z"
  },
  "idx": {
   "now": {
@@ -89220,6 +89220,13 @@
    "sym": []
   },
   {
+   "d": "2026-10-26",
+   "t": "NHNN đề xuất quy định mới về thuê ngoài, kiểm soát rủi ro tại công ty tài chính",
+   "src": "CafeF",
+   "url": "https://cafef.vn/nhnn-de-xuat-quy-dinh-moi-ve-thue-ngoai-kiem-soat-rui-ro-tai-cong-ty-tai-chinh-188261026204919875.chn",
+   "sym": []
+  },
+  {
    "d": "2026-10-25",
    "t": "Bộ Xây dựng: Phí ví điện tử không phải phí duy trì tài khoản giao thông",
    "src": "CafeF",
@@ -90791,19 +90798,6 @@
    "src": "Báo Hải Phòng",
    "url": "https://baohaiphong.vn/no-thue-bao-nhieu-co-the-bi-tam-hoan-xuat-canh-555730.html",
    "sym": []
-  },
-  {
-   "d": "2026-10-13",
-   "t": "Ngân hàng rao bán Rolls-Royce Ghost gần 11 tỷ đồng, loạt ô tô giá hơn 100 triệu cũng lên sàn",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/ngan-hang-rao-ban-rolls-royce-ghost-gan-11-ty-dong-loat-o-to-gia-hon-100-trieu-cung-len-san-1470457.html",
-   "sym": [
-    "CTG",
-    "SSB",
-    "STB",
-    "TPB",
-    "VPB"
-   ]
   }
  ],
  "goldWi": [
