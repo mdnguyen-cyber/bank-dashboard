@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-26T09:33Z"
+  "auto": "2026-10-26T09:47Z"
  },
  "idx": {
   "now": {
@@ -89153,6 +89153,15 @@
    ]
   },
   {
+   "d": "2026-10-26",
+   "t": "VPBank “đặt chuẩn mới” cho concert quốc tế tại Việt Nam với BIGBANG World Tour",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vpbank-dat-chuan-moi-cho-concert-quoc-te-tai-viet-nam-voi-bigbang-world-tour-188261026161629066.chn",
+   "sym": [
+    "VPB"
+   ]
+  },
+  {
    "d": "2026-10-25",
    "t": "Bộ Xây dựng: Phí ví điện tử không phải phí duy trì tài khoản giao thông",
    "src": "CafeF",
@@ -90753,17 +90762,6 @@
    "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
    "url": "https://dautu.kinhtechungkhoan.vn/phien-13-10-ngan-hang-nha-nuoc-bom-rong-12-000-ty-dong-lai-suat-qua-dem-neo-muc-4-8-1470448.html",
    "sym": []
-  },
-  {
-   "d": "2026-10-13",
-   "t": "Techcombank chuẩn bị lập kỷ lục mới, vượt cả VPBank và MB",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/techcombank-chuan-bi-lap-ky-luc-moi-vuot-ca-vpbank-va-mb-1470443.html",
-   "sym": [
-    "MBB",
-    "TCB",
-    "VPB"
-   ]
   }
  ],
  "goldWi": [
