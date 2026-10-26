@@ -2230,7 +2230,7 @@ const HM_V = [
   ['Tổng mức bán lẻ (YoY)', m => eAt('ret', m), 'hi-green', 2], ['Bán lẻ thực, trừ CPI (YoY)', m => { const a = eAt('ret', m), b = eAt('cpi', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
   ['Xuất khẩu (YoY)', m => eAt('xk', m), 'hi-green', 2], ['Nhập khẩu (YoY)', m => eAt('nk', m), 'hi-green', 2], ['Cán cân thương mại (tỷ USD)', m => eAt('tb', m), 'sign', 2],
   ['Sản xuất công nghiệp IIP (YoY)', m => eAt('iip', m), 'hi-green', 2], ['PMI sản xuất', m => eAt('pmi', m), 'pmi', 1],
-  ['FDI đăng ký (YoY)', m => eAt('fdi_reg_yoy', m), 'hi-green', 1], ['FDI thực hiện (YoY)', m => eAt('fdi_real_yoy', m), 'hi-green', 1], ['Vốn đầu tư ngân sách (YoY)', m => eAt('pub_yoy', m), 'hi-green', 1],
+  ['FDI đăng ký (YoY)', m => eAt('fdi_reg_yoy', m), 'hi-green', 1], ['FDI thực hiện (YoY)', m => eAt('fdi_real_yoy', m), 'hi-green', 1], ['Vốn đầu tư ngân sách (YoY)', m => eAt('pub_yoy', m), 'hi-green', 1], ['Khách quốc tế (YoY)', m => eAt('tour_yoy', m), 'hi-green', 1],
   ['Giá cả'],
   ['CPI (YoY)', m => eAt('cpi', m), 'hi-red', 2], ['Lạm phát cơ bản (YoY)', m => eAt('cpi_core', m), 'hi-red', 2], ['CPI bình quân từ đầu năm', m => byM(dom.cpiAvg)[m], 'hi-red', 2],
   ['Tài chính – tiền tệ'],

@@ -74,7 +74,10 @@ def main():
         ix = row('chi-so-gia-tieu-dung-cpi-272', n)
         calc = {m: round((v / ix[ly(m)] - 1) * 100, 2) for m, v in ix.items() if ix.get(ly(m)) and (m < REBASE) == (ly(m) < REBASE)}
         S[k] = dict(B.get(k, {})); S[k].update({m: v for m, v in calc.items() if m not in S[k] or m >= REBASE})
+        S[k].update({m: round(v, 4) for m, v in row('cpi-so-cung-ky-319', n).items()})   # CPI so cùng kỳ công bố trực tiếp: ưu tiên
     S['cpi_core'] = dict(B.get('cpi_core', {}))
+    for r in DL.get('cpi-so-cung-ky-319', {}).values():
+        if 'cơ bản' in r['n'].lower(): S['cpi_core'].update({d[:7]: round(v, 4) for d, v in zip(r['d'], r['v'])})
     # thương mại (triệu USD → tỷ USD)
     for k, slug in [('xk', 'tong-xuat-khau-292'), ('nk', 'tong-nhap-khau-293')]:
         for sk, n in [('', 'Tổng'), ('_dom', 'Khu vực trong nước'), ('_fdi', 'Khu vực trong FDI')]:
@@ -89,8 +92,22 @@ def main():
     for k in ['fdi_real', 'fdi_reg']:
         S[k] = {m: round(v / 1000, 3) for m, v in S[k].items()}
         S[k + '_ytd'] = {m: round(v / 1000, 3) for m, v in S[k + '_ytd'].items()}
+    pm = row('von-dau-tu-tu-nsnn-317', 'Tổng')   # giải ngân vốn NSNN theo tháng (tỷ đồng), tự cập nhật
+    if pm:
+        S['pub'].update(pm)
+        for m in pm:   # luỹ kế từ đầu năm và tăng trưởng, tính lại khi đủ các tháng trong năm
+            ms = [f'{m[:4]}-{i:02d}' for i in range(1, int(m[5:]) + 1)]
+            if all(x in S['pub'] for x in ms):
+                S['pub_ytd'][m] = sum(S['pub'][x] for x in ms)
+        for m in pm:
+            for k, base in [('pub_yoy', 'pub'), ('pub_ytd_yoy', 'pub_ytd')]:
+                a_, b_ = S[base].get(m), S[base].get(ly(m))
+                if a_ and b_ and (m not in S[k] or m > max(B.get(k, {'0': 0}))):
+                    S[k][m] = round((a_ / b_ - 1) * 100, 2)
     for k in ['pub', 'pub_ytd']:
         S[k] = {m: round(v / 1000, 2) for m, v in S[k].items()}   # nghìn tỷ đồng
+    arr = row('khach-quoc-te-theo-loai-hinh-295', 'Tổng số')   # khách quốc tế (nghìn lượt)
+    S['tour'] = {m: round(v, 1) for m, v in arr.items()}; S['tour_yoy'] = yoy(arr)
     # GDP quý (YoY) theo khu vực, từ chuỗi giá so sánh
     G = {'gdp': 'GDP theo giá so sánh', 'gdp_agri': 'Nông nghiệp, lâm nghiệp và thủy sản', 'gdp_ind': 'Công nghiệp và xây dựng', 'gdp_mfg': 'Công nghiệp chế biến, chế tạo',
          'gdp_con': 'Xây dựng', 'gdp_svc': 'Dịch vụ'}
