@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-26T02:02:01Z",
+ "fetched": "2026-10-26T02:17:13Z",
  "report": {
   "us_cpi": [
    {
@@ -1303,8 +1303,9 @@
   ],
   "cpi_au": [
    {
-    "id": "bisq:AU",
-    "error": "HTTP Error 404: "
+    "id": "oecd:AUS.M.N.CPI.PA._T.N.GY",
+    "n": 17,
+    "last": "2026-08-01"
    },
    {
     "id": "oecd:AUS.Q.N.CPI.PA._T.N.GY",
