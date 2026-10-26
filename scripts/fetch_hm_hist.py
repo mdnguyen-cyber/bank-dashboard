@@ -20,7 +20,7 @@ UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdng
 CC = {'us': 'US', 'ea': 'XM', 'jp': 'JP', 'cn': 'CN', 'gb': 'GB', 'kr': 'KR', 'ca': 'CA', 'au': 'AU', 'nz': 'NZ', 'ch': 'CH',
       'in': 'IN', 'id': 'ID', 'th': 'TH', 'my': 'MY', 'ph': 'PH', 'sg': 'SG', 'vn': 'VN'}
 CPI_Q = {'au', 'nz'}
-CPI_ALT = {'ch': ['oecd:CHE', 'fred:CPALTT01CHM659N'], 'jp': ['oecd:JPN', 'fred:CPALTT01JPM659N'], 'gb': ['fred:CPALTT01GBM659N'],
+CPI_ALT = {'au': ['oecdq:AUS', 'oecd:AUS', 'fredq:CPALTT01AUQ659N'], 'nz': ['oecdq:NZL', 'fredq:CPALTT01NZQ659N'], 'ch': ['oecd:CHE', 'fred:CPALTT01CHM659N'], 'jp': ['oecd:JPN', 'fred:CPALTT01JPM659N'], 'gb': ['fred:CPALTT01GBM659N'],
            'ca': ['fred:CPALTT01CAM659N'], 'kr': ['fred:CPALTT01KRM659N'], 'us': ['fred:CPALTT01USM659N'], 'ea': ['fred:CPHPTT01EZM659N'],
            'in': ['fred:INDCPIALLMINMEI'], 'id': ['fred:CPALTT01IDM659N'], 'cn': ['fred:CPALTT01CNM659N']}
 Y10 = {'us': ['fred:GS10', 'fred:IRLTLT01USM156N'], 'ea': ['fred:IRLTLT01DEM156N'], 'jp': ['fred:IRLTLT01JPM156N'], 'gb': ['fred:IRLTLT01GBM156N'],
@@ -56,9 +56,13 @@ def fred(sid):
     return [(d[:7], float(v)) for d, v in rows[1:] if v not in ('', '.')]
 
 
-def oecd_cpi(c3):
-    url = f'https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/{c3}.M.N.CPI.PA._T.N.GY?startPeriod={START}&format=csvfile'
-    return [(r['TIME_PERIOD'][:7], float(r['OBS_VALUE'])) for r in csv.DictReader(io.StringIO(get(url))) if r.get('OBS_VALUE') not in (None, '')]
+def oecd_cpi(c3, f='M'):
+    url = f'https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/{c3}.{f}.N.CPI.PA._T.N.GY?startPeriod={START[:4] + "-Q1" if f == "Q" else START}&format=csvfile'
+    return [(qmonth(r['TIME_PERIOD']), float(r['OBS_VALUE'])) for r in csv.DictReader(io.StringIO(get(url))) if r.get('OBS_VALUE') not in (None, '')]
+
+
+def fred_q(sid):   # FRED theo quý ghi tháng đầu quý → tháng cuối quý
+    return [(f'{m[:4]}-{int(m[5:]) + 2:02d}', v) for m, v in fred(sid)]
 
 
 def qmonth(p):   # '2026-Q2' → '2026-06'
@@ -129,10 +133,10 @@ def main():
         for alt in CPI_ALT.get(c, []):   # nguồn khác bù tháng BIS chưa có (đầu chuỗi hoặc tháng mới nhất)
             try:
                 k, sid = alt.split(':', 1)
-                rows = oecd_cpi(sid) if k == 'oecd' else fred(sid)
+                rows = {'oecd': lambda: oecd_cpi(sid), 'oecdq': lambda: oecd_cpi(sid, 'Q'), 'fred': lambda: fred(sid), 'fredq': lambda: fred_q(sid)}[k]()
                 add = {m: round(v, 4) for m, v in rows if m not in ser}
                 if add:
-                    ser.update(add); s = (s + ' + ' if s else '') + ('OECD' if k == 'oecd' else 'FRED')
+                    ser.update(add); s = (s + ' + ' if s else '') + ('OECD' if k.startswith('oecd') else 'FRED') + (' (quý)' if k.endswith('q') else '')
             except Exception:  # noqa: BLE001
                 pass
         if c != 'vn':

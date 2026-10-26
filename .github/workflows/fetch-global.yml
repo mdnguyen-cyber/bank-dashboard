@@ -30,7 +30,7 @@ jobs:
           python scripts/fetch_calendar.py || echo "fetch_calendar lỗi"
           python scripts/fetch_dlkt.py || echo "fetch_dlkt lỗi"
           python scripts/fetch_market.py || echo "fetch_market lỗi"
-          python scripts/fetch_hm_hist.py || echo "fetch_hm_hist lỗi"
+          FORCE=${{ github.event_name == 'workflow_dispatch' && '1' || '0' }} python scripts/fetch_hm_hist.py || echo "fetch_hm_hist lỗi"
       - name: Dựng dữ liệu cho trang
         run: |
           if [ -f scripts/build_global.py ]; then python scripts/build_global.py; fi
