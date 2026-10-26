@@ -1,6 +1,6 @@
 {
  "asOf": "2026-10-26 04:31",
- "fetched": "2026-10-26 04:46 UTC",
+ "fetched": "2026-10-26 04:59 UTC",
  "target": [
   3.75,
   4.0
@@ -36,7 +36,7 @@
      "Hike 25bps": 5.5,
      "Hike 50+ bps": 0.4
     },
-    "volume": 66841723
+    "volume": 66843378
    }
   },
   {
@@ -63,13 +63,13 @@
    "poly": {
     "slug": "fed-decision-in-december-20260729232808632",
     "p": {
-     "Cut 50+ bps": 0.7,
+     "Cut 50+ bps": 0.5,
      "Cut 25bps": 0.7,
      "No change": 20.5,
      "Hike 25bps": 76.5,
      "Hike 50+ bps": 2.6
     },
-    "volume": 4697523
+    "volume": 4698123
    }
   },
   {
@@ -227,7 +227,7 @@
     "p": {
      "Cut >25bps": 5.5,
      "Cut 25bps": 6.0,
-     "Fed maintains rate": 79.0,
+     "Fed maintains rate": 85.0,
      "Hike 25bps": 11.0,
      "Hike >25bps": 3.0
     }
