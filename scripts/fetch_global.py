@@ -155,7 +155,7 @@ CAT = {
     'cpi_tw': ('CPI Đài Loan', ['bis:TW', 'oecd:TWN.M.N.CPI.PA._T.N.GY']),
     'cpi_gb': ('CPI Anh', ['bis:GB', 'oecd:GBR.M.N.CPI.PA._T.N.GY', 'fred:CPALTT01GBM659N']),
     'cpi_ca': ('CPI Canada', ['bis:CA', 'oecd:CAN.M.N.CPI.PA._T.N.GY', 'fred:CPALTT01CAM659N']),
-    'cpi_au': ('CPI Úc (theo quý)', ['bisq:AU', 'oecd:AUS.Q.N.CPI.PA._T.N.GY', 'fred:CPALTT01AUQ659N']),
+    'cpi_au': ('CPI Úc', ['oecd:AUS.M.N.CPI.PA._T.N.GY', 'oecd:AUS.Q.N.CPI.PA._T.N.GY', 'fred:CPALTT01AUQ659N']),
     'cpi_nz': ('CPI New Zealand (theo quý)', ['bisq:NZ', 'oecd:NZL.Q.N.CPI.PA._T.N.GY', 'fred:CPALTT01NZQ659N']),
     # ---------------- Lãi suất điều hành các NHTW (BIS, theo ngày; dự phòng: lãi suất qua đêm OECD theo tháng)
     'pol_jp': ('BOJ', ['cbpol:JP']),
