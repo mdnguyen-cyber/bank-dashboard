@@ -99,6 +99,47 @@ def parse(h):
     return None
 
 
+HIST = 'https://www.mof.go.jp/english/policy/jgbs/auction/past_auction_results/Auction_Results_for_JGBs.xls'
+SHEETS = {'2年債': '2Y', '5年債': '5Y', '10年債': '10Y', '20年債': '20Y', '30年債': '30Y', '40年債': '40Y'}
+
+
+def hist_rows(since='2016-01-01'):
+    import xlrd
+    from datetime import date as _d, timedelta as _t
+    with urllib.request.urlopen(urllib.request.Request(HIST, headers=UA), timeout=90) as r:
+        wb = xlrd.open_workbook(file_contents=r.read())
+    out = []
+    for sh_name, ten in SHEETS.items():
+        if sh_name not in wb.sheet_names():
+            continue
+        sh = wb.sheet_by_name(sh_name)
+        hdr = next((i for i in range(min(10, sh.nrows)) if 'Auction Date' in [str(c.value).strip() for c in sh.row(i)]), None)
+        if hdr is None:
+            continue
+        lab = [norm(str(c.value)) for c in sh.row(hdr)]
+        col = lambda *ws: next((i for i, l in enumerate(lab) if all(w in l for w in ws) and not (l.startswith('price') and 'price' not in ws)), None)
+        ci = {'d': col('auction date'), 'bids': col('competitive bids'), 'acc': col('bids accepted'), 'avg': col('weighted average price'), 'low': col('lowest accepted price'),
+              'y_avg': col('yield at the average'), 'y_low': col('yield at the lowest'), 'y_hi': col('highest accepted yield')}
+        for i in range(hdr + 1, sh.nrows):
+            row = sh.row(i)
+            v = lambda k: row[ci[k]].value if ci[k] is not None and ci[k] < len(row) and row[ci[k]].value not in ('', None) else None
+            dv = v('d')
+            if not isinstance(dv, float):
+                continue
+            d = (_d(1899, 12, 30) + _t(days=int(dv))).isoformat()
+            bids, acc = v('bids'), v('acc')
+            if d < since or not isinstance(bids, float) or not isinstance(acc, float) or not acc:
+                continue
+            low, avg = v('low'), v('avg')
+            yl, ya = v('y_low'), v('y_avg')
+            if yl is None:
+                yl = v('y_hi')
+            f = lambda x: float(x) if isinstance(x, float) else None
+            out.append({'d': d, 't': ten, 'bids': round(bids / 10, 1), 'acc': round(acc / 10, 1), 'btc': round(bids / acc, 2), 'low': f(low), 'avg': f(avg),
+                        'tail': round(avg - low, 3) if f(low) and f(avg) else None, 'y_low': f(yl), 'y_avg': f(ya), 'src': 'xls'})
+    return out
+
+
 def main():
     old = json.loads(OUT.read_text(encoding='utf-8')) if OUT.exists() else {}
     pages = old.get('pages', {})   # url → kết quả (None = không phải JGB coupon cần giữ)
@@ -159,20 +200,13 @@ def main():
         if r:
             uniq[(r['d'], r['t'])] = r   # cùng một phiên có thể có 2 đường dẫn (cũ, mới)
     rows = sorted(uniq.values(), key=lambda r: (r['d'], r['t']))
-    # dữ liệu lịch sử MOF (2021–2022 không còn trang kết quả riêng): tìm file tải về ở trang Historical Data of Auction Results
+    # dữ liệu lịch sử MOF (file Excel Auction_Results_for_JGBs.xls, đủ mọi phiên từ khi phát hành, đơn vị 100 triệu yên): lấp 2016–2022
     try:
-        idx_u = 'https://www.mof.go.jp/english/policy/jgbs/auction/past_auction_results/index.html'
-        hi = get(idx_u) or ''
-        files = sorted({urljoin(idx_u, u) for u in re.findall(r'href="([^"]+\.(?:xlsx?|csv))"', hi, re.I)})
-        rep['hist_files'] = files[:40]
-        rawd = ROOT / 'data/global/jgb_hist_raw'; rawd.mkdir(parents=True, exist_ok=True)
-        for u in files[:6]:
-            fn = rawd / u.rsplit('/', 1)[1]
-            if not fn.exists():
-                with urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=60) as r_:
-                    fn.write_bytes(r_.read())
-        if not files:
-            (ROOT / 'data/global/jgb_hist_index.html').write_text(hi[:30000], encoding='utf-8')
+        hist = hist_rows()
+        rep['hist_rows'] = len(hist)
+        for r in hist:
+            uniq.setdefault((r['d'], r['t']), r)   # trang kết quả từng phiên (mới hơn) được ưu tiên
+        rows = sorted(uniq.values(), key=lambda r: (r['d'], r['t']))
     except Exception as e:  # noqa: BLE001
         rep['hist_err'] = str(e)[:200]
     rep['rows'] = len(rows); rep['err'] = rep['err'][:20]
