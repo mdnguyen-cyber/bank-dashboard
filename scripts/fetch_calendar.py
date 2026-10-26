@@ -3,7 +3,7 @@
 và lưu dồn vào data/calendar/ff.json để có lịch sử. Feed chỉ có tuần hiện tại và không có số thực tế;
 số thực tế được bổ sung ở scripts/build_calendar.py."""
 import json, sys, urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -31,7 +31,8 @@ def ust_schedule():
         idx[k] = {**idx.get(k, {}), **{a: b for a, b in e.items() if b not in ('', None)}}
     hdr = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36', 'Accept': 'application/xml,text/xml,*/*'}
     try:
-        root = ET.fromstring(urllib.request.urlopen(urllib.request.Request(TAS, headers=hdr), timeout=40).read())
+        raw = urllib.request.urlopen(urllib.request.Request(TAS, headers=hdr), timeout=40).read()
+        root = ET.fromstring(raw)
         strip = lambda t: t.split('}')[-1]; n = 0
         for node in root.iter():
             if strip(node.tag) != 'AuctionCalendarDate':
@@ -41,7 +42,7 @@ def ust_schedule():
                 continue
             put({'term': f.get('SecurityTermWeekYear', ''), 'type': f['SecurityType'], 'tips': f.get('TIPS') == 'Yes', 'frn': f.get('FloatingRate') == 'Yes',
                  'reopen': f.get('ReOpeningIndicator') == 'Yes', 'ann': f.get('AnnouncementDate', '')[:10], 'auction': f['AuctionDate'][:10], 'settle': f.get('SettlementDate', '')[:10]}); n += 1
-        st['xml'] = f'ok {n}'
+        st['xml'] = f'ok {n}' if n else 'không có phiên nào: ' + raw[:300].decode('utf-8', 'replace')
     except Exception as e:  # noqa: BLE001
         st['xml'] = 'lỗi: ' + str(e)[:200]
     try:
@@ -56,8 +57,13 @@ def ust_schedule():
             m = _re.match(r'(\d+)-Year', term)
             if not m:
                 continue
+            au = (r.get('auction_date') or '')[:10]
+            if au < (datetime.now(timezone.utc) - timedelta(days=10)).date().isoformat():
+                continue   # bộ dữ liệu còn giữ bản ghi cũ
             tips, frn = r['security_type'] == 'TIPS', r['security_type'] == 'FRN'
             yrs = int(m.group(1)) + (1 if _re.search(r'(\d+)-Month', term) and int(_re.search(r'(\d+)-Month', term).group(1)) >= 6 else 0)
+            if any(k[0] == f'{yrs}-Year' and k[3] == au for k in idx):
+                continue   # đã có từ lịch dự kiến (phân biệt được TIPS, FRN)
             put({'term': f'{yrs}-Year', 'type': 'Bond' if yrs >= 20 else 'Note', 'tips': tips, 'frn': frn, 'reopen': r.get('reopening') == 'Yes',
                  'ann': (r.get('announcemt_date') or '')[:10], 'auction': (r.get('auction_date') or '')[:10], 'settle': (r.get('issue_date') or '')[:10]}); n += 1
         st['fiscaldata'] = f'ok {n}'
