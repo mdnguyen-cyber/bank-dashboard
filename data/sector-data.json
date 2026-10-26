@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-26T05:00Z"
+  "auto": "2026-10-26T05:13Z"
  },
  "idx": {
   "now": {
@@ -89086,6 +89086,27 @@
    "sym": []
   },
   {
+   "d": "2026-10-26",
+   "t": "Khi những giá trị bản địa mở lối cho những mô hình du lịch mới",
+   "src": "CafeF",
+   "url": "https://cafef.vn/khi-nhung-gia-tri-ban-dia-mo-loi-cho-nhung-mo-hinh-du-lich-moi-18826102611461482.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
+   "t": "Đà tăng lãi suất tiết kiệm nhiều khả năng đã chấm dứt",
+   "src": "CafeF",
+   "url": "https://cafef.vn/da-tang-lai-suat-tiet-kiem-nhieu-kha-nang-da-cham-dut-188261026110527281.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
+   "t": "Bến xe miền Tây có hơn 300 tỷ đồng gửi tiết kiệm ngân hàng",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/ben-xe-mien-tay-co-hon-300-ty-dong-gui-tiet-kiem-ngan-hang-5136873.html",
+   "sym": []
+  },
+  {
    "d": "2026-10-25",
    "t": "Bộ Xây dựng: Phí ví điện tử không phải phí duy trì tài khoản giao thông",
    "src": "CafeF",
@@ -90756,33 +90777,6 @@
    "url": "https://dautu.kinhtechungkhoan.vn/msb-du-kien-chao-ban-936-trieu-co-phieu-cho-co-dong-gia-thap-hon-thi-truong-1470386.html",
    "sym": [
     "MSB"
-   ]
-  },
-  {
-   "d": "2026-10-13",
-   "t": "Bộ Tài chính quy định mức thu phí, lệ phí lĩnh vực an ninh mạng",
-   "src": "Báo Hải Phòng",
-   "url": "https://baohaiphong.vn/bo-tai-chinh-quy-dinh-muc-thu-phi-le-phi-linh-vuc-an-ninh-mang-555652.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-13",
-   "t": "Doanh nhân Nguyễn Thị Phương Thảo: Phụ nữ không chỉ giữ lửa - phụ nữ còn tạo nguồn sáng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/doanh-nhan-nguyen-thi-phuong-thao-phu-nu-khong-chi-giu-lua-phu-nu-con-tao-nguon-sang-1470345.html",
-   "sym": [
-    "HDB",
-    "VJC"
-   ]
-  },
-  {
-   "d": "2026-10-13",
-   "t": "Đặc quyền bay cho khách hàng doanh nghiệp tại ACB: Từ ưu đãi giá vé đến VIP Care",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/dac-quyen-bay-cho-khach-hang-doanh-nghiep-tai-acb-tu-uu-dai-gia-ve-den-vip-care-d151951.html",
-   "sym": [
-    "ACB",
-    "HVN"
    ]
   }
  ],
