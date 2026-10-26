@@ -86,7 +86,7 @@ const charts = {};
 /* ---------- Chart book: mk() lưu cấu hình từng chart theo id để vẽ lại ở Chart book / Cập nhật nhanh ---------- */
 const SPEC = {};
 const cl = o => Array.isArray(o) ? o.map(cl) : (o && Object.getPrototypeOf(o) === Object.prototype) ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cl(v)])) : o;
-const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: PAGE === 'vimo' ? 'Tiền tệ Việt Nam' : 'Vĩ mô tiền tệ', mm: 'Tỷ giá', bank: 'Ngân hàng', peer: 'So sánh ngân hàng', idx: 'Kịch bản IDX', eco: 'Kinh tế Việt Nam', bond: 'Trái phiếu', heat: 'Việt Nam & Thế giới' };
+const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: PAGE === 'vimo' ? 'Tiền tệ Việt Nam' : 'Vĩ mô tiền tệ', mm: 'Tỷ giá', bank: 'Ngân hàng', peer: 'So sánh ngân hàng', idx: 'Kịch bản IDX', eco: 'Kinh tế Việt Nam', bond: 'Trái phiếu', heat: 'Việt Nam & Thế giới', cmd: 'Hàng hóa' };
 function cardMeta(el) {
   const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane'), cc = el.closest('[data-cc]');
   const h = c && c.querySelector(':scope > h3.sub'), one = sel => { const e = c && c.querySelector(':scope > ' + sel); return e ? e.innerHTML : ''; };
@@ -2342,6 +2342,108 @@ function paneHeat() {
   gDone.gl = true; drGL();
 }
 
+/* =====================================================================
+   VĨ MÔ › HÀNG HÓA (bảng giá + biểu đồ; data/cmd-data.js)
+===================================================================== */
+const CMD = window.CMD_DATA || { groups: [], items: [] };
+const cmdI = k => CMD.items.find(x => x.k === k);
+const cmdN = it => { let n = it.v.length - 1; while (n >= 0 && it.v[n] == null) n--; return n; };
+function cmdChg(it, back) {   // % thay đổi so với phiên trước ('p'), N ngày lịch trước, hoặc cuối năm trước ('ytd')
+  const n = cmdN(it); if (n < 1) return null;
+  let i = n - 1;
+  if (back !== 'p') {
+    const d = it.d[n], tgt = back === 'ytd' ? `${+d.slice(0, 4) - 1}-12-31` : new Date(new Date(d) - back * 864e5).toISOString().slice(0, 10);
+    i = -1; for (let j = n - 1; j >= 0; j--) if (it.d[j] <= tgt) { i = j; break; }
+    if (i < 0 || (new Date(tgt) - new Date(it.d[i])) / 864e5 > Math.max(10, back === 'ytd' ? 40 : back * 0.12)) return null;   // chuỗi chưa có số ở mốc đó
+  }
+  return it.v[i] ? (it.v[n] / it.v[i] - 1) * 100 : null;
+}
+const CMD_B = [['p', '1 ngày'], [7, '1 tuần'], [30, '1 tháng'], [91, '3 tháng'], ['ytd', 'Từ đầu năm'], [365, '1 năm'], [1095, '3 năm']];
+const cmdTxt = it => `${it.n} <b>${sg(cmdChg(it, 'ytd'), 1)}</b>`;
+function cmdTabIns() {
+  const R = CMD.items.map(it => ({ it, y: cmdChg(it, 'ytd'), m: cmdChg(it, 30) })).filter(r => r.y != null);
+  if (!R.length) return 'Đang nạp số liệu.';
+  const up = R.slice().sort((a, b) => b.y - a.y), m = R.filter(r => r.m != null).sort((a, b) => b.m - a.m);
+  return `Từ đầu năm tăng mạnh nhất: ${up.slice(0, 3).map(r => cmdTxt(r.it)).join(', ')}; giảm mạnh nhất: ${up.slice(-3).reverse().map(r => cmdTxt(r.it)).join(', ')}. `
+    + `Một tháng qua: ${m.slice(0, 2).map(r => `${r.it.n} ${sg(r.m, 1)}`).join(', ')} dẫn đầu; ${m.slice(-2).reverse().map(r => `${r.it.n} ${sg(r.m, 1)}`).join(', ')} yếu nhất.`
+    + how('Năng lượng và cước vận tải biển là hai nhóm truyền dẫn nhanh nhất vào CPI và chi phí doanh nghiệp Việt Nam (qua giá xăng điều chỉnh định kỳ và giá hàng nhập khẩu); giá nông sản, thủy sản, phân bón tác động trực tiếp tới thu nhập khu vực nông thôn và biên lợi nhuận của các doanh nghiệp đầu ngành.');
+}
+const CMD_GI = {   // hàm ý theo nhóm
+  nl: 'Brent là giá chuẩn cho dầu nhập khẩu của châu Á; giá xăng trong nước điều chỉnh theo giá thành phẩm Singapore với độ trễ vài tuần. Dầu tăng cùng USD mạnh làm chi phí nhập khẩu và CPI chịu áp lực kép, thu hẹp dư địa nới lỏng của NHNN.',
+  vt: 'BDTI, BCTI đo giá thuê tàu chở dầu thô và xăng dầu; BDI đo giá thuê tàu hàng rời (quặng, than, ngũ cốc). Cước tàu dầu tăng vọt thường do rủi ro trên tuyến Trung Đông (eo Hormuz, Biển Đỏ) buộc tàu đi đường vòng, có lợi cho doanh nghiệp vận tải dầu khí nhưng đẩy giá nhập khẩu xăng dầu.',
+  kl: 'Vàng thế giới phản ánh lợi suất thực của Mỹ và nhu cầu trú ẩn; chênh lệch giữa vàng SJC và vàng thế giới quy đổi cho biết cung cầu vàng trong nước. Giá thép HRC Trung Quốc là mức neo cho giá thép trong nước và biên lợi nhuận ngành thép.',
+  cn: 'Cao su và PVC Trung Quốc là giá tham chiếu cho doanh nghiệp cao su tự nhiên và nhựa xây dựng; giá phân bón trong nước đi theo giá khí đốt và giá urê, DAP thế giới, ảnh hưởng tới chi phí sản xuất nông nghiệp.',
+  ns: 'Giá đường thế giới là trần giá cho đường trong nước; giá heo hơi phản ánh chu kỳ đàn và dịch bệnh; giá cá tra, tôm nguyên liệu quyết định biên lợi nhuận của doanh nghiệp chế biến thủy sản xuất khẩu.' };
+function cmdGrpIns(g) {
+  const its = CMD.items.filter(it => it.g === g); if (!its.length) return '';
+  let t = its.map(it => { const n = cmdN(it); return `${it.n} <b>${nf(it.v[n], it.dp)}</b> ${it.u} (${sg(cmdChg(it, 30), 1)} 1 tháng, ${sg(cmdChg(it, 'ytd'), 1)} từ đầu năm)`; }).join('; ') + '.';
+  if (g === 'kl') {   // chênh lệch vàng SJC − vàng thế giới quy đổi (1 lượng = 37,5 g = 1,20565 ounce)
+    const s = cmdI('sjc'), w = cmdI('gold'), fx = vnFxAt(TODAY.slice(0, 7)) ?? vnFxAt(ePrevM(TODAY.slice(0, 7)));
+    if (s && w && fx) { const sv = s.v[cmdN(s)] / 1000, wv = w.v[cmdN(w)] * 1.20565 * fx / 1e6;
+      t += ` Vàng thế giới quy đổi (theo tỷ giá NHTM bán ra) khoảng <b>${nf(wv, 1)} triệu đồng/lượng</b>, vàng SJC cao hơn <b>${nf(sv - wv, 1)} triệu đồng/lượng</b> (${sg((sv / wv - 1) * 100, 1)}).`; }
+  }
+  return t + how(CMD_GI[g]);
+}
+let cmdSel = 'brent';
+function cmdDraw() {
+  const it = cmdI(cmdSel) || CMD.items[0]; if (!it) return;
+  $$('#cmdTab tbody tr[data-k]').forEach(r => r.classList.toggle('sel', r.dataset.k === it.k));
+  const s = $('#cmdSel'); if (s) s.value = it.k;
+  const h = $('#cmdOneH'); if (h) h.textContent = `${it.n} (${it.u})`;
+  const sr = $('#cmdOneSrc'); if (sr) sr.textContent = it.src;
+  mk('cmdOne', { type: 'line', data: { labels: it.d.map(dvn), datasets: [L(it.n, it.v, C.navy, { unit: ' ' + it.u, dp: it.dp, borderWidth: 2 })] },
+    options: { plugins: { legend: { display: false } }, scales: { x: { ticks: { maxTicksLimit: 10 } }, y: numAxis(it.u, { beginAtZero: false, ticks: { callback: v => nf(v, it.dp > 1 ? 1 : 0) } }) } } }, { win: 36 });
+}
+function cmdAlign(it, days) {   // giá theo trục ngày chung, lấp ngày thiếu bằng số gần nhất (tối đa 10 ngày)
+  const out = []; let j = -1;
+  for (const d of days) { while (j + 1 < it.d.length && it.d[j + 1] <= d) j++;
+    out.push(j >= 0 && it.v[j] != null && (new Date(d) - new Date(it.d[j])) / 864e5 <= 10 ? it.v[j] : null); }
+  return out;
+}
+const CMD_CC = [C.navy, C.red, C.tealInk, C.gold, C.purple, C.grey];
+function chCmd() {
+  if (!$('#cmdOne')) return;
+  cmdDraw();
+  CMD.groups.forEach(([g]) => {
+    const id = 'cmdG_' + g; if (!$('#' + id)) return;
+    const its = CMD.items.filter(it => it.g === g);
+    const last = its.reduce((a, it) => it.d[cmdN(it)] > a ? it.d[cmdN(it)] : a, '');
+    const cut = new Date(new Date(last) - 3.2 * 365 * 864e5).toISOString().slice(0, 10);
+    const days = [...new Set(its.flatMap(it => it.d.filter(d => d >= cut)))].sort();
+    mk(id, { type: 'line', plugins: [fxRebase], data: { labels: days.map(dvn), datasets: its.map((it, i) => ({ label: it.n, $raw: cmdAlign(it, days), data: [],
+        borderColor: CMD_CC[i % CMD_CC.length], backgroundColor: CMD_CC[i % CMD_CC.length], borderWidth: i ? 1.6 : 2.4, pointRadius: 0, spanGaps: true, dp: 1, unit: '%' })) },
+      options: { scales: { x: { ticks: { maxTicksLimit: 10 } }, y: { ticks: { callback: v => nf(v, 0) + '%' }, grid: { color: '#eef0f4' } } }, plugins: { refLines: { lines: [{ value: 0, label: '', color: C.grey }] } } } }, { win: 12 });
+  });
+}
+function paneCmd() {
+  const stale = d => (new Date(TODAY) - new Date(d)) / 864e5 > 10;
+  const rows = CMD.groups.map(([g, gn]) => { const its = CMD.items.filter(it => it.g === g); if (!its.length) return '';
+    return `<tr class="grp"><td colspan="${CMD_B.length + 4}">${gn}</td></tr>` + its.map(it => { const n = cmdN(it);
+      return `<tr data-k="${it.k}"><td><b>${it.n}</b></td><td class="muted">${it.u}</td><td class="n"><b>${nf(it.v[n], it.dp)}</b></td>${CMD_B.map(([b]) => { const v = cmdChg(it, b);
+        return `<td class="n" style="color:${v == null || Math.abs(v) < 0.005 ? '' : v > 0 ? '#1e8f5a' : '#c0392b'}">${v == null ? '—' : sg(v, 1)}</td>`; }).join('')}<td class="${stale(it.d[n]) ? 'muted' : ''}">${dvn(it.d[n])}</td></tr>`; }).join(''); }).join('');
+  const srcs = [...new Set(CMD.items.map(it => it.src.replace(/ \(.+\)$/, '')))].join('; ');
+  $('#cmd').innerHTML = `
+  <h2 class="sec">Hàng hóa</h2>
+  <p class="sec-sub">Giá năng lượng, cước vận tải biển, kim loại, nguyên liệu và nông sản trong nước và thế giới, kèm mức thay đổi theo các khung thời gian. Bấm vào một dòng để xem lịch sử giá.</p>
+  <article class="card"><h3 class="sub">Bảng giá hàng hóa</h3>
+    <p class="chart-sub">giá gần nhất · % thay đổi so với phiên trước, 1 tuần, 1 tháng, 3 tháng, cuối năm trước, 1 năm và 3 năm trước (xanh = giá tăng, đỏ = giá giảm) · ngày mờ = số chưa cập nhật hơn 10 ngày</p>
+    <div class="tscroll"><table class="etab cm" id="cmdTab"><thead><tr><th>Hàng hóa</th><th>Đơn vị</th><th class="n">Giá gần nhất</th>${CMD_B.map(([, l]) => `<th class="n">${l}</th>`).join('')}<th>Ngày</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="insight">${cmdTabIns()}</div>
+    <div class="src">${srcs}</div></article>
+  <article class="card"><h3 class="sub"><span id="cmdOneH"></span></h3>
+    <p class="chart-sub">giá theo ngày (phần trước 3 năm gần nhất: số cuối tháng) · chọn hàng hóa: <span class="psel"><select id="cmdSel">${CMD.groups.map(([g, gn]) => `<optgroup label="${gn}">${CMD.items.filter(it => it.g === g).map(it => `<option value="${it.k}">${it.n}</option>`).join('')}</optgroup>`).join('')}</select></span> · đổi khung bằng nút phía trên biểu đồ</p>
+    <div class="cbox tall"><canvas id="cmdOne" role="img" aria-label="Lịch sử giá hàng hóa"></canvas></div>
+    <div class="src">Nguồn: <span id="cmdOneSrc"></span></div></article>
+  <h3 class="sec2">Diễn biến theo nhóm — % thay đổi từ đầu khung đang xem</h3>
+  <div class="grid g2 gap">
+    ${CMD.groups.filter(([g]) => CMD.items.some(it => it.g === g)).map(([g, gn]) => card({ id: 'cmdG_' + g, title: gn + ': ' + CMD.items.filter(it => it.g === g).map(it => it.n.replace(/ \(.+\)$/, '')).join(', '), h: 'tall',
+      sub: '% thay đổi giá so với điểm đầu khung đang xem, theo ngày (cước Baltic, giá Trung Quốc và giá trong nước trước 3 tháng gần nhất: số cuối tuần) · đổi khung bằng nút phía trên biểu đồ',
+      insight: cmdGrpIns(g), src: [...new Set(CMD.items.filter(it => it.g === g).map(it => it.src))].join('; ') })).join('')}
+  </div>`;
+  $$('#cmdTab tbody tr[data-k]').forEach(r => r.onclick = () => { cmdSel = r.dataset.k; cmdDraw(); $('#cmdOne').closest('article').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+  $('#cmdSel').onchange = e => { cmdSel = e.target.value; cmdDraw(); };
+  chCmd();
+}
 /* ---- Ngành › Vĩ mô tiền tệ: phần Mỹ thu gọn (Fed, đường cong UST, USD) ---- */
 function drUsd(id) {
   const labs = monthsFrom('2021-01', TODAY.slice(0, 7));
@@ -3189,7 +3291,7 @@ function openBook(id) {
 function footer() {
   $('#foot').innerHTML = `<div>FinSuccess · ${PAGE === 'vimo' ? 'Dashboard Vĩ mô' : 'Dashboard CSTT &amp; ngành Ngân hàng'} · dữ liệu cập nhật ${dvn(TODAY)}. Không phải khuyến nghị đầu tư.</div>`;
 }
-const builders = PAGE === 'vimo' ? { heat: paneHeat, vn: paneVN, world: paneWorld, quick: paneQuick, book: paneBook, src: paneSrc }
+const builders = PAGE === 'vimo' ? { heat: paneHeat, vn: paneVN, world: paneWorld, cmd: paneCmd, quick: paneQuick, book: paneBook, src: paneSrc }
   : { overview: paneOverview, quick: paneQuick, picture: panePicture, policy: panePolicy, catalyst: paneCatalyst, cons: paneCons, hot: paneHot, book: paneBook, src: paneSrc };
 const built = {};
 function show(k) {

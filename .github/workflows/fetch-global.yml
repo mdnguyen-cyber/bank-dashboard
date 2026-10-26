@@ -30,6 +30,7 @@ jobs:
           python scripts/fetch_calendar.py || echo "fetch_calendar lỗi"
           python scripts/fetch_dlkt.py || echo "fetch_dlkt lỗi"
           python scripts/fetch_market.py || echo "fetch_market lỗi"
+          python scripts/fetch_cmd.py || echo "fetch_cmd lỗi"
           FORCE=${{ github.event_name == 'workflow_dispatch' && '1' || '0' }} python scripts/fetch_hm_hist.py || echo "fetch_hm_hist lỗi"
       - name: Dựng dữ liệu cho trang
         run: |
@@ -38,6 +39,7 @@ jobs:
           python scripts/build_auto.py || echo "build_auto lỗi"
           python scripts/build_eco.py || echo "build_eco lỗi"
           python scripts/build_hm_hist.py || echo "build_hm_hist lỗi"
+          python scripts/build_cmd.py || echo "build_cmd lỗi"
       - name: Commit nếu có số mới và deploy lại trang
         env:
           GH_TOKEN: ${{ github.token }}
@@ -51,6 +53,7 @@ jobs:
           git add data/sector-data.js data/sector-data.json
           [ -f data/eco-data.js ] && git add data/eco-data.js
           [ -f data/hm-hist.js ] && git add data/hm-hist.js
+          [ -f data/cmd-data.js ] && git add data/cmd-data.js
           git add -A data/calendar; [ -f data/calendar-data.js ] && git add data/calendar-data.js
           if git diff --cached --quiet; then echo "Không có số mới"; exit 0; fi
           git commit -m "Số liệu quốc tế $(date -u +%Y-%m-%d) (tự động)"

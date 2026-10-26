@@ -42,6 +42,7 @@ def rows(resp):
 
 def main():
     pts = defaultdict(dict)   # iid -> {date: value}
+    prev = json.loads(OUT.read_text(encoding='utf-8')).get('s', {}) if OUT.exists() else {}   # giữ lịch sử đã có
     for f in sorted(RAW.glob('wi_data_*.json')):
         if not (f.name.startswith('wi_data_macro') or f.name.startswith('wi_data_gbond')):
             continue
@@ -95,6 +96,9 @@ def main():
             g[d[:7]].append(v)
         ser = {m: round(sum(v) / len(v), 4) for m, v in sorted(g.items())}
         if ser: s[k] = ser  # noqa: E701
+    for k, v in prev.items():   # tháng nào dữ liệu gốc lần này không có thì giữ số cũ
+        s[k] = {**v, **s.get(k, {})}
+        s[k] = dict(sorted(s[k].items()))
     OUT.write_text(json.dumps({'src': 'Cục Thống kê, NHNN, Bộ Tài chính, S&P Global; Vietcombank (tỷ giá NHTM)', 's': s}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     for k, v in s.items():
         print(f'{k:14s} {len(v):4d} {min(v)} → {max(v)}')

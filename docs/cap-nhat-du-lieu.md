@@ -25,6 +25,7 @@ Gọi đúng các truy vấn tăng dần dưới đây (cửa sổ ngắn để 
 |---|---|
 | Vĩ mô ngày (tỷ giá, LNH, OMO, lãi suất huy động, DXY, EFFR) | `wi_data_macro get_values indicator_id=82223,82224,82226,82227,82228,82231,235028,235032,7079,82237,81522,82268,202886,202874,202880,202862 from_time=<from> to_time=<to>` |
 | Vĩ mô tháng (M2, tiền gửi, tín dụng, CPI, dự trữ, XNK, FDI, NSNN) | `wi_data_macro get_values indicator_id=265954,265963,265981,265972,75847,241732,75701,202889,75804,76885,255693,76951,82420,75598 from_time=<4 tháng trước> to_time=<to>` |
+| Giá hàng hóa (tab Vĩ mô › Hàng hóa: cước Baltic, giá Trung Quốc, giá trong nước) | `wi_data_commodity get_values indicator_id=73983,73984,73982,203181,203192,74128,74335,74384,264825,264644,74360,74124,203148,1224199,1224193,1276638,74407,74406,74400 from_time=<from> to_time=<to> limit=30` → sau khi lưu raw chạy `python3 scripts/cmd_wi_backfill.py && python3 scripts/build_cmd.py` (commit `data/backfill/cmd_wi.json`, `data/cmd-data.js`) |
 | Định giá ngành theo phiên | `wi_data_sector get_data endpoint_name=sector_ratio_daily filters={"sector_id":"405"} from_time=2022-09-01 to_time=<to>` |
 | Định giá từng mã | `wi_data_companies get_data endpoint_name=ratio_daily filters={"symbol":"<26 mã>"} columns=symbol,trading_date,pe,pb,bvps,market_cap` (giống file `ratio_daily_zz_*` cũ) |
 
@@ -36,6 +37,9 @@ nên khi cần bù lịch sử thì kéo theo từng quý (from/to ≤ 3 tháng,
 
 Khi có BCTC quý mới (mùa báo cáo: tháng 1, 4, 7, 10), kéo lại các truy vấn `fs_bank`, `fs_bank_notes`, `ratio_bank`, `ratio_bank_ttm`,
 `ratio_common_ttm`, `bank_car_tt41` với cùng tham số như file cũ trong `data/raw/wi/` (đọc `request` của file cũ, thêm năm/quý mới).
+
+Lịch sử dài cho bản đồ nhiệt (Việt Nam) nằm ở `data/backfill/vn_hist.json` (`scripts/vn_hist_backfill.py`); chỉ cần chạy lại khi kéo thêm lịch sử.
+Giá hàng hóa: WiData chỉ trả tối đa 1.000 điểm mỗi chỉ tiêu và nén khoảng dài (> 3 tháng thành tuần, > 1 năm thành tháng), nên bù lịch sử theo từng năm.
 
 Lưu kết quả: chạy `python3 scripts/wi_capture_transcript.py <transcript .jsonl của phiên này>` (file mới nhất trong `~/.claude/projects/*/`).
 Kết quả nào bị lưu ra file riêng (tool-results) thay vì nằm trong transcript → đọc file đó và ghi thành
