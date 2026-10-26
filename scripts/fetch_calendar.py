@@ -38,10 +38,10 @@ def ust_schedule():
             if strip(node.tag) != 'AuctionCalendarDate':
                 continue
             f = {strip(c.tag): (c.text or '').strip() for c in node}
-            if f.get('SecurityType') not in ('Note', 'Bond') or not f.get('AuctionDate'):
+            if (f.get('SecurityType') or '').upper() not in ('NOTE', 'BOND') or not f.get('AuctionDate'):
                 continue
-            put({'term': f.get('SecurityTermWeekYear', ''), 'type': f['SecurityType'], 'tips': f.get('TIPS') == 'Yes', 'frn': f.get('FloatingRate') == 'Yes',
-                 'reopen': f.get('ReOpeningIndicator') == 'Yes', 'ann': f.get('AnnouncementDate', '')[:10], 'auction': f['AuctionDate'][:10], 'settle': f.get('SettlementDate', '')[:10]}); n += 1
+            put({'term': f.get('SecurityTermWeekYear', ''), 'type': f['SecurityType'].title(), 'tips': f.get('TIPS', '').upper() in ('Y', 'YES'), 'frn': f.get('FloatingRate', '').upper() in ('Y', 'YES'),
+                 'reopen': f.get('ReOpeningIndicator', '').upper() in ('Y', 'YES'), 'ann': f.get('AnnouncementDate', '')[:10], 'auction': f['AuctionDate'][:10], 'settle': f.get('SettlementDate', '')[:10]}); n += 1
         st['xml'] = f'ok {n}' if n else 'không có phiên nào: ' + raw[:300].decode('utf-8', 'replace')
     except Exception as e:  # noqa: BLE001
         st['xml'] = 'lỗi: ' + str(e)[:200]
