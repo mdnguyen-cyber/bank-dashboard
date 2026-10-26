@@ -21,7 +21,7 @@ OLD_BASE = 'https://www.mof.go.jp/english/jgbs/auction/calendar/'
 UA = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36'}
 START = (2021, 1)
 TENORS = {2, 5, 10, 20, 30, 40}
-VER = 4
+VER = 5
 
 
 def get(url):
@@ -102,7 +102,7 @@ def main():
     old = json.loads(OUT.read_text(encoding='utf-8')) if OUT.exists() else {}
     pages = old.get('pages', {})   # url → kết quả (None = không phải JGB coupon cần giữ)
     if old.get('ver') != VER:
-        pages = {u: r for u, r in pages.items() if r or r is False}   # đổi cách đọc trang → đọc lại các trang đã có nhưng chưa lấy được số (giữ trang không tồn tại = False)
+        pages = {u: r for u, r in pages.items() if (r or r is False) and not (r and r.get('t') == '40Y' and r.get('y_low') is None)}   # đổi cách đọc trang → đọc lại các trang đã có nhưng chưa lấy được số (giữ trang không tồn tại = False)
     seen_cal = old.get('cal', {})
     today = date.today()
     y, m = START
@@ -148,6 +148,8 @@ def main():
         try:
             h = get(u)
             pages[u] = (parse(h) if h else False); rep['new_pages'] += 1
+            if h and pages[u] is None and 'eresul20' in u and u.rsplit('eresul', 1)[1][:4] in ('2021', '2022') and not (ROOT / 'data/global/jgb_debug.html').exists():
+                (ROOT / 'data/global/jgb_debug.html').write_text(u + '\n' + h[:20000], encoding='utf-8')   # mẫu trang chưa đọc được, để chỉnh cách đọc
         except Exception as e:  # noqa: BLE001
             rep['err'].append(f'{u[-30:]}: {str(e)[:80]}')
         time.sleep(0.3)
