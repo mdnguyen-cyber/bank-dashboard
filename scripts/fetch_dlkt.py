@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """Số liệu vĩ mô Việt Nam tự động từ dulieukinhte.com (tổng hợp miễn phí từ Cục Thống kê, NHNN, Vietcombank, S&P Global…).
 Mỗi trang /du-lieu/<slug> có các dòng (data-row-id); lấy tên dòng từ HTML rồi tải chuỗi qua /api/internal/data/series.
-Ghi data/vn/dlkt.json: {slug: {row_id: {n: tên, d: [ngày], v: [giá trị]}}}. Lỗi một trang thì giữ bản cũ của trang đó."""
+Ghi data/vn/dlkt.json: {slug: {row_id: {n: tên, d: [ngày], v: [giá trị]}}}. Lỗi một trang thì giữ bản cũ của trang đó.
+Phần trước 2019 (cùng lần tải, không tốn thêm request) gộp theo tháng vào data/vn/dlkt_hist.json: {slug: {row_id: {n, a: {tháng: bình quân}, e: {tháng: số cuối tháng}}}}
+— dùng cho bản đồ nhiệt nhiều năm."""
 import html, json, re, sys, time, urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'data/vn/dlkt.json'
+HIST = ROOT / 'data/vn/dlkt_hist.json'
 BASE = 'https://dulieukinhte.com'
 UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdnguyen-cyber/bank-dashboard)'}
 FROM = '2019-01-01'
@@ -37,35 +40,47 @@ def rows(slug):
     return out
 
 
-def series(ids):
+def series(ids, hist=None):
     js = json.loads(get(f'{BASE}/api/internal/data/series?ids=' + ','.join(ids)))
     res = {}
     for s in js:
-        d, v = [], []
+        d, v, old = [], [], {}
         for ts, x in s.get('data', []):
+            if x is None:
+                continue
             day = datetime.fromtimestamp(ts / 1000, TZ).date().isoformat()
-            if day >= FROM and x is not None:
+            if day >= FROM:
                 d.append(day); v.append(round(float(x), 4))
+            else:
+                old.setdefault(day[:7], []).append((day, float(x)))
         res[str(s['id'])] = (d, v)
+        if hist is not None and old:
+            hist[str(s['id'])] = {'a': {m: round(sum(x for _, x in p) / len(p), 4) for m, p in sorted(old.items())},
+                                  'e': {m: round(max(p)[1], 4) for m, p in sorted(old.items())}}
     return res
 
 
 def main():
     old = json.loads(OUT.read_text(encoding='utf-8')) if OUT.exists() else {}
-    data, rep = {}, {}
+    old = old.get('pages', old)
+    oldh = json.loads(HIST.read_text(encoding='utf-8')).get('pages', {}) if HIST.exists() else {}
+    data, rep, hist = {}, {}, {}
     for slug in PAGES:
         try:
             rw = rows(slug)
             ids = list(rw)
-            got = {}
+            got, h = {}, {}
             for i in range(0, len(ids), 40):
-                got.update(series(ids[i:i + 40]))
+                got.update(series(ids[i:i + 40], h))
             data[slug] = {k: {'n': rw[k], 'd': got.get(k, ([], []))[0], 'v': got.get(k, ([], []))[1]} for k in ids}
+            hist[slug] = {k: {'n': rw[k], **h[k]} for k in ids if k in h} or oldh.get(slug, {})
             rep[slug] = f'{len(ids)} dòng, {sum(1 for k in ids if got.get(k, ([], []))[0])} có số'
         except Exception as e:  # noqa: BLE001
             rep[slug] = 'lỗi: ' + str(e)[:150]
             if slug in old:
                 data[slug] = old[slug]
+            if slug in oldh:
+                hist[slug] = oldh[slug]
         time.sleep(1)
     try:   # danh mục trang dữ liệu của nguồn, để chọn thêm chỉ tiêu (đầu tư công, FDI thực hiện…)
         idx = set()
@@ -79,8 +94,9 @@ def main():
         pass
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({'fetched': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ'), 'report': rep, 'pages': data}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    HIST.write_text(json.dumps({'note': 'trước 2019, gộp theo tháng', 'pages': {k: v for k, v in hist.items() if v}}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     for k, v in rep.items():
-        print(k, '→', v)
+        print(k, '→', v, '· lịch sử từ', min([min(r['a']) for r in hist.get(k, {}).values() if r.get('a')] or ['—']))
     return 0
 
 

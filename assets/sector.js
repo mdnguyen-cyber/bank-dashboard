@@ -2199,8 +2199,13 @@ function chEco() {
 /* =====================================================================
    VĨ MÔ › VIỆT NAM & THẾ GIỚI (heatmap theo tháng)
 ===================================================================== */
-const HM_R = [['13', '1 năm'], ['37', '3 năm'], ['61', '5 năm'], ['all', 'Tất cả (từ 2019)']];   // khung thời gian của bản đồ nhiệt
-const hmMonths = last => { const out = []; let m = last; const n = hmS.n === 'all' ? 999 : +hmS.n; for (let i = 0; i < n && m >= '2019-01'; i++) { out.unshift(m); m = ePrevM(m); } return out; };
+const HM_R = [['13', '1 năm'], ['37', '3 năm'], ['61', '5 năm'], ['121', '10 năm'], ['241', '20 năm'], ['all', 'Tất cả']];   // khung thời gian của bản đồ nhiệt
+const hmMonths = last => { const out = []; let m = last; const n = hmS.n === 'all' ? 9999 : +hmS.n; for (let i = 0; i < n && m >= '1990-01'; i++) { out.unshift(m); m = ePrevM(m); } return out; };
+/* lịch sử dài (data/hm-hist.js): chỉ dùng cho tháng mà số hiện hành chưa có */
+const HH = window.HM_HIST || {};
+const hAt = (o, m) => { if (!o) return null; const i = (+m.slice(0, 4) - +o.s.slice(0, 4)) * 12 + (+m.slice(5) - +o.s.slice(5)); return i < 0 || i >= o.v.length ? null : o.v[i]; };
+const hW = (k, cc, m) => hAt(HH.w && HH.w[k] && HH.w[k][cc], m);
+const hV = (k, m) => hAt(HH.vn && HH.vn[k], m);
 const gM = (k, m) => { const x = gs(k); const i = x.d.findIndex(d => d.slice(0, 7) === m); if (i >= 0 && x.d[i].length === 7) return x.v[i]; return gMEnd(k, m); };
 const gMAvg = (k, m) => { const x = gs(k), v = []; x.d.forEach((d, i) => { if (d.slice(0, 7) === m && x.v[i] != null) v.push(x.v[i]); }); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
 const cpiM = (k, m) => { const x = cpiSer(k); const i = x.d.indexOf(m); return i < 0 ? null : x.v[i]; };
@@ -2219,42 +2224,53 @@ const HM_C = [['vn', 'Việt Nam', 'vn', 'vn', 'vn', 'vn', 'vn_pmi'], ['us', 'M�
   ['id', 'Indonesia', 'cpi_id', 'pol_id', null, ['usdidr_d', 1], null], ['th', 'Thái Lan', 'cpi_th', 'pol_th', null, null, null], ['my', 'Malaysia', 'cpi_my', 'pol_my', null, null, null],
   ['ph', 'Philippines', 'cpi_ph', 'pol_ph', null, null, null], ['sg', 'Singapore', 'cpi_sg', null, 'sg_10y_d', ['usdsgd_d', 1], null]];
 const y10M = (k, m) => k === 'vn' ? byM(intl.vn10)[m] : /_m$/.test(k) ? gM(k, m) : gMAvg(k, m);
+const nowM = () => TODAY.slice(0, 7);
+const polX = (c, m) => m > nowM() ? null : (c[3] ? polM(c[3], m) : null) ?? (c[0] === 'vn' ? hV('omo', m) ?? hV('refi', m) : hW('pol', c[0], m));
+const cpiX = (c, m) => (c[2] ? cpiM(c[2], m) : null) ?? (c[0] === 'vn' ? hV('cpi', m) : hW('cpi', c[0], m));
+const y10X = (c, m) => (c[4] ? y10M(c[4], m) : null) ?? (c[0] === 'vn' ? hV('vn10', m) : hW('y10', c[0], m));
+const vnFxYtdX = m => { const v = vnFxYtd(m); if (v != null) return v; const u = hV('fx_ytd', m); return u == null ? null : (100 / (100 + u) - 1) * 100; };   // giá trị VND so với USD
+const fxX = (c, m) => { const v = c[5] === 'vn' ? vnFxYtdX(m) : c[5] ? fxYtd(c[5][0], c[5][1], m) : c[0] === 'us' ? (() => { const y0 = gMEnd('dxy_d', `${+m.slice(0, 4) - 1}-12`) ?? gYearStart('dxy_d', m.slice(0, 4)), v = gMEnd('dxy_d', m); return y0 && v ? (v / y0 - 1) * 100 : null; })() : null;
+  return v ?? (c[0] === 'vn' || m > nowM() ? null : hW('fx', c[0], m)); };
 const HM_W = [
-  ['pol', 'Lãi suất điều hành', 'ấm = cao/tăng (thắt chặt)', (c, m) => c[3] ? polM(c[3], m) : null, 'hi-red', 2, '%/năm cuối tháng · Việt Nam: lãi suất OMO 7 ngày · Fed: cận trên · ECB: tiền gửi · Trung Quốc: LPR 1 năm'],
-  ['cpi', 'Lạm phát CPI', 'ấm = lạm phát cao', (c, m) => c[2] ? cpiM(c[2], m) : null, 'hi-red', 1, '% so cùng kỳ · Úc, New Zealand: số quý'],
-  ['real', 'Lãi suất thực', 'xanh = dương cao (chặt)', (c, m) => { const p = c[3] ? polM(c[3], m) : null, i = c[2] ? cpiM(c[2], m) : null; return p == null || i == null ? null : p - i; }, 'hi-green', 2, 'lãi suất điều hành − CPI cùng tháng, điểm %'],
-  ['y10', 'Lợi suất 10 năm', 'ấm = cao', (c, m) => c[4] ? y10M(c[4], m) : null, 'hi-red', 2, '%/năm, bình quân tháng · khu vực euro: Bund Đức'],
-  ['fx', 'Tỷ giá so với USD', 'xanh = đồng tiền mạnh lên', (c, m) => c[5] === 'vn' ? vnFxYtd(m) : c[5] ? fxYtd(c[5][0], c[5][1], m) : c[0] === 'us' ? (() => { const y0 = gMEnd('dxy_d', `${+m.slice(0, 4) - 1}-12`) ?? gYearStart('dxy_d', m.slice(0, 4)), v = gMEnd('dxy_d', m); return y0 && v ? (v / y0 - 1) * 100 : null; })() : null, 'hi-green', 1, '% thay đổi giá trị đồng tiền so với USD từ đầu năm (cuối tháng) · Mỹ: DXY · Việt Nam: NHTM bán ra'],
+  ['pol', 'Lãi suất điều hành', 'ấm = cao/tăng (thắt chặt)', polX, 'hi-red', 2, '%/năm cuối tháng · Việt Nam: lãi suất OMO 7 ngày (trước 2016: lãi suất tái cấp vốn) · Fed: cận trên · ECB: tiền gửi · Trung Quốc: LPR 1 năm'],
+  ['cpi', 'Lạm phát CPI', 'ấm = lạm phát cao', cpiX, 'hi-red', 1, '% so cùng kỳ · Úc, New Zealand: số quý'],
+  ['real', 'Lãi suất thực', 'xanh = dương cao (chặt)', (c, m) => { const p = polX(c, m), i = cpiX(c, m); return p == null || i == null ? null : p - i; }, 'hi-green', 2, 'lãi suất điều hành − CPI cùng tháng, điểm %'],
+  ['y10', 'Lợi suất 10 năm', 'ấm = cao', y10X, 'hi-red', 2, '%/năm, bình quân tháng · khu vực euro: Bund Đức'],
+  ['fx', 'Tỷ giá so với USD', 'xanh = đồng tiền mạnh lên', fxX, 'hi-green', 1, '% thay đổi giá trị đồng tiền so với USD từ đầu năm (cuối tháng; trước 1999: bình quân tháng) · Mỹ: DXY (trước 2021: chỉ số USD của Fed) · Việt Nam: NHTM bán ra (trước 2017: tỷ giá trung tâm của NHNN)'],
   ['pmi', 'PMI sản xuất', 'xanh = trên 50', (c, m) => c[6] ? gM(c[6], m) : null, 'pmi', 1, 'điểm · Mỹ: ISM · Trung Quốc: NBS · khu vực euro: HCOB'],
 ];
 const vnFree = m => { const a = mEnd(dom.freeD, m) ?? byM(dom.free)[m], b = mEnd(dom.nhtmD, m) ?? byM(dom.nhtmSell)[m]; return a == null || b == null ? null : a - b; };
 const HM_V = [
   ['Hoạt động kinh tế'],
-  ['GDP thực (quý, YoY)', m => { const i = (ECO.q || []).indexOf(m); return i < 0 ? null : ECO.gq.gdp[i]; }, 'hi-green', 2],
-  ['Tổng mức bán lẻ (YoY)', m => eAt('ret', m), 'hi-green', 2], ['Bán lẻ thực, trừ CPI (YoY)', m => { const a = eAt('ret', m), b = eAt('cpi', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
-  ['Xuất khẩu (YoY)', m => eAt('xk', m), 'hi-green', 2], ['Nhập khẩu (YoY)', m => eAt('nk', m), 'hi-green', 2], ['Cán cân thương mại (tỷ USD)', m => eAt('tb', m), 'sign', 2],
-  ['Sản xuất công nghiệp IIP (YoY)', m => eAt('iip', m), 'hi-green', 2], ['PMI sản xuất', m => eAt('pmi', m), 'pmi', 1],
-  ['FDI đăng ký (YoY)', m => eAt('fdi_reg_yoy', m), 'hi-green', 1], ['FDI thực hiện (YoY)', m => eAt('fdi_real_yoy', m), 'hi-green', 1], ['Vốn đầu tư ngân sách (YoY)', m => eAt('pub_yoy', m), 'hi-green', 1], ['Khách quốc tế (YoY)', m => eAt('tour_yoy', m), 'hi-green', 1],
+  ['GDP thực (quý, YoY)', m => { const i = (ECO.q || []).indexOf(m); return (i < 0 ? null : ECO.gq.gdp[i]) ?? hV('gdp', m); }, 'hi-green', 2],
+  ['Tổng mức bán lẻ (YoY)', m => eAt('ret', m) ?? hV('ret', m), 'hi-green', 2], ['Bán lẻ thực, trừ CPI (YoY)', m => { const a = eAt('ret', m) ?? hV('ret', m), b = eAt('cpi', m) ?? hV('cpi', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
+  ['Xuất khẩu (YoY)', m => eAt('xk', m) ?? hV('xk', m), 'hi-green', 2], ['Nhập khẩu (YoY)', m => eAt('nk', m) ?? hV('nk', m), 'hi-green', 2], ['Cán cân thương mại (tỷ USD)', m => eAt('tb', m) ?? hV('tb', m), 'sign', 2],
+  ['Sản xuất công nghiệp IIP (YoY)', m => eAt('iip', m) ?? hV('iip', m), 'hi-green', 2], ['PMI sản xuất', m => eAt('pmi', m) ?? hV('pmi', m), 'pmi', 1],
+  ['FDI đăng ký (YoY)', m => eAt('fdi_reg_yoy', m) ?? hV('fdi_reg_yoy', m), 'hi-green', 1], ['FDI thực hiện (YoY)', m => eAt('fdi_real_yoy', m) ?? hV('fdi_real_yoy', m), 'hi-green', 1], ['Vốn đầu tư ngân sách (YoY)', m => eAt('pub_yoy', m) ?? hV('pub_yoy', m), 'hi-green', 1], ['Khách quốc tế (YoY)', m => eAt('tour_yoy', m) ?? hV('tour', m), 'hi-green', 1],
   ['Giá cả'],
-  ['CPI (YoY)', m => eAt('cpi', m), 'hi-red', 2], ['Lạm phát cơ bản (YoY)', m => eAt('cpi_core', m), 'hi-red', 2], ['CPI bình quân từ đầu năm', m => byM(dom.cpiAvg)[m], 'hi-red', 2],
+  ['CPI (YoY)', m => eAt('cpi', m) ?? hV('cpi', m), 'hi-red', 2], ['Lạm phát cơ bản (YoY)', m => eAt('cpi_core', m) ?? hV('cpi_core', m), 'hi-red', 2], ['CPI bình quân từ đầu năm', m => byM(dom.cpiAvg)[m] ?? hV('cpi_avg', m), 'hi-red', 2],
   ['Tài chính – tiền tệ'],
-  ['Tín dụng (YoY)', m => byM(dom.creditYoY)[m], 'hi-green', 1], ['Tiền gửi (YoY)', m => byM(dom.depYoY)[m], 'hi-green', 1], ['Cung tiền M2 (YoY)', m => byM(dom.m2)[m], 'hi-green', 1],
-  ['Lãi suất OMO (cuối tháng)', m => polM('vn', m), 'hi-red', 2], ['LNH qua đêm (bình quân tháng)', m => mAvg(dom.onDaily, m), 'hi-red', 2],
-  ['Chênh LNH qua đêm − Fed funds', m => { const a = mAvg(dom.onDaily, m), b = gMAvg('us_effr_d', m) ?? byM(intl.effr)[m]; return a == null || b == null ? null : a - b; }, 'hi-green', 2],
-  ['Huy động 12T NHTM Nhà nước', m => mEnd(dom.dep12StateD, m) ?? byM(dom.dep12State)[m], 'hi-red', 2], ['Huy động 12T NHTM lớn', m => mEnd(dom.dep12LargeD, m) ?? byM(dom.dep12Large)[m], 'hi-red', 2],
-  ['TPCP 10 năm', m => byM(intl.vn10)[m], 'hi-red', 2],
-  ['USD/VND từ đầu năm (%; dương = VND mất giá)', m => { const v = vnFxYtd(m); return v == null ? null : -v; }, 'hi-red', 2], ['Chênh tự do − NHTM (đồng)', vnFree, 'hi-red', 0],
-  ['Dự trữ ngoại hối (tỷ USD)', m => { const v = byM(dom.reserves)[m]; return v == null ? null : v / 1000; }, 'hi-green', 1],
+  ['Tín dụng (YoY)', m => byM(dom.creditYoY)[m] ?? hV('credit', m), 'hi-green', 1], ['Tiền gửi (YoY)', m => byM(dom.depYoY)[m] ?? hV('dep', m), 'hi-green', 1], ['Cung tiền M2 (YoY)', m => byM(dom.m2)[m] ?? hV('m2', m), 'hi-green', 1],
+  ['Lãi suất OMO (cuối tháng)', m => m > nowM() ? null : polM('vn', m) ?? hV('omo', m), 'hi-red', 2], ['Lãi suất tái cấp vốn', m => m > nowM() ? null : hV('refi', m), 'hi-red', 2],
+  ['LNH qua đêm (bình quân tháng)', m => mAvg(dom.onDaily, m) ?? hV('on', m), 'hi-red', 2],
+  ['Chênh LNH qua đêm − lãi suất Fed', m => { const a = mAvg(dom.onDaily, m) ?? hV('on', m), b = gMAvg('us_effr_d', m) ?? byM(intl.effr)[m] ?? hW('pol', 'us', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
+  ['Huy động 12T NHTM Nhà nước', m => mEnd(dom.dep12StateD, m) ?? byM(dom.dep12State)[m] ?? hV('dep12s', m) ?? hV('dep12vcb', m), 'hi-red', 2], ['Huy động 12T NHTM lớn', m => mEnd(dom.dep12LargeD, m) ?? byM(dom.dep12Large)[m], 'hi-red', 2],
+  ['TPCP 10 năm', m => byM(intl.vn10)[m] ?? hV('vn10', m), 'hi-red', 2],
+  ['USD/VND từ đầu năm (%; dương = VND mất giá)', m => { const v = vnFxYtd(m); return v != null ? -v : hV('fx_ytd', m); }, 'hi-red', 2], ['Chênh tự do − NHTM (đồng)', m => vnFree(m) ?? hV('free_gap', m), 'hi-red', 0],
+  ['Dự trữ ngoại hối (tỷ USD)', m => { const v = byM(dom.reserves)[m] ?? hV('res', m); return v == null ? null : v / 1000; }, 'hi-green', 1],
 ];
 const HM_TIP = { 'hi-red': 'càng cao càng đậm đỏ', 'hi-green': 'càng cao càng đậm xanh', pmi: 'xanh trên 50, đỏ dưới 50', sign: 'xanh dương, đỏ âm' };
+const hmQ = new WeakMap();   // phân vị theo từng dòng/bảng, tính một lần
 function hmColor(v, all, mode) {
   if (v == null) return '';
-  const xs = all.filter(x => x != null); if (!xs.length) return '';
+  let Q = hmQ.get(all);
+  if (!Q) { const q = all.filter(x => x != null).sort((a, b) => a - b), pq = f => q[Math.min(q.length - 1, Math.max(0, Math.round(f * (q.length - 1))))];
+    Q = q.length ? { lo: pq(0.05), hi: pq(0.95), mx: q.reduce((a, b) => Math.max(a, Math.abs(b)), 0) || 1 } : {}; hmQ.set(all, Q); }   // thang màu theo phân vị 5–95% để vài giá trị cực đoan (vd. khách quốc tế sau COVID) không làm nhạt cả dòng
+  if (Q.lo == null) return '';
   let t;   // −1 … 1 (âm = đỏ, dương = xanh)
   if (mode === 'pmi') t = Math.max(-1, Math.min(1, (v - 50) / 4));
-  else if (mode === 'sign') { const mx = Math.max(...xs.map(Math.abs)) || 1; t = v / mx; }
-  else { const q = xs.slice().sort((a, b) => a - b), pq = f => q[Math.min(q.length - 1, Math.max(0, Math.round(f * (q.length - 1))))], lo = pq(0.05), hi = pq(0.95);   // thang màu theo phân vị 5–95% để vài giá trị cực đoan (vd. khách quốc tế sau COVID) không làm nhạt cả dòng
-    t = hi === lo ? 0 : Math.max(-1, Math.min(1, ((v - lo) / (hi - lo)) * 2 - 1)); if (mode === 'hi-red') t = -t; }
+  else if (mode === 'sign') t = v / Q.mx;
+  else { const { lo, hi } = Q; t = hi === lo ? 0 : Math.max(-1, Math.min(1, ((v - lo) / (hi - lo)) * 2 - 1)); if (mode === 'hi-red') t = -t; }
   const a = (0.12 + Math.abs(t) * 0.6).toFixed(2);
   return `background:rgba(${t >= 0 ? '30,143,90' : '192,57,43'},${a})${Math.abs(t) > 0.7 ? ';color:#fff' : ''}`;
 }
@@ -2267,6 +2283,12 @@ function hmTable(cols, rows) {   // rows: [name, values[], mode, dp, cls, scale?
 }
 const hmS = { v: 'world', w: 'pol', n: '61' };
 try { Object.assign(hmS, JSON.parse(localStorage.getItem('fs-hm') || '{}')); } catch (e) {}
+function hmTrim(cols, rows) {   // bỏ các tháng đầu bảng chưa có số nào (khung "Tất cả")
+  const R = rows.filter(r => r.length > 1); let i = 0;
+  while (i < cols.length - 1 && R.every(r => r[1][i] == null)) i++;
+  if (i) R.forEach(r => { r[1] = r[1].slice(i); });
+  return cols.slice(i);
+}
 function hmRender() {
   try { localStorage.setItem('fs-hm', JSON.stringify(hmS)); } catch (e) {}
   $$('#hmView button').forEach(b => b.classList.toggle('on', b.dataset.v === hmS.v));
@@ -2275,15 +2297,17 @@ function hmRender() {
   $$('#hmR button').forEach(b => b.classList.toggle('on', b.dataset.n === hmS.n));
   const box = $('#hmBox'); let html = '', note = '';
   if (hmS.v === 'world') {
-    const W = HM_W.find(w => w[0] === hmS.w), cols = hmMonths(TODAY.slice(0, 7));
+    const W = HM_W.find(w => w[0] === hmS.w); let cols = hmMonths(TODAY.slice(0, 7));
     const rows = HM_C.map(c => [c[1], cols.map(m => { const v = W[3](c, m); return v == null ? null : +v; }), W[4], W[5], c[0] === 'vn' ? 'hm-vn' : '']).filter(r => r[1].some(v => v != null));
+    cols = hmTrim(cols, rows);
     const flat = rows.flatMap(r => r[1]); if (W[4] !== 'pmi') rows.forEach(r => r.push(flat));   // cùng thang màu cho cả bảng: so giữa các nước
     rows.hdr = 'Nước';
     html = hmTable(cols, rows);
     note = `${W[6]} · màu: ${W[2]} (so giữa các nước trong cả bảng) · ô trống = chưa công bố hoặc nguồn tự động chưa có`;
   } else {
-    const lm = eLast('cpi').d, now = TODAY.slice(0, 7), cols = hmMonths(now > lm ? now : lm);
+    const lm = eLast('cpi').d, now = TODAY.slice(0, 7); let cols = hmMonths(now > lm ? now : lm);
     const rows = HM_V.map(r => r.length === 1 ? r : [r[0], cols.map(m => { const v = r[1](m); return v == null ? null : +v; }), r[2], r[3]]);
+    cols = hmTrim(cols, rows);
     html = hmTable(cols, rows);
     note = 'Màu theo từng dòng (so với chính chỉ tiêu đó trong khung thời gian đang xem): xanh = tốt cho tăng trưởng hoặc thanh khoản, đỏ = áp lực (lạm phát, lãi suất, tỷ giá tăng). PMI: xanh trên 50. GDP chỉ có ở tháng cuối quý.';
   }
@@ -2301,14 +2325,14 @@ function heatIns() {
 function paneHeat() {
   $('#heat').innerHTML = `
   <h2 class="sec">Việt Nam &amp; Thế giới</h2>
-  <p class="sec-sub">Chính sách tiền tệ và kinh tế Việt Nam đặt cạnh các nền kinh tế lớn, theo từng tháng. Số liệu lấy trực tiếp từ nguồn công bố (BIS, ngân hàng trung ương, cơ quan thống kê, NHNN, Cục Thống kê) và tự cập nhật.</p>
+  <p class="sec-sub">Chính sách tiền tệ và kinh tế Việt Nam đặt cạnh các nền kinh tế lớn, theo từng tháng. Số liệu lấy trực tiếp từ nguồn công bố (BIS, ngân hàng trung ương, cơ quan thống kê, NHNN, Cục Thống kê) và tự cập nhật; chọn "Tất cả" để xem toàn bộ lịch sử hiện có (từ 1990 với các nền kinh tế lớn, từ 2005 với Việt Nam).</p>
   <article class="card" id="hmCard"><h3 class="sub">Bản đồ nhiệt theo tháng</h3>
     <div class="picker" id="hmView"><button type="button" data-v="world">Thế giới</button><button type="button" data-v="vn">Việt Nam</button></div>
     <div class="picker" id="hmR">${HM_R.map(([k, l]) => `<button type="button" data-n="${k}">${l}</button>`).join('')}</div>
     <div class="picker" id="hmW">${HM_W.map(w => `<button type="button" data-w="${w[0]}">${w[1]}</button>`).join('')}</div>
     <div id="hmBox"></div>
     <div class="insight">${heatIns()}</div>
-    <div class="src">BIS (lãi suất điều hành); Fed, ECB, BOJ, NHNN; cơ quan thống kê các nước qua FRED, OECD, DBnomics; ISM, S&amp;P Global, HCOB, NBS (PMI); ECB, U.S. Treasury, Bộ Tài chính Nhật, ChinaBond (lợi suất); ECB (tỷ giá); Cục Thống kê, NHNN (Việt Nam)</div></article>
+    <div class="src">BIS (lãi suất điều hành, CPI dài hạn); Fed, ECB, BOJ, NHNN; cơ quan thống kê các nước qua FRED, OECD, DBnomics; ISM, S&amp;P Global, HCOB, NBS (PMI); ECB, U.S. Treasury, Bộ Tài chính Nhật, ChinaBond, OECD qua FRED (lợi suất); ECB, Fed H.10 (tỷ giá); Cục Thống kê, NHNN, Bộ Tài chính, Vietcombank (Việt Nam)</div></article>
   <h3 class="ovh" id="hm-gl">Lợi suất, lạm phát và lãi suất điều hành toàn cầu</h3>
   <div data-cc="gl" data-book="1">${gGL()}</div>`;
   $$('#hmView button').forEach(b => b.onclick = () => { hmS.v = b.dataset.v; hmRender(); });
