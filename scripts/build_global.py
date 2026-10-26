@@ -472,11 +472,11 @@ if _ja.exists():
         cut = str(int(rr[-1][0][:4]) - 5) + rr[-1][0][4:]
         v5 = [x for x in rr if x[0] >= cut]
         prev = [x[1] for x in v5[:-1]]
-        tl = [x[3] for x in v5 if x[3] is not None]
-        stats[tc] = {'d': rr[-1][0], 'btc': rr[-1][1], 'y': rr[-1][2], 'tail': rr[-1][3], 'n5y': len(v5), 'from': v5[0][0],
+        tl = [x[4] for x in v5 if x[4] is not None]   # tail theo lợi suất (bps): dùng được cho cả đấu thầu theo giá và theo lợi suất (40Y)
+        stats[tc] = {'d': rr[-1][0], 'btc': rr[-1][1], 'y': rr[-1][2], 'tail': rr[-1][4], 'n5y': len(v5), 'from': v5[0][0],
                      'avg5y': round(sum(x[1] for x in v5) / len(v5), 2), 'min5y': min(x[1] for x in v5), 'max5y': max(x[1] for x in v5),
                      'pct5y': round(sum(1 for x in prev if x < rr[-1][1]) / len(prev) * 100) if prev else None,
-                     'tail5y': round(sum(tl) / len(tl), 3) if tl else None, 'prev': rr[-2][1] if len(rr) > 1 else None}
+                     'tail5y': round(sum(tl) / len(tl), 1) if tl else None, 'prev': rr[-2][1] if len(rr) > 1 else None}
     G['jgbAuct'] = {'s': bt, 'stats': stats, 'fetched': JA.get('fetched'), 'report': JA.get('report')}
 
 # kỳ vọng lãi suất Fed theo phiên FOMC (scripts/fetch_fedwatch.py)

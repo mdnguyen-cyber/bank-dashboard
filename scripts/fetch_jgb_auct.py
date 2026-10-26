@@ -21,7 +21,7 @@ OLD_BASE = 'https://www.mof.go.jp/english/jgbs/auction/calendar/'
 UA = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36'}
 START = (2021, 1)
 TENORS = {2, 5, 10, 20, 30, 40}
-VER = 3
+VER = 4
 
 
 def get(url):
@@ -57,8 +57,9 @@ def field(t, label):
     return num(m.group(1)) if m else None
 
 
-def cells(row):
-    return [re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', c))).strip() for c in re.findall(r'<t[hd][^>]*>(.*?)</t[hd]>', row, re.S | re.I)]
+def cells(row):   # chịu được HTML cũ thiếu thẻ đóng </td>, </tr>
+    parts = re.split(r'<t[hd](?:\s[^>]*)?>', row, flags=re.I)[1:]
+    return [re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', c))).strip() for c in parts]
 
 
 def norm(lbl):
@@ -71,7 +72,7 @@ def parse(h):
     if re.search(r'Inflation|Climate|Liquidity Enhancement|Treasury Discount|T-Bill', head, re.I):
         return None
     for tb in re.findall(r'<table.*?</table>', h, re.S | re.I):
-        rows = [cells(r) for r in re.findall(r'<tr[^>]*>(.*?)</tr>', tb, re.S | re.I)]
+        rows = [cells(r) for r in re.split(r'<tr(?:\s[^>]*)?>', tb, flags=re.I)[1:]]
         rows = [r for r in rows if r]
         for k, r in enumerate(rows):
             lab = [norm(x) for x in r]
@@ -86,11 +87,14 @@ def parse(h):
                     return None
                 bids, acc = g('amounts of competitive bids'), g('amounts of bids accepted')
                 low, avg = g('lowest accepted price'), g('weighted average price')
+                yl, ya = g('yield at the lowest accepted price'), g('yield at the average price')
+                if yl is None:   # 40Y đấu thầu theo lợi suất
+                    yl, ya = g('highest accepted yield'), g('weighted average yield')
                 if not bids or not acc:
                     return None
                 return {'d': f'{dm.group(3)}-{int(dm.group(1)):02d}-{int(dm.group(2)):02d}', 't': f'{int(m.group(1))}Y', 'bids': bids, 'acc': acc,
                         'btc': round(bids / acc, 2), 'low': low, 'avg': avg, 'tail': round(avg - low, 3) if low and avg else None,
-                        'y_low': g('yield at the lowest accepted price'), 'y_avg': g('yield at the average price')}
+                        'y_low': yl, 'y_avg': ya}
     return None
 
 
