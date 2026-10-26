@@ -665,3 +665,8 @@ body.pdf-cap .pdf-hide{display:none!important}
 @media (max-width:900px){.ratg{grid-template-columns:1fr}.rcard dl{grid-template-columns:1fr}.rcard dt{margin-top:4px}}
 .ovintro{font-size:13.5px;line-height:1.55;color:var(--ink2);margin:0 0 12px}
 details.morex{margin:0 0 14px}details.morex>summary{cursor:pointer;color:var(--blue);font-size:13px;margin:4px 0 10px}
+#hmR{margin:0 0 8px}#hmR button{font-size:12px}
+.hmt .ys{border-left:2px solid #c9cfdb}
+.hm{max-height:none}
+.hmt tr.grp td{position:static}.hm-gl{position:sticky;left:8px}
+.hmt th.hm-y span{position:sticky;left:160px}
