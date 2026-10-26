@@ -2279,7 +2279,7 @@ function hmTable(cols, rows) {   // rows: [name, values[], mode, dp, cls, scale?
   const yrs = []; cols.forEach(c => { const y = c.slice(0, 4), l = yrs[yrs.length - 1]; if (l && l[0] === y) l[1]++; else yrs.push([y, 1]); });
   return `<div class="tscroll hm"><table class="hmt"><thead><tr><th class="hm-n" rowspan="2">${rows.hdr || 'Chỉ tiêu'}</th>${yrs.map(([y, n], i) => `<th colspan="${n}" class="hm-y${i ? ' ys' : ''}">${y}</th>`).join('')}</tr>
     <tr>${cols.map(c => `<th class="n${c.slice(5) === '01' ? ' ys' : ''}">${c.slice(5)}</th>`).join('')}</tr></thead><tbody>
-    ${rows.map(r => r.length === 1 ? `<tr class="grp"><td colspan="${cols.length + 1}"><span class="hm-gl">${r[0]}</span></td></tr>` : `<tr class="${r[4] || ''}"><td class="hm-n">${r[0]}</td>${r[1].map((v, i) => `<td class="n${cols[i].slice(5) === '01' ? ' ys' : ''}" style="${hmColor(v, r[5] || r[1], r[2])}">${v == null ? '<span class="muted">–</span>' : nf(v, r[3])}</td>`).join('')}</tr>`).join('')}
+    ${rows.map(r => r.length === 1 ? `<tr class="grp"><td colspan="${cols.length + 1}"><span class="hm-gl">${r[0]}</span></td></tr>` : `<tr class="${r[4] || ''}${r.key != null ? ' hm-lk' + (r.key === rows.sel ? ' hm-sel' : '') : ''}"${r.key != null ? ` data-hk="${esc(r.key)}" title="Bấm để xem biểu đồ toàn bộ lịch sử"` : ''}><td class="hm-n">${r[0]}</td>${r[1].map((v, i) => `<td class="n${cols[i].slice(5) === '01' ? ' ys' : ''}" style="${hmColor(v, r[5] || r[1], r[2])}">${v == null ? '<span class="muted">–</span>' : nf(v, r[3])}</td>`).join('')}</tr>`).join('')}
   </tbody></table></div>`;
 }
 const hmS = { v: 'world', w: 'pol', n: '61' };
@@ -2299,7 +2299,8 @@ function hmRender() {
   const box = $('#hmBox'); let html = '', note = '';
   if (hmS.v === 'world') {
     const W = HM_W.find(w => w[0] === hmS.w); let cols = hmMonths(TODAY.slice(0, 7));
-    const rows = HM_C.map(c => [c[1], cols.map(m => { const v = W[3](c, m); return v == null ? null : +v; }), W[4], W[5], c[0] === 'vn' ? 'hm-vn' : '']).filter(r => r[1].some(v => v != null));
+    const rows = HM_C.map(c => Object.assign([c[1], cols.map(m => { const v = W[3](c, m); return v == null ? null : +v; }), W[4], W[5], c[0] === 'vn' ? 'hm-vn' : ''], { key: c[0] })).filter(r => r[1].some(v => v != null));
+    rows.sel = hmSel.world;
     cols = hmTrim(cols, rows);
     const flat = rows.flatMap(r => r[1]); if (W[4] !== 'pmi') rows.forEach(r => r.push(flat));   // cùng thang màu cho cả bảng: so giữa các nước
     rows.hdr = 'Nước';
@@ -2307,13 +2308,43 @@ function hmRender() {
     note = `${W[6]} · màu: ${W[2]} (so giữa các nước trong cả bảng) · ô trống = chưa công bố hoặc nguồn tự động chưa có`;
   } else {
     const lm = eLast('cpi').d, now = TODAY.slice(0, 7); let cols = hmMonths(now > lm ? now : lm);
-    const rows = HM_V.map(r => r.length === 1 ? r : [r[0], cols.map(m => { const v = r[1](m); return v == null ? null : +v; }), r[2], r[3]]);
+    const rows = HM_V.map(r => r.length === 1 ? r : Object.assign([r[0], cols.map(m => { const v = r[1](m); return v == null ? null : +v; }), r[2], r[3]], { key: r[0] }));
+    rows.sel = hmSel.vn;
     cols = hmTrim(cols, rows);
     html = hmTable(cols, rows);
     note = 'Màu theo từng dòng (so với chính chỉ tiêu đó trong khung thời gian đang xem): xanh = tốt cho tăng trưởng hoặc thanh khoản, đỏ = áp lực (lạm phát, lãi suất, tỷ giá tăng). PMI: xanh trên 50. GDP chỉ có ở tháng cuối quý.';
   }
   box.innerHTML = html + `<p class="hm-note">${note} · cuộn ngang để xem các tháng trước.</p>`;
   const sc = $('.tscroll', box); if (sc) sc.scrollLeft = sc.scrollWidth;   // mở ở tháng mới nhất
+  $$('tr[data-hk]', box).forEach(tr => tr.onclick = () => { hmSel[hmS.v] = tr.dataset.hk; $$('tr.hm-sel', box).forEach(x => x.classList.remove('hm-sel')); tr.classList.add('hm-sel'); hmLine(); $('#hmLineCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+  hmLine();
+}
+const hmSel = { world: 'vn', vn: 'CPI (YoY)' };
+function hmLine() {   // biểu đồ toàn bộ lịch sử của dòng đang chọn trên bản đồ nhiệt; khung mở sẵn theo nút 1/3/5/10/20 năm
+  if (!$('#hmLine')) return;
+  const all = (() => { const o = []; let m = TODAY.slice(0, 7); while (m >= '1990-01') { o.unshift(m); m = ePrevM(m); } return o; })();
+  let ds = [], title = '', sub = '', unit = '', dp = 2, ref = null;
+  if (hmS.v === 'world') {
+    const W = HM_W.find(w => w[0] === hmS.w), c = HM_C.find(x => x[0] === hmSel.world) || HM_C[0], vn = HM_C[0];
+    const ser = cc => all.map(m => { const v = W[3](cc, m); return v == null ? null : +v; });
+    ds = [L(c[1], ser(c), c[0] === 'vn' ? C.purple : C.navy, { borderWidth: 2.4, dp: W[5], unit: W[0] === 'pmi' ? '' : W[0] === 'fx' ? '%' : W[0] === 'real' ? ' điểm %' : '%' })];
+    if (c[0] !== 'vn') ds.push(L('Việt Nam', ser(vn), C.purple, { borderWidth: 1.6, borderDash: [5, 4], dp: W[5], unit: ds[0].unit }));
+    const add = (k, lb, col) => { const w2 = HM_W.find(w => w[0] === k); ds.push(L(`${lb} ${c[1]}`, all.map(m => { const v = w2[3](c, m); return v == null ? null : +v; }), col, { borderWidth: 1.4, dp: w2[5], unit: '%' })); };
+    if (W[0] === 'pol') add('cpi', 'CPI', C.gold);   // lãi suất điều hành đặt cạnh lạm phát
+    if (W[0] === 'real') { add('pol', 'Lãi suất điều hành', C.tealInk); add('cpi', 'CPI', C.gold); }
+    title = `${W[1]}: ${c[1]}${c[0] !== 'vn' ? ' so với Việt Nam' : ''}`; sub = W[6]; unit = W[0] === 'pmi' ? 'điểm' : '%'; dp = W[5]; ref = W[0] === 'pmi' ? 50 : ['real', 'fx'].includes(W[0]) ? 0 : null;
+  } else {
+    const r = HM_V.find(x => x[0] === hmSel.vn && x.length > 1) || HM_V.find(x => x.length > 1);
+    ds = [L(r[0], all.map(m => { const v = r[1](m); return v == null ? null : +v; }), C.navy, { borderWidth: 2.4, dp: r[3], unit: /tỷ USD|đồng\)/.test(r[0]) ? '' : r[2] === 'pmi' ? '' : '%' })];
+    title = `Việt Nam: ${r[0]}`; sub = 'số theo tháng · toàn bộ lịch sử hiện có'; unit = /tỷ USD/.test(r[0]) ? 'tỷ USD' : /đồng\)/.test(r[0]) ? 'đồng' : r[2] === 'pmi' ? 'điểm' : '%'; dp = r[3]; ref = r[2] === 'pmi' ? 50 : r[2] === 'sign' ? 0 : null;
+  }
+  let i0 = all.findIndex((_, i) => ds.some(d => d.data[i] != null)); if (i0 < 0) i0 = all.length - 1;
+  ds.forEach(d => { d.data = d.data.slice(i0); });
+  $('#hmLineH').textContent = title; $('#hmLineSub').textContent = `${sub} · bấm tên dòng khác trên bản đồ nhiệt để đổi biểu đồ`;
+  const n = hmS.n === 'all' ? 0 : +hmS.n - 1;
+  mk('hmLine', { type: 'line', data: { labels: all.slice(i0).map(mvn), datasets: ds },
+    options: { scales: { x: { ticks: { maxTicksLimit: 12 } }, y: numAxis(unit, { beginAtZero: false, ticks: { callback: v => nf(v, dp > 1 ? 1 : dp) + (unit === '%' ? '%' : '') } }) },
+      plugins: ref != null ? { refLines: { lines: [{ value: ref, label: '', color: C.grey }] } } : {} } }, { win: n });
 }
 function heatIns() {
   const m = TODAY.slice(0, 7), p = ePrevM(m);
@@ -2334,6 +2365,8 @@ function paneHeat() {
     <div id="hmBox"></div>
     <div class="insight">${heatIns()}</div>
     <div class="src">BIS (lãi suất điều hành, CPI dài hạn); Fed, ECB, BOJ, NHNN; cơ quan thống kê các nước qua FRED, OECD, DBnomics; ISM, S&amp;P Global, HCOB, NBS (PMI); ECB, U.S. Treasury, Bộ Tài chính Nhật, ChinaBond, OECD qua FRED (lợi suất); ECB, Fed H.10 (tỷ giá); Cục Thống kê, NHNN, Bộ Tài chính, Vietcombank (Việt Nam)</div></article>
+  <article class="card" id="hmLineCard"><h3 class="sub" id="hmLineH"></h3><p class="chart-sub" id="hmLineSub"></p>
+    <div class="cbox tall"><canvas id="hmLine" role="img" aria-label="Biểu đồ dòng đang chọn trên bản đồ nhiệt"></canvas></div></article>
   <h3 class="ovh" id="hm-gl">Lợi suất, lạm phát và lãi suất điều hành toàn cầu</h3>
   <div data-cc="gl" data-book="1">${gGL()}</div>`;
   $$('#hmView button').forEach(b => b.onclick = () => { hmS.v = b.dataset.v; hmRender(); });

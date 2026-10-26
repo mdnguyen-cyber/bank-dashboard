@@ -670,3 +670,6 @@ details.morex{margin:0 0 14px}details.morex>summary{cursor:pointer;color:var(--b
 .hm{max-height:none}
 .hmt tr.grp td{position:static}.hm-gl{position:sticky;left:8px}
 .hmt th.hm-y span{position:sticky;left:160px}
+
+.hmt tr.hm-lk{cursor:pointer}.hmt tr.hm-lk:hover td.hm-n{text-decoration:underline}
+.hmt tr.hm-sel td.hm-n{background:#fff4cc;box-shadow:inset 3px 0 0 var(--navy)}
