@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-26T07:55Z"
+  "auto": "2026-10-26T08:44Z"
  },
  "idx": {
   "now": {
@@ -85230,10 +85230,10 @@
    {
     "s": "ABB",
     "group": "Tư nhân nhỏ",
-    "price": 17700,
-    "pb": 1.29,
-    "pe": 6.99,
-    "mcap": 28442,
+    "price": 17600,
+    "pb": 1.28,
+    "pe": 6.95,
+    "mcap": 28281,
     "bvps": 13741.0,
     "nim": 2.43,
     "cof": 5.31,
@@ -85250,7 +85250,7 @@
     "npYoY": 208.94,
     "credit": 136196.0,
     "ppop": 7381.0,
-    "pppop": 3.85,
+    "pppop": 3.83,
     "provRatio": 30.7,
     "ppopYoY": 123.7
    },
@@ -89128,6 +89128,31 @@
    "sym": []
   },
   {
+   "d": "2026-10-26",
+   "t": "OCB tăng trưởng lợi nhuận hơn 20% sau 9 tháng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ocb-tang-truong-loi-nhuan-hon-20-sau-9-thang-188261026153730203.chn",
+   "sym": [
+    "OCB"
+   ]
+  },
+  {
+   "d": "2026-10-26",
+   "t": "Kiểm toán quyết toán ngân sách: Siết kỷ luật tài khóa từ những cảnh báo sớm",
+   "src": "CafeF",
+   "url": "https://cafef.vn/kiem-toan-quyet-toan-ngan-sach-siet-ky-luat-tai-khoa-tu-nhung-canh-bao-som-188261026122945047.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
+   "t": "KienlongBank giảm lãi do 'ưu đãi tín dụng'",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/kienlongbank-giam-lai-do-uu-dai-tin-dung-5136942.html",
+   "sym": [
+    "KLB"
+   ]
+  },
+  {
    "d": "2026-10-25",
    "t": "Bộ Xây dựng: Phí ví điện tử không phải phí duy trì tài khoản giao thông",
    "src": "CafeF",
@@ -90737,40 +90762,6 @@
    "sym": [
     "MBB",
     "TCB",
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-13",
-   "t": "SHB vay 340 triệu USD từ SMBC và 6 ngân hàng quốc tế",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/shb-vay-340-trieu-usd-tu-smbc-va-6-ngan-hang-quoc-te-1470432.html",
-   "sym": [
-    "SHB",
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-13",
-   "t": "Chân dung 6 lãnh đạo ngân hàng được vinh danh Doanh nhân Việt Nam tiêu biểu 2026",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/chan-dung-6-lanh-dao-ngan-hang-duoc-vinh-danh-doanh-nhan-viet-nam-tieu-bieu-2026-1470410.html",
-   "sym": [
-    "BID",
-    "HDB",
-    "NAB",
-    "OCB",
-    "SSB",
-    "VCB",
-    "VIB"
-   ]
-  },
-  {
-   "d": "2026-10-13",
-   "t": "Một ngân hàng tăng lãi suất tiết kiệm kỳ hạn 18 tháng lên cao nhất thị trường",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/mot-ngan-hang-tang-lai-suat-tiet-kiem-ky-han-18-thang-len-cao-nhat-thi-truong-1470402.html",
-   "sym": [
     "VPB"
    ]
   }
