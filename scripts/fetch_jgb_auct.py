@@ -21,7 +21,7 @@ OLD_BASE = 'https://www.mof.go.jp/english/jgbs/auction/calendar/'
 UA = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36'}
 START = (2021, 1)
 TENORS = {2, 5, 10, 20, 30, 40}
-VER = 2
+VER = 3
 
 
 def get(url):
@@ -78,7 +78,7 @@ def parse(h):
             if 'auction date' in lab and k + 1 < len(rows) and len(rows[k + 1]) >= len(r):
                 v = dict(zip(lab, rows[k + 1]))
                 g = lambda key: num(v.get(key))
-                m = re.match(r'(\d+)-Year', v.get('security', ''))
+                m = re.match(r'(\d+)-Year', v.get('security', ''), re.I)
                 if not m or int(m.group(1)) not in TENORS:
                     return None
                 dm = re.match(r'(\d{1,2})/(\d{1,2})/(\d{4})', v.get('auction date', ''))
@@ -98,7 +98,7 @@ def main():
     old = json.loads(OUT.read_text(encoding='utf-8')) if OUT.exists() else {}
     pages = old.get('pages', {})   # url → kết quả (None = không phải JGB coupon cần giữ)
     if old.get('ver') != VER:
-        pages = {u: r for u, r in pages.items() if r}   # đổi cách đọc trang → đọc lại các trang chưa lấy được số
+        pages = {u: r for u, r in pages.items() if r or r is False}   # đổi cách đọc trang → đọc lại các trang đã có nhưng chưa lấy được số (giữ trang không tồn tại = False)
     seen_cal = old.get('cal', {})
     today = date.today()
     y, m = START
@@ -143,11 +143,15 @@ def main():
             continue
         try:
             h = get(u)
-            pages[u] = parse(h) if h else None; rep['new_pages'] += 1
+            pages[u] = (parse(h) if h else False); rep['new_pages'] += 1
         except Exception as e:  # noqa: BLE001
             rep['err'].append(f'{u[-30:]}: {str(e)[:80]}')
         time.sleep(0.3)
-    rows = sorted((r for r in pages.values() if r), key=lambda r: (r['d'], r['t']))
+    uniq = {}
+    for r in pages.values():
+        if r:
+            uniq[(r['d'], r['t'])] = r   # cùng một phiên có thể có 2 đường dẫn (cũ, mới)
+    rows = sorted(uniq.values(), key=lambda r: (r['d'], r['t']))
     rep['rows'] = len(rows); rep['err'] = rep['err'][:20]
     OUT.write_text(json.dumps({'fetched': today.isoformat(), 'ver': VER, 'report': rep, 'cal': seen_cal, 'pages': pages, 'rows': rows}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     print('JGB đấu thầu:', rep)
