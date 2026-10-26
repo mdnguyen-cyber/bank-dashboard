@@ -165,6 +165,8 @@ CAT = {
     'pol_nz': ('RBNZ (OCR)', ['cbpol:NZ', 'fred:IRSTCI01NZM156N']),
     'pol_ch': ('SNB', ['cbpol:CH']),
     'pol_kr': ('BOK (Base Rate)', ['cbpol:KR']),
+    'pol_cn': ('PBoC (LPR 1 năm)', ['cbpol:CN']), 'pol_in': ('RBI (repo)', ['cbpol:IN']), 'pol_id': ('BI-Rate', ['cbpol:ID']),
+    'pol_th': ('BOT (policy rate)', ['cbpol:TH']), 'pol_my': ('BNM (OPR)', ['cbpol:MY']), 'pol_ph': ('BSP (target RRP)', ['cbpol:PH']),
     # ---------------- Trung Quốc
     'cn_cpi': ('CPI Trung Quốc (% YoY)', ['oecd:CHN.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.CN.PCPI_PC_CP_A_PT', 'fred:CPALTT01CNM659N']),
     'cn_ppi': ('PPI Trung Quốc (% YoY)', ['nbs:NBS/M_A010B/A010B01|NBS/M_A010H/A010H01']),

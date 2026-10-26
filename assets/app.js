@@ -439,7 +439,7 @@ function paneMacro() {
         ${qc('room', 'Dư địa bơm tiền', 'Huy động gần đỉnh → theo dõi tín hiệu nới sớm')}
         ${qc('tight', 'Thắt chặt kéo dài', 'COF tăng, nợ xấu tăng → áp lực P/B')}
       </div>
-      ${SX ? `<div class="insight">IDX-FX <b>${sg(SX.now.fx, 2, '')}</b>, IDX-LIQ <b>${sg(SX.now.liq, 2, '')}</b> → ô <b>${({ ease: 'Nới lỏng mạnh', drain: 'NHNN hút tiền về', room: 'Dư địa bơm tiền', tight: 'Thắt chặt kéo dài' })[SX.now.q]}</b> (cả hai trong vùng ±1: mức vừa). Với ${T}: COF tăng theo LS huy động 12T nhưng LDR được tiền gửi KBNN đỡ (hệ số 50% từ Q3). Backtest bản đầu đúng hướng ${SX.backtest.h6.rate}% (6 tháng), dưới ngưỡng 60% — đọc như bản đồ áp lực, xem <a href="nganh.html#picture">Ngành › Kịch bản IDX</a>.</div>` : ''}
+      ${SX ? `<div class="insight">IDX-FX <b>${sg(SX.now.fx, 2, '')}</b>, IDX-LIQ <b>${sg(SX.now.liq, 2, '')}</b> → ô <b>${({ ease: 'Nới lỏng mạnh', drain: 'NHNN hút tiền về', room: 'Dư địa bơm tiền', tight: 'Thắt chặt kéo dài' })[SX.now.q]}</b> (cả hai trong vùng ±1: mức vừa). Với ${T}: COF tăng theo LS huy động 12T nhưng LDR được tiền gửi KBNN đỡ (hệ số 50% từ Q3). Backtest bản đầu đúng hướng ${SX.backtest.h6.rate}% (6 tháng), dưới ngưỡng 60% — đọc như bản đồ áp lực, xem <a href="vimo.html#idx">Vĩ mô › Quốc tế › Kịch bản IDX</a>.</div>` : ''}
     </article>
     <article class="card span2"><h3 class="sub">Tín hiệu theo quy tắc R-xx <span class="pill ai">quy tắc</span></h3>
       <p class="chart-sub">Ngưỡng là giả định theo dõi từ deck (slide 50–51), chưa backtest</p>

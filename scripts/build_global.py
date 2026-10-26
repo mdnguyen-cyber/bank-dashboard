@@ -393,7 +393,9 @@ G['cpiQ'] = [k for k in ('cpi_au', 'cpi_nz') if any(t in SER.get(k, {}).get('src
 
 # ---------------- Lãi suất điều hành các NHTW: ngày đổi lãi suất (BIS) → chuỗi tháng (giá trị cuối tháng) + bảng mức hiện tại, lần đổi gần nhất
 POL = [('pol_us', 'Fed (cận trên)'), ('pol_xm', 'ECB (tiền gửi)'), ('pol_jp', 'BOJ'), ('pol_gb', 'BOE (Anh)'), ('pol_ca', 'BOC (Canada)'),
-       ('pol_au', 'RBA (Úc)'), ('pol_nz', 'RBNZ (New Zealand)'), ('pol_ch', 'SNB (Thụy Sĩ)'), ('pol_kr', 'BOK (Hàn Quốc)')]
+       ('pol_au', 'RBA (Úc)'), ('pol_nz', 'RBNZ (New Zealand)'), ('pol_ch', 'SNB (Thụy Sĩ)'), ('pol_kr', 'BOK (Hàn Quốc)'),
+       ('pol_cn', 'PBoC (Trung Quốc)'), ('pol_in', 'RBI (Ấn Độ)'), ('pol_id', 'BI (Indonesia)'), ('pol_th', 'BOT (Thái Lan)'), ('pol_my', 'BNM (Malaysia)'), ('pol_ph', 'BSP (Philippines)')]
+POL_EM = {'pol_cn', 'pol_in', 'pol_id', 'pol_th', 'pol_my', 'pol_ph'}   # chỉ dùng cho heatmap, không vẽ vào chart các NHTW phát triển
 _pol_src = {'pol_us': 'us_fedtgt_up', 'pol_xm': 'ea_dfr'}
 G['polTab'] = []
 for k, n in POL:
@@ -414,7 +416,7 @@ for k, n in POL:
     last_chg = chg_pts[-1] if len(chg_pts) > 1 else None
     prev = chg_pts[-2][1] if len(chg_pts) > 1 else None
     ytd = next((v for d, v in reversed(o) if d < o[-1][0][:4] + '-01-01'), None)
-    G['polTab'].append({'k': k, 'n': n, 'v': o[-1][1], 'd': o[-1][0], 'chg': last_chg[0] if last_chg else None, 'prev': prev, 'y0': ytd})
+    G['polTab'].append({'k': k, 'n': n, 'v': o[-1][1], 'd': o[-1][0], 'chg': last_chg[0] if last_chg else None, 'prev': prev, 'y0': ytd, **({'em': 1} if k in POL_EM else {})})
 for k in ['us_wti', 'us_brent']:
     if k in SER:
         put(k + '_d', {d: v for d, v in obs(k) if d >= DAILY_FROM}, 2)

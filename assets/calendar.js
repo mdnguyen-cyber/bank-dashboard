@@ -41,7 +41,7 @@
     [/UoM/, 'Khảo sát của Đại học Michigan về tâm lý và kỳ vọng lạm phát của hộ gia đình Mỹ; kỳ vọng lạm phát được Fed theo dõi sát.'],
   ];
   const why = e => e.note || ((WHY.find(([rx]) => rx.test(e.t)) || [])[1]) || '';
-  /* chart liên quan trên dashboard ngành */
+  /* chart liên quan trên trang Vĩ mô */
   const LINK = [
     ['USD', /Inflation Expectations/, { id: 'gUsInfExp', p: 'intl', c: 'us', n: 'Kỳ vọng lạm phát Mỹ' }], ['USD', /PMI|Consumer Sentiment/, { id: 'gUsSurvey', p: 'intl', c: 'us', n: 'PMI ISM và niềm tin tiêu dùng' }],
     ['EUR', /PMI/, { id: 'gGlPmi', p: 'intl', c: 'gl', n: 'PMI sản xuất các nước' }], ['GBP', /PMI/, { id: 'gGlPmi', p: 'intl', c: 'gl', n: 'PMI sản xuất các nước' }], ['CNY', /PMI/, { id: 'gGlPmi', p: 'intl', c: 'gl', n: 'PMI sản xuất các nước' }],
@@ -49,7 +49,8 @@
     ['USD', /Employment|Unemployment|Earnings|JOLTS|Claims/, { id: 'gUsJobs', p: 'intl', c: 'us', n: 'Thị trường lao động Mỹ' }], ['USD', /Federal Funds Rate|FOMC/, { id: 'gFedPath', p: 'intl', c: 'us', n: 'Kỳ vọng lãi suất Fed' }],
     ['EUR', /CPI/, { id: 'gEaHicp', p: 'intl', c: 'ea', n: 'Lạm phát khu vực euro' }], ['EUR', /Main Refinancing|ECB/, { id: 'gEaRate', p: 'intl', c: 'ea', n: 'Lãi suất ECB' }],
     ['JPY', /BOJ/, { id: 'gJpRate', p: 'intl', c: 'jp', n: 'Lãi suất BOJ' }], ['JPY', /CPI/, { id: 'gJpCpi', p: 'intl', c: 'jp', n: 'Lạm phát Nhật' }], ['CNY', /CPI|PPI/, { id: 'gCnPx', p: 'intl', c: 'cn', n: 'CPI và PPI Trung Quốc' }],
-    ['VND', /CPI/, { id: 'chCpi', p: 'dom', n: 'Lạm phát Việt Nam' }],
+    ['VND', /CPI/, { id: 'chCpi', p: 'eco', n: 'Lạm phát Việt Nam' }], ['VND', /PMI/, { id: 'eIip', p: 'eco', n: 'IIP và PMI Việt Nam' }], ['VND', /GDP/, { id: 'eGdp', p: 'eco', n: 'GDP Việt Nam' }],
+    ['VND', /Retail|Bán lẻ/, { id: 'eRet', p: 'eco', n: 'Bán lẻ Việt Nam' }], ['VND', /Trade|Export|Import/, { id: 'eTb', p: 'eco', n: 'Cán cân thương mại Việt Nam' }],
     ['USD', /^UST \d+Y Auction$/, { id: 'gUsBtc', p: 'intl', c: 'us', n: 'Sức cầu tại phiên đấu thầu UST' }], ['USD', /Quarterly Refunding/, { id: 'gUsNet', p: 'intl', c: 'us', n: 'Phát hành ròng UST' }],
     ...['GBP', 'CAD', 'AUD', 'NZD'].map(c => [c, /CPI/, { id: 'gGlCpi', p: 'intl', c: 'gl', n: 'Lạm phát CPI các nước' }]),
     ...['GBP', 'CAD', 'AUD', 'NZD', 'CHF'].map(c => [c, /Bank Rate|Overnight Rate|Cash Rate|Policy Rate|SNB/, { id: 'gGlPol', p: 'intl', c: 'gl', n: 'Lãi suất điều hành các NHTW' }]),
@@ -164,8 +165,8 @@
   /* ---------- đi tới chart liên quan ---------- */
   function go(lk) {
     if (!lk) return;
-    const N = window.FSNAV; if (!N) { location.href = 'nganh.html#cal-' + lk.id; return; }
-    N.show('picture'); N.openP(lk.p); if (lk.c) N.openC(lk.c);
+    const N = window.FSNAV; if (!N) { location.href = 'vimo.html#cal-' + lk.id; return; }
+    if (N.reveal) N.reveal(lk); else { N.show('picture'); N.openP(lk.p); if (lk.c) N.openC(lk.c); }
     setTimeout(() => {
       const el = document.getElementById(lk.id); if (!el) return;
       for (let a = el; a; a = a.parentElement) if (a.classList && a.classList.contains('ovbody') && a.hidden && a.previousElementSibling) a.previousElementSibling.click();

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<script>/* bản mới: trình duyệt có thể giữ trang cũ ~10 phút; nếu máy chủ đã có bản mới hơn thì tải lại ngay */
+(function(){var V='__BUILD__';if(V.indexOf('BUILD')>0)return;try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(j&&j.v&&j.v!==V&&location.search.indexOf('_v='+j.v)<0){var u=new URL(location.href);u.searchParams.set('_v',j.v);location.replace(u.toString())}}).catch(function(){})}catch(e){}})();</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vĩ mô Việt Nam &amp; Thế giới · FinSuccess</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/favicon-192.png">
+<link rel="stylesheet" href="assets/fs.css">
+</head>
+<body data-page="vimo">
+<div class="logo-bar"><div class="wrap"><div class="logo-left"><img src="assets/fin-success-logo.png" alt="FinSuccess"><nav class="site-nav" aria-label="Dashboard"><a href="vimo.html" class="on">Vĩ mô</a><a href="nganh.html">Ngành Ngân hàng</a><label class="bank-pick"><span>Ngân hàng</span><select aria-label="Chọn ngân hàng" onchange="if(this.value)location.href=this.value"><option value="" selected disabled>chọn…</option><option value="vcb.html">VCB</option><option value="bid.html">BID</option><option value="index.html">CTG</option><option value="tcb.html">TCB</option><option value="mbb.html">MBB</option><option value="acb.html">ACB</option><option disabled>VPB · sắp có</option><option disabled>HDB · sắp có</option><option disabled>LPB · sắp có</option><option disabled>SHB · sắp có</option><option disabled>STB · sắp có</option><option disabled>VIB · sắp có</option><option disabled>TPB · sắp có</option><option disabled>MSB · sắp có</option><option disabled>SSB · sắp có</option><option disabled>OCB · sắp có</option><option disabled>EIB · sắp có</option><option disabled>NAB · sắp có</option><option disabled>ABB · sắp có</option><option disabled>KLB · sắp có</option><option disabled>VAB · sắp có</option><option disabled>BVB · sắp có</option><option disabled>BAB · sắp có</option><option disabled>PGB · sắp có</option><option disabled>SGB · sắp có</option><option disabled>NVB · sắp có</option></select></label></nav></div><div class="logo-right"><div class="stamp" id="stamp"></div></div></div></div></div>
+<div class="stock-head"><div class="wrap" id="stockHead"></div></div>
+<nav class="tabs" role="tablist" aria-label="Các mục dashboard"><div class="wrap" id="tabbar">
+  <button role="tab" data-tab="heat" class="active">1. Việt Nam &amp; Thế giới</button>
+  <button role="tab" data-tab="vn">2. Việt Nam</button>
+  <button role="tab" data-tab="world">3. Quốc tế</button>
+  <button role="tab" data-tab="quick">4. Báo cáo vĩ mô</button>
+  <button role="tab" data-tab="book">5. Chart book</button>
+  <button role="tab" data-tab="src">6. Sources</button>
+</div></nav>
+<main><div class="wrap">
+  <section class="pane active" id="heat" role="tabpanel"></section>
+  <section class="pane" id="vn" role="tabpanel"></section>
+  <section class="pane" id="world" role="tabpanel"></section>
+  <section class="pane" id="quick" role="tabpanel"></section>
+  <section class="pane" id="book" role="tabpanel"></section>
+  <section class="pane" id="src" role="tabpanel"></section>
+</div></main>
+<footer><div class="wrap" id="foot"></div></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="assets/chat-config.js"></script>
+<script src="assets/chartkit.js"></script>
+<script src="assets/share.js"></script>
+<script src="data/calendar-data.js"></script>
+<script src="assets/calendar.js"></script>
+<script src="data/global-data.js"></script>
+<script src="data/fx-daily.js"></script>
+<script src="assets/fxchart.js"></script>
+<script src="data/vira-data.js"></script>
+<script src="data/sector-data.js"></script>
+<script src="data/eco-data.js"></script>
+<script src="data/bond-data.js"></script>
+<script src="data/notes-data.js"></script>
+<script src="assets/notes.js"></script>
+<script src="assets/sector.js"></script>
+<script src="assets/chat.js"></script>
+</body>
+</html>
