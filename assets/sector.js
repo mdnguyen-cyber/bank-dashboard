@@ -878,8 +878,9 @@ const Y10M = { eu: [['y10_de_m', 'Đức'], ['y10_fr_m', 'Pháp'], ['y10_it_m', 
 const yStart = k => { const x = gs(k), y0 = (gd(k) || '').slice(0, 4); const i = x.d.findIndex(d => d >= y0 + '-01-01'); return i >= 0 ? x.v[i] : null; };
 const cpiSer = k => k === 'vn' ? { d: (dom.cpi || []).map(p => p.d.slice(0, 7)), v: (dom.cpi || []).map(p => p.v) } : (() => { const x = gs(k); return { d: x.d.map(d => d.slice(0, 7)), v: x.v }; })();
 const qCharts = c => [...(c.charts || []), ...(c.tables || []).filter(t => t === 'cpi').map(() => ({ id: 'gGlCpiBar' }))];   // bảng CPI cũ trong báo cáo → chart
-const CPI_SRC = 'Eurostat, BLS, OECD, BIS, Cục Thống kê Nhật Bản, NBS Trung Quốc, Cục Thống kê Việt Nam';
-const CPI_G = { eu: ['Châu Âu', 'Mỹ'], ad: ['Châu Á phát triển'], em: ['Châu Á mới nổi'] }, CPI_GC = { 'Châu Âu': C.navy, 'Mỹ': C.purple, 'Châu Á phát triển': C.tealInk, 'Châu Á mới nổi': C.gold };
+const CPI_SRC = 'Eurostat, BLS, ONS (Anh), Statistics Canada, ABS (Úc), Stats NZ, OECD, BIS, Cục Thống kê Nhật Bản, NBS Trung Quốc, Cục Thống kê Việt Nam';
+const CPI_G = { eu: ['Châu Âu', 'Mỹ'], dm: ['Phát triển khác'], ad: ['Châu Á phát triển'], em: ['Châu Á mới nổi'] }, CPI_GC = { 'Châu Âu': C.navy, 'Mỹ': C.purple, 'Phát triển khác': '#4f9bd1', 'Châu Á phát triển': C.tealInk, 'Châu Á mới nổi': C.gold };
+const cpiPer = (k, d) => (GD.cpiQ || []).includes(k) ? `Q${Math.ceil(+d.slice(5, 7) / 3)}/${d.slice(0, 4)}` : `T${+d.slice(5, 7)}`;
 function cpiRows() {   // [nhóm, khoá, tên, mới nhất, kỳ, cùng kỳ năm trước]
   return (GD.cpiTab || []).flatMap(([g, cs]) => cs.map(([k, n]) => { const x = cpiSer(k); let i = x.v.length - 1; while (i >= 0 && x.v[i] == null) i--; if (i < 0) return null;
     const d = x.d[i], y = (+d.slice(0, 4) - 1) + d.slice(4), j = x.d.indexOf(y); return [g, k, n, x.v[i], d, j >= 0 ? x.v[j] : null]; })).filter(Boolean);
@@ -893,7 +894,16 @@ function cpiBarIns() {
 function cpiGrpIns() {
   const R = cpiRows(); if (!R.length) return '';
   const avg = gs => { const r = R.filter(x => gs.includes(x[0])); return r.length ? r.reduce((a, x) => a + x[3], 0) / r.length : null; };
-  return `Bình quân giản đơn mới nhất: châu Âu và Mỹ <b>${pc(avg(CPI_G.eu), 1)}</b>, châu Á phát triển <b>${pc(avg(CPI_G.ad), 1)}</b>, châu Á mới nổi <b>${pc(avg(CPI_G.em), 1)}</b>.`;
+  const dm = R.filter(x => x[0] === 'Phát triển khác').map(x => `${esc(x[2])} <b>${pc(x[3], 1)}</b> (${cpiPer(x[1], x[4])})`).join(', ');
+  return `Bình quân giản đơn mới nhất: châu Âu và Mỹ <b>${pc(avg(CPI_G.eu), 1)}</b>, nhóm Anh, Canada, Úc, New Zealand <b>${pc(avg(CPI_G.dm), 1)}</b>, châu Á phát triển <b>${pc(avg(CPI_G.ad), 1)}</b>, châu Á mới nổi <b>${pc(avg(CPI_G.em), 1)}</b>.${dm ? ` Nhóm phát triển khác: ${dm}; Úc và New Zealand công bố CPI theo quý.` : ''}`;
+}
+const POL_C = { pol_us: C.navy, pol_xm: C.tealInk, pol_jp: C.red, pol_gb: C.purple, pol_ca: '#b5651d', pol_au: C.gold, pol_nz: '#7cc49b', pol_ch: C.grey, pol_kr: '#4f9bd1' };
+function polIns() {
+  const T = GD.polTab || []; if (!T.length) return '';
+  const row = t => { const up = t.prev != null && t.v > t.prev; return `${esc(t.n)} <b>${pc(t.v, 2)}</b>${t.chg ? ` (${up ? 'tăng' : 'giảm'} từ ${pc(t.prev, 2)} ngày ${dvn(t.chg)})` : ''}`; };
+  const yUp = T.filter(t => t.y0 != null && t.v > t.y0).length, yDn = T.filter(t => t.y0 != null && t.v < t.y0).length;
+  return `Mức hiện tại: ${T.map(row).join('; ')}. Từ đầu năm <b>${yUp} ngân hàng trung ương đã tăng</b>, ${yDn} đã giảm lãi suất.`
+    + how('Khi nhiều ngân hàng trung ương cùng tăng lãi suất, nguyên nhân thường là cú sốc lạm phát chung (giá dầu, giá lương thực) chứ không phải yếu tố riêng một nước; mặt bằng lãi suất toàn cầu cao giữ lợi suất trái phiếu và đồng USD ở mức cao, thu hẹp dư địa nới lỏng của NHNN.');
 }
 const PMI_K = [['us_ism_mfg', 'Mỹ (ISM)', C.navy], ['ea_pmi_mfg', 'Khu vực euro', C.tealInk], ['de_pmi_mfg', 'Đức', C.grey], ['cn_pmi_mfg', 'Trung Quốc (NBS)', C.gold], ['vn_pmi', 'Việt Nam', C.red]];
 function pmiIns() {
@@ -953,8 +963,9 @@ function gGL() {
     ${card({ id: 'gGlY10m', title: 'Lợi suất 10 năm theo tháng: châu Âu và các nước phát triển khác', h: 'tall', sub: '%/năm, bình quân tháng · ECB (lãi suất dài hạn hội tụ) và OECD', body: tfPick('glM', [['eu', 'Châu Âu'], ['ap', 'Mỹ, Nhật, Hàn, Úc, Canada']]), src: 'ECB; OECD qua FRED' })}
     ${card({ id: 'gGlCurve', title: 'Đường cong lợi suất TPCP Mỹ', h: 'tall', sub: '%/năm theo kỳ hạn · hiện tại so với 1 tháng trước, đầu năm và 1 năm trước', src: 'U.S. Treasury (Daily Treasury Par Yield Curve)' })}
     ${card({ id: 'gGlOil', title: 'Giá dầu WTI và Brent theo ngày', h: 'tall', sub: 'USD/thùng · giá giao ngay', src: 'EIA qua FRED' })}
-    ${card({ id: 'gGlCpi', title: 'Lạm phát CPI các nước theo nhóm', h: 'tall', sub: '% so cùng kỳ, theo tháng · chọn nhóm nước', body: tfPick('glC', [['eu', 'Châu Âu và Mỹ'], ['ad', 'Châu Á phát triển'], ['em', 'Châu Á mới nổi']]), insight: cpiGrpIns(), src: CPI_SRC })}
+    ${card({ id: 'gGlCpi', title: 'Lạm phát CPI các nước theo nhóm', h: 'tall', sub: '% so cùng kỳ, theo tháng · chọn nhóm nước', body: tfPick('glC', [['eu', 'Châu Âu và Mỹ'], ['dm', 'Anh, Canada, Úc, NZ'], ['ad', 'Châu Á phát triển'], ['em', 'Châu Á mới nổi']]), insight: cpiGrpIns(), src: CPI_SRC })}
     ${card({ id: 'gGlCpiBar', title: 'Lạm phát CPI mới nhất theo nước', h: 'tall', sub: '% so cùng kỳ · cột = tháng mới nhất của từng nước, chấm = cùng kỳ năm trước · màu theo nhóm nước', insight: cpiBarIns(), src: CPI_SRC })}
+    ${card({ id: 'gGlPol', title: 'Lãi suất điều hành các ngân hàng trung ương phát triển', h: 'tall', sub: '%/năm, mức cuối tháng · Fed: cận trên biên độ; ECB: lãi suất tiền gửi', insight: polIns(), src: 'BIS (Central bank policy rates); Fed; ECB' })}
     ${card({ id: 'gGlPmi', title: 'PMI sản xuất các nền kinh tế lớn và Việt Nam', h: 'tall', sub: 'điểm · trên 50 = mở rộng, dưới 50 = thu hẹp · Mỹ: ISM; khu vực euro, Đức: HCOB/S&P Global; Trung Quốc: NBS; Việt Nam: S&P Global', insight: pmiIns(), src: 'ISM, S&P Global, HCOB, NBS Trung Quốc' })}
   </div>`;
 }
@@ -971,16 +982,18 @@ function drGL() {
   wireTf('glM', k => { const S = Y10M[k || 'eu'].filter(([kk]) => gs(kk).v.length); mk('gGlY10m', { type: 'line', data: gLines(S.map(x => x[0]), S.map(x => x[1]), PAL2, { from: '2021-01', dp: 2 }), options: { scales: { y: pctAxis('') } } }); });
   const UC = GD.ustCurve; if (UC) mk('gGlCurve', { type: 'line', data: { labels: UC.t, datasets: UC.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.teal, C.tealInk, C.red, C.grey][i] || C.grey, { pointRadius: 3, borderWidth: i ? 1.6 : 2.6, borderDash: i === 1 ? [2, 2] : i === 4 ? [4, 3] : [], dp: 2 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
   mk('gGlOil', { type: 'line', data: gLines(['us_wti_d', 'us_brent_d'], ['WTI', 'Brent'], [C.navy, C.gold], { unit: ' USD', dp: 2, from: '2021-01-01' }), options: { scales: { y: numAxis('USD/thùng', { beginAtZero: false }) } } });
+  { const T = (GD.polTab || []).filter(t => gs(t.k + '_m').v.length);
+    mk('gGlPol', { type: 'line', data: gLines(T.map(t => t.k + '_m'), T.map(t => t.n), T.map(t => POL_C[t.k] || C.grey), { from: '2021-01', dp: 2, ds: T.map(t => ({ stepped: true, borderWidth: ['pol_us', 'pol_xm', 'pol_jp'].includes(t.k) ? 2.4 : 1.6 })) }), options: { scales: { y: pctAxis('') } } }); }
   mk('gGlPmi', { type: 'line', data: gLines(PMI_K.map(x => x[0]), PMI_K.map(x => x[1]), PMI_K.map(x => x[2]), { unit: '', dp: 1, from: '2021-01', ds: { borderWidth: 1.8 } }), options: { scales: { y: numAxis('điểm', { beginAtZero: false }) }, plugins: { refLines: { lines: [{ value: 50, label: '50', color: C.grey }] } } } }, { win: 36 });
   wireTf('glC', k => { const gs_ = CPI_G[k || 'eu'], cs = (GD.cpiTab || []).filter(([g]) => gs_.includes(g)).flatMap(([, c]) => c);
     const sers = cs.map(([kk, n]) => [n, cpiSer(kk)]).filter(([, x]) => x.v.length), all = [...new Set(sers.flatMap(([, x]) => x.d))].filter(d => d >= '2021-01').sort();
-    mk('gGlCpi', { type: 'line', data: { labels: all.map(mvn), datasets: sers.map(([n, x], i) => { const m = {}; x.d.forEach((d, j) => m[d] = x.v[j]); return L(n, all.map(d => m[d] ?? null), n === 'Việt Nam' ? C.red : n === 'Mỹ' ? C.navy : PAL2[(i + 2) % PAL2.length], { borderWidth: n === 'Việt Nam' || n === 'Mỹ' || /Euro/.test(n) ? 2.6 : 1.6, dp: 1 }); }) },
+    mk('gGlCpi', { type: 'line', data: { labels: all.map(mvn), datasets: sers.map(([n, x], i) => { const m = {}; x.d.forEach((d, j) => m[d] = x.v[j]); return L(n, all.map(d => m[d] ?? null), n === 'Việt Nam' ? C.red : n === 'Mỹ' ? C.navy : PAL2[(i + 2) % PAL2.length], { borderWidth: n === 'Việt Nam' || n === 'Mỹ' || /Euro/.test(n) ? 2.6 : 1.6, dp: 1, spanGaps: true }); }) },
       options: { scales: { y: pctAxis('') }, plugins: { refLines: { lines: [{ value: 2, label: '2%', color: C.grey }] } } } }); });
   { const R = cpiRows().sort((a, b) => b[3] - a[3]);
-    mk('gGlCpiBar', { type: 'bar', data: { labels: R.map(r => `${r[2]} (T${+r[4].slice(5)})`), datasets: [
+    mk('gGlCpiBar', { type: 'bar', data: { labels: R.map(r => `${r[2]} (${cpiPer(r[1], r[4]).replace(/\/\d{4}$/, '')})`), datasets: [
       { label: 'Mới nhất', data: R.map(r => r[3]), grouped: false, backgroundColor: R.map(r => r[1] === 'vn' ? C.red : CPI_GC[r[0]] || C.grey), dp: 1, unit: '%', order: 2 },
       { type: 'line', label: 'Cùng kỳ năm trước', data: R.map(r => r[5]), showLine: false, pointRadius: 4, pointStyle: 'circle', backgroundColor: '#fff', borderColor: '#1f2433', pointBorderWidth: 1.5, dp: 1, unit: '%', order: 1 },
-      ...[['Châu Âu', C.navy], ['Mỹ', C.purple], ['Châu Á phát triển', C.tealInk], ['Châu Á mới nổi', C.gold], ['Việt Nam', C.red]].map(([g, c]) => ({ label: g, data: [], backgroundColor: c, order: 3 }))] },
+      ...[['Châu Âu', C.navy], ['Mỹ', C.purple], ['Phát triển khác', '#4f9bd1'], ['Châu Á phát triển', C.tealInk], ['Châu Á mới nổi', C.gold], ['Việt Nam', C.red]].map(([g, c]) => ({ label: g, data: [], backgroundColor: c, order: 3 }))] },
       options: { indexAxis: 'y', interaction: { mode: 'index', intersect: false, axis: 'y' }, plugins: { legend: { labels: { filter: it => it.text !== 'Mới nhất' } }, refLines: { lines: [{ value: 2, axis: 'x', label: '', color: C.grey }] } }, scales: { x: pctAxis(''), y: { ticks: { autoSkip: false, font: { size: 11 } }, grid: { display: false } } } } }); }
 }
 /* -------- Mỹ -------- */

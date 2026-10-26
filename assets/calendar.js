@@ -48,6 +48,8 @@
     ['EUR', /CPI/, { id: 'gEaHicp', p: 'intl', c: 'ea', n: 'Lạm phát khu vực euro' }], ['EUR', /Main Refinancing|ECB/, { id: 'gEaRate', p: 'intl', c: 'ea', n: 'Lãi suất ECB' }],
     ['JPY', /BOJ/, { id: 'gJpRate', p: 'intl', c: 'jp', n: 'Lãi suất BOJ' }], ['JPY', /CPI/, { id: 'gJpCpi', p: 'intl', c: 'jp', n: 'Lạm phát Nhật' }], ['CNY', /CPI|PPI/, { id: 'gCnPx', p: 'intl', c: 'cn', n: 'CPI và PPI Trung Quốc' }],
     ['VND', /CPI/, { id: 'chCpi', p: 'dom', n: 'Lạm phát Việt Nam' }],
+    ...['GBP', 'CAD', 'AUD', 'NZD'].map(c => [c, /CPI/, { id: 'gGlCpi', p: 'intl', c: 'gl', n: 'Lạm phát CPI các nước' }]),
+    ...['GBP', 'CAD', 'AUD', 'NZD', 'CHF'].map(c => [c, /Bank Rate|Overnight Rate|Cash Rate|Policy Rate|SNB/, { id: 'gGlPol', p: 'intl', c: 'gl', n: 'Lãi suất điều hành các NHTW' }]),
   ];
   const linkOf = e => (LINK.find(([c, rx]) => c === e.c && rx.test(e.t)) || [])[2];
 

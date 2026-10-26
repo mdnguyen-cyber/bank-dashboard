@@ -365,12 +365,39 @@ for k in ['y10_de', 'y10_fr', 'y10_it', 'y10_es', 'y10_nl', 'y10_gb', 'y10_kr', 
         put(k + '_m', {m: v for m, v in monthly(k, 'avg').items() if m >= '2019'}, 3)
 CPI_C = [('Châu Âu', [('cpi_de', 'Đức'), ('cpi_it', 'Ý'), ('cpi_es', 'Tây Ban Nha'), ('cpi_fr', 'Pháp'), ('cpi_nl', 'Hà Lan'), ('ea_hicp', 'Khu vực Euro')]),
          ('Mỹ', [('us_cpi_yoy', 'Mỹ')]),
+         ('Phát triển khác', [('cpi_gb', 'Anh'), ('cpi_ca', 'Canada'), ('cpi_au', 'Úc'), ('cpi_nz', 'New Zealand')]),
          ('Châu Á phát triển', [('jp_cpi_main', 'Nhật Bản'), ('cpi_tw', 'Đài Loan'), ('cpi_sg', 'Singapore'), ('cpi_kr', 'Hàn Quốc')]),
          ('Châu Á mới nổi', [('cn_cpi', 'Trung Quốc'), ('cpi_in', 'Ấn Độ'), ('vn', 'Việt Nam'), ('cpi_th', 'Thái Lan'), ('cpi_id', 'Indonesia'), ('cpi_my', 'Malaysia'), ('cpi_ph', 'Philippines')])]
-for k in ['cpi_de', 'cpi_it', 'cpi_es', 'cpi_fr', 'cpi_nl', 'cpi_tw', 'cpi_sg', 'cpi_kr', 'cpi_in', 'cpi_th', 'cpi_id', 'cpi_my', 'cpi_ph']:
+for k in ['cpi_gb', 'cpi_ca', 'cpi_au', 'cpi_nz', 'cpi_de', 'cpi_it', 'cpi_es', 'cpi_fr', 'cpi_nl', 'cpi_tw', 'cpi_sg', 'cpi_kr', 'cpi_in', 'cpi_th', 'cpi_id', 'cpi_my', 'cpi_ph']:
     if k in SER:
         put(k, {m: v for m, v in monthly(k).items() if m >= '2019'}, 2)
-G['cpiTab'] = [[g, [[k, n] for k, n in cs]] for g, cs in CPI_C]
+G['cpiTab'] = [[g, [[k, n] for k, n in cs if k in G['s'] or k == 'vn']] for g, cs in CPI_C]
+G['cpiQ'] = [k for k in ('cpi_au', 'cpi_nz') if any(t in SER.get(k, {}).get('src', '') for t in ('bisq:', '.Q.', 'Q659'))]
+
+# ---------------- Lãi suất điều hành các NHTW: ngày đổi lãi suất (BIS) → chuỗi tháng (giá trị cuối tháng) + bảng mức hiện tại, lần đổi gần nhất
+POL = [('pol_us', 'Fed (cận trên)'), ('pol_xm', 'ECB (tiền gửi)'), ('pol_jp', 'BOJ'), ('pol_gb', 'BOE (Anh)'), ('pol_ca', 'BOC (Canada)'),
+       ('pol_au', 'RBA (Úc)'), ('pol_nz', 'RBNZ (New Zealand)'), ('pol_ch', 'SNB (Thụy Sĩ)'), ('pol_kr', 'BOK (Hàn Quốc)')]
+_pol_src = {'pol_us': 'us_fedtgt_up', 'pol_xm': 'ea_dfr'}
+G['polTab'] = []
+for k, n in POL:
+    o = obs(_pol_src.get(k, k))
+    if not o:
+        continue
+    chg_pts = [(d, v) for i, (d, v) in enumerate(o) if i == 0 or v != o[i - 1][1]]   # các lần đổi
+    mm, cur, i = {}, None, 0
+    first = '2019-01'
+    m = first
+    while m <= o[-1][0][:7]:
+        while i < len(chg_pts) and chg_pts[i][0][:7] <= m:
+            cur = chg_pts[i][1]; i += 1
+        if cur is not None:
+            mm[m] = cur
+        m = shift(m, 1)
+    put(k + '_m', mm, 2)
+    last_chg = chg_pts[-1] if len(chg_pts) > 1 else None
+    prev = chg_pts[-2][1] if len(chg_pts) > 1 else None
+    ytd = next((v for d, v in reversed(o) if d < o[-1][0][:4] + '-01-01'), None)
+    G['polTab'].append({'k': k, 'n': n, 'v': o[-1][1], 'd': o[-1][0], 'chg': last_chg[0] if last_chg else None, 'prev': prev, 'y0': ytd})
 for k in ['us_wti', 'us_brent']:
     if k in SER:
         put(k + '_d', {d: v for d, v in obs(k) if d >= DAILY_FROM}, 2)

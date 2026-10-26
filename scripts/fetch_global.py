@@ -153,6 +153,18 @@ CAT = {
     'cpi_my': ('CPI Malaysia', ['bis:MY', 'dbn:IMF/CPI/M.MY.PCPI_PC_CP_A_PT', 'oecd:MYS.M.N.CPI.PA._T.N.GY']),
     'cpi_ph': ('CPI Philippines', ['bis:PH', 'dbn:IMF/CPI/M.PH.PCPI_PC_CP_A_PT', 'oecd:PHL.M.N.CPI.PA._T.N.GY']),
     'cpi_tw': ('CPI Đài Loan', ['bis:TW', 'oecd:TWN.M.N.CPI.PA._T.N.GY']),
+    'cpi_gb': ('CPI Anh', ['bis:GB', 'oecd:GBR.M.N.CPI.PA._T.N.GY', 'fred:CPALTT01GBM659N']),
+    'cpi_ca': ('CPI Canada', ['bis:CA', 'oecd:CAN.M.N.CPI.PA._T.N.GY', 'fred:CPALTT01CAM659N']),
+    'cpi_au': ('CPI Úc (theo quý)', ['bisq:AU', 'oecd:AUS.Q.N.CPI.PA._T.N.GY', 'fred:CPALTT01AUQ659N']),
+    'cpi_nz': ('CPI New Zealand (theo quý)', ['bisq:NZ', 'oecd:NZL.Q.N.CPI.PA._T.N.GY', 'fred:CPALTT01NZQ659N']),
+    # ---------------- Lãi suất điều hành các NHTW (BIS, theo ngày; dự phòng: lãi suất qua đêm OECD theo tháng)
+    'pol_jp': ('BOJ', ['cbpol:JP']),
+    'pol_gb': ('BOE (Bank Rate)', ['cbpol:GB', 'fred:IRSTCI01GBM156N']),
+    'pol_ca': ('BOC (qua đêm mục tiêu)', ['cbpol:CA', 'fred:IRSTCI01CAM156N']),
+    'pol_au': ('RBA (cash rate)', ['cbpol:AU', 'fred:IRSTCI01AUM156N']),
+    'pol_nz': ('RBNZ (OCR)', ['cbpol:NZ', 'fred:IRSTCI01NZM156N']),
+    'pol_ch': ('SNB', ['cbpol:CH']),
+    'pol_kr': ('BOK (Base Rate)', ['cbpol:KR']),
     # ---------------- Trung Quốc
     'cn_cpi': ('CPI Trung Quốc (% YoY)', ['oecd:CHN.M.N.CPI.PA._T.N.GY', 'dbn:IMF/CPI/M.CN.PCPI_PC_CP_A_PT', 'fred:CPALTT01CNM659N']),
     'cn_ppi': ('PPI Trung Quốc (% YoY)', ['nbs:NBS/M_A010B/A010B01|NBS/M_A010H/A010H01']),
@@ -203,7 +215,7 @@ def ecb(key):
 def oecd(key):
     url = f'https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/{key}?startPeriod={START[:7]}&format=csvfile'
     rows = list(csv.DictReader(io.StringIO(get(url))))
-    out = [[r['TIME_PERIOD'] + '-01', round(float(r['OBS_VALUE']), 4)] for r in rows if r.get('OBS_VALUE') not in (None, '')]
+    out = [[_qd(r['TIME_PERIOD']), round(float(r['OBS_VALUE']), 4)] for r in rows if r.get('OBS_VALUE') not in (None, '')]
     return sorted(out)
 
 
@@ -265,9 +277,29 @@ def bis(cc):   # BIS: CPI % YoY (WS_LONG_CPI, 771 = thay đổi so cùng kỳ)
     return sorted([[r['TIME_PERIOD'] + '-01', round(float(r['OBS_VALUE']), 4)] for r in rows if r.get('OBS_VALUE') not in (None, '', 'NaN')])
 
 
+def _qd(p):   # '2026-Q2' → tháng cuối quý '2026-06-01'
+    if '-Q' in p:
+        y, q = p.split('-Q')
+        return f'{y}-{int(q) * 3:02d}-01'
+    return p + '-01' if len(p) == 7 else p
+
+
+def bisq(cc):   # BIS CPI % YoY theo quý (Úc, New Zealand công bố CPI theo quý)
+    txt = get(f'https://stats.bis.org/api/v1/data/WS_LONG_CPI/Q.{cc}.771?format=csv&startPeriod=2010-Q1')
+    rows = list(csv.DictReader(io.StringIO(txt)))
+    return sorted([[_qd(r['TIME_PERIOD']), round(float(r['OBS_VALUE']), 4)] for r in rows if r.get('OBS_VALUE') not in (None, '', 'NaN')])
+
+
+def cbpol(cc):   # BIS lãi suất điều hành theo ngày → chỉ giữ ngày đổi lãi suất và ngày cuối (gọn file)
+    txt = get(f'https://stats.bis.org/api/v1/data/WS_CBPOL/D.{cc}?format=csv&startPeriod=2015-01-01')
+    rows = sorted((r['TIME_PERIOD'], round(float(r['OBS_VALUE']), 4)) for r in csv.DictReader(io.StringIO(txt)) if r.get('OBS_VALUE') not in (None, '', 'NaN'))
+    out = [list(x) for i, x in enumerate(rows) if i == 0 or i == len(rows) - 1 or x[1] != rows[i - 1][1]]
+    return out
+
+
 def fetch(c):
     src, sid = c.split(':', 1)
-    return {'fred': fred, 'dbn': dbn, 'ecb': ecb, 'oecd': oecd, 'bis': bis, 'nbs': nbs, 'hlw': hlw, 'nyfed': lambda _: nyfed_sofr99()}[src](sid)
+    return {'fred': fred, 'dbn': dbn, 'ecb': ecb, 'oecd': oecd, 'bis': bis, 'bisq': bisq, 'cbpol': cbpol, 'nbs': nbs, 'hlw': hlw, 'nyfed': lambda _: nyfed_sofr99()}[src](sid)
 
 
 def main():
