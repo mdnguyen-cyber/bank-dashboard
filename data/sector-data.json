@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-26T10:53Z"
+  "auto": "2026-10-26T11:13Z"
  },
  "idx": {
   "now": {
@@ -71050,6 +71050,10 @@
    {
     "d": "2026-10-23",
     "v": 95064.9
+   },
+   {
+    "d": "2026-10-26",
+    "v": 90000.7
    }
   ],
   "tpOut": [
@@ -73851,6 +73855,10 @@
    },
    {
     "d": "2026-10-23",
+    "v": 0.0
+   },
+   {
+    "d": "2026-10-26",
     "v": 0.0
    }
   ]
@@ -89162,6 +89170,21 @@
    ]
   },
   {
+   "d": "2026-10-26",
+   "t": "Lãi suất ngày 26/10 tại MB, VPBank, Techcombank, Sacombank, HDBank, Agribank, Vietcombank, BIDV, VietinBank,...",
+   "src": "CafeF",
+   "url": "https://cafef.vn/lai-suat-ngay-26-10-tai-mb-vpbank-techcombank-sacombank-hdbank-agribank-vietcombank-bidv-vietinbank-188261026170420222.chn",
+   "sym": [
+    "VCB",
+    "BID",
+    "CTG",
+    "TCB",
+    "VPB",
+    "HDB",
+    "STB"
+   ]
+  },
+  {
    "d": "2026-10-25",
    "t": "Bộ Xây dựng: Phí ví điện tử không phải phí duy trì tài khoản giao thông",
    "src": "CafeF",
@@ -90755,13 +90778,6 @@
    "sym": [
     "VPB"
    ]
-  },
-  {
-   "d": "2026-10-13",
-   "t": "Phiên 13/10: Ngân hàng Nhà nước bơm ròng 12.000 tỷ đồng, lãi suất qua đêm neo mức 4,8%",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/phien-13-10-ngan-hang-nha-nuoc-bom-rong-12-000-ty-dong-lai-suat-qua-dem-neo-muc-4-8-1470448.html",
-   "sym": []
   }
  ],
  "goldWi": [
