@@ -30,6 +30,16 @@ def pack(d):
     return {'s': ks[0], 'v': out}
 
 
+def ffill(d):   # mức niêm yết/điều hành giữ nguyên tới khi đổi: điền tháng không có quan sát
+    if not d:
+        return d
+    ks, out, cur = sorted(d), {}, None
+    m = ks[0]
+    while m <= ks[-1]:
+        cur = d.get(m, cur); out[m] = cur; m = nxt(m)
+    return out
+
+
 def ly(m):
     return f'{int(m[:4]) - 1}{m[4:]}'
 
@@ -71,10 +81,10 @@ def main():
     vn['on'] = fill('on', hrow('lai-suat-dieu-hanh-lien-ngan-hang-391', 'Qua đêm'))
     vn['omo'] = dict(V.get('omo', {}))
     vn['nhtm'] = dict(V.get('nhtm', {}))
-    vn['central'] = hrow('ty-gia-usdvnd-cua-nhnn-427', 'Trung tâm', 'e')
+    vn['central'] = ffill(hrow('ty-gia-usdvnd-cua-nhnn-427', 'Trung tâm', 'e'))
     vn['free'] = fill('free', hrow('ty-gia-cho-den-719', 'Bán ra', 'e'))
     vn['dep12s'] = dict(V.get('dep12s', {}))
-    vn['dep12vcb'] = hrow('lai-suat-huy-dong-vietcombank-376', '12 tháng', 'e')
+    vn['dep12vcb'] = ffill(hrow('lai-suat-huy-dong-vietcombank-376', '12 tháng', 'e'))
     refi = hrow('lai-suat-dieu-hanh-lien-ngan-hang-391', 'Lãi suất tái cấp vốn', 'e')   # lãi suất tái cấp vốn: lịch sử + hiện hành, giữ mức gần nhất
     for r in DL.get('lai-suat-dieu-hanh-lien-ngan-hang-391', {}).values():
         if r['n'] == 'Lãi suất tái cấp vốn':
