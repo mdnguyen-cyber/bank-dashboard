@@ -403,12 +403,12 @@ function ppopBurdenIns() {
 function drPpop() {
   if (!D.ppopSector) return;
   const P = D.ppopSector;
-  mk('chPpopBurden', { type: 'bar', data: { labels: P.q, datasets: [
-    { type: 'bar', label: 'Lợi nhuận trước dự phòng', data: P.ppop, backgroundColor: 'rgba(31,138,141,.75)', unit: ' nghìn tỷ', dp: 1 },
-    { type: 'bar', label: 'Chi phí dự phòng', data: P.prov, backgroundColor: 'rgba(192,57,43,.7)', unit: ' nghìn tỷ', dp: 1 },
-    { type: 'bar', label: 'LNST', data: P.npat, backgroundColor: 'rgba(29,38,120,.8)', unit: ' nghìn tỷ', dp: 1 },
-    L('Dự phòng / LN trước dự phòng', P.ppop.map((v, i) => +(P.prov[i] / v * 100).toFixed(1)), C.gold, { yAxisID: 'y1', dp: 1, borderWidth: 2.4 })] },
-    options: { scales: { y: numAxis('nghìn tỷ đồng'), y1: pctAxis('', { position: 'right', grid: { display: false }, min: 0, max: 50 }) } } });
+  mk('chPpopBurden', { type: 'line', data: { labels: P.q, datasets: [
+    L('Lợi nhuận trước dự phòng', P.ppop, C.tealInk, { unit: ' nghìn tỷ', dp: 1, borderWidth: 2.4, pointRadius: 2 }),
+    L('Chi phí dự phòng', P.prov, C.red, { unit: ' nghìn tỷ', dp: 1, pointRadius: 2 }),
+    L('LNST', P.npat, C.navy, { unit: ' nghìn tỷ', dp: 1, borderWidth: 2.4, pointRadius: 2 }),
+    L('Dự phòng / LN trước dự phòng', P.ppop.map((v, i) => +(P.prov[i] / v * 100).toFixed(1)), C.gold, { yAxisID: 'y1', dp: 1, borderWidth: 2, borderDash: [5, 4], keep: true })] },
+    options: { scales: { y: numAxis('nghìn tỷ đồng'), y1: pctAxis('', { position: 'right', grid: { display: false }, min: 0, max: 50 }) } } }, { switch: 'line' });
 
 }
 function subPeer() {
@@ -428,25 +428,21 @@ function subPeer() {
   ${card({ id: 'chCompare', title: 'So sánh tài chính & định giá', h: 'tall', sub: `Chọn chỉ tiêu và nhóm · ${BQ[QI]} (NIM, COF, CIR, ROE: TTM) · P/B, P/E theo giá ${dvn(D.latest.priceDate)}`,
     body: `<div class="picker" id="cmpMetric">${CMP.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div><div class="picker" id="cmpGroup">${['Tất cả', ...GROUPS].map(g => `<button type="button" data-g="${g}">${g}</button>`).join('')}</div>`,
     insight: '<span id="cmpIns"></span>', src: 'WiData ratio_bank, ratio_bank_ttm, ratio_common_ttm, ratio_daily' })}
-  ${D.ppopSector ? `${card({ id: 'chPpopBurden', title: 'Lợi nhuận trước dự phòng, chi phí dự phòng và LNST toàn ngành', h: 'tall', sub: 'nghìn tỷ đồng, cộng 4 quý · đường = chi phí dự phòng / lợi nhuận trước dự phòng (%, trục phải)', insight: ppopBurdenIns(), src: 'BCTC hợp nhất 26 ngân hàng niêm yết · tự tính' })}` : ''}
   <div class="grid g2 gap">
-    ${card({ id: 'chRoePb', title: 'ROE và P/B: ai đang được định giá cao/thấp so với khả năng sinh lời', sub: `ROE TTM ${BQ[QI]} (trục ngang) · P/B ${dvn(D.latest.priceDate)} (trục dọc) · màu theo nhóm`, h: 'tall',
-      insight: roePbInsight(), src: 'WiData ratio_common_ttm, ratio_daily' })}
-    <article class="card"><h3 class="sub">Bảng so sánh ${M.banks.length} ngân hàng</h3><p class="chart-sub">Bấm tiêu đề cột để sắp xếp · % · P/B, P/E: lần</p>
+    ${card({ id: 'chRoePb', title: 'ROE và P/B: ai đang được định giá cao/thấp so với khả năng sinh lời', sub: `ROE TTM ${BQ[QI]} (trục ngang) · P/B ${dvn(D.latest.priceDate)} (trục dọc) · màu theo nhóm (bấm chú thích để ẩn/hiện nhóm) · đường đứt = hồi quy P/B theo ROE của các mã đang hiện · tick ô "Chọn" ở bảng bên cạnh để làm nổi hoặc chỉ hiện các mã đó`, h: 'tall',
+      body: `<div class="picker" id="rpMode"><button type="button" data-m="all">Tất cả, làm nổi mã đã chọn</button><button type="button" data-m="sel">Chỉ mã đã chọn</button><button type="button" data-m="clr">Bỏ chọn</button></div>`,
+      insight: '<span id="rpIns"></span>', src: 'WiData ratio_common_ttm, ratio_daily · hồi quy tuyến tính bình phương nhỏ nhất, tự tính' })}
+    <article class="card"><h3 class="sub">Bảng so sánh ${M.banks.length} ngân hàng</h3><p class="chart-sub">Bấm tiêu đề cột để sắp xếp · tick "Chọn" để đưa mã lên chart ROE–P/B · % · P/B, P/E: lần</p>
       <div class="tscroll" id="cmpTable"></div><div class="src">Nguồn: WiData</div></article>
   </div>`;
 }
 function chPeer() {
-  drPpop();
   drawCompare('nim', 'Tất cả');
   $$('#cmpMetric button').forEach(b => b.onclick = () => drawCompare(b.dataset.k, $('#cmpGroup button.on').dataset.g));
   $$('#cmpGroup button').forEach(b => b.onclick = () => drawCompare($('#cmpMetric button.on').dataset.k, b.dataset.g));
-  mk('chRoePb', { type: 'scatter', data: { datasets: GROUPS.map(g => ({ label: g, data: Lr.filter(r => r.group === g && r.roe != null && r.pb != null && r.roe > 3).map(r => ({ x: r.roe, y: r.pb, s: r.s })), backgroundColor: GC[g], pointRadius: 5, pointHoverRadius: 7 })) },
-    options: { interaction: { mode: 'nearest', intersect: true }, plugins: { tooltip: { callbacks: { label: c => `${c.raw.s}: ROE ${pc(c.raw.x, 1)} · P/B ${x(c.raw.y)}` } }, refLines: { lines: [{ value: SV.now.pb, label: 'P/B ngành ' + x(SV.now.pb), color: C.grey }] } },
-      scales: { x: pctAxis('ROE TTM'), y: numAxis('P/B', { ticks: { callback: v => nf(v, 1) + 'x' } }) } },
-    plugins: [{ id: 'lbl', afterDatasetsDraw(ch) { const { ctx } = ch; ctx.save(); ctx.font = '600 10.5px Arial'; ctx.fillStyle = '#3f4656';
-      ch.data.datasets.forEach((ds, i) => ch.getDatasetMeta(i).data.forEach((p, j) => ctx.fillText(ds.data[j].s, p.x + 6, p.y - 4))); ctx.restore(); } }] });
+  $$('#rpMode button').forEach(b => b.onclick = () => { if (b.dataset.m === 'clr') rpS.sel = []; else rpS.mode = b.dataset.m; drawRoePb(); drawTable(tblS.k, tblS.dir); });
   drawTable('roe', -1);
+  drawRoePb();
 }
 function viewNoteMount() {
   const v = view(); const el = $('#viewNote'); if (!el) return;
@@ -523,6 +519,37 @@ function drawCompare(k, g) {
   const byG = GROUPS.map(gg => `${gg} ${fmt(med(Lr.filter(r => r.group === gg).map(r => r[k])))}`).join(' · ');
   $('#cmpIns').innerHTML = rows.length ? `${lab} cao nhất <b>${top.s} ${fmt(top[k])}</b>, thấp nhất <b>${bot.s} ${fmt(bot[k])}</b>${sector != null ? `; bình quân ngành ${fmt(sector)}` : ''}. Trung vị theo nhóm: ${byG}.${k === 'pe' ? ' Ẩn mã có P/E > 60x (lợi nhuận gần 0).' : ''}` : '';
 }
+/* ROE – P/B: chọn mã từ bảng, hồi quy tuyến tính trên các mã đang hiện */
+const rpS = { mode: 'all', sel: [], hid: [] };
+try { Object.assign(rpS, JSON.parse(localStorage.getItem('fs-roepb') || '{}')); } catch (e) {}
+const rpSave = () => { try { localStorage.setItem('fs-roepb', JSON.stringify(rpS)); } catch (e) {} };
+function olsFit(pts) {   // y = a + b·x
+  const n = pts.length; if (n < 3) return null;
+  const mx = pts.reduce((s, p) => s + p.x, 0) / n, my = pts.reduce((s, p) => s + p.y, 0) / n;
+  const sxx = pts.reduce((s, p) => s + (p.x - mx) ** 2, 0), sxy = pts.reduce((s, p) => s + (p.x - mx) * (p.y - my), 0), syy = pts.reduce((s, p) => s + (p.y - my) ** 2, 0);
+  if (!sxx) return null; const b = sxy / sxx, a = my - b * mx; return { a, b, r2: syy ? (sxy * sxy) / (sxx * syy) : 0, n };
+}
+function drawRoePb() {
+  rpSave();
+  $$('#rpMode button').forEach(b => b.classList.toggle('on', b.dataset.m === rpS.mode));
+  const sel = new Set(rpS.sel), base = Lr.filter(r => r.roe != null && r.pb != null && r.roe > 3 && (rpS.mode === 'all' || sel.has(r.s)));
+  const vis = base.filter(r => !rpS.hid.includes(r.group)), fit = olsFit(vis.map(r => ({ x: r.roe, y: r.pb })));
+  const xs = vis.map(r => r.roe), x0 = Math.min(...xs), x1 = Math.max(...xs);
+  const ds = GROUPS.map(g => ({ label: g, hidden: rpS.hid.includes(g), data: base.filter(r => r.group === g).map(r => ({ x: r.roe, y: r.pb, s: r.s })), backgroundColor: GC[g],
+    pointRadius: base.filter(r => r.group === g).map(r => sel.has(r.s) ? 8 : rpS.mode === 'all' && sel.size ? 4 : 5), pointBorderColor: base.filter(r => r.group === g).map(r => sel.has(r.s) ? '#d9a400' : GC[g]), pointBorderWidth: base.filter(r => r.group === g).map(r => sel.has(r.s) ? 3 : 1), pointHoverRadius: 8 }));
+  if (fit && isFinite(x0)) ds.push({ type: 'line', label: `Hồi quy: P/B = ${nf(fit.a, 2)} + ${nf(fit.b, 3)} × ROE (R² ${nf(fit.r2, 2)}, ${fit.n} mã)`, data: [{ x: x0, y: fit.a + fit.b * x0 }, { x: x1, y: fit.a + fit.b * x1 }], borderColor: C.grey, backgroundColor: C.grey, borderDash: [6, 4], borderWidth: 1.6, pointRadius: 0, fit: 1 });
+  mk('chRoePb', { type: 'scatter', data: { datasets: ds },
+    options: { interaction: { mode: 'nearest', intersect: true }, plugins: { tooltip: { filter: c => !c.dataset.fit, callbacks: { label: c => { const r = c.raw, e = fit ? r.y - (fit.a + fit.b * r.x) : null; return `${r.s}: ROE ${pc(r.x, 1)} · P/B ${x(r.y)}${e != null ? ` · ${e >= 0 ? 'cao' : 'thấp'} hơn đường hồi quy ${nf(Math.abs(e), 2)}x` : ''}`; } } },
+      legend: { onClick: (e, it, lg) => { const g = it.text; if (!GROUPS.includes(g)) return; rpS.hid = rpS.hid.includes(g) ? rpS.hid.filter(z => z !== g) : [...rpS.hid, g]; drawRoePb(); } } },
+      scales: { x: pctAxis('ROE TTM'), y: numAxis('P/B', { ticks: { callback: v => nf(v, 1) + 'x' } }) } },
+    plugins: [{ id: 'lbl', afterDatasetsDraw(ch) { const { ctx } = ch; ctx.save(); ctx.font = '600 10.5px Arial'; ctx.fillStyle = '#3f4656';
+      ch.data.datasets.forEach((d, i) => { if (d.fit || !ch.isDatasetVisible(i)) return; ch.getDatasetMeta(i).data.forEach((p, j) => ctx.fillText(d.data[j].s, p.x + 6, p.y - 4)); }); ctx.restore(); } }] });
+  const el = $('#rpIns'); if (!el) return;
+  if (!fit) { el.innerHTML = 'Chọn ít nhất 3 mã để vẽ đường hồi quy.'; return; }
+  const res = vis.map(r => ({ s: r.s, e: r.pb - (fit.a + fit.b * r.roe), r })).sort((a, b) => a.e - b.e);
+  el.innerHTML = `Trên ${fit.n} mã đang hiện, mỗi 1 điểm % ROE tương ứng P/B cao hơn khoảng <b>${nf(fit.b, 3)}x</b> (R² ${nf(fit.r2, 2)}${fit.r2 < 0.3 ? ': ROE giải thích được ít khác biệt định giá' : ''}). Thấp hơn đường hồi quy nhiều nhất: ${res.slice(0, 3).map(z => `<b>${z.s}</b> (${sg(z.e, 2, 'x')})`).join(', ')}; cao hơn nhiều nhất: ${res.slice(-3).reverse().map(z => `${z.s} (${sg(z.e, 2, 'x')})`).join(', ')}.`
+    + how('Mã nằm dưới đường hồi quy đang được định giá thấp hơn mức thị trường trả cho cùng ROE; trước khi coi là "rẻ" cần xem lý do: chất lượng tài sản (nợ xấu, bao phủ), ROE có bền không, hay rủi ro riêng.');
+}
 function roePbInsight() {
   const ok = Lr.filter(r => r.roe > 3 && r.pb);
   const cheap = ok.filter(r => r.roe >= 18 && r.pb <= 1.3).sort((a, b) => a.pb - b.pb).map(r => `${r.s} (ROE ${pc(r.roe, 0)}, P/B ${x(r.pb)})`);
@@ -530,12 +557,15 @@ function roePbInsight() {
   return `Vùng "ROE cao, P/B thấp" (ROE ≥ 18%, P/B ≤ 1,3x): <b>${cheap.join(', ') || '—'}</b>. P/B cao vượt trội: ${rich.join(', ')} — VCB do chất lượng tài sản, LPB, STB, NVB vì kỳ vọng tái cơ cấu/sáp nhập chứ không vì ROE hiện tại.`;
 }
 const TCOLS = [['s', 'Mã'], ['group', 'Nhóm'], ['nim', 'NIM'], ['cof', 'COF'], ['casa', 'CASA'], ['npl', 'NPL'], ['g2', 'Nhóm 2'], ['llr', 'Bao phủ'], ['ldr', 'LDR'], ['creditYoY', 'TD YoY'], ['roe', 'ROE'], ['cir', 'CIR'], ['pb', 'P/B'], ['pe', 'P/E'], ['provRatio', 'DP/LN trước DP'], ['mcap', 'Vốn hóa (tỷ)']];
+const tblS = { k: 'roe', dir: -1 };
 function drawTable(k, dir) {
+  tblS.k = k; tblS.dir = dir; const sel = new Set(rpS.sel);
   const rows = [...Lr].sort((a, b) => { const A = a[k], B = b[k]; if (A == null) return 1; if (B == null) return -1; return typeof A === 'string' ? dir * A.localeCompare(B) : dir * (A - B); });
   const fmt = (c, v) => c === 's' ? `<b>${v}</b>` : c === 'group' ? gdot(v) + v : c === 'pb' || c === 'pe' ? x(v) : c === 'provRatio' ? pc(v, 0) : c === 'mcap' ? nf(v) : c === 'llr' ? pc(v, 0) : pc(v, 2);
-  $('#cmpTable').innerHTML = `<table><thead><tr>${TCOLS.map(([c, l]) => `<th class="sortable ${c === 's' || c === 'group' ? '' : 'n'}" data-c="${c}">${l}${c === k ? (dir < 0 ? ' ↓' : ' ↑') : ''}</th>`).join('')}</tr></thead>
-    <tbody>${rows.map(r => `<tr>${TCOLS.map(([c]) => `<td class="${c === 's' || c === 'group' ? '' : 'n'}" style="${c === 'group' ? 'white-space:nowrap' : ''}">${fmt(c, r[c])}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
-  $$('#cmpTable th').forEach(th => th.onclick = () => drawTable(th.dataset.c, th.dataset.c === k ? -dir : -1));
+  $('#cmpTable').innerHTML = `<table><thead><tr><th title="Đưa lên chart ROE–P/B">Chọn</th>${TCOLS.map(([c, l]) => `<th class="sortable ${c === 's' || c === 'group' ? '' : 'n'}" data-c="${c}">${l}${c === k ? (dir < 0 ? ' ↓' : ' ↑') : ''}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r => `<tr${sel.has(r.s) ? ' class="rp-on"' : ''}><td><input type="checkbox" data-rp="${r.s}"${sel.has(r.s) ? ' checked' : ''} aria-label="Chọn ${r.s}"></td>${TCOLS.map(([c]) => `<td class="${c === 's' || c === 'group' ? '' : 'n'}" style="${c === 'group' ? 'white-space:nowrap' : ''}">${fmt(c, r[c])}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  $$('#cmpTable th[data-c]').forEach(th => th.onclick = () => drawTable(th.dataset.c, th.dataset.c === k ? -dir : -1));
+  $$('#cmpTable [data-rp]').forEach(cb => cb.onchange = () => { const s = cb.dataset.rp; rpS.sel = cb.checked ? [...new Set([...rpS.sel, s])] : rpS.sel.filter(z => z !== s); cb.closest('tr').classList.toggle('rp-on', cb.checked); drawRoePb(); });
 }
 
 /* =====================================================================
@@ -600,7 +630,7 @@ function openP(k, reveal = true) {
   if (!built[p] || !$('#' + p).classList.contains('active')) show(p);
   const h2 = $('#pic2'); if (p === 'picture' && reveal && h2 && h2.classList.contains('shut')) h2.click();   // đi tới một mục con thì mở phần chi tiết nếu đang thu gọn
   $$(`[data-sn="${p}"] button`).forEach(b => b.classList.toggle('on', b.dataset.p === k));
-  $$(`#${p} > [data-pp]`).forEach(x => x.classList.toggle('on', x.dataset.pp === k));
+  $$(`#${p} .sub[data-pp]`).forEach(x => x.classList.toggle('on', x.dataset.pp === k));
   if (!pDone[k]) { pDone[k] = true; PDRAW[k](); }
   if (reveal) try { history.replaceState(null, '', '#' + k); } catch (e) {}
 }
@@ -2234,6 +2264,7 @@ function subBank() {
       body: `<div class="picker" id="grpMetric">${BMET.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div>`, insight: '<span id="grpIns"></span>', src: 'WiData ratio_bank, ratio_bank_ttm · tự tính bình quân gia quyền' })}
     ${card({ id: 'chNimDep', title: 'NIM, COF ngành và lãi suất huy động 12T', sub: '% · quý · NIM, COF ngành (TTM) so với LS huy động 12T NHTM Nhà nước cuối quý — R-13: COF đi sau 1–3 quý', h: 'tall',
       insight: nimDepInsight(), src: 'WiData ratio_bank_ttm; macro 202886' })}
+    ${D.ppopSector ? card({ id: 'chPpopBurden', title: 'Lợi nhuận trước dự phòng, chi phí dự phòng và LNST toàn ngành', h: 'tall', ctl: true, sub: 'nghìn tỷ đồng, cộng 4 quý · đường nét liền = PPOP, dự phòng, LNST · nét đứt vàng = chi phí dự phòng / lợi nhuận trước dự phòng (%, trục phải) · đổi sang cột bằng nút bên phải tiêu đề', insight: ppopBurdenIns(), src: 'BCTC hợp nhất 26 ngân hàng niêm yết · tự tính' }) : ''}
     ${card({ id: 'chPbBand', title: 'Định giá ngành: P/B và dải ±1σ', sub: `Lần · cuối tháng từ ${mvn(SV.from)} · ngành Ngân hàng (GICS 107, toàn bộ NH niêm yết)`, ctl: true,
       insight: `P/B ngành <b>${x(SV.now.pb)}</b> thấp hơn trung bình ${x(SV.pb.mean)} (${sg((SV.now.pb - SV.pb.mean) / SV.pb.sd, 1, 'σ')}) dù ROE ngành ~17–18%. Thị trường đang chiết khấu rủi ro lãi suất tăng (R-16 chưa thỏa); P/E ${x(SV.now.pe)} so với TB ${x(SV.pe.mean)}.`,
       src: 'WiData sector_ratio_daily (sector 107)' })}
@@ -2273,6 +2304,7 @@ function aqInsight() {
   return `${g}. Big 4 dày đệm dự phòng nhất (VCB bao phủ ~280%); nhóm vừa và nhỏ có NPL cao, bao phủ dưới 70% — nhạy nhất nếu lãi suất cao kéo dài (R-14).`;
 }
 function chBank() {
+  drPpop();
   drawGrp('nim');
   if (D.fee) drawFeeSec();
   $$('#grpMetric button').forEach(b => b.onclick = () => drawGrp(b.dataset.k));
@@ -2748,13 +2780,15 @@ function paneCons() {
   const CS = D.consensus, rows = CS.rows.filter(r => r.tpMed != null);
   const full = rows.filter(r => r.nTP >= 3);
   const upMed = med(full.map(r => r.upside)), peMed = med(full.map(r => r.peFwd));
+  const pbNow = s => (Lr.find(z => z.s === s) || {}).pb, pbTpMed = med(full.map(r => r.pbTP)), pbNowMed = med(full.map(r => pbNow(r.s)));
   $('#cons').innerHTML = `
   <h2 class="sec">Consensus CTCK</h2>
   <p class="sec-sub">${esc(CS.note)} Khoảng ${dvn(CS.from)} – ${dvn(CS.to)}.</p>
-  <div class="kpis k4">
+  <div class="kpis">
     ${kpi('NH có ≥ 3 CTCK định giá', nf(full.length), `trên ${CS.rows.length} NH có báo cáo`)}
     ${kpi('Upside trung vị', sg(upMed, 1), 'NH có ≥ 3 giá mục tiêu', 'pos')}
     ${kpi('P/E fwd 2026 trung vị', x(peMed), `P/E TTM ngành ${x(SV.now.pe)}`)}
+    ${kpi('P/B tại giá mục tiêu trung vị', x(pbTpMed), `P/B hiện tại trung vị ${x(pbNowMed)} · ngành ${x(SV.now.pb)}`)}
     ${kpi('Khuyến nghị', `${nf(CS.rows.reduce((a, r) => a + r.buy, 0))} MUA`, `${nf(CS.rows.reduce((a, r) => a + r.hold, 0))} trung lập · ${nf(CS.rows.reduce((a, r) => a + r.sell, 0))} bán (theo CTCK)`)}
   </div>
   <div class="grid g2 gap">
@@ -2762,18 +2796,37 @@ function paneCons() {
       insight: consIns(full), src: 'WiData co_reports, ratio_daily' })}
     ${card({ id: 'chPeFwd', title: 'P/E forward 2026 theo LNST dự phóng trung vị', h: 'tall', sub: 'Lần · vốn hóa hiện tại / LNST 2026F trung vị các CTCK',
       insight: `P/E fwd thấp nhất: ${[...full].sort((a, b) => a.peFwd - b.peFwd).slice(0, 3).map(r => `<b>${r.s} ${x(r.peFwd)}</b>`).join(', ')}; cao nhất ${[...full].sort((a, b) => b.peFwd - a.peFwd).slice(0, 2).map(r => `${r.s} ${x(r.peFwd)}`).join(', ')}. Big 4 (trừ VCB) được định giá dưới 8,5x dù LNST 2026F tăng hai chữ số.`, src: 'WiData co_reports, ratio_daily' })}
+    ${card({ id: 'chPbTp', title: 'Định giá P/B: hiện tại so với tại giá mục tiêu', h: 'tall', sub: `Lần · cột = P/B theo giá ${dvn(D.latest.priceDate)} · chấm = P/B tại giá mục tiêu trung vị (giá mục tiêu / giá trị sổ sách mỗi cổ phiếu hiện tại) · màu nhạt = dưới 3 CTCK · đường = P/B ngành và trung bình`, insight: consPbIns(full), src: 'Báo cáo CTCK (giá mục tiêu); BCTC (giá trị sổ sách); giá đóng cửa' })}
+    ${card({ id: 'chPbRoeF', title: 'P/B theo nhóm: hiện tại và tại giá mục tiêu', h: 'tall', sub: 'Lần · P/B trung vị theo nhóm hiện tại, tại giá mục tiêu và trung bình 5 năm của ngành', src: 'Báo cáo CTCK; BCTC; giá đóng cửa' })}
   </div>
-  <article class="card"><h3 class="sub">Chi tiết theo ngân hàng</h3><div class="tscroll"><table><thead><tr><th>NH</th><th class="n">CTCK</th><th class="n">MUA / TL / BÁN</th><th class="n">TP trung vị</th><th class="n">TP thấp – cao</th><th class="n">Giá</th><th class="n">Upside</th><th class="n">P/B tại TP</th><th class="n">LNST 2026F (tỷ)</th><th class="n">P/E fwd</th><th>Mới nhất</th></tr></thead><tbody>
+  <article class="card"><h3 class="sub">Chi tiết theo ngân hàng</h3><div class="tscroll"><table><thead><tr><th>NH</th><th class="n">CTCK</th><th class="n">MUA / TL / BÁN</th><th class="n">TP trung vị</th><th class="n">TP thấp – cao</th><th class="n">Giá</th><th class="n">Upside</th><th class="n">P/B hiện tại</th><th class="n">P/B tại TP</th><th class="n">LNST 2026F (tỷ)</th><th class="n">P/E fwd</th><th>Mới nhất</th></tr></thead><tbody>
     ${CS.rows.map(r => { const L0 = Lr.find(z => z.s === r.s); return `<tr class="${r.nTP < 3 ? 'stale' : ''}"><td><b>${r.s}</b>${r.reports.length ? `<details class="more"><summary>${r.reports.length} báo cáo</summary><div class="note">${r.reports.map(p => `${esc(p.src)} ${dvn(p.d)} · ${esc(p.rec)}${p.tp ? ' · TP ' + nf(p.tp) : ''}${p.np26 ? ' · LNST 26F ' + nf(p.np26) : ''} — ${esc(p.title)}`).join('<br>')}</div></details>` : ''}</td>
       <td class="n">${r.n}</td><td class="n">${r.buy} / ${r.hold} / ${r.sell}</td><td class="n">${nf(r.tpMed)}</td><td class="n">${r.tpMin ? nf(r.tpMin) + ' – ' + nf(r.tpMax) : '—'}</td><td class="n">${nf(L0.price)}</td>
-      <td class="n"><b>${sg(r.upside, 1)}</b></td><td class="n">${x(r.pbTP)}</td><td class="n">${nf(r.np26)}</td><td class="n">${x(r.peFwd)}</td><td>${dvn(r.latest)}</td></tr>`; }).join('')}
+      <td class="n"><b>${sg(r.upside, 1)}</b></td><td class="n">${x(L0.pb)}</td><td class="n">${x(r.pbTP)}</td><td class="n">${nf(r.np26)}</td><td class="n">${x(r.peFwd)}</td><td>${dvn(r.latest)}</td></tr>`; }).join('')}
   </tbody></table></div><div class="note">Dòng mờ: dưới 3 giá mục tiêu trong kỳ. Một số CTCK không ghi khuyến nghị (nhãn KHÁC) nên tổng MUA/TL/BÁN có thể nhỏ hơn số CTCK.</div></article>`;
   const s1 = [...rows].sort((a, b) => b.upside - a.upside);
   mk('chUp', { type: 'bar', data: { labels: s1.map(r => `${r.s} (${r.nTP})`), datasets: [{ label: 'Upside', data: s1.map(r => r.upside), backgroundColor: s1.map(r => r.nTP < 3 ? '#d5d9e2' : GC[r.group]), dp: 1, unit: '%' }] },
     options: { indexAxis: 'y', plugins: { legend: { display: false }, refLines: { lines: [{ axis: 'x', value: 0, color: C.grey }] } }, scales: { x: pctAxis() } } });
+  { const s3 = rows.filter(r => r.pbTP != null && pbNow(r.s) != null).sort((a, b) => (b.pbTP / pbNow(b.s)) - (a.pbTP / pbNow(a.s)));
+    mk('chPbTp', { type: 'bar', data: { labels: s3.map(r => `${r.s} (${r.nTP})`), datasets: [
+      { label: 'P/B hiện tại', data: s3.map(r => pbNow(r.s)), backgroundColor: s3.map(r => r.nTP < 3 ? '#d5d9e2' : GC[r.group]), dp: 2, unit: 'x', order: 2 },
+      { type: 'line', label: 'P/B tại giá mục tiêu', data: s3.map(r => r.pbTP), showLine: false, pointRadius: 5, backgroundColor: '#fff', borderColor: '#1f2433', pointBorderWidth: 2, dp: 2, unit: 'x', order: 1 }] },
+      options: { indexAxis: 'y', interaction: { mode: 'index', intersect: false, axis: 'y' }, plugins: { refLines: { lines: [{ axis: 'x', value: SV.now.pb, label: 'Ngành ' + x(SV.now.pb), color: C.red }, { axis: 'x', value: SV.pb.mean, label: 'TB ' + x(SV.pb.mean), color: C.grey }] } }, scales: { x: numAxis('', { ticks: { callback: v => nf(v, 1) + 'x' } }), y: { ticks: { autoSkip: false, font: { size: 11 } }, grid: { display: false } } } } }); }
+  mk('chPbRoeF', { type: 'bar', data: { labels: GROUPS, datasets: [
+    { label: 'P/B hiện tại (trung vị)', data: GROUPS.map(g => med(full.filter(r => r.group === g).map(r => pbNow(r.s)))), backgroundColor: GROUPS.map(g => GC[g]), dp: 2, unit: 'x' },
+    { label: 'P/B tại giá mục tiêu (trung vị)', data: GROUPS.map(g => med(full.filter(r => r.group === g).map(r => r.pbTP))), backgroundColor: 'rgba(217,164,0,.75)', dp: 2, unit: 'x' }] },
+    options: { plugins: { refLines: { lines: [{ value: SV.pb.mean, label: 'TB ngành ' + x(SV.pb.mean), color: C.grey }] } }, scales: { y: numAxis('', { ticks: { callback: v => nf(v, 1) + 'x' } }) } } });
   const s2 = CS.rows.filter(r => r.peFwd != null && r.peFwd < 30).sort((a, b) => a.peFwd - b.peFwd);
   mk('chPeFwd', { type: 'bar', data: { labels: s2.map(r => r.s), datasets: [{ label: 'P/E fwd 2026', data: s2.map(r => r.peFwd), backgroundColor: s2.map(r => r.n < 3 ? '#d5d9e2' : GC[r.group]), dp: 2, unit: 'x' }] },
     options: { indexAxis: 'y', plugins: { legend: { display: false }, refLines: { lines: [{ axis: 'x', value: SV.now.pe, label: 'P/E TTM ngành', color: C.red }] } }, scales: { x: numAxis('', { ticks: { callback: v => nf(v, 0) + 'x' } }) } } });
+}
+function consPbIns(full) {
+  const pb = s => (Lr.find(z => z.s === s) || {}).pb;
+  const R = full.filter(r => r.pbTP != null && pb(r.s) != null).map(r => ({ s: r.s, now: pb(r.s), tp: r.pbTP, roe: (Lr.find(z => z.s === r.s) || {}).roe })).sort((a, b) => (b.tp / b.now) - (a.tp / a.now));
+  if (!R.length) return '';
+  const lo = R.filter(r => r.now < 1.1).map(r => `${r.s} ${x(r.now)}`);
+  return `CTCK định giá các ngân hàng ở P/B trung vị <b>${x(med(R.map(r => r.tp)))}</b>, so với <b>${x(med(R.map(r => r.now)))}</b> hiện tại và trung bình ngành ${x(SV.pb.mean)}. Chênh lớn nhất giữa P/B mục tiêu và hiện tại: ${R.slice(0, 3).map(r => `<b>${r.s}</b> ${x(r.now)} → ${x(r.tp)}`).join(', ')}.${lo.length ? ` Đang giao dịch dưới 1,1x giá trị sổ sách: ${lo.join(', ')}.` : ''}`
+    + how('P/B là thước đo chính khi định giá ngân hàng vì tài sản và vốn chủ đều được ghi theo giá trị sổ sách; P/B hợp lý tăng theo ROE bền vững và giảm theo rủi ro nợ xấu. P/B mục tiêu cao hơn trung bình ngành nghĩa là CTCK kỳ vọng ROE cải thiện hoặc định giá lại toàn ngành.');
 }
 function consIns(full) {
   const s = [...full].sort((a, b) => b.upside - a.upside);

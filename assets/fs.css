@@ -645,3 +645,5 @@ body.pdf-cap .pdf-hide{display:none!important}
 .etab td,.etab th{white-space:nowrap}
 .etab tr.grp td{font-weight:700;color:var(--navy);background:#f6f7fb}
 @media (max-width:700px){.hmt .hm-n{min-width:120px;font-size:12px}.cbox.xl{height:520px}}
+#cmpTable tr.rp-on td{background:#fff7dc}
+#cmpTable input[type=checkbox]{cursor:pointer}
