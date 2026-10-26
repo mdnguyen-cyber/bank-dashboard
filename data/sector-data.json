@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-26T03:51Z"
+  "auto": "2026-10-26T03:52Z"
  },
  "idx": {
   "now": {
@@ -84745,9 +84745,9 @@
     "s": "VCB",
     "group": "Big 4",
     "price": 56700,
-    "pb": 1.96,
+    "pb": 1.97,
     "pe": 11.38,
-    "mcap": 473759,
+    "mcap": 473758,
     "bvps": 28824,
     "nim": 2.81,
     "cof": 2.6,
@@ -84799,7 +84799,7 @@
     "s": "CTG",
     "group": "Big 4",
     "price": 30900,
-    "pb": 1.23,
+    "pb": 1.24,
     "pe": 5.98,
     "mcap": 239991,
     "bvps": 25071.0,
@@ -84826,8 +84826,8 @@
     "s": "MBB",
     "group": "Tư nhân lớn",
     "price": 19750,
-    "pb": 1.35,
-    "pe": 6.6,
+    "pb": 1.34,
+    "pe": 6.61,
     "mcap": 198868,
     "bvps": 14652.0,
     "nim": 4.03,
@@ -84881,7 +84881,7 @@
     "group": "Tư nhân lớn",
     "price": 21100,
     "pb": 1.26,
-    "pe": 7.82,
+    "pe": 7.81,
     "mcap": 122474,
     "bvps": 16716.0,
     "nim": 2.92,
@@ -84907,8 +84907,8 @@
     "s": "VPB",
     "group": "Tư nhân lớn",
     "price": 23950,
-    "pb": 1.28,
-    "pe": 7.69,
+    "pb": 1.29,
+    "pe": 7.68,
     "mcap": 239500,
     "bvps": 18557.0,
     "nim": 5.23,
@@ -84961,7 +84961,7 @@
     "s": "LPB",
     "group": "Tư nhân lớn",
     "price": 40600,
-    "pb": 2.92,
+    "pb": 2.91,
     "pe": 10.74,
     "mcap": 121284,
     "bvps": 13953.0,
@@ -85015,7 +85015,7 @@
     "s": "STB",
     "group": "Tư nhân vừa",
     "price": 67700,
-    "pb": 2.13,
+    "pb": 2.14,
     "pe": 41.44,
     "mcap": 127631,
     "bvps": 31760.0,
@@ -85042,9 +85042,9 @@
     "s": "VIB",
     "group": "Tư nhân vừa",
     "price": 14050,
-    "pb": 1.11,
+    "pb": 1.1,
     "pe": 7.07,
-    "mcap": 52482,
+    "mcap": 52483,
     "bvps": 12683.0,
     "nim": 3.06,
     "cof": 4.89,
@@ -85069,7 +85069,7 @@
     "s": "TPB",
     "group": "Tư nhân vừa",
     "price": 13000,
-    "pb": 0.93,
+    "pb": 0.92,
     "pe": 5.47,
     "mcap": 41472,
     "bvps": 14080.0,
@@ -85088,7 +85088,7 @@
     "npYoY": 18.37,
     "credit": 343282.0,
     "ppop": 12765.0,
-    "pppop": 3.26,
+    "pppop": 3.25,
     "provRatio": 25.0,
     "ppopYoY": 12.4
    },
@@ -85123,7 +85123,7 @@
     "s": "SSB",
     "group": "Tư nhân vừa",
     "price": 16400,
-    "pb": 1.37,
+    "pb": 1.38,
     "pe": 19.05,
     "mcap": 56888,
     "bvps": 11888.0,
@@ -85169,7 +85169,7 @@
     "npYoY": 48.02,
     "credit": 223759.0,
     "ppop": 8347.0,
-    "pppop": 3.92,
+    "pppop": 3.93,
     "provRatio": 32.9,
     "ppopYoY": 29.7
    },
@@ -85179,7 +85179,7 @@
     "price": 17550,
     "pb": 1.37,
     "pe": 66.46,
-    "mcap": 32690,
+    "mcap": 32691,
     "bvps": 12775.0,
     "nim": 2.39,
     "cof": 4.74,
@@ -85204,7 +85204,7 @@
     "s": "NAB",
     "group": "Tư nhân nhỏ",
     "price": 12550,
-    "pb": 1.06,
+    "pb": 1.07,
     "pe": 5.77,
     "mcap": 27093,
     "bvps": 11712.0,
@@ -85258,8 +85258,8 @@
     "s": "KLB",
     "group": "Tư nhân nhỏ",
     "price": 11350,
-    "pb": 0.98,
-    "pe": 4.13,
+    "pb": 0.99,
+    "pe": 4.12,
     "mcap": 8501,
     "bvps": 11445.0,
     "nim": 4.05,
@@ -85277,7 +85277,7 @@
     "npYoY": 73.99,
     "credit": 77618.0,
     "ppop": 3224.0,
-    "pppop": 2.63,
+    "pppop": 2.64,
     "provRatio": 20.1,
     "ppopYoY": 30.2
    },
@@ -85421,7 +85421,7 @@
     "group": "Tư nhân nhỏ",
     "price": 14500,
     "pb": 3.09,
-    "pe": 160.29,
+    "pe": 160.3,
     "mcap": 42408,
     "bvps": 4702.0,
     "nim": 2.33,
@@ -87281,8 +87281,8 @@
     "d": "2026-10-26",
     "pb": 1.45,
     "pe": 8.61,
-    "mcap": 2703,
-    "pppop": 4.94
+    "mcap": 2702,
+    "pppop": 4.93
    }
   ],
   "from": "2021-01-29",
@@ -87290,8 +87290,8 @@
    "d": "2026-10-26",
    "pb": 1.45,
    "pe": 8.61,
-   "mcap": 2703,
-   "pppop": 4.94
+   "mcap": 2702,
+   "pppop": 4.93
   },
   "pb": {
    "mean": 1.79,
@@ -89008,6 +89008,34 @@
  "news": [
   {
    "d": "2026-10-26",
+   "t": "Ngành ngân hàng cam kết tiên phong, kiến tạo sức bật Đông Nam Bộ",
+   "src": "CafeF",
+   "url": "https://cafef.vn/nganh-ngan-hang-cam-ket-tien-phong-kien-tao-suc-bat-dong-nam-bo-188261026103302771.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
+   "t": "Hơn 1.000 cán bộ nhân viên tại một ngân hàng nghỉ việc, chiếm gần 30% tổng quy mô nhân sự",
+   "src": "CafeF",
+   "url": "https://cafef.vn/hon-1000-can-bo-nhan-vien-tai-mot-ngan-hang-nghi-viec-chiem-gan-30-tong-quy-mo-nhan-su-188261026101609571.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
+   "t": "Từ ngày 26/10, FChoice Awards 2026 trở lại: Cách thức gửi đề cử, tự đề cử những cá nhân, doanh nghiệp có dấu ấn nổi bật trong năm ngay từ bây giờ",
+   "src": "CafeF",
+   "url": "https://cafef.vn/tu-ngay-26-10-fchoice-awards-2026-tro-lai-cach-thuc-gui-de-cu-tu-de-cu-nhung-ca-nhan-doanh-nghiep-co-dau-an-noi-bat-trong-nam-ngay-tu-bay-gio-188261026091645878.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
+   "t": "Giá vàng miếng, vàng nhẫn sáng 26/10 tại SJC, DOJI, PNJ, Bảo Tín Minh Châu và Phú Quý",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-sang-26-10-tai-sjc-doji-pnj-bao-tin-minh-chau-va-phu-quy-188261026070950025.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-26",
    "t": "VCBNeo nâng cao năng lực vận hành nhờ chiến lược số hóa toàn diện",
    "src": "CafeF",
    "url": "https://cafef.vn/vcbneo-nang-cao-nang-luc-van-hanh-nho-chien-luoc-so-hoa-toan-dien-188261024121050195.chn",
@@ -89031,13 +89059,6 @@
   },
   {
    "d": "2026-10-26",
-   "t": "Giá vàng miếng, vàng nhẫn sáng 26/10 tại SJC, DOJI, PNJ, Bảo Tín Minh Châu và Phú Quý",
-   "src": "CafeF",
-   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-sang-26-10-tai-sjc-doji-pnj-bao-tin-minh-chau-va-phu-quy-188261026070950025.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-26",
    "t": "Ngày 26/10, gửi 100 triệu đồng 18 tháng tại Sacombank, SHB, HDBank, MB, VPBank, Techcombank và ACB nhận bao nhiêu tiền lãi?",
    "src": "CafeF",
    "url": "https://cafef.vn/ngay-26-10-gui-100-trieu-dong-18-thang-tai-sacombank-shb-hdbank-mb-vpbank-techcombank-va-acb-nhan-bao-nhieu-tien-lai-18826102607081792.chn",
@@ -89055,27 +89076,6 @@
    "t": "Doanh nghiệp thép bị mở thủ tục phá sản, MB rao bán nhà máy luyện gang rộng hơn 12 ha tại Hải Phòng để thu hồi nợ, giá khởi điểm hơn 300 tỷ đồng",
    "src": "CafeF",
    "url": "https://cafef.vn/doanh-nghiep-thep-bi-mo-thu-tuc-pha-san-mb-rao-ban-nha-may-luyen-gang-rong-hon-12-ha-tai-hai-phong-de-thu-hoi-no-gia-khoi-diem-hon-300-ty-dong-188261025215307863.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-26",
-   "t": "Ngành ngân hàng cam kết tiên phong, kiến tạo sức bật Đông Nam Bộ",
-   "src": "CafeF",
-   "url": "https://cafef.vn/nganh-ngan-hang-cam-ket-tien-phong-kien-tao-suc-bat-dong-nam-bo-188261026103302771.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-26",
-   "t": "Hơn 1.000 cán bộ nhân viên tại một ngân hàng nghỉ việc, chiếm gần 30% tổng quy mô nhân sự",
-   "src": "CafeF",
-   "url": "https://cafef.vn/hon-1000-can-bo-nhan-vien-tai-mot-ngan-hang-nghi-viec-chiem-gan-30-tong-quy-mo-nhan-su-188261026101609571.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-26",
-   "t": "Từ ngày 26/10, FChoice Awards 2026 trở lại: Cách thức gửi đề cử, tự đề cử những cá nhân, doanh nghiệp có dấu ấn nổi bật trong năm ngay từ bây giờ",
-   "src": "CafeF",
-   "url": "https://cafef.vn/tu-ngay-26-10-fchoice-awards-2026-tro-lai-cach-thuc-gui-de-cu-tu-de-cu-nhung-ca-nhan-doanh-nghiep-co-dau-an-noi-bat-trong-nam-ngay-tu-bay-gio-188261026091645878.chn",
    "sym": []
   },
   {
@@ -89655,6 +89655,13 @@
   },
   {
    "d": "2026-10-22",
+   "t": "'Nhiều ngân hàng bị tin tặc xâm nhập hệ thống mấy tháng không biết'",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/nhieu-ngan-hang-bi-tin-tac-xam-nhap-he-thong-may-thang-khong-biet-5135600.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-22",
    "t": "Chiều 22/10: Giá vàng nhẫn tại một doanh nghiệp bất ngờ giảm sâu",
    "src": "CafeF",
    "url": "https://cafef.vn/chieu-22-10-gia-vang-nhan-tai-mot-doanh-nghiep-bat-ngo-giam-sau-188261021234853069.chn",
@@ -89674,13 +89681,6 @@
    "t": "Chứng khoán HD báo lãi 9 tháng gấp 3,7 lần cùng kỳ, vượt xa lợi nhuận cả năm 2025",
    "src": "CafeF",
    "url": "https://cafef.vn/chung-khoan-hd-bao-lai-9-thang-gap-37-lan-cung-ky-vuot-xa-loi-nhuan-ca-nam-2025-18826102214590234.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "'Nhiều ngân hàng bị tin tặc xâm nhập hệ thống mấy tháng không biết'",
-   "src": "VnExpress",
-   "url": "https://vnexpress.net/nhieu-ngan-hang-bi-tin-tac-xam-nhap-he-thong-may-thang-khong-biet-5135600.html",
    "sym": []
   },
   {
@@ -91331,7 +91331,7 @@
   },
   {
    "d": "2026-10-25",
-   "v": 4007.0
+   "v": 4024.3
   }
  ],
  "fee": {
@@ -117452,9 +117452,9 @@
      "<b>Mức lợi suất (23/10):</b> 3 tháng <b>4,22%</b>, 2 năm <b>4,69%</b>, 10 năm <b>5,00%</b>, 30 năm <b>5,33%</b>. So với đầu năm: 2 năm <b>+122 bps</b>, 10 năm <b>+81 bps</b>, 30 năm +47 bps. Đỉnh năm: 10 năm <b>5,31%</b> (5/10), 30 năm <b>5,67%</b> (7/10).",
      "<b>Đường cong dốc ít hơn:</b> chênh 10 năm − 2 năm từ <b>72 bps</b> (đầu năm) xuống <b>31 bps</b>; 30 năm − 10 năm từ 67 xuống 33 bps. Kỳ hạn ngắn tăng nhanh hơn kỳ hạn dài, nghĩa là động lực chính từ đầu năm là lộ trình lãi suất Fed.",
      "<b>Nguyên nhân:</b> (1) Fed tăng lên 3,75–4,00% (9/2026) và thị trường đặt khoảng <b>78%</b> khả năng tăng tiếp ngày 9/12 → kéo kỳ hạn 2 năm; (2) lạm phát kỳ vọng 5 năm (breakeven) từ 2,26% (31/7) lên <b>2,48%</b> (23/10) theo giá dầu → giải thích gần hết phần tăng của 10 năm từ tháng 8 (4,75% → 5,00%); (3) cung trái phiếu lớn giữ phần bù kỳ hạn cao.",
-     "<b>Lan sang các nước:</b> tuần 16/10 → 23/10 lợi suất 10 năm Nhật <b>−12 bps</b> (2,837%), Đức −9 bps (3,39%), Hàn Quốc −8 bps; Nhật giảm mạnh nhất phiên 23/10 vì phản ánh phiên Mỹ một ngày sau và kỳ vọng BOJ thắt chặt giảm trước phiên họp 30/10. USD/JPY về <b>156,8</b>.",
+     "<b>Lan sang các nước:</b> tuần 16/10 → 23/10 lợi suất 10 năm Nhật <b>−12 bps</b> (2,837%), Đức −9 bps (3,39%), Hàn Quốc −8 bps; Nhật giảm mạnh nhất phiên 23/10 vì phản ánh phiên Mỹ một ngày sau và kỳ vọng BOJ thắt chặt giảm trước phiên họp 30/10. USD/JPY về <b>156,8</b>. Kênh trú ẩn khác phản ứng yếu: franc Thụy Sĩ gần như đứng yên so với USD, vàng giảm khoảng 3,7% trong tuần; dòng tiền tránh rủi ro chủ yếu chảy vào trái phiếu Mỹ.",
      "<b>Cung:</b> thâm hụt ngân sách 12 tháng <b>1.993 tỷ USD</b> (9/2026); phát hành ròng coupon 4–9/2026 khoảng <b>691 tỷ USD</b>, quy mô đấu thầu 2 và 5 năm tăng khoảng 3 tỷ USD/kỳ từ tháng 7. Fed đã dừng thu hẹp bảng cân đối nhưng chỉ mua tín phiếu (+18 tỷ USD trong 5 tuần đến 21/10), không hấp thụ kỳ hạn dài.",
-     "<b>Cầu:</b> đấu thầu kỳ hạn dài hút tốt ở lợi suất trên 5%: tái phát hành 10 năm (7/10) tỷ lệ đặt mua/chào bán (bid-to-cover) <b>2,77</b>, nhóm indirect (NHTW, tổ chức nước ngoài, quỹ) nhận khoảng <b>78%</b>, đại lý sơ cấp chỉ 2,5%. Ngược lại, NHTW nước ngoài vẫn bán ròng: Nhật −116 tỷ USD, Trung Quốc −109 tỷ USD trong 12 tháng đến 8/2026.",
+     "<b>Cầu:</b> đo bằng tỷ lệ đặt mua/chào bán (bid-to-cover: tiền đặt mua chia cho lượng bán ra) so với chính kỳ hạn đó trong 5 năm. Phiên 10 năm ngày 7/10 đạt <b>2,77</b> lần, cao nhất 5 năm (bình quân 2,50); 30 năm ngày 8/10 đạt 2,54 (bình quân 2,39). Ngược lại phiên 5 năm ngày 23/9 chỉ <b>2,21</b>, thấp nhất 5 năm. NHTW nước ngoài vẫn bán ròng: Nhật −116 tỷ USD, Trung Quốc −109 tỷ USD trong 12 tháng đến 8/2026.",
      "<b>Hàm ý:</b> lợi suất hạ từ đỉnh giúp tỷ giá dịu (DXY 101,8, USD/VND NHTM ổn định), tạo dư địa cho chủ trương giảm lãi suất của NHNN. Nhưng cầu UST hiện đến từ nhà đầu tư nhạy giá (chỉ mua mạnh khi lợi suất trên 5%), nên nếu PCE ngày 29/10 cao hoặc Fed phát tín hiệu tăng tháng 12, 10 năm dễ quay lại 5,1–5,3% và chênh lệch VND − USD lại thu hẹp."
     ],
     "kpis": [
@@ -117515,10 +117515,10 @@
       ]
      },
      {
-      "title": "Lợi suất toàn cầu giảm theo Mỹ: JGB 10 năm −12 bps trong tuần, yên mạnh lên",
+      "title": "Lợi suất toàn cầu giảm theo Mỹ: JGB 10 năm −12 bps; yên tăng nhẹ, franc Thụy Sĩ và vàng không đóng vai trò trú ẩn",
       "scope": "qt",
       "status": "hạ nhiệt",
-      "note": "Tuần 16/10 → 23/10, lợi suất 10 năm giảm đồng loạt: Mỹ <b>−9 bps</b> (5,09% → 5,00%), Nhật <b>−12 bps</b> (2,958% → 2,837%), Đức −9 bps (3,48% → 3,39%), Hàn Quốc −8 bps (4,18% → 4,10%); riêng Trung Quốc đứng yên quanh 1,64% vì đi theo chu kỳ chính sách riêng. Ba lý do: (1) phiên 22/10 ở Mỹ, cổ phiếu công nghệ bị bán mạnh vì lo ngại lợi nhuận từ AI và căng thẳng Trung Đông đẩy dòng tiền vào trái phiếu, có thêm lệnh mua đóng vị thế bán khống (short covering); (2) kỳ vọng Fed bớt cứng rắn: 2 năm giảm 16 bps cùng phiên, xác suất tăng ngày 9/12 giảm từ khoảng <b>89%</b> xuống khoảng <b>78%</b>; (3) giá dầu Brent hạ từ khoảng 126 (14/10) xuống <b>115 USD/thùng</b> (20/10), bớt lo ngại lạm phát. Nhật giảm mạnh nhất vào <b>23/10</b> (10 năm −7,7 bps, 30 năm −4,8 bps, 2 năm −4,2 bps) vì Tokyo đóng cửa trước khi New York mở nên phản ánh phiên Mỹ một ngày sau; nhà đầu tư cũng đánh giá lại khả năng BOJ thắt chặt tiếp trước phiên họp 30/10 (lãi suất BOJ 1,25% từ 9/2026). Chênh lệch Mỹ − Nhật thu hẹp kéo USD/JPY từ 158,2 về <b>156,8</b>. <b>Nhận định:</b> đây là đợt giảm do Mỹ dẫn dắt, các nguyên nhân (tránh rủi ro, giá dầu hạ) đều có thể đảo chiều nhanh; FOMC 28/10, PCE 29/10 và BOJ 30/10 sẽ cho biết đợt giảm có bền hay không.",
+      "note": "Tuần 16/10 → 23/10, lợi suất 10 năm giảm đồng loạt: Mỹ <b>−9 bps</b> (5,09% → 5,00%), Nhật <b>−12 bps</b> (2,958% → 2,837%), Đức −9 bps (3,48% → 3,39%), Hàn Quốc −8 bps (4,18% → 4,10%); riêng Trung Quốc đứng yên quanh 1,64% vì đi theo chu kỳ chính sách riêng. Ba lý do: (1) phiên 22/10 ở Mỹ, cổ phiếu công nghệ bị bán mạnh vì lo ngại lợi nhuận từ AI và căng thẳng Trung Đông đẩy dòng tiền vào trái phiếu, có thêm lệnh mua đóng vị thế bán khống (short covering); (2) kỳ vọng Fed bớt cứng rắn: 2 năm giảm 16 bps cùng phiên, xác suất tăng ngày 9/12 giảm từ khoảng <b>89%</b> xuống khoảng <b>78%</b>; (3) giá dầu Brent hạ từ khoảng 126 (14/10) xuống <b>115 USD/thùng</b> (20/10), bớt lo ngại lạm phát. Nhật giảm mạnh nhất vào <b>23/10</b> (10 năm −7,7 bps, 30 năm −4,8 bps, 2 năm −4,2 bps) vì Tokyo đóng cửa trước khi New York mở nên phản ánh phiên Mỹ một ngày sau; nhà đầu tư cũng đánh giá lại khả năng BOJ thắt chặt tiếp trước phiên họp 30/10 (lãi suất BOJ 1,25% từ 9/2026). Chênh lệch Mỹ − Nhật thu hẹp kéo USD/JPY từ 158,2 về <b>156,8</b>. <b>Các tài sản trú ẩn khác:</b> yên tăng <b>0,9%</b> (USD/JPY 158,2 → 156,8, 19/10 → 23/10), mạnh nhất phiên 22/10 đúng lúc chênh lệch lợi suất Mỹ − Nhật 10 năm thu hẹp từ 221 xuống 205 bps; phiên 23/10 chênh lệch nới lại 216 bps nhưng yên vẫn tăng nhẹ, tức có một phần mua yên để trú ẩn, còn động lực chính vẫn là chênh lệch lãi suất. Franc Thụy Sĩ gần như đứng yên so với USD (0,825 → <b>0,824</b>), chỉ mạnh lên 0,5% so với EUR trong phiên 22/10 (EUR/CHF 0,926 → 0,921) rồi mất một phần (0,923). Vàng giảm khoảng <b>3,7%</b> trong tuần (4.160 → 4.007 USD/ounce), ngược với vai trò trú ẩn: khi lợi suất thực Mỹ cao và Fed còn khả năng tăng lãi suất, vàng (không trả lãi) kém hấp dẫn hơn trái phiếu. DXY đứng yên quanh 101,7–101,8. Như vậy dòng tiền tránh rủi ro tuần qua chảy chủ yếu vào trái phiếu Mỹ, không lan rộng sang tiền tệ và vàng. <b>Nhận định:</b> đây là đợt giảm do Mỹ dẫn dắt, các nguyên nhân (tránh rủi ro, giá dầu hạ) đều có thể đảo chiều nhanh; FOMC 28/10, PCE 29/10 và BOJ 30/10 sẽ cho biết đợt giảm có bền hay không.",
       "change": "Tuần trước đi ngang (UST 10 năm 5,15% → 5,13%, JGB 2,94% → 2,92%); tuần này giảm 9–14 bps ở Mỹ, Nhật, Đức.",
       "charts": [
        {
@@ -117530,6 +117530,11 @@
         "id": "gJpSpr",
         "last": 130,
         "caption": "Chênh UST − JGB 10 năm và USD/JPY: chênh lệch thu hẹp, yên mạnh lên về 156,8."
+       },
+       {
+        "id": "fxS_chf",
+        "last": 130,
+        "caption": "USD/CHF so với DXY: franc Thụy Sĩ gần như đứng yên trong tuần 19–23/10, không có làn sóng mua trú ẩn rõ."
        }
       ]
      },
@@ -117553,12 +117558,16 @@
       ]
      },
      {
-      "title": "Phía cầu: đấu thầu kỳ hạn dài hút tốt ở lợi suất trên 5%, NHTW nước ngoài vẫn bán ròng",
+      "title": "Phía cầu: đấu thầu 10 và 30 năm mạnh nhất nhiều năm, 5 năm yếu nhất 5 năm; NHTW nước ngoài vẫn bán ròng",
       "scope": "qt",
       "status": "mới",
-      "note": "Đấu thầu tháng 10 cho thấy cầu mạnh khi lợi suất vượt 5%: tái phát hành 10 năm (7/10, lợi suất 5,30%) bid-to-cover <b>2,77</b>, nhóm indirect nhận khoảng <b>78%</b> (tháng 8: 61%), đại lý sơ cấp chỉ phải nhận 2,5%; 30 năm (8/10, 5,62%) indirect khoảng <b>71%</b> (tháng 8: 53%). Kỳ hạn trung bình yếu hơn: đấu thầu 5 năm ngày 23/9 bid-to-cover chỉ <b>2,21</b>, đại lý sơ cấp nhận 13,7%. Về người nắm giữ: NHTW và tổ chức chính thức nước ngoài giảm 65 tỷ USD trong 12 tháng đến 8/2026 (Nhật <b>−116 tỷ</b>, Trung Quốc <b>−109 tỷ</b>), phần mua thêm đến từ khu vực tư nhân (Anh +108 tỷ USD, nơi tập trung quỹ và lưu ký). Trong 4 quý đến Q2/2026, quỹ thị trường tiền tệ mua thêm <b>668 tỷ USD</b> (chủ yếu tín phiếu), Fed +272 tỷ, quỹ tương hỗ +200 tỷ, hộ gia đình (gồm quỹ phòng hộ) +189 tỷ. <b>Nhận định:</b> người mua chính hiện là nhà đầu tư nhạy giá, không phải NHTW, nên cầu chỉ mạnh khi lợi suất đủ cao; đây là lý do 10 năm khó giảm sâu dưới 4,9–5,0% chừng nào thâm hụt và lộ trình Fed chưa đổi.",
+      "note": "<b>Đọc kết quả đấu thầu thế nào:</b> mỗi phiên, Kho bạc Mỹ bán một lượng trái phiếu và nhận đặt mua từ nhà đầu tư. Tỷ lệ đặt mua/chào bán (bid-to-cover) = tổng tiền đặt mua chia cho lượng bán ra; 2,5 nghĩa là cứ 1 USD trái phiếu có 2,5 USD muốn mua. Con số này không có mốc tốt/xấu cố định mà phải so với <b>chính kỳ hạn đó trong quá khứ</b>, vì mỗi kỳ hạn có mức bình thường riêng (5 năm qua: 2 năm khoảng 2,6; 10 năm khoảng 2,5; 30 năm khoảng 2,4). Hai dấu hiệu đọc kèm: (a) tỷ trọng nhóm <i>indirect</i> (NHTW, tổ chức nước ngoài, quỹ đặt qua đại lý) — cao nghĩa là có nhà đầu tư cuối cùng mua để giữ; (b) phần <i>đại lý sơ cấp</i> (các ngân hàng lớn có nghĩa vụ mua phần còn thừa) — càng thấp càng tốt, vì phần đại lý phải ôm thường bị bán lại ra thị trường, đè giá trái phiếu. <b>Kết quả gần nhất:</b> 10 năm (7/10, lợi suất 5,30%) bid-to-cover <b>2,77</b>, cao nhất trong 61 phiên của 5 năm (bình quân 2,50); indirect <b>80%</b> (bình quân 69%), đại lý chỉ phải nhận <b>2,5%</b> (bình quân 13%). 30 năm (8/10, 5,62%) <b>2,54</b>, cao hơn 93% số phiên 5 năm (bình quân 2,39); indirect 72%, đại lý 7%. Ngược lại, kỳ hạn trung bình yếu: 5 năm (23/9, 5,03%) chỉ <b>2,21</b>, thấp nhất 5 năm, đại lý phải nhận 16%; 7 năm 2,42 (thấp hơn bình quân 2,52); 20 năm (15/9) 2,57 nhưng indirect chỉ 53% so với bình quân 67%. <b>Về người nắm giữ:</b> NHTW và tổ chức chính thức nước ngoài giảm 65 tỷ USD trong 12 tháng đến 8/2026 (Nhật <b>−116 tỷ</b>, Trung Quốc <b>−109 tỷ</b>); phần mua thêm đến từ khu vực tư nhân (Anh +108 tỷ USD, nơi tập trung quỹ và lưu ký). Trong 4 quý đến Q2/2026, quỹ thị trường tiền tệ mua thêm <b>668 tỷ USD</b> (chủ yếu tín phiếu), Fed +272 tỷ, quỹ tương hỗ +200 tỷ, hộ gia đình (gồm quỹ phòng hộ) +189 tỷ. <b>Nhận định:</b> cầu với kỳ hạn dài chỉ mạnh lên khi lợi suất vượt 5,3–5,6%, tức người mua là nhà đầu tư nhạy giá chứ không phải NHTW mua bất kể giá. Điều này tạo một mức trần mềm cho lợi suất dài hạn (lên cao thì có người mua), nhưng cũng là lý do 10 năm khó giảm sâu dưới 4,9–5,0% chừng nào thâm hụt và lộ trình Fed chưa đổi. Kỳ hạn 5–7 năm yếu nhất, nhạy nhất với kỳ vọng Fed, là điểm cần theo dõi ở các phiên cuối tháng 10.",
       "change": "",
       "charts": [
+       {
+        "id": "gUsBtc",
+        "caption": "Bid-to-cover từng phiên đấu thầu 10 năm so với bình quân 5 năm (đường đứt): phiên 7/10 lên 2,77, cao nhất 5 năm; cột mờ là tỷ trọng indirect. Các kỳ hạn 30, 20, 5, 2 năm xem trong Chart book (mã gUsBtc)."
+       },
        {
         "id": "gUsAuct",
         "win": 24,
@@ -118691,7 +118700,7 @@
    "id": "R-02",
    "layer": "Quốc tế",
    "rule": "Fed hạ lãi suất / kỳ vọng cắt tăng",
-   "now": "Fed TĂNG 25 bps ngày 16/09/2026 lên 3,75–4,00%; EFFR 3,88%; kỳ vọng (phương pháp FedWatch, giá ZQ 2026-10-26): phiên 28/10 tăng 10%, giảm 0%; đến 09/12 xác suất cao hơn hiện hành 76%",
+   "now": "Fed TĂNG 25 bps ngày 16/09/2026 lên 3,75–4,00%; EFFR 3,88%; kỳ vọng (phương pháp FedWatch, giá ZQ 2026-10-26): phiên 28/10 tăng 8%, giảm 0%; đến 09/12 xác suất cao hơn hiện hành 78%",
    "state": "risk",
    "impact": "Chênh lệch VND–USD hẹp lại, dư địa nới của NHNN giảm"
   },

@@ -13,6 +13,10 @@ def chart_ids():
     out = {}
     for m in re.finditer(r"card\(\{\s*id:\s*'(\w+)',\s*title:\s*(['`])(.*?)\2", js, re.S):
         out[m.group(1)] = re.sub(r'\$\{[^}]*\}', '…', m.group(3))
+    sm = re.search(r"const SAFE = \[(.*?)\];", js)   # chart nhóm trú ẩn an toàn: id ghép 'fxS_' + mã
+    if sm:
+        for m in re.finditer(r"\['(\w+)', '([^']+)'", sm.group(1)):
+            out['fxS_' + m.group(1)] = m.group(2) + ' theo ngày so với DXY'
     for m in re.finditer(r"mk\('(ch\w+)'", js):
         out.setdefault(m.group(1), '(tiêu đề động)')
     return out
