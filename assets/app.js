@@ -1083,6 +1083,14 @@ function show(k) {
   try { history.replaceState(null, '', '#' + k); } catch (e) {}
 }
 $$('#tabbar button').forEach(b => b.onclick = () => { show(b.dataset.tab); window.scrollTo({ top: 0 }); });
+window.FSSHARE = {   // cho hộp chia sẻ ảnh: dựng mọi tab ẩn để chọn được mọi chart; đường dẫn tab › tab con
+  prep() { Object.keys(builders).forEach(k => { if (!built[k]) { builders[k](); built[k] = true; } }); $$('#fin .subtabs button').forEach(b => finCharts(b.dataset.sub)); },
+  path(card) {
+    const pane = card.closest('.pane'), sp = card.closest('[data-subp]'), tb = pane && document.querySelector(`#tabbar [data-tab="${pane.id}"]`);
+    const sb = sp && document.querySelector(`#${pane.id} .subtabs [data-sub="${sp.dataset.subp}"]`);
+    return [tb ? tb.textContent.trim() : '', sb ? sb.textContent.trim() : ''].filter(Boolean);
+  }
+};
 document.addEventListener('click', e => { const g = e.target.closest('[data-gofin]'); if (g) { e.preventDefault(); goFin(g.dataset.gofin, g.dataset.card); return; } const a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); show(a.dataset.go); } });
 /* ---------- chế độ Gọn / Chi tiết + nút (i) ---------- */
 const UI_KEY = 'fs-bank-ui';

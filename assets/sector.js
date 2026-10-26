@@ -2634,5 +2634,15 @@ header(); footer();
 decorate();
 try { history.scrollRestoration = 'manual'; } catch (e) {}
 scrollTo(0, 0); addEventListener('load', () => setTimeout(() => scrollTo(0, 0), 0));
-window.FSNAV = { show, openP, openC };   // cho lịch kinh tế đi tới chart liên quan
+window.FSNAV = { show, openP, openC };
+window.FSSHARE = {   // cho hộp chia sẻ ảnh: dựng tab ẩn để chọn được mọi chart, và đường dẫn tab › tab con của từng chart
+  prep: buildAll,
+  path(card) {
+    const pane = card.closest('.pane'), pp = card.closest('[data-pp]'), cc = card.closest('[data-cc]');
+    const tb = pane && document.querySelector(`#tabbar [data-tab="${pane.id}"]`), top = tb ? tb.textContent.trim().replace(/^\d+\.\s*/, '') : '';
+    const mid = pp ? PANE_LBL[pp.dataset.pp] : '';
+    const leaf = cc ? (cc.dataset.cc === 'gl' ? 'Toàn cầu' : (GCOUNTRY.find(x => x[0] === cc.dataset.cc) || ['', ''])[1]) : '';
+    return [top, mid, leaf].filter(Boolean);
+  }
+};   // cho lịch kinh tế đi tới chart liên quan
 })();
