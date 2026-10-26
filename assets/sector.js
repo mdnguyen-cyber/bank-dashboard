@@ -905,6 +905,14 @@ function polIns() {
   return `Mức hiện tại: ${T.map(row).join('; ')}. Từ đầu năm <b>${yUp} ngân hàng trung ương đã tăng</b>, ${yDn} đã giảm lãi suất.`
     + how('Khi nhiều ngân hàng trung ương cùng tăng lãi suất, nguyên nhân thường là cú sốc lạm phát chung (giá dầu, giá lương thực) chứ không phải yếu tố riêng một nước; mặt bằng lãi suất toàn cầu cao giữ lợi suất trái phiếu và đồng USD ở mức cao, thu hẹp dư địa nới lỏng của NHNN.');
 }
+function btcIns() {
+  const S = (GD.btc || {}).stats; if (!S) return '';
+  const row = (k, n) => { const t = S[k]; if (!t) return ''; const up = t.btc >= t.avg5y;
+    return `<b>${n}</b> phiên ${dvn(t.d)}: <b>${nf(t.btc, 2)}</b> lần, ${up ? 'cao hơn' : 'thấp hơn'} bình quân 5 năm ${nf(t.avg5y, 2)} (cao hơn ${t.pct5y}% số phiên trong 5 năm); indirect ${pc(t.ind, 0)} so với bình quân ${pc(t.ind5y, 0)}, đại lý sơ cấp phải nhận ${pc(t.pd, 0)} so với ${pc(t.pd5y, 0)}`; };
+  return `Bid-to-cover = tổng tiền nhà đầu tư đặt mua chia cho lượng Kho bạc bán ra; 2,5 nghĩa là cứ 1 USD trái phiếu chào bán có 2,5 USD đặt mua. Con số chỉ có ý nghĩa khi so với chính kỳ hạn đó trong quá khứ, vì mỗi kỳ hạn có mức bình thường riêng (kỳ hạn ngắn thường cao hơn kỳ hạn dài). Hai dấu hiệu đi kèm: tỷ trọng người mua indirect cao và phần đại lý sơ cấp (primary dealer — các ngân hàng có nghĩa vụ mua phần còn thừa) thấp nghĩa là trái phiếu được nhà đầu tư cuối cùng mua thật, không phải dồn vào kho của đại lý. `
+    + [row('10Y', '10 năm'), row('30Y', '30 năm'), row('5Y', '5 năm')].filter(Boolean).join('. ') + '.'
+    + how('Phiên đấu thầu yếu (bid-to-cover thấp hơn bình quân, đại lý sơ cấp phải nhận nhiều) thường đẩy lợi suất lên ngay trong ngày vì thị trường hiểu là cầu không theo kịp lượng phát hành; phiên mạnh cho thấy ở mức lợi suất đó đã có người mua sẵn sàng, giúp lợi suất khó tăng thêm.');
+}
 const PMI_K = [['us_ism_mfg', 'Mỹ (ISM)', C.navy], ['ea_pmi_mfg', 'Khu vực euro', C.tealInk], ['de_pmi_mfg', 'Đức', C.grey], ['cn_pmi_mfg', 'Trung Quốc (NBS)', C.gold], ['vn_pmi', 'Việt Nam', C.red]];
 function pmiIns() {
   const r = PMI_K.map(([k, n]) => [n, glast(k)]).filter(([, l]) => l.v != null); if (!r.length) return '';
@@ -1171,6 +1179,7 @@ function gUSFlow() {
     ${card({ id: 'gUsHold', title: 'Ai nắm UST: cơ cấu theo nhóm', h: 'tall', sub: '% tổng TPCP Mỹ lưu hành, theo quý (Fed Z.1) · "Khác" gồm doanh nghiệp, GSE, chính phủ liên bang…', src: 'Nguồn: Federal Reserve Z.1 Financial Accounts qua FRED' })}
     ${card({ id: 'gUsAbs', title: 'Ai hấp thụ lượng phát hành 4 quý gần nhất', h: 'tall', sub: 'tỷ USD · thay đổi lượng UST nắm giữ theo nhóm (không gồm "Khác")', insight: '<span id="gUsAbsIns"></span>', src: 'Nguồn: Federal Reserve Z.1 qua FRED' })}
     ${card({ id: 'gUsAuct', title: 'Đấu thầu: ai trúng thầu', h: 'tall', sub: '% lượng trúng thầu theo tháng phát hành · indirect = NHTW, tổ chức nước ngoài và quỹ đặt qua đại lý; direct = tổ chức trong nước đặt trực tiếp; primary dealer = phần còn lại đại lý phải nhận', body: tfPick('usAuct', [['coupons', 'Coupon (notes, bonds, TIPS, FRN)'], ['bills', 'Tín phiếu']]), src: 'Nguồn: U.S. Treasury Fiscal Data — Treasury Securities Auctions Data' })}
+    ${card({ id: 'gUsBtc', title: 'Sức cầu tại phiên đấu thầu: tỷ lệ đặt mua/chào bán (bid-to-cover)', h: 'tall', sub: 'mỗi điểm = một phiên đấu thầu · đường đứt = bình quân 5 năm của chính kỳ hạn đó · cột mờ = % người mua indirect (NHTW, tổ chức nước ngoài, quỹ) trong phần trúng thầu cạnh tranh', body: tfPick('usBtc', [['10Y', '10 năm'], ['30Y', '30 năm'], ['20Y', '20 năm'], ['5Y', '5 năm'], ['2Y', '2 năm']]), insight: btcIns(), src: 'Nguồn: U.S. Treasury Fiscal Data — Treasury Securities Auctions Data' })}
     ${card({ id: 'gUsTic', title: 'Nước ngoài nắm UST theo quốc gia', h: 'tall', sub: 'tỷ USD, cuối tháng (TIC) · Nhật, Trung Quốc, Anh và các trung tâm lưu ký (Bỉ, Luxembourg, Cayman)', src: 'Nguồn: U.S. Treasury — TIC Major Foreign Holders of Treasury Securities' })}
     ${card({ id: 'gUsDef', title: 'Thâm hụt ngân sách liên bang', sub: 'tỷ USD · cột = thặng dư/thâm hụt từng tháng · đường = cộng dồn 12 tháng', src: gsrc(['tsy_deficit']) })}
   </div>
@@ -1200,6 +1209,12 @@ function drUSFlow() {
   wireTf('usAuct', k => { const g = A[k || 'coupons'], a0 = A.d.findIndex(d => d >= '2021-01');
     const obj = Object.fromEntries(Object.entries(g).filter(([n]) => n !== 'amt').map(([n, v]) => [n, v.slice(a0)]));
     stk('gUsAuct', A.d.slice(a0).map(mvn), obj, { pct: true, colors: [C.purple, C.tealInk, C.navy, C.gold, C.grey] }); });
+  wireTf('usBtc', k => { const B = GD.btc; if (!B) return; const r = B.s[k || '10Y'] || [], st = B.stats[k || '10Y'] || {};
+    mk('gUsBtc', { type: 'bar', data: { labels: r.map(x => dvn(x[0])), datasets: [
+      { type: 'line', label: 'Bid-to-cover', data: r.map(x => x[1]), borderColor: C.navy, backgroundColor: C.navy, pointRadius: 3, borderWidth: 1.8, dp: 2, unit: ' lần', yAxisID: 'y', order: 1 },
+      { type: 'bar', label: '% indirect', data: r.map(x => x[3]), backgroundColor: 'rgba(31,138,141,.18)', dp: 1, unit: '%', yAxisID: 'y1', order: 2 }] },
+      options: { plugins: { refLines: { lines: st.avg5y ? [{ value: st.avg5y, label: 'bình quân 5 năm ' + nf(st.avg5y, 2), color: C.red }] : [] } },
+        scales: { y: numAxis('lần', { beginAtZero: false, ticks: { callback: v => nf(v, 1) } }), y1: pctAxis('', { position: 'right', grid: { display: false }, min: 0, max: 100 }) } } }); });
   const tic = GD.tic || {}, tk = ['Japan', 'China', 'United Kingdom', 'Belgium', 'Luxembourg', 'Cayman Islands'].filter(k => tic[k]);
   const td = [...new Set(tk.flatMap(k => tic[k].d))].sort().filter(d => d >= '2018-01');
   const tm = k => { const m = {}; tic[k].d.forEach((d, i) => m[d] = tic[k].v[i]); return td.map(d => m[d] ?? null); };

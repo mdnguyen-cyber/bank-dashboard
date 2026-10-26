@@ -68,7 +68,7 @@ def auctions():
               'primary_dealer_accepted,direct_bidder_accepted,indirect_bidder_accepted,soma_accepted,fima_noncomp_accepted,bid_to_cover_ratio,high_yield,high_discnt_rate,high_investment_rate,floating_rate,inflation_index_security')
     rows = fd_all('/v1/accounting/od/auctions_query', 'auction_date:gte:2018-01-01', fields)
     agg = defaultdict(lambda: defaultdict(float))
-    last = []
+    last, hist = [], []
     for r in rows:
         tot = f(r['total_accepted'])
         if not tot:
@@ -84,11 +84,26 @@ def auctions():
                          'amt': round(tot / 1e9, 1), 'btc': f(r['bid_to_cover_ratio']), 'y': f(r['high_yield']) or f(r['high_investment_rate']),
                          'pd': round((f(r['primary_dealer_accepted']) or 0) / 1e9, 1), 'dir': round((f(r['direct_bidder_accepted']) or 0) / 1e9, 1),
                          'ind': round((f(r['indirect_bidder_accepted']) or 0) / 1e9, 1), 'soma': round((f(r['soma_accepted']) or 0) / 1e9, 1)})
+            tc = term_class(r['security_term'])
+            if tc and r.get('inflation_index_security') != 'Yes' and r.get('floating_rate') != 'Yes' and f(r['bid_to_cover_ratio']):
+                comp = sum((f(r[k]) or 0) for k in ['primary_dealer_accepted', 'direct_bidder_accepted', 'indirect_bidder_accepted']) or tot   # phần cạnh tranh của khu vực tư nhân
+                hist.append([r['auction_date'], tc, f(r['bid_to_cover_ratio']), f(r['high_yield']),
+                             round((f(r['indirect_bidder_accepted']) or 0) / comp * 100, 1), round((f(r['primary_dealer_accepted']) or 0) / comp * 100, 1)])
     out = defaultdict(dict)
     for (m, g), a in sorted(agg.items()):
         out[m][g] = {k: round(v, 1) for k, v in a.items()}
-    last.sort(key=lambda x: x['d'])
-    return dict(sorted(out.items())), last[-40:]
+    last.sort(key=lambda x: x['d']); hist.sort()
+    return dict(sorted(out.items())), last[-40:], hist
+
+
+def term_class(t):
+    """'9-Year 10-Month' (tái phát hành) → '10Y'; chỉ các kỳ hạn coupon chuẩn."""
+    m = re.match(r'(\d+)-Year(?:\s+(\d+)-Month)?', t or '')
+    if not m:
+        return None
+    y = int(m.group(1)) + (int(m.group(2)) if m.group(2) else 0) / 12
+    best = min([2, 3, 5, 7, 10, 20, 30], key=lambda k: abs(k - y))
+    return f'{best}Y' if abs(best - y) <= 0.5 else None
 
 
 def tic_parse(txt):
@@ -154,13 +169,13 @@ def main():
         try:
             v = fn()
             if name == 'auctions':
-                res['auctions'], res['recent'] = v
+                res['auctions'], res['recent'], res['btcHist'] = v
             else:
                 res[name] = v
             rep[name] = 'ok'
         except Exception as e:  # noqa: BLE001
             rep[name] = str(e)[:300]
-            for k in (['auctions', 'recent'] if name == 'auctions' else [name]):
+            for k in (['auctions', 'recent', 'btcHist'] if name == 'auctions' else [name]):
                 if k in old:
                     res[k] = old[k]
         print(name, rep[name], file=sys.stderr)

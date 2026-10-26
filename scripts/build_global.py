@@ -252,6 +252,23 @@ if UP.exists():
                                   'Không cạnh tranh + FIMA': [None if v is None else round(v + (w or 0), 1) for v, w in zip(share(g_, 'noncomp_accepted'), share(g_, 'fima_noncomp_accepted'))]}
                              for g_ in ['bills', 'coupons']}}
     G['auctRecent'] = U.get('recent', [])
+    # tỷ lệ đặt mua/chào bán (bid-to-cover) và tỷ trọng indirect, đại lý sơ cấp từng phiên coupon danh nghĩa, theo kỳ hạn; so với quá khứ của chính kỳ hạn đó
+    bh = U.get('btcHist') or []
+    if bh:
+        bt = {}
+        for d_, tc, btc, y_, ind, pd_ in bh:
+            if d_ >= '2018-01-01':
+                bt.setdefault(tc, []).append([d_, btc, y_, ind, pd_])
+        stats = {}
+        for tc, rows in bt.items():
+            v5 = [r[1] for r in rows if r[0] >= str(int(rows[-1][0][:4]) - 5) + rows[-1][0][4:]]
+            last = rows[-1]; prev6 = [r[1] for r in rows[-7:-1]]
+            stats[tc] = {'d': last[0], 'btc': last[1], 'y': last[2], 'ind': last[3], 'pd': last[4],
+                         'avg6': round(sum(prev6) / len(prev6), 2) if prev6 else None, 'avg5y': round(sum(v5) / len(v5), 2), 'min5y': min(v5), 'max5y': max(v5),
+                         'pct5y': round(sum(1 for x in v5 if x < last[1]) / len(v5) * 100), 'n5y': len(v5),
+                         'ind5y': round(sum(r[3] for r in rows if r[0] >= str(int(rows[-1][0][:4]) - 5) + rows[-1][0][4:]) / len(v5), 1),
+                         'pd5y': round(sum(r[4] for r in rows if r[0] >= str(int(rows[-1][0][:4]) - 5) + rows[-1][0][4:]) / len(v5), 1)}
+        G['btc'] = {'s': {tc: [r for r in rows if r[0] >= '2021-01-01'] for tc, rows in bt.items()}, 'stats': stats}
     tic = U.get('tic', {})
     G['tic'] = {c: pack({m: v for m, v in tic[c].items() if m >= '2015'}, 1) for c in ['Japan', 'China', 'United Kingdom', 'Total', 'Official', 'Cayman Islands', 'Belgium', 'Luxembourg', 'Canada'] if c in tic}
     G['ustFetched'] = U.get('fetched')
