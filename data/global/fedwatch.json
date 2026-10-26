@@ -1,6 +1,6 @@
 {
- "asOf": "2026-10-26 13:56",
- "fetched": "2026-10-26 14:07 UTC",
+ "asOf": "2026-10-26 14:43",
+ "fetched": "2026-10-26 14:53 UTC",
  "target": [
   3.75,
   4.0
@@ -32,11 +32,11 @@
     "p": {
      "Cut 50+ bps": 0.1,
      "Cut 25bps": 0.1,
-     "No change": 94.2,
-     "Hike 25bps": 5.5,
+     "No change": 93.5,
+     "Hike 25bps": 6.5,
      "Hike 50+ bps": 0.4
     },
-    "volume": 68377578
+    "volume": 68642585
    }
   },
   {
@@ -57,15 +57,15 @@
      "Cut 25bps": 1.5,
      "Fed maintains rate": 23.5,
      "Hike 25bps": 74.5,
-     "Hike >25bps": 4.0
+     "Hike >25bps": 3.5
     }
    },
    "poly": {
     "slug": "fed-decision-in-december-20260729232808632",
     "p": {
-     "Cut 50+ bps": 0.9,
+     "Cut 50+ bps": 0.7,
      "Cut 25bps": 0.7,
-     "No change": 20.5,
+     "No change": 21.5,
      "Hike 25bps": 75.5,
      "Hike 50+ bps": 2.8
     },
@@ -98,12 +98,12 @@
     "slug": "fed-decision-in-january-20260729233815502",
     "p": {
      "Cut 50+ bps": 0.9,
-     "Cut 25bps": 1.1,
+     "Cut 25bps": 1.0,
      "No change": 68.5,
      "Hike 25bps": 28.5,
      "Hike 50+ bps": 1.4
     },
-    "volume": 913776
+    "volume": 913825
    }
   },
   {
@@ -132,8 +132,8 @@
   },
   {
    "date": "2027-04-28",
-   "start": 4.3443,
-   "end": 4.43,
+   "start": 4.3493,
+   "end": 4.435,
    "chg_bps": 8.6,
    "probs": {
     "3.75-4.00": 2.7,
@@ -157,8 +157,8 @@
   },
   {
    "date": "2027-06-09",
-   "start": 4.43,
-   "end": 4.5229,
+   "start": 4.435,
+   "end": 4.5279,
    "chg_bps": 9.3,
    "probs": {
     "3.75-4.00": 1.7,
@@ -228,7 +228,7 @@
     "p": {
      "Cut >25bps": 5.5,
      "Cut 25bps": 6.0,
-     "Fed maintains rate": 79.5,
+     "Fed maintains rate": 79.0,
      "Hike 25bps": 11.0,
      "Hike >25bps": 3.0
     }
@@ -944,18 +944,18 @@
   },
   "2027-04": {
    "ticker": "ZQJ27.CBT",
-   "px": 95.65,
-   "rate": 4.35
+   "px": 95.645,
+   "rate": 4.355
   },
   "2027-05": {
    "ticker": "ZQK27.CBT",
-   "px": 95.57,
-   "rate": 4.43
+   "px": 95.565,
+   "rate": 4.435
   },
   "2027-06": {
    "ticker": "ZQM27.CBT",
-   "px": 95.505,
-   "rate": 4.495
+   "px": 95.5,
+   "rate": 4.5
   },
   "2027-07": {
    "ticker": "ZQN27.CBT",
