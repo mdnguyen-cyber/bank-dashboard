@@ -12,7 +12,38 @@ URL = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json'
 KEEP = {'High': 'H', 'Medium': 'M'}
 
 
+TAS = 'https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.xml'
+
+
+def ust_schedule():
+    """Lịch đấu thầu dự kiến của Kho bạc Mỹ (công bố theo quý, gồm cả ngày thông báo phát hành quý) → data/calendar/ust_auctions.json.
+    Chỉ giữ trái phiếu coupon (Note, Bond, TIPS, FRN); lưu dồn để giữ các phiên đã qua."""
+    import xml.etree.ElementTree as ET
+    out_p = ROOT / 'data/calendar/ust_auctions.json'
+    old = json.loads(out_p.read_text(encoding='utf-8')) if out_p.exists() else []
+    req = urllib.request.Request(TAS, headers={'User-Agent': 'Mozilla/5.0 (fs-bank-dashboard)'})
+    root = ET.fromstring(urllib.request.urlopen(req, timeout=40).read())
+    strip = lambda t: t.split('}')[-1]
+    idx = {(e['term'], e['tips'], e['frn'], e['auction']): e for e in old}
+    for node in root.iter():
+        if strip(node.tag) != 'AuctionCalendarDate':
+            continue
+        f = {strip(c.tag): (c.text or '').strip() for c in node}
+        if f.get('SecurityType') not in ('Note', 'Bond') or not f.get('AuctionDate'):
+            continue
+        e = {'term': f.get('SecurityTermWeekYear', ''), 'type': f['SecurityType'], 'tips': f.get('TIPS') == 'Yes', 'frn': f.get('FloatingRate') == 'Yes',
+             'reopen': f.get('ReOpeningIndicator') == 'Yes', 'ann': f.get('AnnouncementDate', '')[:10], 'auction': f['AuctionDate'][:10], 'settle': f.get('SettlementDate', '')[:10]}
+        idx[(e['term'], e['tips'], e['frn'], e['auction'])] = e
+    out = sorted(idx.values(), key=lambda e: (e['auction'], e['term']))
+    out_p.write_text(json.dumps(out, ensure_ascii=False, indent=0), encoding='utf-8')
+    print(f'Lịch đấu thầu UST: {len(out)} phiên coupon')
+
+
 def main():
+    try:
+        ust_schedule()
+    except Exception as e:  # noqa: BLE001
+        print('Không tải được lịch đấu thầu UST:', e)
     req = urllib.request.Request(URL, headers={'User-Agent': 'Mozilla/5.0 (fs-bank-dashboard)'})
     try:
         raw = json.loads(urllib.request.urlopen(req, timeout=30).read().decode('utf-8'))

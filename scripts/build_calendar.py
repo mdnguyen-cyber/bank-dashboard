@@ -69,6 +69,31 @@ def main():
         for r in json.loads(bp.read_text(encoding='utf-8'))['ev']:
             for t in BT[r['k']]:
                 add({'c': 'USD', 't': t, 'd': to_utc(r['d'], r['time'], 'America/New_York'), 'i': 'H', 'f': '', 'p': '', 'src': 'bls'})
+    # đấu thầu TPCP Mỹ kỳ hạn coupon (lịch dự kiến của Kho bạc), kết quả lúc 13:00 giờ New York; thông báo phát hành quý (quarterly refunding)
+    up = CAL / 'ust_auctions.json'
+    bt = (G.get('btc') or {}).get('s') or {}
+    if up.exists():
+        import re as _re
+        for r in json.loads(up.read_text(encoding='utf-8')):
+            m = _re.match(r'(\d+)-Year', r['term'])
+            if not m:
+                continue
+            tc = m.group(1) + 'Y'
+            kind = ' TIPS' if r['tips'] else ' FRN' if r['frn'] else ''
+            e = add({'c': 'USD', 't': f'UST {tc}{kind} Auction', 'd': to_utc(r['auction'], '13:00', 'America/New_York'), 'i': 'M' if kind else 'H', 'f': '', 'p': '', 'src': 'ust',
+                     'note': 'Kết quả đấu thầu: tỷ lệ đặt mua/chào bán (bid-to-cover), tỷ trọng người mua indirect và phần đại lý sơ cấp phải nhận cho biết sức cầu với trái phiếu Mỹ ở mức lợi suất hiện tại; phiên yếu thường đẩy lợi suất lên ngay trong ngày.'
+                                     + (' Phiên tái phát hành.' if r.get('reopen') else '')})
+            if not kind and tc in bt:   # số thực tế: bid-to-cover phiên đó; kỳ trước: phiên liền trước cùng kỳ hạn
+                rows = bt[tc]
+                hit = [x for x in rows if x[0] == r['auction']]
+                prv = [x for x in rows if x[0] < r['auction']]
+                if hit:
+                    e['a'] = f'{hit[0][1]:.2f}'
+                if prv:
+                    e['p'] = f'{prv[-1][1]:.2f}'
+            if not kind and tc == '10Y' and not r.get('reopen') and r.get('ann'):
+                add({'c': 'USD', 't': 'Treasury Quarterly Refunding', 'd': to_utc(r['ann'], '08:30', 'America/New_York'), 'i': 'H', 'f': '', 'p': '', 'src': 'ust',
+                     'note': 'Kho bạc Mỹ công bố quy mô phát hành trái phiếu coupon cho quý tới. Tăng quy mô kỳ hạn dài nghĩa là cung trái phiếu nhiều hơn, thường gây áp lực tăng lợi suất kỳ hạn dài.'})
     # FOMC: ngày họp và dự báo theo xác suất CME FedWatch
     fw = G.get('fedwatch') or {}
     tgt = fw.get('target') or []
@@ -150,7 +175,7 @@ def main():
         by.setdefault((e['c'], e['t']), []).append(e)
     for lst in by.values():
         for a, b in zip(lst, lst[1:]):
-            if not a.get('a') and b.get('p') and a['d'] < now:
+            if not a.get('a') and b.get('p') and a['d'] < now and a.get('src') != 'ust':
                 a['a'] = b['p']; a['ap'] = 1
 
     lo = (today - timedelta(days=400)).isoformat()

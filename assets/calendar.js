@@ -22,6 +22,8 @@
     [/^French Flash (\w+) PMI$/, (m, k) => `Pháp: PMI ${k === 'Services' ? 'dịch vụ' : 'sản xuất'} sơ bộ`], [/^German Flash (\w+) PMI$/, (m, k) => `Đức: PMI ${k === 'Services' ? 'dịch vụ' : 'sản xuất'} sơ bộ`],
     [/^Revised UoM Consumer Sentiment$/, 'Niềm tin tiêu dùng ĐH Michigan (điều chỉnh)'], [/^Prelim UoM Consumer Sentiment$/, 'Niềm tin tiêu dùng ĐH Michigan (sơ bộ)'],
     [/^Revised UoM Inflation Expectations$/, 'Kỳ vọng lạm phát ĐH Michigan (điều chỉnh)'], [/^Prelim UoM Inflation Expectations$/, 'Kỳ vọng lạm phát ĐH Michigan (sơ bộ)'],
+    [/^UST (\d+Y) Auction$/, (m, k) => `Đấu thầu TPCP Mỹ ${k} (bid-to-cover)`], [/^UST (\d+Y) TIPS Auction$/, (m, k) => `Đấu thầu TPCP Mỹ ${k} chống lạm phát (TIPS)`], [/^UST (\d+Y) FRN Auction$/, (m, k) => `Đấu thầu TPCP Mỹ ${k} lãi suất thả nổi (FRN)`],
+    [/^Treasury Quarterly Refunding$/, 'Kho bạc Mỹ công bố phát hành quý (quarterly refunding)'],
     [/^(.+) Speaks$/, (m, w) => `${w.replace(/^Fed Chair/, 'Chủ tịch Fed').replace(/^BOE Gov/, 'Thống đốc BoE').replace(/^ECB President/, 'Chủ tịch ECB').replace(/^BOJ Gov/, 'Thống đốc BOJ')} phát biểu`],
   ];
   const vname = t => { for (const [rx, v] of NAME) { const m = t.match(rx); if (m) return typeof v === 'function' ? v(...m) : v; } return t; };
@@ -48,6 +50,7 @@
     ['EUR', /CPI/, { id: 'gEaHicp', p: 'intl', c: 'ea', n: 'Lạm phát khu vực euro' }], ['EUR', /Main Refinancing|ECB/, { id: 'gEaRate', p: 'intl', c: 'ea', n: 'Lãi suất ECB' }],
     ['JPY', /BOJ/, { id: 'gJpRate', p: 'intl', c: 'jp', n: 'Lãi suất BOJ' }], ['JPY', /CPI/, { id: 'gJpCpi', p: 'intl', c: 'jp', n: 'Lạm phát Nhật' }], ['CNY', /CPI|PPI/, { id: 'gCnPx', p: 'intl', c: 'cn', n: 'CPI và PPI Trung Quốc' }],
     ['VND', /CPI/, { id: 'chCpi', p: 'dom', n: 'Lạm phát Việt Nam' }],
+    ['USD', /^UST \d+Y Auction$/, { id: 'gUsBtc', p: 'intl', c: 'us', n: 'Sức cầu tại phiên đấu thầu UST' }], ['USD', /Quarterly Refunding/, { id: 'gUsNet', p: 'intl', c: 'us', n: 'Phát hành ròng UST' }],
     ...['GBP', 'CAD', 'AUD', 'NZD'].map(c => [c, /CPI/, { id: 'gGlCpi', p: 'intl', c: 'gl', n: 'Lạm phát CPI các nước' }]),
     ...['GBP', 'CAD', 'AUD', 'NZD', 'CHF'].map(c => [c, /Bank Rate|Overnight Rate|Cash Rate|Policy Rate|SNB/, { id: 'gGlPol', p: 'intl', c: 'gl', n: 'Lãi suất điều hành các NHTW' }]),
   ];
