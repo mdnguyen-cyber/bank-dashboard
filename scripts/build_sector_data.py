@@ -70,7 +70,10 @@ def main():
     for d in raw:
         if d['tool'] != 'wi_data_macro':
             continue
-        for s in d['response'].get('data', []):
+        dat = d['response'].get('data', []) if isinstance(d['response'], dict) else []
+        for s in (dat if isinstance(dat, list) else []):
+            if not isinstance(s, dict) or 'values' not in s:   # bỏ qua kết quả list_indicators hoặc dạng bảng
+                continue
             p = pref.get(s.get('time_type'), 0)
             for v in s['values']:
                 k = ym(v['date'])
@@ -351,6 +354,29 @@ def main():
                            'npat': [r(pttm(i, 'is190') / 1e3, 1) for i in range(3, len(pqs))],
                            'src': 'BCTC hợp nhất 26 ngân hàng niêm yết, cộng 4 quý gần nhất'}
     D['latest'] = {'quarter': QL[-1], 'priceDate': lastday, 'rows': latest}
+
+    # P/B lịch sử từng NH: cuối mỗi quý (ratio_bank) + mọi phiên có trong các lần kéo ratio_daily; trung vị ngành theo cùng ngày
+    import calendar as _cal
+    pbh = {s_: {} for s_ in BANKS}
+    for qi, ql in enumerate(QL):
+        q_, y_ = int(ql[1]), int(ql[3:])
+        dq = f'{y_}-{q_ * 3:02d}-{_cal.monthrange(y_, q_ * 3)[1]:02d}'
+        for s_ in BANKS:
+            v = (banks[s_].get('pb') or [None] * len(QL))[qi]
+            if v: pbh[s_][dq] = v
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily':
+            for x in rows(d['response']):
+                if x.get('symbol') in pbh and x.get('pb'):
+                    pbh[x['symbol']][x['trading_date'][:10]] = r(x['pb'])
+    days = sorted({k for v in pbh.values() for k in v})
+    medv = []
+    for k in days:
+        xs = [v[k] for v in pbh.values() if k in v]
+        if len(xs) >= 10:
+            medv.append([k, r(statistics.median(xs))])
+    D['pbHist'] = {'banks': {s_: sorted([k, v] for k, v in pbh[s_].items()) for s_ in BANKS}, 'median': medv,
+                   'note': 'cuối mỗi quý và các phiên gần đây'}
 
     # tổng hợp ngành: trung vị theo nhóm + bình quân gia quyền theo dư nợ cho NPL, LDR, CASA (xấp xỉ)
     def wavg(key, qi, grp=None):
