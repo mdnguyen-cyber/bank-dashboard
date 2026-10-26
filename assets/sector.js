@@ -2472,7 +2472,7 @@ function paneQuick() {
   ${u.concerns.map((c, i) => `${c.scope && (i === 0 || u.concerns[i - 1].scope !== c.scope) ? `<h3 class="qscope">${QSCOPE[c.scope] || ''}</h3>` : ''}
   <section class="qc">
     <div class="qc-h"><span class="qn">${i + 1}</span>${f(`concerns.${i}.title`, esc(c.title), 'h3')}${E ? `<select data-st="${i}">${Object.entries(ST).map(([k, [, l]]) => `<option value="${k}"${k === c.status ? ' selected' : ''}>${l}</option>`).join('')}</select>` : stPill(c.status)}${ed.has(`concerns.${i}.status`) ? '<span class="pill watch" title="Chuyên viên đổi trạng thái">đã đổi</span>' : ''}</div>
-    ${f(`concerns.${i}.note`, c.note, 'p', 'qnote')}
+    ${f(`concerns.${i}.note`, c.note, 'div', 'qnote')}
     ${c.change || E ? `<p class="qchg"><b>So với bản trước:</b> ${f(`concerns.${i}.change`, c.change || '')}</p>` : ''}
     <div class="grid ${qCharts(c).length > 1 ? 'g2' : ''} gap">${qCharts(c).map((g, j) => SPEC[g.id] ? `
       <article class="card qchart"><h3 class="sub">${esc(g.title || cardMeta(SPEC[g.id].el).title)}</h3>
