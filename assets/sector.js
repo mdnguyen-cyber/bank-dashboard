@@ -912,6 +912,25 @@ function polIns() {
   return `Mức hiện tại: ${T.map(row).join('; ')}. Từ đầu năm <b>${yUp} ngân hàng trung ương đã tăng</b>, ${yDn} đã giảm lãi suất.`
     + how('Khi nhiều ngân hàng trung ương cùng tăng lãi suất, nguyên nhân thường là cú sốc lạm phát chung (giá dầu, giá lương thực) chứ không phải yếu tố riêng một nước; mặt bằng lãi suất toàn cầu cao giữ lợi suất trái phiếu và đồng USD ở mức cao, thu hẹp dư địa nới lỏng của NHNN.');
 }
+function jgbCurveIns() {
+  const J = GD.jgbCurve; if (!J) return '';
+  const c = n => J.c.find(x => x.n === n), now = c('Hiện tại'), y0 = c('Đầu năm'), y5 = c('5 năm trước'), ix = t => J.t.indexOf(t);
+  const ch = (a, t) => a && now ? (now.v[ix(t)] - a.v[ix(t)]) * 100 : null;
+  const T = ['2Y', '10Y', '30Y'].filter(t => ix(t) >= 0);
+  return `Hiện tại (${dvn(now.d)}): ${T.map(t => `${t} <b>${pc(now.v[ix(t)], 3)}</b>`).join(', ')}. Từ đầu năm: ${T.map(t => `${t} ${sg(ch(y0, t), 0, ' bps')}`).join(', ')}${y5 ? `; so với 5 năm trước: ${T.map(t => `${t} ${sg(ch(y5, t), 0, ' bps')}`).join(', ')}` : ''}.`
+    + how('Lợi suất JGB tăng khi BoJ tăng lãi suất và mua ít trái phiếu hơn; kỳ hạn dài còn chịu thêm lo ngại về chi tiêu ngân sách. JGB lợi suất cao hơn khiến nhà đầu tư Nhật bớt mua trái phiếu nước ngoài (trong đó có UST), tạo áp lực lên lợi suất toàn cầu và hỗ trợ đồng yên.');
+}
+function jgbSlopeIns() {
+  const a = glast('jp_s30_10_d'), b = glast('jp_s10_2_d'); if (a.v == null) return '';
+  const y0 = k => { const x = gs(k), i = x.d.findIndex(d => d >= a.d.slice(0, 4) + '-01-01'); return i >= 0 ? x.v[i] : null; };
+  return `30Y − 10Y <b>${nf(a.v, 0)} bps</b> (đầu năm ${nf(y0('jp_s30_10_d'), 0)}), 10Y − 2Y <b>${nf(b.v, 0)} bps</b> (đầu năm ${nf(y0('jp_s10_2_d'), 0)}) · ${dvn(a.d)}.`;
+}
+function jgbBtcIns() {
+  const S = (GD.jgbAuct || {}).stats; if (!S || !Object.keys(S).length) return 'Đang nạp kết quả đấu thầu.';
+  const row = (k) => { const t = S[k]; if (!t) return ''; return `<b>${k}</b> phiên ${dvn(t.d)}: bid-to-cover <b>${nf(t.btc, 2)}</b> (bình quân 5 năm qua ${nf(t.avg5y, 2)}${t.pct5y != null ? `, cao hơn ${t.pct5y}% số phiên` : ''}), tail ${t.tail != null ? nf(t.tail, 2) : '–'} (bình quân ${t.tail5y != null ? nf(t.tail5y, 2) : '–'})`; };
+  return ['10Y', '20Y', '30Y', '40Y'].map(row).filter(Boolean).join('. ') + '.'
+    + how('Phiên yếu (bid-to-cover thấp hơn bình quân, tail lớn) cho thấy nhà đầu tư chỉ mua khi được giảm giá, thường đẩy lợi suất kỳ hạn đó tăng ngay trong ngày; với JGB kỳ hạn siêu dài (20Y–40Y), cầu phụ thuộc lớn vào công ty bảo hiểm nhân thọ.');
+}
 function btcIns() {
   const S = (GD.btc || {}).stats; if (!S) return '';
   const row = (k, n) => { const t = S[k]; if (!t) return ''; const up = t.btc >= t.avg5y;
@@ -1312,6 +1331,10 @@ function gJP() {
     ${card({ id: 'gJpRate', title: 'BOJ: lãi suất qua đêm và JGB 10 năm', sub: '%/năm, trung bình tháng', src: gsrc(['jp_rate', 'jp_10y']) })}
     ${card({ id: 'gJpJgb', title: 'Lợi suất JGB theo ngày: 2, 10, 30 năm', h: 'tall', sub: '%/năm, theo ngày · MOF công bố cuối mỗi ngày giao dịch', src: 'Bộ Tài chính Nhật Bản (MOF) — JGB Interest Rate' })}
     ${card({ id: 'gJpSpr', title: 'Chênh UST − JGB 10 năm và USD/JPY', h: 'tall', sub: 'bps (trục trái) · USD/JPY (trục phải) · chênh thu hẹp thường kéo JPY mạnh lên', src: 'U.S. Treasury; MOF Nhật Bản; ECB (tỷ giá tham chiếu, quy đổi chéo)' })}
+    ${card({ id: 'gJpCurve', title: 'Đường cong lợi suất JGB', h: 'tall', sub: '%/năm theo kỳ hạn 1Y–40Y · hiện tại so với 1 tuần, 1 tháng, đầu năm, 1 năm và 5 năm trước', insight: jgbCurveIns(), src: 'Bộ Tài chính Nhật Bản (MOF) — JGB Interest Rate (đường cong lợi suất par)' })}
+    ${card({ id: 'gJpSlope', title: 'Độ dốc đường cong JGB: 30Y − 10Y và 10Y − 2Y', h: 'tall', sub: 'bps, theo ngày từ 2021 · dốc lên = kỳ hạn dài đòi bù cao hơn (lo ngại tài khoá, cầu từ bảo hiểm và BoJ giảm)', insight: jgbSlopeIns(), src: 'Bộ Tài chính Nhật Bản (MOF) — JGB Interest Rate' })}
+    ${card({ id: 'gJpBtc', title: 'Sức cầu tại phiên đấu thầu JGB: bid-to-cover và tail', h: 'tall', sub: 'mỗi điểm = một phiên · bid-to-cover = khối lượng đặt thầu cạnh tranh / trúng thầu · cột = tail (giá bình quân − giá thấp nhất trúng thầu, yên/100 yên; càng nhỏ càng tốt) · đường đứt = bình quân 5 năm qua', body: tfPick('jpBtc', [['10Y', '10Y'], ['30Y', '30Y'], ['20Y', '20Y'], ['40Y', '40Y'], ['5Y', '5Y'], ['2Y', '2Y']]), insight: jgbBtcIns(), src: 'Bộ Tài chính Nhật Bản (MOF) — Auction Results; bid-to-cover và tail FinSuccess tính từ số MOF công bố' })}
+    ${card({ id: 'gJpLong', title: 'JGB 10Y theo ngày từ 2016', h: 'tall', sub: '%/năm · từ giai đoạn kiểm soát đường cong lợi suất (YCC) tới khi BoJ thoát lãi suất âm (3/2024)', src: 'Bộ Tài chính Nhật Bản (MOF) — JGB Interest Rate' })}
     ${card({ id: 'gJpBsA', title: 'Bảng cân đối BoJ: tài sản theo cấu phần', h: 'tall', sub: 'nghìn tỷ JPY, cuối tháng · JGB giảm = BoJ thu hẹp mua (QT theo lộ trình giảm mua từ 08/2024)',
       insight: B ? `JGB BoJ nắm <b>${nf(B.a.JGB[nB], 0)} nghìn tỷ JPY</b>, ${sg(B.a.JGB[nB] - B.a.JGB[nB - 12], 0, ' nghìn tỷ')} trong 12 tháng; ETF ${nf(B.a['ETF + J-REIT'][nB], 0)} nghìn tỷ, cho vay ${nf(B.a['Cho vay'][nB], 0)} nghìn tỷ.` : '', src: 'Nguồn: Bank of Japan — BOJ Time-Series Data Search (Bank of Japan Accounts)' })}
     ${card({ id: 'gJpBsL', title: 'Bảng cân đối BoJ: nguồn vốn theo cấu phần', h: 'tall', sub: 'nghìn tỷ JPY, cuối tháng · tiền gửi NH tại BoJ (current account) là thanh khoản dư thừa của hệ thống', src: 'Nguồn: Bank of Japan — BOJ Time-Series Data Search' })}
@@ -1337,6 +1360,16 @@ function drJP() {
     mk('gJpSpr', { type: 'line', data: { labels: ds.map(dvn), datasets: [L('UST − JGB 10 năm', ds.map(d => sp.v[sp.d.indexOf(d)]), C.navy, { unit: ' bps', dp: 0, borderWidth: 2.2 }), L('USD/JPY', ds.map(d => fm[d] ?? null), C.red, { yAxisID: 'y1', unit: '', dp: 2, spanGaps: true })] },
       options: { scales: { y: numAxis('bps'), y1: numAxis('USD/JPY', { position: 'right', grid: { display: false }, beginAtZero: false }) } } });
   }
+  const JC = GD.jgbCurve;
+  if (JC) mk('gJpCurve', { type: 'line', data: { labels: JC.t, datasets: JC.c.map((c, i) => L(`${c.n} (${dvn(c.d)})`, c.v, [C.navy, C.teal, C.tealInk, C.red, C.grey, C.gold][i] || C.grey, { pointRadius: 3, borderWidth: i ? 1.6 : 2.6, borderDash: i === 1 ? [2, 2] : i >= 4 ? [4, 3] : [], dp: 3 })) }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
+  if (gs('jp_s30_10_d').v.length) mk('gJpSlope', { type: 'line', data: gLines(['jp_s30_10_d', 'jp_s10_2_d'], ['30Y − 10Y', '10Y − 2Y'], [C.red, C.navy], { unit: ' bps', dp: 0, from: '2021-01-01' }), options: { scales: { y: numAxis('bps') } } });
+  if (gs('jp_10y_dl').v.length) mk('gJpLong', { type: 'line', data: gLines(['jp_10y_dl'], ['JGB 10Y'], [C.navy], { dp: 3, from: '2016-01-01' }), options: { plugins: { refLines: { lines: [{ value: 0, label: '0%', color: C.grey }] } }, scales: { y: pctAxis('') } } });
+  wireTf('jpBtc', k => { const A = GD.jgbAuct; if (!A) return; const r = (A.s[k || '10Y'] || []).filter(x => x[0] >= '2021-01-01'), st = A.stats[k || '10Y'] || {};
+    mk('gJpBtc', { type: 'bar', data: { labels: r.map(x => dvn(x[0])), datasets: [
+      { type: 'line', label: 'Bid-to-cover', data: r.map(x => x[1]), borderColor: C.navy, backgroundColor: C.navy, pointRadius: 3, borderWidth: 1.8, dp: 2, unit: ' lần', yAxisID: 'y', order: 1 },
+      { type: 'bar', label: 'Tail (yên/100 yên)', data: r.map(x => x[3]), backgroundColor: 'rgba(192,57,43,.30)', dp: 2, unit: '', yAxisID: 'y1', order: 2 }] },
+      options: { plugins: { refLines: { lines: st.avg5y ? [{ value: st.avg5y, label: 'bình quân 5 năm qua ' + nf(st.avg5y, 2), color: C.tealInk }] : [] } },
+        scales: { y: numAxis('lần', { beginAtZero: false, ticks: { callback: v => nf(v, 1) } }), y1: numAxis('tail', { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 2) } }) } } }); });
   const B = GD.bojbs, H = GD.jgbHold;
   if (B) { const f = B.d.findIndex(d => d >= '2016-01'), cut = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, v.slice(f)]));
     stk('gJpBsA', B.d.slice(f).map(mvn), cut(B.a), { type: 'line', total: true, unit: ' nghìn tỷ JPY' });

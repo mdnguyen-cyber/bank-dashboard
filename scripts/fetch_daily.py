@@ -14,6 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 P = ROOT / 'data/global/daily.json'
 UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdnguyen-cyber/bank-dashboard)'}
 FROM = '2021-01-01'   # giữ tối thiểu 5 năm số liệu ngày
+FROM_JGB = '2016-01-01'   # JGB: 10 năm, đủ mọi kỳ hạn MOF công bố
+JGB_T = ['1Y', '2Y', '3Y', '4Y', '5Y', '6Y', '7Y', '8Y', '9Y', '10Y', '15Y', '20Y', '25Y', '30Y', '40Y']
 
 
 def get(url, enc='utf-8', tries=3):
@@ -77,9 +79,9 @@ def jgb():
         idx = {h.strip(): i for i, h in enumerate(hdr)}
         for r in rows:
             d = jdate(r[0]) if r else None
-            if not d or d < FROM:
+            if not d or d < FROM_JGB:
                 continue
-            out[d] = {t: fnum(r[idx[c]]) if c in idx and idx[c] < len(r) else None for t, c in [('2Y', '2Y'), ('5Y', '5Y'), ('10Y', '10Y'), ('20Y', '20Y'), ('30Y', '30Y'), ('40Y', '40Y')]}
+            out[d] = {t: fnum(r[idx[t]]) if t in idx and idx[t] < len(r) else None for t in JGB_T}
     return dict(sorted(out.items()))
 
 

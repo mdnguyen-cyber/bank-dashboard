@@ -440,6 +440,44 @@ if DP.exists():
         ld = _d.fromisoformat(last)
         snaps = [('Hiện tại', last), ('1 tuần trước', at((ld - _t(days=7)).isoformat())), ('1 tháng trước', at((ld - _t(days=30)).isoformat())), ('Đầu năm', next((d for d in ds if d >= f'{ld.year}-01-01'), None)), ('1 năm trước', at((ld - _t(days=365)).isoformat()))]
         G['ustCurve'] = {'t': TEN, 'c': [{'n': n, 'd': d, 'v': [U[d].get(t) for t in TEN]} for n, d in snaps if d]}
+    # Nhật: đường cong JGB (mọi kỳ hạn MOF công bố), độ dốc theo ngày, kết quả đấu thầu
+    J = {d: x for d, x in DY.get('jgb', {}).items() if isinstance(x, dict)}
+    if J:
+        from datetime import date as _d, timedelta as _t
+        JT = ['1Y', '2Y', '3Y', '4Y', '5Y', '6Y', '7Y', '8Y', '9Y', '10Y', '15Y', '20Y', '25Y', '30Y', '40Y']
+        jd = sorted(J)
+        def jat(target):
+            c = [d for d in jd if d <= target]
+            return c[-1] if c else None
+        jl = _d.fromisoformat(jd[-1])
+        jsn = [('Hiện tại', jd[-1]), ('1 tuần trước', jat((jl - _t(days=7)).isoformat())), ('1 tháng trước', jat((jl - _t(days=30)).isoformat())),
+               ('Đầu năm', next((d for d in jd if d >= f'{jl.year}-01-01'), None)), ('1 năm trước', jat((jl - _t(days=365)).isoformat())), ('5 năm trước', jat((jl - _t(days=1826)).isoformat()))]
+        JT = [t for t in JT if J[jd[-1]].get(t) is not None]
+        G['jgbCurve'] = {'t': JT, 'c': [{'n': n, 'd': d, 'v': [J[d].get(t) for t in JT]} for n, d in jsn if d]}
+        for t in ['1Y', '20Y', '40Y']:
+            put(f'jp_{t.lower()}_d', {d: x[t] for d, x in J.items() if x.get(t) is not None and d >= DAILY_FROM}, 3)
+        put('jp_s30_10_d', {d: (x['30Y'] - x['10Y']) * 100 for d, x in J.items() if x.get('30Y') is not None and x.get('10Y') is not None and d >= DAILY_FROM}, 1)
+        put('jp_s10_2_d', {d: (x['10Y'] - x['2Y']) * 100 for d, x in J.items() if x.get('10Y') is not None and x.get('2Y') is not None and d >= DAILY_FROM}, 1)
+        put('jp_10y_dl', {d: x['10Y'] for d, x in J.items() if x.get('10Y') is not None}, 3)   # 10 năm theo ngày, lịch sử dài (từ 2016)
+_ja = ROOT / 'data/global/jgb_auct.json'
+if _ja.exists():
+    JA = json.loads(_ja.read_text(encoding='utf-8'))
+    rows = JA.get('rows') or []
+    bt = {}
+    for r in rows:
+        bt.setdefault(r['t'], []).append([r['d'], r['btc'], r.get('y_avg'), r.get('tail'), round((r['y_low'] - r['y_avg']) * 100, 1) if r.get('y_low') is not None and r.get('y_avg') is not None else None])
+    stats = {}
+    for tc, rr in bt.items():
+        rr.sort()
+        cut = str(int(rr[-1][0][:4]) - 5) + rr[-1][0][4:]
+        v5 = [x for x in rr if x[0] >= cut]
+        prev = [x[1] for x in v5[:-1]]
+        tl = [x[3] for x in v5 if x[3] is not None]
+        stats[tc] = {'d': rr[-1][0], 'btc': rr[-1][1], 'y': rr[-1][2], 'tail': rr[-1][3], 'n5y': len(v5), 'from': v5[0][0],
+                     'avg5y': round(sum(x[1] for x in v5) / len(v5), 2), 'min5y': min(x[1] for x in v5), 'max5y': max(x[1] for x in v5),
+                     'pct5y': round(sum(1 for x in prev if x < rr[-1][1]) / len(prev) * 100) if prev else None,
+                     'tail5y': round(sum(tl) / len(tl), 3) if tl else None, 'prev': rr[-2][1] if len(rr) > 1 else None}
+    G['jgbAuct'] = {'s': bt, 'stats': stats, 'fetched': JA.get('fetched'), 'report': JA.get('report')}
 
 # kỳ vọng lãi suất Fed theo phiên FOMC (scripts/fetch_fedwatch.py)
 _fw = ROOT / 'data/global/fedwatch.json'
