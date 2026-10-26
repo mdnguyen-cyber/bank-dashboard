@@ -16,34 +16,61 @@ TAS = 'https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.xml
 
 
 def ust_schedule():
-    """Lịch đấu thầu dự kiến của Kho bạc Mỹ (công bố theo quý, gồm cả ngày thông báo phát hành quý) → data/calendar/ust_auctions.json.
-    Chỉ giữ trái phiếu coupon (Note, Bond, TIPS, FRN); lưu dồn để giữ các phiên đã qua."""
+    """Lịch đấu thầu TPCP Mỹ kỳ hạn coupon → data/calendar/ust_auctions.json (lưu dồn, giữ các phiên đã qua).
+    Nguồn 1: lịch dự kiến theo quý của Kho bạc (XML, gồm cả ngày thông báo phát hành quý).
+    Nguồn 2 (dự phòng, chỉ các phiên đã thông báo ~1 tuần trước): Fiscal Data API upcoming_auctions.
+    Trạng thái từng nguồn ghi vào data/calendar/ust_status.json."""
+    import re as _re
     import xml.etree.ElementTree as ET
     out_p = ROOT / 'data/calendar/ust_auctions.json'
     old = json.loads(out_p.read_text(encoding='utf-8')) if out_p.exists() else []
-    req = urllib.request.Request(TAS, headers={'User-Agent': 'Mozilla/5.0 (fs-bank-dashboard)'})
-    root = ET.fromstring(urllib.request.urlopen(req, timeout=40).read())
-    strip = lambda t: t.split('}')[-1]
     idx = {(e['term'], e['tips'], e['frn'], e['auction']): e for e in old}
-    for node in root.iter():
-        if strip(node.tag) != 'AuctionCalendarDate':
-            continue
-        f = {strip(c.tag): (c.text or '').strip() for c in node}
-        if f.get('SecurityType') not in ('Note', 'Bond') or not f.get('AuctionDate'):
-            continue
-        e = {'term': f.get('SecurityTermWeekYear', ''), 'type': f['SecurityType'], 'tips': f.get('TIPS') == 'Yes', 'frn': f.get('FloatingRate') == 'Yes',
-             'reopen': f.get('ReOpeningIndicator') == 'Yes', 'ann': f.get('AnnouncementDate', '')[:10], 'auction': f['AuctionDate'][:10], 'settle': f.get('SettlementDate', '')[:10]}
-        idx[(e['term'], e['tips'], e['frn'], e['auction'])] = e
+    st = {}
+    def put(e):
+        k = (e['term'], e['tips'], e['frn'], e['auction'])
+        idx[k] = {**idx.get(k, {}), **{a: b for a, b in e.items() if b not in ('', None)}}
+    hdr = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36', 'Accept': 'application/xml,text/xml,*/*'}
+    try:
+        root = ET.fromstring(urllib.request.urlopen(urllib.request.Request(TAS, headers=hdr), timeout=40).read())
+        strip = lambda t: t.split('}')[-1]; n = 0
+        for node in root.iter():
+            if strip(node.tag) != 'AuctionCalendarDate':
+                continue
+            f = {strip(c.tag): (c.text or '').strip() for c in node}
+            if f.get('SecurityType') not in ('Note', 'Bond') or not f.get('AuctionDate'):
+                continue
+            put({'term': f.get('SecurityTermWeekYear', ''), 'type': f['SecurityType'], 'tips': f.get('TIPS') == 'Yes', 'frn': f.get('FloatingRate') == 'Yes',
+                 'reopen': f.get('ReOpeningIndicator') == 'Yes', 'ann': f.get('AnnouncementDate', '')[:10], 'auction': f['AuctionDate'][:10], 'settle': f.get('SettlementDate', '')[:10]}); n += 1
+        st['xml'] = f'ok {n}'
+    except Exception as e:  # noqa: BLE001
+        st['xml'] = 'lỗi: ' + str(e)[:200]
+    try:
+        url = ('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/upcoming_auctions'
+               '?fields=security_type,security_term,reopening,announcemt_date,auction_date,issue_date&page[size]=200')
+        js = json.loads(urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': hdr['User-Agent']}), timeout=40).read().decode('utf-8'))
+        n = 0
+        for r in js.get('data', []):
+            if r.get('security_type') not in ('Note', 'Bond', 'TIPS', 'FRN'):
+                continue
+            term = _re.sub(r'\s+', ' ', r.get('security_term') or '')
+            m = _re.match(r'(\d+)-Year', term)
+            if not m:
+                continue
+            tips, frn = r['security_type'] == 'TIPS', r['security_type'] == 'FRN'
+            yrs = int(m.group(1)) + (1 if _re.search(r'(\d+)-Month', term) and int(_re.search(r'(\d+)-Month', term).group(1)) >= 6 else 0)
+            put({'term': f'{yrs}-Year', 'type': 'Bond' if yrs >= 20 else 'Note', 'tips': tips, 'frn': frn, 'reopen': r.get('reopening') == 'Yes',
+                 'ann': (r.get('announcemt_date') or '')[:10], 'auction': (r.get('auction_date') or '')[:10], 'settle': (r.get('issue_date') or '')[:10]}); n += 1
+        st['fiscaldata'] = f'ok {n}'
+    except Exception as e:  # noqa: BLE001
+        st['fiscaldata'] = 'lỗi: ' + str(e)[:200]
     out = sorted(idx.values(), key=lambda e: (e['auction'], e['term']))
     out_p.write_text(json.dumps(out, ensure_ascii=False, indent=0), encoding='utf-8')
-    print(f'Lịch đấu thầu UST: {len(out)} phiên coupon')
+    (ROOT / 'data/calendar/ust_status.json').write_text(json.dumps({'at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ'), 'n': len(out), **st}, ensure_ascii=False), encoding='utf-8')
+    print('Lịch đấu thầu UST:', st, len(out), 'phiên')
 
 
 def main():
-    try:
-        ust_schedule()
-    except Exception as e:  # noqa: BLE001
-        print('Không tải được lịch đấu thầu UST:', e)
+    ust_schedule()
     req = urllib.request.Request(URL, headers={'User-Agent': 'Mozilla/5.0 (fs-bank-dashboard)'})
     try:
         raw = json.loads(urllib.request.urlopen(req, timeout=30).read().decode('utf-8'))
