@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-26T01:18:44Z",
+ "fetched": "2026-10-26T02:02:01Z",
  "report": {
   "us_cpi": [
    {
@@ -1265,6 +1265,141 @@
    {
     "id": "oecd:TWN.M.N.CPI.PA._T.N.GY",
     "error": "HTTP Error 404: Not Found"
+   }
+  ],
+  "cpi_gb": [
+   {
+    "id": "bis:GB",
+    "n": 200,
+    "last": "2026-08-01"
+   },
+   {
+    "id": "oecd:GBR.M.N.CPI.PA._T.N.GY",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "fred:CPALTT01GBM659N",
+    "n": 183,
+    "last": "2025-03-01"
+   }
+  ],
+  "cpi_ca": [
+   {
+    "id": "bis:CA",
+    "n": 200,
+    "last": "2026-08-01"
+   },
+   {
+    "id": "oecd:CAN.M.N.CPI.PA._T.N.GY",
+    "n": 201,
+    "last": "2026-09-01"
+   },
+   {
+    "id": "fred:CPALTT01CAM659N",
+    "n": 183,
+    "last": "2025-03-01"
+   }
+  ],
+  "cpi_au": [
+   {
+    "id": "bisq:AU",
+    "error": "HTTP Error 404: "
+   },
+   {
+    "id": "oecd:AUS.Q.N.CPI.PA._T.N.GY",
+    "n": 66,
+    "last": "2026-06-01"
+   },
+   {
+    "id": "fred:CPALTT01AUQ659N",
+    "n": 61,
+    "last": "2025-01-01"
+   }
+  ],
+  "cpi_nz": [
+   {
+    "id": "bisq:NZ",
+    "error": "HTTP Error 404: "
+   },
+   {
+    "id": "oecd:NZL.Q.N.CPI.PA._T.N.GY",
+    "n": 66,
+    "last": "2026-06-01"
+   },
+   {
+    "id": "fred:CPALTT01NZQ659N",
+    "n": 55,
+    "last": "2023-07-01"
+   }
+  ],
+  "pol_jp": [
+   {
+    "id": "cbpol:JP",
+    "n": 8,
+    "last": "2026-10-20"
+   }
+  ],
+  "pol_gb": [
+   {
+    "id": "cbpol:GB",
+    "n": 27,
+    "last": "2026-10-19"
+   },
+   {
+    "id": "fred:IRSTCI01GBM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "pol_ca": [
+   {
+    "id": "cbpol:CA",
+    "n": 31,
+    "last": "2026-10-19"
+   },
+   {
+    "id": "fred:IRSTCI01CAM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "pol_au": [
+   {
+    "id": "cbpol:AU",
+    "n": 32,
+    "last": "2026-10-15"
+   },
+   {
+    "id": "fred:IRSTCI01AUM156N",
+    "n": 201,
+    "last": "2026-09-01"
+   }
+  ],
+  "pol_nz": [
+   {
+    "id": "cbpol:NZ",
+    "n": 35,
+    "last": "2026-10-16"
+   },
+   {
+    "id": "fred:IRSTCI01NZM156N",
+    "n": 180,
+    "last": "2024-12-01"
+   }
+  ],
+  "pol_ch": [
+   {
+    "id": "cbpol:CH",
+    "n": 14,
+    "last": "2026-10-20"
+   }
+  ],
+  "pol_kr": [
+   {
+    "id": "cbpol:KR",
+    "n": 27,
+    "last": "2026-10-08"
    }
   ],
   "cn_cpi": [

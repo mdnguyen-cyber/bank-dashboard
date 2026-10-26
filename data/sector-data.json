@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-26T01:23Z"
+  "auto": "2026-10-26T02:07Z"
  },
  "idx": {
   "now": {
@@ -85338,10 +85338,10 @@
    {
     "s": "BAB",
     "group": "Tư nhân nhỏ",
-    "price": 10600,
-    "pb": 0.95,
-    "pe": 10.21,
-    "mcap": 12217,
+    "price": 10300,
+    "pb": 0.92,
+    "pe": 9.92,
+    "mcap": 11871,
     "bvps": 11169.0,
     "nim": 2.05,
     "cof": 6.13,
@@ -85358,7 +85358,7 @@
     "npYoY": 7.39,
     "credit": 137890.0,
     "ppop": 2106.0,
-    "pppop": 5.8,
+    "pppop": 5.64,
     "provRatio": 29.5,
     "ppopYoY": 35.6
    },
@@ -85419,10 +85419,10 @@
    {
     "s": "NVB",
     "group": "Tư nhân nhỏ",
-    "price": 14500,
-    "pb": 3.09,
-    "pe": 160.3,
-    "mcap": 42408,
+    "price": 14900,
+    "pb": 3.18,
+    "pe": 164.72,
+    "mcap": 43578,
     "bvps": 4702.0,
     "nim": 2.33,
     "cof": 5.45,
@@ -85439,7 +85439,7 @@
     "npYoY": null,
     "credit": 133527.0,
     "ppop": 1188.0,
-    "pppop": 35.69,
+    "pppop": 36.67,
     "provRatio": 77.6,
     "ppopYoY": null
    }
