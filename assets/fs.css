@@ -694,3 +694,7 @@ h3.grp-h small{font-size:12px;font-weight:400;color:#8a93a3}
 .l22 td,.l22 th{white-space:nowrap}.l22 td:last-child{white-space:normal}
 .l22 td:last-child{font-size:12px;min-width:220px;max-width:300px}
 .rkt{font:700 13px Arial;color:var(--navy);margin:6px 0 4px}.rkt span{font-weight:400;color:var(--ink2)}
+/* backend.html */
+.bemeta{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 12px;margin:4px 0 10px;font-size:13px}
+.bemeta dt{color:var(--muted);font-weight:700}.bemeta dd{margin:0;color:var(--ink2)}
+.betab td{font-size:12.5px;vertical-align:top}.betab code,.bemeta code{font-size:11.5px;background:#f2f4f8;padding:1px 4px;border-radius:4px}

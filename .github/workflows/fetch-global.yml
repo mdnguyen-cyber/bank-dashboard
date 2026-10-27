@@ -42,6 +42,7 @@ jobs:
           python scripts/build_hm_hist.py || echo "build_hm_hist lỗi"
           python scripts/build_cmd.py || echo "build_cmd lỗi"
           python scripts/vimo_risk_models.py || echo "vimo_risk_models lỗi"
+          python scripts/build_catalog.py || echo "build_catalog lỗi"
       - name: Commit nếu có số mới và deploy lại trang
         env:
           GH_TOKEN: ${{ github.token }}
@@ -57,6 +58,7 @@ jobs:
           [ -f data/hm-hist.js ] && git add data/hm-hist.js
           [ -f data/cmd-data.js ] && git add data/cmd-data.js
           [ -f data/vimo-risk.js ] && git add data/vimo-risk.js
+          [ -f data/catalog.js ] && git add data/catalog.js
           git add -A data/calendar; [ -f data/calendar-data.js ] && git add data/calendar-data.js
           if git diff --cached --quiet; then echo "Không có số mới"; exit 0; fi
           git commit -m "Số liệu quốc tế $(date -u +%Y-%m-%d) (tự động)"
