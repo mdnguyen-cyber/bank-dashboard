@@ -38,6 +38,7 @@ nên khi cần bù lịch sử thì kéo theo từng quý (from/to ≤ 3 tháng,
 Khi có BCTC quý mới (mùa báo cáo: tháng 1, 4, 7, 10), kéo lại các truy vấn `fs_bank`, `fs_bank_notes`, `ratio_bank`, `ratio_bank_ttm`,
 `ratio_common_ttm`, `bank_car_tt41` với cùng tham số như file cũ trong `data/raw/wi/` (đọc `request` của file cũ, thêm năm/quý mới).
 Cơ cấu cho vay/huy động ở tab Tài chính › Tổng quan: `wi_data_companies get_data endpoint_name=fs_bank_notes filters={"symbol":"CTG,VCB,BID,TCB,MBB,ACB","year":"<năm>","quarter":"1,2,3,4","consolidation_id":"2"}` với cột `symbol,year,quarter,fnx13,fnx14,fnx18,fnx33–35,fnx38,39,44–48,50,fnx52–55,58–71,74–76,fnx104,107,110,fnx112–116,118,119,fnx121–123,125–128` (giống file `wi_data_companies_fs_bank_notes_*` có cột fnx112).
+Riêng CTG, nợ xử lý bằng dự phòng thực tế: sau mỗi BCTC quý/bán niên/năm, `wi_data_document_miner search` (ticker CTG, loai_tai_lieu 7, query "biến động dự phòng rủi ro cho vay khách hàng, sử dụng dự phòng rủi ro tín dụng trong kỳ") → thêm số lũy kế đầu năm (triệu đồng) vào `data/backfill/ctg_writeoff.json`.
 Riêng CTG: khi VietinBank đăng "Điểm tin BCTC" quý mới (investor.vietinbank.vn › Điểm tin BCTC, trang 2), thêm số "Cho vay/Tiền gửi theo phân khúc khách hàng" (nghìn tỷ) vào `data/backfill/ctg_ir_segments.json`; kiểm tổng khớp dư nợ, tiền gửi BCTC.
 
 Lịch sử dài cho bản đồ nhiệt (Việt Nam) nằm ở `data/backfill/vn_hist.json` (`scripts/vn_hist_backfill.py`); chỉ cần chạy lại khi kéo thêm lịch sử.

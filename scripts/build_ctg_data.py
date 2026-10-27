@@ -280,6 +280,23 @@ def build(raw):
             row['ppopTTM'] = round(sum(x['ppop'] for x in last4), 1)
         if row['nplAmt']:
             row['llrInclAccrued'] = round(-row['llp'] / (row['nplAmt'] + row['accrued']) * 100, 1)
+    # nợ xử lý bằng dự phòng THỰC TẾ (thuyết minh biến động dự phòng cho vay KH, lũy kế đầu năm) thay cho số ước tính khi có
+    _wf = ROOT / f'data/backfill/{TICKER.lower()}_writeoff.json'
+    if _wf.exists():
+        _y = json.loads(_wf.read_text(encoding='utf-8'))['ytd']
+        for i, row in enumerate(Q):
+            yy, qq = _y.get(str(row['year']), {}), row['quarter']
+            cur, prv = yy.get(str(qq)), (0 if qq == 1 else yy.get(str(qq - 1)))
+            if cur is None or prv is None or i == 0:
+                continue
+            wo = round((cur - prv) / 1e3, 1)   # triệu → tỷ
+            row['writeOffAct'] = wo
+            p = Q[i - 1]
+            if row.get('nplAmt') is not None and p.get('nplAmt') is not None:
+                form = row['nplAmt'] - p['nplAmt'] + wo
+                row['nplFormation'] = round(form, 1)
+                row['nplFormationRate'] = round(form / ((row['loansGross'] + p['loansGross']) / 2) * 400, 2)
+        D['writeOffSrc'] = json.loads(_wf.read_text(encoding='utf-8'))['_src']
     D['quarterly'] = Q
     qn_ = Q[-1]
     D['meta'].update({'roe': qn_['roe'], 'roa': qn_['roa'], 'nim': qn_['nim'], 'cir': qn_['cir'], 'casa': qn_['casa'],
@@ -289,7 +306,7 @@ def build(raw):
                           'NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).')
     D['formula'] = {
         'creditCost': 'Chi phí dự phòng 4 quý gần nhất / dư nợ cho vay KH bình quân 5 quý (BNK-13)',
-        'nplFormation': 'NPL cuối − NPL đầu + nợ xử lý bằng dự phòng; nợ xử lý ≈ dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ (BNK-11, ước tính; chi phí dự phòng gồm cả dự phòng khác ngoài cho vay)',
+        'nplFormation': 'Hình thành nợ xấu ròng = NPL cuối − NPL đầu + nợ xử lý bằng dự phòng. Nợ xử lý lấy số thực tế trong thuyết minh (sử dụng dự phòng rủi ro tín dụng) khi có; kỳ không có thì ước tính = dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ. Ròng: đã trừ nợ xấu thu hồi, bán, nâng nhóm',
         'nplFormationRate': 'Hình thành nợ xấu quý / dư nợ bình quân đầu-cuối quý × 4 (quy năm)',
         'nimAdj': 'NIM × (1 − chi phí dự phòng TTM / thu nhập lãi thuần TTM) ≈ (NII − dự phòng) / TS sinh lời (BNK-07)',
         'llrInclAccrued': 'Dự phòng cho vay KH / (nợ xấu + lãi, phí phải thu) — stress test coi lãi dự thu là nợ xấu (BNK-14)',

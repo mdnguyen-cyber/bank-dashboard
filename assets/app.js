@@ -109,6 +109,12 @@ function gapIns() {
   const lo = qs.reduce((m, q) => r(q) < r(m) ? q : m, qs[0]);
   return `Khe hở ≤ 12 tháng <b>${pc(now)} tổng tài sản</b> (${sg(g / 1000, 1, ' nghìn tỷ')}, ${QL.q}), so với bình quân ${pc(avg)} từ ${qs[0].q} và mức âm sâu nhất ${pc(r(lo))} (${lo.q}). ${g < 0 ? 'Âm: nợ định giá lại nhanh hơn tài sản — lãi suất huy động giảm thì chi phí vốn giảm trước, nhưng chỉ đạo giảm lãi suất cho vay tác động thẳng vào phía tài sản.' : 'Dương: tài sản định giá lại nhanh hơn nợ — giảm lãi suất cho vay ăn vào NIM ngay.'}`;
 }
+function formIns() {
+  const qf = Q.filter(q => q.nplFormation != null), L = qf[qf.length - 1], t4 = lastN(qf, 4), p4 = qf.slice(-8, -4);
+  const sum = a => a.reduce((x, q) => x + q.nplFormation, 0), avgR = a => a.reduce((x, q) => x + q.nplFormationRate, 0) / a.length;
+  const act = L.writeOffAct != null, wo = act ? L.writeOffAct : L.writeOffEst;
+  return `${L.q}: hình thành nợ xấu ròng <b>${nf(L.nplFormation)}</b> tỷ (<b>${pc(L.nplFormationRate, 2)}</b> dư nợ quy năm), trong đó nợ xử lý bằng dự phòng ${nf(wo)} tỷ (${act ? 'số thực tế theo thuyết minh' : 'ước tính'}). Cộng 4 quý gần nhất <b>${nf(sum(t4))}</b> tỷ, bình quân <b>${pc(avgR(t4), 2)}</b>/năm${p4.length === 4 ? ` so với ${nf(sum(p4))} tỷ (${pc(avgR(p4), 2)}) của 4 quý trước đó` : ''}. Số từng quý dao động mạnh vì xử lý nợ thường dồn vào cuối năm và phụ thuộc thu hồi, nâng nhóm — nên đọc theo tổng 4 quý.${D.writeOffSrc && Q.some(q => q.writeOffAct != null) ? ` Ở các kỳ có thuyết minh, nợ xử lý ước tính chênh số thực tế trung vị ${nf((a => a[Math.floor(a.length / 2)])(Q.filter(q => q.writeOffAct != null && q.writeOffEst != null).map(q => Math.abs(q.writeOffEst - q.writeOffAct)).sort((a, b) => a - b)))} tỷ/quý, nên các quý chưa có thuyết minh dùng số ước tính vẫn tin được.` : ''} ${NR.nplFormCheck || ''}`;
+}
 function accrIns() {
   const a = yoyQ('accrued'), l = yoyQ('loansGross');
   const n = Q.length - 1, q4 = Q[n - 4], nplTxt = QL.npl != null && q4 && q4.npl != null ? (() => {
@@ -580,8 +586,8 @@ function paneFin() {
         insight: `NPL <b>${pc(QL.npl, 2)}</b> (quý trước ${pc(QP.npl, 2)}), nhóm 2 <b>${pc(QL.g2, 2)}</b>. Nhóm 2 thường đồng pha với NPL chứ không phải chỉ báo sớm — nên đọc cùng hình thành nợ xấu.`, src: 'BCTC hợp nhất' })}
       ${X ? card({ id: 'chAqPeer', title: 'Nợ xấu và nhóm 2: ' + T + ' so với ' + GRP + ' và ngành', sub: '% dư nợ · quý', ctl: true,
         insight: aqPeerIns(), src: 'BCTC các ngân hàng niêm yết · tự tổng hợp' }) : ''}
-      ${card({ id: 'chForm', title: 'Hình thành nợ xấu (ước tính)', sub: 'tỷ đồng/quý và % dư nợ quy năm · = ΔNPL + nợ xử lý bằng dự phòng (tự tính)',
-        insight: `${QL.q}: hình thành nợ xấu khoảng <b>${nf(QL.nplFormation)}</b> tỷ (<b>${pc(QL.nplFormationRate, 2)}</b> dư nợ quy năm), nợ xử lý bằng dự phòng ~${nf(QL.writeOffEst)} tỷ. ${NR.nplFormCheck || ''}`, src: 'Tự tính từ BCTC hợp nhất' })}
+      ${card({ id: 'chForm', title: 'Hình thành nợ xấu ròng', sub: 'tỷ đồng/quý và % dư nợ quy năm · = nợ xấu tăng thêm + nợ xử lý bằng dự phòng · ròng: đã trừ nợ xấu thu hồi, bán, nâng nhóm nên có quý âm' + (Q.some(q => q.writeOffAct != null) ? ' · cột đậm = nợ xử lý lấy số thực tế trong thuyết minh, cột nhạt = ước tính' : ' · nợ xử lý ước tính từ biến động dự phòng'),
+        insight: formIns(), src: (D.writeOffSrc ? esc(D.writeOffSrc) + '; ' : '') + 'BCTC hợp nhất · tự tính' })}
       ${card({ id: 'chAccr', title: 'Lãi, phí phải thu so với cho vay', sub: 'tăng trưởng YoY (%) · trục phải: lãi phải thu / dư nợ và tỷ lệ nợ xấu (%, nét đứt đỏ) · lãi dự thu tăng nhanh hơn dư nợ là dấu hiệu nợ xấu tiềm ẩn — NPL đi lên sau đó là xác nhận', ctl: true,
         insight: accrIns(), src: 'BCTC hợp nhất (tài sản Có khác: lãi, phí phải thu; cho vay khách hàng)' })}
     </div>
@@ -758,8 +764,9 @@ function finCharts(k) {
       { label: 'Nhóm 2', data: q16.map(q => q.g2), borderColor: C.gold, backgroundColor: C.gold, dp: 2, unit: '%' }] }, options: { scales: { y: pctAxis() } } }, { switch: 'line' });
     const qf = Q.filter(q => q.nplFormation != null);
     mk('chForm', { type: 'bar', data: { labels: qf.map(q => q.q), datasets: [
-      { label: 'Hình thành nợ xấu (tỷ)', data: qf.map(q => q.nplFormation), backgroundColor: C.blue, yAxisID: 'y', dp: 0 },
-      { type: 'line', label: '% dư nợ quy năm', data: qf.map(q => q.nplFormationRate), borderColor: C.red, backgroundColor: C.red, yAxisID: 'y1', dp: 2, unit: '%' }] },
+      { label: 'Hình thành nợ xấu ròng (tỷ)', data: qf.map(q => q.nplFormation), backgroundColor: qf.map(q => q.writeOffAct != null || !Q.some(z => z.writeOffAct != null) ? C.blue : C.blue + '66'), yAxisID: 'y', dp: 0 },
+      { type: 'line', label: '% dư nợ quy năm', data: qf.map(q => q.nplFormationRate), borderColor: C.red, backgroundColor: C.red, yAxisID: 'y1', borderWidth: 1.2, pointRadius: 2, dp: 2, unit: '%' },
+      { type: 'line', label: 'Bình quân 4 quý (% quy năm)', data: qf.map((q, i) => i < 3 ? null : +(qf.slice(i - 3, i + 1).reduce((a, z) => a + z.nplFormationRate, 0) / 4).toFixed(2)), borderColor: C.purple, backgroundColor: C.purple, yAxisID: 'y1', borderWidth: 2.6, pointRadius: 0, dp: 2, unit: '%', spanGaps: true }] },
       options: { scales: { y: numAxis('tỷ đồng'), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
     mk('chLlr', { type: 'line', data: { labels: q16.map(q => q.q), datasets: [
       { label: 'LLR', data: q16.map(q => q.llr), borderColor: C.navy, backgroundColor: C.navy, dp: 0, unit: '%' },
@@ -972,6 +979,36 @@ function paneEvents() {
 /* =====================================================================
    TAB 5 · CONSENSUS CTCK
 ===================================================================== */
+let cpbSel = null;
+function drCpb() {
+  const H = (window.SECTOR_DATA || {}).pbHist; if (!$('#chCpb')) return;
+  const qEnd = d => /-(03-31|06-30|09-30|12-31)$/.test(d), lab = d => qEnd(d) ? `Q${+d.slice(5, 7) / 3}/${d.slice(0, 4)}` : dvn(d);
+  const ql = q => { const [a, y] = q.slice(1).split('/'); return `${y}-${['03-31', '06-30', '09-30', '12-31'][a - 1]}`; };
+  let ser;   // [[ngày, P/B]]
+  if (cpbSel === T) { ser = VB.history.filter(v => v.pb != null).map(v => [ql(v.q), v.pb]); if (M.pb != null) ser.push([M.priceDate, M.pb]); }
+  else if (cpbSel === '_med' && H) { const a = H.median; ser = a.filter(p => qEnd(p[0])).concat(qEnd(a[a.length - 1][0]) ? [] : [a[a.length - 1]]); }
+  else if (H && H.banks[cpbSel]) { const a = H.banks[cpbSel]; ser = a.filter(p => qEnd(p[0])).concat(qEnd(a[a.length - 1][0]) ? [] : [a[a.length - 1]]); }
+  if (!ser || !ser.length) return;
+  const v = ser.map(p => p[1]), m = v.reduce((a, b) => a + b, 0) / v.length, sd = Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length), now = v[v.length - 1];
+  const medM = H ? new Map(H.median.map(p => [p[0], p[1]])) : new Map();
+  const nm = cpbSel === '_med' ? 'Trung vị ngành' : cpbSel;
+  const ds = [{ label: 'P/B ' + nm, data: v, borderColor: cpbSel === T ? C.navy : C.blue, backgroundColor: cpbSel === T ? C.navy : C.blue, borderWidth: 2.6, pointRadius: 1.5, dp: 2, unit: 'x' }];
+  if (cpbSel !== '_med' && H) ds.push({ label: 'Trung vị ngành', data: ser.map(p => medM.get(p[0]) ?? null), borderColor: C.grey, backgroundColor: C.grey, borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0, dp: 2, unit: 'x', spanGaps: true });
+  const lines = [{ value: m, label: `TB ${x(m)}`, color: C.grey, dash: [2, 3] }, { value: m + sd, label: `+1σ ${x(m + sd)}`, color: '#c9a227', dash: [6, 4] }, { value: m - sd, label: `−1σ ${x(m - sd)}`, color: '#c9a227', dash: [6, 4] }];
+  const own = cpbSel === T, pbTp = own && CS.summary.median && M.bvps ? CS.summary.median / M.bvps : null, my = store.get().decision, myTp = own && my && +my.tp ? +my.tp / M.bvps : null;
+  if (pbTp) lines.push({ value: pbTp, label: `P/B tại TP trung vị ${x(pbTp)}`, color: C.red, dash: [5, 4] });
+  if (myTp) lines.push({ value: myTp, label: `P/B tại TP của tôi ${x(myTp)}`, color: C.teal, dash: [5, 4] });
+  mk('chCpb', { type: 'line', data: { labels: ser.map(p => lab(p[0])), datasets: ds }, options: { plugins: { refLines: { lines } }, scales: { y: numAxis('', { beginAtZero: false, ticks: { callback: z => nf(z, 1) + 'x' } }) } } }, { win: 60 });
+  $('#cpbH').textContent = own ? `P/B lịch sử ${T} và P/B tại giá mục tiêu` : cpbSel === '_med' ? 'P/B trung vị ngành ngân hàng (26 ngân hàng niêm yết)' : `P/B lịch sử ${cpbSel} so với trung vị ngành`;
+  $('#cpbSub').textContent = `Lần · cuối mỗi quý${own ? '' : ' từ ' + lab(ser[0][0])} và phiên gần nhất · đường xám = trung bình, vàng = ±1 độ lệch chuẩn của chính chuỗi${own ? ' · đỏ = P/B tại giá mục tiêu trung vị CTCK (BVPS hiện tại)' : ''} · bấm lại mã đang chọn để về ${T}`;
+  const peers = H ? Object.keys(H.banks).filter(b => b !== T && (D.peers.rows || []).some(r => (r.symbol || r.s) === b && r.group === GRP)) : [];
+  $('#cpbPick').innerHTML = [T, ...peers, '_med'].map(b => `<button type="button" data-b="${b}" class="${b === cpbSel ? 'on' : ''}">${b === '_med' ? 'Trung vị ngành' : b}</button>`).join('');
+  $$('#cpbPick button').forEach(b => b.onclick = () => { cpbSel = b.dataset.b === cpbSel ? T : b.dataset.b; drCpb(); });
+  const z = sd ? (now - m) / sd : 0, pct = v.filter(y => y <= now).length / v.length * 100;
+  $('#cpbIns').innerHTML = `${nm}: P/B hiện tại <b>${x(now)}</b>, ${z >= 0 ? 'cao' : 'thấp'} hơn trung bình ${x(m)} của chuỗi <b>${nf(Math.abs(z), 1)} độ lệch chuẩn</b>; cao hơn ${nf(pct, 0)}% số quý (thấp nhất ${x(Math.min(...v))}, cao nhất ${x(Math.max(...v))}).`
+    + (pbTp ? ` Giá mục tiêu trung vị ${nf(CS.summary.median)}đ tương ứng P/B <b>${x(pbTp)}</b> trên BVPS hiện tại (${x(CS.summary.median / FW.bvps2026F)} trên BVPS 2026F) — ${pbTp > m + sd ? 'cao hơn mốc +1σ: CTCK kỳ vọng định giá lại vượt vùng lịch sử' : pbTp > m ? 'trên trung bình lịch sử nhưng trong dải ±1σ' : 'vẫn dưới trung bình lịch sử'}.` : '')
+    + (myTp ? ` TP của tôi tương ứng P/B ${x(myTp)}.` : '');
+}
 function paneCons() {
   const S = CS.summary; const s = store.get(); const myTp = s.decision && +s.decision.tp;
   const rows = CS.rows; const P = D.plan;
@@ -987,6 +1024,12 @@ function paneCons() {
     ${kpi('LNST 2026F (median)', nf(S.npMedian) + ' tỷ', sg((S.npMedian / FW.npat2025 - 1) * 100) + ' vs 2025 · ' + S.npN + ' dự phóng')}
     ${kpi('P/E · P/B forward', x(FW.peFwd) + ' · ' + x(FW.pbFwd), 'BVPS 2026F ' + nf(FW.bvps2026F) + 'đ')}
   </div>
+  <article class="card" id="cpbCard"><h3 class="sub" id="cpbH"></h3>
+    <p class="chart-sub" id="cpbSub"></p>
+    <div class="picker" id="cpbPick"></div>
+    <div class="cbox"><canvas id="chCpb" role="img" aria-label="P/B lịch sử"></canvas></div>
+    <div class="insight" id="cpbIns"></div>
+    <div class="src">Nguồn: BCTC (giá trị sổ sách), giá đóng cửa, báo cáo CTCK (giá mục tiêu) · tự tính</div></article>
   <h3 class="sub" style="margin:6px 0 10px">Dải dự phóng của các công ty chứng khoán</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chTp', title: 'Giá mục tiêu từng CTCK', sub: 'đ/CP · đường đỏ = thị giá ' + nf(M.price) + 'đ · nhãn = upside', h: 'tall',
@@ -998,6 +1041,7 @@ function paneCons() {
   <article class="card"><h3 class="sub">Chi tiết báo cáo</h3><div class="tscroll"><table><thead><tr><th>CTCK</th><th>Ngày</th><th>KN</th><th class="n">TP</th><th class="n">Upside</th><th class="n">TOI 2026F</th><th class="n">TOI 2027F</th><th class="n">LNST 2026F</th><th class="n">LNST 2027F</th><th>Luận điểm</th></tr></thead><tbody>
     ${[...rows, ...CS.forecastOnly].map(r => `<tr class="${r.stale ? 'stale' : ''}"><td><b>${esc(r.broker)}</b></td><td>${dvn(r.date)}</td><td>${esc(r.rating)}</td><td class="n">${r.tp ? nf(r.tp) : '—'}</td><td class="n">${r.tp ? sg(r.upside, 0) : '—'}</td><td class="n">${nf(r.toiF)}</td><td class="n">${nf(r.toiF1)}</td><td class="n">${nf(r.npF)}</td><td class="n">${nf(r.npF1)}</td><td>${esc(r.thesis)}${r.summary ? `<details class="more"><summary>Tóm tắt</summary><div class="note">${esc(r.summary)}</div></details>` : ''}</td></tr>`).join('')}
   </tbody></table></div><div class="src">Nguồn: ${esc(CS.src)}</div></article>`;
+  cpbSel = T; drCpb();
   const tr = [...rows].sort((a, b) => a.tp - b.tp);
   const fade = (c, r) => r.stale ? c + '55' : c;
   mk('chTp', { type: 'bar', data: { labels: tr.map(r => `${r.broker} ${dvn(r.date).slice(0, 5)}`), datasets: [
@@ -1183,7 +1227,7 @@ const PEER_MX = {   // [khoá trong SECTOR_DATA.banks.series, tên, chiều tố
   pb: ['pb', 'P/B', 'val'], pe: ['pe', 'P/E', 'val'] };
 const PEER_C = { chNim: ['nim', 'yea', 'cof'], chNimAdj: ['nim'], chNimPeer: ['nim', 'cof'], chCof: ['cof'], chCasa: ['casa'], chCir: ['cir'], chNpl: ['npl', 'g2'], chAqPeer: ['npl', 'g2', 'llr'],
   chForm: ['npl', 'g2'], chAccr: ['npl'], chLlr: ['llr', 'npl'], chCc: ['npl', 'llr'], chLdr: ['ldr'], chLdrQ: ['ldr'], chGrow: ['credit'], chEA: ['credit'], chFund: ['casa', 'ldr'], chWfA: ['credit'], chWfL: ['casa'],
-  chRoe: ['roe', 'roa'], chPpop: ['np', 'roe'], chToiQ: ['np', 'cir'], chToiY: ['np'], chPlY: ['np'], chPlanDone: ['np'], chNfiQ: ['cir'], chNfiShare: ['cir'], chVal: ['pb', 'pe', 'roe'], chValF: ['pb', 'pe', 'roe'], chPbRoe: ['pb', 'roe'], chPrice: ['pb', 'pe'],
+  chRoe: ['roe', 'roa'], chPpop: ['np', 'roe'], chToiQ: ['np', 'cir'], chToiY: ['np'], chPlY: ['np'], chPlanDone: ['np'], chNfiQ: ['cir'], chNfiShare: ['cir'], chVal: ['pb', 'pe', 'roe'], chCpb: ['pb', 'roe'], chValF: ['pb', 'pe', 'roe'], chPbRoe: ['pb', 'roe'], chPrice: ['pb', 'pe'],
   chLdrRaw: ['ldr'], chLoanTenor: ['credit'], chLoanSec: ['credit'], chLoanCust: ['credit'], chIrLoan: ['credit'], chIrDep: ['casa'], chDepType: ['casa'], chDepCust: ['casa'], chLev: ['roe'], chGrowS: ['credit'] };
 function peerHtml(cid, title) {
   const SB = (window.SECTOR_DATA || {}).banks, ks = PEER_C[cid];

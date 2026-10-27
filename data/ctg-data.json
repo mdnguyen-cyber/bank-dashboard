@@ -6,7 +6,7 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Big 4",
-  "updated": "2026-10-26",
+  "updated": "2026-10-27",
   "price": 30000,
   "priceDate": "2026-10-20",
   "mcap": 234950,
@@ -29,6 +29,7 @@
   "llr": 133.9,
   "ratioPeriod": "TTM Q2/2026"
  },
+ "writeOffSrc": "Thuyết minh BCTC hợp nhất CTG — biến động dự phòng rủi ro cho vay khách hàng, dòng \"Sử dụng dự phòng rủi ro tín dụng trong kỳ\" (lũy kế từ đầu năm, triệu đồng)",
  "quarterly": [
   {
    "q": "Q1/2010",
@@ -3155,14 +3156,15 @@
    "eps": 2510.4798,
    "npatYoY": 69.5,
    "writeOffEst": 4259.8,
-   "nplFormation": 10363.3,
-   "nplFormationRate": 4.46,
+   "nplFormation": 8987.8,
+   "nplFormationRate": 3.87,
    "creditCost": 1.57,
    "nimAdj": 1.7,
    "recoveriesTTM": 1412.9,
    "pbtTTM": 11602.5,
    "ppopTTM": 25757.3,
-   "llrInclAccrued": 54.5
+   "llrInclAccrued": 54.5,
+   "writeOffAct": 2884.3
   },
   {
    "q": "Q2/2020",
@@ -3232,14 +3234,15 @@
    "eps": 2995.2474,
    "npatYoY": 103.8,
    "writeOffEst": 2361.7,
-   "nplFormation": 1413.2,
-   "nplFormationRate": 0.61,
+   "nplFormation": 155.5,
+   "nplFormationRate": 0.07,
    "creditCost": 1.33,
    "nimAdj": 1.79,
    "recoveriesTTM": 1454.4,
    "pbtTTM": 13906.1,
    "ppopTTM": 26129.4,
-   "llrInclAccrued": 55.1
+   "llrInclAccrued": 55.1,
+   "writeOffAct": 1104.0
   },
   {
    "q": "Q3/2020",
@@ -3316,7 +3319,8 @@
    "recoveriesTTM": 3225.4,
    "pbtTTM": 13688.7,
    "ppopTTM": 27268.4,
-   "llrInclAccrued": 59.6
+   "llrInclAccrued": 59.6,
+   "writeOffAct": 2660.5
   },
   {
    "q": "Q4/2020",
@@ -3470,7 +3474,8 @@
    "recoveriesTTM": 1823.7,
    "pbtTTM": 22170.6,
    "ppopTTM": 31275.3,
-   "llrInclAccrued": 77.0
+   "llrInclAccrued": 77.0,
+   "writeOffAct": 0.0
   },
   {
    "q": "Q2/2021",
@@ -3540,14 +3545,15 @@
    "eps": 3416.5735,
    "npatYoY": 47.2,
    "writeOffEst": 2342.0,
-   "nplFormation": 7865.3,
+   "nplFormation": 7871.7,
    "nplFormationRate": 3.01,
    "creditCost": 1.4,
    "nimAdj": 2.05,
    "recoveriesTTM": 2697.9,
    "pbtTTM": 20475.1,
    "ppopTTM": 34478.6,
-   "llrInclAccrued": 77.3
+   "llrInclAccrued": 77.3,
+   "writeOffAct": 2348.4
   },
   {
    "q": "Q3/2021",
@@ -3617,14 +3623,15 @@
    "eps": 3442.1928,
    "npatYoY": 50.7,
    "writeOffEst": 2759.5,
-   "nplFormation": 6380.2,
+   "nplFormation": 6379.9,
    "nplFormationRate": 2.36,
    "creditCost": 1.43,
    "nimAdj": 2.06,
    "recoveriesTTM": 2484.0,
    "pbtTTM": 20631.7,
    "ppopTTM": 35324.9,
-   "llrInclAccrued": 77.6
+   "llrInclAccrued": 77.6,
+   "writeOffAct": 2759.2
   },
   {
    "q": "Q4/2021",
@@ -3771,14 +3778,15 @@
    "eps": 2557.5888,
    "npatYoY": -30.7,
    "writeOffEst": 0.1,
-   "nplFormation": 1021.1,
+   "nplFormation": 1021.0,
    "nplFormationRate": 0.35,
    "creditCost": 1.94,
    "nimAdj": 1.36,
    "recoveriesTTM": 3844.2,
    "pbtTTM": 15351.5,
    "ppopTTM": 36809.6,
-   "llrInclAccrued": 116.4
+   "llrInclAccrued": 116.4,
+   "writeOffAct": 0.0
   },
   {
    "q": "Q2/2022",
@@ -3855,7 +3863,8 @@
    "recoveriesTTM": 3840.1,
    "pbtTTM": 18346.5,
    "ppopTTM": 38581.6,
-   "llrInclAccrued": 116.4
+   "llrInclAccrued": 116.4,
+   "writeOffAct": 4483.8
   },
   {
    "q": "Q3/2022",
@@ -3932,7 +3941,8 @@
    "recoveriesTTM": 5639.6,
    "pbtTTM": 19442.5,
    "ppopTTM": 42450.3,
-   "llrInclAccrued": 132.4
+   "llrInclAccrued": 132.4,
+   "writeOffAct": 692.6
   },
   {
    "q": "Q4/2022",
@@ -4002,14 +4012,15 @@
    "eps": 3490.6252,
    "npatYoY": 19.1,
    "writeOffEst": 15018.0,
-   "nplFormation": 13167.2,
-   "nplFormationRate": 4.18,
+   "nplFormation": 13145.2,
+   "nplFormationRate": 4.17,
    "creditCost": 1.97,
    "nimAdj": 1.47,
    "recoveriesTTM": 5362.5,
    "pbtTTM": 20946.1,
    "ppopTTM": 45109.2,
-   "llrInclAccrued": 105.5
+   "llrInclAccrued": 105.5,
+   "writeOffAct": 14996.0
   },
   {
    "q": "Q1/2023",
@@ -4079,14 +4090,15 @@
    "eps": 3520.2709,
    "npatYoY": 37.6,
    "writeOffEst": 7017.1,
-   "nplFormation": 8251.5,
+   "nplFormation": 8251.6,
    "nplFormationRate": 2.53,
    "creditCost": 2.09,
    "nimAdj": 1.41,
    "recoveriesTTM": 5036.7,
    "pbtTTM": 21103.9,
    "ppopTTM": 47564.2,
-   "llrInclAccrued": 96.4
+   "llrInclAccrued": 96.4,
+   "writeOffAct": 7017.2
   },
   {
    "q": "Q2/2023",
@@ -4163,7 +4175,8 @@
    "recoveriesTTM": 5244.8,
    "pbtTTM": 21869.0,
    "ppopTTM": 48924.4,
-   "llrInclAccrued": 95.5
+   "llrInclAccrued": 95.5,
+   "writeOffAct": 6720.9
   },
   {
    "q": "Q3/2023",
@@ -4240,7 +4253,8 @@
    "recoveriesTTM": 4258.3,
    "pbtTTM": 22583.3,
    "ppopTTM": 48758.5,
-   "llrInclAccrued": 103.0
+   "llrInclAccrued": 103.0,
+   "writeOffAct": 4007.4
   },
   {
    "q": "Q4/2023",
@@ -4310,14 +4324,15 @@
    "eps": 3706.4396,
    "npatYoY": 18.6,
    "writeOffEst": 9360.6,
-   "nplFormation": 7028.1,
-   "nplFormationRate": 1.97,
+   "nplFormation": 6677.5,
+   "nplFormationRate": 1.87,
    "creditCost": 1.84,
    "nimAdj": 1.5,
    "recoveriesTTM": 4671.3,
    "pbtTTM": 24989.4,
    "ppopTTM": 50104.7,
-   "llrInclAccrued": 88.5
+   "llrInclAccrued": 88.5,
+   "writeOffAct": 9010.0
   },
   {
    "q": "Q1/2024",
@@ -4387,14 +4402,15 @@
    "eps": 3734.8257,
    "npatYoY": 18.6,
    "writeOffEst": 5046.9,
-   "nplFormation": 8840.0,
+   "nplFormation": 8839.9,
    "nplFormationRate": 2.37,
    "creditCost": 1.87,
    "nimAdj": 1.53,
    "recoveriesTTM": 4683.9,
    "pbtTTM": 25219.4,
    "ppopTTM": 51659.9,
-   "llrInclAccrued": 88.2
+   "llrInclAccrued": 88.2,
+   "writeOffAct": 5046.8
   },
   {
    "q": "Q2/2024",
@@ -4464,14 +4480,15 @@
    "eps": 3764.9913,
    "npatYoY": 15.7,
    "writeOffEst": 10551.7,
-   "nplFormation": 14796.0,
+   "nplFormation": 14796.1,
    "nplFormationRate": 3.84,
    "creditCost": 1.9,
    "nimAdj": 1.54,
    "recoveriesTTM": 4780.3,
    "pbtTTM": 25419.1,
    "ppopTTM": 53198.1,
-   "llrInclAccrued": 74.5
+   "llrInclAccrued": 74.5,
+   "writeOffAct": 10551.8
   },
   {
    "q": "Q3/2024",
@@ -4548,7 +4565,8 @@
    "recoveriesTTM": 7465.1,
    "pbtTTM": 27100.9,
    "ppopTTM": 56708.1,
-   "llrInclAccrued": 98.9
+   "llrInclAccrued": 98.9,
+   "writeOffAct": 1771.9
   },
   {
    "q": "Q4/2024",
@@ -4618,14 +4636,15 @@
    "eps": 4720.3452,
    "npatYoY": 27.4,
    "writeOffEst": 1337.2,
-   "nplFormation": -535.9,
+   "nplFormation": -536.4,
    "nplFormationRate": -0.13,
    "creditCost": 1.75,
    "nimAdj": 1.61,
    "recoveriesTTM": 7608.2,
    "pbtTTM": 31763.9,
    "ppopTTM": 59362.7,
-   "llrInclAccrued": 105.8
+   "llrInclAccrued": 105.8,
+   "writeOffAct": 1336.7
   },
   {
    "q": "Q1/2025",
@@ -4695,14 +4714,15 @@
    "eps": 4806.0186,
    "npatYoY": 28.7,
    "writeOffEst": 6506.1,
-   "nplFormation": 13125.4,
+   "nplFormation": 13119.2,
    "nplFormationRate": 2.98,
    "creditCost": 1.68,
    "nimAdj": 1.56,
    "recoveriesTTM": 8774.9,
    "pbtTTM": 32376.8,
    "ppopTTM": 60037.5,
-   "llrInclAccrued": 88.5
+   "llrInclAccrued": 88.5,
+   "writeOffAct": 6499.9
   },
   {
    "q": "Q2/2025",
@@ -4772,14 +4792,15 @@
    "eps": 5607.6194,
    "npatYoY": 48.9,
    "writeOffEst": 7804.4,
-   "nplFormation": 4646.7,
+   "nplFormation": 4638.7,
    "nplFormationRate": 1.0,
    "creditCost": 1.33,
    "nimAdj": 1.73,
    "recoveriesTTM": 9445.4,
    "pbtTTM": 37724.1,
    "ppopTTM": 60540.7,
-   "llrInclAccrued": 82.4
+   "llrInclAccrued": 82.4,
+   "writeOffAct": 7796.4
   },
   {
    "q": "Q3/2025",
@@ -4849,14 +4870,15 @@
    "eps": 6207.7926,
    "npatYoY": 54.5,
    "writeOffEst": 964.5,
-   "nplFormation": -2126.6,
+   "nplFormation": -2136.8,
    "nplFormationRate": -0.44,
    "creditCost": 1.08,
    "nimAdj": 1.84,
    "recoveriesTTM": 8351.7,
    "pbtTTM": 41785.8,
    "ppopTTM": 61197.2,
-   "llrInclAccrued": 100.8
+   "llrInclAccrued": 100.8,
+   "writeOffAct": 954.3
   },
   {
    "q": "Q4/2025",
@@ -4926,14 +4948,15 @@
    "eps": 4455.3531,
    "npatYoY": 36.5,
    "writeOffEst": 3876.8,
-   "nplFormation": 4070.6,
-   "nplFormationRate": 0.82,
+   "nplFormation": 4044.4,
+   "nplFormationRate": 0.81,
    "creditCost": 0.92,
    "nimAdj": 1.94,
    "recoveriesTTM": 9991.1,
    "pbtTTM": 43443.9,
    "ppopTTM": 60741.9,
-   "llrInclAccrued": 89.1
+   "llrInclAccrued": 89.1,
+   "writeOffAct": 3850.6
   },
   {
    "q": "Q1/2026",
@@ -5093,7 +5116,7 @@
  "quarterlyNote": "BCTC hợp nhất từ WiData (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
  "formula": {
   "creditCost": "Chi phí dự phòng 4 quý gần nhất / dư nợ cho vay KH bình quân 5 quý (BNK-13)",
-  "nplFormation": "NPL cuối − NPL đầu + nợ xử lý bằng dự phòng; nợ xử lý ≈ dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ (BNK-11, ước tính; chi phí dự phòng gồm cả dự phòng khác ngoài cho vay)",
+  "nplFormation": "Hình thành nợ xấu ròng = NPL cuối − NPL đầu + nợ xử lý bằng dự phòng. Nợ xử lý lấy số thực tế trong thuyết minh (sử dụng dự phòng rủi ro tín dụng) khi có; kỳ không có thì ước tính = dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ. Ròng: đã trừ nợ xấu thu hồi, bán, nâng nhóm",
   "nplFormationRate": "Hình thành nợ xấu quý / dư nợ bình quân đầu-cuối quý × 4 (quy năm)",
   "nimAdj": "NIM × (1 − chi phí dự phòng TTM / thu nhập lãi thuần TTM) ≈ (NII − dự phòng) / TS sinh lời (BNK-07)",
   "llrInclAccrued": "Dự phòng cho vay KH / (nợ xấu + lãi, phí phải thu) — stress test coi lãi dự thu là nợ xấu (BNK-14)",
@@ -28000,7 +28023,7 @@
     "summary": "TCBS đánh giá cổ phiếu CTG duy trì vị thế hấp dẫn để nắm giữ và tích lũy trong các nhịp điều chỉnh khi sở hữu ROE đạt 21.8%, cao thứ hai hệ thống, trong khi định giá P/B 1.24 lần hiện thấp hơn mức trung bình ngành và lịch sử của chính doanh nghiệp. Động lực tăng trưởng trong nửa cuối năm 2026 dự kiến được thúc đẩy bởi việc nới hạn mức tín dụng và quy định mới cho phép tính 50% tiền gửi Kho bạc Nhà nước vào tỷ lệ LDR, tạo dư địa mở rộng cho vay với dự báo tăng trưởng tín dụng cả năm đạt 14%, tập trung vào phân khúc bán lẻ và doanh nghiệp FDI. Lợi nhuận trước thuế năm 2026 được kỳ vọng đạt 54,216 tỷ đồng, tăng 24.8% so với năm trước, nhờ NIM duy trì ở mức 2.92% và chỉ số CIR thuộc nhóm thấp nhất ngành phản ánh hiệu quả vận hành tối ưu, nối tiếp đà phục hồi từ quý 2/2026 khi lợi nhuận lập đỉnh lịch sử nhờ biên lãi thuần cải thiện mạnh mẽ do lãi suất tài sản gia tăng nhanh hơn chi phí vốn. Tuy nhiên, chất lượng tài sản vẫn là biến số cần theo dõi sát sao khi nợ xấu có dấu hiệu tăng trở lại trong quý 2/2026 tại các lĩnh vực bất động sản, tiêu dùng và nông nghiệp, đồng thời tỷ lệ bao phủ nợ xấu giảm mạnh xuống mức thấp nhất trong hai năm là 134%, tạo áp lực duy trì chi phí dự phòng cao để củng cố bộ đệm rủi ro. Bên cạnh đó, sự suy giảm của tỷ lệ CASA cùng áp lực chi phí vốn đi lên có thể trở thành rào cản kìm hãm đà cải thiện biên lãi thuần của ngân hàng trong thời gian tới."
    }
   ],
-  "fadeBefore": "2026-07-26",
+  "fadeBefore": "2026-07-27",
   "summary": {
    "n": 8,
    "median": 41400.0,
