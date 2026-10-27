@@ -3234,7 +3234,7 @@ function vRiskRows() {
   return R;
 }
 function paneVRisk() {
-  const R = vRiskRows(), I = riskRows().filter(r => r.g === 'Quốc tế'), A = [...R, ...I], nR = A.filter(r => r.lvl === 'risk');
+  const R = vRiskRows(), I = riskRows().filter(r => r.g === 'Quốc tế' && !/Brent/.test(r.n)), A = [...R, ...I], nR = A.filter(r => r.lvl === 'risk');
   const E = window.ECO_DATA, cpi = E ? lastv(E.m.map((m, i) => ({ d: m, v: E.s.cpi[i] })).filter(p => p.v != null)) : null;
   $('#vrisk').innerHTML = `
   <h2 class="sec">Catalyst · Risk</h2>
