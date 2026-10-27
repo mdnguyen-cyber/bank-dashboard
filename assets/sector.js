@@ -93,7 +93,7 @@ const charts = {};
 /* ---------- Chart book: mk() lưu cấu hình từng chart theo id để vẽ lại ở Chart book / Cập nhật nhanh ---------- */
 const SPEC = {};
 const cl = o => Array.isArray(o) ? o.map(cl) : (o && Object.getPrototypeOf(o) === Object.prototype) ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cl(v)])) : o;
-const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: PAGE === 'vimo' ? 'Tiền tệ Việt Nam' : 'Vĩ mô tiền tệ', mm: 'Tỷ giá', bank: 'Ngân hàng', peer: 'So sánh ngân hàng', idx: 'Kịch bản IDX', eco: 'Kinh tế Việt Nam', bond: 'Trái phiếu', heat: 'Việt Nam & Thế giới', cmd: 'Hàng hóa' };
+const PANE_LBL = { camel: 'Xếp hạng TT21', overview: 'Tổng quan', policy: 'Chính sách', catalyst: 'Catalyst', cons: 'Consensus', hot: 'Chủ đề nóng', intl: 'Quốc tế', dom: PAGE === 'vimo' ? 'Tiền tệ Việt Nam' : 'Vĩ mô tiền tệ', mm: 'Tỷ giá', bank: 'Ngân hàng', peer: 'So sánh ngân hàng', idx: 'Kịch bản IDX', eco: 'Kinh tế Việt Nam', bond: 'Trái phiếu', heat: 'Việt Nam & Thế giới', cmd: 'Hàng hóa', vrisk: 'Catalyst · Risk' };
 function cardMeta(el) {
   const c = el.closest('article.card'), pp = el.closest('[data-pp]'), pane = el.closest('.pane'), cc = el.closest('[data-cc]');
   const h = c && c.querySelector(':scope > h3.sub'), one = sel => { const e = c && c.querySelector(':scope > ' + sel); return e ? e.innerHTML : ''; };
@@ -3198,12 +3198,55 @@ function riskTable(R, tid) {
   const lvlTxt = { risk: '<span class="pill risk">Cao</span>', watch: '<span class="pill watch">Trung bình</span>', ok: '<span class="pill ok">Thấp</span>' };
   return `<div class="tscroll"><table class="risk-t" id="${tid}"><thead><tr><th>Lớp</th><th>Rủi ro</th><th>Số hiện tại</th><th>Xu hướng</th><th>Mức rủi ro</th><th></th></tr></thead><tbody>
     ${R.map((r, i) => `<tr class="rk" data-i="${i}" style="cursor:pointer"><td style="white-space:nowrap">${esc(r.g)}</td><td><b>${esc(r.n)}</b></td><td>${r.now}</td><td>${r.tr}</td><td>${lvlTxt[r.lvl]}</td><td class="muted">▾</td></tr>
-      <tr class="rkd" data-i="${i}" hidden><td colspan="6"><p class="cnote" style="margin:0 0 8px">${r.how}</p>${r.draw ? `<div class="cbox" style="height:260px"><canvas id="${tid}c${i}"></canvas></div>` : ''}${r.extra || ''}</td></tr>`).join('')}
+      <tr class="rkd" data-i="${i}" hidden><td colspan="6"><p class="cnote" style="margin:0 0 8px">${r.how}</p>${r.draw ? `<div class="cbox" style="height:260px"><canvas id="${tid}c${i}"></canvas></div>` : ''}${typeof r.extra === 'function' ? r.extra(`${tid}c${i}`) : r.extra || ''}</td></tr>`).join('')}
     </tbody></table></div>`;
 }
 function wireRisk(R, tid) {
   $$(`#${tid} tr.rk`).forEach(tr => tr.onclick = () => { const i = tr.dataset.i, d = $(`#${tid} tr.rkd[data-i="${i}"]`); d.hidden = !d.hidden; tr.lastElementChild.textContent = d.hidden ? '▾' : '▴';
     if (!d.hidden && !d.dataset.drawn && R[i].draw) { R[i].draw(`${tid}c${i}`); d.dataset.drawn = 1; } });
+}
+/* ---- Vĩ mô › Catalyst · Risk: rủi ro lạm phát và tỷ giá, kết quả mô hình truyền dẫn (scripts/vimo_risk_models.py) ---- */
+const CPIW = { trans: 9.67, house: 18.82, food: 33.56 };   // tỷ trọng rổ CPI 2020 (Cục Thống kê), %
+function vRiskRows() {
+  const V = window.VRISK, E = window.ECO_DATA; if (!V || !E) return [];
+  const es = k => E.m.map((m, i) => ({ d: m, v: E.s[k][i] })).filter(p => p.v != null), lastE = k => lastv(es(k));
+  const lv = c => c > 1 ? 'risk' : c > 0.5 ? 'watch' : 'ok';   // đóng góp vào CPI chung, điểm %
+  const fitChart = (id, M, yl) => mk(id, { type: 'line', data: { labels: M.fit.map(p => mvn(p.m)), datasets: [L(yl + ' thực tế', M.fit.map(p => p.y), C.navy, { borderWidth: 2.2 }), L('Mô hình', M.fit.map(p => p.f), C.red, { borderDash: [4, 3] })] }, options: { scales: { y: pctAxis('% so cùng kỳ') } } });
+  const lagChart = (id, M) => mk(id, { type: 'bar', data: { labels: M.cors.map(c => c.k + 'T'), datasets: [{ label: 'Tương quan theo độ trễ', data: M.cors.map(c => c.r), backgroundColor: M.cors.map(c => c.k === M.lagBest ? C.red : '#b9c0cf'), dp: 2, unit: '' }] }, options: { plugins: { legend: { display: false } }, scales: { y: numAxis('hệ số tương quan', { min: -1, max: 1, ticks: { stepSize: 0.5, callback: v => nf(v, 1) } }) } } });
+  const two = id => `<div class="grid g2" style="margin-top:8px"><div class="cbox" style="height:220px"><canvas id="${id}b"></canvas></div><div class="cnote" style="margin:0">Cột đỏ = độ trễ có tương quan cao nhất (tháng).</div></div>`;
+  const R = [];
+  { const M = V.oilTrans, Mr = V.ronTrans, ct = lastE('cpi_trans'), now = M.path[0].v, nx = M.path[M.path.length - 1].v, cc = now * CPIW.trans / 100;
+    R.push({ g: 'Lạm phát', n: 'Giá dầu → CPI giao thông', now: `Brent ${sg(M.xLast.v, 0)} so cùng kỳ (${mvn(M.xLast.m)}) · CPI giao thông ${pc(ct.v, 1)} (${mvn(ct.d)})`, tr: `đóng góp ~${sg(now, 1, ' đ%')} vào CPI giao thông, ~${sg(cc, 2, ' đ%')} vào CPI chung`, lvl: lv(cc),
+      how: `<b>Độ trễ:</b> CPI giao thông phản ứng với Brent sau <b>${M.lagBest} tháng</b> (tương quan ${nf(M.corBest, 2)}); qua giá xăng bán lẻ thì gần như ngay trong tháng (RON95: tương quan ${nf(Mr.corBest, 2)}). <b>Mức truyền dẫn:</b> Brent tăng 10% so cùng kỳ và giữ nguyên → CPI giao thông tăng khoảng <b>${nf(M.cum * 10, 1)} điểm %</b> sau ${M.K} tháng (t = ${nf(M.t, 1)}, R² ${nf(M.r2, 2)}); RON95 tăng 10% → CPI giao thông +${nf(Mr.cum * 10, 1)} điểm % (R² ${nf(Mr.r2, 2)}). <b>Hiện tại:</b> Brent ${sg(M.xLast.v, 0)} so cùng kỳ đóng góp khoảng ${sg(now, 1, ' điểm %')} vào CPI giao thông${Math.abs(nx - now) > 0.3 ? `, lên ${sg(nx, 1, ' điểm %')} sau ${M.K} tháng nếu giá giữ nguyên` : ''}; với tỷ trọng ${nf(CPIW.trans, 2)}% trong rổ CPI là ~${sg(cc, 2, ' điểm %')} CPI chung. Mẫu ${mvn(M.from)}–${mvn(M.to)}, ${M.n} tháng.`,
+      draw: id => { fitChart(id, M, 'CPI giao thông'); lagChart(id + 'b', M); }, extra: two }); }
+  { const M = V.oilHouse, ch = lastE('cpi_house'), cc = ch.v * CPIW.house / 100;
+    R.push({ g: 'Lạm phát', n: 'Giá dầu → CPI nhà ở, điện, nước', now: `CPI nhà ở, điện, nước ${pc(ch.v, 1)} so cùng kỳ (${mvn(ch.d)})`, tr: `nhóm này góp ~${sg(cc, 2, ' đ%')} vào CPI chung`, lvl: lv(cc),
+      how: `<b>Kết quả:</b> không có truyền dẫn có ý nghĩa từ giá dầu sang nhóm nhà ở, điện, nước (tương quan cao nhất ${nf(M.corBest, 2)} ở độ trễ ${M.lagBest} tháng; R² ${nf(M.r2, 2)}, t = ${nf(M.t, 1)}). Giá điện và nước do Nhà nước điều chỉnh theo từng đợt, không theo giá dầu hằng tháng; giá dầu chỉ đi vào nhóm này qua gas, chất đốt với tỷ trọng nhỏ. Rủi ro của nhóm vì vậy là <b>quyết định tăng giá điện, giá nước</b> và giá thuê nhà, không phải giá dầu. Hiện nhóm tăng ${pc(ch.v, 1)} so cùng kỳ, góp ~${sg(cc, 2, ' điểm %')} vào CPI chung (tỷ trọng ${nf(CPIW.house, 2)}%).`,
+      draw: id => { fitChart(id, M, 'CPI nhà ở, điện, nước'); lagChart(id + 'b', M); }, extra: two }); }
+  { const M = V.hogFood, cf = lastE('cpi_food'), now = M.path[0].v, cc = now * CPIW.food / 100;
+    R.push({ g: 'Lạm phát', n: 'Giá thịt lợn → CPI hàng ăn', now: `Heo hơi ${sg(M.xLast.v, 0)} so cùng kỳ (${mvn(M.xLast.m)}) · CPI hàng ăn ${pc(cf.v, 1)} (${mvn(cf.d)})`, tr: `đóng góp ~${sg(now, 2, ' đ%')} vào CPI hàng ăn, ~${sg(cc, 2, ' đ%')} vào CPI chung`, lvl: Math.abs(cc) > 1 ? 'risk' : Math.abs(cc) > 0.5 ? 'watch' : 'ok',
+      how: `<b>Độ trễ:</b> CPI hàng ăn và dịch vụ ăn uống phản ứng với giá heo hơi sau <b>${M.lagBest} tháng</b> (tương quan ${nf(M.corBest, 2)}). <b>Mức truyền dẫn:</b> heo hơi tăng 10% so cùng kỳ và giữ nguyên → CPI hàng ăn tăng khoảng <b>${nf(M.cum * 10, 2)} điểm %</b> sau ${M.K} tháng (t = ${nf(M.t, 1)}, R² ${nf(M.r2, 2)}); quan hệ chặt chủ yếu nhờ đợt dịch tả lợn châu Phi 2019–2020, khi giá heo hơi tăng gấp đôi. <b>Hiện tại:</b> heo hơi ${sg(M.xLast.v, 0)} so cùng kỳ góp khoảng ${sg(now, 2, ' điểm %')} vào CPI hàng ăn, ~${sg(cc, 2, ' điểm %')} vào CPI chung (tỷ trọng ${nf(CPIW.food, 2)}%).`,
+      draw: id => { fitChart(id, M, 'CPI hàng ăn'); lagChart(id + 'b', M); }, extra: two }); }
+  { const on = dom.on, eff = gs('us_effr_m'), ef = Object.fromEntries(eff.d.map((d, i) => [d.slice(0, 7), eff.v[i]])), fx = dom.nhtmSell, fm = Object.fromEntries(fx.map(p => [p.d.slice(0, 7), p.v]));
+    const rows = on.filter(p => p.d >= '2021-01' && ef[p.d.slice(0, 7)] != null).map(p => { const m = p.d.slice(0, 7), y0 = (+m.slice(0, 4) - 1) + m.slice(4); return { m, gap: p.v - ef[m], fx: fm[m] && fm[y0] ? (fm[m] / fm[y0] - 1) * 100 : null }; });
+    const l = rows[rows.length - 1], F = GD.fedwatch, M_ = F && F.meetings, fy = M_ && M_[Math.min(M_.length - 1, 7)], mid = F ? (F.target[0] + F.target[1]) / 2 : null;
+    R.push({ g: 'Tỷ giá', n: 'Fed → tỷ giá USD/VND', now: `Chênh LNH qua đêm VND − EFFR ${sg(l.gap, 2, ' đ%')} (${mvn(l.m)}) · USD/VND NHTM ${sg(l.fx, 1)} so cùng kỳ`, tr: fy ? `Fed kỳ vọng ${sg((fy.exp_rate - mid) * 100, 0, ' bps')} tới ${dvn(fy.date)}` : '—', lvl: l.gap < 0 ? 'risk' : l.gap < 1 ? 'watch' : 'ok',
+      how: `<b>Cơ chế:</b> (1) Fed giữ lãi suất cao → lãi suất USD cao hơn lãi suất VND ngắn hạn (chênh lệch âm) → doanh nghiệp, ngân hàng có động cơ giữ USD, vay VND để mua USD (carry trade ngược) → cầu USD trong nước tăng. (2) USD mạnh lên trên toàn cầu (DXY) kéo tỷ giá trung tâm và giá bán USD của ngân hàng lên. (3) NHNN phản ứng bằng bán USD dự trữ và hút VND qua tín phiếu → lãi suất liên ngân hàng VND tăng lại, chênh lệch thu hẹp, tỷ giá dịu đi nhưng thanh khoản hệ thống căng hơn. Vì vậy tác động của Fed lên ngân hàng Việt Nam đi qua <b>thanh khoản và lãi suất VND</b> nhiều hơn là qua bản thân tỷ giá. <b>Cách đọc chart:</b> giai đoạn 2023–2024 lãi suất VND qua đêm thấp hơn lãi suất USD kéo dài (cột đỏ) và USD/VND tăng lên 4–5% so cùng kỳ trong năm 2024; cuối 2022 và các đợt căng tỷ giá sau đó, NHNN đẩy lãi suất liên ngân hàng lên cao (cột xanh lớn) để đóng khoảng chênh và chặn đà tăng tỷ giá. <b>Hiện tại:</b> chênh lệch ${sg(l.gap, 2, ' điểm %')}, USD/VND ${sg(l.fx, 1)} so cùng kỳ.`,
+      draw: id => mk(id, { type: 'bar', data: { labels: rows.map(r => mvn(r.m)), datasets: [{ label: 'Chênh LNH qua đêm VND − EFFR (điểm %)', data: rows.map(r => r.gap), backgroundColor: rows.map(r => r.gap < 0 ? 'rgba(192,57,43,.55)' : 'rgba(41,56,168,.35)'), yAxisID: 'y', dp: 2, unit: ' đ%', order: 2 },
+        { type: 'line', label: 'USD/VND NHTM bán ra, % so cùng kỳ (trục phải)', data: rows.map(r => r.fx), borderColor: C.navy, borderWidth: 2.2, pointRadius: 0, yAxisID: 'y1', dp: 1, unit: '%', order: 1 }] },
+        options: { scales: { y: numAxis('điểm %'), y1: { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 0) + '%' } } } } }) }); }
+  return R;
+}
+function paneVRisk() {
+  const R = vRiskRows(), I = riskRows().filter(r => r.g === 'Quốc tế'), A = [...R, ...I], nR = A.filter(r => r.lvl === 'risk');
+  const E = window.ECO_DATA, cpi = E ? lastv(E.m.map((m, i) => ({ d: m, v: E.s.cpi[i] })).filter(p => p.v != null)) : null;
+  $('#vrisk').innerHTML = `
+  <h2 class="sec">Catalyst · Risk</h2>
+  <div class="banner warn"><b>${nR.length}/${A.length} rủi ro ở mức cao</b>${nR.length ? `: ${nR.map(r => r.n).join(', ')}` : ''}.${cpi ? ` CPI chung ${pc(cpi.v, 2)} so cùng kỳ (${mvn(cpi.d)}), mục tiêu khoảng 4,5%.` : ''} Bấm từng dòng để xem kết quả mô hình và chart.</div>
+  <article class="card"><h3 class="sub">Lạm phát và tỷ giá: truyền dẫn từ cú sốc giá</h3><p class="chart-sub">Mức rủi ro theo đóng góp vào CPI chung: cao trên 1 điểm %, trung bình 0,5–1 điểm % · tỷ giá: cao khi lãi suất VND qua đêm thấp hơn lãi suất USD</p>
+    ${riskTable(R, 'rkV')}<div class="src">Nguồn: Cục Thống kê (CPI theo nhóm); EIA (Brent); Bộ Công Thương (giá xăng); giá heo hơi bình quân ba miền; NHNN, Fed (lãi suất); Vietcombank (tỷ giá) · mô hình trễ phân phối, sai số chuẩn Newey-West, tự tính</div></article>
+  <article class="card"><h3 class="sub">Rủi ro quốc tế</h3><p class="chart-sub">Cùng danh sách với Ngành › Catalyst · Risk</p>${riskTable(I, 'rkVi')}</article>`;
+  wireRisk(R, 'rkV'); wireRisk(I, 'rkVi');
 }
 function paneCatalyst() {
   const types = ['Tất cả', ...new Set(D.events.map(e => e.type))];
@@ -3586,7 +3629,7 @@ function openBook(id) {
 function footer() {
   $('#foot').innerHTML = `<div>FinSuccess · ${PAGE === 'vimo' ? 'Dashboard Vĩ mô' : 'Dashboard CSTT &amp; ngành Ngân hàng'} · dữ liệu cập nhật ${dvn(TODAY)}. Không phải khuyến nghị đầu tư.</div>`;
 }
-const builders = PAGE === 'vimo' ? { heat: paneHeat, vn: paneVN, world: paneWorld, cmd: paneCmd, quick: paneQuick, book: paneBook, src: paneSrc }
+const builders = PAGE === 'vimo' ? { heat: paneHeat, vn: paneVN, world: paneWorld, cmd: paneCmd, vrisk: paneVRisk, quick: paneQuick, book: paneBook, src: paneSrc }
   : { overview: paneOverview, quick: paneQuick, picture: panePicture, policy: panePolicy, catalyst: paneCatalyst, cons: paneCons, hot: paneHot, book: paneBook, src: paneSrc };
 const built = {};
 function show(k) {
