@@ -105,7 +105,7 @@
     ch.options.devicePixelRatio = 2 * zs; ch.options.animation = false; ch.resize(Math.round(w / zs), Math.round(h / zs)); ch.update('none');
     x.drawImage(ch.canvas, X, Y, w, h);
     if (win && sx) { ['min', 'max'].forEach(k => { if (keep[k] === undefined) delete sx[k]; else sx[k] = keep[k]; }); }
-    ch.options.devicePixelRatio = old; ch.options.animation = oldA; ch.resize(); ch.update('none');
+    ch.options.devicePixelRatio = old ?? Chart.defaults.devicePixelRatio; ch.options.animation = oldA; ch.resize(); ch.update('none');
   }
   function lastLab(it) {   // kỳ dữ liệu cuối theo khung sẽ vẽ
     const w = winOf(it); if (!w) return it.meta.last; const l = String((it.meta.ch.data.labels || [])[w[1]] || '');

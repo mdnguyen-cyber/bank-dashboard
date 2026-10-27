@@ -568,4 +568,4 @@ window.FSPDF = (function () {
 })();
 
 /* gom các lần co giãn liên tiếp (mở lịch, đổi cỡ cửa sổ) thành một lần vẽ lại cho mỗi chart */
-if (window.Chart) Chart.defaults.resizeDelay = 120;
+if (window.Chart) { Chart.defaults.resizeDelay = 120; Chart.defaults.devicePixelRatio = Math.max(2, window.devicePixelRatio || 1); }   // vẽ tối thiểu 2x: màn hình 100% hoặc trình duyệt thu nhỏ (DPR ≤ 1) không bị mờ
