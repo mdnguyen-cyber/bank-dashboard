@@ -4,6 +4,7 @@
    opts = { title, sub, src, file } */
 (function () {
   const S = 2;   // độ phân giải x2
+  const LOGO = new Image(); LOGO.src = 'assets/fin-success-logo.png';   // tải sẵn để vẽ vào ảnh
   const rgb = c => !c || c === 'transparent' || /rgba\(\d+,\s*\d+,\s*\d+,\s*0\)/.test(c) ? null : c;
   function bgOf(el, stop) { for (let e = el; e && e !== stop; e = e.parentElement) { const b = rgb(getComputedStyle(e).backgroundColor); if (b) return b; } return '#fff'; }
   function wrapLines(ctx, t, w) {
@@ -29,14 +30,17 @@
     const rowY = new Map(); let Hb = 0;
     keep.forEach(tr => { rowY.set(tr, Hb); Hb += tr.getBoundingClientRect().height; });
     const W = Math.round(w0 + (visR - visL));
-    const pad = o.compact ? 12 : 24, titleH = o.title ? 30 : 0;
+    const pad = o.compact ? 12 : 24, titleH = o.compact ? 34 : 54;
     const cv = document.createElement('canvas'), x = cv.getContext('2d');
-    x.font = '12px Arial'; const subL = o.sub ? wrapLines(x, o.sub, Math.max(W, 360)) : [], srcL = o.src ? wrapLines(x, 'Nguồn: ' + o.src, Math.max(W - 140, 220)) : [];
-    const Wc = Math.max(W, o.title ? Math.min(900, x.measureText(o.title).width * 1.4 + 20) : 0, subL.length ? 360 : 0);
+    x.font = '12px Arial'; const subL = o.sub ? wrapLines(x, o.sub, Math.max(W, 360)) : [], srcL = o.src ? wrapLines(x, 'Nguồn: ' + o.src, Math.max(W, 220)) : [];
+    const logoOk = LOGO.complete && LOGO.naturalWidth && /^https?:/.test(location.protocol), lh = o.compact ? 30 : 48, lw = logoOk ? lh * LOGO.naturalWidth / LOGO.naturalHeight : 90;
+    const Wc = Math.max(W, (o.title ? Math.min(900, x.measureText(o.title).width * 1.4 + 20) : 0) + lw + 20, subL.length ? 360 : 0);
     const top = pad + titleH + subL.length * 16 + (subL.length ? 8 : 0), H = top + Hb + 12 + (srcL.length ? srcL.length * 15 : 15) + pad;
     cv.width = (Wc + pad * 2) * S; cv.height = H * S; x.scale(S, S);
     x.fillStyle = '#fff'; x.fillRect(0, 0, Wc + pad * 2, H);
-    if (o.title) { x.fillStyle = '#1D2678'; x.font = 'bold 16px Arial'; x.textBaseline = 'top'; x.fillText(o.title, pad, pad); }
+    if (logoOk) x.drawImage(LOGO, pad + Wc - lw, pad - 4, lw, lh);
+    else { x.textAlign = 'right'; x.textBaseline = 'top'; x.font = 'bold 18px Arial'; x.fillStyle = '#1D2678'; x.fillText('FinSuccess', pad + Wc, pad); x.textAlign = 'left'; }
+    if (o.title) { x.fillStyle = '#1D2678'; x.font = `bold ${o.compact ? 16 : 18}px Arial`; x.textBaseline = 'top'; x.fillText(o.title, pad, pad + (o.compact ? 4 : 12), Math.max(120, Wc - lw - 16)); }
     x.fillStyle = '#596272'; x.font = '12px Arial'; x.textBaseline = 'top'; subL.forEach((l, i) => x.fillText(l, pad, pad + titleH + i * 16));
     const draw = stickyPass => keep.forEach(tr => [...tr.cells].forEach(c => {
       const r = c.getBoundingClientRect(); if (!r.width || !r.height) return;
@@ -69,7 +73,6 @@
     if (w0) { x.strokeStyle = '#c9cfdc'; x.lineWidth = 1; x.beginPath(); x.moveTo(pad + w0, top); x.lineTo(pad + w0, top + Hb); x.stroke(); }
     const fy = top + Hb + 12; x.textAlign = 'left'; x.textBaseline = 'top'; x.font = '11px Arial'; x.fillStyle = '#8a93a3';
     srcL.forEach((l, i) => x.fillText(l, pad, fy + i * 15));
-    x.textAlign = 'right'; x.font = 'bold 12px Arial'; x.fillStyle = '#1D2678'; x.fillText('FinSuccess', pad + Wc, fy);
     return cv;
   }
   function toast(t) {

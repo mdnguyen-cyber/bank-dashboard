@@ -11,6 +11,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
 <link rel="apple-touch-icon" href="assets/favicon-192.png">
 <link rel="stylesheet" href="assets/fs.css">
+<link rel="expect" href="#pg-ready" blocking="render">
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"*.html"},{"not":{"selector_matches":"[download],[target=_blank]"}}]},"eagerness":"moderate"}],"prefetch":[{"urls":["vimo.html","nganh.html"],"eagerness":"eager"}]}</script>
 
 </head>
@@ -55,5 +56,6 @@
 <script src="assets/notes.js"></script>
 <script src="assets/sector.js"></script>
 <script src="assets/chat.js"></script>
+<div id="pg-ready" hidden></div>
 </body>
 </html>
