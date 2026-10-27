@@ -135,7 +135,8 @@ def main():
         spx[sid] = {'d': [r['trading_date'] for r in rows], 'c': [r['close'] for r in rows]}
     notes = {}
     for ep, keys in (('fs_sec_notes', ['fn114_2', 'fn114_3', 'fn112_8', 'fn112_9', 'fn112_11', 'fn112_12', 'fn113_3']), ('fs_ins_notes', ['fn23', 'fn23_1', 'fn111_1', 'fn111_2', 'fn111_3', 'fn111_4'])):
-        rows = pick(ep, lambda f: True)
+        cand = [t for _, t in pick_all(ep, lambda f: True) if t and keys[1] in t[0]]
+        rows = max(cand, key=len) if cand else []
         notes[ep] = {'k': keys, 'v': fs_rows(rows, keys)}
     rep = []
     for r in pick('co_reports', lambda f: 'SSI' in f):
@@ -156,8 +157,138 @@ def main():
         insr.setdefault(r['symbol'], []).append({k: v for k, v in r.items() if k != 'symbol'})
     names = {r['symbol']: {'n': r['name_vi'], 'ex': r['exchange'], 'lst': r['listing_date'], 't': r['company_type']} for r in pick('companies', lambda f: 'SSI' in f and 'BVH' in f)}
     out.update({'pb': pb, 'px': px, 'vniD': vni, 'spx': spx, 'notes': notes, 'rep': rep, 'plans': plans, 'holders': holders, 'events': events, 'roe': roe, 'insr': insr, 'names': names})
+    extend(out, allsym)
     OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(',', ':')))
     print({k: (len(v) if isinstance(v, (list, dict)) else v) for k, v in out.items()}, OUT.stat().st_size // 1024, 'KB')
+
+
+def raw_fin(name):
+    p = RAW / 'fin' / name
+    return table(json.loads(p.read_text())) if p.exists() else []
+
+
+def extend(out, allsym):
+    """Trang doanh nghiệp đầy đủ: giá dài hạn, ban lãnh đạo, công ty con, giao dịch nội bộ, tin tức, định giá theo quý, room ngoại, danh mục đầu tư BH."""
+    # giá ngành, VN-Index từ 10/2021
+    vl = {}
+    for req, rows in pick_all('index_eod', lambda f: True):
+        for r in rows:
+            if r.get('indicator_id') == 235211 and r.get('date'):
+                vl[r['date']] = r['value']
+    for r in raw_fin('vnindex_2021-10_2025-09.txt'):
+        vl[r['date']] = r['value']
+    out['vniD'] = {k: vl[k] for k in sorted(vl) if k >= '2021-10-01'}
+    for sid in ('406', '408'):
+        m = dict(zip(out['spx'][sid]['d'], out['spx'][sid]['c']))
+        for req, rows in pick_all('sector_price_daily', lambda f, sid=sid: f'"{sid}"' in f):
+            for r in rows:
+                m[r['trading_date']] = r['close']
+        for r in raw_fin(f'sector{sid}_px_2021-10_2025-09.txt'):
+            m[r['trading_date']] = r['close']
+        ds = sorted(m)
+        out['spx'][sid] = {'d': ds, 'c': [m[d] for d in ds]}
+    # báo cáo CTCK: gộp mọi lần lấy
+    seen = {}
+    for req, rows in pick_all('co_reports', lambda f: True):
+        for r in rows:
+            if r.get('symbol') not in allsym:
+                continue
+            k = (r['symbol'], r['source'], r['recommendation_date'])
+            seen[k] = {'s': r['symbol'], 'org': r['source'], 'd': r['recommendation_date'], 'rec': r.get('recommendation'), 'tp': r.get('target_price_adjusted'),
+                       'np': r.get('net_income_forecast'), 'np1': r.get('net_income_forecast_n1'), 'y': r.get('year'), 'title': r.get('report_title')}
+    out['rep'] = sorted(seen.values(), key=lambda r: r['d'], reverse=True)
+    co = {s: {} for s in allsym}
+    for r in pick('co_leaders', lambda f: 'SSI' in f):
+        co[r['symbol']].setdefault('leaders', []).append({'n': r['name'], 'role': r.get('position'), 'since': r.get('appointment_date')})
+    RANKP = ['Chủ tịch HĐQT', 'Chủ tịch Hội đồng quản trị', 'Phó Chủ tịch HĐQT', 'Thành viên HĐQT', 'Tổng Giám đốc', 'Chủ tịch', 'Phó Chủ tịch', 'Thành viên HĐQT', 'Tổng Giám đốc', 'Phó Tổng', 'Giám đốc', 'Kế toán', 'Trưởng', 'Thành viên']
+    rk = lambda p: next((i for i, k in enumerate(RANKP) if k.lower() in (p or '').lower()), 99)
+    for s in co:
+        if 'leaders' in co[s]:
+            co[s]['leaders'].sort(key=lambda l: (rk(l['role']), l['since'] or ''))
+    KIND = {1: 'Công ty con', 2: 'Liên kết', 3: 'Liên doanh'}
+    for r in pick('co_subsidiaries', lambda f: 'SSI' in f):
+        co[r['symbol']].setdefault('subs', []).append({'n': r['subcompany_name'], 'kind': KIND.get(r.get('subcompany_type'), ''), 'pct': next((r[k] for k in ('ownership_ratio', 'benefit_ratio', 'voting_ratio') if r.get(k) is not None), None),
+                                                       'cap': ty(r.get('charter_capital')), 'tk': r.get('sub_symbol') or r.get('ma_ck'), 'd': r.get('last_update')})
+    ins_rows = {}
+    for rows in [raw_fin('insider_SEC_2022on.txt')] + [t for _, t in pick_all('co_insider', lambda f: True)]:
+        for r in rows:
+            ins_rows[r['id']] = r
+    for r in ins_rows.values():
+        d = r.get('executed_to_date') or r.get('registered_to_date') or r.get('registered_from_date') or ''
+        if r['symbol'] not in co or d < '2022-01-01':
+            continue
+        tt = r.get('transaction_type') or ''
+        side = 'Mua' if tt in ('Mua', 'Nhận chuyển nhượng') else 'Bán' if tt in ('Bán', 'Chuyển nhượng') else tt
+        co[r['symbol']].setdefault('trades', []).append({
+            'name': r['insider_name'], 'role': r.get('insider_position'), 'type': ' · '.join(x for x in [r.get('report_type'), tt if tt not in ('Mua', 'Bán') else None, r.get('transaction_purpose')] if x),
+            'side': side, 'reg': abs(r['registered_volume']) if r.get('registered_volume') else None, 'exe': abs(r['executed_volume']) if r.get('executed_volume') else None,
+            'regFrom': r.get('registered_from_date'), 'regTo': r.get('registered_to_date'), 'from': r.get('executed_from_date'), 'to': r.get('executed_to_date'),
+            'afterPct': r.get('ratio_after'), 'after': r.get('volume_after'), 'big': True})
+    news = {}
+    news_raw = [raw_fin('news_SEC_2026-07on.txt')]
+    for f in sorted(glob.glob(str(RAW / 'wi_data_news_*.json'))):
+        req, resp = load(f)
+        if req.get('action') == 'news_feed':
+            news_raw.append(table(resp))
+    for rows in news_raw:
+        for r in rows:
+            syms = r.get('symbol') or []
+            if not isinstance(syms, list) or len(syms) > 4:
+                continue
+            for s in syms:
+                if s in co:
+                    news.setdefault(s, {})[r['url']] = {'d': (r.get('publish_time') or '')[:10], 't': r['title'], 'u': r['url'], 'src': r.get('source_name')}
+    for s, m in news.items():
+        co[s]['news'] = sorted(m.values(), key=lambda n: n['d'], reverse=True)[:60]
+    for r in pick('ratio_common', lambda f: 'SSI' in f and '2018' in f):
+        co[r['symbol']].setdefault('rq', []).append([f"{r['year']}Q{r['quarter']}", r.get('pb'), r.get('pe'), r.get('roe'), r.get('roa'), r.get('eps'), r.get('bvps')])
+    for s in co:
+        if 'rq' in co[s]:
+            co[s]['rq'].sort()
+    info = sorted(pick('eod_info', lambda f: True), key=lambda r: r['trading_date'])
+    for r in info:
+        c = co.get(r['symbol'])
+        if c is None:
+            continue
+        if r.get('listed_shares'):
+            c['shares'] = r['listed_shares']
+        if r.get('ratio_fo_current') is not None:
+            c['foPct'] = r['ratio_fo_current']; c['foMax'] = r.get('ratio_fo_max'); c['foD'] = r['trading_date']
+        elif r.get('foreigner_holding_shares') and r.get('listed_shares'):
+            c['foPct'] = r['foreigner_holding_shares'] / r['listed_shares']; c['foD'] = r['trading_date']
+    # room: số liệu là tỷ lệ (0,xx) hay %? chuẩn hoá về tỷ lệ
+    for c in co.values():
+        for k in ('foPct', 'foMax'):
+            if c.get(k) is not None and c[k] > 1:
+                c[k] = c[k] / 100
+    # danh mục đầu tư bảo hiểm (thuyết minh) — tỷ đồng
+    G = [('Tiền gửi', ['fn120_1', 'fn250_1']), ('Trái phiếu', ['fn120_2', 'fn250_2', 'fn121_3', 'fn121_4']),
+         ('Cổ phiếu', ['fn121_1', 'fn121_2']), ('Chứng chỉ quỹ', ['fn120_6', 'fn250_6', 'fn121_5']), ('Ủy thác đầu tư', ['fn120_7', 'fn250_7']), ('Khác', ['fn120_5', 'fn250_5'])]
+    rows = [r for r in pick('fs_ins_notes', lambda f: '2022' in f) if 'fn120' in r]
+    for r in rows:
+        tot = sum(r.get(k) or 0 for k in ('fn120', 'fn121', 'fn250'))
+        if not tot:
+            continue
+        parts = [sum(r.get(k) or 0 for k in ks) for _, ks in G]
+        rest = tot - sum(parts)
+        v = [f"{r['year']}Q{r['quarter']}"] + [ty(p) for p in parts] + [ty(rest) if abs(rest) > tot * 0.01 else None]
+        co[r['symbol']].setdefault('inv', {'n': [g for g, _ in G] + ['Chưa tách'], 'v': []})['v'].append(v)
+    for c in co.values():
+        if 'inv' in c:
+            c['inv']['v'].sort()
+            c['inv']['k'] = c['inv']['n']
+    # CTCK: lợi nhuận đã thực hiện (is91) / chưa thực hiện (is92)
+    for req, rows2 in pick_all('fs_sec', lambda f: True):
+        if 'is91' not in (req.get('columns') or ''):
+            continue
+        for r in rows2:
+            if r.get('symbol') in co and r.get('is91') is not None:
+                co[r['symbol']].setdefault('_rz', {})[f"{r['year']}Q{r['quarter']}"] = [ty(r.get('is91')), ty(r.get('is92'))]
+    for c in co.values():
+        if '_rz' in c:
+            c['rz'] = [[q] + v for q, v in sorted(c.pop('_rz').items())]
+    out['co'] = co
+    return out
 
 
 if __name__ == '__main__':
