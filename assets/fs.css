@@ -722,3 +722,9 @@ table td.xh-on{outline:2px solid var(--navy);outline-offset:-2px;font-weight:700
 .l22key .k-solid{background:var(--navy)}.l22key .k-dash{border:1.6px dashed var(--navy);background:transparent}
 .l22key .k-dia{width:9px;height:9px;margin:4px 3px 0;background:#111;transform:rotate(45deg);border-radius:0}
 .tbl-btns{display:inline-flex;gap:6px}
+/* chuyển trang mượt: view transition giữa các trang (Chrome, Edge), giữ nguyên thanh đầu trang */
+@view-transition{navigation:auto}
+html{background:var(--bg)}
+.logo-bar{view-transition-name:site-head}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.18s}
+::view-transition-group(site-head){animation-duration:0s}
