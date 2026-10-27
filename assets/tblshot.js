@@ -80,16 +80,21 @@
     cv.toBlob(b => { const u = URL.createObjectURL(b), a = document.createElement('a'); a.download = (file || 'bang') + '.png'; a.href = u; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); toast('Đã tải ảnh PNG'); }, 'image/png');
   }
   function copy(cv, file) {
-    if (!navigator.clipboard || !window.ClipboardItem) { download(cv, file); return; }
+    const fail = () => { download(cv, file); toast('Trình duyệt không cho chép ảnh nên đã tải ảnh về'); };
+    if (!navigator.clipboard || !window.ClipboardItem || !window.isSecureContext) return fail();
+    const ok = () => toast('Đã chép ảnh — dán (Ctrl+V) vào Zalo, Word, email…');
     const p = new Promise(res => cv.toBlob(res, 'image/png'));
-    navigator.clipboard.write([new ClipboardItem({ 'image/png': p })]).then(() => toast('Đã chép ảnh — dán (Ctrl+V) vào Zalo, Word, email…')).catch(() => download(cv, file));
+    navigator.clipboard.write([new ClipboardItem({ 'image/png': p })]).then(ok)
+      .catch(() => p.then(bl => navigator.clipboard.write([new ClipboardItem({ 'image/png': bl })])).then(ok).catch(fail));
   }
   function shot(sc, o = {}) { const cv = render(sc, o); if (cv) download(cv, o.file); }
-  function button(sc, o) {
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'tbl-shot'; b.textContent = 'Xuất ảnh bảng';
-    b.title = 'Tải ảnh PNG phần bảng đang hiện (cột đầu + các cột trong khung); cuộn ngang để chọn khoảng thời gian. Chuột phải vào một ô để chép ảnh ô, dòng hoặc cả bảng.';
-    b.onclick = () => shot(sc, typeof o === 'function' ? o() : o);
-    return b;
+  function button(sc, o) {   // cặp nút: chép ảnh (dán thẳng) + tải PNG
+    const g = document.createElement('span'); g.className = 'tbl-btns';
+    const mk = (t, tip, f) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'tbl-shot'; b.textContent = t; b.title = tip; b.onclick = f; g.appendChild(b); };
+    const m = () => typeof o === 'function' ? o() : o;
+    mk('Chép ảnh bảng', 'Chép ảnh phần bảng đang hiện vào bộ nhớ tạm để dán (Ctrl+V) vào Zalo, Word, email; cuộn ngang để chọn khoảng thời gian', () => { const cv = render(sc, m()); if (cv) copy(cv, m().file); });
+    mk('Tải PNG', 'Tải ảnh PNG phần bảng đang hiện', () => shot(sc, m()));
+    return g;
   }
   /* tô sáng dòng × cột + menu chuột phải */
   let menu = null;
@@ -121,8 +126,8 @@
       it.push(['Chép ảnh dòng này', () => copy(render(sc, { ...m, sub: '', rows: [tr] }), m.file + '_dong')]);
       it.push(['Chép ảnh bảng, tô sáng ô này', () => copy(render(sc, { ...m, hl }), m.file + '_to-sang')]);
       it.push(['Chép ảnh bảng đang xem', () => copy(render(sc, m), m.file)]);
-      it.push(['Tải ảnh bảng, tô sáng ô này (PNG)', () => download(render(sc, { ...m, hl }), m.file + '_to-sang')]);
-      it.push(['Tải ảnh bảng đang xem (PNG)', () => download(render(sc, m), m.file)]);
+      it.push(['—'], ['Tải PNG: bảng, tô sáng ô này', () => download(render(sc, { ...m, hl }), m.file + '_to-sang')]);
+      it.push(['Tải PNG: bảng đang xem', () => download(render(sc, m), m.file)]);
       if (h.onChart) it.push(['—'], ['Vẽ chart dòng này', () => h.onChart(tr)]);
       if (h.onCompare) { const inC = h.isCompared && h.isCompared(tr); it.push([inC ? 'Bỏ dòng này khỏi so sánh' : 'Thêm dòng này vào chart so sánh', () => h.onCompare(tr)]);
         if (h.nCompare && h.nCompare() > 0) it.push([`Xoá so sánh (${h.nCompare()} dòng)`, () => h.clearCompare()]); }
