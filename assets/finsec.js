@@ -993,28 +993,130 @@ function drawSurrender() {
 const SYMS = () => PAGE === 'bh' ? INS_ALL : SEC_L;
 const lastPx = s => { const p = W.px[s]; return p ? last(p.c) : null; };
 const med2 = a => { const b = a.filter(v => v != null).sort((x, y) => x - y); if (!b.length) return null; const m = b.length >> 1; return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2; };
+const xx = (v, d = 2) => v == null || isNaN(v) ? '—' : nf(v, d) + 'x';
+// vạch tham chiếu (ngang hoặc dọc) có nhãn
+const vref = { id: 'vref', afterDatasetsDraw(ch, _a, o) {
+  const ls = o && o.lines; if (!ls) return; const { ctx, chartArea: A } = ch;
+  ls.forEach(l => { const sc = ch.scales[l.axis || 'y']; if (!sc) return; const p = sc.getPixelForValue(l.value), hz = sc.isHorizontal();
+    ctx.save(); ctx.strokeStyle = l.color || C.red; ctx.lineWidth = 1.3; ctx.setLineDash(l.dash || [5, 4]); ctx.beginPath();
+    if (hz) { ctx.moveTo(p, A.top); ctx.lineTo(p, A.bottom); } else { ctx.moveTo(A.left, p); ctx.lineTo(A.right, p); } ctx.stroke(); ctx.setLineDash([]);
+    if (l.label) { ctx.font = '600 10.5px Arial'; ctx.fillStyle = l.color || C.red; ctx.textBaseline = 'bottom'; if (hz) ctx.fillText(l.label, Math.min(p + 4, A.right - ctx.measureText(l.label).width), A.top + 12); else ctx.fillText(l.label, A.left + 4, p - 2); }
+    ctx.restore(); }); } };
+Chart.register(vref);
+// consensus: mỗi CTCK lấy bản mới nhất (riêng cho giá mục tiêu, LNST dự phóng và khuyến nghị)
 function consOf(s) {
-  const R = W.rep.filter(r => r.s === s).sort((a, b) => b.d.localeCompare(a.d)), withTp = R.filter(r => r.tp), px = lastPx(s);
-  const orgs = [...new Set(R.map(r => r.org))], tp = med2(withTp.map(r => r.tp)), np = med2(R.filter(r => r.np).map(r => r.np));
-  const plan = W.plans.find(p => p.s === s && p.y === 2026);
-  return { s, R, n: R.length, nOrg: orgs.length, tp, px, up: tp && px ? tp / px - 1 : null, np, plan, last: R[0], tpMin: withTp.length ? Math.min(...withTp.map(r => r.tp)) : null, tpMax: withTp.length ? Math.max(...withTp.map(r => r.tp)) : null };
+  const R = W.rep.filter(r => r.s === s).sort((a, b) => b.d.localeCompare(a.d)), px = lastPx(s), v = W.val[s] || {};
+  const per = f => { const m = new Map(); R.forEach(r => { if (f(r) && !m.has(r.org)) m.set(r.org, r); }); return [...m.values()]; };
+  const T = per(r => r.tp), N = per(r => r.np && (!r.y || r.y === 2026)), K = per(r => r.rec && !/KHÁC/.test(r.rec));
+  const tp = med2(T.map(r => r.tp)), np = med2(N.map(r => r.np)), plan = W.plans.find(p => p.s === s && p.y === 2026);
+  const pbNow = v.pb, bvps = v.bvps || (px && v.pb ? px / v.pb : null);
+  return { s, R, T, N, n: new Set(R.map(r => r.org)).size, nTP: T.length, tp, px, up: tp && px ? tp / px - 1 : null, np, plan, last: R[0],
+    tpMin: T.length ? Math.min(...T.map(r => r.tp)) : null, tpMax: T.length ? Math.max(...T.map(r => r.tp)) : null,
+    buy: K.filter(r => /MUA/.test(r.rec)).length, sell: K.filter(r => /BÁN/.test(r.rec)).length, hold: K.filter(r => !/MUA|BÁN/.test(r.rec)).length,
+    pbNow, pbTP: tp && bvps ? tp / bvps : null, peFwd: np && v.mcap ? v.mcap / np : null, mcap: v.mcap };
 }
 const recPill = r => !r ? '—' : /MUA/.test(r) ? `<span class="pill ok">${esc(r)}</span>` : /BÁN/.test(r) ? `<span class="pill risk">${esc(r)}</span>` : /KHÁC/.test(r) ? '<span class="pill">Chưa phân loại</span>' : `<span class="pill watch">${esc(r)}</span>`;
+const GRP = PAGE === 'bh' ? { BVH: 'Nhân thọ', PVI: 'Phi nhân thọ', MIG: 'Phi nhân thọ', BMI: 'Phi nhân thọ', BIC: 'Phi nhân thọ', PTI: 'Phi nhân thọ' }
+  : { TCX: 'Thuộc ngân hàng', VPX: 'Thuộc ngân hàng', MBS: 'Thuộc ngân hàng', SSI: 'Độc lập', VCI: 'Độc lập', HCM: 'Độc lập', VND: 'Độc lập', VCK: 'Độc lập', SHS: 'Độc lập' };
+const GCOL = { 'Nhân thọ': C.navy, 'Phi nhân thọ': C.teal, 'Thuộc ngân hàng': C.purple, 'Độc lập': C.navy };
+const SECV = () => PAGE === 'bh' ? sv406 : sv408;
+let consSel = null;
 function paneCons() {
-  const cs = SYMS().map(consOf);
+  const cs = SYMS().map(consOf), has = cs.filter(c => c.tp != null), full = has.filter(c => c.nTP >= 2), base = full.length ? full : has;
+  const sv = SECV(), n = sv.pb.length, pbM = avgN(sv.pb, n);
+  const lo = c => c.nTP < 2 ? '#d5d9e2' : GCOL[GRP[c.s]] || C.navy;
   $('#cons').innerHTML = `<h2 class="sec">Consensus CTCK</h2>
-  <p class="sec-sub">Báo cáo phân tích của các công ty chứng khoán từ 01/04/2026; giá mục tiêu đã điều chỉnh theo sự kiện quyền. Upside so với giá đóng cửa phiên gần nhất. Bấm mã để xem chi tiết từng báo cáo.</p>
-  <article class="card">${tbl(['Mã', 'Số báo cáo', 'Số CTCK', 'Giá hiện tại', 'Giá mục tiêu (trung vị)', 'Khoảng giá mục tiêu', 'Upside', 'LNST 2026F trung vị (tỷ)', 'Kế hoạch LNST 2026 (tỷ)', 'Báo cáo mới nhất'],
-    cs.map(c => [`<b>${dnLink(c.s)}</b>`, c.n || '—', c.nOrg || '—', nf(c.px), nf(c.tp), c.tpMin ? nf(c.tpMin) + ' – ' + nf(c.tpMax) : '—', c.up == null ? '—' : `<span class="${cls(c.up)}">${sg(c.up, 1)}</span>`, nf(c.np), c.plan ? nf(c.plan.pat) : '—',
-      c.last ? `${esc(c.last.org)} · ${dvn(c.last.d)} · ${recPill(c.last.rec)}` : '<span class="muted">Chưa có báo cáo</span>']))}
-    <div class="src">Nguồn: ${WI} (báo cáo phân tích CTCK, kế hoạch ĐHĐCĐ, giá đóng cửa)</div></article>
-  <div class="grid g2 gap">${card({ id: 'consUp', title: 'Upside theo giá mục tiêu trung vị', sub: '% so với giá đóng cửa phiên gần nhất', src: WI })}
-    ${card({ id: 'consNp', title: 'LNST 2026 dự phóng và kế hoạch', sub: 'Tỷ đồng · trung vị dự phóng của CTCK so với kế hoạch ĐHĐCĐ', src: WI })}</div>`;
-  const u = cs.filter(c => c.up != null);
-  mk('consUp', { type: 'bar', data: { labels: u.map(c => c.s), datasets: [bar('Upside', u.map(c => c.up * 100), u.map(c => c.up >= 0 ? C.green : C.red), { unit: '%', dp: 1 })] }, options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: yPct('%') } } });
-  const v = cs.filter(c => c.np || c.plan);
-  mk('consNp', { type: 'bar', data: { labels: v.map(c => c.s), datasets: [bar('LNST 2026F (trung vị CTCK)', v.map(c => c.np), C.navy, { unit: ' tỷ' }), bar('Kế hoạch ĐHĐCĐ', v.map(c => c.plan ? c.plan.pat : null), C.gold, { unit: ' tỷ' })] },
-    options: { scales: { x: { grid: { display: false } }, y: yNum('tỷ đồng') } } });
+  <p class="sec-sub">Báo cáo phân tích của các công ty chứng khoán từ 01/04/2026; mỗi CTCK lấy bản mới nhất. Giá mục tiêu đã điều chỉnh theo sự kiện quyền; upside so với giá đóng cửa phiên gần nhất. Bấm một mã ở chart hoặc bảng để xem P/B của mã đó.</p>
+  <div class="kpis">
+    ${kpi('Mã có ≥ 2 CTCK định giá', nf(full.length), `trên ${has.length} mã có giá mục tiêu · ${cs.length} mã theo dõi`)}
+    ${kpi('Upside trung vị', sg(med2(base.map(c => c.up)), 1), full.length ? 'mã có ≥ 2 giá mục tiêu' : 'mọi mã có giá mục tiêu', cls(med2(base.map(c => c.up))))}
+    ${kpi('P/E fwd 2026 trung vị', xx(med2(cs.map(c => c.peFwd)), 1), `P/E TTM ngành ${xx(last(sv.pe), 1)}`)}
+    ${kpi('P/B tại giá mục tiêu trung vị', xx(med2(base.map(c => c.pbTP))), `P/B hiện tại trung vị ${xx(med2(base.map(c => c.pbNow)))} · ngành ${xx(last(sv.pb))}`)}
+    ${kpi('Khuyến nghị', `${cs.reduce((a, c) => a + c.buy, 0)} MUA`, `${cs.reduce((a, c) => a + c.hold, 0)} trung lập · ${cs.reduce((a, c) => a + c.sell, 0)} bán (theo CTCK)`)}
+  </div>
+  <article class="card" id="pbHistCard"><h3 class="sub" id="pbHistH"></h3><p class="chart-sub" id="pbHistSub"></p>
+    <div class="cbox tall"><canvas id="chPbHist" role="img" aria-label="P/B lịch sử"></canvas></div>
+    <div class="insight" id="pbHistIns"></div><div class="src">Nguồn: ${WI} (định giá theo phiên, báo cáo CTCK)</div></article>
+  <div class="grid g2 gap">
+    ${card({ id: 'chUp', title: 'Upside theo giá mục tiêu trung vị', h: 'tall', sub: 'Mỗi CTCK lấy bản mới nhất · số trong ngoặc = số giá mục tiêu · màu nhạt = dưới 2 CTCK (kém tin cậy)', ins: consUpIns(has), src: WI })}
+    ${card({ id: 'chPeFwd', title: 'P/E forward 2026 theo LNST dự phóng trung vị', h: 'tall', sub: 'Lần · vốn hóa hiện tại / LNST 2026F trung vị các CTCK; đường đỏ: P/E TTM ngành', ins: consPeIns(cs, sv), src: WI })}
+    ${card({ id: 'chPbTp', title: 'Định giá P/B: hiện tại so với tại giá mục tiêu', h: 'tall', sub: 'Lần · cột = P/B hiện tại · chấm = P/B tại giá mục tiêu trung vị (giá mục tiêu / giá trị sổ sách mỗi cổ phiếu hiện tại) · màu nhạt = dưới 2 CTCK', ins: consPbIns(has, pbM, sv), src: WI })}
+    ${card({ id: 'chPbGrp', title: 'P/B theo nhóm: hiện tại và tại giá mục tiêu', h: 'tall', sub: `Lần · trung vị theo nhóm ${PAGE === 'bh' ? '(nhân thọ, phi nhân thọ)' : '(CTCK thuộc ngân hàng, độc lập)'}; vạch xám: trung bình 3 năm của P/B ngành`, src: WI })}
+    ${card({ id: 'chNp', title: 'LNST 2026: dự phóng trung vị và kế hoạch ĐHĐCĐ', h: 'tall', sub: 'Tỷ đồng · chấm vàng = kế hoạch ĐHĐCĐ', ins: consNpIns(cs), src: WI + ' (báo cáo CTCK, kế hoạch ĐHĐCĐ)' })}
+    ${card({ id: 'chRec', title: 'Khuyến nghị theo mã', h: 'tall', sub: 'Số CTCK theo khuyến nghị mới nhất của từng CTCK; báo cáo không ghi khuyến nghị không tính', src: WI })}
+  </div>
+  <article class="card"><h3 class="sub">Chi tiết theo mã</h3><div class="tscroll"><table class="fz" id="consTab"><thead><tr><th>Mã</th><th class="n">CTCK</th><th class="n">MUA / TL / BÁN</th><th class="n">GMT trung vị</th><th class="n">GMT thấp – cao</th><th class="n">Giá</th><th class="n">Upside</th><th class="n">P/B hiện tại</th><th class="n">P/B tại GMT</th><th class="n">LNST 26F (tỷ)</th><th class="n">KH LNST 26 (tỷ)</th><th class="n">P/E fwd</th><th>Báo cáo mới nhất</th></tr></thead><tbody>
+    ${cs.map(c => `<tr class="${c.nTP < 2 ? 'stale' : ''}" data-s="${c.s}" style="cursor:pointer"><td><b>${c.s}</b> <a href="dn.html?s=${c.s}#cons" class="muted" style="font-size:11px">chi tiết</a>${c.R.length ? `<details class="more"><summary>${c.R.length} báo cáo</summary><div class="note">${c.R.map(r => `${esc(r.org)} ${dvn(r.d)} · ${esc(r.rec || '')}${r.tp ? ' · GMT ' + nf(r.tp) : ''}${r.np ? ' · LNST ' + nf(r.np) : ''}`).join('<br>')}</div></details>` : ''}</td>
+      <td class="n">${c.n || '—'}</td><td class="n">${c.buy} / ${c.hold} / ${c.sell}</td><td class="n">${nf(c.tp)}</td><td class="n">${c.tpMin ? nf(c.tpMin) + ' – ' + nf(c.tpMax) : '—'}</td><td class="n">${nf(c.px)}</td>
+      <td class="n">${c.up == null ? '—' : `<b class="${cls(c.up)}">${sg(c.up, 1)}</b>`}</td><td class="n">${xx(c.pbNow)}</td><td class="n">${xx(c.pbTP)}</td><td class="n">${nf(c.np)}</td><td class="n">${c.plan ? nf(c.plan.pat) : '—'}</td><td class="n">${xx(c.peFwd, 1)}</td><td>${c.last ? `${esc(c.last.org)} · ${dvn(c.last.d)}` : '<span class="muted">Chưa có</span>'}</td></tr>`).join('')}
+  </tbody></table></div><div class="note">Dòng mờ: dưới 2 giá mục tiêu trong kỳ. Một số CTCK không ghi khuyến nghị (chưa phân loại) nên tổng MUA/TL/BÁN có thể nhỏ hơn số CTCK.</div><div class="src">Nguồn: ${WI}</div></article>`;
+  const pick = (e, els, ch) => { if (!els || !els.length) return; consPick(String(ch.data.labels[els[0].index]).split(' ')[0]); };
+  const s1 = has.slice().sort((a, b) => b.up - a.up);
+  mk('chUp', { type: 'bar', data: { labels: s1.map(c => `${c.s} (${c.nTP})`), datasets: [bar('Upside', s1.map(c => c.up * 100), s1.map(lo), { unit: '%', dp: 1 })] },
+    options: { indexAxis: 'y', onClick: pick, plugins: { legend: { display: false }, vref: { lines: [{ axis: 'x', value: 0, color: C.grey, dash: [] }] } }, scales: { x: yPct('%'), y: { grid: { display: false } } } } });
+  const s2 = cs.filter(c => c.peFwd != null && c.peFwd < 60).sort((a, b) => a.peFwd - b.peFwd);
+  mk('chPeFwd', { type: 'bar', data: { labels: s2.map(c => c.s), datasets: [bar('P/E fwd 2026', s2.map(c => c.peFwd), s2.map(c => c.N.length < 2 ? '#d5d9e2' : GCOL[GRP[c.s]]), { unit: 'x', dp: 1 })] },
+    options: { indexAxis: 'y', onClick: pick, plugins: { legend: { display: false }, vref: { lines: [{ axis: 'x', value: last(sv.pe), label: 'P/E TTM ngành ' + xx(last(sv.pe), 1), color: C.red }] } }, scales: { x: yNum('lần', { ticks: { callback: v => nf(v, 0) + 'x' } }), y: { grid: { display: false } } } } });
+  const s3 = has.filter(c => c.pbTP != null && c.pbNow != null).sort((a, b) => b.pbTP / b.pbNow - a.pbTP / a.pbNow);
+  mk('chPbTp', { type: 'bar', data: { labels: s3.map(c => `${c.s} (${c.nTP})`), datasets: [
+    bar('P/B hiện tại', s3.map(c => c.pbNow), s3.map(lo), { unit: 'x', dp: 2, order: 2 }),
+    { type: 'line', label: 'P/B tại giá mục tiêu', data: s3.map(c => c.pbTP), showLine: false, pointRadius: 6, backgroundColor: '#fff', borderColor: '#1f2433', pointBorderWidth: 2, unit: 'x', dp: 2, order: 1 }] },
+    options: { indexAxis: 'y', onClick: pick, interaction: { mode: 'index', intersect: false, axis: 'y' }, plugins: { vref: { lines: [{ axis: 'x', value: last(sv.pb), label: 'Ngành ' + xx(last(sv.pb)), color: C.red }, { axis: 'x', value: pbM, label: 'TB 3 năm ' + xx(pbM), color: C.grey }] } },
+      scales: { x: yNum('lần', { ticks: { callback: v => nf(v, 1) + 'x' } }), y: { grid: { display: false } } } } });
+  const G = [...new Set(Object.values(GRP))];
+  mk('chPbGrp', { type: 'bar', data: { labels: G, datasets: [bar('P/B hiện tại (trung vị)', G.map(g => med2(cs.filter(c => GRP[c.s] === g).map(c => c.pbNow))), G.map(g => GCOL[g]), { unit: 'x', dp: 2 }),
+    bar('P/B tại giá mục tiêu (trung vị)', G.map(g => med2(has.filter(c => GRP[c.s] === g).map(c => c.pbTP))), 'rgba(217,164,0,.75)', { unit: 'x', dp: 2 })] },
+    options: { plugins: { vref: { lines: [{ value: pbM, label: 'TB 3 năm ngành ' + xx(pbM), color: C.grey }] } }, scales: { x: { grid: { display: false } }, y: yNum('lần', { ticks: { callback: v => nf(v, 1) + 'x' } }) } } });
+  const s4 = cs.filter(c => c.np || c.plan);
+  mk('chNp', { type: 'bar', data: { labels: s4.map(c => `${c.s} (${c.N.length})`), datasets: [bar('LNST 2026F trung vị', s4.map(c => c.np), s4.map(c => c.N.length < 2 ? '#d5d9e2' : GCOL[GRP[c.s]]), { unit: ' tỷ', order: 2 }),
+    { type: 'line', label: 'Kế hoạch ĐHĐCĐ', data: s4.map(c => c.plan ? c.plan.pat : null), showLine: false, pointRadius: 6, backgroundColor: C.gold, borderColor: C.gold, unit: ' tỷ', dp: 0, order: 1 }] },
+    options: { indexAxis: 'y', onClick: pick, interaction: { mode: 'index', intersect: false, axis: 'y' }, scales: { x: yNum('tỷ đồng'), y: { grid: { display: false } } } } });
+  const s5 = cs.filter(c => c.buy + c.hold + c.sell);
+  mk('chRec', { type: 'bar', data: { labels: s5.map(c => c.s), datasets: [bar('MUA', s5.map(c => c.buy), C.green, { stack: 'r' }), bar('Trung lập', s5.map(c => c.hold), C.gold, { stack: 'r' }), bar('BÁN', s5.map(c => c.sell), C.red, { stack: 'r' })] },
+    options: { indexAxis: 'y', onClick: pick, scales: { x: yNum('số CTCK', { stacked: true, ticks: { stepSize: 1 } }), y: { stacked: true, grid: { display: false } } } } });
+  $$('#consTab tbody tr[data-s]').forEach(tr => tr.onclick = e => { if (e.target.closest('details,a')) return; consPick(tr.dataset.s); });
+  drPbHist();
+}
+function consPick(s) { consSel = consSel === s ? null : s; drPbHist(); const c = $('#pbHistCard'); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+function drPbHist() {
+  const sv = SECV(), nmS = PAGE === 'bh' ? 'ngành bảo hiểm' : 'ngành chứng khoán';
+  let ser, title, c = null, peer = null;
+  const sec = sv.d.map((d, i) => [d, sv.pb[i]]).filter(p => p[1] != null);
+  if (consSel && W.pb[consSel]) { const p = W.pb[consSel]; ser = p.d.map((d, i) => [d, p.pb[i]]).filter(x => x[1] != null); c = consOf(consSel); peer = sec; title = `P/B ${consSel} theo phiên so với P/B ${nmS}`; }
+  else { ser = sec; title = `P/B ${nmS} theo phiên`; const cs = SYMS().map(consOf).filter(x => x.pbTP != null && x.pbNow != null && x.mcap); const w = cs.reduce((a, x) => a + x.mcap, 0);
+    c = w ? { pbTP: last(sv.pb) * cs.reduce((a, x) => a + x.mcap * x.pbTP / x.pbNow, 0) / w, nTP: cs.length, agg: true } : null; }
+  const v = ser.map(p => p[1]), m = v.reduce((a, b) => a + b, 0) / v.length, sd = Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length), now = last(v), lastD = last(ser)[0];
+  const yEnd = `${lastD.slice(0, 4)}-12-31`, fut = [];
+  if (c && c.pbTP != null && yEnd > lastD) { const d = new Date(lastD + 'T00:00:00Z'); for (;;) { d.setUTCDate(d.getUTCDate() + 1); const iso = d.toISOString().slice(0, 10); if (iso > yEnd) break; if (d.getUTCDay() % 6) fut.push(iso); } }
+  const dates = ser.map(p => p[0]).concat(fut), n0 = ser.length;
+  const ds = [line(consSel ? 'P/B ' + consSel : 'P/B ' + nmS, v.concat(fut.map(() => null)), consSel ? C.navy : C.teal, { pointRadius: 0, borderWidth: 1.8, unit: 'x', dp: 2 })];
+  if (peer) { const mm = new Map(peer); ds.push(line('P/B ' + nmS, dates.map(d => mm.has(d) ? mm.get(d) : null), C.grey, { pointRadius: 0, borderWidth: 1.2, borderDash: [4, 3], unit: 'x', dp: 2 })); }
+  if (c && c.pbTP != null && fut.length) ds.push(line(`Tới P/B tại giá mục tiêu ${xx(c.pbTP)} (31/12)`, dates.map((d, i) => i < n0 - 1 ? null : +(now + (c.pbTP - now) * (i - (n0 - 1)) / (dates.length - n0)).toFixed(3)), C.red, { pointRadius: 0, borderWidth: 1.8, borderDash: [6, 4], unit: 'x', dp: 2 }));
+  mk('chPbHist', { type: 'line', data: { labels: dates.map(dvn), datasets: ds },
+    options: { plugins: { vref: { lines: [{ value: m, label: `TB ${xx(m)}`, color: C.grey, dash: [2, 3] }, { value: m + sd, label: `+1σ ${xx(m + sd)}`, color: '#c9a227' }, { value: m - sd, label: `−1σ ${xx(m - sd)}`, color: '#c9a227' }] } },
+      scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 9 } }, y: yNum('lần', { beginAtZero: false, ticks: { callback: v2 => nf(v2, 1) + 'x' } }) } } });
+  $('#pbHistH').textContent = title;
+  $('#pbHistSub').textContent = `Lần · theo phiên từ ${dvn(ser[0][0])} · nét đứt đỏ = P/B đi từ hiện tại tới P/B tại giá mục tiêu trung vị vào 31/12 · đường xám = trung bình, đường vàng = ±1 độ lệch chuẩn · bấm lại mã đang chọn để về P/B ngành`;
+  const z = sd ? (now - m) / sd : 0, pct = v.filter(y => y <= now).length / v.length * 100;
+  $('#pbHistIns').innerHTML = `${consSel || 'P/B ngành'}: hiện tại <b>${xx(now)}</b>, ${z >= 0 ? 'cao' : 'thấp'} hơn trung bình ${xx(m)} <b>${nf(Math.abs(z), 1)} độ lệch chuẩn</b>; cao hơn ${nf(pct, 0)}% số phiên trong chuỗi (thấp nhất ${xx(Math.min(...v))}, cao nhất ${xx(Math.max(...v))}).`
+    + (c && c.pbTP != null ? ` Giá mục tiêu trung vị của CTCK tương ứng P/B <b>${xx(c.pbTP)}</b>${c.agg ? ` (bình quân theo vốn hóa của ${c.nTP} mã có giá mục tiêu)` : ` (${c.nTP} giá mục tiêu)`}.` : '')
+    + (PAGE === 'bh' ? ' P/B của doanh nghiệp bảo hiểm đi theo ROE bền vững, mà ROE chủ yếu đến từ lợi suất danh mục; vì vậy P/B nhạy với lãi suất hơn với tăng trưởng phí.' : ' P/B công ty chứng khoán biến động mạnh theo chu kỳ thị trường: tăng nhanh khi thanh khoản và dư nợ ký quỹ tăng, giảm sâu khi thị trường điều chỉnh.');
+}
+function consUpIns(has) {
+  const s = has.slice().sort((a, b) => b.up - a.up), neg = s.filter(c => c.up < 0);
+  return s.length ? `Upside cao nhất: ${s.slice(0, 3).map(c => `<b>${c.s} ${sg(c.up, 0)}</b> (${c.nTP} CTCK)`).join(', ')}.${neg.length ? ' Giá đã vượt giá mục tiêu trung vị: ' + neg.map(c => `${c.s} ${sg(c.up, 0)}`).join(', ') + '.' : ''} Phần lớn mã chỉ có 1–2 giá mục tiêu nên trung vị nhạy với từng báo cáo.` : '';
+}
+function consPeIns(cs, sv) {
+  const s = cs.filter(c => c.peFwd != null).sort((a, b) => a.peFwd - b.peFwd);
+  return s.length ? `P/E fwd thấp nhất: ${s.slice(0, 3).map(c => `<b>${c.s} ${xx(c.peFwd, 1)}</b>`).join(', ')}; cao nhất ${s.slice(-2).map(c => `${c.s} ${xx(c.peFwd, 1)}`).join(', ')}; P/E TTM ngành ${xx(last(sv.pe), 1)}.` : '';
+}
+function consPbIns(has, pbM, sv) {
+  const R = has.filter(c => c.pbTP != null && c.pbNow != null).sort((a, b) => b.pbTP / b.pbNow - a.pbTP / a.pbNow);
+  return R.length ? `CTCK định giá ở P/B trung vị <b>${xx(med2(R.map(c => c.pbTP)))}</b>, so với <b>${xx(med2(R.map(c => c.pbNow)))}</b> hiện tại; P/B ngành ${xx(last(sv.pb))}, trung bình 3 năm ${xx(pbM)}. Chênh lớn nhất giữa P/B mục tiêu và hiện tại: ${R.slice(0, 3).map(c => `<b>${c.s}</b> ${xx(c.pbNow)} → ${xx(c.pbTP)}`).join(', ')}.` : '';
+}
+function consNpIns(cs) {
+  const R = cs.filter(c => c.np && c.plan && c.plan.pat);
+  return R.length ? `So với kế hoạch ĐHĐCĐ: ${R.map(c => `<b>${c.s}</b> ${sg(c.np / c.plan.pat - 1, 0)}`).join(', ')} (dự phóng trung vị so với kế hoạch LNST 2026).` : 'Chưa đủ mã có cả dự phóng và kế hoạch để so sánh.';
 }
 
 /* =====================================================================
