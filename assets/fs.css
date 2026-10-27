@@ -712,3 +712,5 @@ table td.xh-on{outline:2px solid var(--navy);outline-offset:-2px;font-weight:700
 .tbl-menu hr{border:0;border-top:1px solid var(--line2);margin:4px 0}
 .tbl-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#1D2678;color:#fff;padding:9px 16px;border-radius:10px;font:600 13px Arial;opacity:0;transition:.25s;z-index:9999;pointer-events:none}
 .tbl-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.kpi.kpi-lk{cursor:pointer;transition:border-color .15s,box-shadow .15s}.kpi.kpi-lk:hover{border-color:var(--teal);box-shadow:0 2px 10px rgba(29,38,120,.08)}
+.cmp-x{margin-left:8px;border:1px solid var(--line);background:#fff;color:var(--neg);font:600 11.5px Arial;border-radius:99px;padding:2px 9px;cursor:pointer;vertical-align:middle}.cmp-x:hover{background:#fde4e1}

@@ -710,6 +710,7 @@ function paneWorld() {
 function goChart(p, cid) {
   if (builders[p]) show(p); else if (P2PANE[p]) openP(p); else { location.href = (PAGE === 'vimo' ? 'nganh.html' : 'vimo.html') + '#' + p + '~' + cid; return; }
   setTimeout(() => { const el = document.getElementById(cid), c = el && (el.closest('article.card') || el); if (!c) return;
+    const ob = el.closest('.ovbody'); if (ob && ob.hidden && ob.previousElementSibling) ob.previousElementSibling.click();
     c.scrollIntoView({ behavior: 'smooth', block: 'start' }); c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1800); }, 300);
 }
 function openP(k, reveal = true) {
@@ -1985,6 +1986,7 @@ function fxIns() {
 function drFx() { const cfg = FSFX.config({ nhtmSell: dom.nhtmSell, free: dom.free, freeD: dom.freeD, nhtmD: dom.nhtmD }, { numAxis }); if (cfg) mk('chFx', cfg); }
 function chDom() {
   const labs = monthsFrom('2021-01', TODAY.slice(0, 7));
+  kpiLinks($('[data-pp="dom"]'), ['chFx', 'chFxGap', 'chOn', 'chMoney', 'chCpi', 'chExt']);
   drFx();
   const G = fxGapSer();
   mk('chFxGap', { type: 'bar', data: { labels: G.map(p => dvn(p.d)), datasets: [{ label: 'Tự do − NHTM', data: G.map(p => p.v), backgroundColor: G.map(p => p.v > 0 ? 'rgba(192,57,43,.7)' : 'rgba(31,138,141,.7)'), dp: 0, unit: 'đ', barPercentage: 1, categoryPercentage: 1 }] },
@@ -2227,10 +2229,23 @@ function subEco() {
     ${card({ id: 'ePubM', title: 'Giải ngân vốn ngân sách theo tháng', sub: 'nghìn tỷ đồng/tháng · đường = so cùng kỳ, % (trục phải)', src: 'Bộ Tài chính, Cục Thống kê' })}
   </div>`;
 }
+/* ô KPI đầu mục: bấm để mở và cuộn tới chart tương ứng (thứ tự ô = thứ tự id) */
+function kpiLinks(box, ids) {
+  const k = box && box.querySelector('.kpis'); if (!k) return;
+  const go = id => { const c = document.getElementById(id); if (!c) return; const a = c.closest('article.card') || c;
+    const ob = c.closest('.ovbody'); if (ob && ob.hidden && ob.previousElementSibling) ob.previousElementSibling.click();
+    const d = c.closest('details'); if (d && !d.open) d.open = true;
+    a.scrollIntoView({ behavior: 'smooth', block: 'start' }); a.classList.add('flash'); setTimeout(() => a.classList.remove('flash'), 1800); };
+  [...k.querySelectorAll('.kpi')].forEach((t, i) => { const id = ids[i]; if (!id || !document.getElementById(id)) return;
+    t.classList.add('kpi-lk'); t.title = 'Bấm để xem chart';
+    t.onclick = () => { const c = document.getElementById(id), pp = c.closest('[data-pp]');
+      if (pp && !box.contains(c) && !c.offsetParent) { openP(pp.dataset.pp); setTimeout(() => go(id), 400); } else go(id); }; });
+}
 function chEco() {
   if (!ECO) return;
   collapsify($('[data-pp="eco"]'), 'eco', ['e-dash', 'e-grow'], 'h3.dsec');
   const F = '2021-01', labs = eLab(F);
+  kpiLinks($('[data-pp="eco"]'), ['eGdp', 'eIip', 'eRet', 'eXnk', 'eFdi', 'ePubY', 'chCpi']);
   { const qi = ECO.q.findIndex(q => q >= '2021-01'), Q = ECO.q.slice(qi), sl = k => (ECO.gq[k] || []).slice(qi);
     mk('eGdp', { type: 'bar', data: { labels: Q.map(qLabQ), datasets: [{ label: 'GDP', data: sl('gdp'), backgroundColor: 'rgba(29,38,120,.75)', dp: 2, unit: '%', order: 3 },
       L('Nông, lâm, thủy sản', sl('gdp_agri'), C.gold, { pointRadius: 2, order: 1 }), L('Công nghiệp và xây dựng', sl('gdp_ind'), C.red, { pointRadius: 2, order: 1 }), L('Dịch vụ', sl('gdp_svc'), C.tealInk, { pointRadius: 2, order: 1 })] },
@@ -2457,8 +2472,10 @@ function hmLine() {   // biểu đồ toàn bộ lịch sử của dòng đang c
   }
   let i0 = all.findIndex((_, i) => ds.some(d => d.data[i] != null)); if (i0 < 0) i0 = all.length - 1;
   ds.forEach(d => { d.data = d.data.slice(i0); });
-  const nc = hmCmp[hmS.v].length;
-  $('#hmLineH').textContent = title + (nc ? ` và ${nc} dòng so sánh` : ''); $('#hmLineSub').textContent = `${sub} · bấm tên dòng khác trên bản đồ nhiệt để đổi biểu đồ · chuột phải vào một ô để thêm dòng vào so sánh`;
+  const cmpN = hmS.v === 'vn' ? hmCmp.vn.filter(k => k !== hmSel.vn) : hmCmp.world.map(k => (HM_C.find(x => x[0] === k) || [])[1]).filter(Boolean);
+  $('#hmLineH').innerHTML = esc(title) + (cmpN.length ? ` <span style="font-weight:400">so với</span> ${cmpN.map(esc).join(', ')} <button type="button" class="cmp-x" id="hmCmpX" title="Bỏ các dòng so sánh, về chart ban đầu">Xoá so sánh ✕</button>` : '');
+  $('#hmLineSub').textContent = `${sub} · bấm tên dòng khác trên bản đồ nhiệt để đổi biểu đồ · chuột phải vào một ô để thêm dòng vào so sánh`;
+  if ($('#hmCmpX')) $('#hmCmpX').onclick = () => { hmCmp[hmS.v].length = 0; hmLine(); };
   const n = hmS.n === 'all' ? 0 : +hmS.n - 1;
   const y1 = hmS.v === 'vn' && hmLine.two ? { y1: { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 1) } } } : {};
   mk('hmLine', { type: 'line', data: { labels: all.slice(i0).map(mvn), datasets: ds },
@@ -2549,7 +2566,7 @@ function cmdDraw() {
     const all = [it, ...cmp], d0 = new Date(Date.now() - 3 * 365.25 * 864e5).toISOString().slice(0, 10);
     const days = [...new Set(all.flatMap(x => x.d.filter(d => d >= d0)))].sort();
     const ds = all.map((x, j) => { const a = cmdAlign(x, days), b = a.find(v => v != null); return L(x.n, a.map(v => v == null || !b ? null : +(v / b * 100).toFixed(2)), j ? CMP_CC[(j - 1) % CMP_CC.length] : C.navy, { unit: '', dp: 1, borderWidth: j ? 1.6 : 2.2, spanGaps: true }); });
-    if (h) h.textContent = `${it.n} so với ${cmp.map(x => x.n).join(', ')} (chỉ số, đầu kỳ 3 năm = 100)`;
+    if (h) { h.innerHTML = `${esc(it.n)} <span style="font-weight:400">so với</span> ${cmp.map(x => esc(x.n)).join(', ')} <span style="font-weight:400">(chỉ số, đầu kỳ 3 năm = 100)</span> <button type="button" class="cmp-x" id="cmdCmpX" title="Bỏ các hàng hóa so sánh, về chart ban đầu">Xoá so sánh ✕</button>`; $('#cmdCmpX').onclick = () => { cmdCmp.length = 0; cmdDraw(); }; }
     mk('cmdOne', { type: 'line', data: { labels: days.map(dvn), datasets: ds }, options: { plugins: { refLines: { lines: [{ value: 100, color: C.grey, label: '' }] } }, scales: { x: { ticks: { maxTicksLimit: 10 } }, y: numAxis('chỉ số', { beginAtZero: false, ticks: { callback: v => nf(v, 0) } }) } } });
     return;
   }
