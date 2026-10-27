@@ -405,6 +405,20 @@ def build(raw):
     _all[TICKER] = mixq
     _bf.write_text(json.dumps(_all, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     D['mixQ'] = mixq
+    # P/B theo phiên (ratio_daily) của mã này và các NH cùng nhóm có trang riêng; bản dẫn xuất commit ở data/backfill/pb_daily.json
+    _pf = ROOT / 'data/backfill/pb_daily.json'
+    _pd = json.loads(_pf.read_text(encoding='utf-8')) if _pf.exists() else {}
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily':
+            for r in rows(d['response']):
+                sy = r.get('symbol'); sy = sy[0] if isinstance(sy, list) else sy
+                if sy and r.get('pb') is not None and r.get('trading_date'):
+                    _pd.setdefault(sy, {})[r['trading_date'][:10]] = round(float(r['pb']), 4)
+    _pd = {k: dict(sorted(v.items())) for k, v in sorted(_pd.items())}
+    _pf.write_text(json.dumps(_pd, separators=(',', ':')), encoding='utf-8')
+    _own = [k for k in json.loads((ROOT / 'data/banks.json').read_text(encoding='utf-8')) if not k.startswith('_')]
+    D['pbDaily'] = {k: [[d_, v_] for d_, v_ in _pd[k].items() if d_ >= '2021-01-01'] for k in _own
+                    if k in _pd and (k == TICKER or PEER_GROUPS.get(k) == GRP)}
     _ir = ROOT / f'data/backfill/{TICKER.lower()}_ir_segments.json'   # phân khúc khách hàng theo cách ngân hàng tự trình bày (tài liệu nhà đầu tư)
     if _ir.exists():
         _j = json.loads(_ir.read_text(encoding='utf-8'))
