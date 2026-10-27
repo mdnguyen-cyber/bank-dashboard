@@ -100,7 +100,7 @@ function card({ id, title, sub, ins, src, h = '', body = '', cls = '' }) {
 }
 const kpi = (l, v, s, cls = '') => `<div class="kpi"><span>${l}</span><b>${v}</b><em class="${cls}">${s || ''}</em></div>`;
 const cls = v => v == null ? '' : v >= 0 ? 'pos' : 'neg';
-const tbl = (head, rows, o = {}) => `<div class="tscroll"><table class="${o.cls || ''}"><thead><tr>${head.map((h, i) => `<th${i && o.num !== false ? ' class="n"' : ''}>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td${i && o.num !== false ? ' class="n"' : ''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const tbl = (head, rows, o = {}) => `<div class="tscroll"><table class="fz ${o.cls || ''}"><thead><tr>${head.map((h, i) => `<th${i && o.num !== false ? ' class="n"' : ''}>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td${i && o.num !== false ? ' class="n"' : ''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 // chuỗi giá trị: 3 cột, mỗi cột có các ô số liệu
 function chain(cols) {
   return `<div class="vchain">${cols.map(c => `<div class="vc-col"><h4>${c.t}</h4><p>${c.d}</p>${(c.k || []).map(k => `<div class="vc-k"><span>${k[0]}</span><b>${k[1]}</b>${k[2] ? `<em>${k[2]}</em>` : ''}</div>`).join('')}</div>`).join('')}</div>`;
@@ -308,14 +308,7 @@ function paneLife() {
   $('#life').innerHTML = `
   <h2 class="sec">Bảo hiểm nhân thọ</h2>
   <p class="sec-sub">Số liệu lũy kế từ đầu năm, tỷ đồng. Số tháng là số ước tại thời điểm công bố; số năm chính thức theo Niên giám của Bộ Tài chính. Rê chuột vào từng điểm để xem bản tin nguồn.</p>
-  <article class="card"><h3 class="sub">Chuỗi giá trị bảo hiểm nhân thọ</h3>
-    <p class="chart-sub">Phí thu vào được trích lập dự phòng và đem đầu tư; phần lớn quay lại khách hàng qua bồi thường, đáo hạn, bảo tức. Số liệu toàn thị trường, kỳ ${kyLbl(k)}.</p>
-    ${chain([
-      { t: '1 · Đầu vào: bán hàng', d: 'Kênh đại lý, ngân hàng (bancassurance), môi giới; nhượng tái bảo hiểm phần rủi ro lớn.', k: [['Tổng phí', nf(p[1]) + ' tỷ', 'YoY ' + sg(p[2])], ['Phí khai thác mới', nf(nb[1]) + ' tỷ', 'YoY ' + sg(nb[2])], ['HĐ khai thác mới', nf(nc[1]), kyShort(nc[0]) + (nc[2] != null ? ' · YoY ' + sg(nc[2]) : '')], ['HĐ có hiệu lực', nf(inf[1] / 1e6, 2) + ' triệu', kyShort(inf[0])]] },
-      { t: '2 · Trích lập và đầu tư', d: 'Dự phòng nghiệp vụ là nợ phải trả với khách hàng; tài sản đầu tư chủ yếu trái phiếu Chính phủ, tiền gửi, trái phiếu ngân hàng.', k: [['Dự phòng nghiệp vụ', nf(rs[1] / 1000, 0) + ' nghìn tỷ', kyShort(rs[0]) + (rs[2] != null ? ' · YoY ' + sg(rs[2]) : '')], ['Tổng tài sản', nf(as[1] / 1000, 0) + ' nghìn tỷ', kyShort(as[0])], ['Dự phòng / tổng tài sản', rs[0] === as[0] ? pc(rs[1] / as[1], 0) : '—', ''], ['Đầu tư trở lại nền KT', nf(iv[1] / 1000, 0) + ' nghìn tỷ', kyShort(iv[0])], ['Vốn chủ sở hữu', nf(eq[1] / 1000, 0) + ' nghìn tỷ', kyShort(eq[0])]] },
-      { t: '3 · Đầu ra: chi trả', d: 'Bồi thường, đáo hạn, giá trị hoàn lại khi hủy hợp đồng, bảo tức.', k: [['Chi trả quyền lợi', nf(cl[1]) + ' tỷ', kyShort(cl[0]) + ' · YoY ' + sg(cl[2])], ['Chi trả / phí', cp != null ? pc(cp, 1) : '—', cp0 != null ? 'cùng kỳ ' + pc(cp0, 1) : '']] }])}
-    <div class="insight">Chỉ số theo dõi: <b>phí mới / HĐ có hiệu lực</b> (động lực tăng trưởng), <b>dự phòng / tài sản</b> và <b>cơ cấu danh mục × lợi suất</b> (thu nhập đầu tư), <b>chi trả / phí</b> và <b>đáo hạn / phí</b> (áp lực đầu ra). Chi trả / phí cùng kỳ tính từ số tăng trưởng nguồn công bố.</div>
-    <div class="src">Nguồn: ${srcOf([p, nb, cl, inf, nc, rs, as, iv, eq])}</div></article>
+
   <div class="grid g2 gap">
     ${card({ id: 'lfFY', title: 'Phí, khai thác mới và chi trả theo năm', sub: 'Tỷ đồng · số chính thức năm; năm 2025 là số ước', src: FY_SRC,
       ins: `Phí khai thác mới năm 2025 bằng ${pc(fy('LIFE|NB_PREM|Tổng|Toàn TT')[9] / fy('LIFE|NB_PREM|Tổng|Toàn TT')[6], 0)} đỉnh 2022, hệ quả của khủng hoảng niềm tin 2023 với sản phẩm liên kết đầu tư bán qua ngân hàng và các quy định siết bán hàng sau đó. Chi trả quyền lợi trên 57 nghìn tỷ mỗi năm từ 2023, gần gấp đôi năm 2020.` })}
@@ -346,7 +339,7 @@ function paneLife() {
 function commTable() {
   const cos = [...new Set(I.comm.map(r => r.co))], ys = [2021, 2022, 2023, 2024];
   const cell = (c, y, f) => { const r = I.comm.find(x => x.co === c && x.y === y); if (!r || r[f] == null) return '<span class="muted">—</span>'; return pc(r[f], 1) + (/Báo chí/.test(r.st || '') ? '*' : ''); };
-  return `<div class="tscroll"><table class="cmpt"><thead><tr><th rowspan="2">Doanh nghiệp</th><th colspan="4" class="n">Hoa hồng / tổng phí</th><th colspan="2" class="n">Hoa hồng / phí KTM</th></tr><tr>${ys.map(y => `<th class="n">${y}</th>`).join('')}<th class="n">2021</th><th class="n">2024</th></tr></thead><tbody>
+  return `<div class="tscroll"><table class="fz cmpt"><thead><tr><th rowspan="2">Doanh nghiệp</th><th colspan="4" class="n">Hoa hồng / tổng phí</th><th colspan="2" class="n">Hoa hồng / phí KTM</th></tr><tr>${ys.map(y => `<th class="n">${y}</th>`).join('')}<th class="n">2021</th><th class="n">2024</th></tr></thead><tbody>
     ${cos.map(c => `<tr><td>${esc(c)}</td>${ys.map(y => `<td class="n">${cell(c, y, 'r_prem')}</td>`).join('')}<td class="n">${cell(c, 2021, 'r_nb')}</td><td class="n">${cell(c, 2024, 'r_nb')}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function drawLife(k) {
@@ -583,13 +576,7 @@ function paneSec() {
     ${kpi('Nợ vay / VCSH', pc(debtOf(r) / sv(r, 'bs400'), 0), 'cùng kỳ ' + pc(debtOf(r0) / sv(r0, 'bs400'), 0))}
     ${kpi('LNTT 4 quý', nf(tS(x => sv(x, 'is90')) / 1000, 1) + ' nghìn tỷ', 'YoY ' + sg(tS(x => sv(x, 'is90')) / ttm(SECQ, yoyQ(q), x => sv(x, 'is90')) - 1), cls(tS(x => sv(x, 'is90')) / ttm(SECQ, yoyQ(q), x => sv(x, 'is90')) - 1))}
   </div>
-  <article class="card"><h3 class="sub">Chuỗi giá trị công ty chứng khoán</h3>
-    <p class="chart-sub">Vốn chủ và vốn vay được đưa vào bốn mảng; số liệu tổng các công ty niêm yết, ${qLbl(q)} (số dư) và 4 quý gần nhất (doanh thu).</p>
-    ${chain([
-      { t: '1 · Đầu vào: vốn và khách hàng', d: 'Vốn chủ; vay ngân hàng, phát hành trái phiếu, vay nước ngoài; đội môi giới; nguồn thương vụ.', k: [['Vốn chủ sở hữu', nf(sv(r, 'bs400') / 1000, 0) + ' nghìn tỷ', ''], ['Vay và trái phiếu phát hành', nf(debtOf(r) / 1000, 0) + ' nghìn tỷ', pc(debtOf(r) / sv(r, 'bs400'), 0) + ' VCSH'], ['Tổng tài sản', nf(sv(r, 'bs270') / 1000, 0) + ' nghìn tỷ', '']] },
-      { t: '2 · Hoạt động', d: 'Môi giới; cho vay ký quỹ và ứng trước; tự doanh (FVTPL, AFS, HTM); ngân hàng đầu tư (bảo lãnh, tư vấn).', k: [['Cho vay', nf(sv(r, 'bs114') / 1000, 0) + ' nghìn tỷ', pc(sv(r, 'bs114') / sv(r, 'bs400'), 0) + ' VCSH'], ['FVTPL', nf(sv(r, 'bs112') / 1000, 0) + ' nghìn tỷ', pc(sv(r, 'bs112') / sv(r, 'bs400'), 0) + ' VCSH'], ['HTM + AFS', nf(((sv(r, 'bs113') || 0) + (sv(r, 'bs115') || 0)) / 1000, 0) + ' nghìn tỷ', 'thu nhập cố định là chính']] },
-      { t: '3 · Đầu ra: doanh thu 4 quý', d: 'Phí môi giới, lãi cho vay, lãi lỗ danh mục, phí ngân hàng đầu tư.', k: [['Môi giới', nf(tS(x => sv(x, 'is06'))) + ' tỷ', ''], ['Lãi cho vay và phải thu', nf(tS(x => sv(x, 'is03'))) + ' tỷ', ''], ['Lãi FVTPL ròng', nf(tS(x => (sv(x, 'is01') || 0) + (sv(x, 'is21') || 0))) + ' tỷ', 'đã trừ lỗ FVTPL'], ['Bảo lãnh và tư vấn', nf(tS(x => (sv(x, 'is07') || 0) + (sv(x, 'is10') || 0))) + ' tỷ', '']] }])}
-    <div class="insight"><b>Mô hình dự phóng:</b> doanh thu môi giới = giá trị giao dịch thị trường × thị phần × phí bình quân; lãi cho vay = dư nợ thị trường × thị phần × lợi suất, giới hạn bởi trần cho vay 200% VCSH và cơ cấu nguồn vốn; danh mục tách thu nhập cố định khỏi cổ phiếu, phần cổ phiếu định giá lại theo ROE kỳ vọng, chỉ số và margin, từng mã hoặc đồng thuận. Thứ tự đánh giá một mã: P/B so đồng thuận, rồi thị phần môi giới và hiệu quả phí, thị phần margin và NIM, thương vụ IB, danh mục tự doanh.</div></article>
+
   <div class="grid g2 gap">
     ${card({ id: 'scRev', title: 'Doanh thu theo mảng của các CTCK niêm yết', sub: 'Tỷ đồng/quý · lãi FVTPL đã trừ lỗ FVTPL; đường: VN-Index cuối quý (trục phải)', src: WI + ' (BCTC tổng hợp ngành chứng khoán; chỉ số VN-Index)',
       ins: `Lãi cho vay ${qLbl(q)} ${nf(sv(r, 'is03'))} tỷ, môi giới ${nf(sv(r, 'is06'))} tỷ. Cho vay ký quỹ giờ là nguồn thu ổn định và lớn nhất; môi giới bị cạnh tranh phí 0% kéo biên xuống.` })}
@@ -704,11 +691,36 @@ const srcType = t => ({ 'MOF - Niên giám/Báo cáo năm (chính thức)': 'B�
 const ovh = (n, t) => `<h3 class="sec2">${n} · ${t}</h3>`;
 const goSub = (k, l) => `<button type="button" class="lnk" data-gosub="${k}">${l} →</button>`;
 const gloss = items => `<dl class="gloss">${items.map(([t, d]) => `<dt>${t}</dt><dd>${d}</dd>`).join('')}</dl>`;
-const drvTbl = rows => `<div class="tscroll"><table class="fdrv"><thead><tr><th>Yếu tố</th><th>Cơ chế</th><th>Tác động lên</th><th>Theo dõi</th></tr></thead><tbody>${rows.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>`;
+const drvTbl = rows => `<div class="tscroll"><table class="fz fdrv"><thead><tr><th>Yếu tố</th><th>Cơ chế</th><th>Tác động lên</th><th>Theo dõi</th></tr></thead><tbody>${rows.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>`;
 const wireGo = root => $$('[data-gosub]', root).forEach(b => b.onclick = () => { openSub(b.dataset.gosub); window.scrollTo({ top: 0 }); });
 const topShare = (seg, y, n) => { const b = I.fydn[seg].share, i = b.years.indexOf(y); return b.rows.map(r => r.v[i]).filter(v => v != null).sort((a, c) => c - a).slice(0, n).reduce((a, v) => a + v, 0); };
 const nCo = (seg, y) => { const b = I.fydn[seg].prem, i = b.years.indexOf(y); return b.rows.filter(r => r.v[i]).length; };
 
+function lifeChainCard() {
+  const P = ser('LIFE', 'PREM'), NB = ser('LIFE', 'NB_PREM'), CL = ser('LIFE', 'CLAIMS'), IF = ser('LIFE', 'INFORCE_CONTRACTS'), NC = ser('LIFE', 'NB_CONTRACTS');
+  const RS = ser('LIFE', 'RESERVES'), AS = ser('LIFE', 'ASSETS'), IV = ser('LIFE', 'INVEST'), EQ = ser('LIFE', 'EQUITY');
+  const p = last(P), nb = last(NB), cl = last(CL), inf = last(IF), nc = last(NC), rs = last(RS), as = last(AS), iv = last(IV), eq = last(EQ);
+  const k = p[0];
+  const cp = cl[0] === k ? cl[1] / p[1] : null, cp0 = (cl[0] === k && p[2] != null && cl[2] != null) ? (cl[1] / (1 + cl[2])) / (p[1] / (1 + p[2])) : null;
+  return `  <article class="card"><h3 class="sub">Bảo hiểm nhân thọ</h3>
+    <p class="chart-sub">Phí thu vào được trích lập dự phòng và đem đầu tư; phần lớn quay lại khách hàng qua bồi thường, đáo hạn, bảo tức. Số liệu toàn thị trường, kỳ ${kyLbl(k)}.</p>
+    ${chain([
+      { t: '1 · Đầu vào: bán hàng', d: 'Kênh đại lý, ngân hàng (bancassurance), môi giới; nhượng tái bảo hiểm phần rủi ro lớn.', k: [['Tổng phí', nf(p[1]) + ' tỷ', 'YoY ' + sg(p[2])], ['Phí khai thác mới', nf(nb[1]) + ' tỷ', 'YoY ' + sg(nb[2])], ['HĐ khai thác mới', nf(nc[1]), kyShort(nc[0]) + (nc[2] != null ? ' · YoY ' + sg(nc[2]) : '')], ['HĐ có hiệu lực', nf(inf[1] / 1e6, 2) + ' triệu', kyShort(inf[0])]] },
+      { t: '2 · Trích lập và đầu tư', d: 'Dự phòng nghiệp vụ là nợ phải trả với khách hàng; tài sản đầu tư chủ yếu trái phiếu Chính phủ, tiền gửi, trái phiếu ngân hàng.', k: [['Dự phòng nghiệp vụ', nf(rs[1] / 1000, 0) + ' nghìn tỷ', kyShort(rs[0]) + (rs[2] != null ? ' · YoY ' + sg(rs[2]) : '')], ['Tổng tài sản', nf(as[1] / 1000, 0) + ' nghìn tỷ', kyShort(as[0])], ['Dự phòng / tổng tài sản', rs[0] === as[0] ? pc(rs[1] / as[1], 0) : '—', ''], ['Đầu tư trở lại nền KT', nf(iv[1] / 1000, 0) + ' nghìn tỷ', kyShort(iv[0])], ['Vốn chủ sở hữu', nf(eq[1] / 1000, 0) + ' nghìn tỷ', kyShort(eq[0])]] },
+      { t: '3 · Đầu ra: chi trả', d: 'Bồi thường, đáo hạn, giá trị hoàn lại khi hủy hợp đồng, bảo tức.', k: [['Chi trả quyền lợi', nf(cl[1]) + ' tỷ', kyShort(cl[0]) + ' · YoY ' + sg(cl[2])], ['Chi trả / phí', cp != null ? pc(cp, 1) : '—', cp0 != null ? 'cùng kỳ ' + pc(cp0, 1) : '']] }])}
+    <div class="insight">Chỉ số theo dõi: <b>phí mới / HĐ có hiệu lực</b> (động lực tăng trưởng), <b>dự phòng / tài sản</b> và <b>cơ cấu danh mục × lợi suất</b> (thu nhập đầu tư), <b>chi trả / phí</b> và <b>đáo hạn / phí</b> (áp lực đầu ra). Chi trả / phí cùng kỳ tính từ số tăng trưởng nguồn công bố.</div>
+    <div class="src">Nguồn: ${srcOf([p, nb, cl, inf, nc, rs, as, iv, eq])}</div></article>`;
+}
+function secChainCard() {
+  const q = SEC_LASTQ, r = rowAt(SECQ, q), tS = f => ttm(SECQ, q, f);
+  return `  <article class="card"><h3 class="sub">Công ty chứng khoán</h3>
+    <p class="chart-sub">Vốn chủ và vốn vay được đưa vào bốn mảng; số liệu tổng các công ty niêm yết, ${qLbl(q)} (số dư) và 4 quý gần nhất (doanh thu).</p>
+    ${chain([
+      { t: '1 · Đầu vào: vốn và khách hàng', d: 'Vốn chủ; vay ngân hàng, phát hành trái phiếu, vay nước ngoài; đội môi giới; nguồn thương vụ.', k: [['Vốn chủ sở hữu', nf(sv(r, 'bs400') / 1000, 0) + ' nghìn tỷ', ''], ['Vay và trái phiếu phát hành', nf(debtOf(r) / 1000, 0) + ' nghìn tỷ', pc(debtOf(r) / sv(r, 'bs400'), 0) + ' VCSH'], ['Tổng tài sản', nf(sv(r, 'bs270') / 1000, 0) + ' nghìn tỷ', '']] },
+      { t: '2 · Hoạt động', d: 'Môi giới; cho vay ký quỹ và ứng trước; tự doanh (FVTPL, AFS, HTM); ngân hàng đầu tư (bảo lãnh, tư vấn).', k: [['Cho vay', nf(sv(r, 'bs114') / 1000, 0) + ' nghìn tỷ', pc(sv(r, 'bs114') / sv(r, 'bs400'), 0) + ' VCSH'], ['FVTPL', nf(sv(r, 'bs112') / 1000, 0) + ' nghìn tỷ', pc(sv(r, 'bs112') / sv(r, 'bs400'), 0) + ' VCSH'], ['HTM + AFS', nf(((sv(r, 'bs113') || 0) + (sv(r, 'bs115') || 0)) / 1000, 0) + ' nghìn tỷ', 'thu nhập cố định là chính']] },
+      { t: '3 · Đầu ra: doanh thu 4 quý', d: 'Phí môi giới, lãi cho vay, lãi lỗ danh mục, phí ngân hàng đầu tư.', k: [['Môi giới', nf(tS(x => sv(x, 'is06'))) + ' tỷ', ''], ['Lãi cho vay và phải thu', nf(tS(x => sv(x, 'is03'))) + ' tỷ', ''], ['Lãi FVTPL ròng', nf(tS(x => (sv(x, 'is01') || 0) + (sv(x, 'is21') || 0))) + ' tỷ', 'đã trừ lỗ FVTPL'], ['Bảo lãnh và tư vấn', nf(tS(x => (sv(x, 'is07') || 0) + (sv(x, 'is10') || 0))) + ' tỷ', '']] }])}
+    <div class="insight"><b>Mô hình dự phóng:</b> doanh thu môi giới = giá trị giao dịch thị trường × thị phần × phí bình quân; lãi cho vay = dư nợ thị trường × thị phần × lợi suất, giới hạn bởi trần cho vay 200% VCSH và cơ cấu nguồn vốn; danh mục tách thu nhập cố định khỏi cổ phiếu, phần cổ phiếu định giá lại theo ROE kỳ vọng, chỉ số và margin, từng mã hoặc đồng thuận. Thứ tự đánh giá một mã: P/B so đồng thuận, rồi thị phần môi giới và hiệu quả phí, thị phần margin và NIM, thương vụ IB, danh mục tự doanh.</div></article>`;
+}
 function paneOvBH() {
   const y = 2024, gi = FYY.indexOf(y), last9 = FYY.length - 1;
   $('#ov').innerHTML = `<h2 class="sec">Tổng quan ngành Bảo hiểm Việt Nam</h2>
@@ -731,12 +743,7 @@ function paneOvBH() {
       ins: `Phí/GDP tăng liên tục tới 2021 nhờ nhân thọ bán qua ngân hàng, rồi giảm từ 2022 khi phí nhân thọ đi xuống trong lúc GDP vẫn tăng.` })}
   </div>
   ${ovh(2, 'Chuỗi giá trị')}
-  <article class="card"><h3 class="sub">Bảo hiểm nhân thọ</h3>
-    <p class="chart-sub">Phí thu vào được trích lập dự phòng và đem đầu tư nhiều năm; phần lớn quay lại khách hàng qua bồi thường, đáo hạn, bảo tức.</p>
-    ${chain([
-      { t: '1 · Đầu vào: bán hàng', d: 'Đại lý, ngân hàng (bancassurance), môi giới; nhượng tái bảo hiểm phần rủi ro lớn.', k: [['Chỉ số', 'Doanh thu thuần, giá trị hợp đồng còn hiệu lực', ''], ['Động lực', 'Phí khai thác mới, số hợp đồng mới', '']] },
-      { t: '2 · Trích lập và đầu tư', d: 'Dự phòng nghiệp vụ là nợ phải trả với khách hàng (cấu phần lớn nhất của nguồn vốn); tài sản đầu tư theo kỳ hạn của nghĩa vụ.', k: [['Cấu trúc', 'Nợ phải trả (dự phòng) / tài sản / vốn chủ', ''], ['Chỉ số', 'Vay nợ và repo / tài sản; dự phòng / tài sản', ''], ['Thu nhập', 'Σ tỷ trọng danh mục × lợi suất từng loại', '']] },
-      { t: '3 · Đầu ra: chi trả', d: 'Bồi thường rủi ro, đáo hạn, giá trị hoàn lại khi hủy hợp đồng, bảo tức.', k: [['Chỉ số', 'Bồi thường / doanh thu thuần; đáo hạn / doanh thu', ''], ['Cảnh báo', 'Giá trị hoàn lại tăng nhanh hơn phí → quỹ đầu tư co lại', '']] }])}</article>
+  ${lifeChainCard()}
   <article class="card"><h3 class="sub">Bảo hiểm phi nhân thọ</h3>
     <p class="chart-sub">Hợp đồng ngắn hạn (thường một năm): lợi nhuận = biên nghiệp vụ (100% − tỷ lệ kết hợp) + lợi suất danh mục × quy mô danh mục.</p>
     ${chain([
@@ -821,12 +828,7 @@ function paneOvCK() {
     ${card({ id: 'ovVni', title: 'VN-Index dài hạn', sub: 'Điểm, cuối tháng', src: WI + ' (VN-Index)' })}
   </div>
   ${ovh(2, 'Chuỗi giá trị')}
-  <article class="card">
-    ${chain([
-      { t: '1 · Đầu vào: vốn và khách hàng', d: 'Vốn chủ; vay ngân hàng, phát hành trái phiếu, vay nước ngoài; đội môi giới; nguồn thương vụ.', k: [['Chỉ số', 'Chi phí vốn (lãi suất vay, offshore), nợ vay / VCSH', '']] },
-      { t: '2 · Hoạt động', d: 'Môi giới; cho vay ký quỹ và ứng trước; tự doanh (FVTPL, AFS, HTM); ngân hàng đầu tư (bảo lãnh, tư vấn).', k: [['Chỉ số', 'Cho vay / VCSH (trần 200%), FVTPL / VCSH, tách thu nhập cố định khỏi cổ phiếu', '']] },
-      { t: '3 · Đầu ra', d: 'Phí môi giới, lãi cho vay, lãi lỗ danh mục, phí ngân hàng đầu tư.', k: [['Chỉ số', 'Thị phần × phí; dư nợ × lợi suất (NIM); lãi danh mục; số thương vụ', '']] }])}
-    <div class="insight"><b>Mô hình dự phóng:</b> doanh thu môi giới = giá trị giao dịch thị trường × thị phần × phí bình quân; lãi cho vay = dư nợ thị trường × thị phần × lợi suất, giới hạn bởi trần 200% VCSH và cơ cấu nguồn vốn; danh mục tách thu nhập cố định khỏi cổ phiếu, phần cổ phiếu định giá lại theo ROE kỳ vọng, chỉ số và margin, từng mã hoặc đồng thuận. Thứ tự đánh giá một mã: P/B so đồng thuận, rồi thị phần môi giới và hiệu quả phí, thị phần margin và NIM, thương vụ ngân hàng đầu tư, danh mục tự doanh.</div></article>
+  ${secChainCard()}
   ${ovh(3, 'Cấu trúc ngành')}
   <div class="grid g2 gap">
     ${card({ title: 'Mô hình và mức tập trung', body: `<ul class="ilist">
@@ -963,7 +965,7 @@ function paneCatalyst() {
     ['Từ 09/2025', 'NĐ 245/2025: niêm yết ngay sau IPO', 'Số thương vụ IPO, doanh thu ngân hàng đầu tư', '+', '']];
   $('#catalyst').innerHTML = `<h2 class="sec">Catalyst · Risk</h2>
   <p class="sec-sub">Sự kiện có thể đoán trước thời điểm và rủi ro đang diễn ra; + hỗ trợ, − bất lợi, ? hai chiều hoặc chưa rõ.</p>
-  <article class="card"><div class="tscroll"><table><thead><tr><th>Thời điểm</th><th>Sự kiện / rủi ro</th><th>Kênh tác động</th><th>Tác động</th><th>Trạng thái</th></tr></thead><tbody>
+  <article class="card"><div class="tscroll"><table class="fz"><thead><tr><th>Thời điểm</th><th>Sự kiện / rủi ro</th><th>Kênh tác động</th><th>Tác động</th><th>Trạng thái</th></tr></thead><tbody>
     ${rows.map(r => `<tr><td style="white-space:nowrap"><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${imp(r[3])}</td><td>${r[4]}</td></tr>`).join('')}</tbody></table></div>
     <div class="src">Nguồn: ${PAGE === 'bh' ? srcOf(ser('LIFE', 'CLAIMS').slice(-1), ser('LIFE', 'NB_PREM').slice(-1), ser('NONLIFE', 'PREM').slice(-1)) + '; văn bản pháp luật; ' + WI : 'FTSE Russell; Nghị định 245/2025/NĐ-CP; ' + WI}</div></article>
   ${PAGE === 'bh' ? `<h3 class="sec2">Chủ đề nóng: hủy hợp đồng nhân thọ</h3>${surrenderBlock()}` : ''}`;

@@ -747,3 +747,6 @@ dl.gloss{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:8px 16px
 dl.gloss dt{font-weight:700;color:var(--navy)}dl.gloss dd{margin:0;color:var(--ink)}
 table.fdrv td{font-size:12.8px}table.fdrv td:first-child{min-width:160px}table.fdrv td:nth-child(2){min-width:320px}
 @media (max-width:760px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:6px}}
+/* cột đầu cố định khi cuộn ngang */
+table.fz th:first-child,table.fz td:first-child{position:sticky;left:0;z-index:2;background:#fff;box-shadow:inset -1px 0 0 var(--line2)}
+table.fz thead th:first-child{background:var(--soft);z-index:3}
