@@ -3143,8 +3143,9 @@ function regBlock() {
   const E = RG.err, e = E && E.ldr;
   const src = 'Wi MCP fs_bank (bs160_1, bs320_1, bs330, bs360), fs_bank_notes (fnx19, fnx109, fnx114, fnx115), bank_liquidity_risk · tự tính; số tự công bố: báo cáo thường niên, nghị quyết phát hành trái phiếu, bản tin nhà đầu tư của từng ngân hàng';
   return `${card({ id: 'chLdr22', title: 'LDR theo Thông tư 22 của từng ngân hàng', h: 'tall', ctl: false,
-    sub: `% · cột đặc = LDR theo công thức TT 22 (ước tính) · cột nét đứt = LDR thô (cho vay / tiền gửi khách hàng) · ◆ = số ngân hàng tự công bố cùng kỳ · đường đỏ = trần 85%`,
-    body: `<div class="picker" id="l22Pick">${RG.periods.map(p => `<button type="button" data-k="${p.k}">${p.l}</button>`).join('')}</div>`,
+    sub: `% · trần 85% (đường đỏ) áp dụng cho LDR tính theo TT 22, không áp dụng cho LDR thuần`,
+    body: `<div class="l22key"><span><i class="k-solid"></i><b>Cột tô màu</b> = LDR tính theo Thông tư 22 (ước tính): mẫu số gồm tiền gửi KH (trừ ký quỹ, vốn chuyên dùng), giấy tờ có giá, tiền gửi và vay TCTD khác, một phần tiền gửi Kho bạc</span><span><i class="k-dash"></i><b>Cột nét đứt</b> = LDR thuần = cho vay khách hàng / tiền gửi khách hàng</span><span><i class="k-dia"></i>Số ngân hàng tự công bố cùng kỳ</span></div>
+    <div class="picker" id="l22Pick">${RG.periods.map(p => `<button type="button" data-k="${p.k}">${p.l}</button>`).join('')}</div>`,
     insight: '<span id="l22Ins"></span>', src })}
   ${card({ id: 'chSelf22', title: 'Các tỷ lệ thanh khoản ngân hàng tự công bố', h: 'tall', ctl: false,
     sub: '% · số ngân hàng công bố gần nhất · màu đậm = kỳ năm 2026, màu nhạt = 31/12/2025 · đường đỏ = ngưỡng TT 22 · rê chuột xem kỳ và nguồn',
@@ -3181,17 +3182,17 @@ function drawLdr22(k) {
   const rows = RG.rows.filter(r => r.ldr[k] != null).sort((a, b) => b.ldr[k] - a.ldr[k]);
   const selfAt = r => r.self && r.self.ldr != null && r.self.asof === RG.qEnd[k] ? r.self.ldr : (r.selfPrev && r.selfPrev.asof === RG.qEnd[k] ? r.selfPrev.ldr ?? null : null);
   mk('chLdr22', { type: 'bar', data: { labels: rows.map(r => r.s), datasets: [
-      { label: 'LDR theo TT 22 (ước tính)', data: rows.map(r => r.ldr[k]), backgroundColor: rows.map(r => GC[r.group]), grouped: false, order: 2, dp: 1, unit: '%', barPercentage: 0.62 },
-      { label: 'LDR thô (cho vay / tiền gửi KH)', data: rows.map(r => r.raw[k]), backgroundColor: 'rgba(0,0,0,0)', borderColor: rows.map(r => GC[r.group]), borderWidth: 0, dashBar: true, grouped: false, order: 3, dp: 1, unit: '%', barPercentage: 0.9 },
+      { label: 'LDR tính theo TT 22 (ước tính)', data: rows.map(r => r.ldr[k]), backgroundColor: rows.map(r => GC[r.group]), grouped: false, order: 2, dp: 1, unit: '%', barPercentage: 0.62 },
+      { label: 'LDR thuần (cho vay / tiền gửi KH)', data: rows.map(r => r.raw[k]), backgroundColor: 'rgba(0,0,0,0)', borderColor: rows.map(r => GC[r.group]), borderWidth: 0, dashBar: true, grouped: false, order: 3, dp: 1, unit: '%', barPercentage: 0.9 },
       { type: 'line', label: 'Ngân hàng tự công bố', data: rows.map(selfAt), showLine: false, pointStyle: 'rectRot', pointRadius: 6, pointBackgroundColor: '#111', borderColor: '#fff', borderWidth: 1, order: 1, dp: 1, unit: '%' }] },
-    options: { plugins: { legend: { labels: { filter: it => it.datasetIndex !== 1 } }, refLines: { lines: [{ value: 85, label: 'Trần 85%' }] } }, scales: { y: pctAxis('', { min: 40 }) } },
+    options: { plugins: { legend: { display: false }, refLines: { lines: [{ value: 85, label: 'Trần 85%' }] } }, scales: { y: pctAxis('', { min: 40 }) } },
     plugins: [{ id: 'dashBar', afterDatasetsDraw(ch) {   // cột LDR thô: viền nét đứt
       const { ctx } = ch; ch.data.datasets.forEach((ds, di) => { if (!ds.dashBar || !ch.isDatasetVisible(di)) return; const M = ch.getDatasetMeta(di);
         const a = ch.chartArea; ctx.save(); ctx.beginPath(); ctx.rect(a.left, a.top, a.right - a.left, a.bottom - a.top); ctx.clip(); ctx.setLineDash([5, 3]); ctx.lineWidth = 1.6;
         M.data.forEach((b, i) => { if (ds.data[i] == null) return; const { x, y, base, width } = b.getProps(['x', 'y', 'base', 'width'], true); ctx.strokeStyle = ds.borderColor[i]; ctx.strokeRect(x - width / 2, y, width, Math.min(base, a.bottom + 2) - y); });
         ctx.restore(); }); } }] });
   const over = rows.filter(r => r.ldr[k] > 85), near = rows.filter(r => r.ldr[k] > 83 && r.ldr[k] <= 85), A = RG.agg[k];
-  $('#l22Ins').innerHTML = `${RG.periods.find(p => p.k === k).l}: trung vị 26 ngân hàng <b>${pc(A.ldr, 1)}</b> theo TT 22 (ước tính) so với LDR thô ${pc(A.raw, 1)} — chênh lệch đến từ giấy tờ có giá phát hành và tiền gửi của TCTD khác được cộng vào mẫu số. ${over.length ? `Trên 85%: ${over.map(r => `<b>${r.s} ${pc(r.ldr[k], 1)}</b>`).join(', ')}.` : 'Không ngân hàng nào trên 85%.'} ${near.length ? `Sát trần (83–85%): ${near.map(r => r.s).join(', ')}.` : ''} VPB ước tính cao vì số hợp nhất gồm FE Credit; số tự công bố (◆) mới là số giám sát.`;
+  $('#l22Ins').innerHTML = `${RG.periods.find(p => p.k === k).l}: trung vị 26 ngân hàng <b>${pc(A.ldr, 1)}</b> theo TT 22 (ước tính) so với LDR thuần ${pc(A.raw, 1)} — chênh lệch đến từ giấy tờ có giá phát hành và tiền gửi của TCTD khác được cộng vào mẫu số. ${over.length ? `Trên 85%: ${over.map(r => `<b>${r.s} ${pc(r.ldr[k], 1)}</b>`).join(', ')}.` : 'Không ngân hàng nào trên 85%.'} ${near.length ? `Sát trần (83–85%): ${near.map(r => r.s).join(', ')}.` : ''} VPB ước tính cao vì số hợp nhất gồm FE Credit; số tự công bố (◆) mới là số giám sát.`;
 }
 
 function panePolicy() {
