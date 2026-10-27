@@ -61,7 +61,7 @@ def main():
         'ins': {'S': S, 'ser': ser, 'fy': ins['fy'], 'fydn': ins['fydn'], 'comm': ins['comm'], 'rel': [r for r in ins['releases'] if r['sel']][:40],
                 'nRel': len(ins['releases']), 'nRows': len(ins['data'])},
         'wi': fin_wi,
-        'vni': {k: v for k, v in vni.items() if k >= '2016-01'},
+        'vni': {**{k: v for k, v in vni.items() if k >= '2016-01'}, **{d[:7]: v for d, v in sorted(fin_wi.get('vniD', {}).items())}},
     }
     js = 'window.FIN_DATA=' + json.dumps(out, ensure_ascii=False, separators=(',', ':')) + ';\n'
     (ROOT / 'data' / 'fin-data.js').write_text(js)

@@ -742,3 +742,4 @@ ul.ilist,ol.ilist{margin:4px 0 0;padding-left:18px;font-size:13px}ul.ilist li,ol
 .cmpt td.n,.cmpt th.n{text-align:right}
 td .pos,span.pos{color:var(--pos)}td .neg,span.neg{color:var(--neg)}
 @media (max-width:760px){.vchain{grid-template-columns:1fr}.vc-col:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-15px}}
+.site-nav a,.site-nav .bank-pick span{white-space:nowrap}

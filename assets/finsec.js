@@ -5,6 +5,7 @@
 (function () {
 'use strict';
 const F = window.FIN_DATA; if (!F) return;
+const PAGE = document.body.dataset.page || 'bh';   // bh = ngành Bảo hiểm · ck = ngành Chứng khoán · dn = doanh nghiệp
 const I = F.ins, S = I.S, W = F.wi;
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const nf = (v, d = 0) => v == null || isNaN(v) ? '—' : Number(v).toLocaleString('vi-VN', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -66,10 +67,17 @@ Chart.defaults.plugins.tooltip.callbacks.footer = items => {   // nguồn của 
   return ss.length ? 'Nguồn: ' + ss.join(' · ') : '';
 };
 Chart.defaults.plugins.tooltip.footerFont = { weight: 'normal', size: 10.5 };
-const charts = {};
+const charts = {}, SPEC = {};
+const cl = o => Array.isArray(o) ? o.map(cl) : (o && Object.getPrototypeOf(o) === Object.prototype) ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cl(v)])) : o;
+const ptLbl = { id: 'ptLbl', afterDatasetsDraw(ch) {   // nhãn mã cạnh điểm của chart bubble
+  if (ch.config.type !== 'bubble') return; const x = ch.ctx; x.save(); x.font = '700 11px Arial'; x.fillStyle = '#303540'; x.textBaseline = 'middle';
+  ch.data.datasets.forEach((ds, i) => { const m = ch.getDatasetMeta(i); if (m.hidden) return; m.data.forEach(e => x.fillText(ds.label, e.x + (e.options.radius || 6) + 3, e.y)); }); x.restore(); } };
+Chart.register(ptLbl);
 function mk(id, cfg, o = {}) {
   const el = document.getElementById(id); if (!el) return;
   if (charts[id]) charts[id].destroy();
+  if (!id.startsWith('cb-')) { const c = el.closest('article.card'), h = c && c.querySelector(':scope > h3.sub'), one = q => { const e = c && c.querySelector(':scope > ' + q); return e ? e.innerHTML : ''; };
+    SPEC[id] = { cfg: cl(cfg), ts: !!o.ts, title: h ? h.textContent : id, sub: one('.chart-sub'), src: one('.src') }; }
   cfg.options = cfg.options || {};
   cfg.options.interaction = cfg.options.interaction || { mode: 'index', intersect: false, axis: cfg.options.indexAxis === 'y' ? 'y' : 'x' };
   if (window.FSK) FSK.prep(cfg);
@@ -104,69 +112,142 @@ function chain(cols) {
 const lP = lastPt(ser('LIFE', 'PREM')), nP = lastPt(ser('NONLIFE', 'PREM')), tP = lastPt(ser('TOTAL', 'PREM'));
 const sv408 = W.secVal['408'], sv406 = W.secVal['406'];
 function header() {
-  $('#stockHead').innerHTML = `<div class="tick">TC KHÁC</div>
-    <div class="cname">Ngành tài chính khác · Bảo hiểm và Chứng khoán <span class="pill watch">Đang xây dựng</span><small>Thị trường bảo hiểm theo số công bố của Bộ Tài chính, IAV; doanh nghiệp niêm yết và định giá theo Wi MCP · dựng ${dvn(F.built)}</small></div>
+  if (PAGE === 'bh') $('#stockHead').innerHTML = `<div class="tick">BẢO HIỂM</div>
+    <div class="cname">Ngành Bảo hiểm · Nhân thọ, Phi nhân thọ, Môi giới <span class="pill watch">Đang xây dựng</span><small>Thị trường theo số công bố của Bộ Tài chính, IAV; doanh nghiệp niêm yết theo Wi MCP · dựng ${dvn(F.built)}</small></div>
     <div class="hstats">
       <div class="hstat"><span>Phí BH ${kyShort(tP[0])}</span><b>${nf(tP[1])} tỷ</b></div>
+      <div class="hstat"><span>Tổng phí YoY</span><b>${sg(tP[2])}</b></div>
       <div class="hstat"><span>Nhân thọ YoY</span><b>${sg(lP[2])}</b></div>
       <div class="hstat"><span>Phi nhân thọ YoY</span><b>${sg(nP[2])}</b></div>
-      <div class="hstat"><span>P/B ngành CK</span><b>${nf(last(sv408.pb), 2)}x</b></div>
-      <div class="hstat"><span>P/B ngành BH</span><b>${nf(last(sv406.pb), 2)}x</b></div>
+      <div class="hstat"><span>P/B ngành</span><b>${nf(last(sv406.pb), 2)}x</b></div>
     </div>`;
+  else { const r = rowAt(SECQ, SEC_LASTQ), vk = Object.keys(F.vni).sort();
+    $('#stockHead').innerHTML = `<div class="tick">CHỨNG KHOÁN</div>
+    <div class="cname">Ngành Chứng khoán · Công ty chứng khoán niêm yết <span class="pill watch">Đang xây dựng</span><small>BCTC tổng hợp ngành, 9 công ty lớn và định giá theo Wi MCP · dựng ${dvn(F.built)}</small></div>
+    <div class="hstats">
+      <div class="hstat"><span>VN-Index</span><b>${nf(F.vni[last(vk)], 0)}</b></div>
+      <div class="hstat"><span>Dư nợ cho vay ${qLbl(SEC_LASTQ)}</span><b>${nf(sv(r, 'bs114') / 1000, 0)} nghìn tỷ</b></div>
+      <div class="hstat"><span>Cho vay / VCSH</span><b>${pc(sv(r, 'bs114') / sv(r, 'bs400'), 0)}</b></div>
+      <div class="hstat"><span>P/B ngành</span><b>${nf(last(sv408.pb), 2)}x</b></div>
+      <div class="hstat"><span>P/E ngành</span><b>${nf(last(sv408.pe), 1)}x</b></div>
+    </div>`; }
   $('#stamp').textContent = 'Dữ liệu dựng ngày ' + dvn(F.built);
 }
+const avgN = (a, n) => { const b = a.slice(-n).filter(v => v != null); return b.length ? b.reduce((s, v) => s + v, 0) / b.length : null; };
+const sdN = (a, n) => { const b = a.slice(-n).filter(v => v != null), m = avgN(b, b.length); return Math.sqrt(b.reduce((s, v) => s + (v - m) ** 2, 0) / b.length); };
+const dnLink = s => `<a href="dn.html?s=${s}">${s}</a>`;
+function pbBand(id, sv, color) {   // P/B ngành theo phiên + trung bình 3 năm ±1 độ lệch chuẩn
+  const n = sv.pb.length, m = avgN(sv.pb, n), sd = sdN(sv.pb, n);
+  mk(id, { type: 'line', data: { labels: sv.d.map(dvn), datasets: [
+    line('P/B', sv.pb, color, { pointRadius: 0, unit: 'x', dp: 2 }),
+    line('Trung bình', sv.pb.map(() => m), C.grey, { pointRadius: 0, borderDash: [5, 4], borderWidth: 1.4, unit: 'x', dp: 2 }),
+    line('+1 độ lệch chuẩn', sv.pb.map(() => m + sd), C.red, { pointRadius: 0, borderDash: [2, 3], borderWidth: 1, unit: 'x', dp: 2 }),
+    line('−1 độ lệch chuẩn', sv.pb.map(() => m - sd), C.green, { pointRadius: 0, borderDash: [2, 3], borderWidth: 1, unit: 'x', dp: 2 }) ] },
+    options: { scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } }, y: yNum('lần', { ticks: { callback: v => nf(v, 1) + 'x' } }) } } }, { ts: true });
+  return { m, sd, z: (last(sv.pb) - m) / sd };
+}
+const zTxt = z => z > 1 ? 'cao hơn trung bình trên 1 độ lệch chuẩn' : z > 0.3 ? 'cao hơn trung bình' : z < -1 ? 'thấp hơn trung bình trên 1 độ lệch chuẩn' : z < -0.3 ? 'thấp hơn trung bình' : 'quanh trung bình';
 
 /* =====================================================================
-   TAB 1 · TỔNG QUAN
+   TỔNG QUAN NGÀNH BẢO HIỂM
 ===================================================================== */
-function paneOverview() {
+const INS_ALL = ['BVH', 'PVI', 'MIG', 'BMI', 'BIC', 'PTI'];
+function paneOvBH() {
   const tA = lastPt(ser('TOTAL', 'ASSETS')), tI = lastPt(ser('TOTAL', 'INVEST')), lNB = lastPt(ser('LIFE', 'NB_PREM')), lC = lastPt(ser('LIFE', 'CLAIMS'));
-  const q = SEC_LASTQ, sr = rowAt(SECQ, q);
-  const mEq = sv(sr, 'bs114') / sv(sr, 'bs400');
+  const ms = INS_ALL.map(insMetrics), n = sv406.pb.length;
+  const inf = lastPt(ser('LIFE', 'INFORCE_CONTRACTS')), fyIf = fy('LIFE|INFORCE_CONTRACTS|Tổng|Toàn TT'), mIf = Math.max(...fyIf.filter(x => x != null));
   $('#ov').innerHTML = `
-  <h2 class="sec">Tổng quan · Bảo hiểm và Chứng khoán</h2>
-  <p class="sec-sub">Hai ngành tài chính ngoài ngân hàng. Bảo hiểm: quy mô thị trường theo số công bố của Bộ Tài chính và IAV (lũy kế từ đầu năm). Chứng khoán: BCTC tổng hợp các công ty chứng khoán niêm yết và định giá ngành từ Wi MCP. Trang đang được xây tiếp.</p>
+  <h2 class="sec">Tổng quan ngành Bảo hiểm</h2>
+  <p class="sec-sub">Quy mô thị trường theo số công bố của Bộ Tài chính và IAV (lũy kế từ đầu năm, tỷ đồng); doanh nghiệp niêm yết theo BCTC quý và định giá theo phiên.</p>
   <div class="kpis">
-    ${kpi('Tổng phí bảo hiểm ' + kyShort(tP[0]), nf(tP[1]) + ' tỷ', 'YoY ' + sg(tP[2]), cls(tP[2]))}
+    ${kpi('Tổng phí ' + kyShort(tP[0]), nf(tP[1]) + ' tỷ', 'YoY ' + sg(tP[2]), cls(tP[2]))}
     ${kpi('Phí nhân thọ ' + kyShort(lP[0]), nf(lP[1]) + ' tỷ', 'YoY ' + sg(lP[2]), cls(lP[2]))}
     ${kpi('Phí khai thác mới NT', nf(lNB[1]) + ' tỷ', kyShort(lNB[0]) + ' · YoY ' + sg(lNB[2]), cls(lNB[2]))}
     ${kpi('Phí phi nhân thọ ' + kyShort(nP[0]), nf(nP[1]) + ' tỷ', 'YoY ' + sg(nP[2]), cls(nP[2]))}
     ${kpi('Đầu tư trở lại nền KT', nf(tI[1] / 1000, 0) + ' nghìn tỷ', 'Tổng tài sản ' + nf(tA[1] / 1000, 0) + ' nghìn tỷ · ' + kyShort(tI[0]))}
-    ${kpi('Cho vay ký quỹ / VCSH CTCK', pc(mEq, 0), 'tổng các CTCK niêm yết · ' + qLbl(q))}
+    ${kpi('P/B ngành', nf(last(sv406.pb), 2) + 'x', 'TB 3 năm ' + nf(avgN(sv406.pb, n), 2) + 'x · ' + dvn(last(sv406.d)))}
   </div>
+  <article class="card"><h3 class="sub">Điều đang diễn ra</h3><ul class="ilist">
+    <li><b>Nhân thọ thu hẹp sau 2022.</b> Phí khai thác mới năm 2025 bằng ${pc(fy('LIFE|NB_PREM|Tổng|Toàn TT')[9] / fy('LIFE|NB_PREM|Tổng|Toàn TT')[6], 0)} mức đỉnh 2022; hợp đồng có hiệu lực ${nf(inf[1] / 1e6, 2)} triệu (${kyShort(inf[0])}), từ đỉnh ${nf(mIf / 1e6, 1)} triệu cuối ${FYY[fyIf.indexOf(mIf)]}.</li>
+    <li><b>Chi trả tăng nhanh hơn phí.</b> ${kyLbl(lC[0])}: chi trả quyền lợi nhân thọ ${nf(lC[1])} tỷ (${sg(lC[2])}), phí ${sg(lP[2])}. Hợp đồng ký đợt 2018–2022 đang đáo hạn và bị hủy.</li>
+    <li><b>Sản phẩm chuyển sang tử kỳ:</b> ${pc(at(ser('LIFE', 'NB_CONTRACTS_MIX', 'Tử kỳ'), lP[0]), 1)} số hợp đồng mới ${kyShort(lP[0])}; phí mới bình quân mỗi hợp đồng giảm.</li>
+    <li><b>Phi nhân thọ tăng nhanh:</b> ${sg(nP[2])} ${kyShort(nP[0])}, sức khỏe và tài sản dẫn dắt.</li>
+    <li><b>Định giá:</b> P/B ngành ${nf(last(sv406.pb), 2)}x, ${zTxt((last(sv406.pb) - avgN(sv406.pb, n)) / sdN(sv406.pb, n))} 3 năm (${nf(avgN(sv406.pb, n), 2)}x).</li></ul>
+    <div class="src">Nguồn: ${srcOf(ser('LIFE', 'PREM').slice(-2), ser('LIFE', 'CLAIMS').slice(-1), ser('NONLIFE', 'PREM').slice(-1), [inf])}; ${WI}</div></article>
   <div class="grid g2 gap">
     ${card({ id: 'ovPrem', title: 'Doanh thu phí bảo hiểm theo năm', sub: 'Tỷ đồng · cột: phi nhân thọ và nhân thọ; đường: tổng phí so GDP (trục phải). Năm 2025 là số ước.', src: FY_SRC + '; Tổng cục Thống kê (GSO)',
       ins: `Phí nhân thọ đạt đỉnh <b>${nf(fy('LIFE|PREM|Tổng|Toàn TT')[6])} tỷ</b> năm 2022 rồi giảm ba năm liền, còn <b>${nf(fy('LIFE|PREM|Tổng|Toàn TT')[9])} tỷ</b> năm 2025. Phi nhân thọ tăng đều, nên tỷ trọng phi nhân thọ trong tổng phí lên ${pc(fy('NONLIFE|PREM|Tổng|Toàn TT')[9] / fy('TOTAL|PREM|Tổng|Toàn TT')[9], 0)} năm 2025 (2022: ${pc(fy('NONLIFE|PREM|Tổng|Toàn TT')[6] / fy('TOTAL|PREM|Tổng|Toàn TT')[6], 0)}).` })}
-    ${card({ id: 'ovPb', title: 'Định giá ngành: P/B chứng khoán và bảo hiểm', sub: 'Lần · theo phiên, toàn bộ cổ phiếu niêm yết của từng ngành', src: WI + ' (định giá ngành theo ngày)',
-      ins: `P/B ngành chứng khoán ${nf(last(sv408.pb), 2)}x, ngành bảo hiểm ${nf(last(sv406.pb), 2)}x (phiên ${dvn(last(sv408.d))}). Trung bình 3 năm: chứng khoán ${nf(avgN(sv408.pb, 750), 2)}x, bảo hiểm ${nf(avgN(sv406.pb, 750), 2)}x.` })}
+    ${card({ id: 'ovPbBH', title: 'P/B ngành bảo hiểm', sub: 'Lần · theo phiên; đường đứt: trung bình 3 năm và ±1 độ lệch chuẩn', src: WI + ' (định giá ngành theo ngày)' })}
   </div>
-  <div class="grid g2 gap">
-    ${card({ title: 'Bảo hiểm: điều đang diễn ra', body: `<ul class="ilist">
-      <li><b>Nhân thọ thu hẹp sau 2022.</b> Phí khai thác mới năm 2025 bằng khoảng ${pc(fy('LIFE|NB_PREM|Tổng|Toàn TT')[9] / fy('LIFE|NB_PREM|Tổng|Toàn TT')[6], 0)} mức đỉnh 2022; số hợp đồng có hiệu lực ${nf(lastPt(ser('LIFE', 'INFORCE_CONTRACTS'))[1] / 1e6, 2)} triệu (${kyShort(lastPt(ser('LIFE', 'INFORCE_CONTRACTS'))[0])}), từ đỉnh ${(() => { const v = fy('LIFE|INFORCE_CONTRACTS|Tổng|Toàn TT'), m = Math.max(...v.filter(x => x != null)); return nf(m / 1e6, 1) + ' triệu cuối ' + FYY[v.indexOf(m)]; })()}.</li>
-      <li><b>Chi trả tăng nhanh hơn phí.</b> ${kyLbl(lC[0])}: chi trả quyền lợi nhân thọ ${nf(lC[1])} tỷ (${sg(lC[2])}), phí ${sg(lP[2])}. Hợp đồng ký đợt 2018–2022 đang đáo hạn và bị hủy.</li>
-      <li><b>Sản phẩm chuyển sang tử kỳ.</b> Tử kỳ chiếm ${pc(at(ser('LIFE', 'NB_CONTRACTS_MIX', 'Tử kỳ'), lP[0]), 1)} số hợp đồng mới ${kyShort(lP[0])}; phí mới bình quân mỗi hợp đồng giảm.</li>
-      <li><b>Phi nhân thọ tăng nhanh nhất nhiều năm:</b> ${sg(nP[2])} ${kyShort(nP[0])}, sức khỏe và tài sản dẫn dắt.</li></ul>`,
-      src: srcOf(ser('LIFE', 'PREM').slice(-3), ser('LIFE', 'CLAIMS').slice(-2), ser('NONLIFE', 'PREM').slice(-2)) })}
-    ${card({ title: 'Chứng khoán: điều đang diễn ra', body: secOverviewList(), src: WI + ' (BCTC tổng hợp ngành chứng khoán, định giá ngành)' })}
-  </div>
-  <article class="card"><h3 class="sub">Lộ trình xây trang</h3>
-    <div class="tscroll"><table><thead><tr><th>Phần</th><th>Đã có</th><th>Đang bổ sung</th></tr></thead><tbody>
-      <tr><td><b>Bảo hiểm nhân thọ</b></td><td>Phí, khai thác mới, hợp đồng, cơ cấu sản phẩm, thị phần, chi trả, hoa hồng, BVH</td><td>Kênh phân phối theo kỳ, giá trị hoàn lại toàn thị trường, biên khả năng thanh toán</td></tr>
-      <tr><td><b>Bảo hiểm phi nhân thọ</b></td><td>Phí, nghiệp vụ, tỷ lệ bồi thường, thị phần, 5 mã niêm yết, môi giới</td><td>Tái bảo hiểm (VNR), chuỗi cầu từng nghiệp vụ (ô tô, tín dụng, tiền gửi)</td></tr>
-      <tr><td><b>Chứng khoán</b></td><td>Doanh thu theo mảng, cho vay ký quỹ, nợ vay, danh mục, định giá, 9 mã</td><td>Giá trị giao dịch toàn thị trường, thị phần môi giới HOSE, chi phí vốn (lãi suất, vay nước ngoài), phát hành TPDN theo tổ chức tư vấn, số IPO</td></tr>
-    </tbody></table></div></article>`;
+  <article class="card"><h3 class="sub">Doanh nghiệp bảo hiểm niêm yết</h3>
+    <p class="chart-sub">4 quý gần nhất đến quý mới nhất của từng mã; bấm mã để xem trang doanh nghiệp. Tỷ lệ kết hợp chỉ áp dụng cho phi nhân thọ.</p>
+    ${insTable(ms)}
+    <div class="src">Nguồn: ${WI} (BCTC hợp nhất, định giá phiên ${dvn(ms[0].v.d)})</div></article>`;
+  drawPremFY();
+  pbBand('ovPbBH', sv406, C.teal);
+}
+function insTable(ms) {
+  return tbl(['Mã', 'Quý', 'Phí gốc 4Q', 'YoY', 'Tỷ lệ bồi thường', 'Tỷ lệ kết hợp', 'Danh mục / VCSH', 'LN tài chính / LNTT', 'ROE', 'P/B', 'P/E', 'Vốn hóa (tỷ)'],
+    ms.map(m => [`<b>${dnLink(m.sym)}</b>`, qLbl(m.q), nf(m.gp), `<span class="${cls(m.gy)}">${sg(m.gy)}</span>`, pc(m.lr, 0), m.sym === 'BVH' ? '<span class="muted">—</span>' : `<span class="${m.cr > 1 ? 'neg' : 'pos'}">${pc(m.cr, 1)}</span>`, nf(m.invEq, 2) + 'x', pc(m.fin, 0), pc(m.roe, 1), nf(m.v.pb, 2) + 'x', nf(m.v.pe, 1) + 'x', nf(m.v.mcap)]));
+}
+function drawPremFY() {
   const yrs = FYY.map(String);
   mk('ovPrem', { type: 'bar', data: { labels: yrs, datasets: [
     bar('Phi nhân thọ', fy('NONLIFE|PREM|Tổng|Toàn TT'), C.teal, { stack: 's', unit: ' tỷ' }),
     bar('Nhân thọ', fy('LIFE|PREM|Tổng|Toàn TT'), C.navy, { stack: 's', unit: ' tỷ' }),
     line('Phí / GDP', fy('TOTAL|PREM_GDP|Tổng|Toàn TT').map(v => v == null ? null : v * 100), C.purple, { yAxisID: 'y1', dp: 2 }) ] },
     options: { scales: { x: { stacked: true, grid: { display: false } }, y: yNum('tỷ đồng', { stacked: true }), y1: yPct('', { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 1) + '%' } }) } } });
-  const n = Math.min(sv408.d.length, sv406.d.length);
-  mk('ovPb', { type: 'line', data: { labels: sv408.d.slice(-n).map(dvn), datasets: [
-    line('Chứng khoán', sv408.pb.slice(-n), C.navy, { pointRadius: 0, unit: 'x', dp: 2 }), line('Bảo hiểm', sv406.pb.slice(-n), C.teal, { pointRadius: 0, unit: 'x', dp: 2 }) ] },
-    options: { scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } }, y: yNum('lần', { ticks: { callback: v => nf(v, 1) + 'x' } }) } } }, { ts: true });
 }
-const avgN = (a, n) => { const b = a.slice(-n).filter(v => v != null); return b.length ? b.reduce((s, v) => s + v, 0) / b.length : null; };
+// so sánh doanh nghiệp bảo hiểm niêm yết (Bức tranh ngành)
+function panePeerBH(T) {
+  const ms = INS_ALL.map(insMetrics);
+  T.innerHTML = `
+  <div class="grid g2 gap">
+    ${card({ id: 'pbScBH', title: 'P/B và ROE: doanh nghiệp bảo hiểm niêm yết', sub: 'P/B phiên gần nhất (trục dọc), ROE 4 quý (trục ngang)', src: WI })}
+    ${card({ id: 'pbFinBH', title: 'Lợi nhuận tài chính so với lợi nhuận trước thuế', sub: '% · 4 quý gần nhất; trên 100% là nghiệp vụ bảo hiểm lỗ sau chi phí, đầu tư bù lại', src: WI + ' (BCTC hợp nhất)',
+      ins: 'Lợi nhuận của doanh nghiệp bảo hiểm Việt Nam đến chủ yếu từ danh mục đầu tư (tiền gửi, trái phiếu), nên lãi suất huy động và lợi suất trái phiếu Chính phủ quyết định phần lớn lợi nhuận.' })}
+  </div>
+  <article class="card"><h3 class="sub">Bảng so sánh</h3>${insTable(ms)}<div class="src">Nguồn: ${WI}</div></article>`;
+  const pts = ms.filter(m => m.v && m.v.pb != null && m.roe != null);
+  mk('pbScBH', { type: 'bubble', data: { datasets: pts.map((m, i) => ({ label: m.sym, data: [{ x: m.roe * 100, y: m.v.pb, r: Math.max(5, Math.sqrt(m.v.mcap || 0) / 12) }], backgroundColor: C.pal[i] + 'cc', borderColor: C.pal[i] })) },
+    options: { interaction: { mode: 'nearest', intersect: true }, plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ROE ${nf(c.raw.x, 1)}%, P/B ${nf(c.raw.y, 2)}x` } } },
+      scales: { x: yPct('ROE 4 quý'), y: yNum('P/B', { ticks: { callback: v => nf(v, 1) + 'x' } }) } } });
+  mk('pbFinBH', { type: 'bar', data: { labels: ms.map(m => m.sym), datasets: [bar('LN tài chính / LNTT', ms.map(m => m.fin * 100), ms.map(m => m.fin > 1 ? C.purple : C.navy), { unit: '%', dp: 0 })] },
+    options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: yPct('%') } } });
+}
+
+/* =====================================================================
+   TỔNG QUAN NGÀNH CHỨNG KHOÁN
+===================================================================== */
+function paneOvCK() {
+  const q = SEC_LASTQ, r = rowAt(SECQ, q), r0 = rowAt(SECQ, yoyQ(q)), n = sv408.pb.length;
+  const ms = SEC_L.map(s => secMetrics(s, q)).filter(Boolean);
+  const tS = f => ttm(SECQ, q, f), tS0 = f => ttm(SECQ, yoyQ(q), f), pbt = tS(x => sv(x, 'is90')), pbt0 = tS0(x => sv(x, 'is90'));
+  $('#ov').innerHTML = `
+  <h2 class="sec">Tổng quan ngành Chứng khoán</h2>
+  <p class="sec-sub">Số tổng hợp các công ty chứng khoán niêm yết (BCTC hợp nhất), tỷ đồng. Kỳ chung để so sánh: ${qLbl(q)}; quý sau đó chưa đủ công ty báo cáo.</p>
+  <div class="kpis">
+    ${kpi('Dư nợ cho vay', nf(sv(r, 'bs114') / 1000, 0) + ' nghìn tỷ', 'YoY ' + sg(sv(r, 'bs114') / sv(r0, 'bs114') - 1), cls(sv(r, 'bs114') / sv(r0, 'bs114') - 1))}
+    ${kpi('Cho vay / VCSH', pc(sv(r, 'bs114') / sv(r, 'bs400'), 0), 'trần 200% VCSH từng công ty')}
+    ${kpi('Nợ vay / VCSH', pc(debtOf(r) / sv(r, 'bs400'), 0), 'cùng kỳ ' + pc(debtOf(r0) / sv(r0, 'bs400'), 0))}
+    ${kpi('Doanh thu môi giới 4Q', nf(tS(x => sv(x, 'is06')) / 1000, 1) + ' nghìn tỷ', 'YoY ' + sg(tS(x => sv(x, 'is06')) / tS0(x => sv(x, 'is06')) - 1), cls(tS(x => sv(x, 'is06')) / tS0(x => sv(x, 'is06')) - 1))}
+    ${kpi('LNTT 4 quý', nf(pbt / 1000, 1) + ' nghìn tỷ', 'YoY ' + sg(pbt / pbt0 - 1), cls(pbt / pbt0 - 1))}
+    ${kpi('P/B ngành', nf(last(sv408.pb), 2) + 'x', 'TB 3 năm ' + nf(avgN(sv408.pb, n), 2) + 'x · ' + dvn(last(sv408.d)))}
+  </div>
+  <article class="card"><h3 class="sub">Điều đang diễn ra</h3>${secOverviewList()}
+    <div class="src">Nguồn: ${WI} (BCTC tổng hợp ngành chứng khoán, định giá ngành)</div></article>
+  <div class="grid g2 gap">
+    ${card({ id: 'ovRevCK', title: 'Doanh thu theo mảng của các CTCK niêm yết', sub: 'Tỷ đồng/quý · lãi FVTPL đã trừ lỗ FVTPL; đường: VN-Index cuối quý (trục phải)', src: WI + ' (BCTC tổng hợp ngành chứng khoán; VN-Index)' })}
+    ${card({ id: 'ovPbCK', title: 'P/B ngành chứng khoán', sub: 'Lần · theo phiên; đường đứt: trung bình 3 năm và ±1 độ lệch chuẩn', src: WI + ' (định giá ngành theo ngày)' })}
+  </div>
+  <article class="card"><h3 class="sub">9 công ty chứng khoán lớn</h3>
+    <p class="chart-sub">4 quý đến ${qLbl(q)}; bấm mã để xem trang doanh nghiệp. Thị phần tính trong tổng các CTCK niêm yết.</p>
+    ${tbl(['Mã', 'P/B', 'P/E', 'Vốn hóa (tỷ)', 'VCSH (tỷ)', 'Thị phần DT môi giới', 'Thị phần cho vay', 'Cho vay / VCSH', 'Nợ vay / VCSH', 'ROE 4Q'],
+      ms.map(m => [`<b>${dnLink(m.sym)}</b>`, nf(m.v.pb, 2) + 'x', nf(m.v.pe, 1) + 'x', nf(m.v.mcap), nf(m.eq), pc(m.brkSh, 1), pc(m.loanSh, 1), `<span class="${m.loanEq > 1.7 ? 'neg' : ''}">${pc(m.loanEq, 0)}</span>`, pc(m.debtEq, 0), pc(m.roe, 1)]))}
+    <div class="src">Nguồn: ${WI}</div></article>`;
+  drawRevCK('ovRevCK');
+  pbBand('ovPbCK', sv408, C.navy);
+}
 function secOverviewList() {
   const q = SEC_LASTQ, r = rowAt(SECQ, q), r0 = rowAt(SECQ, yoyQ(q));
   const rev = x => sv(x, 'is06'), mi = x => sv(x, 'is03');
@@ -177,6 +258,42 @@ function secOverviewList() {
     <li><b>Đòn bẩy ${debt(r) / sv(r, 'bs400') > debt(r0) / sv(r0, 'bs400') ? 'tăng' : 'giảm'}:</b> nợ vay và trái phiếu phát hành bằng ${pc(debt(r) / sv(r, 'bs400'), 0)} VCSH (cùng kỳ ${pc(debt(r0) / sv(r0, 'bs400'), 0)}).</li>
     <li><b>Lợi nhuận trước thuế 4 quý</b> ${nf(pbt / 1000, 1)} nghìn tỷ, ${sg(pbt / pbt0 - 1, 0)} so 4 quý trước đó.</li>
     <li><b>Định giá:</b> P/B ngành ${nf(last(sv408.pb), 2)}x, P/E ${nf(last(sv408.pe), 1)}x.</li></ul>`;
+}
+function drawRevCK(id) {
+  const R = SECQ.filter(r => r[0] >= '2019Q1');
+  const qEnd = q2 => { const y = q2.slice(0, 4), m = String(+q2.slice(5) * 3).padStart(2, '0'); return F.vni[`${y}-${m}`] ?? null; };
+  mk(id, { type: 'bar', data: { labels: R.map(r => qLbl(r[0])), datasets: [
+    bar('Môi giới', R.map(r => sv(r, 'is06')), C.navy, { stack: 's', unit: ' tỷ' }),
+    bar('Lãi cho vay và phải thu', R.map(r => sv(r, 'is03')), C.teal, { stack: 's', unit: ' tỷ' }),
+    bar('Lãi FVTPL ròng', R.map(r => (sv(r, 'is01') || 0) + (sv(r, 'is21') || 0)), C.gold, { stack: 's', unit: ' tỷ' }),
+    bar('HTM + AFS', R.map(r => (sv(r, 'is02') || 0) + (sv(r, 'is04') || 0)), C.grey, { stack: 's', unit: ' tỷ' }),
+    bar('Bảo lãnh, tư vấn', R.map(r => (sv(r, 'is07') || 0) + (sv(r, 'is10') || 0)), C.purple, { stack: 's', unit: ' tỷ' }),
+    line('VN-Index', R.map(r => qEnd(r[0])), C.red, { yAxisID: 'y1', unit: '', dp: 0, pointRadius: 1.5 }) ] },
+    options: { scales: { x: { stacked: true, grid: { display: false } }, y: yNum('tỷ đồng', { stacked: true }), y1: yNum('VN-Index', { position: 'right', grid: { display: false } }) } } });
+}
+// Bức tranh ngành CK › Thị trường
+function paneMkt(T) {
+  const vk = Object.keys(F.vni).sort(), vl = last(vk), v12 = F.vni[vk[vk.length - 13]], vye = F.vni[`${+vl.slice(0, 4) - 1}-12`];
+  T.innerHTML = `
+  <div class="kpis k4">
+    ${kpi('VN-Index', nf(F.vni[vl], 0), 'tháng ' + vl.slice(5) + '/' + vl.slice(0, 4))}
+    ${kpi('So đầu năm', sg(F.vni[vl] / vye - 1), '', cls(F.vni[vl] / vye - 1))}
+    ${kpi('So 12 tháng trước', sg(F.vni[vl] / v12 - 1), '', cls(F.vni[vl] / v12 - 1))}
+    ${kpi('P/B ngành CK', nf(last(sv408.pb), 2) + 'x', 'P/E ' + nf(last(sv408.pe), 1) + 'x')}
+  </div>
+  <div class="grid g2 gap">
+    ${card({ id: 'scPb', title: 'P/B ngành chứng khoán và VN-Index', sub: 'P/B theo phiên (trục trái); VN-Index cuối tháng (trục phải)', src: WI + ' (định giá ngành theo ngày; VN-Index)',
+      ins: 'Cổ phiếu chứng khoán là nhóm có beta cao nhất với thị trường: doanh thu môi giới, cho vay ký quỹ và lãi danh mục đều đi theo thanh khoản và điểm số, nên P/B ngành thường dẫn trước VN-Index ở các nhịp tăng và giảm.' })}
+    ${card({ title: 'Dữ liệu thị trường đang bổ sung', body: tbl(['Chỉ số', 'Dùng để', 'Trạng thái'], [
+      ['Giá trị giao dịch toàn thị trường theo tháng', 'Dự phóng doanh thu môi giới', '<span class="pill pending">Đang lấy</span>'],
+      ['Thị phần môi giới HOSE theo quý', 'Thị phần × phí', '<span class="pill pending">Đang lấy</span>'],
+      ['Dư nợ margin toàn thị trường (gồm CTCK chưa niêm yết)', 'Thị phần margin', '<span class="pill pending">Đang lấy</span>'],
+      ['Chi phí vốn: lãi suất vay ngân hàng, vay hợp vốn nước ngoài', 'NIM mảng cho vay', '<span class="pill pending">Đang lấy</span>'],
+      ['Lợi suất thu nhập cố định (tiền gửi, CD, TPDN)', 'Thu nhập danh mục FI', '<span class="pill pending">Đang lấy</span>'],
+      ['Số thương vụ IPO, phát hành TPDN theo tổ chức tư vấn', 'Doanh thu ngân hàng đầu tư', '<span class="pill pending">Đang lấy</span>'],
+      ['Khối ngoại mua bán ròng theo tháng', 'Dòng vốn sau nâng hạng FTSE', '<span class="pill pending">Đang lấy</span>']], { num: false }) })}
+  </div>`;
+  drawMkt();
 }
 
 /* =====================================================================
@@ -225,8 +342,7 @@ function paneLife() {
     ${card({ title: 'Tỷ lệ hoa hồng: doanh nghiệp nhân thọ lớn', sub: 'Chi hoa hồng bảo hiểm gốc (BCTC, dòng 16.1) chia tổng phí và chia phí khai thác mới. Chưa gồm thưởng, hỗ trợ đại lý và phí độc quyền bancassurance.', body: commTable(),
       src: 'Báo cáo tài chính kiểm toán từng doanh nghiệp; báo chí (số làm tròn, đánh dấu *); phí theo Bộ Tài chính – Niên giám Thị trường bảo hiểm Việt Nam' })}
   </div>
-  ${bvhBlock()}
-  ${lawBlock()}`;
+`;
   drawLife(k);
 }
 function commTable() {
@@ -284,7 +400,6 @@ function drawLife(k) {
     bar(kyShort(nbK), rows.map(r => r.v * 100), C.navy, { unit: '%', dp: 1, $src: rows.map(r => r.s) }),
     bar(kyShort(nbK0), rows.map(r => r.v0 == null ? null : r.v0 * 100), C.blue + '55', { unit: '%', dp: 1 }) ] },
     options: { indexAxis: 'y', scales: { x: yPct('%'), y: { grid: { display: false } } } } });
-  drawBvh();
 }
 
 /* ---------- BVH ---------- */
@@ -498,17 +613,8 @@ function paneSec() {
     <div class="src">Nguồn: ${WI} (BCTC hợp nhất từng công ty, BCTC tổng hợp ngành, định giá theo phiên)</div></article>
   <div class="grid g2 gap">
     ${card({ id: 'scLoan', title: 'Dư nợ cho vay theo công ty', sub: 'Nghìn tỷ đồng · cuối quý', src: WI + ' (BCTC hợp nhất)' })}
-    ${card({ id: 'scPb', title: 'P/B ngành chứng khoán và VN-Index', sub: 'P/B theo phiên (trục trái); VN-Index cuối tháng (trục phải)', src: WI + ' (định giá ngành theo ngày; VN-Index)' })}
-  </div>
-  <article class="card"><h3 class="sub">Dữ liệu đang bổ sung</h3>
-    ${tbl(['Chỉ số', 'Dùng để', 'Trạng thái'], [
-      ['Giá trị giao dịch toàn thị trường theo tháng', 'Dự phóng doanh thu môi giới', '<span class="pill pending">Đang lấy</span>'],
-      ['Thị phần môi giới HOSE theo quý', 'Thị phần × phí', '<span class="pill pending">Đang lấy</span>'],
-      ['Dư nợ margin toàn thị trường (gồm CTCK chưa niêm yết)', 'Thị phần margin', '<span class="pill pending">Đang lấy</span>'],
-      ['Chi phí vốn: lãi suất vay ngân hàng, vay hợp vốn nước ngoài', 'NIM mảng cho vay', '<span class="pill pending">Đang lấy</span>'],
-      ['Lợi suất thu nhập cố định (tiền gửi, CD, TPDN)', 'Thu nhập danh mục FI', '<span class="pill pending">Đang lấy</span>'],
-      ['Số thương vụ IPO, phát hành TPDN theo tổ chức tư vấn (TCBS, HDS, VPBS…)', 'Doanh thu ngân hàng đầu tư', '<span class="pill pending">Đang lấy</span>'],
-      ['Danh mục tự doanh chi tiết theo mã', 'Định giá lại danh mục cổ phiếu', '<span class="pill pending">Đang lấy</span>']], { num: false })}</article>`;
+    ${card({ id: 'scSc', title: 'P/B và ROE: 9 công ty chứng khoán', sub: 'P/B theo phiên gần nhất (trục dọc), ROE 4 quý (trục ngang); cỡ điểm theo vốn chủ sở hữu', src: WI })}
+  </div>`;
   drawSec(q, ms);
 }
 function secInsight(ms) {
@@ -536,6 +642,13 @@ function drawSec(q, ms) {
   const top = ms.slice().sort((a, b) => b.loan - a.loan).slice(0, 7).map(m => m.sym);
   mk('scLoan', { type: 'line', data: { labels: Q.map(qLbl), datasets: top.map((s, i) => line(s, Q.map(q2 => { const r = rowAt(W.sec[s], q2); return r ? sv(r, 'bs114') / 1000 : null; }), C.pal[i], { unit: ' nghìn tỷ', dp: 1, pointRadius: 1.5 })) },
     options: { scales: { x: { grid: { display: false } }, y: yNum('nghìn tỷ đồng') } } });
+  const pts = ms.filter(m => m.v && m.v.pb != null && m.roe != null);
+  mk('scSc', { type: 'bubble', data: { datasets: pts.map((m, i) => ({ label: m.sym, data: [{ x: m.roe * 100, y: m.v.pb, r: Math.max(5, Math.sqrt(m.eq) / 10) }], backgroundColor: C.pal[i % 10] + 'cc', borderColor: C.pal[i % 10] })) },
+    options: { interaction: { mode: 'nearest', intersect: true }, plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ROE ${nf(c.raw.x, 1)}%, P/B ${nf(c.raw.y, 2)}x` } } },
+      scales: { x: yPct('ROE 4 quý'), y: yNum('P/B', { ticks: { callback: v => nf(v, 1) + 'x' } }) } } });
+}
+
+function drawMkt() {
   const d = sv408.d, mOf = x => x.slice(0, 7);
   mk('scPb', { type: 'line', data: { labels: d.map(dvn), datasets: [
     line('P/B ngành chứng khoán', sv408.pb, C.navy, { pointRadius: 0, unit: 'x', dp: 2 }),
@@ -547,8 +660,16 @@ function drawSec(q, ms) {
    TAB 5 · PHƯƠNG PHÁP · NGUỒN
 ===================================================================== */
 function paneSrc() {
+  if (PAGE === 'ck') { $('#src').innerHTML = `<h2 class="sec">Sources</h2><p class="sec-sub">Nguồn và cách tính các chỉ số trên trang.</p>
+  <article class="card"><h3 class="sub">Nguồn và cách tính</h3>
+    <ul class="ilist">
+      <li><b>BCTC</b>: báo cáo tài chính hợp nhất theo quý của từng công ty và báo cáo tổng hợp ngành chứng khoán, ngành bảo hiểm (${WI}). Số dư cuối quý; doanh thu, lợi nhuận cộng 4 quý gần nhất.</li>
+      <li><b>Tỷ lệ kết hợp (phi nhân thọ)</b> = (|tổng chi trực tiếp kinh doanh bảo hiểm| + |chi phí quản lý| + |chi phí bán hàng|) / doanh thu thuần kinh doanh bảo hiểm. Không dùng cho nhân thọ vì chi trực tiếp gồm tăng dự phòng toán học.</li>
+      <li><b>Tỷ lệ bồi thường</b> = |tổng chi bồi thường và trả tiền bảo hiểm| / doanh thu phí bảo hiểm thuần; đã gồm thay đổi dự phòng bồi thường.</li>
+      <li><b>Nợ vay CTCK</b> = vay và nợ thuê tài chính ngắn hạn + trái phiếu phát hành ngắn hạn, dài hạn.</li>
+      <li><b>Định giá</b>: P/B, P/E theo phiên của từng mã và toàn ngành (${WI}).</li></ul></article>`; return; }
   $('#src').innerHTML = `
-  <h2 class="sec">Phương pháp · Nguồn</h2>
+  <h2 class="sec">Sources</h2>
   <p class="sec-sub">Bộ dữ liệu thị trường bảo hiểm gồm ${nf(I.nRows)} con số tháng/năm 2016–2026 từ ${nf(I.nRel)} bài, bản tin nguồn; mỗi con số giữ nguồn và ngày đăng của nó.</p>
   <div class="grid g2 gap">
     ${card({ title: 'Thứ tự ưu tiên nguồn (bảo hiểm)', body: tbl(['Hạng', 'Nguồn', 'Dùng cho'], [
@@ -582,20 +703,345 @@ function paneSrc() {
   <article class="card"><h3 class="sub">Bản tin, bài nguồn mới nhất</h3>
     <p class="chart-sub">${I.rel.length} bài gần nhất có số được dùng, trong tổng ${nf(I.nRel)} bài nguồn của bộ dữ liệu bảo hiểm.</p>
     ${tbl(['Ngày đăng', 'Bài / bản tin', 'Loại nguồn', 'Kỳ số liệu', 'Số dòng được dùng'], I.rel.map(r => [dvn(r.d), r.u && /^https?:/.test(r.u) ? `<a href="${esc(r.u)}" target="_blank" rel="noopener">${esc(r.n)}</a>` : esc(r.n), esc(srcType(r.t)), r.from === r.to ? kyLbl(r.from) : kyLbl(r.from) + ' → ' + kyLbl(r.to), nf(r.sel)]), { num: false })}</article>
-  <article class="card"><h3 class="sub">Chứng khoán và doanh nghiệp niêm yết</h3>
-    <ul class="ilist">
-      <li><b>BCTC</b>: báo cáo tài chính hợp nhất theo quý của từng công ty và báo cáo tổng hợp ngành chứng khoán, ngành bảo hiểm (${WI}). Số dư cuối quý; doanh thu, lợi nhuận cộng 4 quý gần nhất.</li>
-      <li><b>Tỷ lệ kết hợp (phi nhân thọ)</b> = (|tổng chi trực tiếp kinh doanh bảo hiểm| + |chi phí quản lý| + |chi phí bán hàng|) / doanh thu thuần kinh doanh bảo hiểm. Không dùng cho nhân thọ vì chi trực tiếp gồm tăng dự phòng toán học.</li>
-      <li><b>Tỷ lệ bồi thường</b> = |tổng chi bồi thường và trả tiền bảo hiểm| / doanh thu phí bảo hiểm thuần; đã gồm thay đổi dự phòng bồi thường.</li>
-      <li><b>Nợ vay CTCK</b> = vay và nợ thuê tài chính ngắn hạn + trái phiếu phát hành ngắn hạn, dài hạn.</li>
-      <li><b>Định giá</b>: P/B, P/E theo phiên của từng mã và toàn ngành (${WI}).</li></ul></article>`;
+`;
 }
 const srcType = t => ({ 'MOF - Niên giám/Báo cáo năm (chính thức)': 'Bộ Tài chính – Niên giám', 'MOF - Bản tin/Tổng quan (Cục QLGSBH)': 'Bộ Tài chính – Bản tin', 'IAV - Hiệp hội Bảo hiểm VN': 'IAV', 'Báo chí dẫn Bộ Tài chính/Cục QLGSBH': 'Báo chí dẫn Bộ Tài chính', 'Báo chí/khác': 'Báo chí', 'DN tự công bố': 'Doanh nghiệp công bố', 'Tổng cục Thống kê (GSO)': 'GSO' }[t] || t || '');
 
 /* =====================================================================
+   BỨC TRANH NGÀNH (tab con)
+===================================================================== */
+const SUBS = PAGE === 'bh' ? [['life', 'Nhân thọ', paneLife], ['nonlife', 'Phi nhân thọ và môi giới', paneNonlife], ['peerbh', 'So sánh doanh nghiệp', panePeerBH]]
+  : [['sec', 'Ngành công ty chứng khoán', paneSec], ['mkt', 'Thị trường', paneMkt]];
+const subDone = {};
+function panePicture() {
+  $('#picture').innerHTML = `<h2 class="sec">Bức tranh ngành</h2>
+    <p class="sec-sub">${PAGE === 'bh' ? 'Thị trường nhân thọ, phi nhân thọ, môi giới bảo hiểm theo số công bố của Bộ Tài chính và IAV; doanh nghiệp niêm yết theo BCTC.' : 'Hoạt động của các công ty chứng khoán niêm yết (BCTC tổng hợp ngành) và thị trường cổ phiếu.'}</p>
+    ${PAGE === 'bh' ? '<div class="banner chain">Lãi suất, thu nhập dân cư → Phí khai thác mới, hủy hợp đồng → Dự phòng và quỹ đầu tư → Lợi suất danh mục → Lợi nhuận, P/B doanh nghiệp bảo hiểm</div>'
+      : '<div class="banner chain">Thanh khoản, VN-Index, dòng vốn ngoại → Doanh thu môi giới, dư nợ ký quỹ → Chi phí vốn và đòn bẩy → Lãi danh mục → Lợi nhuận, P/B công ty chứng khoán</div>'}
+    <div class="subtabs" role="tablist">${SUBS.map(([k, l], i) => `<button type="button" data-p="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
+    ${SUBS.map(([k], i) => `<div class="sub${i ? '' : ' on'}" data-pp="${k}" id="${k}"></div>`).join('')}`;
+  $$('#picture .subtabs button').forEach(b => b.onclick = () => openSub(b.dataset.p));
+  openSub(SUBS[0][0], false);
+}
+function openSub(k, hash = true) {
+  if (!built.picture) show('picture');
+  $$('#picture .subtabs button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
+  $$('#picture .sub').forEach(x => x.classList.toggle('on', x.dataset.pp === k));
+  if (!subDone[k]) { subDone[k] = true; const f = SUBS.find(x => x[0] === k)[2]; try { f($('#' + k)); } catch (e) { console.error(e); } }
+  if (hash) try { history.replaceState(null, '', '#' + k); } catch (e) {}
+}
+
+/* =====================================================================
+   CHÍNH SÁCH · QUY ĐỊNH
+===================================================================== */
+function panePolicy() {
+  if (PAGE === 'bh') { $('#policy').innerHTML = `<h2 class="sec">Chính sách · Quy định</h2>
+    <p class="sec-sub">Khung pháp lý kinh doanh bảo hiểm, các mốc chuyển tiếp và quy định về dự phòng, đầu tư, khả năng thanh toán.</p>${lawBlock()}`; return; }
+  $('#policy').innerHTML = `<h2 class="sec">Chính sách · Quy định</h2>
+  <p class="sec-sub">Khung pháp lý hoạt động công ty chứng khoán và các thay đổi cấu trúc thị trường.</p>
+  <div class="grid g2 gap">
+    ${card({ title: 'Văn bản và quy định chính', body: tbl(['Văn bản', 'Nội dung', 'Hiệu lực'], [
+      ['<b>Luật Chứng khoán 54/2019/QH14</b>', 'Khung pháp lý thị trường chứng khoán', '01/01/2021'],
+      ['Luật 56/2024/QH15 (sửa đổi)', 'Sửa đổi Luật Chứng khoán và các luật tài chính liên quan', '01/01/2025'],
+      ['<b>Thông tư 121/2020/TT-BTC</b>', 'Hoạt động công ty chứng khoán; tổng dư nợ cho vay ký quỹ không vượt 200% vốn chủ sở hữu, cho vay một khách hàng không vượt 3% vốn chủ sở hữu', '2021'],
+      ['<b>Thông tư 68/2024/TT-BTC</b>', 'Nhà đầu tư tổ chức nước ngoài được mua cổ phiếu không cần đủ tiền khi đặt lệnh (non pre-funding)', '02/11/2024'],
+      ['Hệ thống giao dịch KRX tại HOSE', 'Hạ tầng giao dịch mới, nền tảng cho các sản phẩm và cơ chế giao dịch mới', '05/05/2025'],
+      ['<b>Nghị định 245/2025/NĐ-CP</b>', 'Niêm yết ngay sau IPO (hồ sơ niêm yết xét song song hồ sơ IPO); bỏ quyền của ĐHĐCĐ hạ tỷ lệ sở hữu nước ngoài thấp hơn luật; chào bán trái phiếu ra công chúng phải có xếp hạng tín nhiệm', '09/2025']], { num: false }),
+      ins: 'Trần cho vay 200% vốn chủ là giới hạn cứng của mảng ký quỹ: công ty đã cho vay từ 170% vốn chủ chỉ tăng được dư nợ khi tăng vốn, nên các đợt phát hành, IPO của CTCK thường đi trước một nhịp mở rộng margin.',
+      src: 'Luật Chứng khoán 2019, Luật 56/2024/QH15; Thông tư 121/2020/TT-BTC, 68/2024/TT-BTC; Nghị định 245/2025/NĐ-CP; HOSE' })}
+    ${card({ title: 'Nâng hạng thị trường FTSE Russell', body: tbl(['Mốc', 'Nội dung'], [
+      ['08/10/2025', 'FTSE Russell xác nhận nâng hạng Việt Nam từ thị trường cận biên lên mới nổi thứ cấp'],
+      ['03/2026', 'Rà soát giữa kỳ, công bố chi tiết triển khai'],
+      ['<b>21/09/2026</b>', 'Hiệu lực, giai đoạn 1: 10% tỷ trọng'],
+      ['03/2027', 'Giai đoạn 2: 30%'], ['06/2027', 'Giai đoạn 3: 65%'], ['09/2027', 'Giai đoạn 4: 100%']], { num: false }),
+      ins: 'Dòng vốn vào theo từng giai đoạn tỷ trọng nên tác động lên thanh khoản và doanh thu môi giới kéo dài tới hết 2027. Ngân hàng Thế giới ước vốn gián tiếp vào khoảng 3–5 tỷ USD những năm đầu, có thể lên 25 tỷ USD vào 2030 nếu cải cách tiếp tục.',
+      src: 'FTSE Russell (thông báo phân loại thị trường 10/2025); Tạp chí Công Thương; VietnamPlus' })}
+  </div>`;
+}
+
+/* =====================================================================
+   CATALYST · RISK
+===================================================================== */
+const imp = i => `<span class="imp ${i === '+' ? 'p' : i === '−' ? 'm' : 'z'}">${i}</span>`;
+function paneCatalyst() {
+  const rows = PAGE === 'bh' ? [
+    ['Hàng tháng', 'Bản tin thị trường bảo hiểm của Bộ Tài chính, số liệu IAV', 'Tăng trưởng phí, khai thác mới, chi trả', '?', 'Bản tin tiếp theo khoảng 45–55 ngày sau kỳ'],
+    ['Hàng quý', 'BCTC quý III/2026 của BVH, BMI, BIC, PTI', 'Lợi nhuận, chi giá trị hoàn lại', '?', 'Chờ công bố'],
+    ['Đang diễn ra', 'Làn sóng hủy hợp đồng và đáo hạn hợp đồng nhân thọ ký 2018–2022', 'Quỹ đầu tư co lại, nền lợi nhuận tương lai giảm', '−', `Chi trả ${kyShort(last(ser('LIFE', 'CLAIMS'))[0])} ${sg(last(ser('LIFE', 'CLAIMS'))[2])}`],
+    ['Đang diễn ra', 'Khai thác mới nhân thọ chưa hồi phục, dịch chuyển sang tử kỳ', 'Phí mới bình quân giảm, dự phòng tích lũy chậm', '−', `Phí mới ${kyShort(last(ser('LIFE', 'NB_PREM'))[0])} ${sg(last(ser('LIFE', 'NB_PREM'))[2])}`],
+    ['Đang diễn ra', 'Phi nhân thọ tăng nhanh (sức khỏe, tài sản)', 'Doanh thu phí, quy mô danh mục', '+', `${sg(nP[2])} ${kyShort(nP[0])}`],
+    ['Theo lãi suất', 'Lãi suất huy động, lợi suất TPCP', 'Lợi suất danh mục (tiền gửi, trái phiếu chiếm phần lớn)', '+', 'Lãi suất tăng có lợi cho thu nhập đầu tư nhưng tăng động cơ hủy hợp đồng'],
+    ['01/01/2027', 'Phần hoa hồng của Thông tư 96/2026 có hiệu lực', 'Chi phí khai thác nhân thọ', '?', 'Sắp hiệu lực'],
+    ['31/12/2027', 'Hết áp dụng quy định đầu tư cũ (NĐ 73/2016)', 'Cơ cấu danh mục đầu tư', '?', ''],
+    ['01/01/2028', 'Cấm đầu tư một số loại tài sản (Luật 08/2022 Điều 99)', 'Cơ cấu danh mục đầu tư', '−', ''],
+    ['31/12/2030', 'Hết cách tính biên khả năng thanh toán cũ', 'Yêu cầu vốn', '?', '']]
+    : [
+    ['21/09/2026 → 09/2027', 'FTSE Russell nâng hạng, giải ngân tỷ trọng 10% → 30% → 65% → 100%', 'Thanh khoản, dòng vốn ngoại, doanh thu môi giới', '+', 'Giai đoạn 1 đã hiệu lực'],
+    ['Hàng quý', 'BCTC quý III/2026 của SSI và các CTCK còn lại', 'Lợi nhuận ngành, lãi danh mục', '?', 'Chờ công bố'],
+    ['Đang diễn ra', 'Dư nợ cho vay ký quỹ tăng nhanh, một số công ty gần trần 200% vốn chủ', 'Phải tăng vốn để mở rộng margin; rủi ro giải chấp khi thị trường giảm', '−', `HCM ${pc(secMetrics('HCM', SEC_LASTQ).loanEq, 0)} vốn chủ`],
+    ['Đang diễn ra', 'Cạnh tranh phí môi giới (0%)', 'Biên môi giới', '−', ''],
+    ['2025–2026', 'Niêm yết các CTCK lớn: TCX, VCK, VPX', 'Cung cổ phiếu ngành, cạnh tranh vốn chủ lớn', '?', 'Đã niêm yết cuối 2025'],
+    ['Theo lãi suất', 'Lãi suất liên ngân hàng, vay ngân hàng, vay hợp vốn nước ngoài', 'Chi phí vốn mảng cho vay và danh mục FI', '−', 'Nợ vay ngành bằng ' + pc(debtOf(rowAt(SECQ, SEC_LASTQ)) / sv(rowAt(SECQ, SEC_LASTQ), 'bs400'), 0) + ' vốn chủ'],
+    ['Từ 09/2025', 'NĐ 245/2025: niêm yết ngay sau IPO', 'Số thương vụ IPO, doanh thu ngân hàng đầu tư', '+', '']];
+  $('#catalyst').innerHTML = `<h2 class="sec">Catalyst · Risk</h2>
+  <p class="sec-sub">Sự kiện có thể đoán trước thời điểm và rủi ro đang diễn ra; + hỗ trợ, − bất lợi, ? hai chiều hoặc chưa rõ.</p>
+  <article class="card"><div class="tscroll"><table><thead><tr><th>Thời điểm</th><th>Sự kiện / rủi ro</th><th>Kênh tác động</th><th>Tác động</th><th>Trạng thái</th></tr></thead><tbody>
+    ${rows.map(r => `<tr><td style="white-space:nowrap"><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${imp(r[3])}</td><td>${r[4]}</td></tr>`).join('')}</tbody></table></div>
+    <div class="src">Nguồn: ${PAGE === 'bh' ? srcOf(ser('LIFE', 'CLAIMS').slice(-1), ser('LIFE', 'NB_PREM').slice(-1), ser('NONLIFE', 'PREM').slice(-1)) + '; văn bản pháp luật; ' + WI : 'FTSE Russell; Nghị định 245/2025/NĐ-CP; ' + WI}</div></article>
+  ${PAGE === 'bh' ? `<h3 class="sec2">Chủ đề nóng: hủy hợp đồng nhân thọ</h3>${surrenderBlock()}` : ''}`;
+  if (PAGE === 'bh') drawSurrender();
+}
+function surrenderBlock() {
+  return `<div class="grid g2 gap">
+    ${card({ title: 'BVH: hủy hợp đồng tăng nhanh hơn doanh thu phí', sub: 'Chi trả bảo hiểm nhân thọ của BVH, tỷ đồng', body: tbl(['Khoản', '2024', '2025', '6T/2025', '6T/2026'], [
+        ['Đáo hạn', '2.980', '3.473', '1.577', '1.968'], ['<b>Giá trị hoàn lại (hủy HĐ)</b>', '9.182', '<b>10.534</b>', '4.818', '<b>5.948</b>'], ['Rủi ro và khác', '2.902', '2.811', '1.360', '1.400'], ['<b>Tổng</b>', '15.064', '16.817', '7.755', '9.316']]),
+      ins: 'Hủy hợp đồng 6T/2026 tăng 23,5% trong khi phí nhân thọ 6 tháng giảm 3,3% (16.662 → 16.119 tỷ); giá trị hoàn lại so với phí lên 36,9% từ 28,9%. Trích lập dự phòng nghiệp vụ 6 tháng giảm 28%. Hủy muộn thường không gây lỗ kế toán vì giá trị hoàn lại thấp hơn dự phòng đang giữ, nhưng làm co quỹ đầu tư, tức co nền tạo lợi nhuận tương lai.',
+      src: 'Báo cáo tài chính Tập đoàn Bảo Việt (BVH), thuyết minh chi bồi thường' })}
+    ${card({ id: 'catClaims', title: 'Chi trả quyền lợi so với phí nhân thọ toàn thị trường', sub: '% · chi trả quyền lợi / tổng phí, lũy kế từ đầu năm tại các kỳ có đủ hai số', src: srcOf(ser('LIFE', 'CLAIMS').filter(p => p[0] >= '2021'), ser('LIFE', 'PREM').filter(p => p[0] >= '2021')),
+      ins: 'Tỷ lệ chi trả trên phí tăng mạnh từ 2023, khi hợp đồng liên kết đầu tư bán qua ngân hàng giai đoạn 2018–2022 bắt đầu bị hủy và đáo hạn.' })}
+  </div>`;
+}
+function drawSurrender() {
+  const C1 = ser('LIFE', 'CLAIMS'), P1 = ser('LIFE', 'PREM'), ks = C1.map(p => p[0]).filter(k => k >= '2021' && at(P1, k));
+  mk('catClaims', { type: 'line', data: { labels: ks.map(kyShort), datasets: [line('Chi trả / phí', ks.map(k => at(C1, k) / at(P1, k) * 100), C.purple, { $src: ks.map(k => pt(C1, k)[3]) })] },
+    options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: yPct('%') } } });
+}
+
+/* =====================================================================
+   CONSENSUS CTCK
+===================================================================== */
+const SYMS = () => PAGE === 'bh' ? INS_ALL : SEC_L;
+const lastPx = s => { const p = W.px[s]; return p ? last(p.c) : null; };
+const med2 = a => { const b = a.filter(v => v != null).sort((x, y) => x - y); if (!b.length) return null; const m = b.length >> 1; return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2; };
+function consOf(s) {
+  const R = W.rep.filter(r => r.s === s).sort((a, b) => b.d.localeCompare(a.d)), withTp = R.filter(r => r.tp), px = lastPx(s);
+  const orgs = [...new Set(R.map(r => r.org))], tp = med2(withTp.map(r => r.tp)), np = med2(R.filter(r => r.np).map(r => r.np));
+  const plan = W.plans.find(p => p.s === s && p.y === 2026);
+  return { s, R, n: R.length, nOrg: orgs.length, tp, px, up: tp && px ? tp / px - 1 : null, np, plan, last: R[0], tpMin: withTp.length ? Math.min(...withTp.map(r => r.tp)) : null, tpMax: withTp.length ? Math.max(...withTp.map(r => r.tp)) : null };
+}
+const recPill = r => !r ? '—' : /MUA/.test(r) ? `<span class="pill ok">${esc(r)}</span>` : /BÁN/.test(r) ? `<span class="pill risk">${esc(r)}</span>` : /KHÁC/.test(r) ? '<span class="pill">Chưa phân loại</span>' : `<span class="pill watch">${esc(r)}</span>`;
+function paneCons() {
+  const cs = SYMS().map(consOf);
+  $('#cons').innerHTML = `<h2 class="sec">Consensus CTCK</h2>
+  <p class="sec-sub">Báo cáo phân tích của các công ty chứng khoán từ 01/04/2026; giá mục tiêu đã điều chỉnh theo sự kiện quyền. Upside so với giá đóng cửa phiên gần nhất. Bấm mã để xem chi tiết từng báo cáo.</p>
+  <article class="card">${tbl(['Mã', 'Số báo cáo', 'Số CTCK', 'Giá hiện tại', 'Giá mục tiêu (trung vị)', 'Khoảng giá mục tiêu', 'Upside', 'LNST 2026F trung vị (tỷ)', 'Kế hoạch LNST 2026 (tỷ)', 'Báo cáo mới nhất'],
+    cs.map(c => [`<b>${dnLink(c.s)}</b>`, c.n || '—', c.nOrg || '—', nf(c.px), nf(c.tp), c.tpMin ? nf(c.tpMin) + ' – ' + nf(c.tpMax) : '—', c.up == null ? '—' : `<span class="${cls(c.up)}">${sg(c.up, 1)}</span>`, nf(c.np), c.plan ? nf(c.plan.pat) : '—',
+      c.last ? `${esc(c.last.org)} · ${dvn(c.last.d)} · ${recPill(c.last.rec)}` : '<span class="muted">Chưa có báo cáo</span>']))}
+    <div class="src">Nguồn: ${WI} (báo cáo phân tích CTCK, kế hoạch ĐHĐCĐ, giá đóng cửa)</div></article>
+  <div class="grid g2 gap">${card({ id: 'consUp', title: 'Upside theo giá mục tiêu trung vị', sub: '% so với giá đóng cửa phiên gần nhất', src: WI })}
+    ${card({ id: 'consNp', title: 'LNST 2026 dự phóng và kế hoạch', sub: 'Tỷ đồng · trung vị dự phóng của CTCK so với kế hoạch ĐHĐCĐ', src: WI })}</div>`;
+  const u = cs.filter(c => c.up != null);
+  mk('consUp', { type: 'bar', data: { labels: u.map(c => c.s), datasets: [bar('Upside', u.map(c => c.up * 100), u.map(c => c.up >= 0 ? C.green : C.red), { unit: '%', dp: 1 })] }, options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: yPct('%') } } });
+  const v = cs.filter(c => c.np || c.plan);
+  mk('consNp', { type: 'bar', data: { labels: v.map(c => c.s), datasets: [bar('LNST 2026F (trung vị CTCK)', v.map(c => c.np), C.navy, { unit: ' tỷ' }), bar('Kế hoạch ĐHĐCĐ', v.map(c => c.plan ? c.plan.pat : null), C.gold, { unit: ' tỷ' })] },
+    options: { scales: { x: { grid: { display: false } }, y: yNum('tỷ đồng') } } });
+}
+
+/* =====================================================================
+   CHART BOOK
+===================================================================== */
+function buildAll() {
+  Object.keys(builders).forEach(k => { if (k !== 'book' && !built[k]) { built[k] = true; try { builders[k](); } catch (e) { console.error(e); } } });
+  if (typeof SUBS !== 'undefined') SUBS.forEach(([k, , f]) => { if (!subDone[k] && $('#' + k)) { subDone[k] = true; try { f($('#' + k)); } catch (e) { console.error(e); } } });
+}
+function paneBook() {
+  buildAll();
+  const ids = Object.keys(SPEC);
+  $('#book').innerHTML = `<h2 class="sec">Chart book</h2><p class="sec-sub">${ids.length} chart của trang ở một chỗ, luôn theo dữ liệu mới nhất.</p>
+  <div class="bk-bar"><input id="bkQ" type="search" placeholder="Tìm chart…" aria-label="Tìm chart"></div>
+  <div class="grid g2 gap" id="bkGrid">${ids.map(id => { const s = SPEC[id]; return `<article class="card bk" data-id="${id}" data-s="${esc((s.title + ' ' + id).toLowerCase())}"><h3 class="sub">${esc(s.title)}</h3>${s.sub ? `<p class="chart-sub">${s.sub}</p>` : ''}<div class="cbox"><canvas id="cb-${id}"></canvas></div>${s.src ? `<div class="src">${s.src}</div>` : ''}</article>`; }).join('')}</div>`;
+  const draw = c => { const id = c.dataset.id; if (c.dataset.dn) return; c.dataset.dn = 1; mk('cb-' + id, cl(SPEC[id].cfg), { ts: SPEC[id].ts }); };
+  const ob = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) draw(e.target); }), { rootMargin: '300px' }) : null;
+  $$('#bkGrid .bk').forEach(c => ob ? ob.observe(c) : draw(c));
+  $('#bkQ').oninput = e => { const q = e.target.value.trim().toLowerCase(); $$('#bkGrid .bk').forEach(c => c.hidden = q && !c.dataset.s.includes(q)); };
+}
+
+/* =====================================================================
+   TRANG DOANH NGHIỆP (dn.html?s=MÃ)
+===================================================================== */
+const SYM = PAGE === 'dn' ? (new URLSearchParams(location.search).get('s') || 'SSI').toUpperCase() : null;
+const CO = SYM ? W.names[SYM] : null, IS_INS = CO && CO.t === 3;
+const QS = () => IS_INS ? W.ins[SYM] : W.sec[SYM];
+const qv = (r, k) => IS_INS ? iv(r, k) : sv(r, k);
+const noteRows = () => (W.notes[IS_INS ? 'fs_ins_notes' : 'fs_sec_notes'].v[SYM] || []);
+const nk = k => W.notes[IS_INS ? 'fs_ins_notes' : 'fs_sec_notes'].k.indexOf(k) + 1;
+const nv = (q, k) => { const r = noteRows().find(x => x[0] === q); return r ? r[nk(k)] : null; };
+const ttmRoe = (R, q) => { const n = ttm(R, q, r => IS_INS ? iv(r, 'is60') : sv(r, 'is200')), e = avgBal(R, q, r => IS_INS ? iv(r, 'bs400') : sv(r, 'bs400')); return n != null && e ? n / e : null; };
+function dnHeader() {
+  const R = QS(), q = last(R)[0], v = W.val[SYM], px = W.px[SYM];
+  const lo = px ? Math.min(...px.c.slice(-250)) : null, hi = px ? Math.max(...px.c.slice(-250)) : null;
+  $('#stockHead').innerHTML = `<div class="tick">${SYM}</div>
+    <div class="cname">${esc(CO.n)}<small>${IS_INS ? 'Bảo hiểm' : 'Chứng khoán'} · ${CO.ex} · niêm yết ${dvn(CO.lst)} · <a href="${IS_INS ? 'bh' : 'ck'}.html">Ngành ${IS_INS ? 'Bảo hiểm' : 'Chứng khoán'}</a></small></div>
+    <div class="hstats">
+      <div class="hstat"><span>Giá ${dvn(last(px.d))}</span><b>${nf(last(px.c))}</b></div>
+      <div class="hstat"><span>52 tuần</span><b>${nf(lo)} – ${nf(hi)}</b></div>
+      <div class="hstat"><span>P/B</span><b>${nf(v.pb, 2)}x</b></div>
+      <div class="hstat"><span>P/E</span><b>${nf(v.pe, 1)}x</b></div>
+      <div class="hstat"><span>Vốn hóa</span><b>${nf(v.mcap / 1000, 1)} nghìn tỷ</b></div>
+      <div class="hstat"><span>ROE 4Q (${qLbl(q)})</span><b>${pc(ttmRoe(R, q), 1)}</b></div>
+    </div>`;
+  $('#stamp').textContent = 'Dữ liệu dựng ngày ' + dvn(F.built);
+  const sel = $('.bank-pick.on select'); if (sel) sel.value = 'dn.html?s=' + SYM;
+  document.title = `${SYM} · ${CO.n} · FinSuccess`;
+}
+// ---------- Tổng quan ----------
+function dnOv() {
+  const R = QS(), q = last(R)[0], r = last(R), r0 = rowAt(R, yoyQ(q));
+  const pbtK = IS_INS ? 'is50' : 'is90', pbt = qv(r, pbtK), pbt0 = qv(r0, pbtK);
+  let k;
+  if (IS_INS) { const m = insMetrics(SYM);
+    k = [kpi('Phí BH gốc 4 quý', nf(m.gp / 1000, 1) + ' nghìn tỷ', 'YoY ' + sg(m.gy), cls(m.gy)), kpi(SYM === 'BVH' ? 'Tỷ lệ bồi thường' : 'Tỷ lệ kết hợp', pc(SYM === 'BVH' ? m.lr : m.cr, 1), '4 quý · ' + qLbl(q)),
+      kpi('Danh mục / VCSH', nf(m.invEq, 2) + 'x', qLbl(q)), kpi('LN tài chính / LNTT', pc(m.fin, 0), '4 quý'), kpi('LNTT ' + qLbl(q), nf(pbt) + ' tỷ', pbt0 ? 'YoY ' + sg(pbt / pbt0 - 1) : '', cls(pbt / pbt0 - 1)), kpi('ROE 4 quý', pc(m.roe, 1), '')]; }
+  else { const m = secMetrics(SYM, q) || {}, mg = nv(q, 'fn114_2');
+    k = [kpi('Vốn chủ sở hữu', nf(sv(r, 'bs400') / 1000, 1) + ' nghìn tỷ', qLbl(q)), kpi('Dư nợ ký quỹ', mg ? nf(mg / 1000, 1) + ' nghìn tỷ' : nf(sv(r, 'bs114') / 1000, 1) + ' nghìn tỷ', mg ? pc(mg / sv(r, 'bs400'), 0) + ' VCSH' : 'cho vay'),
+      kpi('Nợ vay / VCSH', pc(debtOf(r) / sv(r, 'bs400'), 0), ''), kpi('Thị phần DT môi giới', m.brkSh != null ? pc(m.brkSh, 1) : '—', 'trong nhóm niêm yết, 4Q đến ' + qLbl(m.q || SEC_LASTQ)),
+      kpi('LNTT ' + qLbl(q), nf(pbt) + ' tỷ', pbt0 ? 'YoY ' + sg(pbt / pbt0 - 1) : '', cls(pbt / pbt0 - 1)), kpi('ROE 4 quý', pc(ttmRoe(R, q), 1), '')]; }
+  const H = W.holders.filter(h => h.s === SYM).sort((a, b) => b.pct - a.pct);
+  const P = W.plans.filter(p => p.s === SYM).sort((a, b) => b.y - a.y);
+  const ytd = y => { const qs = R.filter(x => x[0].startsWith(y)); return { pbt: qs.reduce((a, x) => a + (qv(x, pbtK) || 0), 0), pat: qs.reduce((a, x) => a + (qv(x, IS_INS ? 'is60' : 'is200') || 0), 0), n: qs.length }; };
+  $('#ov').innerHTML = `<h2 class="sec">Tổng quan</h2>
+  <div class="kpis">${k.join('')}</div>
+  <div class="grid g2 gap">
+    ${card({ id: 'dnPx', title: 'Giá cổ phiếu so với ngành và VN-Index', sub: `Chỉ số hóa về 100 tại phiên đầu kỳ · đường đứt: đỉnh và đáy 52 tuần của ${SYM}`, src: WI + ' (giá điều chỉnh, chỉ số giá ngành, VN-Index)' })}
+    <article class="card"><h3 class="sub">Kế hoạch và thực hiện</h3>
+      ${P.length ? tbl(['Năm', 'Doanh thu KH', 'LNTT KH', 'LNST KH', 'LNTT thực hiện', '% KH'], P.map(p => { const y = ytd(String(p.y)); return [p.y, nf(p.rev), nf(p.pbt), nf(p.pat), nf(y.pbt) + (y.n < 4 ? ` <small class="muted">(${y.n} quý)</small>` : ''), p.pbt ? pc(y.pbt / p.pbt, 0) : '—']; })) : '<p class="muted">Chưa có kế hoạch ĐHĐCĐ trong dữ liệu.</p>'}
+      <h3 class="sub" style="margin-top:16px">Cổ đông lớn (từ 5%)</h3>
+      ${H.length ? tbl(['Cổ đông', 'Tỷ lệ', 'Cập nhật'], H.map(h => [esc(h.n), nf(h.pct, 2) + '%', dvn(h.d)])) : '<p class="muted">Không có cổ đông từ 5% trong dữ liệu.</p>'}
+      <div class="src">Nguồn: ${WI} (kế hoạch ĐHĐCĐ, BCTC, cổ đông lớn)</div></article>
+  </div>`;
+  const px = W.px[SYM], d0 = px.d[0], idx = (a, d) => { const m = {}; a.d.forEach((x, i) => m[x] = a.c[i]); return m; };
+  const sp = idx(W.spx[IS_INS ? '406' : '408']), vn = W.vniD, b = (m, d) => m[d];
+  const base = (m) => { const f = px.d.find(d => m[d] != null); return f ? m[f] : null; };
+  const sB = base(sp), vB = base(vn), pB = px.c[0];
+  const lo = Math.min(...px.c.slice(-250)) / pB * 100, hi = Math.max(...px.c.slice(-250)) / pB * 100;
+  mk('dnPx', { type: 'line', data: { labels: px.d.map(dvn), datasets: [
+    line(SYM, px.c.map(c => c / pB * 100), C.navy, { pointRadius: 0, dp: 1, unit: '' }),
+    line('Ngành ' + (IS_INS ? 'bảo hiểm' : 'chứng khoán'), px.d.map(d => sp[d] != null ? sp[d] / sB * 100 : null), C.teal, { pointRadius: 0, dp: 1, unit: '' }),
+    line('VN-Index', px.d.map(d => vn[d] != null ? vn[d] / vB * 100 : null), C.grey, { pointRadius: 0, dp: 1, unit: '' }),
+    line('Đỉnh 52 tuần', px.d.map(() => hi), C.red, { pointRadius: 0, borderDash: [4, 4], borderWidth: 1, dp: 1, unit: '' }),
+    line('Đáy 52 tuần', px.d.map(() => lo), C.green, { pointRadius: 0, borderDash: [4, 4], borderWidth: 1, dp: 1, unit: '' }) ] },
+    options: { scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } }, y: yNum('chỉ số, đầu kỳ = 100') } } }, { ts: true });
+}
+// ---------- Tài chính ----------
+function dnFin() {
+  const R = QS().filter(r => r[0] >= '2019Q1'), L = R.map(r => qLbl(r[0])), q = last(R)[0];
+  const tyy = (r, k) => { const v = qv(r, k); return v == null ? null : v / 1000; };
+  const years = [...new Set(R.map(r => r[0].slice(0, 4)))];
+  const pbtK = IS_INS ? 'is50' : 'is90';
+  const yr = y => { const qs = R.filter(x => x[0].startsWith(y)); return { v: qs.reduce((a, x) => a + (qv(x, pbtK) || 0), 0), n: qs.length }; };
+  const plan = y => (W.plans.find(p => p.s === SYM && String(p.y) === y) || {}).pbt;
+  const A0 = QS(), rq = last(A0), rq0 = rowAt(A0, yoyQ(q)), pbtQ = qv(rq, pbtK), pbtQ0 = qv(rq0, pbtK);
+  const insIS = IS_INS ? `${qLbl(q)}: phí gốc ${nf(qv(rq, 'is01_1'))} tỷ${qv(rq0, 'is01_1') ? ` (${sg(qv(rq, 'is01_1') / qv(rq0, 'is01_1') - 1)} so cùng kỳ)` : ''}, LNTT ${nf(pbtQ)} tỷ${pbtQ0 > 0 ? ` (${sg(pbtQ / pbtQ0 - 1)})` : ''}; lợi nhuận hoạt động tài chính ${nf(qv(rq, 'is25'))} tỷ.`
+    : (() => { const mix = [['môi giới', 'is06'], ['lãi cho vay', 'is03']].map(([l, k]) => `${l} ${nf(sv(rq, k))} tỷ`).join(', '); return `${qLbl(q)}: ${mix}, lãi FVTPL ròng ${nf((sv(rq, 'is01') || 0) + (sv(rq, 'is21') || 0))} tỷ; LNTT ${nf(pbtQ)} tỷ${pbtQ0 > 0 ? ` (${sg(pbtQ / pbtQ0 - 1)} so cùng kỳ)` : ''}.`; })();
+  const insR1 = IS_INS ? (SYM === 'BVH' ? 'Ở doanh nghiệp nhân thọ, chi bồi thường gồm cả tăng dự phòng toán học, nên tỷ lệ bồi thường cao không có nghĩa nghiệp vụ lỗ; lợi nhuận đến chủ yếu từ đầu tư.' : 'Tỷ lệ kết hợp dưới 100% là nghiệp vụ bảo hiểm có lãi trước thu nhập đầu tư.')
+    : `Cho vay bằng ${pc(sv(rq, 'bs114') / sv(rq, 'bs400'), 0)} vốn chủ, nợ vay ${pc(debtOf(rq) / sv(rq, 'bs400'), 0)}. ${sv(rq, 'bs114') / sv(rq, 'bs400') > 1.7 ? 'Cho vay đã gần trần 200% vốn chủ: dư nợ chỉ tăng thêm khi vốn chủ tăng.' : 'Còn dư địa mở rộng cho vay trước trần 200% vốn chủ.'}`;
+  $('#fin').innerHTML = `<h2 class="sec">Tài chính</h2><p class="sec-sub">BCTC hợp nhất theo quý, nghìn tỷ đồng nếu không ghi khác; quý mới nhất ${qLbl(q)}.</p>
+  <div class="grid g2 gap">
+    ${card({ id: 'dnA', title: 'Tài sản theo quý', sub: 'Nghìn tỷ đồng', src: WI + ' (BCTC hợp nhất)' })}
+    ${card({ id: 'dnL', title: 'Nguồn vốn theo quý', sub: 'Nghìn tỷ đồng', src: WI + ' (BCTC hợp nhất)' })}
+    ${card({ id: 'dnY', title: 'Lợi nhuận trước thuế theo năm và kế hoạch', sub: 'Tỷ đồng · năm hiện tại: cột đặc = lũy kế thực hiện, viền đứt = kế hoạch ĐHĐCĐ', src: WI + ' (BCTC, kế hoạch ĐHĐCĐ)' })}
+    ${card({ id: 'dnIS', title: IS_INS ? 'Phí bảo hiểm, bồi thường và lợi nhuận theo quý' : 'Doanh thu theo mảng và lợi nhuận trước thuế theo quý', sub: 'Tỷ đồng', src: WI + ' (BCTC hợp nhất)', ins: insIS })}
+    ${card({ id: 'dnR1', title: IS_INS ? 'Tỷ lệ bồi thường và tỷ lệ kết hợp' : 'Cho vay, nợ vay và FVTPL so với vốn chủ', sub: '% · 4 quý trượt' + (IS_INS ? '; tỷ lệ kết hợp không áp dụng cho nhân thọ' : ''), src: WI, ins: insR1 })}
+    ${card({ id: 'dnR2', title: IS_INS ? 'Nguồn lợi nhuận: nghiệp vụ và đầu tư' : 'ROE, biên môi giới và lợi suất cho vay', sub: IS_INS ? 'Tỷ đồng/quý · lợi nhuận gộp kinh doanh bảo hiểm so với lợi nhuận hoạt động tài chính' : '% · 4 quý trượt', src: WI })}
+    ${IS_INS ? card({ id: 'dnN', title: 'Lãi tiền gửi so với lợi nhuận trước thuế', sub: 'Tỷ đồng/quý · lãi tiền gửi trong doanh thu hoạt động tài chính', src: WI + ' (thuyết minh BCTC)', ins: 'Lãi tiền gửi trên 70% lợi nhuận trước thuế thì dự phóng lợi nhuận dựa trước hết vào số dư tiền gửi và lãi suất huy động.' })
+      : card({ id: 'dnN', title: 'Danh mục FVTPL: cổ phiếu và thu nhập cố định', sub: 'Nghìn tỷ đồng · giá trị hợp lý; cổ phiếu trên 30% vốn chủ thì lợi nhuận năm sau đi theo giá cổ phiếu', src: WI + ' (thuyết minh BCTC)' })}
+    ${SYM === 'BVH' ? card({ id: 'dnBvh', title: 'Chi trả bảo hiểm nhân thọ theo loại', sub: 'Tỷ đồng/quý · đáo hạn, giá trị hoàn lại (hủy hợp đồng), bồi thường; quý không có số là chưa công bố chi tiết', src: WI + ' (thuyết minh chi bồi thường)' }) : ''}
+  </div>`;
+  const st = { x: { stacked: true, grid: { display: false } }, y: yNum('nghìn tỷ đồng', { stacked: true }) };
+  if (IS_INS) {
+    mk('dnA', { type: 'bar', data: { labels: L, datasets: [bar('Đầu tư tài chính ngắn hạn', R.map(r => tyy(r, 'bs120')), C.navy, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('Đầu tư tài chính dài hạn', R.map(r => tyy(r, 'bs250')), C.teal, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('Tài sản khác', R.map(r => (qv(r, 'bs270') - (qv(r, 'bs120') || 0) - (qv(r, 'bs250') || 0)) / 1000), C.grey, { stack: 's', unit: ' nghìn tỷ', dp: 1 })] }, options: { scales: st } });
+    mk('dnL', { type: 'bar', data: { labels: L, datasets: [bar('Nợ phải trả (chủ yếu dự phòng nghiệp vụ)', R.map(r => tyy(r, 'bs300')), C.purple, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('Vốn chủ sở hữu', R.map(r => tyy(r, 'bs400')), C.navy, { stack: 's', unit: ' nghìn tỷ', dp: 1 })] }, options: { scales: st } });
+    mk('dnIS', { type: 'bar', data: { labels: L, datasets: [bar('Phí bảo hiểm gốc', R.map(r => qv(r, 'is01_1')), C.navy, { unit: ' tỷ' }), bar('Chi bồi thường', R.map(r => Math.abs(qv(r, 'is15') || 0)), C.purple, { unit: ' tỷ' }), line('LNTT', R.map(r => qv(r, 'is50')), C.gold, { unit: ' tỷ', dp: 0, yAxisID: 'y1' })] },
+      options: { scales: { x: { grid: { display: false } }, y: yNum('tỷ đồng'), y1: yNum('LNTT, tỷ đồng', { position: 'right', grid: { display: false } }) } } });
+    const lr = R.map(r => { const a = ttm(QS(), r[0], x => Math.abs(iv(x, 'is15') || 0)), b = ttm(QS(), r[0], x => iv(x, 'is03')); return a != null && b ? a / b * 100 : null; });
+    const cr = R.map(r => { const n = ttm(QS(), r[0], x => iv(x, 'isx01')); if (!n) return null; const c = ttm(QS(), r[0], x => Math.abs(iv(x, 'is18') || 0) + Math.abs(iv(x, 'is26') || 0) + Math.abs(iv(x, 'isx27') || 0)); return c / n * 100; });
+    mk('dnR1', { type: 'line', data: { labels: L, datasets: [line('Tỷ lệ bồi thường', lr, C.purple)].concat(SYM === 'BVH' ? [] : [line('Tỷ lệ kết hợp', cr, C.navy)]) }, options: { scales: { x: { grid: { display: false } }, y: yPct('%') } } });
+    mk('dnR2', { type: 'bar', data: { labels: L, datasets: [bar('LN gộp kinh doanh bảo hiểm', R.map(r => qv(r, 'is19')), C.teal, { unit: ' tỷ' }), bar('LN hoạt động tài chính', R.map(r => qv(r, 'is25')), C.navy, { unit: ' tỷ' }), line('LNTT', R.map(r => qv(r, 'is50')), C.gold, { unit: ' tỷ', dp: 0 })] }, options: { scales: { x: { grid: { display: false } }, y: yNum('tỷ đồng') } } });
+    const NQ = noteRows().map(x => x[0]).filter(x => x >= '2022Q1').sort();
+    mk('dnN', { type: 'bar', data: { labels: NQ.map(qLbl), datasets: [bar('Lãi tiền gửi', NQ.map(x => nv(x, 'fn23_1') || null), C.teal, { unit: ' tỷ' }), line('LNTT', NQ.map(x => qv(rowAt(QS(), x), 'is50')), C.navy, { unit: ' tỷ', dp: 0 })] }, options: { scales: { x: { grid: { display: false } }, y: yNum('tỷ đồng') } } });
+    if (SYM === 'BVH') { const nz = v => v ? Math.abs(v) : null;
+      mk('dnBvh', { type: 'bar', data: { labels: NQ.map(qLbl), datasets: [bar('Đáo hạn', NQ.map(x => nz(nv(x, 'fn111_2'))), C.navy, { stack: 's', unit: ' tỷ' }), bar('Giá trị hoàn lại', NQ.map(x => nz(nv(x, 'fn111_3'))), C.purple, { stack: 's', unit: ' tỷ' }), bar('Bồi thường nhân thọ', NQ.map(x => nz(nv(x, 'fn111_4'))), C.teal, { stack: 's', unit: ' tỷ' })] }, options: { scales: { x: { stacked: true, grid: { display: false } }, y: yNum('tỷ đồng', { stacked: true }) } } }); }
+  } else {
+    const oth = r => (sv(r, 'bs270') - ['bs111', 'bs112', 'bs113', 'bs114', 'bs115'].reduce((a, k) => a + (sv(r, k) || 0), 0)) / 1000;
+    mk('dnA', { type: 'bar', data: { labels: L, datasets: [bar('Tiền', R.map(r => tyy(r, 'bs111')), C.grey, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('FVTPL', R.map(r => tyy(r, 'bs112')), C.gold, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('HTM', R.map(r => tyy(r, 'bs113')), C.tealInk, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('Cho vay', R.map(r => tyy(r, 'bs114')), C.navy, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('AFS', R.map(r => tyy(r, 'bs115')), C.teal, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('Khác', R.map(oth), '#d5d9e2', { stack: 's', unit: ' nghìn tỷ', dp: 1 })] }, options: { scales: st } });
+    mk('dnL', { type: 'bar', data: { labels: L, datasets: [bar('Vay ngắn hạn', R.map(r => tyy(r, 'bs311')), C.purple, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('Trái phiếu phát hành', R.map(r => ((sv(r, 'bs316') || 0) + (sv(r, 'bs346') || 0)) / 1000), C.gold, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('Nợ khác', R.map(r => (sv(r, 'bs270') - sv(r, 'bs400') - debtOf(r)) / 1000), '#d5d9e2', { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('Vốn chủ sở hữu', R.map(r => tyy(r, 'bs400')), C.navy, { stack: 's', unit: ' nghìn tỷ', dp: 1 })] }, options: { scales: st } });
+    mk('dnIS', { type: 'bar', data: { labels: L, datasets: [
+      bar('Môi giới', R.map(r => sv(r, 'is06')), C.navy, { stack: 's', unit: ' tỷ' }), bar('Lãi cho vay', R.map(r => sv(r, 'is03')), C.teal, { stack: 's', unit: ' tỷ' }), bar('Lãi FVTPL ròng', R.map(r => (sv(r, 'is01') || 0) + (sv(r, 'is21') || 0)), C.gold, { stack: 's', unit: ' tỷ' }),
+      bar('HTM + AFS', R.map(r => (sv(r, 'is02') || 0) + (sv(r, 'is04') || 0)), C.grey, { stack: 's', unit: ' tỷ' }), bar('Bảo lãnh, tư vấn', R.map(r => (sv(r, 'is07') || 0) + (sv(r, 'is10') || 0)), C.purple, { stack: 's', unit: ' tỷ' }),
+      line('LNTT', R.map(r => sv(r, 'is90')), C.red, { unit: ' tỷ', dp: 0, pointRadius: 1.5 })] }, options: { scales: { x: { stacked: true, grid: { display: false } }, y: yNum('tỷ đồng', { stacked: true }) } } });
+    const pE = (r, f) => f(r) / sv(r, 'bs400') * 100;
+    mk('dnR1', { type: 'line', data: { labels: L, datasets: [line('Cho vay / VCSH', R.map(r => pE(r, x => sv(x, 'bs114'))), C.teal, { dp: 0 }), line('Nợ vay / VCSH', R.map(r => pE(r, debtOf)), C.navy, { dp: 0 }), line('FVTPL / VCSH', R.map(r => pE(r, x => sv(x, 'bs112'))), C.gold, { dp: 0 })] },
+      options: { scales: { x: { grid: { display: false } }, y: yPct('% VCSH') }, plugins: { refl: {} } } });
+    const A = QS();
+    mk('dnR2', { type: 'line', data: { labels: L, datasets: [
+      line('ROE', R.map(r => { const v = ttmRoe(A, r[0]); return v == null ? null : v * 100; }), C.navy),
+      line('Biên môi giới', R.map(r => { const a = ttm(A, r[0], x => sv(x, 'is06')), b = ttm(A, r[0], x => sv(x, 'is27')); return a ? (a + b) / a * 100 : null; }), C.teal),
+      line('Lợi suất cho vay', R.map(r => { const a = ttm(A, r[0], x => sv(x, 'is03')), b = avgBal(A, r[0], x => sv(x, 'bs114')); return a != null && b ? a / b * 100 : null; }), C.purple)] },
+      options: { scales: { x: { grid: { display: false } }, y: yPct('%') } } });
+    const NQ = noteRows().map(x => x[0]).filter(x => x >= '2022Q1').sort();
+    mk('dnN', { type: 'bar', data: { labels: NQ.map(qLbl), datasets: [bar('Cổ phiếu', NQ.map(x => ((nv(x, 'fn112_8') || 0) + (nv(x, 'fn112_9') || 0)) / 1000), C.gold, { stack: 's', unit: ' nghìn tỷ', dp: 1 }), bar('Trái phiếu, chứng chỉ tiền gửi', NQ.map(x => ((nv(x, 'fn112_11') || 0) + (nv(x, 'fn112_12') || 0)) / 1000), C.navy, { stack: 's', unit: ' nghìn tỷ', dp: 1 }),
+      line('Cổ phiếu / VCSH', NQ.map(x => { const r = rowAt(A, x); return r ? ((nv(x, 'fn112_8') || 0) + (nv(x, 'fn112_9') || 0)) / sv(r, 'bs400') * 100 : null; }), C.red, { yAxisID: 'y1', dp: 0 })] },
+      options: { scales: { x: { stacked: true, grid: { display: false } }, y: yNum('nghìn tỷ đồng', { stacked: true }), y1: yPct('% VCSH', { position: 'right', grid: { display: false } }) } } });
+  }
+  const cy = last(years), pl = plan(cy);
+  mk('dnY', { type: 'bar', data: { labels: years.map(y => y === cy && yr(y).n < 4 ? `${y} (${yr(y).n}Q)` : y), datasets: [
+    bar('LNTT thực hiện', years.map(y => yr(y).v), years.map(y => y === cy && yr(y).n < 4 ? C.teal : C.navy), { unit: ' tỷ', grouped: false }),
+    bar('Kế hoạch ĐHĐCĐ', years.map(y => y === cy ? pl ?? null : null), 'rgba(0,0,0,0)', { unit: ' tỷ', borderColor: C.navy, borderWidth: 1.5, borderDash: [5, 4], grouped: false })] },
+    options: { scales: { x: { grid: { display: false } }, y: yNum('tỷ đồng') } } });
+}
+// ---------- Catalyst & Sự kiện ----------
+function dnEvents() {
+  const E = W.events.filter(e => e.s === SYM).sort((a, b) => (b.ex || b.rec || '').localeCompare(a.ex || a.rec || ''));
+  const R = QS(), q = last(R)[0], nq = (() => { let y = +q.slice(0, 4), n = +q.slice(5) + 1; if (n > 4) { n = 1; y++; } return `Q${n}/${y}`; })();
+  $('#events').innerHTML = `<h2 class="sec">Catalyst &amp; Sự kiện</h2>
+  <div class="grid g2 gap">
+    ${card({ title: 'Sắp tới', body: tbl(['Thời điểm', 'Sự kiện'], [
+      ['Trong 20–45 ngày sau quý', `BCTC ${nq === 'Q4/' + q.slice(0, 4) ? 'quý IV' : nq.replace('Q', 'quý ')} (quý mới nhất có trong dữ liệu: ${qLbl(q)})`],
+      ...(IS_INS ? [['Hàng tháng', 'Bản tin thị trường bảo hiểm của Bộ Tài chính (thị phần, tăng trưởng phí)']] : [['21/09/2026 → 09/2027', 'FTSE Russell nâng hạng: giải ngân tỷ trọng theo 4 giai đoạn']])], { num: false }), src: IS_INS ? 'Bộ Tài chính; ' + WI : 'FTSE Russell; ' + WI })}
+    ${card({ title: 'Cổ tức và sự kiện quyền từ 2025', body: E.length ? tbl(['Ngày GDKHQ', 'Loại', 'Nội dung', 'Cổ tức tiền (đ/cp)'], E.map(e => [dvn(e.ex || e.rec), esc(e.t || ''), esc(e.title || ''), e.cash ? nf(e.cash) : '—']), { num: false }) : '<p class="muted">Không có sự kiện trong dữ liệu.</p>', src: WI + ' (sự kiện doanh nghiệp)' })}
+  </div>`;
+}
+// ---------- Consensus ----------
+function dnCons() {
+  const c = consOf(SYM), R = c.R;
+  $('#cons').innerHTML = `<h2 class="sec">Consensus CTCK</h2><p class="sec-sub">Báo cáo phân tích từ 01/04/2026; giá mục tiêu đã điều chỉnh theo sự kiện quyền; giá hiện tại ${nf(c.px)}.</p>
+  ${R.length ? `<div class="grid g2 gap">${card({ id: 'dnTp', title: 'Giá mục tiêu từng CTCK', sub: 'Đồng/cổ phiếu · đường đỏ: giá hiện tại; báo cáo cũ hơn 3 tháng tô nhạt', src: WI })}
+    ${card({ id: 'dnNp', title: 'LNST 2026 dự phóng từng CTCK và kế hoạch ĐHĐCĐ', sub: 'Tỷ đồng', src: WI + ' (báo cáo CTCK, kế hoạch ĐHĐCĐ)' })}</div>
+  <article class="card">${tbl(['Ngày', 'CTCK', 'Khuyến nghị', 'Giá mục tiêu', 'Upside', 'LNST N', 'LNST N+1', 'Tiêu đề'], R.map(r => [dvn(r.d), esc(r.org), recPill(r.rec), nf(r.tp), r.tp && c.px ? sg(r.tp / c.px - 1, 1) : '—', nf(r.np), nf(r.np1), esc(r.title || '')]), { num: false })}<div class="src">Nguồn: ${WI}</div></article>` : '<article class="card"><p class="muted">Chưa có báo cáo phân tích của CTCK cho mã này từ 01/04/2026.</p></article>'}`;
+  if (!R.length) return;
+  const old = d => (new Date(F.built) - new Date(d)) / 864e5 > 92;
+  const T = R.filter(r => r.tp);
+  mk('dnTp', { type: 'bar', data: { labels: T.map(r => `${r.org} ${dvn(r.d).slice(0, 5)}`), datasets: [bar('Giá mục tiêu', T.map(r => r.tp), T.map(r => old(r.d) ? C.navy + '55' : C.navy), { unit: ' đ', dp: 0 }),
+    { type: 'line', label: 'Giá hiện tại', data: T.map(() => c.px), borderColor: C.red, borderWidth: 1.5, pointRadius: 0, borderDash: [5, 4], indexAxis: 'y', unit: ' đ', dp: 0 }] },
+    options: { indexAxis: 'y', scales: { x: yNum('đồng'), y: { grid: { display: false } } } } });
+  const N = R.filter(r => r.np), pl = c.plan;
+  mk('dnNp', { type: 'bar', data: { labels: N.map(r => `${r.org} ${dvn(r.d).slice(0, 5)}`).concat(pl ? ['Kế hoạch ĐHĐCĐ'] : []), datasets: [bar('LNST 2026F', N.map(r => r.np).concat(pl ? [pl.pat] : []), N.map(r => old(r.d) ? C.teal + '66' : C.teal).concat([C.gold]), { unit: ' tỷ' })] },
+    options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: yNum('tỷ đồng'), y: { grid: { display: false } } } } });
+}
+// ---------- Định giá ----------
+function dnVal() {
+  const p = W.pb[SYM], n = p ? p.pb.filter(v => v != null).length : 0;
+  const peers = (IS_INS ? INS_ALL : SEC_L);
+  $('#val').innerHTML = `<h2 class="sec">Định giá</h2>
+  <div class="grid g2 gap">
+    ${card({ id: 'dnPb', title: 'P/B theo phiên', sub: `Đường đứt: trung bình và ±1 độ lệch chuẩn${n < 600 ? ' (chuỗi ngắn vì mới niêm yết)' : ' 3 năm'}`, src: WI + ' (định giá theo phiên)' })}
+    ${card({ id: 'dnPe', title: 'P/E theo phiên', sub: 'Lần · P/E trên LNST công ty mẹ 4 quý', src: WI + ' (định giá theo phiên)' })}
+    ${card({ id: 'dnSc', title: `P/B và ROE: ${SYM} so với nhóm`, sub: 'P/B phiên gần nhất (trục dọc), ROE 4 quý (trục ngang)', src: WI })}
+    <article class="card"><h3 class="sub">So sánh định giá</h3>${tbl(['Mã', 'P/B', 'P/E', 'ROE 4Q', 'Vốn hóa (tỷ)'], peers.map(s => { const R = IS_INS ? W.ins[s] : W.sec[s], q = last(R)[0], v = W.val[s]; return [s === SYM ? `<b>${s}</b>` : dnLink(s), nf(v.pb, 2) + 'x', nf(v.pe, 1) + 'x', pc(IS_INS ? insMetrics(s).roe : (() => { const e = avgBal(R, q, x => sv(x, 'bs400')), nn = ttm(R, q, x => sv(x, 'is200')); return nn != null && e ? nn / e : null; })(), 1), nf(v.mcap)]; }))}<div class="src">Nguồn: ${WI}</div></article>
+  </div>`;
+  if (p) { const ok = p.pb.map((v, i) => v != null ? i : -1).filter(i => i >= 0), d = ok.map(i => p.d[i]), pb = ok.map(i => p.pb[i]), pe = ok.map(i => p.pe[i]);
+    pbBand('dnPb', { d, pb }, C.navy);
+    mk('dnPe', { type: 'line', data: { labels: d.map(dvn), datasets: [line('P/E', pe, C.teal, { pointRadius: 0, unit: 'x', dp: 1 })] }, options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } }, y: yNum('lần', { ticks: { callback: v => nf(v, 0) + 'x' } }) } } }, { ts: true }); }
+  const pts = peers.map(s => { const R = IS_INS ? W.ins[s] : W.sec[s], q = last(R)[0], e = avgBal(R, q, x => IS_INS ? iv(x, 'bs400') : sv(x, 'bs400')), nn = ttm(R, q, x => IS_INS ? iv(x, 'is60') : sv(x, 'is200')); return { s, x: nn != null && e ? nn / e * 100 : null, y: W.val[s].pb }; }).filter(o => o.x != null && o.y != null);
+  mk('dnSc', { type: 'bubble', data: { datasets: pts.map(o => ({ label: o.s, data: [{ x: o.x, y: o.y, r: o.s === SYM ? 11 : 6 }], backgroundColor: o.s === SYM ? C.red : C.navy + '88', borderColor: o.s === SYM ? C.red : C.navy })) },
+    options: { interaction: { mode: 'nearest', intersect: true }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.dataset.label}: ROE ${nf(c.raw.x, 1)}%, P/B ${nf(c.raw.y, 2)}x` } } }, scales: { x: yPct('ROE 4 quý'), y: yNum('P/B', { ticks: { callback: v => nf(v, 1) + 'x' } }) } } });
+}
+
+/* =====================================================================
    ĐIỀU HƯỚNG
 ===================================================================== */
-const builders = { ov: paneOverview, life: paneLife, nonlife: paneNonlife, sec: paneSec, src: paneSrc };
+const builders = PAGE === 'dn' ? { ov: dnOv, fin: dnFin, events: dnEvents, cons: dnCons, val: dnVal }
+  : { ov: PAGE === 'bh' ? paneOvBH : paneOvCK, picture: panePicture, policy: panePolicy, catalyst: paneCatalyst, cons: paneCons, book: paneBook, src: paneSrc };
 const built = {};
 function show(k) {
   if (!builders[k]) k = 'ov';
@@ -605,9 +1051,9 @@ function show(k) {
   try { history.replaceState(null, '', '#' + k); } catch (e) {}
 }
 $$('#tabbar button').forEach(b => b.onclick = () => { show(b.dataset.tab); window.scrollTo({ top: 0 }); });
-header();
-$('#foot').innerHTML = `<div>FinSuccess · Dashboard Ngành tài chính khác (đang xây dựng) · dữ liệu dựng ${dvn(F.built)}. Không phải khuyến nghị đầu tư.</div>`;
-show((location.hash || '#ov').slice(1));
-window.FSSHARE = { prep() { Object.keys(builders).forEach(k => { if (!built[k]) { built[k] = true; builders[k](); } }); },
-  path(c) { const p = c.closest('.pane'), b = p && document.querySelector(`#tabbar [data-tab="${p.id}"]`); return [b ? b.textContent.trim().replace(/^\d+\.\s*/, '') : '']; } };
+if (PAGE === 'dn') { if (!CO) { $('main .wrap').innerHTML = '<p>Không có dữ liệu cho mã này.</p>'; return; } dnHeader(); } else header();
+$('#foot').innerHTML = `<div>FinSuccess · ${PAGE === 'dn' ? SYM + ' · ' + esc(CO.n) : 'Dashboard ngành ' + (PAGE === 'bh' ? 'Bảo hiểm' : 'Chứng khoán')} (đang xây dựng) · dữ liệu dựng ${dvn(F.built)}. Không phải khuyến nghị đầu tư.</div>`;
+{ const h = (location.hash || '#ov').slice(1); if (PAGE !== 'dn' && SUBS.some(x => x[0] === h)) openSub(h); else show(h); }
+window.FSSHARE = { prep: PAGE === 'dn' ? () => Object.keys(builders).forEach(k => { if (!built[k]) { built[k] = true; builders[k](); } }) : buildAll,
+  path(c) { const p = c.closest('.pane'), b = p && document.querySelector(`#tabbar [data-tab="${p.id}"]`), sb = c.closest('.sub'), t = SUBS && sb ? (SUBS.find(x => x[0] === sb.dataset.pp) || [])[1] : ''; return [b ? b.textContent.trim().replace(/^\d+\.\s*/, '') : '', t].filter(Boolean); } };
 })();
