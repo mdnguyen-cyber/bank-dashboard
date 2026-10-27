@@ -1039,6 +1039,9 @@ function paneCons() {
   const rows = CS.rows; const P = D.plan;
   const np = [...rows.filter(r => r.npF), ...CS.forecastOnly];
   const runRate = P ? P.npatYTD * 4 / P.ytdQuarters : null;
+  const tpAdjNote = rows.some(r => r.tpOrig) ? ' TP công bố trước ngày GDKHQ đã quy về cùng cơ sở số CP hiện tại: (TP − cổ tức tiền + tỷ lệ quyền mua × giá phát hành) / (1 + tỷ lệ CP mới); bảng ghi kèm giá gốc.' : '';
+  const PA = D.pbAdjNote, pbNote = 'P/B tính lại = vốn hóa thực tại phiên / VCSH thuộc cổ đông ngân hàng mẹ. CP mới từ cổ tức cổ phiếu, thưởng, quyền mua được tính ngay từ ngày GDKHQ; tiền thu từ quyền mua và cổ tức tiền mặt phát sinh sau ngày khóa sổ BCTC gần nhất được cộng/trừ thẳng vào VCSH, không chờ BCTC quý sau.'
+    + (PA && PA.events.length ? ` Đang áp dụng (sau BCTC ${dvn(PA.q)}): ${PA.events.map(e => esc(e.t) + ' (GDKHQ ' + dvn(e.ex) + ')').join('; ')}.` : '') + ' Trung vị 26 NH chưa tính lại theo cách này (định nghĩa VCSH khác, thường lệch 1–4%).';
   $('#cons').innerHTML = `<h2 class="sec">Consensus CTCK</h2>
   <div class="kpis">
     ${kpi('Median TP', nf(S.median) + 'đ', sg(S.upsideMedian) + ' vs giá', 'pos')}
@@ -1052,12 +1055,13 @@ function paneCons() {
     <p class="chart-sub" id="cpbSub"></p>
     <div class="picker" id="cpbPick"></div>
     <div class="cbox"><canvas id="chCpb" role="img" aria-label="P/B lịch sử"></canvas></div>
+    <p class="cnote">${pbNote}</p>
     <div class="insight" id="cpbIns"></div>
     <div class="src">Nguồn: BCTC (giá trị sổ sách), giá đóng cửa, báo cáo CTCK (giá mục tiêu) · tự tính</div></article>
   <h3 class="sub" style="margin:6px 0 10px">Dải dự phóng của các công ty chứng khoán</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chTp', title: 'Giá mục tiêu từng CTCK', sub: 'đ/CP · đường đỏ = thị giá ' + nf(M.price) + 'đ · nhãn = upside', h: 'tall',
-      body: `<p class="cnote">Màu xám = báo cáo trước ${dvn(CS.fadeBefore)} (> 3 tháng), không vào thống kê.${D.lastStockDiv ? ` TP trong báo cáo trước ${dvn(D.lastStockDiv.ex)} là giá công bố gốc, chưa điều chỉnh theo đợt chia cổ phiếu ${nf(D.lastStockDiv.ratio, 1)}%.` : ''}</p>`,
+      body: `<p class="cnote">Màu xám = báo cáo trước ${dvn(CS.fadeBefore)} (> 3 tháng), không vào thống kê.${tpAdjNote}</p>`,
       insight: (() => { const live = rows.filter(r => r.tp && !r.stale), hi = live.reduce((a, b) => b.tp > a.tp ? b : a, live[0]), lo = live.reduce((a, b) => b.tp < a.tp ? b : a, live[0]), below = live.filter(r => r.tp < M.price).length;
         return `Dải TP <b>${nf(S.min)}–${nf(S.max)}đ</b> (upside ${sg((S.min / M.price - 1) * 100, 0)} đến ${sg((S.max / M.price - 1) * 100, 0)}); ${below ? below + ' CTCK có TP dưới thị giá' : 'không CTCK nào có TP dưới thị giá'}. Cao nhất ${esc(hi.broker)} (${nf(hi.tp)}đ, ${dvn(hi.date)}), thấp nhất ${esc(lo.broker)} (${nf(lo.tp)}đ, ${dvn(lo.date)}). ${esc(NR.tpSpread || '')}`; })() })}
     ${card({ id: 'chNp', title: 'LNST 2026F từng CTCK và kế hoạch ĐHĐCĐ', sub: 'tỷ đồng · nhãn = YoY so với LNST 2025 ' + nf(FW.npat2025) + ' tỷ · xám = run-rate ' + (P ? P.ytdLabel : '') + ' × 2', h: 'tall',
@@ -1065,8 +1069,8 @@ function paneCons() {
       insight: `Dự phóng 2026 nằm trong khoảng <b>${nf(S.npMin)}–${nf(S.npMax)}</b> tỷ (${sg((S.npMin / FW.npat2025 - 1) * 100, 0)} đến ${sg((S.npMax / FW.npat2025 - 1) * 100, 0)} YoY), ${S.npMin > P.npat ? 'đều cao hơn' : S.npMax < P.npat ? 'đều thấp hơn' : 'bao quanh'} KH ĐHĐCĐ <b>${nf(P.npat)}</b> tỷ. ${P.ytdLabel} đã đạt <b>${nf(FW.npatH1)}</b> tỷ (${sg(P.npatYTDyoy)} YoY, ${pc(P.npatDone)} KH). Để khớp median, H2 cần <b>${nf(FW.impliedH2)}</b> tỷ — <b>${sg((FW.impliedH2 / FW.h2_2025 - 1) * 100)}</b> so với H2/2025 (${nf(FW.h2_2025)} tỷ), ${(FW.impliedH2 / FW.h2_2025 - 1) * 100 < P.npatYTDyoy ? `thấp hơn tốc độ H1 (${sg(P.npatYTDyoy)}): consensus đã giả định lợi nhuận chậm lại nửa cuối năm` : `cao hơn tốc độ H1 (${sg(P.npatYTDyoy)}): consensus kỳ vọng lợi nhuận tăng tốc nửa cuối năm`}.` })}
   </div>
   <article class="card"><h3 class="sub">Chi tiết báo cáo</h3><div class="tscroll"><table><thead><tr><th>CTCK</th><th>Ngày</th><th>KN</th><th class="n">TP</th><th class="n">Upside</th><th class="n">TOI 2026F</th><th class="n">TOI 2027F</th><th class="n">LNST 2026F</th><th class="n">LNST 2027F</th><th>Luận điểm</th></tr></thead><tbody>
-    ${[...rows, ...CS.forecastOnly].map(r => `<tr class="${r.stale ? 'stale' : ''}"><td><b>${esc(r.broker)}</b></td><td>${dvn(r.date)}</td><td>${esc(r.rating)}</td><td class="n">${r.tp ? nf(r.tp) : '—'}</td><td class="n">${r.tp ? sg(r.upside, 0) : '—'}</td><td class="n">${nf(r.toiF)}</td><td class="n">${nf(r.toiF1)}</td><td class="n">${nf(r.npF)}</td><td class="n">${nf(r.npF1)}</td><td>${esc(r.thesis)}${r.summary ? `<details class="more"><summary>Tóm tắt</summary><div class="note">${esc(r.summary)}</div></details>` : ''}</td></tr>`).join('')}
-  </tbody></table></div><p class="cnote">Dòng mờ = báo cáo trước ${dvn(CS.fadeBefore)} (> 3 tháng). KN là khuyến nghị quy về 3 mức: MUA gồm cả Khả quan/Outperform.${D.lastStockDiv ? ` TP trong báo cáo trước ${dvn(D.lastStockDiv.ex)} là giá công bố gốc, chưa điều chỉnh theo đợt chia cổ phiếu ${nf(D.lastStockDiv.ratio, 1)}%.` : ''}</p><div class="src">Nguồn: ${esc(CS.src)}</div></article>`;
+    ${[...rows, ...CS.forecastOnly].map(r => `<tr class="${r.stale ? 'stale' : ''}"><td><b>${esc(r.broker)}</b></td><td>${dvn(r.date)}</td><td>${esc(r.rating)}</td><td class="n">${r.tp ? nf(r.tp) : '—'}${r.tpOrig ? `<br><small class="muted">gốc ${nf(r.tpOrig)}</small>` : ''}</td><td class="n">${r.tp ? sg(r.upside, 0) : '—'}</td><td class="n">${nf(r.toiF)}</td><td class="n">${nf(r.toiF1)}</td><td class="n">${nf(r.npF)}</td><td class="n">${nf(r.npF1)}</td><td>${esc(r.thesis)}${r.summary ? `<details class="more"><summary>Tóm tắt</summary><div class="note">${esc(r.summary)}</div></details>` : ''}</td></tr>`).join('')}
+  </tbody></table></div><p class="cnote">Dòng mờ = báo cáo trước ${dvn(CS.fadeBefore)} (> 3 tháng). KN là khuyến nghị quy về 3 mức: MUA gồm cả Khả quan/Outperform.${tpAdjNote}</p><div class="src">Nguồn: ${esc(CS.src)}</div></article>`;
   cpbSel = T; drCpb();
   const tr = [...rows].sort((a, b) => a.tp - b.tp);
   const fade = (c, r) => r.stale ? c + '55' : c;

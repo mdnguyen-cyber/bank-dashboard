@@ -76,3 +76,14 @@ Không ghi "WiData" ở bất cứ nội dung hiển thị nào; ghi cơ quan c�
 - `wi_data_gbond`: `bonds_gov_yield_curve` 234528/234530/234531/234526/234529; `bonds_gov_auction_monthly` và `bonds_gov_secondary_yield_monthly` (bond_type TPCP) theo từng năm.
 
 Aggregate của Wi cắt ở 200 nhóm: luôn lọc theo năm để mỗi lần dưới 200 nhóm.
+
+## P/B và giá mục tiêu điều chỉnh theo sự kiện quyền (trang ngân hàng)
+
+Các nguồn dữ liệu thường chỉ cập nhật VCSH sau khi có BCTC quý mới, nên sau một đợt phát hành quyền mua, P/B bị lệch (thiếu tiền thu về). Bản dựng tự tính lại:
+
+- P/B = vốn hóa thực tại phiên / VCSH thuộc cổ đông NH mẹ (`bsx12 − bs390`).
+- Số CP đổi ngay ngày GDKHQ (cổ tức cổ phiếu, thưởng, quyền mua — các sự kiện cùng ngày được gộp, tỷ lệ cộng chứ không nhân). Phát hành riêng lẻ/ESOP nhận ra từ bước tăng bền của số CP mà nguồn dùng.
+- VCSH = BCTC quý chứa phiên đó nếu đã công bố, nếu chưa thì quý mới nhất; cộng tiền thu từ quyền mua, trừ cổ tức tiền mặt có GDKHQ sau ngày khóa sổ quý đó.
+- Giá mục tiêu công bố trước GDKHQ: (TP − cổ tức tiền + tỷ lệ quyền × giá phát hành) / (1 + tỷ lệ CP mới); bảng ghi kèm giá gốc.
+
+Cần trong raw (lấy lại khi có sự kiện mới): `co_events` của 6 mã; `ratio_daily` cột `trading_date,bvps,market_cap,pb` của từng mã; `fs_bank` cột `bsx12,bs390`. Bản dẫn xuất đã commit: `data/backfill/corp_events.json`, `bvps_daily.json`, `shares_daily.json`, `equity_parent.json`, `pb_adj.json`. Dựng lại cả 6 mã 2 lần (lần 2 để đường P/B của các NH cùng nhóm cũng dùng số đã điều chỉnh).

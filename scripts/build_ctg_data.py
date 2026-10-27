@@ -432,7 +432,166 @@ def build(raw):
     _pd = {k: dict(sorted(v.items())) for k, v in sorted(_pd.items())}
     _pf.write_text(json.dumps(_pd, separators=(',', ':')), encoding='utf-8')
     _own = [k for k in json.loads((ROOT / 'data/banks.json').read_text(encoding='utf-8')) if not k.startswith('_')]
-    D['pbDaily'] = {k: [[d_, v_] for d_, v_ in _pd[k].items() if d_ >= '2021-01-01'] for k in _own + ['_median']
+    # ---- Sự kiện quyền (cổ tức tiền, cổ tức/thưởng cổ phiếu, phát hành thêm) và BVPS theo phiên: bản dẫn xuất commit ở data/backfill
+    _ef = ROOT / 'data/backfill/corp_events.json'
+    _ev = json.loads(_ef.read_text(encoding='utf-8')) if _ef.exists() else {}
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'co_events':
+            for r in rows(d['response']):
+                sy = r.get('symbol'); ex = (r.get('ex_date') or '')[:10]
+                cd, sr, ir = r.get('cash_dividend') or 0, r.get('stock_dividend_ratio') or 0, r.get('issuance_ratio') or 0
+                if sy in _own and ex and (cd or sr or ir):
+                    k = f"{ex}|{r.get('event_title')}"
+                    _ev.setdefault(sy, {})[k] = {'ex': ex, 'cash': cd, 'stock': sr, 'iss': ir, 'issPx': r.get('issuance_price') or 0, 't': r.get('event_title')}
+    _ev = {k: dict(sorted(v.items())) for k, v in sorted(_ev.items())}
+    _ef.write_text(json.dumps(_ev, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    _bf2 = ROOT / 'data/backfill/bvps_daily.json'   # điểm đổi giá trị BVPS của nguồn (giá trị giữ nguyên tới điểm đổi kế tiếp)
+    _bvd = {k: dict(v) for k, v in (json.loads(_bf2.read_text(encoding='utf-8')) if _bf2.exists() else {}).items()}
+    _full = {}
+    for k, v in _bvd.items():   # bung điểm đổi thành từng phiên theo lịch phiên của P/B để gộp với raw mới
+        cps = sorted(v.items()); dts = sorted(_pd.get(k, {}))
+        j, cur = 0, None
+        for dt in dts:
+            while j < len(cps) and cps[j][0] <= dt:
+                cur = cps[j][1]; j += 1
+            if cur is not None and dt >= cps[0][0]:
+                _full.setdefault(k, {})[dt] = cur
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily':
+            for r in rows(d['response']):
+                sy = r.get('symbol'); sy = sy[0] if isinstance(sy, list) else sy
+                if sy in _own and r.get('bvps') is not None and r.get('trading_date'):
+                    _full.setdefault(sy, {})[r['trading_date'][:10]] = round(float(r['bvps']), 4)
+    _bvd = {}
+    for k, v in sorted(_full.items()):
+        prev = None
+        for dt, x in sorted(v.items()):
+            if x != prev:
+                _bvd.setdefault(k, {})[dt] = x; prev = x
+    _bf2.write_text(json.dumps(_bvd, separators=(',', ':')), encoding='utf-8')
+
+    # ---- P/B điều chỉnh theo sự kiện quyền của chính mã này. P/B = vốn hóa thực tại phiên / VCSH thuộc cổ đông NH mẹ:
+    #   giá đóng cửa gốc = P/B nguồn × BVPS nguồn (cùng một dòng, đúng giá khớp phiên);
+    #   CP lưu hành đổi NGAY ngày GDKHQ (cổ tức cổ phiếu, thưởng, quyền mua) — nguồn chỉ cập nhật khi CP mới niêm yết;
+    #     phát hành riêng lẻ/ESOP (không có trong lịch sự kiện) nhận ra từ bước tăng bền của số CP nguồn;
+    #   VCSH = BCTC quý chứa phiên đó nếu đã công bố, nếu chưa thì quý mới nhất (cùng quy ước với P/B nguồn và trung vị ngành),
+    #     + tiền thu từ quyền mua − cổ tức tiền mặt có GDKHQ sau ngày khóa sổ quý đó (chưa nằm trong BCTC).
+    _g = {}   # gộp các sự kiện cùng ngày GDKHQ (vd cổ tức cổ phiếu + quyền mua): tỷ lệ cộng, không nhân
+    for e in _ev.get(TICKER, {}).values():
+        g = _g.setdefault(e['ex'], {'ex': e['ex'], 'cash': 0, 'stock': 0, 'iss': 0, 'issCash': 0, 't': []})
+        g['cash'] += e['cash']; g['stock'] += e['stock']; g['iss'] += e['iss']; g['issCash'] += e['iss'] * e['issPx']; g['t'].append(e['t'])
+    EV = sorted(_g.values(), key=lambda e: e['ex'])
+    for e in EV:
+        e['t'] = '; '.join(e['t'])
+    EVp = [e for e in EV if e['ex'] <= asof]
+    S_now = shares_m
+    _sf = ROOT / 'data/backfill/shares_daily.json'   # điểm đổi số CP lưu hành mà nguồn dùng (triệu CP) = vốn hóa / giá
+    _sd = {k: dict(v) for k, v in (json.loads(_sf.read_text(encoding='utf-8')) if _sf.exists() else {}).items()}
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily':
+            for r in rows(d['response']):
+                sy = r.get('symbol'); sy = sy[0] if isinstance(sy, list) else sy
+                dt = (r.get('trading_date') or '')[:10]
+                if sy in _own and r.get('market_cap') and r.get('pb') and _full.get(sy, {}).get(dt):
+                    _sd.setdefault(sy, {})[dt] = round(r['market_cap'] / (r['pb'] * _full[sy][dt]) / 1e6, 1)
+    _sdc = {}
+    for k, v in sorted(_sd.items()):   # nén thành điểm đổi (> 0,2%)
+        prev = None
+        for dt, x in sorted(v.items()):
+            if prev is None or abs(x / prev - 1) > 0.002:
+                _sdc.setdefault(k, {})[dt] = x; prev = x
+    _sf.write_text(json.dumps(_sdc, separators=(',', ':')), encoding='utf-8')
+    if _sdc.get(TICKER):   # số CP nguồn mới nhất (vốn hóa / giá gốc) chính xác hơn vốn hóa / giá điều chỉnh
+        _l = sorted(_sdc[TICKER].items())[-1][1]
+        if abs(_l / S_now - 1) < 0.05:
+            S_now = _l
+    fac = lambda e: 1 + e['stock'] + e['iss']
+    # bước tăng bền của số CP nguồn không khớp sự kiện quyền trong 150 ngày trước đó = phát hành riêng lẻ / ESOP
+    PL = []
+    seg = sorted(_sdc.get(TICKER, {}).items())
+    dts_all = sorted(_pd.get(TICKER, {}))
+    def nsess(a, b):
+        return sum(1 for x in dts_all if a <= x < b)
+    clean = []
+    for k, (dt, x) in enumerate(seg):   # bỏ đoạn ngắn (≤ 10 phiên) rồi quay về mức cũ: lỗi tạm thời của nguồn
+        if 0 < k < len(seg) - 1 and abs(seg[k + 1][1] / seg[k - 1][1] - 1) < 0.003 and nsess(dt, seg[k + 1][0]) <= 10:
+            continue
+        clean.append((dt, x))
+    L, pend = None, []
+    for dt, x in clean:
+        if L is None:
+            L = x; continue
+        if x < L * 0.997 or abs(x / L - 1) <= 0.003:
+            continue   # giảm (lỗi nguồn) hoặc không đổi
+        lo = (date.fromisoformat(dt) - timedelta(days=150)).isoformat()
+        cand = [e for e in EVp if lo < e['ex'] <= dt and e not in pend]
+        f = 1.0
+        for e in cand:
+            f *= fac(e)
+        r = x / L / (f if cand and abs(x / L / f - 1) < 0.02 else 1)
+        if cand and abs(x / L / f - 1) < 0.02:
+            pend += cand
+        if r > 1.003:
+            PL.append({'d': dt, 'r': r})
+        L = x
+    def S_at(t):   # triệu CP lưu hành tại phiên t
+        s = S_now
+        for e in EVp:
+            if e['ex'] > t:
+                s /= fac(e)
+        for p_ in PL:
+            if p_['d'] > t:
+                s /= p_['r']
+        return s
+    def qend_of(y, q):
+        return f"{y}-{q * 3:02d}-{30 if q in (2, 3) else 31}"
+    _mf = ROOT / 'data/backfill/equity_parent.json'   # VCSH thuộc cổ đông ngân hàng mẹ = bsx12 − lợi ích CĐ thiểu số (bs390), tỷ đồng
+    _mp = json.loads(_mf.read_text(encoding='utf-8')) if _mf.exists() else {}
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'fs_bank':
+            for r in rows(d['response']):
+                if r.get('symbol') in _own and r.get('quarter') in (1, 2, 3, 4) and r.get('bsx12') is not None and r.get('bs390') is not None:
+                    _mp.setdefault(r['symbol'], {})[f"{r['year']}Q{r['quarter']}"] = round((r['bsx12'] - r['bs390']) / 1e9, 1)
+    _mp = {k: dict(sorted(v.items())) for k, v in sorted(_mp.items())}
+    _mf.write_text(json.dumps(_mp, separators=(',', ':')), encoding='utf-8')
+    _pe = _mp.get(TICKER, {})
+    QE = [(qend_of(q['year'], q['quarter']), _pe.get(f"{q['year']}Q{q['quarter']}", q['equity'])) for q in Q if q.get('equity')]
+    def bv_at(t):
+        cur = None
+        for qe, eq in QE:   # quý chứa phiên t (nếu đã có) hoặc quý mới nhất trước đó
+            qs = (date.fromisoformat(qe) - timedelta(days=88)).isoformat()[:8] + '01'
+            if qs <= t:
+                cur = (qe, eq)
+        if not cur:
+            return None, None
+        qe, bv = cur
+        for e in EVp:
+            if qe < e['ex'] <= t:
+                bv += e['issCash'] * S_at((date.fromisoformat(e['ex']) - timedelta(days=1)).isoformat()) / 1e3
+                bv -= e['cash'] * S_at(e['ex']) / 1e3
+        return bv, qe
+    _bvs = _full.get(TICKER, {})
+    _adj = {}
+    for dt, pbv in _pd.get(TICKER, {}).items():
+        b = _bvs.get(dt)
+        if b is None or dt < '2021-01-01':
+            continue
+        bv, _ = bv_at(dt)
+        if bv:
+            _adj[dt] = round(pbv * b * S_at(dt) / 1e3 / bv, 4)
+    _af = ROOT / 'data/backfill/pb_adj.json'
+    _pa = json.loads(_af.read_text(encoding='utf-8')) if _af.exists() else {}
+    if _adj:
+        _pa[TICKER] = dict(sorted(_adj.items()))
+        _af.write_text(json.dumps(dict(sorted(_pa.items())), separators=(',', ':')), encoding='utf-8')
+        _bvn, _qn = bv_at(asof)
+        D['meta']['pbProvider'] = D['meta']['pb']
+        D['meta']['pb'] = round(price * S_now / 1e3 / _bvn, 2)
+        D['meta']['bvps'] = round(_bvn * 1e3 / S_now)
+        _adjEv = [e for e in EVp if e['ex'] > _qn]
+        D['pbAdjNote'] = {'q': _qn, 'events': [{'ex': e['ex'], 't': e['t']} for e in _adjEv], 'placements': [{'d': p_['d'], 'pct': round((p_['r'] - 1) * 100, 2)} for p_ in PL]}
+    _src = lambda k: {**_pd[k], **_pa[k]} if k in _pa else _pd[k]   # mã có trang riêng: P/B đã điều chỉnh sự kiện quyền
+    D['pbDaily'] = {k: [[d_, v_] for d_, v_ in sorted(_src(k).items()) if d_ >= '2021-01-01'] for k in _own + ['_median']
                     if k in _pd and (k == TICKER or k == '_median' or PEER_GROUPS.get(k) == GRP)}
     _ir = ROOT / f'data/backfill/{TICKER.lower()}_ir_segments.json'   # phân khúc khách hàng theo cách ngân hàng tự trình bày (tài liệu nhà đầu tư)
     if _ir.exists():
@@ -538,15 +697,19 @@ def build(raw):
 
     # ------------------------------------------------ consensus (co_reports)
     cutoff_fade = (date.fromisoformat(asof) - timedelta(days=92)).isoformat()
+    def adj_px(p, d0):   # quy giá mục tiêu công bố trước GDKHQ về cùng cơ sở CP hiện tại: (P − cổ tức tiền + tỷ lệ quyền × giá phát hành) / (1 + tỷ lệ CP mới)
+        for e in sorted([e for e in EVp if d0 < e['ex']], key=lambda e: e['ex']):
+            p = (p - e['cash'] + e['issCash']) / (1 + e['stock'] + e['iss'])
+        return round(p)
     latest = {}
     for r in sorted(reports, key=lambda r: r['recommendation_date']):
         if r.get('target_price'):
             latest[r['source']] = r
     cons = []
     for src, r in sorted(latest.items(), key=lambda kv: kv[1]['recommendation_date'], reverse=True):
-        cons.append({'broker': src, 'date': r['recommendation_date'], 'rating': r['recommendation'], 'tp': r['target_price'],
-                     'tpAdj': round(r['target_price_adjusted']) if r.get('target_price_adjusted') else r['target_price'],
-                     'upside': round((r['target_price'] / D['meta']['price'] - 1) * 100, 1),
+        tp0, tpa = r['target_price'], adj_px(r['target_price'], r['recommendation_date'])
+        cons.append({'broker': src, 'date': r['recommendation_date'], 'rating': r['recommendation'], 'tp': tpa, 'tpOrig': tp0 if round(tpa) != round(tp0) else None,
+                     'upside': round((tpa / D['meta']['price'] - 1) * 100, 1),
                      'toiF': r.get('revenue_forecast'), 'toiF1': r.get('revenue_forecast_n1'),
                      'npF': r.get('net_income_forecast'), 'npF1': r.get('net_income_forecast_n1'),
                      'thesis': r.get('report_title'), 'stale': r['recommendation_date'] < cutoff_fade})
@@ -564,7 +727,9 @@ def build(raw):
     npat_h1 = D['plan']['npatYTD'] if D['plan'] else None
     div_paid = round(div_cash * shares_m / 1e3, 1)  # tỷ VND: đ/CP × triệu CP / 1000
     np_med = statistics.median(nps) if nps else None
-    bv26 = eq_q2 + (np_med - npat_h1) - div_paid if np_med else None
+    _qe2 = qend_of(Q[-1]['year'], Q[-1]['quarter'])
+    rights_cash = round(sum(e['issCash'] * S_at((date.fromisoformat(e['ex']) - timedelta(days=1)).isoformat()) / 1e3 for e in EVp if e['ex'] > _qe2 and e['iss']), 1)
+    bv26 = eq_q2 + (np_med - npat_h1) - div_paid + rights_cash if np_med else None
     D['consensus'] = {
         'rows': cons, 'forecastOnly': fc_only, 'fadeBefore': cutoff_fade,
         'summary': {'n': len(tps), 'median': statistics.median(tps), 'mean': round(statistics.mean(tps)), 'min': min(tps), 'max': max(tps),
@@ -578,7 +743,7 @@ def build(raw):
                 'npatH1': npat_h1, 'impliedH2': round(np_med - npat_h1, 1) if np_med else None,
                 'npat2025': next((a['npat'] for a in A if a['y'] == cur_year - 1), None),
                 'h2_2025': round(sum(q['npat'] for q in Q if q['year'] == cur_year - 1 and q['quarter'] >= 3), 1),
-                'divPaid': div_paid},
+                'divPaid': div_paid, 'rightsCash': rights_cash},
         'src': 'WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi.',
     }
     summ = {}
