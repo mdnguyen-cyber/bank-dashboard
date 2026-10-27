@@ -1078,14 +1078,15 @@ function paneCons() {
     { label: 'TP', data: tr.map(r => [M.price, r.tp]), backgroundColor: tr.map(r => fade(C.navy, r)), barThickness: 4, dp: 0 },
   ] }, options: { indexAxis: 'y', plugins: { legend: { display: false }, refLines: { lines: [{ axis: 'x', value: M.price, label: 'Thị giá', color: C.red }] },
       tooltip: { callbacks: { label: c => { const r = tr[c.dataIndex]; return `TP ${nf(r.tp)}đ · upside ${sg(r.upside, 0)} · ${r.rating}`; } } } },
-    scales: { x: numAxis('đ/CP', { min: Math.floor(M.price * 0.95 / 1000) * 1000 }) } },
-    plugins: [{ id: 'upLab', afterDatasetsDraw(ch) { const ctx = ch.ctx; ch.getDatasetMeta(0).data.forEach((b, i) => { ctx.save(); const col = tr[i].stale ? '#b9c0cc' : C.navy; ctx.fillStyle = col; ctx.beginPath(); ctx.arc(b.x, b.y, 6, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = tr[i].stale ? '#9aa3b2' : C.navy; ctx.font = '600 11px Arial'; ctx.fillText(sg(tr[i].upside, 0), b.x + 10, b.y + 4); ctx.restore(); }); } }] });
+    scales: { x: numAxis('đ/CP', { min: Math.min(Math.floor(M.price * 0.95 / 1000) * 1000, Math.floor(Math.min(...tr.map(r => r.tp)) * 0.93 / 1000) * 1000) }), y: { ticks: { autoSkip: false, font: { size: 10.5 } } } } },
+    plugins: [{ id: 'upLab', afterDatasetsDraw(ch) { const ctx = ch.ctx; ch.getDatasetMeta(0).data.forEach((b, i) => { ctx.save(); const col = tr[i].stale ? '#b9c0cc' : C.navy, X = ch.scales.x.getPixelForValue(tr[i].tp), neg = tr[i].tp < M.price; ctx.fillStyle = col; ctx.beginPath(); ctx.arc(X, b.y, 6, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = tr[i].stale ? '#9aa3b2' : neg ? C.red : C.navy; ctx.font = '600 11px Arial'; ctx.textAlign = neg ? 'right' : 'left'; ctx.fillText(sg(tr[i].upside, 0), neg ? X - 10 : X + 10, b.y + 4); ctx.restore(); }); } }] });
   const nr = [...np].sort((a, b) => a.npF - b.npF);
   const lab = nr.map(r => `${r.broker} (${sg((r.npF / FW.npat2025 - 1) * 100, 0)})`).concat(['KH ĐHĐCĐ (' + sg((P.npat / FW.npat2025 - 1) * 100, 0) + ')', 'Run-rate ' + P.ytdLabel + ' ×2']);
   mk('chNp', { type: 'bar', data: { labels: lab, datasets: [{ label: 'LNST 2026F', dp: 0, unit: ' tỷ',
     data: nr.map(r => r.npF).concat([P.npat, runRate]),
     backgroundColor: nr.map(r => fade(C.teal, r)).concat([C.navy, '#c9ced8']), borderColor: nr.map(() => 'transparent').concat([C.navy, '#9aa3b2']), borderWidth: 1 }] },
-    options: { indexAxis: 'y', plugins: { legend: { display: false }, refLines: { lines: [{ axis: 'x', value: FW.npat2025, label: 'LNST 2025', color: C.purple }] } }, scales: { x: numAxis('tỷ đồng', { min: 0 }) } } });
+    options: { indexAxis: 'y', plugins: { legend: { display: false }, refLines: { lines: [{ axis: 'x', value: FW.npat2025, label: 'LNST 2025', color: C.purple }] } }, scales: { x: numAxis('tỷ đồng', { min: 0 }), y: { ticks: { autoSkip: false, font: { size: 10.5 } } } } } });
+  [['chTp', tr.length], ['chNp', lab.length]].forEach(([id, n]) => { const b = document.getElementById(id)?.parentElement; if (b) b.style.height = Math.max(340, n * 21 + 70) + 'px'; });   // đủ chỗ cho mọi nhãn CTCK
 }
 
 /* =====================================================================
