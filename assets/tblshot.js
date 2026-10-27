@@ -53,7 +53,7 @@
       if (hl) { x.fillStyle = 'rgba(29,38,120,.10)'; x.fillRect(X0, Y0, X1 - X0, h); }
       x.strokeStyle = '#e6e9f0'; x.lineWidth = 0.6; x.beginPath(); x.moveTo(X0, Y0 + h); x.lineTo(X1, Y0 + h); x.stroke();
       if (parseFloat(cs.borderLeftWidth) > 0 && cs.borderLeftStyle !== 'none') { x.strokeStyle = cs.borderLeftColor; x.lineWidth = parseFloat(cs.borderLeftWidth); x.beginPath(); x.moveTo(X0, Y0); x.lineTo(X0, Y0 + h); x.stroke(); }
-      const txt = c.innerText.replace(/\s+/g, ' ').trim();
+      const txt = (c.querySelector('.info') ? (() => { const k = c.cloneNode(true); k.querySelectorAll('.info').forEach(b => b.remove()); return k.textContent; })() : c.innerText).replace(/\s+/g, ' ').trim();
       if (txt) {
         x.beginPath(); x.rect(X0, Y0, X1 - X0, h); x.clip();
         x.fillStyle = cs.color; x.font = `${on || +cs.fontWeight >= 600 || cs.fontWeight === 'bold' ? 'bold ' : ''}${parseFloat(cs.fontSize)}px Arial`; x.textBaseline = 'middle';
@@ -120,7 +120,7 @@
       const td = e.target.closest('td'); if (!td) return; const tr = td.parentElement; if (isGroup(tr) || tr.parentElement.tagName === 'THEAD') return;
       e.preventDefault(); closeMenu();
       const hlCells = new Set([...tr.cells, ...(td.cellIndex > 0 ? colCells(td) : [])]), hl = { cells: hlCells, on: td.cellIndex > 0 ? td : null };
-      const m = meta(), lab = (tr.cells[0].innerText || '').trim(), cr = td.getBoundingClientRect();
+      const m = meta(), lab = (tr.cells[0].textContent || '').replace(/\s*i\s*$/, '').trim(), cr = td.getBoundingClientRect();
       const it = [];
       if (td.cellIndex > 0) it.push(['Chép ảnh ô này', () => copy(render(sc, { ...m, title: lab, sub: '', rows: [tr], cols: [cr.left, cr.right], compact: 1 }), m.file + '_o')]);
       it.push(['Chép ảnh dòng này', () => copy(render(sc, { ...m, sub: '', rows: [tr] }), m.file + '_dong')]);

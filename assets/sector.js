@@ -2378,6 +2378,17 @@ const HM_V = [
   ['USD/VND từ đầu năm (%; dương = VND mất giá)', m => { const v = vnFxYtd(m); return v != null ? -v : hV('fx_ytd', m); }, 'hi-red', 2], ['Chênh tự do − NHTM (đồng)', m => vnFree(m) ?? hV('free_gap', m), 'hi-red', 0],
   ['Dự trữ ngoại hối (tỷ USD)', m => { const v = byM(dom.reserves)[m] ?? hV('res', m); return v == null ? null : v / 1000; }, 'hi-green', 1],
 ];
+const HM_VTIP = {
+  'GDP thực (quý, YoY)': 'Chỉ có ở tháng cuối quý.',
+  'PMI sản xuất': 'Xanh trên 50 (mở rộng), đỏ dưới 50 (thu hẹp).',
+  'Bán lẻ thực, trừ CPI (YoY)': 'Tổng mức bán lẻ % so cùng kỳ trừ CPI % so cùng kỳ.',
+  'Chênh LNH − SOFR qua đêm': 'Lãi suất liên ngân hàng VND qua đêm − SOFR qua đêm, bình quân tháng. Dương = giữ VND có lợi hơn giữ USD.',
+  'Chênh LNH − USD kỳ hạn 6 tháng': 'Lãi suất liên ngân hàng VND 6 tháng (NHNN) − SOFR kỳ hạn 6 tháng (VIRA); trước 07/2026 dùng lợi suất tín phiếu Kho bạc Mỹ 6 tháng. Bình quân tháng; dương = giữ VND có lợi hơn giữ USD.',
+  'Chênh LNH − USD kỳ hạn 1 năm': 'VNIBOR 1 năm − SOFR kỳ hạn 1 năm (VIRA); trước 07/2026 dùng lợi suất tín phiếu Kho bạc Mỹ 1 năm. Bình quân tháng; dương = giữ VND có lợi hơn giữ USD.',
+  'USD/VND từ đầu năm (%; dương = VND mất giá)': 'Tỷ giá NHTM bán ra cuối tháng so với cuối năm trước.',
+  'Chênh tự do − NHTM (đồng)': 'Tỷ giá thị trường tự do − tỷ giá NHTM bán ra, cuối tháng. Dương lớn = cầu USD ngoài hệ thống tăng.',
+};
+const hmI = t => t ? ` <button type="button" class="info" data-k="txt" data-t="${esc(t)}" aria-label="Giải thích">i</button>` : '';
 const HM_TIP = { 'hi-red': 'càng cao càng đậm đỏ', 'hi-green': 'càng cao càng đậm xanh', pmi: 'xanh trên 50, đỏ dưới 50', sign: 'xanh dương, đỏ âm' };
 const hmQ = new WeakMap();   // phân vị theo từng dòng/bảng, tính một lần
 function hmColor(v, all, mode) {
@@ -2395,9 +2406,9 @@ function hmColor(v, all, mode) {
 }
 function hmTable(cols, rows) {   // rows: [name, values[], mode, dp, cls, scale?] | [group]; scale = mảng giá trị dùng làm thang màu (mặc định chính dòng đó)
   const yrs = []; cols.forEach(c => { const y = c.slice(0, 4), l = yrs[yrs.length - 1]; if (l && l[0] === y) l[1]++; else yrs.push([y, 1]); });
-  return `<div class="tscroll hm"><table class="hmt"><thead><tr><th class="hm-n" rowspan="2">${rows.hdr || 'Chỉ tiêu'}</th>${yrs.map(([y, n], i) => `<th colspan="${n}" class="hm-y${i ? ' ys' : ''}">${y}</th>`).join('')}</tr>
+  return `<div class="tscroll hm"><table class="hmt"><thead><tr><th class="hm-n" rowspan="2">${rows.hdr || 'Chỉ tiêu'}${hmI(rows.hdrTip)}</th>${yrs.map(([y, n], i) => `<th colspan="${n}" class="hm-y${i ? ' ys' : ''}">${y}</th>`).join('')}</tr>
     <tr>${cols.map(c => `<th class="n${c.slice(5) === '01' ? ' ys' : ''}">${c.slice(5)}</th>`).join('')}</tr></thead><tbody>
-    ${rows.map(r => r.length === 1 ? `<tr class="grp"><td colspan="${cols.length + 1}"><span class="hm-gl">${r[0]}</span></td></tr>` : `<tr class="${r[4] || ''}${r.key != null ? ' hm-lk' + (r.key === rows.sel ? ' hm-sel' : '') : ''}"${r.key != null ? ` data-hk="${esc(r.key)}" title="Bấm để xem biểu đồ toàn bộ lịch sử"` : ''}><td class="hm-n">${r[0]}</td>${r[1].map((v, i) => `<td class="n${cols[i].slice(5) === '01' ? ' ys' : ''}" style="${hmColor(v, r[5] || r[1], r[2])}">${v == null ? '<span class="muted">–</span>' : nf(v, r[3])}</td>`).join('')}</tr>`).join('')}
+    ${rows.map(r => r.length === 1 ? `<tr class="grp"><td colspan="${cols.length + 1}"><span class="hm-gl">${r[0]}</span></td></tr>` : `<tr class="${r[4] || ''}${r.key != null ? ' hm-lk' + (r.key === rows.sel ? ' hm-sel' : '') : ''}"${r.key != null ? ` data-hk="${esc(r.key)}" title="Bấm để xem biểu đồ toàn bộ lịch sử"` : ''}><td class="hm-n">${r[0]}${hmI(r.tip)}</td>${r[1].map((v, i) => `<td class="n${cols[i].slice(5) === '01' ? ' ys' : ''}" style="${hmColor(v, r[5] || r[1], r[2])}">${v == null ? '<span class="muted">–</span>' : nf(v, r[3])}</td>`).join('')}</tr>`).join('')}
   </tbody></table></div>`;
 }
 const hmS = { v: 'world', w: 'pol', n: '61' };
@@ -2426,11 +2437,12 @@ function hmRender() {
     note = `${W[6]} · màu: ${W[2]} (so giữa các nước trong cả bảng) · ô trống = chưa công bố hoặc nguồn tự động chưa có`;
   } else {
     const lm = eLast('cpi').d, now = TODAY.slice(0, 7); let cols = hmMonths(now > lm ? now : lm);
-    const rows = HM_V.map(r => r.length === 1 ? r : Object.assign([r[0], cols.map(m => { const v = r[1](m); return v == null ? null : +v; }), r[2], r[3]], { key: r[0] }));
+    const rows = HM_V.map(r => r.length === 1 ? r : Object.assign([r[0], cols.map(m => { const v = r[1](m); return v == null ? null : +v; }), r[2], r[3]], { key: r[0], tip: HM_VTIP[r[0]] }));
+    rows.hdrTip = 'Màu theo từng dòng: so với chính chỉ tiêu đó trong khung thời gian đang xem.';
     rows.sel = hmSel.vn;
     cols = hmTrim(cols, rows);
     html = hmTable(cols, rows);
-    note = 'Màu theo từng dòng (so với chính chỉ tiêu đó trong khung thời gian đang xem): xanh = tốt cho tăng trưởng hoặc thanh khoản, đỏ = áp lực (lạm phát, lãi suất, tỷ giá tăng). PMI: xanh trên 50. GDP chỉ có ở tháng cuối quý. Chênh lãi suất VND − USD (bình quân tháng): qua đêm = LNH qua đêm − SOFR; 6 tháng = LNH 6 tháng (NHNN) − SOFR kỳ hạn 6 tháng (VIRA, trước 07/2026 dùng lợi suất tín phiếu Kho bạc Mỹ 6 tháng); 1 năm = VNIBOR 1 năm − SOFR kỳ hạn 1 năm (VIRA, trước 07/2026 dùng tín phiếu Kho bạc Mỹ 1 năm); dương = giữ VND có lợi hơn giữ USD.';
+    note = 'Xanh = tốt cho tăng trưởng hoặc thanh khoản, đỏ = áp lực (lạm phát, lãi suất, tỷ giá tăng).';
   }
   box.innerHTML = html + `<p class="hm-note">${note} · cuộn ngang để xem các tháng trước.</p>`;
   const sc = $('.tscroll', box); if (sc) sc.scrollLeft = sc.scrollWidth;   // mở ở tháng mới nhất
@@ -2446,7 +2458,7 @@ function hmRender() {
   const grpSet = hmGrpOff[hmS.v] || (hmGrpOff[hmS.v] = new Set());
   const grpApply = g => { const off = grpSet.has(g.textContent.trim()); g.classList.toggle('grp-off', off); let n = g.nextElementSibling; while (n && !n.classList.contains('grp')) { n.hidden = off; n = n.nextElementSibling; } };
   $$('tr.grp', box).forEach(g => { g.title = 'Bấm để thu gọn / mở nhóm này'; grpApply(g); g.onclick = () => { const k = g.textContent.trim(); grpSet.has(k) ? grpSet.delete(k) : grpSet.add(k); grpApply(g); }; });
-  $$('tr[data-hk]', box).forEach(tr => tr.onclick = () => { hmSel[hmS.v] = tr.dataset.hk; $$('tr.hm-sel', box).forEach(x => x.classList.remove('hm-sel')); tr.classList.add('hm-sel'); hmLine(); $('#hmLineCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+  $$('tr[data-hk]', box).forEach(tr => tr.onclick = e => { if (e && e.target.closest('.info')) return; hmSel[hmS.v] = tr.dataset.hk; $$('tr.hm-sel', box).forEach(x => x.classList.remove('hm-sel')); tr.classList.add('hm-sel'); hmLine(); $('#hmLineCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   hmLine();
 }
 const hmGrpOff = {};
