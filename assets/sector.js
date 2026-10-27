@@ -2442,9 +2442,14 @@ function hmRender() {
     FSTbl.enhance(sc, { meta, onChart: tr => tr.click(),
       onCompare: tr => { const k = tr.dataset.hk; if (!k) return; const a = C_(), i = a.indexOf(k); if (i >= 0) a.splice(i, 1); else a.push(k); hmLine(); $('#hmLineCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); },
       isCompared: tr => C_().includes(tr.dataset.hk), nCompare: () => C_().length, clearCompare: () => { C_().length = 0; hmLine(); } }); }
+  // dòng nhóm (Hoạt động kinh tế, Giá cả…) bấm để thu gọn/mở; nhóm thu gọn không vào ảnh xuất
+  const grpSet = hmGrpOff[hmS.v] || (hmGrpOff[hmS.v] = new Set());
+  const grpApply = g => { const off = grpSet.has(g.textContent.trim()); g.classList.toggle('grp-off', off); let n = g.nextElementSibling; while (n && !n.classList.contains('grp')) { n.hidden = off; n = n.nextElementSibling; } };
+  $$('tr.grp', box).forEach(g => { g.title = 'Bấm để thu gọn / mở nhóm này'; grpApply(g); g.onclick = () => { const k = g.textContent.trim(); grpSet.has(k) ? grpSet.delete(k) : grpSet.add(k); grpApply(g); }; });
   $$('tr[data-hk]', box).forEach(tr => tr.onclick = () => { hmSel[hmS.v] = tr.dataset.hk; $$('tr.hm-sel', box).forEach(x => x.classList.remove('hm-sel')); tr.classList.add('hm-sel'); hmLine(); $('#hmLineCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   hmLine();
 }
+const hmGrpOff = {};
 const CMP_CC = ['#C0392B', '#1f8a8d', '#9a7400', '#861C52', '#2938A8', '#596272'];
 const hmSel = { world: 'vn', vn: 'CPI (YoY)' }, hmCmp = { world: [], vn: [] };
 function hmLine() {   // biểu đồ toàn bộ lịch sử của dòng đang chọn trên bản đồ nhiệt; khung mở sẵn theo nút 1/3/5/10/20 năm

@@ -714,3 +714,5 @@ table td.xh-on{outline:2px solid var(--navy);outline-offset:-2px;font-weight:700
 .tbl-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .kpi.kpi-lk{cursor:pointer;transition:border-color .15s,box-shadow .15s}.kpi.kpi-lk:hover{border-color:var(--teal);box-shadow:0 2px 10px rgba(29,38,120,.08)}
 .cmp-x{margin-left:8px;border:1px solid var(--line);background:#fff;color:var(--neg);font:600 11.5px Arial;border-radius:99px;padding:2px 9px;cursor:pointer;vertical-align:middle}.cmp-x:hover{background:#fde4e1}
+.hmt tr.grp{cursor:pointer}.hmt tr.grp .hm-gl::before{content:'▾';display:inline-block;width:14px;color:var(--muted)}
+.hmt tr.grp.grp-off .hm-gl::before{content:'▸'}.hmt tr.grp.grp-off td{opacity:.75}

@@ -21,11 +21,11 @@
     let visL = R.left + w0, visR = Math.min(R.right, tbl.getBoundingClientRect().right);
     if (o.cols) { visL = o.cols[0]; visR = o.cols[1]; }
     else {   // chỉ lấy cột hiện trọn
-      const rowMax = [...tbl.rows].reduce((a, r) => r.cells.length > (a ? a.cells.length : 0) ? r : a, null);
+      const rowMax = [...tbl.rows].filter(r => !r.hidden && r.getBoundingClientRect().height).reduce((a, r) => r.cells.length > (a ? a.cells.length : 0) ? r : a, null);
       if (rowMax) { const rs = [...rowMax.cells].filter(c => c.cellIndex > 0 || !w0).map(c => c.getBoundingClientRect());
         const L = rs.find(r => r.left >= visL - 1); if (L) visL = L.left; const Rr = [...rs].reverse().find(r => r.right <= visR + 1); if (Rr) visR = Rr.right; }
     }
-    const keep = [...tbl.rows].filter(tr => tr.parentElement.tagName === 'THEAD' || !o.rows || o.rows.includes(tr));
+    const keep = [...tbl.rows].filter(tr => tr.parentElement.tagName === 'THEAD' || (!o.rows ? !tr.hidden && !tr.classList.contains('grp-off') : o.rows.includes(tr)));
     const rowY = new Map(); let Hb = 0;
     keep.forEach(tr => { rowY.set(tr, Hb); Hb += tr.getBoundingClientRect().height; });
     const W = Math.round(w0 + (visR - visL));
