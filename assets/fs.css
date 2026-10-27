@@ -743,3 +743,7 @@ ul.ilist,ol.ilist{margin:4px 0 0;padding-left:18px;font-size:13px}ul.ilist li,ol
 td .pos,span.pos{color:var(--pos)}td .neg,span.neg{color:var(--neg)}
 @media (max-width:760px){.vchain{grid-template-columns:1fr}.vc-col:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-15px}}
 .site-nav a,.site-nav .bank-pick span{white-space:nowrap}
+dl.gloss{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:8px 16px;margin:0;font-size:13px}
+dl.gloss dt{font-weight:700;color:var(--navy)}dl.gloss dd{margin:0;color:var(--ink)}
+table.fdrv td{font-size:12.8px}table.fdrv td:first-child{min-width:160px}table.fdrv td:nth-child(2){min-width:320px}
+@media (max-width:760px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:6px}}

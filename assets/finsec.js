@@ -152,12 +152,11 @@ const zTxt = z => z > 1 ? 'cao hơn trung bình trên 1 độ lệch chuẩn' : 
    TỔNG QUAN NGÀNH BẢO HIỂM
 ===================================================================== */
 const INS_ALL = ['BVH', 'PVI', 'MIG', 'BMI', 'BIC', 'PTI'];
-function paneOvBH() {
+function paneMktBH(T) {
   const tA = lastPt(ser('TOTAL', 'ASSETS')), tI = lastPt(ser('TOTAL', 'INVEST')), lNB = lastPt(ser('LIFE', 'NB_PREM')), lC = lastPt(ser('LIFE', 'CLAIMS'));
   const ms = INS_ALL.map(insMetrics), n = sv406.pb.length;
   const inf = lastPt(ser('LIFE', 'INFORCE_CONTRACTS')), fyIf = fy('LIFE|INFORCE_CONTRACTS|Tổng|Toàn TT'), mIf = Math.max(...fyIf.filter(x => x != null));
-  $('#ov').innerHTML = `
-  <h2 class="sec">Tổng quan ngành Bảo hiểm</h2>
+  T.innerHTML = `
   <p class="sec-sub">Quy mô thị trường theo số công bố của Bộ Tài chính và IAV (lũy kế từ đầu năm, tỷ đồng); doanh nghiệp niêm yết theo BCTC quý và định giá theo phiên.</p>
   <div class="kpis">
     ${kpi('Tổng phí ' + kyShort(tP[0]), nf(tP[1]) + ' tỷ', 'YoY ' + sg(tP[2]), cls(tP[2]))}
@@ -219,12 +218,11 @@ function panePeerBH(T) {
 /* =====================================================================
    TỔNG QUAN NGÀNH CHỨNG KHOÁN
 ===================================================================== */
-function paneOvCK() {
+function paneMktCK(T) {
   const q = SEC_LASTQ, r = rowAt(SECQ, q), r0 = rowAt(SECQ, yoyQ(q)), n = sv408.pb.length;
   const ms = SEC_L.map(s => secMetrics(s, q)).filter(Boolean);
   const tS = f => ttm(SECQ, q, f), tS0 = f => ttm(SECQ, yoyQ(q), f), pbt = tS(x => sv(x, 'is90')), pbt0 = tS0(x => sv(x, 'is90'));
-  $('#ov').innerHTML = `
-  <h2 class="sec">Tổng quan ngành Chứng khoán</h2>
+  T.innerHTML = `
   <p class="sec-sub">Số tổng hợp các công ty chứng khoán niêm yết (BCTC hợp nhất), tỷ đồng. Kỳ chung để so sánh: ${qLbl(q)}; quý sau đó chưa đủ công ty báo cáo.</p>
   <div class="kpis">
     ${kpi('Dư nợ cho vay', nf(sv(r, 'bs114') / 1000, 0) + ' nghìn tỷ', 'YoY ' + sg(sv(r, 'bs114') / sv(r0, 'bs114') - 1), cls(sv(r, 'bs114') / sv(r0, 'bs114') - 1))}
@@ -490,13 +488,6 @@ function paneNonlife() {
     ${kpi('Đầu tư trở lại nền KT', nf(IV[1] / 1000, 0) + ' nghìn tỷ', kyShort(IV[0]))}
     ${kpi('Vốn chủ sở hữu PNT', nf(EQ[1] / 1000, 0) + ' nghìn tỷ', kyShort(EQ[0]))}
   </div>
-  <article class="card"><h3 class="sub">Chỉ số chính của doanh nghiệp phi nhân thọ</h3>
-    <p class="chart-sub">Doanh thu thuần (phí giữ lại sau nhượng tái, cộng nhận tái) tạo quỹ dự phòng và vốn để đầu tư; lợi nhuận = biên nghiệp vụ (100% − tỷ lệ kết hợp) + lợi suất danh mục × quy mô danh mục.</p>
-    ${chain([
-      { t: 'Doanh thu', d: 'Phí gốc, nhận tái; trừ phí nhượng tái và hoàn phí.', k: [['Doanh thu thuần / VCSH', 'đo tốc độ quay vốn của nghiệp vụ', ''], ['Phí nhận tái / tổng phí', '> 10% thì không so được bồi thường với DN chỉ bán gốc', '']] },
-      { t: 'Chi phí nghiệp vụ', d: 'Bồi thường + chi phí khai thác, quản lý.', k: [['Tỷ lệ bồi thường', 'bồi thường / phí thuần', ''], ['Tỷ lệ chi phí', '(chi trực tiếp − bồi thường + bán hàng + quản lý) / doanh thu thuần', ''], ['Tỷ lệ kết hợp', 'bồi thường + chi phí; dưới 100% là nghiệp vụ có lãi', '']] },
-      { t: 'Đầu tư', d: 'Tiền gửi, trái phiếu, cổ phiếu; lãi tiền gửi thường là phần lớn.', k: [['Danh mục / VCSH', '', ''], ['Lợi suất = Σ tỷ trọng × lợi suất từng loại', 'lãi suất huy động, lợi suất TPCP, TPDN', ''], ['LN tài chính / LNTT', '> 100% là nghiệp vụ lỗ, đầu tư bù', '']] }])}
-  </article>
   <div class="grid g2 gap">
     ${card({ id: 'nlFY', title: 'Phí gốc và bồi thường gốc theo năm', sub: 'Tỷ đồng · đường: tỷ lệ bồi thường gốc (trục phải). Năm 2025 là số ước.', src: FY_SRC,
       ins: `Phí phi nhân thọ tăng liên tục, ${nf(fy('NONLIFE|PREM|Tổng|Toàn TT')[0])} tỷ năm 2016 lên ${nf(fy('NONLIFE|PREM|Tổng|Toàn TT')[9])} tỷ năm 2025. ${kyLbl(p[0])} tăng ${sg(p[2])}, nhanh nhất trong nhiều năm.` })}
@@ -708,10 +699,197 @@ function paneSrc() {
 const srcType = t => ({ 'MOF - Niên giám/Báo cáo năm (chính thức)': 'Bộ Tài chính – Niên giám', 'MOF - Bản tin/Tổng quan (Cục QLGSBH)': 'Bộ Tài chính – Bản tin', 'IAV - Hiệp hội Bảo hiểm VN': 'IAV', 'Báo chí dẫn Bộ Tài chính/Cục QLGSBH': 'Báo chí dẫn Bộ Tài chính', 'Báo chí/khác': 'Báo chí', 'DN tự công bố': 'Doanh nghiệp công bố', 'Tổng cục Thống kê (GSO)': 'GSO' }[t] || t || '');
 
 /* =====================================================================
+   TỔNG QUAN NGÀNH: yếu tố cấu trúc, ít thay đổi (chuỗi giá trị, cấu trúc, động lực, chu kỳ, khung pháp lý, thuật ngữ)
+===================================================================== */
+const ovh = (n, t) => `<h3 class="sec2">${n} · ${t}</h3>`;
+const goSub = (k, l) => `<button type="button" class="lnk" data-gosub="${k}">${l} →</button>`;
+const gloss = items => `<dl class="gloss">${items.map(([t, d]) => `<dt>${t}</dt><dd>${d}</dd>`).join('')}</dl>`;
+const drvTbl = rows => `<div class="tscroll"><table class="fdrv"><thead><tr><th>Yếu tố</th><th>Cơ chế</th><th>Tác động lên</th><th>Theo dõi</th></tr></thead><tbody>${rows.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>`;
+const wireGo = root => $$('[data-gosub]', root).forEach(b => b.onclick = () => { openSub(b.dataset.gosub); window.scrollTo({ top: 0 }); });
+const topShare = (seg, y, n) => { const b = I.fydn[seg].share, i = b.years.indexOf(y); return b.rows.map(r => r.v[i]).filter(v => v != null).sort((a, c) => c - a).slice(0, n).reduce((a, v) => a + v, 0); };
+const nCo = (seg, y) => { const b = I.fydn[seg].prem, i = b.years.indexOf(y); return b.rows.filter(r => r.v[i]).length; };
+
+function paneOvBH() {
+  const y = 2024, gi = FYY.indexOf(y), last9 = FYY.length - 1;
+  $('#ov').innerHTML = `<h2 class="sec">Tổng quan ngành Bảo hiểm Việt Nam</h2>
+  <p class="sec-sub">Những đặc điểm cấu trúc của ngành, thay đổi chậm: vai trò trong nền kinh tế, chuỗi giá trị, cấu trúc thị trường, các yếu tố tác động, chu kỳ và khung pháp lý. Số liệu diễn biến xem ở tab Bức tranh ngành.</p>
+  ${ovh(1, 'Bảo hiểm trong nền kinh tế')}
+  <div class="kpis">
+    ${kpi('Phí bảo hiểm / GDP', pc(fy('TOTAL|PREM_GDP|Tổng|Toàn TT')[gi], 2), 'năm ' + y + ' · đỉnh ' + pc(Math.max(...fy('TOTAL|PREM_GDP|Tổng|Toàn TT').filter(v => v)), 2) + ' năm 2021')}
+    ${kpi('Phí bình quân đầu người', nf(fy('TOTAL|PREM_PER_CAPITA|Tổng|Toàn TT')[gi] / 1000, 2) + ' triệu đồng', 'năm ' + y)}
+    ${kpi('Tổng tài sản', nf(fy('TOTAL|ASSETS|Tổng|Toàn TT')[last9] / 1000, 0) + ' nghìn tỷ', 'năm ' + FYY[last9] + ' (ước)')}
+    ${kpi('Đầu tư trở lại nền KT', nf(fy('TOTAL|INVEST|Tổng|Toàn TT')[last9] / 1000, 0) + ' nghìn tỷ', 'năm ' + FYY[last9] + ' (ước)')}
+    ${kpi('Số doanh nghiệp', nCo('LIFE', y) + ' NT · ' + nCo('NONLIFE', y) + ' PNT', 'có doanh thu năm ' + y)}
+    ${kpi('Đại lý và lao động', nf(fy('TOTAL|AGENTS|Tổng|Toàn TT')[gi] / 1000, 0) + ' nghìn người', 'năm ' + y)}
+  </div>
+  <div class="grid g2 gap">
+    ${card({ title: 'Vai trò của ngành', body: `<ul class="ilist">
+      <li><b>Chuyển giao rủi ro:</b> doanh nghiệp, hộ gia đình trả phí để chuyển rủi ro tài sản, sức khỏe, tính mạng sang doanh nghiệp bảo hiểm; doanh nghiệp bảo hiểm chia bớt rủi ro lớn qua tái bảo hiểm.</li>
+      <li><b>Huy động vốn dài hạn:</b> phí nhân thọ được trích dự phòng và đầu tư nhiều năm, chủ yếu vào trái phiếu Chính phủ và tiền gửi; ngành bảo hiểm là một trong những nhà đầu tư lớn nhất của trái phiếu Chính phủ kỳ hạn dài.</li>
+      <li><b>Mức độ thâm nhập còn thấp:</b> phí bảo hiểm khoảng ${pc(fy('TOTAL|PREM_GDP|Tổng|Toàn TT')[gi], 1)} GDP; dư địa tăng trưởng dài hạn đến từ thu nhập tăng, già hóa dân số và nhu cầu bảo vệ sức khỏe.</li></ul>` })}
+    ${card({ id: 'ovPen', title: 'Mức độ thâm nhập bảo hiểm', sub: 'Cột: phí bình quân đầu người (triệu đồng); đường: phí so với GDP (trục phải)', src: 'Bộ Tài chính – Niên giám Thị trường bảo hiểm Việt Nam',
+      ins: `Phí/GDP tăng liên tục tới 2021 nhờ nhân thọ bán qua ngân hàng, rồi giảm từ 2022 khi phí nhân thọ đi xuống trong lúc GDP vẫn tăng.` })}
+  </div>
+  ${ovh(2, 'Chuỗi giá trị')}
+  <article class="card"><h3 class="sub">Bảo hiểm nhân thọ</h3>
+    <p class="chart-sub">Phí thu vào được trích lập dự phòng và đem đầu tư nhiều năm; phần lớn quay lại khách hàng qua bồi thường, đáo hạn, bảo tức.</p>
+    ${chain([
+      { t: '1 · Đầu vào: bán hàng', d: 'Đại lý, ngân hàng (bancassurance), môi giới; nhượng tái bảo hiểm phần rủi ro lớn.', k: [['Chỉ số', 'Doanh thu thuần, giá trị hợp đồng còn hiệu lực', ''], ['Động lực', 'Phí khai thác mới, số hợp đồng mới', '']] },
+      { t: '2 · Trích lập và đầu tư', d: 'Dự phòng nghiệp vụ là nợ phải trả với khách hàng (cấu phần lớn nhất của nguồn vốn); tài sản đầu tư theo kỳ hạn của nghĩa vụ.', k: [['Cấu trúc', 'Nợ phải trả (dự phòng) / tài sản / vốn chủ', ''], ['Chỉ số', 'Vay nợ và repo / tài sản; dự phòng / tài sản', ''], ['Thu nhập', 'Σ tỷ trọng danh mục × lợi suất từng loại', '']] },
+      { t: '3 · Đầu ra: chi trả', d: 'Bồi thường rủi ro, đáo hạn, giá trị hoàn lại khi hủy hợp đồng, bảo tức.', k: [['Chỉ số', 'Bồi thường / doanh thu thuần; đáo hạn / doanh thu', ''], ['Cảnh báo', 'Giá trị hoàn lại tăng nhanh hơn phí → quỹ đầu tư co lại', '']] }])}</article>
+  <article class="card"><h3 class="sub">Bảo hiểm phi nhân thọ</h3>
+    <p class="chart-sub">Hợp đồng ngắn hạn (thường một năm): lợi nhuận = biên nghiệp vụ (100% − tỷ lệ kết hợp) + lợi suất danh mục × quy mô danh mục.</p>
+    ${chain([
+      { t: '1 · Doanh thu', d: 'Phí gốc, nhận tái; trừ phí nhượng tái và hoàn phí.', k: [['Doanh thu thuần + nhận tái / VCSH', 'tốc độ quay vốn của nghiệp vụ', ''], ['Phí nhận tái / tổng phí', 'trên 10% thì không so được bồi thường với DN chỉ bán gốc', '']] },
+      { t: '2 · Chi phí nghiệp vụ', d: 'Bồi thường + chi phí khai thác, quản lý.', k: [['Tỷ lệ bồi thường', 'bồi thường / phí thuần', ''], ['Tỷ lệ chi phí', 'chi phí khai thác, quản lý / doanh thu thuần', ''], ['Tỷ lệ kết hợp', 'bồi thường + chi phí; dưới 100% là nghiệp vụ có lãi', '']] },
+      { t: '3 · Đầu tư', d: 'Tiền gửi, trái phiếu, cổ phiếu; lãi tiền gửi thường là phần lớn.', k: [['Danh mục / VCSH', 'quy mô vốn đem đầu tư', ''], ['Lợi suất danh mục', 'lãi suất huy động, lợi suất TPCP, TPDN', ''], ['LN tài chính / LNTT', 'trên 100% là nghiệp vụ lỗ, đầu tư bù', '']] }])}</article>
+  ${ovh(3, 'Cấu trúc ngành')}
+  <div class="grid g2 gap">
+    ${card({ title: 'Mức tập trung, sở hữu và kênh phân phối', body: `<ul class="ilist">
+      <li><b>Nhân thọ tập trung cao:</b> ${nCo('LIFE', y)} doanh nghiệp, 5 doanh nghiệp lớn nhất chiếm ${pc(topShare('LIFE', y, 5), 0)} doanh thu phí năm ${y}. Phần lớn là doanh nghiệp vốn nước ngoài (Manulife, Prudential, Dai-ichi, AIA…); Bảo Việt Nhân thọ là doanh nghiệp trong nước duy nhất trong top 5.</li>
+      <li><b>Phi nhân thọ phân tán hơn:</b> ${nCo('NONLIFE', y)} doanh nghiệp, top 5 chiếm ${pc(topShare('NONLIFE', y, 5), 0)}. Ba nhóm chính: doanh nghiệp có vốn nhà nước (Bảo Việt, PVI, PTI, Bảo Minh, PJICO), doanh nghiệp thuộc ngân hàng (MIC, BIC, VBI, ABIC, BSH) dựa vào khách hàng của ngân hàng mẹ, và doanh nghiệp vốn nước ngoài.</li>
+      <li><b>Kênh phân phối nhân thọ:</b> đại lý hơn 50% phí khai thác mới, ngân hàng gần 45%, kênh khác khoảng 4% (8T/2026). Kênh ngân hàng tăng nhanh 2016–2022 và chịu siết mạnh từ 2023.</li></ul>`,
+      src: 'Bộ Tài chính – Niên giám Thị trường bảo hiểm Việt Nam (Phụ lục 3); Hiệp hội Bảo hiểm Việt Nam (IAV)' })}
+    ${card({ id: 'ovShareBH', title: `Thị phần doanh thu phí năm ${y}`, sub: '% · 6 doanh nghiệp lớn nhất của mỗi mảng', h: 'tall', src: 'Bộ Tài chính – Niên giám Thị trường bảo hiểm Việt Nam (Phụ lục 3)' })}
+  </div>
+  ${ovh(4, 'Các yếu tố tác động')}
+  <article class="card">${drvTbl([
+    ['Lãi suất huy động, lợi suất TPCP', 'Danh mục chủ yếu là tiền gửi và trái phiếu nên thu nhập đầu tư đi theo lãi suất (có độ trễ vì tiền gửi, trái phiếu đáo hạn dần). Lãi suất cao cũng làm hợp đồng tiết kiệm của bảo hiểm kém hấp dẫn hơn tiền gửi, khách dễ hủy.', 'Thu nhập đầu tư, tỷ lệ hủy hợp đồng', goSub('peerbh', 'So sánh doanh nghiệp')],
+    ['Thu nhập và niềm tin của người dân', 'Nhân thọ là sản phẩm dài hạn, quyết định mua phụ thuộc thu nhập và niềm tin; khủng hoảng niềm tin năm 2023 làm phí khai thác mới giảm gần một nửa.', 'Phí khai thác mới nhân thọ', goSub('life', 'Nhân thọ')],
+    ['Quy định bán hàng qua ngân hàng', 'Luật Kinh doanh bảo hiểm 2022, Thông tư 67/2023 và Luật Các tổ chức tín dụng 2024 siết bán bảo hiểm qua ngân hàng, cấm ràng buộc mua bảo hiểm với khoản vay.', 'Kênh bancassurance, cơ cấu sản phẩm', goSub('life', 'Nhân thọ')],
+    ['Tín dụng, doanh số ô tô', 'Xe cơ giới là nghiệp vụ phi nhân thọ lớn thứ hai; doanh số xe mới và tín dụng mua xe quyết định phí bảo hiểm xe.', 'Phí và bồi thường xe cơ giới', goSub('nonlife', 'Phi nhân thọ')],
+    ['Đầu tư, xây dựng, xuất nhập khẩu', 'Dự án và hàng hóa cần bảo hiểm tài sản, kỹ thuật, cháy nổ, hàng hóa vận chuyển.', 'Phí tài sản, kỹ thuật, hàng hóa', goSub('nonlife', 'Phi nhân thọ')],
+    ['Chi phí y tế', 'Sức khỏe là nghiệp vụ phi nhân thọ lớn nhất; chi phí khám chữa bệnh tăng làm tỷ lệ bồi thường tăng nếu không định phí lại.', 'Tỷ lệ bồi thường sức khỏe', goSub('nonlife', 'Phi nhân thọ')],
+    ['Thiên tai, tổn thất lớn', 'Bão, lũ, cháy nổ lớn làm bồi thường tài sản tăng đột biến; phần lớn được tái bảo hiểm nên phần doanh nghiệp giữ lại nhỏ hơn.', 'Bồi thường, lợi nhuận phi nhân thọ', goSub('nonlife', 'Phi nhân thọ')],
+    ['Thị trường chứng khoán', 'Một phần danh mục là cổ phiếu, chứng chỉ quỹ; giá cổ phiếu ảnh hưởng lãi đầu tư và định giá cổ phiếu bảo hiểm.', 'Lãi đầu tư, P/B', goSub('whole', 'Toàn cảnh')]])}</article>
+  ${ovh(5, 'Chu kỳ ngành')}
+  <div class="grid g2 gap">
+    ${card({ id: 'ovCyc', title: 'Tăng trưởng phí theo năm: nhân thọ và phi nhân thọ', sub: '% so với năm trước · số chính thức, năm 2025 là số ước', src: FY_SRC })}
+    ${card({ title: 'Các giai đoạn của ngành', body: `<ul class="ilist">
+      <li><b>2016–2021 · Bùng nổ nhân thọ:</b> phí nhân thọ tăng 20–30% mỗi năm nhờ sản phẩm liên kết đầu tư và kênh ngân hàng; phí/GDP lên gần 4%.</li>
+      <li><b>2022 · Đỉnh:</b> phí nhân thọ ${nf(fy('LIFE|PREM|Tổng|Toàn TT')[6])} tỷ, phí khai thác mới ${nf(fy('LIFE|NB_PREM|Tổng|Toàn TT')[6])} tỷ.</li>
+      <li><b>2023–nay · Điều chỉnh:</b> khủng hoảng niềm tin với sản phẩm liên kết đầu tư bán qua ngân hàng; luật mới siết bán hàng; phí khai thác mới giảm còn khoảng một nửa, hủy hợp đồng và đáo hạn tăng.</li>
+      <li><b>Phi nhân thọ đi theo chu kỳ kinh tế:</b> chậm lại năm 2020–2021 (dịch bệnh), tăng nhanh trở lại từ 2022 cùng tín dụng, đầu tư và nhu cầu sức khỏe.</li></ul>` })}
+  </div>
+  ${ovh(6, 'Khung pháp lý chủ chốt: các tỷ lệ an toàn')}
+  <article class="card">${tbl(['Quy định', 'Nhân thọ', 'Phi nhân thọ', 'Căn cứ'], [
+    ['<b>Biên khả năng thanh toán tối thiểu</b>', '4% dự phòng nghiệp vụ (1,5% với liên kết đơn vị) + 0,1–0,3% số tiền bảo hiểm chịu rủi ro', 'Mức lớn hơn của 25% phí giữ lại và 12,5% phí gốc cộng phí nhận tái', 'NĐ 73/2016 (áp dụng đến 31/12/2030)'],
+    ['<b>Giới hạn đầu tư</b>', 'Tối đa 50% vào cổ phiếu, trái phiếu doanh nghiệp, góp vốn; 20% bất động sản; 20% cho vay', 'Tối đa 35% vào cổ phiếu, trái phiếu doanh nghiệp, góp vốn; 10% bất động sản', 'NĐ 73/2016 Điều 61–62 (đến 31/12/2027)'],
+    ['<b>Dự phòng toán học</b>', 'Sàn: Zillmer 3% với hợp đồng trên 5 năm; lãi suất kỹ thuật không vượt 80% lợi suất bình quân 24 tháng của TPCP từ 10Y', '—', 'TT 67/2023 Điều 38'],
+    ['<b>Bảng tử vong</b>', 'Tối thiểu 80% CSO 1980', '—', 'TT 96/2026 Điều 7']], { num: false })}
+    <div class="insight">Lộ trình chuyển sang khung mới và các mốc hiệu lực xem ở tab Chính sách · Quy định.</div>
+    <div class="src">Nguồn: Nghị định 73/2016, 46/2023, 97/2026; Thông tư 67/2023, 96/2026</div></article>
+  ${ovh(7, 'Thuật ngữ và chỉ số cần biết')}
+  <article class="card">${gloss([
+    ['Phí khai thác mới (KTM)', 'Phí năm đầu của hợp đồng mới ký trong kỳ; chỉ báo sớm nhất về tăng trưởng nhân thọ.'],
+    ['Hợp đồng có hiệu lực', 'Hợp đồng còn đóng phí, chưa đáo hạn hay hủy; nền tạo phí tái tục những năm sau.'],
+    ['Liên kết đầu tư', 'Gồm liên kết chung (lãi suất cam kết tối thiểu, doanh nghiệp chịu rủi ro lãi suất) và liên kết đơn vị (khách chịu rủi ro đầu tư).'],
+    ['Tử kỳ, hỗn hợp, bán kèm', 'Tử kỳ: chỉ bảo vệ, phí thấp; hỗn hợp: bảo vệ + tiết kiệm, có đáo hạn; bán kèm: sản phẩm bổ trợ gắn hợp đồng chính.'],
+    ['Phí gốc, nhận tái, nhượng tái', 'Phí thu từ khách; phí nhận từ doanh nghiệp bảo hiểm khác; phí chuyển cho nhà tái bảo hiểm.'],
+    ['Tỷ lệ bồi thường', 'Bồi thường / phí thuần. Ở nhân thọ chi bồi thường gồm cả tăng dự phòng nên không đo trực tiếp lãi lỗ nghiệp vụ.'],
+    ['Tỷ lệ kết hợp', 'Tỷ lệ bồi thường + tỷ lệ chi phí; dưới 100% là nghiệp vụ phi nhân thọ có lãi trước thu nhập đầu tư.'],
+    ['Dự phòng toán học', 'Khoản doanh nghiệp nhân thọ phải giữ cho nghĩa vụ tương lai; tích lũy từ phần phí thừa những năm đầu cộng lãi.'],
+    ['Giá trị hoàn lại', 'Tiền trả khách khi hủy hợp đồng trước hạn; hủy sớm gây lỗ cho doanh nghiệp, hủy muộn làm co quỹ đầu tư.'],
+    ['Biên khả năng thanh toán', 'Vốn tự có vượt nghĩa vụ; phải cao hơn mức tối thiểu theo quy định.'],
+    ['Bancassurance', 'Bán bảo hiểm qua ngân hàng; ngân hàng nhận phí hoa hồng và phí độc quyền phân phối.'],
+    ['Lãi suất kỹ thuật', 'Lãi suất dùng để tính dự phòng; càng thấp thì dự phòng phải giữ càng lớn.']])}</article>`;
+  const pg = fy('TOTAL|PREM_GDP|Tổng|Toàn TT'), pcp = fy('TOTAL|PREM_PER_CAPITA|Tổng|Toàn TT'), ix = FYY.map((y2, i) => i).filter(i => pg[i] != null);
+  mk('ovPen', { type: 'bar', data: { labels: ix.map(i => String(FYY[i])), datasets: [bar('Phí bình quân đầu người', ix.map(i => pcp[i] / 1000), C.navy, { unit: ' triệu đồng', dp: 2 }), line('Phí / GDP', ix.map(i => pg[i] * 100), C.purple, { yAxisID: 'y1', dp: 2 })] },
+    options: { scales: { x: { grid: { display: false } }, y: yNum('triệu đồng', { ticks: { callback: v => nf(v, 1) } }), y1: yPct('', { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 1) + '%' } }) } } });
+  const sh = seg => { const b = I.fydn[seg].share, i = b.years.indexOf(y); return b.rows.map(r => ({ c: r.co, v: r.v[i] })).filter(r => r.v != null).sort((a, c) => c.v - a.v).slice(0, 6); };
+  const L1 = sh('LIFE'), N1 = sh('NONLIFE');
+  mk('ovShareBH', { type: 'bar', data: { labels: [...L1.map(r => 'NT · ' + r.c), ...N1.map(r => 'PNT · ' + r.c)], datasets: [bar('Thị phần', [...L1, ...N1].map(r => r.v * 100), [...L1.map(() => C.navy), ...N1.map(() => C.teal)], { unit: '%', dp: 1 })] },
+    options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: yPct('%'), y: { grid: { display: false } } } } });
+  const g = k => fy(k).map((v, i, a) => i && v && a[i - 1] ? (v / a[i - 1] - 1) * 100 : null);
+  mk('ovCyc', { type: 'bar', data: { labels: FYY.slice(1).map(String), datasets: [bar('Nhân thọ', g('LIFE|PREM|Tổng|Toàn TT').slice(1), C.navy, { unit: '%', dp: 1 }), bar('Phi nhân thọ', g('NONLIFE|PREM|Tổng|Toàn TT').slice(1), C.teal, { unit: '%', dp: 1 }), line('Khai thác mới nhân thọ', g('LIFE|NB_PREM|Tổng|Toàn TT').slice(1), C.purple, { dp: 1 })] },
+    options: { scales: { x: { grid: { display: false } }, y: yPct('% so năm trước') } } });
+  wireGo($('#ov'));
+}
+
+function paneOvCK() {
+  const q = SEC_LASTQ, r = rowAt(SECQ, q), ms = SEC_L.map(s => secMetrics(s, q)).filter(Boolean), vk = Object.keys(F.vni).sort();
+  const tS = f => ttm(SECQ, q, f), top = (k) => ms.reduce((a, m) => a + (m[k] || 0), 0);
+  $('#ov').innerHTML = `<h2 class="sec">Tổng quan ngành Chứng khoán Việt Nam</h2>
+  <p class="sec-sub">Những đặc điểm cấu trúc của ngành, thay đổi chậm: vai trò, chuỗi giá trị, cấu trúc cạnh tranh, các yếu tố tác động, chu kỳ và khung pháp lý. Số liệu diễn biến xem ở tab Bức tranh ngành.</p>
+  ${ovh(1, 'Công ty chứng khoán trong thị trường vốn')}
+  <div class="grid g2 gap">
+    ${card({ title: 'Vai trò của ngành', body: `<ul class="ilist">
+      <li><b>Trung gian của thị trường vốn:</b> công ty chứng khoán môi giới giao dịch, cho nhà đầu tư vay ký quỹ, tư vấn và bảo lãnh phát hành cổ phiếu, trái phiếu, và tự đầu tư bằng vốn của mình.</li>
+      <li><b>Doanh thu đi theo thị trường:</b> cả bốn mảng (môi giới, cho vay ký quỹ, tự doanh, ngân hàng đầu tư) đều tăng giảm theo thanh khoản và điểm số, nên cổ phiếu chứng khoán là nhóm có beta cao nhất.</li>
+      <li><b>Bảng cân đối như một tổ chức tín dụng nhỏ:</b> cho vay ký quỹ chiếm phần lớn tài sản, tài trợ bằng vay ngân hàng và trái phiếu; đòn bẩy bị giới hạn bởi trần cho vay 200% vốn chủ và tỷ lệ vốn khả dụng.</li>
+      <li><b>Nâng hạng thị trường:</b> FTSE Russell đưa Việt Nam lên thị trường mới nổi thứ cấp từ 21/9/2026, giải ngân tỷ trọng tới 09/2027.</li></ul>` })}
+    ${card({ id: 'ovVni', title: 'VN-Index dài hạn', sub: 'Điểm, cuối tháng', src: WI + ' (VN-Index)' })}
+  </div>
+  ${ovh(2, 'Chuỗi giá trị')}
+  <article class="card">
+    ${chain([
+      { t: '1 · Đầu vào: vốn và khách hàng', d: 'Vốn chủ; vay ngân hàng, phát hành trái phiếu, vay nước ngoài; đội môi giới; nguồn thương vụ.', k: [['Chỉ số', 'Chi phí vốn (lãi suất vay, offshore), nợ vay / VCSH', '']] },
+      { t: '2 · Hoạt động', d: 'Môi giới; cho vay ký quỹ và ứng trước; tự doanh (FVTPL, AFS, HTM); ngân hàng đầu tư (bảo lãnh, tư vấn).', k: [['Chỉ số', 'Cho vay / VCSH (trần 200%), FVTPL / VCSH, tách thu nhập cố định khỏi cổ phiếu', '']] },
+      { t: '3 · Đầu ra', d: 'Phí môi giới, lãi cho vay, lãi lỗ danh mục, phí ngân hàng đầu tư.', k: [['Chỉ số', 'Thị phần × phí; dư nợ × lợi suất (NIM); lãi danh mục; số thương vụ', '']] }])}
+    <div class="insight"><b>Mô hình dự phóng:</b> doanh thu môi giới = giá trị giao dịch thị trường × thị phần × phí bình quân; lãi cho vay = dư nợ thị trường × thị phần × lợi suất, giới hạn bởi trần 200% VCSH và cơ cấu nguồn vốn; danh mục tách thu nhập cố định khỏi cổ phiếu, phần cổ phiếu định giá lại theo ROE kỳ vọng, chỉ số và margin, từng mã hoặc đồng thuận. Thứ tự đánh giá một mã: P/B so đồng thuận, rồi thị phần môi giới và hiệu quả phí, thị phần margin và NIM, thương vụ ngân hàng đầu tư, danh mục tự doanh.</div></article>
+  ${ovh(3, 'Cấu trúc ngành')}
+  <div class="grid g2 gap">
+    ${card({ title: 'Mô hình và mức tập trung', body: `<ul class="ilist">
+      <li><b>Tập trung cao:</b> 9 công ty lớn chiếm ${pc(top('brkSh'), 0)} doanh thu môi giới và ${pc(top('loanSh'), 0)} dư nợ cho vay của nhóm niêm yết (4 quý đến ${qLbl(q)}).</li>
+      <li><b>CTCK thuộc ngân hàng:</b> TCX (Techcombank), VPX (VPBank), MBS (MB) có lợi thế khách hàng và nguồn vốn từ ngân hàng mẹ, mạnh ở trái phiếu và ngân hàng đầu tư.</li>
+      <li><b>CTCK độc lập, theo tập đoàn:</b> SSI, VCI, HCM, VND, VCK (VPS), SHS cạnh tranh bằng nền tảng môi giới, nhóm khách tổ chức nước ngoài hoặc khách cá nhân quy mô lớn.</li>
+      <li><b>Cạnh tranh phí:</b> phí môi giới cá nhân về gần 0% ở nhiều công ty; lợi nhuận chuyển sang cho vay ký quỹ và danh mục.</li></ul>`, src: WI + ' (BCTC hợp nhất, BCTC tổng hợp ngành)' })}
+    ${card({ id: 'ovStrCK', title: 'Thị phần trong nhóm niêm yết', sub: `% · doanh thu môi giới và dư nợ cho vay, 4 quý đến ${qLbl(q)}`, h: 'tall', src: WI })}
+  </div>
+  ${ovh(4, 'Các yếu tố tác động')}
+  <article class="card">${drvTbl([
+    ['Thanh khoản thị trường', 'Giá trị giao dịch quyết định doanh thu môi giới và nhu cầu vay ký quỹ.', 'Môi giới, cho vay ký quỹ', goSub('mkt', 'Thị trường')],
+    ['Lãi suất, thanh khoản ngân hàng', 'CTCK vay ngân hàng và phát hành trái phiếu để cho vay ký quỹ, nắm giữ trái phiếu; lãi suất tăng làm chi phí vốn và áp lực lên danh mục tăng.', 'NIM mảng cho vay, lãi danh mục', goSub('sec', 'Ngành CTCK')],
+    ['Dòng vốn nước ngoài, nâng hạng', 'Nâng hạng FTSE, cơ chế không cần đủ tiền khi đặt lệnh (non pre-funding) thu hút quỹ ngoại, tăng giao dịch tổ chức.', 'Môi giới khách tổ chức, ngân hàng đầu tư', goSub('mkt', 'Thị trường')],
+    ['Giá cổ phiếu, trái phiếu', 'Danh mục tự doanh đánh giá lại theo giá cuối kỳ (FVTPL); thị trường giảm mạnh thì dễ phát sinh lỗ và giải chấp ký quỹ.', 'Lãi lỗ tự doanh, dự phòng cho vay', goSub('sec', 'Ngành CTCK')],
+    ['Quy định cho vay ký quỹ, vốn', 'Trần 200% vốn chủ, tỷ lệ vốn khả dụng; muốn mở rộng margin phải tăng vốn.', 'Tăng trưởng dư nợ, phát hành, ROE', goSub('sec', 'Ngành CTCK')],
+    ['IPO, phát hành trái phiếu', 'Số thương vụ IPO, phát hành tăng khi thị trường thuận lợi và thủ tục rút ngắn (NĐ 245/2025).', 'Doanh thu ngân hàng đầu tư', goSub('sec', 'Ngành CTCK')]])}</article>
+  ${ovh(5, 'Chu kỳ ngành')}
+  <div class="grid g2 gap">
+    ${card({ id: 'ovCycCK', title: 'Lợi nhuận trước thuế ngành và VN-Index', sub: 'Cột: LNTT các CTCK niêm yết theo quý (tỷ đồng); đường: VN-Index cuối quý (trục phải)', src: WI })}
+    ${card({ title: 'Các giai đoạn của ngành', body: `<ul class="ilist">
+      <li><b>2018–2019:</b> VN-Index lập đỉnh đầu 2018 rồi đi ngang; lợi nhuận ngành ổn định, thấp.</li>
+      <li><b>2020–2021 · Bùng nổ:</b> lãi suất thấp, hàng triệu tài khoản cá nhân mới; thanh khoản và dư nợ ký quỹ tăng vọt, lợi nhuận ngành cao nhất lịch sử.</li>
+      <li><b>2022 · Điều chỉnh:</b> lãi suất tăng, khủng hoảng trái phiếu doanh nghiệp, giải chấp ký quỹ; lỗ tự doanh.</li>
+      <li><b>2023–nay · Phục hồi và mở rộng vốn:</b> CTCK tăng vốn, niêm yết các công ty lớn (TCX, VCK, VPX); dư nợ cho vay vượt đỉnh cũ; nâng hạng FTSE từ 09/2026.</li></ul>` })}
+  </div>
+  ${ovh(6, 'Khung pháp lý chủ chốt')}
+  <article class="card">${tbl(['Quy định', 'Nội dung', 'Căn cứ'], [
+    ['<b>Vốn điều lệ tối thiểu</b>', 'Môi giới 25 tỷ đồng; tự doanh 50 tỷ; bảo lãnh phát hành 165 tỷ; tư vấn đầu tư 10 tỷ (cộng dồn theo nghiệp vụ đăng ký)', 'NĐ 155/2020/NĐ-CP'],
+    ['<b>Tỷ lệ vốn khả dụng</b>', 'Tối thiểu 180%; dưới mức này bị hạn chế hoạt động', 'TT 91/2020/TT-BTC'],
+    ['<b>Cho vay ký quỹ</b>', 'Tổng dư nợ ≤ 200% vốn chủ; một khách hàng ≤ 3% vốn chủ; chỉ cho vay trên danh mục chứng khoán đủ điều kiện', 'TT 121/2020/TT-BTC'],
+    ['<b>Giao dịch của nhà đầu tư nước ngoài</b>', 'Tổ chức nước ngoài được đặt lệnh mua không cần đủ tiền (non pre-funding); CTCK chịu rủi ro thanh toán', 'TT 68/2024/TT-BTC'],
+    ['<b>IPO và niêm yết</b>', 'Hồ sơ niêm yết xét song song hồ sơ IPO, niêm yết ngay sau phát hành', 'NĐ 245/2025/NĐ-CP']], { num: false })}
+    <div class="src">Nguồn: Nghị định 155/2020, 245/2025; Thông tư 91/2020, 121/2020, 68/2024</div></article>
+  ${ovh(7, 'Thuật ngữ và chỉ số cần biết')}
+  <article class="card">${gloss([
+    ['Cho vay ký quỹ (margin)', 'CTCK cho nhà đầu tư vay để mua chứng khoán, chính chứng khoán đó làm tài sản bảo đảm.'],
+    ['Ứng trước tiền bán', 'Cho nhà đầu tư nhận trước tiền bán chứng khoán chưa về tài khoản.'],
+    ['FVTPL', 'Tài sản tài chính ghi nhận theo giá trị hợp lý qua lãi lỗ: thay đổi giá vào thẳng lợi nhuận kỳ đó.'],
+    ['AFS', 'Sẵn sàng để bán: thay đổi giá vào vốn chủ, chỉ vào lợi nhuận khi bán.'],
+    ['HTM', 'Giữ đến ngày đáo hạn: tiền gửi, chứng chỉ tiền gửi, trái phiếu; ghi theo giá gốc, thu lãi đều.'],
+    ['Lợi nhuận chưa thực hiện', 'Lãi lỗ đánh giá lại danh mục khi chưa bán; biến động theo giá cuối kỳ.'],
+    ['Tỷ lệ vốn khả dụng', 'Vốn khả dụng / tổng giá trị rủi ro; đo khả năng chịu tổn thất của CTCK.'],
+    ['Bảo lãnh phát hành', 'CTCK cam kết mua phần chứng khoán chưa bán hết của đợt phát hành, nhận phí bảo lãnh.'],
+    ['Non pre-funding', 'Nhà đầu tư tổ chức nước ngoài mua chứng khoán mà không cần có đủ tiền khi đặt lệnh.'],
+    ['Biên môi giới', '(Doanh thu − chi phí môi giới) / doanh thu môi giới.']])}</article>`;
+  const vv = vk.filter(k => k >= '2016-01');
+  mk('ovVni', { type: 'line', data: { labels: vv.map(k => k.slice(5) + '/' + k.slice(0, 4)), datasets: [line('VN-Index', vv.map(k => F.vni[k]), C.navy, { pointRadius: 0, unit: '', dp: 0 })] },
+    options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } }, y: yNum('điểm') } } });
+  const st = ms.slice().sort((a, b) => b.brkSh - a.brkSh);
+  mk('ovStrCK', { type: 'bar', data: { labels: st.map(m => m.sym), datasets: [bar('Doanh thu môi giới', st.map(m => m.brkSh * 100), C.navy, { unit: '%', dp: 1 }), bar('Dư nợ cho vay', st.map(m => m.loanSh * 100), C.teal, { unit: '%', dp: 1 })] },
+    options: { indexAxis: 'y', scales: { x: yPct('%'), y: { grid: { display: false } } } } });
+  const R = SECQ, qEnd = q2 => F.vni[`${q2.slice(0, 4)}-${String(+q2.slice(5) * 3).padStart(2, '0')}`] ?? null;
+  mk('ovCycCK', { type: 'bar', data: { labels: R.map(x => qLbl(x[0])), datasets: [bar('LNTT ngành', R.map(x => sv(x, 'is90')), R.map(x => sv(x, 'is90') < 0 ? C.red : C.navy), { unit: ' tỷ' }), line('VN-Index', R.map(x => qEnd(x[0])), C.red, { yAxisID: 'y1', unit: '', dp: 0, pointRadius: 1.5 })] },
+    options: { scales: { x: { grid: { display: false } }, y: yNum('tỷ đồng'), y1: yNum('VN-Index', { position: 'right', grid: { display: false } }) } } });
+  wireGo($('#ov'));
+}
+
+/* =====================================================================
    BỨC TRANH NGÀNH (tab con)
 ===================================================================== */
-const SUBS = PAGE === 'bh' ? [['life', 'Nhân thọ', paneLife], ['nonlife', 'Phi nhân thọ và môi giới', paneNonlife], ['peerbh', 'So sánh doanh nghiệp', panePeerBH]]
-  : [['sec', 'Ngành công ty chứng khoán', paneSec], ['mkt', 'Thị trường', paneMkt]];
+const SUBS = PAGE === 'bh' ? [['whole', 'Toàn cảnh', paneMktBH], ['life', 'Nhân thọ', paneLife], ['nonlife', 'Phi nhân thọ và môi giới', paneNonlife], ['peerbh', 'So sánh doanh nghiệp', panePeerBH]]
+  : [['whole', 'Toàn cảnh', paneMktCK], ['sec', 'Ngành công ty chứng khoán', paneSec], ['mkt', 'Thị trường', paneMkt]];
 const subDone = {};
 function panePicture() {
   $('#picture').innerHTML = `<h2 class="sec">Bức tranh ngành</h2>
@@ -724,7 +902,7 @@ function panePicture() {
   openSub(SUBS[0][0], false);
 }
 function openSub(k, hash = true) {
-  if (!built.picture) show('picture');
+  if (!built.picture || !$('#picture').classList.contains('active')) show('picture');
   $$('#picture .subtabs button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
   $$('#picture .sub').forEach(x => x.classList.toggle('on', x.dataset.pp === k));
   if (!subDone[k]) { subDone[k] = true; const f = SUBS.find(x => x[0] === k)[2]; try { f($('#' + k)); } catch (e) { console.error(e); } }
