@@ -1,0 +1,405 @@
+{
+ "ACB": {
+  "asof": "2025-12-31",
+  "ldr": 79.1,
+  "sflr": 24.4,
+  "reserve": 14.7,
+  "pay30": 64.4,
+  "lcr": null,
+  "nsfr": null,
+  "src": "ACB, Báo cáo thường niên 2025 (12/06/2026)",
+  "doc_id": 8972,
+  "note": ""
+ },
+ "VCB": {
+  "asof": "2025-12-31",
+  "ldr": 81.8,
+  "sflr": null,
+  "reserve": 22.2,
+  "pay30": 75.7,
+  "lcr": null,
+  "nsfr": null,
+  "src": "VCB, Báo cáo thường niên 2025 (10/07/2026), tr.16",
+  "doc_id": 8964,
+  "note": "LDR 'theo quy định của NHNN'; không công bố SFLR",
+  "prev": {
+   "asof": "2024-12-31",
+   "ldr": 80.4,
+   "sflr": null,
+   "reserve": 18.1,
+   "pay30": 121.2
+  }
+ },
+ "BID": {
+  "asof": "2025-12-31",
+  "ldr": 81.84,
+  "sflr": 27.08,
+  "reserve": 16.77,
+  "pay30": 60.72,
+  "lcr": null,
+  "nsfr": null,
+  "src": "BID, Nghị quyết HĐQT số 1276 ngày 14/10/2026 (CBTT 16/10/2026), tr.16",
+  "doc_id": 31259,
+  "note": "Số liệu báo cáo NHNN/riêng lẻ",
+  "prev": {
+   "asof": "2024-12-31",
+   "ldr": 83.65,
+   "sflr": 24.27,
+   "reserve": 15.12,
+   "pay30": 70.82
+  }
+ },
+ "CTG": {
+  "asof": "2026-06-30",
+  "ldr": 82.54,
+  "sflr": 24.71,
+  "reserve": 16.47,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "CTG, Bản cáo bạch chào bán trái phiếu ra công chúng (12/10/2026), tr.142",
+  "doc_id": 28751,
+  "note": "Số liệu Công ty mẹ (riêng lẻ)",
+  "prev": {
+   "asof": "2025-12-31",
+   "ldr": 82.91,
+   "sflr": 25.91,
+   "reserve": 17.6
+  }
+ },
+ "MBB": {
+  "asof": "2025-12-31",
+  "ldr": 79.47,
+  "sflr": 25.7,
+  "reserve": 15.45,
+  "pay30": 79.14,
+  "lcr": null,
+  "nsfr": null,
+  "src": "MBB, Nghị quyết HĐQT số 39 ngày 11/09/2026 (CBTT 14/09/2026), tr.19; SFLR từ BCTN 2025 (01/04/2026) tr.46",
+  "doc_id": 18774,
+  "note": "SFLR lấy từ BCTN 2025 (doc 8969); BCTN ghi LDR 80,0%",
+  "prev": {
+   "asof": "2024-12-31",
+   "ldr": 81.08,
+   "sflr": null,
+   "reserve": 13.48,
+   "pay30": 80.5
+  }
+ },
+ "TCB": {
+  "asof": "2026-09-30",
+  "ldr": 77.7,
+  "sflr": 27.9,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "TCB, Gặp gỡ NĐT cá nhân - Cập nhật KQKD Q3/2026 (30/09/2026), tr.12-14",
+  "doc_id": 53395,
+  "note": "IR deck; Q2/2026 LDR 80,1%",
+  "prev": {
+   "asof": "2025-12-31",
+   "ldr": 76.5,
+   "sflr": 24.6,
+   "reserve": 18.7,
+   "pay30": 66.6,
+   "src": "TCB, BCTN 2025 (08/04/2026), tr.28",
+   "doc_id": 8967
+  }
+ },
+ "VPB": {
+  "asof": "2026-06-30",
+  "ldr": 84.53,
+  "sflr": 22.4,
+  "reserve": 16.07,
+  "pay30": 63.55,
+  "lcr": null,
+  "nsfr": null,
+  "src": "VPB, CBTT định kỳ tình hình tài chính bán niên 2026 (21/08/2026), tr.6-7",
+  "doc_id": 13567,
+  "note": "Riêng lẻ",
+  "prev": {
+   "asof": "2025-12-31",
+   "ldr": 81.73,
+   "sflr": 27.48,
+   "reserve": 18.57,
+   "pay30": 85.86,
+   "src": "VPB, BCTN 2025 (01/04/2026), tr.55",
+   "doc_id": 8999
+  }
+ },
+ "HDB": {
+  "asof": "2026-06-30",
+  "ldr": 70.07,
+  "sflr": null,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "HDB, Nghị quyết HĐQT số 17 ngày 27/08/2026 (CBTT 03/09/2026), tr.7",
+  "doc_id": 21731,
+  "note": "LDR riêng lẻ; hợp nhất 72,89%",
+  "prev": {
+   "asof": "2025-12-31",
+   "ldr": 66.96,
+   "sflr": null
+  }
+ },
+ "LPB": {
+  "asof": null,
+  "ldr": null,
+  "sflr": null,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": null,
+  "doc_id": null,
+  "note": "Không tìm thấy bảng tỷ lệ an toàn thanh khoản trong tài liệu 2026"
+ },
+ "SHB": {
+  "asof": "2025-12-31",
+  "ldr": 78.54,
+  "sflr": 24.22,
+  "reserve": 17.13,
+  "pay30": 84.26,
+  "lcr": null,
+  "nsfr": null,
+  "src": "SHB, Nghị quyết HĐQT số 42 ngày 14/08/2026, Phụ lục 01, tr.21",
+  "doc_id": 65368,
+  "note": "",
+  "prev": {
+   "asof": "2024-12-31",
+   "ldr": 76.58,
+   "sflr": 23.62,
+   "reserve": 16.66,
+   "pay30": 103.41
+  }
+ },
+ "STB": {
+  "asof": "2025-12-31",
+  "ldr": 73,
+  "sflr": 26,
+  "reserve": 20,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "STB, Báo cáo thường niên 2025 (18/04/2026), tr.20",
+  "doc_id": 8971,
+  "note": "Số làm tròn trong BCTN (~73%, ~26%, ~20%)"
+ },
+ "VIB": {
+  "asof": null,
+  "ldr": null,
+  "sflr": null,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": null,
+  "doc_id": null,
+  "note": "Không tìm thấy số LDR/SFLR công bố trong tài liệu 2026"
+ },
+ "TPB": {
+  "asof": "2025-12-31",
+  "ldr": 68.8,
+  "sflr": 18.93,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "TPB, Báo cáo thường niên 2025 (21/04/2026), tr.23",
+  "doc_id": 8979,
+  "note": "LDR và SFLR riêng lẻ"
+ },
+ "MSB": {
+  "asof": "2025-12-31",
+  "ldr": 61.99,
+  "sflr": 26.74,
+  "reserve": 21.42,
+  "pay30": 63.13,
+  "lcr": null,
+  "nsfr": null,
+  "src": "MSB, Báo cáo thường niên 2025 (22/04/2026), tr.77",
+  "doc_id": 8976,
+  "note": "",
+  "prev": {
+   "asof": "2024-12-31",
+   "ldr": 72.24,
+   "sflr": 28.27,
+   "reserve": 20.42,
+   "pay30": 76.22
+  }
+ },
+ "SSB": {
+  "asof": null,
+  "ldr": null,
+  "sflr": null,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": null,
+  "doc_id": null,
+  "note": "Không tìm thấy số LDR/SFLR công bố trong tài liệu 2026"
+ },
+ "OCB": {
+  "asof": "2025-12-31",
+  "ldr": 73.08,
+  "sflr": 28.95,
+  "reserve": 20.18,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "OCB, Báo cáo thường niên 2025 (09/04/2026), tr.53",
+  "doc_id": 17212,
+  "note": ""
+ },
+ "EIB": {
+  "asof": "2026-06-30",
+  "ldr": 82.45,
+  "sflr": 27.44,
+  "reserve": null,
+  "pay30": 80.29,
+  "lcr": null,
+  "nsfr": null,
+  "src": "EIB, Biên bản họp ĐHĐCĐ bất thường ngày 24/07/2026 (27/07/2026), tr.11-12",
+  "doc_id": 65006,
+  "note": "Chủ tọa trả lời cổ đông; CAR riêng lẻ 12,55%"
+ },
+ "NAB": {
+  "asof": "2025-12-31",
+  "ldr": 53.29,
+  "sflr": 23.87,
+  "reserve": 20.37,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "NAB, Báo cáo thường niên 2025 (20/03/2026), tr.14",
+  "doc_id": 8978,
+  "note": "LDR giảm -23,69 điểm % so với 2024 theo BCTN",
+  "prev": {
+   "asof": "2024-12-31",
+   "ldr": 76.98,
+   "sflr": 22.33,
+   "reserve": 23.42
+  }
+ },
+ "ABB": {
+  "asof": null,
+  "ldr": null,
+  "sflr": null,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": null,
+  "doc_id": null,
+  "note": "Không tìm thấy số LDR/SFLR công bố trong tài liệu 2026"
+ },
+ "KLB": {
+  "asof": "2025-12-31",
+  "ldr": 78.13,
+  "sflr": 14.22,
+  "reserve": 26.8,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "KLB, Báo cáo thường niên 2025 (21/04/2026), tr.30",
+  "doc_id": 8991,
+  "note": ""
+ },
+ "VAB": {
+  "asof": null,
+  "ldr": null,
+  "sflr": null,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": null,
+  "doc_id": null,
+  "note": "BCTN 2025 (doc 8992, tr.12-13) có biểu đồ LDR/SFLR/dự trữ thanh khoản nhưng không trích được số"
+ },
+ "BVB": {
+  "asof": "2026-06-30",
+  "ldr": 68.7,
+  "sflr": null,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "BVB, Bản cáo bạch (15/09/2026), tr.58-59",
+  "doc_id": 18683,
+  "note": "Chỉ nêu LDR cho 30/06/2026",
+  "prev": {
+   "asof": "2025-12-31",
+   "ldr": 67.64,
+   "sflr": 27.52,
+   "src": "BVB, BCTN 2025 (23/04/2026), tr.37",
+   "doc_id": 897
+  }
+ },
+ "BAB": {
+  "asof": "2025-12-31",
+  "ldr": 71.42,
+  "sflr": null,
+  "reserve": 13.83,
+  "pay30": 69.63,
+  "lcr": null,
+  "nsfr": null,
+  "src": "BAB, Báo cáo thường niên 2025 (10/04/2026), tr.22",
+  "doc_id": 8988,
+  "note": "",
+  "prev": {
+   "asof": "2024-12-31",
+   "ldr": 72.85,
+   "sflr": null,
+   "reserve": 11.95,
+   "pay30": 73.94
+  }
+ },
+ "PGB": {
+  "asof": "2025-12-31",
+  "ldr": 58.35,
+  "sflr": 21.36,
+  "reserve": 21.14,
+  "pay30": 81.49,
+  "lcr": null,
+  "nsfr": null,
+  "src": "PGB, Thông báo chào bán cổ phiếu ra công chúng (24/09/2026), tr.101; dự trữ TK & KNCT 30 ngày từ BCTN 2025 (21/04/2026) tr.17",
+  "doc_id": 17139,
+  "note": "Reserve/pay30 từ BCTN (doc 8993); bản chào bán ghi 18,76% là 'TS thanh khoản cao bình quân/Tổng TS bình quân'",
+  "prev": {
+   "asof": "2024-12-31",
+   "ldr": 64.45,
+   "sflr": 20.48,
+   "reserve": 20.71,
+   "pay30": 92.95
+  }
+ },
+ "SGB": {
+  "asof": null,
+  "ldr": null,
+  "sflr": null,
+  "reserve": null,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": null,
+  "doc_id": null,
+  "note": "Không tìm thấy số LDR/SFLR công bố trong tài liệu 2026"
+ },
+ "NVB": {
+  "asof": "2025-12-31",
+  "ldr": 66.79,
+  "sflr": 10.39,
+  "reserve": 16.02,
+  "pay30": null,
+  "lcr": null,
+  "nsfr": null,
+  "src": "NVB, Báo cáo thường niên 2025 (10/04/2026), tr.12",
+  "doc_id": 8983,
+  "note": ""
+ }
+}

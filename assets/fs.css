@@ -679,3 +679,17 @@ h3.grp-h small{font-size:12px;font-weight:400;color:#8a93a3}
 .rng .tsw{display:inline-flex;gap:0;margin-left:8px;padding-left:8px;border-left:1px solid var(--line)}.rng .tsw button{border-radius:0}.rng .tsw button:first-child{border-radius:999px 0 0 999px}.rng .tsw button:last-child{border-radius:0 999px 999px 0}
 
 .cnote{margin:8px 0 0;padding:6px 10px;font-size:12px;line-height:1.45;color:#5b6475;background:#FFF8E1;border-left:3px solid #FFC000;border-radius:4px}
+/* Tổng quan › các yếu tố tác động: mỗi nhóm một khung */
+.dbx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.dbox{margin:0;display:flex;flex-direction:column;border-top:3px solid var(--navy)}
+.dbox .dgh{margin:0 0 8px}
+.dfl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.dfl li{padding:10px 0;border-top:1px solid var(--line2)}
+.dfh{display:flex;align-items:baseline;gap:8px;justify-content:space-between}
+.dfh b{color:var(--ink);font-size:13.5px}
+.dfl p{margin:4px 0 4px;font-size:13px;color:var(--ink2)}
+.card.flash{box-shadow:0 0 0 3px var(--teal);transition:box-shadow .3s}
+@media (max-width:860px){.dbx{grid-template-columns:minmax(0,1fr)}}
+.pill.rs-bad{background:#fde4e1;color:#a3261a;border:1px solid #f0a49b}
+.l22 td,.l22 th{white-space:nowrap}.l22 td:last-child{white-space:normal}
+.l22 td:last-child{font-size:12px;min-width:220px;max-width:300px}

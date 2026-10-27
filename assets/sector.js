@@ -278,6 +278,14 @@ function paneOverview() {
       ['Vốn (CAR), giới hạn cấp tín dụng, phân loại nợ', ['Hệ số an toàn vốn tối thiểu 8% cộng đệm (TT 14/2025); dư nợ một khách hàng, nhóm khách hàng liên quan bị giới hạn theo vốn tự có; nợ phân 5 nhóm, trích dự phòng theo nhóm.', 'Vốn tối thiểu, giới hạn một khách hàng, phân loại nợ.'],
         ['Thiếu vốn → phải tăng vốn (phát hành, giữ lại lợi nhuận, hạn chế cổ tức tiền mặt) và tăng trưởng chậm lại.', 'Thiếu vốn → phải tăng vốn, tăng trưởng chậm lại.'], ['policy', 'tab Chính sách'], 'CAR · ROE']]],
   ];
+  /* chart minh hoạ cho từng yếu tố: [mục, id chart, nhãn] */
+  const FCH = {
+    'Lãi suất điều hành và thanh khoản': ['dom', 'chOn', 'LNH qua đêm và OMO'], 'Tỷ giá USD/VND': ['dom', 'chFx', 'tỷ giá USD/VND'], 'Fed và đồng USD': ['dom', 'gUsOis', 'đường cong OIS Mỹ'],
+    'Tăng trưởng kinh tế và doanh nghiệp': ['dom', 'chMoney', 'tín dụng, tiền gửi, M2'], 'Lạm phát': ['eco', 'chCpi', 'CPI Việt Nam'], 'Bất động sản': ['bank', 'chAQ', 'chất lượng tài sản'],
+    'Tài khoá và Kho bạc': ['dom', 'chFiscal', 'chi − thu ngân sách'], 'Room tín dụng': ['camel', 'chCmRoom', 'room tín dụng ngụ ý'], 'Chủ trương lãi suất và tín dụng ưu tiên': ['policy', 'chSbvStance', 'nhịp điều hành NHNN'],
+    'Tái cơ cấu và xử lý nợ xấu': ['policy', 'regTbl', 'lịch quy định'], 'Tỷ lệ thanh khoản: LDR, vốn ngắn hạn cho vay dài hạn, LCR, NSFR': ['policy', 'chLdr22', 'LDR theo TT 22 từng ngân hàng'],
+    'Vốn (CAR), giới hạn cấp tín dụng, phân loại nợ': ['peer', 'chCompare', 'so sánh ngân hàng'],
+  };
   const CYC = [
     ['Nới lỏng', ['NHNN hạ lãi suất, bơm tiền', 'Giảm, bơm tiền'], ['Tăng dần khi room nới', 'Tăng dần'], ['Thường mở rộng: COF giảm nhanh hơn lãi suất cho vay', 'Mở rộng'], ['Giảm dần nhờ doanh nghiệp dễ vay đảo nợ', 'Giảm dần'], ['Thường tăng sớm nhất', 'Tăng sớm nhất']],
     ['Phục hồi', ['Lãi suất thấp, ổn định', 'Thấp, ổn định'], 'Tăng nhanh', ['Hẹp lại khi cạnh tranh cho vay', 'Hẹp lại'], 'Thấp', ['Theo tăng trưởng lợi nhuận', 'Theo lợi nhuận']],
@@ -385,9 +393,9 @@ function paneOverview() {
 
   <h3 class="ovh" id="ov5">4 · Các yếu tố tác động</h3>
   <div class="banner chain">${S('Fed, USD, giá dầu → Tỷ giá → NHNN điều hành → Lãi suất liên ngân hàng → Lãi suất huy động, cho vay → NIM, nợ xấu, tăng trưởng → Lợi nhuận → P/B ngân hàng', 'Fed, USD → Tỷ giá → NHNN → Lãi suất → NIM, nợ xấu → Lợi nhuận → P/B')}</div>
-  ${DRV.map(([gname, gdesc, items], gi) => `<section class="dgrp"><div class="dgh"><span class="dn">${String.fromCharCode(65 + gi)}</span><div><h4>${gname}</h4><p>${T(gdesc)}</p></div></div>
-    <div class="drv gap">${items.map(([t, how, imp, [p, l], m]) => `<article class="card dcard"><div class="dh"><h4>${t}</h4><span class="pill">${m}</span></div>
-      <p><b>Cơ chế:</b> ${T(how)}</p><p><b>Tác động đến ngân hàng:</b> ${T(imp)}</p><p class="dgo">Theo dõi: ${go(p, l)}</p></article>`).join('')}</div></section>`).join('')}
+  <div class="dbx gap">${DRV.map(([gname, gdesc, items], gi) => `<article class="card dbox"><div class="dgh"><span class="dn">${String.fromCharCode(65 + gi)}</span><div><h4>${gname}</h4><p>${T(gdesc)}</p></div></div>
+    <ul class="dfl">${items.map(([t, how, imp, [p, l], m]) => { const [cp, cid, cl] = FCH[t] || [p, '', l]; return `<li><div class="dfh"><b>${t}</b><span class="pill">${m}</span></div>
+      <p>${S(how[0] + ' ' + imp[0], imp[1])}</p>${cid ? `<button type="button" class="lnk" data-goc="${cp}~${cid}">Chart: ${cl} →</button>` : go(p, l)}</li>`; }).join('')}</ul></article>`).join('')}</div>
 
   <h3 class="ovh" id="ov6">5 · Chu kỳ ngành</h3>
   ${card({ id: 'ovCycle', title: 'Chỉ số giá cổ phiếu ngân hàng qua các chu kỳ', h: 'xl', sub: 'chỉ số giá ngành Ngân hàng (20/03/2012 = 100, cuối tháng, trục trái, thang log) · nét đứt = tăng trưởng tín dụng toàn hệ thống so cùng kỳ (%, trục phải) · nền màu = giai đoạn chu kỳ theo FinSuccess', insight: cycleIns(), src: 'Chỉ số giá ngành Ngân hàng; NHNN (tăng trưởng tín dụng); phân giai đoạn: FinSuccess' })}
@@ -431,6 +439,7 @@ function paneOverview() {
   $('#vmSw').onchange = e => vm(e.target.checked ? 'long' : 'short');
   try { vm(localStorage.getItem('fs-vc-mode') || 'short'); } catch (e) { vm('short'); }
   $$('#overview [data-gop]').forEach(b => b.onclick = () => { const p = b.dataset.gop; if (p === 'policy') { show('policy'); } else { openP(p); } window.scrollTo({ top: 0 }); });
+  $$('#overview [data-goc]').forEach(b => b.onclick = () => { const [p, c] = b.dataset.goc.split('~'); goChart(p, c); });
   collapsify($('#overview'), 'ov2', ['ov1', 'ov2']);
   $$('#overview [data-ov]').forEach(a => a.onclick = e => { e.preventDefault(); const t = document.getElementById(a.dataset.ov); if (t) { if (t.classList.contains('shut')) t.click(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
   drCycle();
@@ -698,6 +707,12 @@ function paneWorld() {
   <div class="sub" data-pp="mm">${subMM()}</div>
   <div class="sub" data-pp="idx">${subIdx()}</div>`;
   wireSubs('world');
+}
+/* mở mục chứa chart rồi cuộn tới chart; mục ở trang kia thì chuyển trang kèm #mục~chart */
+function goChart(p, cid) {
+  if (builders[p]) show(p); else if (P2PANE[p]) openP(p); else { location.href = (PAGE === 'vimo' ? 'nganh.html' : 'vimo.html') + '#' + p + '~' + cid; return; }
+  setTimeout(() => { const el = document.getElementById(cid), c = el && (el.closest('article.card') || el); if (!c) return;
+    c.scrollIntoView({ behavior: 'smooth', block: 'start' }); c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1800); }, 300);
 }
 function openP(k, reveal = true) {
   const p = P2PANE[k];
@@ -2986,7 +3001,6 @@ function sbvBlock() {
   const y26 = act.filter(e => e.d >= '2026'), n26 = y26.filter(e => e.dir === 'nới').length, t26 = y26.filter(e => e.dir === 'thắt').length;
   const lastRate = E.filter(e => e.tool === 'Lãi suất điều hành')[0];
   return `
-  <div class="kpis pol">${tiles.map(c => kpi(lbl[c.k] || c.k, esc(val(c)), esc(sub(c)))).join('')}</div>
   ${card({ id: 'chSbvStance', title: 'Nhịp điều hành NHNN theo quý', h: 'tall',
     sub: 'số quyết định nới (trên 0) và thắt (dưới 0) mỗi quý, không tính dòng diễn biến thị trường · rê chuột xem tên quyết định · bấm vào cột để lọc bảng bên dưới',
     insight: `Lãi suất điều hành <b>giữ nguyên từ 19/6/2023</b> (tái cấp vốn 4,5%, tái chiết khấu 3,0%). NHNN điều tiết bằng OMO (lần đổi gần nhất: ${esc(lastRate.t.toLowerCase())}, ${dvn(lastRate.d)}), room tín dụng và quy định an toàn. Từ đầu 2026 có <b>${n26} quyết định nới, ${t26} thắt</b>: nới chủ yếu ở room (loại trừ dự án trọng điểm, NOXH, KCN, du lịch) và LDR (KBNN 50%; trần 95% theo cách tính mới của TT50, bắt buộc từ 10/2028); trong khi thanh khoản căng đẩy LNH qua đêm lên 11–12,5% (6/2026) và lãi suất huy động lên 6,38% (9/2026) bất chấp chỉ đạo giảm lãi suất.`,
@@ -3032,33 +3046,73 @@ function sbvWire() {
   render();
 }
 
+/* ---- tỷ lệ an toàn thanh khoản theo TT 22 từng ngân hàng: ước tính từ BCTC + số ngân hàng tự công bố ---- */
+const RG = D.regRatios;
+const rgSt = (v, cap, near) => v == null ? '<span class="muted">—</span>' : v > cap ? '<span class="pill rs-bad">Vượt</span>' : v > cap - near ? '<span class="pill rs-soon">Sát trần</span>' : '<span class="pill rs-on">Đạt</span>';
+function regTiles() {
+  const kb = (D.sbv.current.find(c => c.k.startsWith('Tỷ lệ tiền gửi có kỳ hạn KBNN')) || {}).v || '—', A = RG ? RG.agg[RG.q] : {};
+  const nOver = RG ? RG.rows.filter(r => r.ldr[RG.q] > 85).length : 0;
+  const sf = RG ? RG.rows.map(r => r.self && r.self.sflr).filter(v => v != null).sort((a, b) => a - b) : [], sfN = sf.length, sfM = sfN ? sf[Math.floor((sfN - 1) / 2)] : null, sfX = sfN ? sf[sfN - 1] : null;
+  return `<div class="kpis pol">
+    ${kpi('LDR (TT 22)', 'Trần 85%', RG ? `trung vị 26 NH ước tính ${pc(A.ldr, 1)} (${RG.qLbl}) · ${nOver} NH trên 85% · TT 50: trần 95% công thức mới` : 'TT 50: trần 95% công thức mới')}
+    ${kpi('Vốn ngắn hạn cho vay trung, dài hạn', 'Tối đa 40%', RG ? `từ 01/07/2026 (trước 30%) · ${sfN} NH công bố, trung vị ${pc(sfM, 1)}, cao nhất ${pc(sfX, 1)} · TT 50 thay bằng NSFR` : 'từ 01/07/2026 (trước 30%)')}
+    ${kpi('Dự trữ thanh khoản', 'Tối thiểu 10%', 'tài sản thanh khoản cao / tổng nợ phải trả · TT 22 · thay bằng LCR')}
+    ${kpi('Khả năng chi trả 30 ngày', 'VND ≥ 50%', 'ngoại tệ ≥ 10% · TT 22 · thay bằng LCR')}
+    ${kpi('LCR (TT 50)', '50% → 100%', 'bắt buộc từ 01/10/2028, +10 điểm/năm, 100% từ 10/2033')}
+    ${kpi('NSFR (TT 50)', '90% → 100%', 'bắt buộc từ 01/10/2028, 100% từ 01/10/2030')}
+    ${kpi('Tiền gửi có kỳ hạn KBNN vào D', esc(kb), 'hệ số tính vào mẫu số LDR (TT 25/2026)')}
+  </div>`;
+}
+function regBlock() {
+  if (!RG) return '';
+  const E = RG.err, e = E && E.ldr;
+  const src = 'Wi MCP fs_bank (bs160_1, bs320_1, bs330, bs360), fs_bank_notes (fnx19, fnx109, fnx114, fnx115), bank_liquidity_risk · tự tính; số tự công bố: báo cáo thường niên, nghị quyết phát hành trái phiếu, bản tin nhà đầu tư của từng ngân hàng';
+  return `${card({ id: 'chLdr22', title: 'LDR theo Thông tư 22 của từng ngân hàng', h: 'tall', ctl: false,
+    sub: `% · cột đặc = LDR theo công thức TT 22 (ước tính) · cột nét đứt = LDR thô (cho vay / tiền gửi khách hàng) · ◆ = số ngân hàng tự công bố cùng kỳ · đường đỏ = trần 85%`,
+    body: `<div class="picker" id="l22Pick">${RG.periods.map(p => `<button type="button" data-k="${p.k}">${p.l}</button>`).join('')}</div>`,
+    insight: '<span id="l22Ins"></span>', src })}
+  <article class="card" id="regTbl2"><h3 class="sub">Tuân thủ tỷ lệ an toàn thanh khoản (TT 22)</h3>
+    <p class="chart-sub">LDR ước tính ${RG.qLbl} từ báo cáo tài chính hợp nhất; các cột còn lại là số ngân hàng tự công bố gần nhất (tỷ lệ NHNN giám sát tính trên số riêng lẻ) · LCR, NSFR chưa bắt buộc nên hầu hết ngân hàng chưa công bố</p>
+    <div class="tscroll"><table class="l22"><thead><tr><th>Ngân hàng</th><th>Nhóm</th><th class="n">LDR ước tính</th><th class="n">LDR công bố</th><th>LDR so với 85%</th><th class="n">Vốn NH cho vay TDH (công bố)</th><th>So với 40%</th><th class="n">Dự trữ thanh khoản</th><th class="n">Chi trả 30 ngày (VND)</th><th class="n">LCR · NSFR</th><th>Kỳ · nguồn công bố</th></tr></thead><tbody>
+    ${[...RG.rows].sort((a, b) => (b.ldr[RG.q] ?? 0) - (a.ldr[RG.q] ?? 0)).map(r => { const f = r.self || {};
+      return `<tr><td><b>${r.s}</b></td><td style="white-space:nowrap">${gdot(r.group)}${r.group}</td><td class="n">${pc(r.ldr[RG.q], 1)}</td><td class="n">${f.ldr != null ? pc(f.ldr, 1) : '—'}</td><td>${rgSt(f.ldr != null && f.asof >= RG.qEnd[RG.q] ? f.ldr : r.ldr[RG.q], 85, 2)}</td>
+      <td class="n">${f.sflr != null ? pc(f.sflr, 1) : '—'}</td><td>${rgSt(f.sflr, 40, 5)}</td>
+      <td class="n">${f.reserve != null ? pc(f.reserve, 1) : '—'}</td><td class="n">${f.pay30 != null ? pc(f.pay30, 1) : '—'}</td><td class="n">${f.lcr != null || f.nsfr != null ? `${f.lcr != null ? pc(f.lcr, 0) : '—'} · ${f.nsfr != null ? pc(f.nsfr, 0) : '—'}` : '—'}</td>
+      <td style="min-width:180px">${f.src ? `${dvn(f.asof)} · ${esc(f.src)}` : '<span class="muted">chưa tìm thấy số công bố</span>'}</td></tr>`; }).join('')}</tbody></table></div>
+    <div class="insight">${e ? `So với số ngân hàng tự công bố tại 31/12/2025 (${e.n} ngân hàng), LDR ước tính lệch trung bình <b>${nf(e.mae, 1)} điểm %</b> (${e.bias >= 0 ? 'cao hơn' : 'thấp hơn'} ${nf(Math.abs(e.bias), 1)} điểm % về bình quân; 80% số ngân hàng lệch dưới ${nf(e.p80, 1)} điểm %)` : ''}${e ? `; ${e.w3}/${e.n} quan sát lệch trong 3 điểm %` : ''}. Lệch lớn nhất là VPB (khoảng 9–10 điểm %) vì số hợp nhất gồm dư nợ của công ty tài chính FE Credit; với VPB nên dùng số tự công bố. Tỷ lệ vốn ngắn hạn cho vay trung, dài hạn không ước tính được đủ chính xác từ báo cáo tài chính công khai nên chỉ hiển thị số ngân hàng tự công bố. Trạng thái LDR dựa trên số tự công bố nếu ngân hàng đã công bố cho ${RG.qLbl} trở về sau, nếu không thì dựa trên ước tính; Sát trần = trong 2 điểm % với LDR, 5 điểm % với tỷ lệ vốn ngắn hạn.</div>
+    <div class="src">Nguồn: ${src}</div></article>`;
+}
+function drawLdr22(k) {
+  $$('#l22Pick button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  const rows = RG.rows.filter(r => r.ldr[k] != null).sort((a, b) => b.ldr[k] - a.ldr[k]);
+  const selfAt = r => r.self && r.self.ldr != null && r.self.asof === RG.qEnd[k] ? r.self.ldr : (r.selfPrev && r.selfPrev.asof === RG.qEnd[k] ? r.selfPrev.ldr ?? null : null);
+  mk('chLdr22', { type: 'bar', data: { labels: rows.map(r => r.s), datasets: [
+      { label: 'LDR theo TT 22 (ước tính)', data: rows.map(r => r.ldr[k]), backgroundColor: rows.map(r => GC[r.group]), grouped: false, order: 2, dp: 1, unit: '%', barPercentage: 0.62 },
+      { label: 'LDR thô (cho vay / tiền gửi KH)', data: rows.map(r => r.raw[k]), backgroundColor: 'rgba(0,0,0,0)', borderColor: rows.map(r => GC[r.group]), borderWidth: 0, dashBar: true, grouped: false, order: 3, dp: 1, unit: '%', barPercentage: 0.9 },
+      { type: 'line', label: 'Ngân hàng tự công bố', data: rows.map(selfAt), showLine: false, pointStyle: 'rectRot', pointRadius: 6, pointBackgroundColor: '#111', borderColor: '#fff', borderWidth: 1, order: 1, dp: 1, unit: '%' }] },
+    options: { plugins: { legend: { labels: { filter: it => it.datasetIndex !== 1 } }, refLines: { lines: [{ value: 85, label: 'Trần 85%' }] } }, scales: { y: pctAxis('', { min: 40 }) } },
+    plugins: [{ id: 'dashBar', afterDatasetsDraw(ch) {   // cột LDR thô: viền nét đứt
+      const { ctx } = ch; ch.data.datasets.forEach((ds, di) => { if (!ds.dashBar || !ch.isDatasetVisible(di)) return; const M = ch.getDatasetMeta(di);
+        const a = ch.chartArea; ctx.save(); ctx.beginPath(); ctx.rect(a.left, a.top, a.right - a.left, a.bottom - a.top); ctx.clip(); ctx.setLineDash([5, 3]); ctx.lineWidth = 1.6;
+        M.data.forEach((b, i) => { if (ds.data[i] == null) return; const { x, y, base, width } = b.getProps(['x', 'y', 'base', 'width'], true); ctx.strokeStyle = ds.borderColor[i]; ctx.strokeRect(x - width / 2, y, width, Math.min(base, a.bottom + 2) - y); });
+        ctx.restore(); }); } }] });
+  const over = rows.filter(r => r.ldr[k] > 85), near = rows.filter(r => r.ldr[k] > 83 && r.ldr[k] <= 85), A = RG.agg[k];
+  $('#l22Ins').innerHTML = `${RG.periods.find(p => p.k === k).l}: trung vị 26 ngân hàng <b>${pc(A.ldr, 1)}</b> theo TT 22 (ước tính) so với LDR thô ${pc(A.raw, 1)} — chênh lệch đến từ giấy tờ có giá phát hành và tiền gửi của TCTD khác được cộng vào mẫu số. ${over.length ? `Trên 85%: ${over.map(r => `<b>${r.s} ${pc(r.ldr[k], 1)}</b>`).join(', ')}.` : 'Không ngân hàng nào trên 85%.'} ${near.length ? `Sát trần (83–85%): ${near.map(r => r.s).join(', ')}.` : ''} VPB ước tính cao vì số hợp nhất gồm FE Credit; số tự công bố (◆) mới là số giám sát.`;
+}
+
 function panePolicy() {
-  const S = D.ldrSens, cur = store.get().kbnn || '50';
   $('#policy').innerHTML = `
   <h2 class="sec">Chính sách · Quy định</h2>
-  <p class="sec-sub">Điều hành của NHNN và các quy định quyết định trần tăng trưởng, chi phí vốn của từng nhóm ngân hàng. Bảng REG dùng chung với dashboard CTG.</p>
+  <p class="sec-sub">Điều hành của NHNN và các tỷ lệ an toàn quyết định trần tăng trưởng, chi phí vốn của từng ngân hàng. Khung tỷ lệ chi tiết ở Tổng quan › mục 6.</p>
+  ${regTiles()}
+  ${regBlock()}
   ${sbvBlock()}
-  ${card({ id: 'chLdrSens', title: 'Tiền gửi Kho bạc trong LDR: ai hưởng lợi khi hệ số thay đổi', h: 'tall', ctl: false,
-    sub: `% · ${S.quarter} · chọn hệ số tiền gửi KBNN tính vào mẫu số LDR · đường đỏ = trần 85% (TT22)`,
-    body: `<div class="picker" id="kbPick">${[['0', '0% (Q1/2026)'], ['20', '20% (Q2/2026 · mặc định TT50)'], ['50', '50% (từ Q3/2026)']].map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div>`,
-    insight: '<span id="kbIns"></span>', src: 'Wi MCP ratio_bank (ldr), fs_bank (bs160_1, bs330), fs_bank_notes (fnx107) · tự tính' })}
-  <article class="card"><h3 class="sub">Độ nhạy LDR theo hệ số KBNN</h3><p class="chart-sub">${esc(S.formula)}</p>
-    <div class="tscroll"><table><thead><tr><th>Ngân hàng</th><th>Nhóm</th><th class="n">Tiền gửi KBNN (tỷ)</th><th class="n">% tiền gửi KH</th><th class="n">LDR 0%</th><th class="n">LDR 20%</th><th class="n">LDR 50%</th><th class="n">Giảm khi 20%→50%</th></tr></thead><tbody>
-    ${S.rows.map(r => `<tr><td><b>${r.s}</b></td><td style="white-space:nowrap">${gdot(r.group)}${r.group}</td><td class="n">${nf(r.kbnn)}</td><td class="n">${pc(r.kbnnPctDep, 1)}</td><td class="n">${pc(r.ldr0, 2)}</td><td class="n">${pc(r.ldr20, 2)}</td><td class="n">${pc(r.ldr50, 2)}</td><td class="n">${sg(r.ldr50 - r.ldr20, 2, ' đ%')}</td></tr>`).join('')}</tbody></table></div></article>
-  <article class="card"><h3 class="sub">Lịch quy định (REG)</h3><p class="chart-sub">Văn bản mới nhất lên trước · nhãn Chưa hiệu lực = đã ban hành, chưa bắt buộc áp dụng</p><div class="tscroll"><table>
+  <article class="card" id="regTbl"><h3 class="sub">Lịch quy định (REG)</h3><p class="chart-sub">Văn bản mới nhất lên trước · nhãn Chưa hiệu lực = đã ban hành, chưa bắt buộc áp dụng</p><div class="tscroll"><table>
     <thead><tr><th>Trạng thái</th><th>ID</th><th>Quy định</th><th>Mức</th><th>Văn bản</th><th>Lộ trình</th></tr></thead><tbody>
     ${D.reg.map(g => `<tr class="${g.flag ? 'hl' : g.eff > TODAY ? 'soon' : ''}"><td style="white-space:nowrap">${regSt(g)}</td><td style="white-space:nowrap">${g.id}</td><td>${esc(g.rule)}</td><td>${esc(g.level)}${g.flag ? `<div class="note keep">⚠ ${esc(g.flag)}</div>` : ''}</td><td>${regDoc(g, D.regRef)}</td><td>${esc(g.path)}</td></tr>`).join('')}
     </tbody></table></div></article>`;
-  const draw = k => {
-    $$('#kbPick button').forEach(b => b.classList.toggle('on', b.dataset.k === k)); store.set({ kbnn: k });
-    const key = 'ldr' + k; const rows = [...S.rows].sort((a, b) => b[key] - a[key]);
-    mk('chLdrSens', { type: 'bar', data: { labels: rows.map(r => r.s), datasets: [{ label: 'LDR hệ số ' + k + '%', data: rows.map(r => r[key]), backgroundColor: rows.map(r => GC[r.group]), dp: 2, unit: '%' }] },
-      options: { plugins: { legend: { display: false }, refLines: { lines: [{ value: 85, label: 'Trần 85%' }] } }, scales: { y: pctAxis('', { min: 50 }) } } });
-    const big = S.rows.filter(r => r.group === 'Big 4');
-    $('#kbIns').innerHTML = `Ở hệ số ${k}%: ${rows.filter(r => r[key] > 85).map(r => `<b>${r.s} ${pc(r[key], 1)}</b>`).join(', ') || 'không NH nào'} vượt 85%. Chỉ Big 4 có tiền gửi KBNN đáng kể (${big.map(r => `${r.s} ${nf(r.kbnn / 1000, 0)} nghìn tỷ`).join(', ')}) — mỗi 30 điểm % hệ số kéo LDR của họ xuống ~1,7–2,1 điểm %; nhóm tư nhân gần như không đổi. TT50 (1/12/2026) đặt mặc định 20%, Thống đốc có thể điều chỉnh — nếu về 20% thì lợi thế Q3 của Big 4 mất đi.`;
-  };
-  $$('#kbPick button').forEach(b => b.onclick = () => draw(b.dataset.k));
-  draw(cur);  sbvWire();
+  if (RG) { $$('#l22Pick button').forEach(b => b.onclick = () => drawLdr22(b.dataset.k)); drawLdr22(RG.q); }
+  sbvWire();
 }
 
 /* =====================================================================
@@ -3588,7 +3642,7 @@ const mode0 = 'compact';   // chỉ dùng bản gọn
 setMode(mode0);
 
 header(); footer();
-{ const h = (location.hash || '#').slice(1); if (P2PANE[h]) openP(h); else if (h === 'gl' && PAGE === 'vimo') show('heat'); else show(h); }
+{ const [h, hc] = (location.hash || '#').slice(1).split('~'); if (hc) goChart(h, hc); else if (P2PANE[h]) openP(h); else if (h === 'gl' && PAGE === 'vimo') show('heat'); else show(h); }
 decorate();
 try { history.scrollRestoration = 'manual'; } catch (e) {}
 scrollTo(0, 0); addEventListener('load', () => setTimeout(() => scrollTo(0, 0), 0));
