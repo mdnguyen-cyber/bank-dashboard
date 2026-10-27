@@ -3083,7 +3083,11 @@ function regBlock() {
     sub: `% · cột đặc = LDR theo công thức TT 22 (ước tính) · cột nét đứt = LDR thô (cho vay / tiền gửi khách hàng) · ◆ = số ngân hàng tự công bố cùng kỳ · đường đỏ = trần 85%`,
     body: `<div class="picker" id="l22Pick">${RG.periods.map(p => `<button type="button" data-k="${p.k}">${p.l}</button>`).join('')}</div>`,
     insight: '<span id="l22Ins"></span>', src })}
-  <article class="card" id="regTbl2"><h3 class="sub">Tuân thủ tỷ lệ an toàn thanh khoản (TT 22)</h3>
+  ${card({ id: 'chSelf22', title: 'Các tỷ lệ thanh khoản ngân hàng tự công bố', h: 'tall', ctl: false,
+    sub: '% · số ngân hàng công bố gần nhất · màu đậm = kỳ năm 2026, màu nhạt = 31/12/2025 · đường đỏ = ngưỡng TT 22 · rê chuột xem kỳ và nguồn',
+    body: `<div class="picker" id="s22Pick">${S22.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div>`,
+    insight: '<span id="s22Ins"></span>', src: 'Báo cáo thường niên, nghị quyết phát hành trái phiếu, bản tin nhà đầu tư của từng ngân hàng' })}
+  <details class="morex" id="regTbl2"><summary>Bảng chi tiết: tuân thủ tỷ lệ an toàn thanh khoản (TT 22) của 26 ngân hàng</summary><article class="card"><h3 class="sub">Tuân thủ tỷ lệ an toàn thanh khoản (TT 22)</h3>
     <p class="chart-sub">LDR ước tính ${RG.qLbl} từ báo cáo tài chính hợp nhất; các cột còn lại là số ngân hàng tự công bố gần nhất (tỷ lệ NHNN giám sát tính trên số riêng lẻ) · LCR, NSFR chưa bắt buộc nên hầu hết ngân hàng chưa công bố</p>
     <div class="tscroll"><table class="l22"><thead><tr><th>Ngân hàng</th><th>Nhóm</th><th class="n">LDR ước tính</th><th class="n">LDR công bố</th><th>LDR so với 85%</th><th class="n">Vốn NH cho vay TDH (công bố)</th><th>So với 40%</th><th class="n">Dự trữ thanh khoản</th><th class="n">Chi trả 30 ngày (VND)</th><th class="n">LCR · NSFR</th><th>Kỳ · nguồn công bố</th></tr></thead><tbody>
     ${[...RG.rows].sort((a, b) => (b.ldr[RG.q] ?? 0) - (a.ldr[RG.q] ?? 0)).map(r => { const f = r.self || {};
@@ -3092,7 +3096,22 @@ function regBlock() {
       <td class="n">${f.reserve != null ? pc(f.reserve, 1) : '—'}</td><td class="n">${f.pay30 != null ? pc(f.pay30, 1) : '—'}</td><td class="n">${f.lcr != null || f.nsfr != null ? `${f.lcr != null ? pc(f.lcr, 0) : '—'} · ${f.nsfr != null ? pc(f.nsfr, 0) : '—'}` : '—'}</td>
       <td style="min-width:180px">${f.src ? `${dvn(f.asof)} · ${esc(f.src)}` : '<span class="muted">chưa tìm thấy số công bố</span>'}</td></tr>`; }).join('')}</tbody></table></div>
     <div class="insight">${e ? `So với số ngân hàng tự công bố tại 31/12/2025 (${e.n} ngân hàng), LDR ước tính lệch trung bình <b>${nf(e.mae, 1)} điểm %</b> (${e.bias >= 0 ? 'cao hơn' : 'thấp hơn'} ${nf(Math.abs(e.bias), 1)} điểm % về bình quân; 80% số ngân hàng lệch dưới ${nf(e.p80, 1)} điểm %)` : ''}${e ? `; ${e.w3}/${e.n} quan sát lệch trong 3 điểm %` : ''}. Lệch lớn nhất là VPB (khoảng 9–10 điểm %) vì số hợp nhất gồm dư nợ của công ty tài chính FE Credit; với VPB nên dùng số tự công bố. Tỷ lệ vốn ngắn hạn cho vay trung, dài hạn không ước tính được đủ chính xác từ báo cáo tài chính công khai nên chỉ hiển thị số ngân hàng tự công bố. Trạng thái LDR dựa trên số tự công bố nếu ngân hàng đã công bố cho ${RG.qLbl} trở về sau, nếu không thì dựa trên ước tính; Sát trần = trong 2 điểm % với LDR, 5 điểm % với tỷ lệ vốn ngắn hạn.</div>
-    <div class="src">Nguồn: ${src}</div></article>`;
+    <div class="src">Nguồn: ${src}</div></article></details>`;
+}
+const S22 = [['sflr', 'Vốn ngắn hạn cho vay trung, dài hạn (tối đa 40%)', 40, 'max'], ['reserve', 'Dự trữ thanh khoản (tối thiểu 10%)', 10, 'min'], ['pay30', 'Khả năng chi trả 30 ngày, VND (tối thiểu 50%)', 50, 'min'], ['ldr', 'LDR công bố (tối đa 85%)', 85, 'max']];
+const hexA = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
+function drawSelf22(k) {
+  $$('#s22Pick button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  const [, lab, thr, dir] = S22.find(z => z[0] === k);
+  const rows = RG.rows.filter(r => r.self && r.self[k] != null).sort((a, b) => dir === 'max' ? b.self[k] - a.self[k] : a.self[k] - b.self[k]);
+  const col = r => { const c = GC[r.group] || '#2938A8'; return r.self.asof >= '2026-01-01' ? c : (c.startsWith('#') ? hexA(c, 0.4) : c); };
+  mk('chSelf22', { type: 'bar', data: { labels: rows.map(r => r.s), datasets: [{ label: lab, data: rows.map(r => r.self[k]), backgroundColor: rows.map(col), dp: 1, unit: '%' }] },
+    options: { plugins: { legend: { display: false }, refLines: { lines: [{ value: thr, label: (dir === 'max' ? 'Trần ' : 'Sàn ') + thr + '%' }] },
+      tooltip: { callbacks: { afterLabel: c => { const f = rows[c.dataIndex].self; return `${dvn(f.asof)} · ${f.src}`; } } } }, scales: { y: pctAxis('', { beginAtZero: true, suggestedMax: thr * 1.12 }) } } });
+  const v = rows.map(r => r.self[k]), md = v.length ? [...v].sort((a, b) => a - b)[Math.floor((v.length - 1) / 2)] : null;
+  const tight = dir === 'max' ? rows.filter(r => r.self[k] > thr - (k === 'ldr' ? 2 : 5)) : rows.filter(r => r.self[k] < thr * 1.3);
+  const miss = RG.rows.filter(r => !r.self || r.self[k] == null).map(r => r.s);
+  $('#s22Ins').innerHTML = `${rows.length} ngân hàng công bố, trung vị <b>${pc(md, 1)}</b>. ${tight.length ? `Gần ngưỡng nhất: ${tight.map(r => `<b>${r.s} ${pc(r.self[k], 1)}</b>`).join(', ')}.` : `Không ngân hàng nào gần ngưỡng ${thr}%.`} ${miss.length ? `Chưa có số công bố: ${miss.join(', ')}.` : ''}`;
 }
 function drawLdr22(k) {
   $$('#l22Pick button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
@@ -3123,7 +3142,7 @@ function panePolicy() {
     <thead><tr><th>Trạng thái</th><th>ID</th><th>Quy định</th><th>Mức</th><th>Văn bản</th><th>Lộ trình</th></tr></thead><tbody>
     ${D.reg.map(g => `<tr class="${g.flag ? 'hl' : g.eff > TODAY ? 'soon' : ''}"><td style="white-space:nowrap">${regSt(g)}</td><td style="white-space:nowrap">${g.id}</td><td>${esc(g.rule)}</td><td>${esc(g.level)}${g.flag ? `<div class="note keep">⚠ ${esc(g.flag)}</div>` : ''}</td><td>${regDoc(g, D.regRef)}</td><td>${esc(g.path)}</td></tr>`).join('')}
     </tbody></table></div></article>`;
-  if (RG) { $$('#l22Pick button').forEach(b => b.onclick = () => drawLdr22(b.dataset.k)); drawLdr22(RG.q); }
+  if (RG) { $$('#l22Pick button').forEach(b => b.onclick = () => drawLdr22(b.dataset.k)); drawLdr22(RG.q);  $$('#s22Pick button').forEach(b => b.onclick = () => drawSelf22(b.dataset.k)); drawSelf22('sflr'); }
   sbvWire();
 }
 
