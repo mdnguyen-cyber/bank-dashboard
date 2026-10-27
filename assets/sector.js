@@ -2375,7 +2375,7 @@ const HM_V = [
   ['Chênh LNH − SOFR qua đêm', m => { const a = mAvg(dom.onDaily, m) ?? hV('on', m), b = gMAvg('us_sofr_d', m) ?? gMAvg('us_effr_d', m) ?? byM(intl.effr)[m] ?? hW('pol', 'us', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
   ['Chênh LNH − USD kỳ hạn 6 tháng', m => { const a = mAvg((dom.lnh || {})['6M'], m) ?? vrAvg('vnd', '6M', m), b = vrAvg('sofr', '6M', m) ?? gMAvg('us_6m_d', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
   ['Chênh LNH − USD kỳ hạn 1 năm', m => { const a = vrAvg('vnd', '1Y', m), b = vrAvg('sofr', '1Y', m) ?? gMAvg('us_1y_d', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
-  ['USD/VND từ đầu năm (%; dương = VND mất giá)', m => { const v = vnFxYtd(m); return v != null ? -v : hV('fx_ytd', m); }, 'hi-red', 2], ['Chênh tự do − NHTM (đồng)', m => vnFree(m) ?? hV('free_gap', m), 'hi-red', 0],
+  ['USD/VND từ đầu năm (%; dương = VND mất giá)', m => { const v = vnFxYtd(m); return v != null ? -v : hV('fx_ytd', m); }, 'hi-red', 2], ['Chỉ số USD (DXY)', m => byM(intl.dxy)[m] ?? gMAvg('dxy_d', m) ?? gMAvg('us_dxy_d', m), 'hi-red', 1],
   ['Dự trữ ngoại hối (tỷ USD)', m => { const v = byM(dom.reserves)[m] ?? hV('res', m); return v == null ? null : v / 1000; }, 'hi-green', 1],
 ];
 const HM_VTIP = {
@@ -2386,7 +2386,7 @@ const HM_VTIP = {
   'Chênh LNH − USD kỳ hạn 6 tháng': 'Lãi suất liên ngân hàng VND 6 tháng (NHNN) − SOFR kỳ hạn 6 tháng (VIRA); trước 07/2026 dùng lợi suất tín phiếu Kho bạc Mỹ 6 tháng. Bình quân tháng; dương = giữ VND có lợi hơn giữ USD.',
   'Chênh LNH − USD kỳ hạn 1 năm': 'VNIBOR 1 năm − SOFR kỳ hạn 1 năm (VIRA); trước 07/2026 dùng lợi suất tín phiếu Kho bạc Mỹ 1 năm. Bình quân tháng; dương = giữ VND có lợi hơn giữ USD.',
   'USD/VND từ đầu năm (%; dương = VND mất giá)': 'Tỷ giá NHTM bán ra cuối tháng so với cuối năm trước.',
-  'Chênh tự do − NHTM (đồng)': 'Tỷ giá thị trường tự do − tỷ giá NHTM bán ra, cuối tháng. Dương lớn = cầu USD ngoài hệ thống tăng.',
+  'Chỉ số USD (DXY)': 'Chỉ số đồng USD so với rổ 6 đồng tiền lớn (ICE), cuối tháng. Tăng = USD mạnh lên, gây áp lực lên tỷ giá USD/VND.',
 };
 const hmI = t => t ? ` <button type="button" class="info" data-k="txt" data-t="${esc(t)}" aria-label="Giải thích">i</button>` : '';
 const HM_TIP = { 'hi-red': 'càng cao càng đậm đỏ', 'hi-green': 'càng cao càng đậm xanh', pmi: 'xanh trên 50, đỏ dưới 50', sign: 'xanh dương, đỏ âm' };
