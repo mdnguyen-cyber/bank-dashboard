@@ -30,17 +30,18 @@
     const rowY = new Map(); let Hb = 0;
     keep.forEach(tr => { rowY.set(tr, Hb); Hb += tr.getBoundingClientRect().height; });
     const W = Math.round(w0 + (visR - visL));
-    const pad = o.compact ? 12 : 24, titleH = o.compact ? 34 : 54;
+    const pad = o.bare ? 2 : o.compact ? 12 : 24, titleH = o.bare ? 0 : o.compact ? 34 : 54;
     const cv = document.createElement('canvas'), x = cv.getContext('2d');
     x.font = '12px Arial'; const subL = o.sub ? wrapLines(x, o.sub, Math.max(W, 360)) : [], srcL = o.src ? wrapLines(x, 'Nguồn: ' + o.src, Math.max(W, 220)) : [];
     const logoOk = LOGO.complete && LOGO.naturalWidth && /^https?:/.test(location.protocol), lh = o.compact ? 30 : 48, lw = logoOk ? lh * LOGO.naturalWidth / LOGO.naturalHeight : 90;
-    const Wc = Math.max(W, (o.title ? Math.min(900, x.measureText(o.title).width * 1.4 + 20) : 0) + lw + 20, subL.length ? 360 : 0);
-    const top = pad + titleH + subL.length * 16 + (subL.length ? 8 : 0), H = top + Hb + 12 + (srcL.length ? srcL.length * 15 : 15) + pad;
+    const Wc = o.bare ? W : Math.max(W, (o.title ? Math.min(900, x.measureText(o.title).width * 1.4 + 20) : 0) + lw + 20, subL.length ? 360 : 0);
+    if (o.bare) { subL.length = 0; srcL.length = 0; }
+    const top = pad + titleH + subL.length * 16 + (subL.length ? 8 : 0), H = top + Hb + (o.bare ? 0 : 12 + (srcL.length ? srcL.length * 15 : 15)) + pad;
     cv.width = (Wc + pad * 2) * S; cv.height = H * S; x.scale(S, S);
     x.fillStyle = '#fff'; x.fillRect(0, 0, Wc + pad * 2, H);
-    if (logoOk) x.drawImage(LOGO, pad + Wc - lw, pad - 4, lw, lh);
+    if (o.bare) {} else if (logoOk) x.drawImage(LOGO, pad + Wc - lw, pad - 4, lw, lh);
     else { x.textAlign = 'right'; x.textBaseline = 'top'; x.font = 'bold 18px Arial'; x.fillStyle = '#1D2678'; x.fillText('FinSuccess', pad + Wc, pad); x.textAlign = 'left'; }
-    if (o.title) { x.fillStyle = '#1D2678'; x.font = `bold ${o.compact ? 16 : 18}px Arial`; x.textBaseline = 'top'; x.fillText(o.title, pad, pad + (o.compact ? 4 : 12), Math.max(120, Wc - lw - 16)); }
+    if (o.title && !o.bare) { x.fillStyle = '#1D2678'; x.font = `bold ${o.compact ? 16 : 18}px Arial`; x.textBaseline = 'top'; x.fillText(o.title, pad, pad + (o.compact ? 4 : 12), Math.max(120, Wc - lw - 16)); }
     x.fillStyle = '#596272'; x.font = '12px Arial'; x.textBaseline = 'top'; subL.forEach((l, i) => x.fillText(l, pad, pad + titleH + i * 16));
     const draw = stickyPass => keep.forEach(tr => [...tr.cells].forEach(c => {
       const r = c.getBoundingClientRect(); if (!r.width || !r.height) return;
@@ -91,11 +92,17 @@
       .catch(() => p.then(bl => navigator.clipboard.write([new ClipboardItem({ 'image/png': bl })])).then(ok).catch(fail));
   }
   function shot(sc, o = {}) { const cv = render(sc, o); if (cv) download(cv, o.file); }
+  function share(sc, m, extra = {}) {   // mở hộp Chia sẻ ảnh (như chart): caption, chú thích, khung 16:9 / 4:5
+    if (!window.FSShareImage) { const cv = render(sc, { ...m, ...extra }); if (cv) copy(cv, m.file); return; }
+    const cv = render(sc, { ...m, ...extra, bare: 1 }); if (!cv) return;
+    window.FSShareImage({ img: cv, title: extra.title || m.title, sub: m.sub, src: m.src });
+  }
   function button(sc, o) {   // cặp nút: chép ảnh (dán thẳng) + tải PNG
     const g = document.createElement('span'); g.className = 'tbl-btns';
     const mk = (t, tip, f) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'tbl-shot'; b.textContent = t; b.title = tip; b.onclick = f; g.appendChild(b); };
     const m = () => typeof o === 'function' ? o() : o;
-    mk('Chép ảnh bảng', 'Chép ảnh phần bảng đang hiện vào bộ nhớ tạm để dán (Ctrl+V) vào Zalo, Word, email; cuộn ngang để chọn khoảng thời gian', () => { const cv = render(sc, m()); if (cv) copy(cv, m().file); });
+    mk('⇪ Chia sẻ ảnh', 'Mở hộp chia sẻ ảnh như chart: ghi nhận định, caption, vẽ chú thích, chọn khung 16:9 hoặc 4:5; chỉ lấy phần bảng đang hiện', () => share(sc, m()));
+    mk('Chép ảnh bảng', 'Chép nhanh ảnh phần bảng đang hiện để dán (Ctrl+V)', () => { const cv = render(sc, m()); if (cv) copy(cv, m().file); });
     mk('Tải PNG', 'Tải ảnh PNG phần bảng đang hiện', () => shot(sc, m()));
     return g;
   }
@@ -127,6 +134,7 @@
       const it = [];
       if (td.cellIndex > 0) it.push(['Chép ảnh ô này', () => copy(render(sc, { ...m, title: lab, sub: '', rows: [tr], cols: [cr.left, cr.right], compact: 1 }), m.file + '_o')]);
       it.push(['Chép ảnh dòng này', () => copy(render(sc, { ...m, sub: '', rows: [tr] }), m.file + '_dong')]);
+      it.push(['⇪ Chia sẻ ảnh bảng, tô sáng ô này (thêm caption)', () => share(sc, m, { hl })]);
       it.push(['Chép ảnh bảng, tô sáng ô này', () => copy(render(sc, { ...m, hl }), m.file + '_to-sang')]);
       it.push(['Chép ảnh bảng đang xem', () => copy(render(sc, m), m.file)]);
       it.push(['—'], ['Tải PNG: bảng, tô sáng ô này', () => download(render(sc, { ...m, hl }), m.file + '_to-sang')]);
@@ -142,5 +150,5 @@
       menu.querySelectorAll('button').forEach(b => b.onclick = () => { const f = it[+b.dataset.i][1]; closeMenu(); f(); });
     });
   }
-  window.FSTbl = { shot, button, render, copy, download, enhance };
+  window.FSTbl = { shot, button, render, copy, download, enhance, share };
 })();

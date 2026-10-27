@@ -83,8 +83,8 @@
     return out;
   }
   /* ---------- khung thời gian khi ghép ảnh ---------- */
-  const tdates = ch => (window.FSK && FSK.dates && (ch.data.labels || []).length >= 6) ? FSK.dates(ch.data.labels) : null;
-  const curWin = ch => { const x = (ch.options.scales && ch.options.scales.x) || {}, n = (ch.data.labels || []).length; return [typeof x.min === 'number' ? x.min : 0, typeof x.max === 'number' ? x.max : n - 1]; };
+  const tdates = ch => ch && (window.FSK && FSK.dates && (ch.data.labels || []).length >= 6) ? FSK.dates(ch.data.labels) : null;
+  const curWin = ch => { if (!ch) return [0, 0]; const x = (ch.options.scales && ch.options.scales.x) || {}, n = (ch.data.labels || []).length; return [typeof x.min === 'number' ? x.min : 0, typeof x.max === 'number' ? x.max : n - 1]; };
   function winOf(it) {   // [i0, i1] cần hiện cho chart này, hoặc null = giữ như trên chart
     const k = it.rng || st.rng, ch = it.meta.ch, ds = tdates(ch);
     if (!ds || k === 'cur') return null;
@@ -107,12 +107,17 @@
     if (win && sx) { ['min', 'max'].forEach(k => { if (keep[k] === undefined) delete sx[k]; else sx[k] = keep[k]; }); }
     ch.options.devicePixelRatio = old ?? Chart.defaults.devicePixelRatio; ch.options.animation = oldA; ch.resize(); ch.update('none');
   }
+  function put(x, mm, X, Y, w, h, zs, win) {   // chart: vẽ lại độ phân giải cao; bảng (ảnh dựng sẵn): đặt vừa khung, giữ tỉ lệ
+    if (!mm.img) return snap(x, mm.ch, X, Y, w, h, zs, win);
+    const r = Math.min(w / mm.img.width, h / mm.img.height), dw = mm.img.width * r, dh = mm.img.height * r;
+    x.imageSmoothingQuality = 'high'; x.drawImage(mm.img, X + (w - dw) / 2, Y, dw, dh);
+  }
   function lastLab(it) {   // kỳ dữ liệu cuối theo khung sẽ vẽ
-    const w = winOf(it); if (!w) return it.meta.last; const l = String((it.meta.ch.data.labels || [])[w[1]] || '');
+    if (!it.meta.ch) return it.meta.last; const w = winOf(it); if (!w) return it.meta.last; const l = String((it.meta.ch.data.labels || [])[w[1]] || '');
     return /\d{4}|\d{1,2}\/\d{1,2}|Q\d/.test(l) ? l : it.meta.last;
   }
   function firstLab(it) {
-    const w = winOf(it) || curWin(it.meta.ch); const l = String((it.meta.ch.data.labels || [])[w[0]] || '');
+    if (!it.meta.ch) return ''; const w = winOf(it) || curWin(it.meta.ch); const l = String((it.meta.ch.data.labels || [])[w[0]] || '');
     return tdates(it.meta.ch) ? l : '';
   }
   const uniq = a => [...new Set(a.filter(Boolean))];
@@ -157,7 +162,7 @@
     x.font = font('400', 16);
     const foot = wrap(x, (n === 1 && lastLab(st.items[0]) ? 'Kỳ dữ liệu: ' + lastLab(st.items[0]) + ' · ' : '') + 'Nguồn: ' + (n === 1 ? m.src : srcAll()), W - 2 * P - Math.round(260 * k), n === 1 ? 2 : 3);
     const fh = foot.length * Math.round(22 * k) + Math.round(34 * k), cy1 = H - fh;
-    if (n === 1) snap(x, m.ch, P, y, W - 2 * P, cy1 - y, st.fmt === 'tall' ? 1.3 : 1.6, winOf(st.items[0]));
+    if (n === 1) put(x, m, P, y, W - 2 * P, cy1 - y, st.fmt === 'tall' ? 1.3 : 1.6, winOf(st.items[0]));
     else {   // lưới chart: mỗi ô có tên chart, nhận định ngắn (nếu có), mô tả và kỳ dữ liệu
       const C = cols(n), R = Math.ceil(n / C), g = Math.round(28 * k), gy = Math.round(22 * k);
       const cw = (W - 2 * P - (C - 1) * g) / C, chh = (cy1 - Math.round(12 * k) - y - (R - 1) * gy) / R;
@@ -172,7 +177,7 @@
         const sub = [mm.sub, l1 ? (f0 && f0 !== l1 ? f0 + ' – ' + l1 : 'đến ' + l1) : ''].filter(Boolean).join(' · ');
         if (sub) { x.fillStyle = FIN.grey; x.font = font('400', small ? 12.5 : 13.5); wrap(x, sub, cw, 1).forEach(l => { x.fillText(l, X, yy); yy += Math.round(18 * k); }); }
         yy += Math.round(4 * k);
-        const hh = Y + chh - yy; if (hh > 40) snap(x, mm.ch, X, yy, cw, hh, Math.max(1, Math.min(1.5, cw / 640)), winOf(it));
+        const hh = Y + chh - yy; if (hh > 40) put(x, mm, X, yy, cw, hh, Math.max(1, Math.min(1.5, cw / 640)), winOf(it));
         if (c < inRow - 1) { x.fillStyle = FIN.line; x.fillRect(X + cw + g / 2, Y, 1, chh); }
       });
     }
@@ -271,7 +276,7 @@
     const old = new Map(st.items.map(it => [it.card, it.note]));
     const before = st.items.map(it => it.card).join();
     const oldR = new Map(st.items.map(it => [it.card, it.rng]));
-    st.items = cards.filter(c => document.body.contains(c)).slice(0, MAXN).map(c => ({ card: c, meta: meta(c), note: keepNotes ? old.get(c) || '' : '', rng: keepNotes ? oldR.get(c) || '' : '' }));
+    st.items = cards.filter(c => c._fssMeta || document.body.contains(c)).slice(0, MAXN).map(c => ({ card: c, meta: c._fssMeta || meta(c), note: keepNotes ? old.get(c) || '' : '', rng: keepNotes ? oldR.get(c) || '' : '' }));
     if (st.shapes.length && before !== st.items.map(it => it.card).join()) { st.shapes = []; msg('Bố cục thay đổi nên hình vẽ đã được xoá.'); }
   }
   function drawItems() {
@@ -289,6 +294,11 @@
     setItems(cards, false); if (!st.items.length) return;
     M.hidden = false; document.body.classList.add('fss-open'); syncUi(); refresh();
   }
+  window.FSShareImage = o => {   // o = { img: canvas, title, sub, src, last }
+    const page = txt(document.querySelector('.site-nav a.on')) || 'FinSuccess';
+    st.fmt = o.img.height > o.img.width * 0.62 ? 'tall' : 'wide';   // bảng cao thì mở sẵn khung dọc 4:5
+    open([{ _fssMeta: { ch: null, img: o.img, title: o.title || 'Bảng số liệu', sub: o.sub || '', src: cleanSrc(o.src || ''), last: o.last || '', page, ins: o.ins || '', path: [page] } }]);
+  };
   function close() { M.hidden = true; PK.hidden = true; document.body.classList.remove('fss-open'); M.querySelector('.fss-txt').hidden = true; }
   const blob = () => new Promise(r => finalCanvas().toBlob(r, 'image/png'));
   const fname = () => 'FinSuccess_' + plain(st.key && st.items.length > 1 ? st.key : first().title).replace(/[^\w\- ]+/g, '').trim().slice(0, 60) + '_' + new Date().toLocaleDateString('vi-VN').replace(/\//g, '-') + '.png';
