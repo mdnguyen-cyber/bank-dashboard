@@ -1213,6 +1213,7 @@ function gUS() {
   </div>
   <h3 class="sec2">Lãi suất Fed và kỳ vọng lãi suất</h3>
   ${fedWatchCard()}
+  ${oisCards()}
   <div class="grid g2 gap">
   ${card({ id: 'gUsRates', title: 'Lợi suất TPCP Mỹ và lãi suất Fed', sub: '%/năm, theo ngày · EFFR, 2 năm, 10 năm', src: gsrc(['us_10y']) })}
     ${card({ id: 'gUsTaylor', title: 'Quy tắc Taylor so với lãi suất Fed thực tế', h: 'tall', sub: `i* = r* + π + 0,5(π − 2) + 0,5 × độ lệch sản lượng · V1: lệch GDP (CBO) · V2: lệch thất nghiệp × (−2) (Okun) · r* = HLW (NY Fed)`, body: tfPick('usTay', [['core', 'π = PCE lõi'], ['trim', 'π = PCE trimmed mean']]), insight: '<span id="gTayIns"></span>', src: gsrc(['us_pce_core', 'us_rstar', 'us_gdp']) })}
@@ -1239,6 +1240,46 @@ function gUS() {
   ${card({ id: 'gUsSurvey', title: 'PMI ISM và niềm tin tiêu dùng', h: 'tall', sub: 'PMI: trên 50 = mở rộng (trục trái) · niềm tin tiêu dùng ĐH Michigan (trục phải, 1966 = 100)', insight: usSurveyIns(), src: 'ISM; Đại học Michigan (qua FRED)' })}
   ${card({ id: 'gUsInfExp', title: 'Kỳ vọng lạm phát của hộ gia đình so với CPI', h: 'tall', sub: '% · kỳ vọng 1 năm và 5–10 năm (khảo sát ĐH Michigan) so với CPI thực tế so cùng kỳ', insight: usInfExpIns(), src: 'Đại học Michigan (qua FRED); BLS' })}
   </div>`;
+}
+/* ---- Đường cong OIS (SOFR) Mỹ — tính từ hợp đồng tương lai SOFR (scripts/fetch_ois.py) ---- */
+function oisSnaps() {
+  const O = GD.ois; if (!O || !O.hist) return null;
+  const ds = Object.keys(O.hist).sort(), last = ds[ds.length - 1];
+  const at = n => { const t = new Date(new Date(last) - n * 864e5).toISOString().slice(0, 10); return ds.filter(d => d <= t).pop(); };
+  return { O, ds, last, w: at(7), m: at(30) };
+}
+function oisCards() {
+  const S = oisSnaps(); if (!S) return '';
+  const { O, last, w, m } = S, c = O.hist[last], cw = w && O.hist[w], cm = m && O.hist[m], sp = O.sofr;
+  const bp = (a, b) => a != null && b != null ? (a - b) * 100 : null;
+  const U = GD.ustCurve, uc = U && U.c[0], ust = t => uc ? uc.v[U.t.indexOf(t)] : null;
+  const ins = `${dvn(last)}: OIS 3 tháng <b>${pc(c['3M'], 2)}</b>, 1 năm <b>${pc(c['1Y'], 2)}</b>, 2 năm <b>${pc(c['2Y'], 2)}</b>${c['5Y'] != null ? `, 5 năm ${pc(c['5Y'], 2)}` : ''}; SOFR ${sp ? `${pc(sp.v, 2)} (${dvn(sp.d)})` : '—'}.`
+    + (sp ? ` OIS 1 năm thấp hơn SOFR hiện tại <b>${sg(bp(c['1Y'], sp.v), 0, ' bps')}</b> — mức lãi suất bình quân thị trường định giá cho 12 tháng tới; 2 năm ${sg(bp(c['2Y'], sp.v), 0, ' bps')} so với SOFR.` : '')
+    + (cw ? ` So với 1 tuần trước: 1 năm ${sg(bp(c['1Y'], cw['1Y']), 0, ' bps')}, 2 năm ${sg(bp(c['2Y'], cw['2Y']), 0, ' bps')}` : '') + (cm ? `; 1 tháng: 1 năm ${sg(bp(c['1Y'], cm['1Y']), 0, ' bps')}, 2 năm ${sg(bp(c['2Y'], cm['2Y']), 0, ' bps')}.` : '.')
+    + (ust('2Y') != null ? ` Chênh OIS − TPCP: 2 năm ${sg(bp(c['2Y'], ust('2Y')), 0, ' bps')}${c['5Y'] != null && ust('5Y') != null ? `, 5 năm ${sg(bp(c['5Y'], ust('5Y')), 0, ' bps')}` : ''}.` : '')
+    + how('OIS là lãi suất cố định đổi lấy SOFR cộng dồn trong suốt kỳ hạn, nên phản ánh gần như thuần túy kỳ vọng lãi suất qua đêm (ít rủi ro tín dụng, không có phần bù kỳ hạn lớn như TPCP). OIS thấp hơn SOFR = thị trường định giá Fed hạ lãi suất trong kỳ hạn đó; OIS cao hơn = định giá tăng. Chênh OIS − TPCP âm nghĩa là TPCP đang phải trả lợi suất cao hơn mức kỳ vọng lãi suất thuần, thường do nguồn cung TPCP lớn.');
+  const tl = O.tenors.filter(t => c[t] != null);
+  return `<div class="grid g2 gap">
+    ${card({ id: 'gUsOis', title: 'Đường cong OIS (SOFR) Mỹ', h: 'tall', sub: `%/năm · lãi suất cố định của hoán đổi chỉ số qua đêm theo kỳ hạn, so với 1 tuần và 1 tháng trước · đường xám = lợi suất TPCP cùng kỳ hạn · đỏ = SOFR`, insight: ins,
+      src: 'Ước tính FinSuccess từ giá hợp đồng tương lai SOFR 1 tháng và 3 tháng (CME, qua Yahoo Finance), chưa điều chỉnh độ lồi; SOFR: Fed New York; lợi suất TPCP: U.S. Treasury' })}
+    ${card({ id: 'gUsOisTs', title: 'OIS (SOFR) Mỹ theo thời gian', h: 'tall', sub: '%/năm, theo phiên · kỳ hạn 3 tháng, 1 năm, 2 năm, 5 năm so với SOFR',
+      src: 'Ước tính FinSuccess từ hợp đồng tương lai SOFR (CME); SOFR: Fed New York' })}
+  </div>`;
+}
+function drawOis() {
+  const S = oisSnaps(); if (!S || !document.getElementById('gUsOis')) return;
+  const { O, ds, last, w, m } = S, T = O.tenors.filter(t => O.hist[last][t] != null);
+  const U = GD.ustCurve, uc = U && U.c[0];
+  const set = [[last, 'Hiện tại', C.navy, []], [w, '1 tuần trước', C.tealInk, [4, 3]], [m, '1 tháng trước', C.gold, [2, 3]]].filter((x, i) => x[0] && (i === 0 || x[0] !== last));
+  const dsets = set.map(([d, lab, col, dash], i) => L(`${lab} (${dvn(d)})`, T.map(t => O.hist[d][t] ?? null), col, { borderDash: dash, pointRadius: i ? 2 : 3, borderWidth: i ? 1.6 : 2.6 }));
+  if (uc) dsets.push(L(`Lợi suất TPCP (${dvn(uc.d)})`, T.map(t => { const k = t === '18M' || t === '9M' || t === '4Y' ? -1 : U.t.indexOf(t); return k < 0 ? null : uc.v[k]; }), C.grey, { borderDash: [5, 4], pointRadius: 2, spanGaps: true }));
+  if (O.sofr) dsets.push(L(`SOFR (${dvn(O.sofr.d)})`, T.map(() => O.sofr.v), C.red, { borderDash: [2, 3], borderWidth: 1.2 }));
+  mk('gUsOis', { type: 'line', data: { labels: T, datasets: dsets }, options: { plugins: { legend: { display: true, position: 'bottom' } }, scales: { y: pctAxis('', { beginAtZero: false }) } } });
+  const sh = O.sofrHist || {}, sd = Object.keys(sh).sort(), lastS = d => { const k = sd.filter(x => x <= d).pop(); return k ? sh[k] : null; };
+  mk('gUsOisTs', { type: 'line', data: { labels: ds.map(dvn), datasets: [
+    L('OIS 3 tháng', ds.map(d => O.hist[d]['3M'] ?? null), C.tealInk), L('OIS 1 năm', ds.map(d => O.hist[d]['1Y'] ?? null), C.navy, { borderWidth: 2.4 }),
+    L('OIS 2 năm', ds.map(d => O.hist[d]['2Y'] ?? null), C.gold), L('OIS 5 năm', ds.map(d => O.hist[d]['5Y'] ?? null), C.purple),
+    L('SOFR', ds.map(lastS), C.red, { borderDash: [2, 3], borderWidth: 1.2 })] }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
 }
 /* ---- Kỳ vọng lãi suất Fed theo phiên FOMC (phương pháp CME FedWatch, tính từ giá ZQ) ---- */
 function fedWatchCard(o = {}) {
@@ -1445,6 +1486,7 @@ function drUS() {
     options: { scales: { y: numAxis('nghìn'), y1: pctAxis('', { position: 'right', grid: { display: false } }) } } });
   mk('gUsSpr', { type: 'line', data: gLines(['sofr_iorb', 'tgcr_iorb', 'sofr99_iorb'], ['SOFR − IORB', 'TGCR − IORB', 'SOFR p99 − IORB'], [C.navy, C.tealInk, C.red], { unit: ' bps', dp: 0 }), options: { plugins: { refLines: { lines: [{ value: 0, label: '' }] } }, scales: { y: numAxis('bps') } } });
   drawFedPath();
+  drawOis();
   mk('gUsRates', { type: 'line', data: gLines(['us_effr_d', 'us_2y_d', 'us_10y_d'], ['EFFR', '2 năm', '10 năm'], [C.navy, C.gold, C.red], { from: '2021-01-01' }), options: { scales: { y: pctAxis('') } } });
   drUSFlow();
 }

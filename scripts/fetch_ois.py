@@ -73,7 +73,7 @@ def main():
             sr1[(d.year, d.month)] = p
     q0 = add_months(today.replace(day=1), -6)
     k, n = 0, 0
-    while n < 26 and k < 40:
+    while n < 28 and k < 90:
         d = add_months(q0, k); k += 1
         if d.month % 3:
             continue
@@ -93,10 +93,10 @@ def main():
         v = dt.date.fromisoformat(vd)
         spot = [r for x, r in sofr.items() if x <= vd]
         spot = sofr[max(x for x in sofr if x <= vd)] if spot else None
-        starts = sorted(imm(y, m) for (y, m) in sr3)
-        nxt = next((s for s in starts if s > v), None)
-        if nxt is None:
-            return None
+        qy, qm = v.year, ((v.month - 1) // 3 + 1) * 3   # quý IMM kế tiếp (không phụ thuộc hợp đồng nào có giá)
+        if imm(qy, qm) <= v:
+            qy, qm = qy + qm // 12, qm % 12 + 3
+        nxt = imm(qy, qm)
         per = []   # (bắt đầu, kết thúc, lãi suất %)
         cur = v
         while cur < nxt:   # các tháng trước IMM kế tiếp: SR1 (hoặc SOFR nếu thiếu)
@@ -106,17 +106,31 @@ def main():
             if r is None:
                 return None
             per.append((cur, me, r)); cur = me
-        for (y, m) in sorted(sr3):
-            s = imm(y, m)
-            if s < nxt:
-                continue
-            if s != cur:
-                break   # đứt quãng
-            e = imm(y + (m + 2) // 12, (m + 2) % 12 + 1)
-            p = px(sr3[(y, m)], vd)
-            if p is None:
-                break
-            per.append((s, e, 100 - p)); cur = e
+        avail = {}   # quý → lãi suất SR3 tại phiên vd
+        for (y, m), p in sr3.items():
+            v_ = px(p, vd)
+            if v_ is not None:
+                avail[(y, m)] = 100 - v_
+        if avail:
+            y, m = qy, qm
+            lastq = max(avail)
+            gap = 0
+            while y is not None and (y, m) <= lastq:
+                s_, e_ = imm(y, m), imm(y + (m + 2) // 12, (m + 2) % 12 + 1)
+                r = avail.get((y, m))
+                if r is None:   # thiếu hợp đồng: nội suy tuyến tính giữa hai quý gần nhất có giá
+                    lo_ = max((k_ for k_ in avail if k_ < (y, m)), default=None); hi_ = min((k_ for k_ in avail if k_ > (y, m)), default=None)
+                    gap += 1
+                    if lo_ is None or hi_ is None or gap > 2:
+                        break
+                    f_ = ((y * 12 + m) - (lo_[0] * 12 + lo_[1])) / ((hi_[0] * 12 + hi_[1]) - (lo_[0] * 12 + lo_[1]))
+                    r = avail[lo_] + f_ * (avail[hi_] - avail[lo_])
+                else:
+                    gap = 0
+                per.append((s_, e_, r)); cur = e_
+                y, m = y + (m + 2) // 12, (m + 2) % 12 + 1
+        if not per:
+            return None
         end = per[-1][1]
 
         def G(t):
@@ -149,7 +163,7 @@ def main():
         if d < (today - dt.timedelta(days=95)).isoformat():
             continue
         c = curve(d)
-        if c and len(c) >= 6:
+        if c and len(c) >= 5:
             hist[d] = c
     last = max(hist) if hist else None
     if not last:
@@ -158,7 +172,7 @@ def main():
           'sofr': {'d': max(sofr), 'v': sofr[max(sofr)]} if sofr else None,
           'sofrHist': dict(sorted(sofr.items())),
           'hist': dict(sorted(hist.items())),
-          'contracts': {'sr1': len(sr1), 'sr3': len(sr3)}}
+          'contracts': {'sr1': len(sr1), 'sr3': sorted(f'{MCODE[m - 1]}{y % 100:02d}' for y, m in sr3)}}
     OUT.write_text(json.dumps(js, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     print('ois', last, hist[last])
 
