@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu Wi MCP; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-27T10:38Z"
+  "auto": "2026-10-27T15:45Z"
  },
  "idx": {
   "now": {
@@ -6540,6 +6540,10 @@
    {
     "d": "2026-10-26",
     "v": 26500.0
+   },
+   {
+    "d": "2026-10-27",
+    "v": 26140.0
    }
   ],
   "nhtmD": [
@@ -42065,6 +42069,10 @@
     {
      "d": "2026-10-23",
      "v": 3.95
+    },
+    {
+     "d": "2026-10-26",
+     "v": 4.27
     }
    ],
    "1W": [
@@ -47855,6 +47863,10 @@
     {
      "d": "2026-10-23",
      "v": 4.08
+    },
+    {
+     "d": "2026-10-26",
+     "v": 5.0
     }
    ],
    "1M": [
@@ -53645,6 +53657,10 @@
     {
      "d": "2026-10-23",
      "v": 5.25
+    },
+    {
+     "d": "2026-10-26",
+     "v": 4.83
     }
    ],
    "3M": [
@@ -59435,6 +59451,10 @@
     {
      "d": "2026-10-23",
      "v": 6.9
+    },
+    {
+     "d": "2026-10-26",
+     "v": 7.12
     }
    ],
    "6M": [
@@ -65225,6 +65245,10 @@
     {
      "d": "2026-10-23",
      "v": 8.02
+    },
+    {
+     "d": "2026-10-26",
+     "v": 7.59
     }
    ],
    "9M": [
@@ -71015,6 +71039,10 @@
     {
      "d": "2026-10-23",
      "v": 8.7
+    },
+    {
+     "d": "2026-10-26",
+     "v": 8.7
     }
    ]
   },
@@ -71702,6 +71730,10 @@
    {
     "d": "2026-10-26",
     "v": 90000.7
+   },
+   {
+    "d": "2026-10-27",
+    "v": 96358.1
    }
   ],
   "tpOut": [
@@ -74507,6 +74539,10 @@
    },
    {
     "d": "2026-10-26",
+    "v": 0.0
+   },
+   {
+    "d": "2026-10-27",
     "v": 0.0
    }
   ]
@@ -124387,6 +124423,77 @@
    ]
   },
   {
+   "d": "2026-10-27",
+   "t": "Tối 27/10, 15 ngân hàng đã công bố lợi nhuận 9 tháng: Một nhà băng vượt kế hoạch cả năm, hai cái tên đầu tiên sụt giảm",
+   "src": "CafeF",
+   "url": "https://cafef.vn/toi-27-10-15-ngan-hang-da-cong-bo-loi-nhuan-9-thang-mot-nha-bang-vuot-ke-hoach-ca-nam-hai-cai-ten-dau-tien-sut-giam-1882610272113363.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-27",
+   "t": "Kiểm toán Nhà nước trước yêu cầu đổi mới trong bối cảnh mới",
+   "src": "CafeF",
+   "url": "https://cafef.vn/kiem-toan-nha-nuoc-truoc-yeu-cau-doi-moi-trong-boi-canh-moi-18826102720244169.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-27",
+   "t": "Fitch nâng xếp hạng tín nhiệm Techcombank: Mở rộng lợi thế trên thị trường vốn quốc tế",
+   "src": "CafeF",
+   "url": "https://cafef.vn/fitch-nang-xep-hang-tin-nhiem-techcombank-mo-rong-loi-the-tren-thi-truong-von-quoc-te-188261027201815178.chn",
+   "sym": [
+    "TCB"
+   ]
+  },
+  {
+   "d": "2026-10-27",
+   "t": "Sắp xét xử vắng mặt nguyên Giám đốc SeaBank Hai Bà Trưng trốn truy nã",
+   "src": "CafeF",
+   "url": "https://cafef.vn/sap-xet-xu-vang-mat-nguyen-giam-doc-seabank-hai-ba-trung-tron-truy-na-188261027134317016.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-27",
+   "t": "VietABank tăng trưởng hiệu quả, tiếp sức doanh nghiệp phát triển",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vietabank-tang-truong-hieu-qua-tiep-suc-doanh-nghiep-phat-trien-188261027161749424.chn",
+   "sym": [
+    "VAB"
+   ]
+  },
+  {
+   "d": "2026-10-27",
+   "t": "Tình hình quy mô nhân sự và thu nhập cán bộ nhân viên Sacombank hiện nay",
+   "src": "CafeF",
+   "url": "https://cafef.vn/tinh-hinh-quy-mo-nhan-su-va-thu-nhap-can-bo-nhan-vien-sacombank-hien-nay-188261027164729054.chn",
+   "sym": [
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-27",
+   "t": "Ngân hàng tư nhân thứ 5 của Việt Nam vượt mốc tài sản 1 triệu tỷ đồng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngan-hang-tu-nhan-thu-5-cua-viet-nam-vuot-moc-tai-san-1-trieu-ty-dong-188261027154652914.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-27",
+   "t": "Sacombank giảm nhân sự xuống thấp nhất 10 năm",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/sacombank-giam-nhan-su-xuong-thap-nhat-10-nam-5137594.html",
+   "sym": [
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-27",
+   "t": "SCB giảm lãi suất tiết kiệm xuống gần 0%",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/scb-giam-lai-suat-tiet-kiem-xuong-gan-0-5137507.html",
+   "sym": []
+  },
+  {
    "d": "2026-10-26",
    "t": "NHNN đề xuất quy định mới về thuê ngoài, kiểm soát rủi ro tại công ty tài chính",
    "src": "CafeF",
@@ -125910,90 +126017,6 @@
     "ACB",
     "BID",
     "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-19",
-   "t": "Ngân hàng sẵn sàng giảm lợi nhuận để ưu tiên vốn lưu động giá rẻ cho doanh nghiệp",
-   "src": "vneconomy",
-   "url": "https://vneconomy.vn/ngan-hang-san-sang-giam-loi-nhuan-de-uu-tien-von-luu-dong-gia-re-cho-doanh-nghiep.htm",
-   "sym": [
-    "BID",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-19",
-   "t": "Lãnh đạo ngân hàng lớn nói gì sau cuộc họp khẩn với Thống đốc?",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/lanh-dao-ngan-hang-lon-noi-gi-sau-cuoc-hop-khan-voi-thong-doc-d152255.html",
-   "sym": [
-    "ACB",
-    "BID",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-19",
-   "t": "Không chấp hành chỉ đạo về lãi suất, ngân hàng có thể bị giảm room tín dụng trong năm 2027",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/khong-chap-hanh-chi-dao-ve-lai-suat-ngan-hang-co-the-bi-giam-room-tin-dung-trong-nam-2027-1471209.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-19",
-   "t": "Agribank, BIDV, Vietcombank, ACB cùng loạt ngân hàng giảm lãi suất cho vay, ưu đãi tới 2%/năm",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/agribank-bidv-vietcombank-acb-cung-loat-ngan-hang-giam-lai-suat-cho-vay-uu-dai-toi-2-nam-1471236.html",
-   "sym": [
-    "ACB",
-    "BID",
-    "LPB",
-    "STB",
-    "VBB",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-18",
-   "t": "NHNN yêu cầu các nhà băng giảm lãi suất huy động ít nhất 0,5%, tuyệt đối không đua nhau tăng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-it-nhat-0-5-tuyet-doi-khong-dua-nhau-tang-1471113.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-18",
-   "t": "NHNN yêu cầu các nhà băng giảm lãi suất huy động ít nhất 0,5%, tuyệt đối không đua nhau tăng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-huy-dong-it-nhat-0-5-tuyet-doi-khong-dua-nhau-tang-1471113.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-14",
-   "t": "Chủ tịch Eximbank Nguyễn Lê Quốc Anh: Thay đổi room ngoại sẽ tác động tích cực tới định giá cổ phiếu",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/chu-tich-eximbank-nguyen-le-quoc-anh-thay-doi-room-ngoai-se-tac-dong-tich-cuc-toi-dinh-gia-co-phieu-1470577.html",
-   "sym": [
-    "EIB"
-   ]
-  },
-  {
-   "d": "2026-10-14",
-   "t": "Phường Hồng Bàng điều chỉnh tăng dự toán thu ngân sách hơn 450 tỷ đồng",
-   "src": "Báo Hải Phòng",
-   "url": "https://baohaiphong.vn/phuong-hong-bang-dieu-chinh-tang-du-toan-thu-ngan-sach-hon-450-ty-dong-555765.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-14",
-   "t": "VIS Rating điểm tên loạt ngân hàng có dư nợ cho vay bất động sản đáng chú ý",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/vis-rating-diem-ten-loat-ngan-hang-co-du-no-cho-vay-bat-dong-san-dang-chu-y-1470549.html",
-   "sym": [
-    "MBB",
-    "TCB",
-    "VIB",
-    "VPB"
    ]
   }
  ],
