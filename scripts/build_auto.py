@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Lớp cập nhật tự động (chạy trên GitHub Actions sau các script fetch_*): nối số mới từ nguồn công khai vào data/sector-data.json
-mà không cần AI gọi WiData. Bản dựng đầy đủ từ WiData (build_sector_data.py) vẫn là nền; lớp này chỉ nối phần mới hơn.
+mà không cần AI gọi Wi MCP. Bản dựng đầy đủ từ Wi MCP (build_sector_data.py) vẫn là nền; lớp này chỉ nối phần mới hơn.
 - Giá, P/B, P/E, vốn hoá 26 ngân hàng: VNDirect (data/vn/market.json)
 - Định giá ngành (secVal): co giãn theo tổng vốn hoá / vốn chủ / lợi nhuận suy ra từ P/B, P/E từng ngân hàng
 - Giá vàng thế giới: COMEX qua Yahoo Finance
@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 J = lambda p: json.loads((ROOT / p).read_text(encoding='utf-8')) if (ROOT / p).exists() else None
 
 # dom key → (trang dulieukinhte, tên dòng chính xác, kiểu): 'd' = theo ngày (nối điểm mới), 'm' = theo tháng (ngày đầu tháng)
-# (đã đối chiếu khớp số WiData; CPI và M2 của nguồn này khác định nghĩa/kỳ gốc nên không nối)
+# (đã đối chiếu khớp số Wi MCP; CPI và M2 của nguồn này khác định nghĩa/kỳ gốc nên không nối)
 DOM_MAP = {
     'creditYtd': ('tang-truong-tin-dung-toc-do-353', 'TỔNG CỘNG', 'm'),
     'freeD': ('ty-gia-cho-den-719', 'Bán ra', 'd'),
@@ -64,7 +64,7 @@ def main():
         if r.get('price') and close:
             k = close / r['price']   # vốn hoá theo giá; P/B, P/E lấy VNDirect nếu có, không thì co giãn theo giá
             r['mcap'] = round(r['mcap'] * k) if r.get('mcap') else r.get('mcap')
-            r['pb'] = round(r['pb'] * k, 2) if r.get('pb') else r.get('pb')   # giữ cách tính vốn chủ, lợi nhuận của bản WiData, chỉ co giãn theo giá
+            r['pb'] = round(r['pb'] * k, 2) if r.get('pb') else r.get('pb')   # giữ cách tính vốn chủ, lợi nhuận của bản Wi MCP, chỉ co giãn theo giá
             r['pe'] = round(r['pe'] * k, 2) if r.get('pe') else r.get('pe')
             if r.get('pppop'):
                 r['pppop'] = round(r['pppop'] * k, 2)
@@ -78,7 +78,7 @@ def main():
             c['upside'] = round((med / px_of[c['s']] - 1) * 100, 1)
     rep['banks'] = f'{upd}/{len(rows)} ngân hàng, giá đến {pdate}'
 
-    # 2) định giá ngành: co giãn mức WiData theo thay đổi tổng hợp từ các ngân hàng
+    # 2) định giá ngành: co giãn mức Wi MCP theo thay đổi tổng hợp từ các ngân hàng
     mc = sum(r.get('mcap') or 0 for r in rows)
     eq = sum(r['mcap'] / r['pb'] for r in rows if r.get('mcap') and r.get('pb'))
     er = sum(r['mcap'] / r['pe'] for r in rows if r.get('mcap') and r.get('pe') and r['pe'] > 0)

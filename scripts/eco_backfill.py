@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Tạo data/backfill/eco_wi.json từ response WiData gốc (data/raw/wi, không commit): các chuỗi vĩ mô VN mà nguồn
+"""Tạo data/backfill/eco_wi.json từ response Wi MCP gốc (data/raw/wi, không commit): các chuỗi vĩ mô VN mà nguồn
 tự động (dulieukinhte.com) chưa có hoặc bị đổi kỳ gốc — CPI theo nhóm (YoY), lạm phát cơ bản, FDI thực hiện/đăng ký,
-giải ngân vốn đầu tư từ ngân sách, GDP quý (YoY) — cùng dự báo CPI của các tổ chức. Chạy lại sau mỗi lần lấy số WiData."""
+giải ngân vốn đầu tư từ ngân sách, GDP quý (YoY) — cùng dự báo CPI của các tổ chức. Chạy lại sau mỗi lần lấy số Wi MCP."""
 import json
 from pathlib import Path
 

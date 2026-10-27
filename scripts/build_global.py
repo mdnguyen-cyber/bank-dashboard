@@ -1,7 +1,7 @@
 """data/global/series.json (nguồn public) → data/global-data.js (window.GLOBAL_DATA) cho tab Quốc tế.
 
 Tính: YoY / MoM / 3 tháng quy năm từ chỉ số giá, Taylor rule (V1 lệch GDP, V2 lệch thất nghiệp × Okun −2),
-bậc thang thanh khoản Mỹ, quy đổi tài sản NHTW sang tỷ USD. Không dùng WiData.
+bậc thang thanh khoản Mỹ, quy đổi tài sản NHTW sang tỷ USD. Không dùng Wi MCP.
 """
 import json
 from datetime import date

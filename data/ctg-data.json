@@ -19,7 +19,7 @@
   "view": null,
   "irUrl": "https://investor.vietinbank.vn/",
   "strategic": "MUFG",
-  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "Wi MCP eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 22.2,
   "roa": 1.45,
   "nim": 2.75,
@@ -5114,7 +5114,7 @@
    "llrInclAccrued": 75.5
   }
  ],
- "quarterlyNote": "BCTC hợp nhất từ WiData (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
+ "quarterlyNote": "BCTC hợp nhất từ Wi MCP (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
  "formula": {
   "creditCost": "Chi phí dự phòng 4 quý gần nhất / dư nợ cho vay KH bình quân 5 quý (BNK-13)",
   "nplFormation": "Hình thành nợ xấu ròng = NPL cuối − NPL đầu + nợ xử lý bằng dự phòng. Nợ xử lý lấy số thực tế trong thuyết minh (sử dụng dự phòng rủi ro tín dụng) khi có; kỳ không có thì ước tính = dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ. Ròng: đã trừ nợ xấu thu hồi, bán, nâng nhóm",
@@ -5639,7 +5639,7 @@
   "ytdLabel": "6T/2026",
   "pbtYTD": 25868.1,
   "npatYTD": 20743.5,
-  "src": "WiData co_plans (ĐHĐCĐ 24/04/2026); YTD cộng từ BCTC quý",
+  "src": "Wi MCP co_plans (ĐHĐCĐ 24/04/2026); YTD cộng từ BCTC quý",
   "pbtDone": 60.7,
   "npatDone": 60.9,
   "pbtYTDyoy": 36.7,
@@ -23838,7 +23838,7 @@
     }
    }
   ],
-  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
+  "src": "Wi MCP co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
   "subs": [
    {
     "name": "CTCP Chứng khoán Ngân hàng Công thương Việt Nam",
@@ -43445,7 +43445,7 @@
    "s": 463.97,
    "v": 1669.01
   },
-  "src": "WiData eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
+  "src": "Wi MCP eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
  },
  "valuation": {
   "history": [
@@ -44071,7 +44071,7 @@
    "divPaid": 3553.4,
    "rightsCash": 0
   },
-  "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
+  "src": "Wi MCP co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
  "events": [
   {
@@ -44081,7 +44081,7 @@
    "impact": "+",
    "status": "pending",
    "detail": "Ước tính khác nhau giữa CTCK: ~800 tỷ (VDS), ~1.000 tỷ (VDS 06/2026), 2.000–3.000 tỷ (KAFI); thời điểm từng được kỳ vọng Q2, rồi 08/2026, chưa xác nhận hoàn tất.",
-   "src": "WiData ai_news — báo cáo CTCK 05–09/2026"
+   "src": "Wi MCP ai_news — báo cáo CTCK 05–09/2026"
   },
   {
    "d": "2026-12-31",
@@ -44090,7 +44090,7 @@
    "impact": "+",
    "status": "pending",
    "detail": "Vốn điều lệ 77.669 tỷ (Q2/2026); Agriseco nêu kế hoạch lên hơn 105.000 tỷ. CAR 2025 9,89% là ràng buộc chính của tăng trưởng.",
-   "src": "WiData ai_news; BCTC Q2/2026"
+   "src": "Wi MCP ai_news; BCTC Q2/2026"
   },
   {
    "d": "2026-12-01",
@@ -44108,7 +44108,7 @@
    "impact": "+",
    "status": "pending",
    "detail": "GTCG ổn định vì không rút trước hạn; theo TT50, GTCG do TCTD khác nắm giữ bị loại khỏi LDR.",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-10-20",
@@ -44124,7 +44124,7 @@
    "t": "Bản cáo bạch và thông báo chào bán trái phiếu ra công chúng",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-10-08",
@@ -44132,7 +44132,7 @@
    "t": "Giấy chứng nhận đăng ký chào bán trái phiếu ra công chúng",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-10-01",
@@ -44140,7 +44140,7 @@
    "t": "Báo cáo kết quả đợt chào bán cổ phiếu PHP do Vietinbank sở hữu ra công chúng",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-09-17",
@@ -44148,7 +44148,7 @@
    "t": "Nghị quyết HĐQT về việc thông qua các nội dung liên quan đến phương án phát hành trái phiếu ra công chúng",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-27",
@@ -44156,7 +44156,7 @@
    "t": "Trả cổ tức năm 2025 bằng tiền 450 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-08-22",
@@ -44164,7 +44164,7 @@
    "t": "HĐQT thông qua nội dung hợp đồng khung tiền gửi bằng VND với MUFG Chi nhánh TPHCM",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-21",
@@ -44172,7 +44172,7 @@
    "t": "Nghị quyết HĐQT về việc thông qua các Hợp đồng hạn mức với MUFG - Chi nhánh TP.HCM",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-01",
@@ -44181,7 +44181,7 @@
    "impact": "+",
    "status": "done",
    "detail": "Big 4 hưởng lợi nhiều nhất do giữ nhiều tiền gửi KBNN. NHSV ước dư địa cho vay thêm ~55.000 tỷ cho CTG.",
-   "src": "Công thức LDR WiData; WiData ai_news"
+   "src": "Công thức LDR Wi MCP; Wi MCP ai_news"
   },
   {
    "d": "2026-07-31",
@@ -44189,7 +44189,7 @@
    "t": "Báo cáo tình hình quản trị 6 tháng đầu năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-30",
@@ -44198,7 +44198,7 @@
    "detail": "Ngân hàng TMCP Công Thương Việt Nam (HOSE: CTG) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 2.2026 tích cực đạt 11.740 tỷ đồng (+21.4%YoY). Lũy kế 6 tháng đầu năm 2026, LNST cổ đông công ty mẹ vượt trội đạt 20.657 tỷ đồng (+36.9%YoY), hoàn thành 60.6% kế hoạch năm và 50.4% lợi nhuận dự phóng từ các CTCK (Kỳ vọng 2026F: 41.013 tỷ đồng, tăng 18.5%YoY). Về định giá P/E forward ở mức 6.1 lần so với P/E trailing 5.9 lần.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-07-27",
@@ -44206,7 +44206,7 @@
    "t": "Báo cáo định kỳ tình hình thanh toán gốc, lãi trái phiếu doanh nghiệp (từ 01/01/2026 - 30/06/2026)",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-22",
@@ -44214,7 +44214,7 @@
    "t": "Thông báo về việc kéo dài thời gian giữ chức vụ Phó TGĐ",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-08",
@@ -44222,7 +44222,7 @@
    "t": "HĐQT thông qua hợp đồng khung vay vốn qua kênh tài trợ TM với MUFG Singapore",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-08",
@@ -44230,7 +44230,7 @@
    "t": "CBTT chào bán cổ phiếu PHP do Vietinbank sở hữu ra công chúng",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-01",
@@ -44238,7 +44238,7 @@
    "t": "Nhận được Quyết định và Thông báo của HNX về việc hủy niêm yết trái phiếu CTG123018",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-06-30",
@@ -44246,7 +44246,7 @@
    "t": "CBTT thông qua nội dung Thỏa thuận sửa đổi của Thỏa thuận và Hợp đồng với MUFG Bank",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-06-25",
@@ -44254,7 +44254,7 @@
    "t": "Thông báo thay đổi nhân sự - Miễn nhiệm và bổ nhiệm Phó TGĐ",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-06-17",
@@ -44262,7 +44262,7 @@
    "t": "Thông báo ký hợp đồng kiểm toán BCTC 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-05-27",
@@ -44270,7 +44270,7 @@
    "t": "Thông báo thay đổi nhân sự",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-04-29",
@@ -44279,7 +44279,7 @@
    "detail": "Ngân hàng TMCP Công Thương Việt Nam (HOSE:CTG) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 1.2026 vượt trội đạt 8.917 tỷ đồng (+64.6% YoY), hoàn thành 34.3% kế hoạch năm. Các chỉ số tài chính khả quan với tăng trưởng tín dụng 12.5% và nợ xấu ở mức 1.0%.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-04-24",
@@ -44287,7 +44287,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-04-21",
@@ -44296,7 +44296,7 @@
    "detail": "Ngân hàng TMCP Công Thương Việt Nam (HOSE:CTG) công bố lợi nhuận sau thuế công ty mẹ Quý 4.2025 ổn định đạt 11.067 tỷ đồng (+12.9% YoY), đưa lũy kế cả năm 2025 lên mức 34.604 tỷ đồng, tăng 36.5% so với kết quả năm 2024. Các chỉ số tài chính khả quan với tăng trưởng tín dụng 15.6%, nợ xấu ở mức 1.1% và NIM đạt 2.6%.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2025-12-17",
@@ -44304,7 +44304,7 @@
    "t": "Trả cổ tức năm 2025 bằng cổ phiếu tỷ lệ 100:44.63658403",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-11-17",
@@ -44312,7 +44312,7 @@
    "t": "Trả cổ tức năm 2024 bằng tiền 450 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-04-01",
@@ -44320,7 +44320,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2025",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-10-17",
@@ -44328,7 +44328,7 @@
    "t": "Họp ĐHCĐ Bất thường năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-04-27",
@@ -44336,7 +44336,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   }
  ],
  "macro": {
@@ -68924,7 +68924,7 @@
     }
    ]
   },
-  "src": "WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202862, 7079, 241732, 75847, 265963"
+  "src": "Wi MCP macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202862, 7079, 241732, 75847, 265963"
  },
  "signals": [
   {
@@ -70066,7 +70066,7 @@
  },
  "sources": [
   {
-   "n": "WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
+   "n": "Wi MCP — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
    "u": "https://widata.vn/CTG"
   },
   {

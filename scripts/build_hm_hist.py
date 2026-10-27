@@ -62,7 +62,7 @@ def main():
                 return dict(r.get(kind, {}))
         return {}
 
-    def fill(key, extra):   # WiData trước, dulieukinhte bù tháng còn trống
+    def fill(key, extra):   # Wi MCP trước, dulieukinhte bù tháng còn trống
         base = dict(V.get(key, {}))
         for m, v in extra.items():
             base.setdefault(m, v)

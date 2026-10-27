@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Tạo data/backfill/cmd_wi.json: chuỗi giá hàng hóa (theo ngày; đoạn cũ theo tuần/tháng) cho tab Hàng hóa, từ response
-WiData gốc (data/raw/wi, không commit). Dùng cho các mặt hàng chưa có nguồn công khai tự cập nhật: cước vận tải biển
+Wi MCP gốc (data/raw/wi, không commit). Dùng cho các mặt hàng chưa có nguồn công khai tự cập nhật: cước vận tải biển
 Baltic, giá Trung Quốc (cao su, PVC, thép HRC), giá trong nước (phân bón, thép, heo hơi, thủy sản, vàng SJC, xăng)
-và làm dự phòng cho vàng, bạc, đường. Gộp mọi file: cùng ngày thì lấy file sau. Chạy lại sau mỗi lần kéo số WiData."""
+và làm dự phòng cho vàng, bạc, đường. Gộp mọi file: cùng ngày thì lấy file sau. Chạy lại sau mỗi lần kéo số Wi MCP."""
 import json
 from pathlib import Path
 

@@ -26,7 +26,7 @@ def main():
         allq |= set(banks[t])
         banks[t]['_car'] = D['car']
     qs = sorted(allq, key=qkey)
-    out = {'quarters': qs, 'series': {}, 'car': {}, 'group': {t: GROUP[t] for t in TICKERS}, 'note': 'Chuỗi quý từ BCTC hợp nhất qua WiData; NIM, YEA, COF, CIR, ROE, ROA là TTM; chi phí tín dụng, hình thành nợ xấu, NIM sau dự phòng là số tự tính.'}
+    out = {'quarters': qs, 'series': {}, 'car': {}, 'group': {t: GROUP[t] for t in TICKERS}, 'note': 'Chuỗi quý từ BCTC hợp nhất qua Wi MCP; NIM, YEA, COF, CIR, ROE, ROA là TTM; chi phí tín dụng, hình thành nợ xấu, NIM sau dự phòng là số tự tính.'}
     for t in TICKERS:
         out['series'][t] = {k: [banks[t].get(q, {}).get(k) for q in qs] for k in KEYS}
         out['car'][t] = [{'period': c['period'], 'car': c['car'], 'tier1': c['tier1']} for c in banks[t]['_car']]

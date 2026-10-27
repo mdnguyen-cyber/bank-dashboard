@@ -58,7 +58,7 @@
    "SGB": "Tư nhân nhỏ",
    "NVB": "Tư nhân nhỏ"
   },
-  "note": "Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.",
+  "note": "Số liệu Wi MCP; phần tự tính có công thức ở chân trang và tab Sources.",
   "auto": "2026-10-27T02:18Z"
  },
  "idx": {
@@ -1109,7 +1109,7 @@
   },
   "deviations": [
    "Tính theo tháng (giá trị cuối tháng Wi nén từ chuỗi ngày), deck đề xuất theo tuần.",
-   "Tiền cơ sở (DOM-12) chưa có trong WiData → dùng M2 % YoY.",
+   "Tiền cơ sở (DOM-12) chưa có trong Wi MCP → dùng M2 % YoY.",
    "USD/VND liên ngân hàng → dùng tỷ giá NHTM bán ra (82223).",
    "Chênh lệch VND–USD dùng LNH qua đêm trung bình 3 cuối tháng − EFFR (deck: LNH 1 tháng − SOFR).",
    "Cán cân đối ngoại chưa gồm kiều hối và khối ngoại ròng (deck DOM-06).",
@@ -121899,7 +121899,7 @@
    "id": "R-03",
    "layer": "Quốc tế",
    "rule": "Thanh khoản ròng Fed giảm / SOFR > IORB",
-   "now": "Chưa có chuỗi trong WiData (FRED WALCL, WTREGEN, RRP)",
+   "now": "Chưa có chuỗi trong Wi MCP (FRED WALCL, WTREGEN, RRP)",
    "state": "na",
    "impact": "—"
   },
@@ -122019,7 +122019,7 @@
    "impact": "−",
    "status": "pending",
    "detail": "Vượt mục tiêu làm NHNN khó hạ lãi suất điều hành; Brent +60% YoY là nguồn đẩy giá.",
-   "src": "WiData 75804, 203084; ngày công bố dự kiến"
+   "src": "Wi MCP 75804, 203084; ngày công bố dự kiến"
   },
   {
    "d": "2026-10-28",
@@ -122046,7 +122046,7 @@
    "impact": "+",
    "status": "done",
    "detail": "Dòng vốn ngoại và tăng vốn — hỗ trợ CAR nhóm tư nhân.",
-   "src": "WiData news_feed 13–14/10/2026"
+   "src": "Wi MCP news_feed 13–14/10/2026"
   },
   {
    "d": "2026-10-14",
@@ -122064,7 +122064,7 @@
    "impact": "−",
    "status": "done",
    "detail": "Đảo chiều sau chu kỳ hạ 2024–2025; UST 10Y lên 5,2%.",
-   "src": "fedratecalc.com; WiData 7079, 234521"
+   "src": "fedratecalc.com; Wi MCP 7079, 234521"
   },
   {
    "d": "2026-09-15",
@@ -122073,7 +122073,7 @@
    "impact": "0",
    "status": "done",
    "detail": "LNH qua đêm dao động 0,5–7% quanh các kỳ cuối tháng.",
-   "src": "WiData ai_news 14/10/2026"
+   "src": "Wi MCP ai_news 14/10/2026"
   },
   {
    "d": "2026-08-01",
@@ -122091,7 +122091,7 @@
    "impact": "−",
    "status": "done",
    "detail": "Brent lên 118 USD/thùng cùng tháng; chênh tự do − NHTM +1.723đ.",
-   "src": "WiData 202886, 82226, 203084"
+   "src": "Wi MCP 202886, 82226, 203084"
   }
  ],
  "sources": [

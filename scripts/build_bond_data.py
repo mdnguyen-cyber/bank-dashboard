@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Thị trường trái phiếu cho tab "Trái phiếu: FI · G-bond" ở nganh.html.
 
-Đọc data/raw/wi/*.json (WiData: wi_data_cbond, wi_data_gbond, wi_data_macro) → data/bond-data.js (window.BOND_DATA).
+Đọc data/raw/wi/*.json (Wi MCP: wi_data_cbond, wi_data_gbond, wi_data_macro) → data/bond-data.js (window.BOND_DATA).
 Khung theo báo cáo thị trường tiền tệ: Thị trường 1 (lãi suất huy động 12T theo nhóm ngân hàng) & FI bond
 (trái phiếu ngân hàng phát hành: lãi suất coupon theo kỳ hạn so với huy động), TPDN toàn thị trường (phát hành,
 chậm trả, đáo hạn), G-bond (đường cong, đấu thầu, khối ngoại).
@@ -320,13 +320,13 @@ def main():
                  'fiLast': fm[li] if li is not None else None, 'bigNow': big4},
         'dep': dep, 'fi': fi, 'cb': cb, 'gb': gb, 'oil': oil_block(raw), 'big4': big4_block(raw, months, tiers['Big 4']),
         'src': {
-            'dep': 'WiData bảng 46 (lãi suất huy động 12 tháng, cá nhân, tại quầy) — các mã ' + ', '.join(str(i) for l in TIERS.values() for i, _ in l),
-            'fi': 'WiData bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), nhóm Ngân hàng',
-            'cb': 'WiData bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), VND',
-            'curve': 'WiData bonds_gov_yield_curve 234528/234530/234531/234526/234529',
-            'auc': 'WiData bonds_gov_auction_monthly (HNX, Kho bạc Nhà nước)', 'fx': 'WiData bonds_gov_secondary_yield_monthly (HNX)',
-            'big4': 'WiData bonds_corp_issuances, bonds_corp_issuances_hist (HNX) — lãi suất tại thời điểm phát hành, VND',
-            'oil': 'WiData — Brent (ICE, hợp đồng tương lai) 203084, WTI (CME) 203111; giá bán lẻ Petrolimex vùng 1: RON 95-III 80241 / E10 RON 95-III 1276626, E5 RON 92-II 1276554, DO 0,05S 1276560',
+            'dep': 'Wi MCP bảng 46 (lãi suất huy động 12 tháng, cá nhân, tại quầy) — các mã ' + ', '.join(str(i) for l in TIERS.values() for i, _ in l),
+            'fi': 'Wi MCP bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), nhóm Ngân hàng',
+            'cb': 'Wi MCP bonds_corp_issuance_monthly, bonds_corp_cashflow_monthly, bonds_corp_maturity_schedule_monthly (HNX), VND',
+            'curve': 'Wi MCP bonds_gov_yield_curve 234528/234530/234531/234526/234529',
+            'auc': 'Wi MCP bonds_gov_auction_monthly (HNX, Kho bạc Nhà nước)', 'fx': 'Wi MCP bonds_gov_secondary_yield_monthly (HNX)',
+            'big4': 'Wi MCP bonds_corp_issuances, bonds_corp_issuances_hist (HNX) — lãi suất tại thời điểm phát hành, VND',
+            'oil': 'Wi MCP — Brent (ICE, hợp đồng tương lai) 203084, WTI (CME) 203111; giá bán lẻ Petrolimex vùng 1: RON 95-III 80241 / E10 RON 95-III 1276626, E5 RON 92-II 1276554, DO 0,05S 1276560',
             'holders': 'Bộ Tài chính; ADB AsianBondsOnline (Viet Nam Market Summary các kỳ); VBMA (Báo cáo thường niên 2022, 2023); KBNN qua Tạp chí Tài chính (2016–2017)'},
     }
     js = '// Sinh tự động bởi scripts/build_bond_data.py — KHÔNG sửa tay.\nwindow.BOND_DATA = ' + json.dumps(out, ensure_ascii=False, separators=(',', ':')) + ';\n'

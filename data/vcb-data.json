@@ -19,7 +19,7 @@
   "view": null,
   "irUrl": "https://www.vietcombank.com.vn/vi-VN/Nha-dau-tu",
   "strategic": "Mizuho",
-  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "Wi MCP eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 18.0,
   "roa": 1.71,
   "nim": 2.81,
@@ -5387,7 +5387,7 @@
    "llrInclAccrued": 135.4
   }
  ],
- "quarterlyNote": "BCTC hợp nhất từ WiData (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
+ "quarterlyNote": "BCTC hợp nhất từ Wi MCP (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
  "formula": {
   "creditCost": "Chi phí dự phòng 4 quý gần nhất / dư nợ cho vay KH bình quân 5 quý (BNK-13)",
   "nplFormation": "Hình thành nợ xấu ròng = NPL cuối − NPL đầu + nợ xử lý bằng dự phòng. Nợ xử lý lấy số thực tế trong thuyết minh (sử dụng dự phòng rủi ro tín dụng) khi có; kỳ không có thì ước tính = dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ. Ròng: đã trừ nợ xấu thu hồi, bán, nâng nhóm",
@@ -5938,7 +5938,7 @@
   "ytdLabel": "6T/2026",
   "pbtYTD": 29222.4,
   "npatYTD": 24013.1,
-  "src": "WiData co_plans (ĐHĐCĐ 24/04/2026); YTD cộng từ BCTC quý",
+  "src": "Wi MCP co_plans (ĐHĐCĐ 24/04/2026); YTD cộng từ BCTC quý",
   "pbtDone": 65.1,
   "npatDone": 66.9,
   "pbtYTDyoy": 33.5,
@@ -24066,7 +24066,7 @@
     }
    }
   ],
-  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
+  "src": "Wi MCP co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
   "subs": [
    {
     "name": "Công ty TNHH Tài chính Việt Nam tại Hồng kông - Vinafico",
@@ -43689,7 +43689,7 @@
    "s": 470.96,
    "v": 1699.38
   },
-  "src": "WiData eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
+  "src": "Wi MCP eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
  },
  "valuation": {
   "history": [
@@ -44420,7 +44420,7 @@
    "divPaid": 3800.6,
    "rightsCash": 0
   },
-  "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
+  "src": "Wi MCP co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
  "events": [
   {
@@ -44430,7 +44430,7 @@
    "impact": "+",
    "status": "pending",
    "detail": "ĐHĐCĐ 2025 thông qua tối đa 543,1 triệu CP; CTCK kỳ vọng hoàn tất H2/2026 và nâng CAR khoảng 2 điểm %.",
-   "src": "WiData ai_news (BSC 09/2026, Yuanta 05/2026); VnBusiness (09/2025)"
+   "src": "Wi MCP ai_news (BSC 09/2026, Yuanta 05/2026); VnBusiness (09/2025)"
   },
   {
    "d": "2026-12-31",
@@ -44439,7 +44439,7 @@
    "impact": "+",
    "status": "pending",
    "detail": "Chờ cơ quan có thẩm quyền phê duyệt; tăng vốn điều lệ để giữ CAR khi tín dụng tăng.",
-   "src": "WiData ai_news (VPBS 05/2026); VnBusiness (09/2025)"
+   "src": "Wi MCP ai_news (VPBS 05/2026); VnBusiness (09/2025)"
   },
   {
    "d": "2026-12-01",
@@ -44464,7 +44464,7 @@
    "t": "Thông báo thay đổi nhân sự",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-10-02",
@@ -44472,7 +44472,7 @@
    "t": "Thông báo nhận được đơn xin nghỉ hưu trước tuổi của Phó TGĐ Nguyễn Văn Tuân",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-27",
@@ -44480,7 +44480,7 @@
    "t": "Trả cổ tức năm 2025 bằng tiền 450 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-08-06",
@@ -44488,7 +44488,7 @@
    "t": "Nghị quyết HĐQT về việc thông qua giới hạn tín dụng đối với Mizuho Bank Ltd.",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-03",
@@ -44496,7 +44496,7 @@
    "t": "Thông báo thay đổi nhân sự (kèm Nghị quyết, QĐ)",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-01",
@@ -44505,7 +44505,7 @@
    "impact": "+",
    "status": "done",
    "detail": "Big 4 hưởng lợi nhiều nhất do giữ nhiều tiền gửi KBNN. Vietcap ước LDR của VCB giảm khoảng 2 điểm % nhờ thay đổi này; BSC ước thêm ~47.000 tỷ dư địa cho vay.",
-   "src": "Công thức LDR WiData; WiData ai_news"
+   "src": "Công thức LDR Wi MCP; Wi MCP ai_news"
   },
   {
    "d": "2026-07-30",
@@ -44513,7 +44513,7 @@
    "t": "Báo cáo tình hình quản trị 6 tháng đầu năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-30",
@@ -44522,7 +44522,7 @@
    "detail": "Ngân hàng TMCP Ngoại thương Việt Nam (HOSE: VCB) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 2.2026 vượt trội đạt 14.542 tỷ đồng (+64.7%YoY). Lũy kế 6 tháng đầu năm 2026, LNST cổ đông công ty mẹ vượt trội đạt 23.999 tỷ đồng (+36.9%YoY), hoàn thành 66.9% kế hoạch năm và 59.5% lợi nhuận dự phóng từ các CTCK (Kỳ vọng 2026F: 40.308 tỷ đồng, tăng 14.6%YoY). Về định giá P/E forward ở mức 12.9 lần so với P/E trailing 11.3 lần.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-05-21",
@@ -44530,7 +44530,7 @@
    "t": "Nghị quyết HĐQT về việc phê duyệt phương án phát hành trái phiếu theo hình thức riêng lẻ năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-05-19",
@@ -44538,7 +44538,7 @@
    "t": "Quy chế nội bộ về quản trị công ty sửa đổi",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-05-13",
@@ -44546,7 +44546,7 @@
    "t": "Nghị quyết HĐQT về việc phê duyệt phương án phát hành trái phiếu tăng vốn cấp 2 năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-04-29",
@@ -44555,7 +44555,7 @@
    "detail": "Ngân hàng TMCP Ngoại thương Việt Nam (HOSE:VCB) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 1.2026 ổn định đạt 9.457 tỷ đồng (+8.7% YoY), hoàn thành 26.0% kế hoạch năm. Các chỉ số tài chính khả quan với tăng trưởng tín dụng 19.5% và nợ xấu ở mức 0.6%.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-04-28",
@@ -44563,7 +44563,7 @@
    "t": "Thông báo thay đổi nhân sự - Bổ nhiệm thành viên BKS",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-04-24",
@@ -44571,7 +44571,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-10-24",
@@ -44579,7 +44579,7 @@
    "t": "Trả cổ tức năm 2024 bằng tiền 450 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-04-26",
@@ -44587,7 +44587,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2025",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-03-12",
@@ -44595,7 +44595,7 @@
    "t": "Trả cổ tức bằng cổ phiếu tỷ lệ 1000:495",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-03-07",
@@ -44603,7 +44603,7 @@
    "t": "Họp ĐHCĐ bất thường năm 2025",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-08-19",
@@ -44611,7 +44611,7 @@
    "t": "Họp ĐHCĐ bất thường năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-04-27",
@@ -44619,7 +44619,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   }
  ],
  "macro": {
@@ -69207,7 +69207,7 @@
     }
    ]
   },
-  "src": "WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202856, 7079, 241732, 75847, 265963"
+  "src": "Wi MCP macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202856, 7079, 241732, 75847, 265963"
  },
  "signals": [
   {
@@ -70349,7 +70349,7 @@
  },
  "sources": [
   {
-   "n": "WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
+   "n": "Wi MCP — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
    "u": "https://widata.vn/VCB"
   },
   {
@@ -70371,9 +70371,9 @@
   "llrRef": null,
   "recovTarget": " (ngân hàng đặt mục tiêu thu hồi ~3.000 tỷ nợ xấu năm 2026 — VPBS 09/2026)",
   "tpSpread": "Các CTCK đồng thuận về chất lượng tài sản và COF thấp; chênh lệch nằm ở tốc độ phục hồi NIM, tiến độ phát hành riêng lẻ 6,5% và khoản hoàn nhập dự phòng trái phiếu doanh nghiệp.",
-  "divNote": "<b>Các năm trống — lợi nhuận được giữ lại để tăng vốn bằng cổ tức cổ phiếu (cần NHNN, Bộ Tài chính phê duyệt), không phải do lỗ:</b><br><b>2016–2020:</b> cổ tức tiền mặt 8%/năm; lợi nhuận 2020 trả 12% tiền mặt (cuối 2021).<br><b>2021:</b> không chia tiền mặt — phần lợi nhuận còn lại năm 2021 cùng lợi nhuận lũy kế đến 2018 dùng cho đợt cổ tức cổ phiếu 49,5% (03/2025; WiData ghi vào năm 2024), nâng vốn điều lệ lên ~83.557 tỷ.<br><b>2022–2023:</b> phương án chia cổ tức cổ phiếu từ lợi nhuận hai năm này (tổng hơn 44.000 tỷ) đang chờ phê duyệt; kế hoạch 2026 gồm phát hành cổ phiếu trả cổ tức tỷ lệ 12,8% (VPBS 05/2026).<br><b>2024–2025:</b> cổ tức tiền mặt quay lại ở mức 4,5% (450đ/CP).<br>Bối cảnh: NHTM Nhà nước giữ sở hữu Nhà nước ≥ 65%; tăng vốn chủ yếu bằng lợi nhuận giữ lại, cộng phương án bán 6,5% cho nhà đầu tư chiến lược.",
+  "divNote": "<b>Các năm trống — lợi nhuận được giữ lại để tăng vốn bằng cổ tức cổ phiếu (cần NHNN, Bộ Tài chính phê duyệt), không phải do lỗ:</b><br><b>2016–2020:</b> cổ tức tiền mặt 8%/năm; lợi nhuận 2020 trả 12% tiền mặt (cuối 2021).<br><b>2021:</b> không chia tiền mặt — phần lợi nhuận còn lại năm 2021 cùng lợi nhuận lũy kế đến 2018 dùng cho đợt cổ tức cổ phiếu 49,5% (03/2025; Wi MCP ghi vào năm 2024), nâng vốn điều lệ lên ~83.557 tỷ.<br><b>2022–2023:</b> phương án chia cổ tức cổ phiếu từ lợi nhuận hai năm này (tổng hơn 44.000 tỷ) đang chờ phê duyệt; kế hoạch 2026 gồm phát hành cổ phiếu trả cổ tức tỷ lệ 12,8% (VPBS 05/2026).<br><b>2024–2025:</b> cổ tức tiền mặt quay lại ở mức 4,5% (450đ/CP).<br>Bối cảnh: NHTM Nhà nước giữ sở hữu Nhà nước ≥ 65%; tăng vốn chủ yếu bằng lợi nhuận giữ lại, cộng phương án bán 6,5% cho nhà đầu tư chiến lược.",
   "divInsight": "Tỷ lệ chi trả tiền mặt thấp (~10% từ 2024) và các đợt cổ phiếu lớn cho thấy lợi nhuận được ưu tiên giữ lại để tăng vốn; năm không chi tiền mặt là lựa chọn giữ vốn, không phải tín hiệu kinh doanh xấu.",
-  "divSrc": "WiData co_events, ratio_common_year; Báo Pháp luật/Doanh nhân (01/2025), VnBusiness (09/2025), VPBS (05/2026)",
+  "divSrc": "Wi MCP co_events, ratio_common_year; Báo Pháp luật/Doanh nhân (01/2025), VnBusiness (09/2025), VPBS (05/2026)",
   "eventsNote": "Mốc chưa có lịch chính thức (phát hành riêng lẻ 6,5%, cổ tức cổ phiếu từ lợi nhuận 2022–2023) là mốc theo dõi, chưa xác nhận.",
   "modelNote": "",
   "risks": [

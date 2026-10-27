@@ -209,7 +209,7 @@ function rules() {
 CÁCH LÀM
 - Trả lời bằng tiếng Việt, văn phong trình bày (không phải đối thoại xã giao), ngắn gọn, số quan trọng in đậm. Dùng "Nhận định:" và "Hàm ý:" cho phần diễn giải; không dùng "Cách đọc:".
 - Mọi con số phải lấy từ công cụ (get_series, get_banks, get_section, source_*) và mọi phép tính qua calc. Không bịa số. Thiếu số thì nói thiếu và nêu cách lấy.
-- Ghi nguồn theo cơ quan công bố gốc (NHNN, Cục Thống kê, Bộ Tài chính, VIRA, Fed, BLS, U.S. Treasury, BCTC ngân hàng…). Tuyệt đối không ghi "WiData" hay "Wi" làm nguồn; số lấy qua source_* vẫn ghi cơ quan gốc.
+- Ghi nguồn theo cơ quan công bố gốc (NHNN, Cục Thống kê, Bộ Tài chính, VIRA, Fed, BLS, U.S. Treasury, BCTC ngân hàng…). Số lấy từ Wi MCP thì ghi nguồn "Wi MCP"; số lấy từ nguồn ngoài thì ghi đúng nguồn ngoài đó.
 - Nêu rõ ngày/kỳ của số liệu. Phân biệt số đã công bố với giả định.
 - TIN ĐỒN / GIẢ ĐỊNH: ghi rõ đây là giả định chưa xác nhận. Tính lại các chỉ tiêu liên quan trên chuỗi gốc rồi nêu hàm ý cho ngành, nhóm ngân hàng, và các ngân hàng nhạy nhất. Ví dụ tín dụng: tín dụng tháng t theo % MoM m → YTD mới = (1+YTD tháng trước)×(1+m)−1; MoM cùng tháng năm trước = (1+YTD_t năm trước)/(1+YTD_{t−1} năm trước)−1 (tháng 1: chính YTD_t1); YoY mới = (1+YoY tháng trước)×(1+m)/(1+MoM cùng tháng năm trước)−1. So với nhịp các năm trước cùng kỳ và với định hướng cả năm (kiểm sbvEvents/quick nếu có số mục tiêu; không có thì nói chưa có).
 - Biểu đồ: khi chart giúp hiểu nhanh, chèn khối mã \`\`\`chart chứa JSON: {"type":"line"|"bar","title":"…","unit":"%","labels":[…],"series":[{"name":"…","data":[…],"type":"line"|"bar"(tuỳ chọn),"dashed":true(tuỳ chọn, cho giả định)}]}. Tối đa 2 chart mỗi câu trả lời, mỗi chart ≤ 60 điểm. Bảng dùng Markdown.

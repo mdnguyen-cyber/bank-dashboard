@@ -19,7 +19,7 @@
   "view": null,
   "irUrl": "https://www.mbbank.com.vn/Investor",
   "strategic": null,
-  "src": "WiData eod_adjust 2026-10-21 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "Wi MCP eod_adjust 2026-10-21 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 21.7,
   "roa": 2.04,
   "nim": 4.03,
@@ -4783,7 +4783,7 @@
    "llrInclAccrued": 48.4
   }
  ],
- "quarterlyNote": "BCTC hợp nhất từ WiData (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
+ "quarterlyNote": "BCTC hợp nhất từ Wi MCP (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
  "formula": {
   "creditCost": "Chi phí dự phòng 4 quý gần nhất / dư nợ cho vay KH bình quân 5 quý (BNK-13)",
   "nplFormation": "Hình thành nợ xấu ròng = NPL cuối − NPL đầu + nợ xử lý bằng dự phòng. Nợ xử lý lấy số thực tế trong thuyết minh (sử dụng dự phòng rủi ro tín dụng) khi có; kỳ không có thì ước tính = dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ. Ròng: đã trừ nợ xấu thu hồi, bán, nâng nhóm",
@@ -5334,7 +5334,7 @@
   "ytdLabel": "6T/2026",
   "pbtYTD": 20188.3,
   "npatYTD": 16148.2,
-  "src": "WiData co_plans (ĐHĐCĐ 18/04/2026); YTD cộng từ BCTC quý",
+  "src": "Wi MCP co_plans (ĐHĐCĐ 18/04/2026); YTD cộng từ BCTC quý",
   "pbtDone": 51.2,
   "npatDone": 51.2,
   "pbtYTDyoy": 27.1,
@@ -24516,7 +24516,7 @@
     }
    }
   ],
-  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
+  "src": "Wi MCP co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
   "subs": [
    {
     "name": "CTCP Chứng khoán MB",
@@ -42526,7 +42526,7 @@
    "s": 463.97,
    "v": 1669.01
   },
-  "src": "WiData eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
+  "src": "Wi MCP eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
  },
  "valuation": {
   "history": [
@@ -43189,7 +43189,7 @@
    "divPaid": 9967.3,
    "rightsCash": 8055.0
   },
-  "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
+  "src": "Wi MCP co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
  "events": [
   {
@@ -43199,7 +43199,7 @@
    "impact": "+",
    "status": "pending",
    "detail": "CTCK kỳ vọng được nới room ngoại; chưa có quyết định chính thức.",
-   "src": "WiData ai_news (KBSV 09/2026)"
+   "src": "Wi MCP ai_news (KBSV 09/2026)"
   },
   {
    "d": "2026-12-01",
@@ -43224,7 +43224,7 @@
    "t": "Quyết định về việc thực hiện góp vốn để tăng vốn điều lệ của MBV",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-09-22",
@@ -43232,7 +43232,7 @@
    "t": "Thông báo thay đổi nhân sự - Luân chuyển nhân sự cấp cao (kèm Nghị quyết HĐQT)",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-11",
@@ -43240,7 +43240,7 @@
    "t": "Thực hiện quyền mua cổ phiếu phát hành thêm tỷ lệ 10:1 giá 10000 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-08-11",
@@ -43248,7 +43248,7 @@
    "t": "Trả cổ tức năm 2025 bằng cổ phiếu tỷ lệ 100:15",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-08-01",
@@ -43257,7 +43257,7 @@
    "impact": "+",
    "status": "done",
    "detail": "Ngân hàng tư nhân giữ ít tiền gửi KBNN nên hưởng lợi ít hơn Big 4. ",
-   "src": "Công thức LDR WiData; WiData ai_news"
+   "src": "Công thức LDR Wi MCP; Wi MCP ai_news"
   },
   {
    "d": "2026-07-30",
@@ -43266,7 +43266,7 @@
    "detail": "Ngân hàng TMCP Quân Đội (HOSE: MBB) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 2.2026 tích cực đạt 8.229 tỷ đồng (+40.0%YoY). Lũy kế 6 tháng đầu năm 2026, LNST cổ đông công ty mẹ vượt trội đạt 15.745 tỷ đồng (+26.5%YoY), hoàn thành 49.9% kế hoạch năm và 51.8% lợi nhuận dự phóng từ các CTCK (Kỳ vọng 2026F: 30.403 tỷ đồng, tăng 13.5%YoY). Về định giá P/E forward ở mức 6.7 lần so với P/E trailing 6.0 lần.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-07-17",
@@ -43274,7 +43274,7 @@
    "t": "Trả cổ tức năm 2025 bằng tiền 1000 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-04-28",
@@ -43283,7 +43283,7 @@
    "detail": "Ngân hàng TMCP Quân Đội (HOSE:MBB) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 1.2026 ổn định đạt 7.516 tỷ đồng (+14.4% YoY), hoàn thành 23.8% kế hoạch năm. Các chỉ số tài chính khả quan với tăng trưởng tín dụng 38.0% và nợ xấu ở mức 1.4%.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-04-18",
@@ -43291,7 +43291,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-02-23",
@@ -43299,7 +43299,7 @@
    "t": "Lấy ý kiến cổ đông bằng văn bản năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-08-21",
@@ -43307,7 +43307,7 @@
    "t": "Trả cổ tức năm 2024 bằng tiền 300 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-08-13",
@@ -43315,7 +43315,7 @@
    "t": "Trả cổ tức năm 2024 bằng cổ phiếu tỷ lệ 100:32",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-04-26",
@@ -43323,7 +43323,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2025",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-01-07",
@@ -43331,7 +43331,7 @@
    "t": "Trả cổ tức năm 2023 bằng cổ phiếu tỷ lệ 100:15",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-06-15",
@@ -43339,7 +43339,7 @@
    "t": "Họp ĐHCĐ bất thường năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-06-14",
@@ -43347,7 +43347,7 @@
    "t": "Trả cổ tức năm 2023 bằng tiền 500 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-04-19",
@@ -43355,7 +43355,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   }
  ],
  "macro": {
@@ -67943,7 +67943,7 @@
     }
    ]
   },
-  "src": "WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202742, 7079, 241732, 75847, 265963"
+  "src": "Wi MCP macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202742, 7079, 241732, 75847, 265963"
  },
  "signals": [
   {
@@ -69349,7 +69349,7 @@
  },
  "sources": [
   {
-   "n": "WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
+   "n": "Wi MCP — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
    "u": "https://widata.vn/MBB"
   },
   {
@@ -69375,7 +69375,7 @@
   "tpSpread": "Các CTCK đồng thuận về lợi thế hạn mức tín dụng từ việc nhận chuyển giao bắt buộc và ROE dẫn đầu; chênh lệch nằm ở áp lực huy động, thanh khoản (LDR cao) và tốc độ phục hồi NIM.",
   "divNote": "",
   "divInsight": "MB kết hợp cổ tức cổ phiếu tỷ lệ lớn (32% cho năm 2024, 15% cho năm 2025) với tiền mặt (1.000đ/CP cho năm 2025) và phát hành quyền mua giá 10.000đ để tăng vốn theo tốc độ tín dụng.",
-  "divSrc": "WiData co_events, ratio_common_year",
+  "divSrc": "Wi MCP co_events, ratio_common_year",
   "eventsNote": "",
   "modelNote": "",
   "risks": [

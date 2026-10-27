@@ -19,7 +19,7 @@
   "view": null,
   "irUrl": "https://techcombank.com/nha-dau-tu",
   "strategic": null,
-  "src": "WiData eod_adjust 2026-10-21 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q3/2026",
+  "src": "Wi MCP eod_adjust 2026-10-21 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q3/2026",
   "roe": 15.9,
   "roa": 2.45,
   "nim": 3.67,
@@ -4387,7 +4387,7 @@
    "llrInclAccrued": 46.7
   }
  ],
- "quarterlyNote": "BCTC hợp nhất từ WiData (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
+ "quarterlyNote": "BCTC hợp nhất từ Wi MCP (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
  "formula": {
   "creditCost": "Chi phí dự phòng 4 quý gần nhất / dư nợ cho vay KH bình quân 5 quý (BNK-13)",
   "nplFormation": "Hình thành nợ xấu ròng = NPL cuối − NPL đầu + nợ xử lý bằng dự phòng. Nợ xử lý lấy số thực tế trong thuyết minh (sử dụng dự phòng rủi ro tín dụng) khi có; kỳ không có thì ước tính = dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ. Ròng: đã trừ nợ xấu thu hồi, bán, nâng nhóm",
@@ -4932,7 +4932,7 @@
   "ytdLabel": "9T/2026",
   "pbtYTD": 28915.4,
   "npatYTD": 23014.2,
-  "src": "WiData co_plans (ĐHĐCĐ 2026); YTD cộng từ BCTC quý",
+  "src": "Wi MCP co_plans (ĐHĐCĐ 2026); YTD cộng từ BCTC quý",
   "pbtDone": 82.6,
   "npatDone": 82.2,
   "pbtYTDyoy": 23.7,
@@ -23554,7 +23554,7 @@
     }
    }
   ],
-  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
+  "src": "Wi MCP co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
   "subs": [
    {
     "name": "CTCP Chứng khoán Kỹ Thương",
@@ -35418,7 +35418,7 @@
    "s": 476.17,
    "v": 1677.54
   },
-  "src": "WiData eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
+  "src": "Wi MCP eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
  },
  "valuation": {
   "history": [
@@ -35976,7 +35976,7 @@
    "divPaid": 0.0,
    "rightsCash": 0
   },
-  "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
+  "src": "Wi MCP co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
  "events": [
   {
@@ -35995,7 +35995,7 @@
    "detail": "Ngân hàng TMCP Kỹ thương Việt Nam (HOSE: TCB) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 3.2026 tích cực đạt 7.943 tỷ đồng (+23.7%YoY). Lũy kế 9 tháng đầu năm 2026, LNST cổ đông công ty mẹ ổn định đạt 21.964 tỷ đồng (+18.0%YoY), hoàn thành 78.4% kế hoạch năm và 74.7% lợi nhuận dự phóng từ các CTCK (Kỳ vọng 2026F: 29.414 tỷ đồng, tăng 16.3%YoY). Về định giá P/E forward ở mức 7.8 lần so với P/E trailing 8.4 lần.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-10-20",
@@ -36011,7 +36011,7 @@
    "t": "Biên bản kiểm phiếu và Nghị quyết ĐHĐCĐ thông qua Phương án tăng vốn điều lệ 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-25",
@@ -36019,7 +36019,7 @@
    "t": "CBTT tài liệu lấy ý kiến cổ đông về phương án tăng vốn điều lệ năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-11",
@@ -36027,7 +36027,7 @@
    "t": "Lấy ý kiến cổ đông bằng văn bản năm 2026 đợt 1",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-08-03",
@@ -36035,7 +36035,7 @@
    "t": "Thông báo thay đổi nhân sự - Bổ nhiệm Phó Tổng Giám đốc kiêm Giám đốc Khối Quản trị Ngân hàng (kèm Quyết định của HĐQT)",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-01",
@@ -36044,7 +36044,7 @@
    "impact": "+",
    "status": "done",
    "detail": "Ngân hàng tư nhân giữ ít tiền gửi KBNN nên hưởng lợi ít hơn Big 4. ",
-   "src": "Công thức LDR WiData; WiData ai_news"
+   "src": "Công thức LDR Wi MCP; Wi MCP ai_news"
   },
   {
    "d": "2026-07-30",
@@ -36052,7 +36052,7 @@
    "t": "Báo cáo tình hình quản trị 6 tháng đầu năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-21",
@@ -36061,7 +36061,7 @@
    "detail": "Ngân hàng TMCP Kỹ thương Việt Nam (HOSE: TCB) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 2.2026 ổn định đạt 7.350 tỷ đồng (+17.7%YoY). Lũy kế 6 tháng đầu năm 2026, LNST cổ đông công ty mẹ ổn định đạt 14.021 tỷ đồng (+15.0%YoY), hoàn thành 50.1% kế hoạch năm và 48.2% lợi nhuận dự phóng từ các CTCK (Kỳ vọng 2026F: 29.110 tỷ đồng, tăng 15.1%YoY). Về định giá P/E forward ở mức 8.2 lần so với P/E trailing 7.8 lần.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-07-02",
@@ -36069,7 +36069,7 @@
    "t": "Quyết định của HĐQT về việc bổ nhiệm Phó TGĐ",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-06-10",
@@ -36077,7 +36077,7 @@
    "t": "Trả cổ tức năm 2025 bằng tiền 700 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-06-03",
@@ -36085,7 +36085,7 @@
    "t": "Các Nghị quyết HĐQT về việc phê duyệt giao dịch cung cấp dịch vụ đại lý lưu ký cho trái phiếu",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-05-28",
@@ -36093,7 +36093,7 @@
    "t": "Nghị quyết HĐQT về việc phê duyệt giao dịch/hợp đồng cung cấp dịch vụ đại lý lưu ký cho trái phiếu TCB lần 9",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-05-25",
@@ -36101,7 +36101,7 @@
    "t": "Nghị quyết HĐQT về việc cấp hạn mức thẻ tín dụng cho Phó TGĐ",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-04-22",
@@ -36110,7 +36110,7 @@
    "detail": "Ngân hàng TMCP Kỹ thương Việt Nam (HOSE:TCB) công bố lợi nhuận sau thuế công ty mẹ Quý 1.2026 ổn định đạt 6.671 tỷ đồng (+12.2% YoY), hoàn thành 23.8% kế hoạch năm. Các chỉ số tài chính khả quan với tăng trưởng tín dụng 20.0% và nợ xấu ở mức 1.1%.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-03-23",
@@ -36118,7 +36118,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-10-22",
@@ -36126,7 +36126,7 @@
    "t": "Trả cổ tức năm 2024 bằng tiền 1000 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-03-21",
@@ -36134,7 +36134,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2025",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-02-06",
@@ -36142,7 +36142,7 @@
    "t": "Lấy ý kiến CĐ bằng văn bản năm 2025",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-07-16",
@@ -36150,7 +36150,7 @@
    "t": "Lấy ý kiến CĐ bằng văn bản năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-06-20",
@@ -36158,7 +36158,7 @@
    "t": "Thưởng cổ phiếu tỷ lệ 1:1",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-06-05",
@@ -36166,7 +36166,7 @@
    "t": "Trả cổ tức năm 2023 bằng tiền 1500 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-04-20",
@@ -36174,7 +36174,7 @@
    "t": "Họp ĐHCĐ Thường niên năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-01-22",
@@ -36182,7 +36182,7 @@
    "t": "Lấy ý kiến CĐ bằng văn bản năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   }
  ],
  "macro": {
@@ -60770,7 +60770,7 @@
     }
    ]
   },
-  "src": "WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202820, 7079, 241732, 75847, 265963"
+  "src": "Wi MCP macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202820, 7079, 241732, 75847, 265963"
  },
  "signals": [
   {
@@ -62176,7 +62176,7 @@
  },
  "sources": [
   {
-   "n": "WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
+   "n": "Wi MCP — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
    "u": "https://widata.vn/TCB"
   },
   {
@@ -62202,7 +62202,7 @@
   "tpSpread": "Các CTCK đồng thuận về tín dụng tăng nhanh và thu nhập phí (bảo hiểm, ngân hàng đầu tư, chứng khoán); chênh lệch nằm ở tốc độ phục hồi NIM, việc nới hạn mức tín dụng Q4/2026 và mức tập trung vào bất động sản, trái phiếu doanh nghiệp.",
   "divNote": "",
   "divInsight": "Cổ tức tiền mặt duy trì ở mức thấp (1.000đ/CP cho năm 2024, 700đ/CP cho năm 2025, tỷ suất ~2%); phần lớn lợi nhuận được giữ lại để tăng vốn.",
-  "divSrc": "WiData co_events, ratio_common_year",
+  "divSrc": "Wi MCP co_events, ratio_common_year",
   "eventsNote": "",
   "modelNote": "",
   "risks": [

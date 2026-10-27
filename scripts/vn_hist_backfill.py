@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Tạo data/backfill/vn_hist.json: lịch sử dài (theo tháng) của các chỉ tiêu Việt Nam cho bản đồ nhiệt, từ response
-WiData gốc (data/raw/wi, không commit). Nguồn gốc số liệu: Cục Thống kê, NHNN, Bộ Tài chính, S&P Global (PMI).
+Wi MCP gốc (data/raw/wi, không commit). Nguồn gốc số liệu: Cục Thống kê, NHNN, Bộ Tài chính, S&P Global (PMI).
 Chuỗi theo ngày/tuần được gộp theo tháng: bình quân (LNH qua đêm, TPCP 10 năm) hoặc số cuối tháng (tỷ giá, lãi suất).
-Chạy lại sau mỗi lần lấy thêm số WiData."""
+Chạy lại sau mỗi lần lấy thêm số Wi MCP."""
 import json
 from collections import defaultdict
 from pathlib import Path

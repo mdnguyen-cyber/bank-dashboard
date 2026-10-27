@@ -14,7 +14,7 @@
 
   const TITLE = 'Hành lang tỷ giá USD/VND và chỉ số USD (DXY)';
   const SUB = 'VND · theo ngày từ 2021 · trung tâm, trần/sàn ±5%, giá NHNN bán can thiệp, NHTM và tự do bán ra (theo ngày từ 07/2025, theo tuần trước đó), Vietcombank bán ra · trục phải = DXY';
-  const SRC = 'Ngân hàng Nhà nước (tỷ giá trung tâm, trần, sàn, giá bán của Sở Giao dịch NHNN); Vietcombank; DXY tính theo công thức ICE từ tỷ giá tham chiếu ECB; NHTM và tự do: WiData 82223, 82226';
+  const SRC = 'Ngân hàng Nhà nước (tỷ giá trung tâm, trần, sàn, giá bán của Sở Giao dịch NHNN); Vietcombank; DXY tính theo công thức ICE từ tỷ giá tham chiếu ECB; NHTM và tự do: Wi MCP 82223, 82226';
 
   function insight(m) {   // m = { nhtmSell: [{d,v}], free: [{d,v}] }
     const c = last('vn_sbv_central_d'), ce = last('vn_sbv_ceil_d'), se = last('vn_sbv_sell_d'), x = last('dxy_d'), ns = lastArr(m.nhtmSell), vs = last('usdvnd_vcb_sell');

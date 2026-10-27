@@ -19,7 +19,7 @@
   "view": null,
   "irUrl": "https://bidv.com.vn/vn/quan-he-nha-dau-tu",
   "strategic": "KEB Hana",
-  "src": "WiData eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "Wi MCP eod_adjust 2026-10-20 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 18.1,
   "roa": 1.02,
   "nim": 2.15,
@@ -4475,7 +4475,7 @@
    "llrInclAccrued": 46.2
   }
  ],
- "quarterlyNote": "BCTC hợp nhất từ WiData (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
+ "quarterlyNote": "BCTC hợp nhất từ Wi MCP (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
  "formula": {
   "creditCost": "Chi phí dự phòng 4 quý gần nhất / dư nợ cho vay KH bình quân 5 quý (BNK-13)",
   "nplFormation": "Hình thành nợ xấu ròng = NPL cuối − NPL đầu + nợ xử lý bằng dự phòng. Nợ xử lý lấy số thực tế trong thuyết minh (sử dụng dự phòng rủi ro tín dụng) khi có; kỳ không có thì ước tính = dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ. Ròng: đã trừ nợ xấu thu hồi, bán, nâng nhóm",
@@ -5000,7 +5000,7 @@
   "ytdLabel": "6T/2026",
   "pbtYTD": 18904.6,
   "npatYTD": 15173.7,
-  "src": "WiData co_plans (ĐHĐCĐ 24/04/2026); YTD cộng từ BCTC quý",
+  "src": "Wi MCP co_plans (ĐHĐCĐ 24/04/2026); YTD cộng từ BCTC quý",
   "pbtDone": 46.3,
   "npatDone": 46.5,
   "pbtYTDyoy": 17.9,
@@ -22792,7 +22792,7 @@
     "asOf": "2026-09-23"
    }
   ],
-  "holderNote": "Số liệu nguồn ghi đảo tỷ lệ giữa NHNN và KEB Hana; bảng đã hoán đổi theo CBTT giao dịch của KEB Hana (mua 603,3 triệu CP, nắm 15% vốn, 11/2019 — WiData co_insider).",
+  "holderNote": "Số liệu nguồn ghi đảo tỷ lệ giữa NHNN và KEB Hana; bảng đã hoán đổi theo CBTT giao dịch của KEB Hana (mua 603,3 triệu CP, nắm 15% vốn, 11/2019 — Wi MCP co_insider).",
   "leadership": [
    {
     "name": "Lê Ngọc Lâm",
@@ -23078,7 +23078,7 @@
     }
    }
   ],
-  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
+  "src": "Wi MCP co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
   "subs": [],
   "other": 9.06
  },
@@ -40282,7 +40282,7 @@
    "s": 463.97,
    "v": 1669.01
   },
-  "src": "WiData eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
+  "src": "Wi MCP eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
  },
  "valuation": {
   "history": [
@@ -40783,7 +40783,7 @@
    "divPaid": 3542.1,
    "rightsCash": 0
   },
-  "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
+  "src": "Wi MCP co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
  "events": [
   {
@@ -40793,7 +40793,7 @@
    "impact": "+",
    "status": "pending",
    "detail": "Gồm lợi nhuận giữ lại, quỹ dự trữ và phát hành riêng lẻ; mục tiêu đáp ứng chuẩn Basel cao hơn. Các CTCK lưu ý rủi ro chậm tiến độ.",
-   "src": "WiData ai_news (VNDS 09/2026, VDS 09/2026)"
+   "src": "Wi MCP ai_news (VNDS 09/2026, VDS 09/2026)"
   },
   {
    "d": "2026-12-01",
@@ -40818,7 +40818,7 @@
    "t": "CBTT về ngày ĐKCC để thực hiện quyền thanh toán lãi trái phiếu",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-10-09",
@@ -40826,7 +40826,7 @@
    "t": "CBTT về giao dịch với bên có liên quan - KEB Hana Bank",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-10-08",
@@ -40834,7 +40834,7 @@
    "t": "Thông báo quyết định của NHNN về việc sửa đổi nội dung vốn điều lệ tại Giấy phép thành lập và hoạt động của BID",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-10-02",
@@ -40842,7 +40842,7 @@
    "t": "HĐQT thông qua việc cấp hạn mức đối với  Keb Hana Bank Co.,LTD",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-09-14",
@@ -40850,7 +40850,7 @@
    "t": "Báo cáo kết quả đợt chào bán trái phiếu ra công chúng (đợt 3)",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-09-14",
@@ -40858,7 +40858,7 @@
    "t": "Thông báo nhận được Công văn của UBCKNN về báo cáo kết quả đợt chào bán trái phiếu ra công chúng (đợt 3)",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-28",
@@ -40866,7 +40866,7 @@
    "t": "Thông báo nhận được công văn của UBCKNN về tài liệu báo cáo kết quả phát hành cổ phiếu để tăng vốn cổ phần từ nguồn vốn chủ sở hữu",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-25",
@@ -40874,7 +40874,7 @@
    "t": "Báo cáo kết quả đợt phát hành CP để tăng vốn cổ phần từ nguồn vốn CSH, Thông báo thay đổi số lương CP có quyền biểu quyết",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-20",
@@ -40882,7 +40882,7 @@
    "t": "Trả cổ tức năm 2025 bằng tiền 450 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-08-20",
@@ -40890,7 +40890,7 @@
    "t": "Thông báo chào bán trái phiếu ra công chúng đợt 3",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-17",
@@ -40898,7 +40898,7 @@
    "t": "Thưởng cổ phiếu tỷ lệ 100:6.8433",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-08-14",
@@ -40906,7 +40906,7 @@
    "t": "Nhận được công văn của UBCKNN về tài liệu báo cáo triển khai chào bán trái phiếu ra công chúng đợt 3",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-12",
@@ -40914,7 +40914,7 @@
    "t": "Thông báo về ngày đăng ký cuối cùng phát hành cổ phiếu để tăng vốn cổ phần từ nguồn vốn chủ sở hữu (quỹ dự trữ bổ sung vốn điều lệ)",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-06",
@@ -40922,7 +40922,7 @@
    "t": "Nghị quyết HĐQT về việc phê duyệt phương án phát hành Trái phiếu BIDV theo hình thức riêng lẻ trong năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-05",
@@ -40930,7 +40930,7 @@
    "t": "Các nội dung liên quan đến phát hành cổ phiếu để tăng vốn điều lệ từ nguồn vốn chủ sở hữu",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-04",
@@ -40938,7 +40938,7 @@
    "t": "Các Thông báo của HNX về ngày giao dịch đầu tiên trái phiếu niêm yết của BIDV",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-01",
@@ -40947,7 +40947,7 @@
    "impact": "+",
    "status": "done",
    "detail": "Big 4 hưởng lợi nhiều nhất do giữ nhiều tiền gửi KBNN. TCBS kỳ vọng thay đổi này tạo thêm dư địa cho vay trong nửa cuối năm.",
-   "src": "Công thức LDR WiData; WiData ai_news"
+   "src": "Công thức LDR Wi MCP; Wi MCP ai_news"
   },
   {
    "d": "2026-07-31",
@@ -40956,7 +40956,7 @@
    "detail": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam (HOSE: BID) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 2.2026 tích cực đạt 8.146 tỷ đồng (+20.6%YoY). Lũy kế 6 tháng đầu năm 2026, LNST cổ đông công ty mẹ ổn định đạt 14.947 tỷ đồng (+18.7%YoY), hoàn thành 45.8% kế hoạch năm và 43.5% lợi nhuận dự phóng từ các CTCK (Kỳ vọng 2026F: 34.346 tỷ đồng, tăng 14.9%YoY). Về định giá P/E forward ở mức 8.3 lần so với P/E trailing 8.7 lần.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-07-30",
@@ -40964,7 +40964,7 @@
    "t": "Báo cáo định kỳ tình hình thanh toán gốc, lãi trái phiếu doanh nghiệp 6 tháng đầu năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-30",
@@ -40972,7 +40972,7 @@
    "t": "Nhận được công văn của UBCKNN về tài liệu báo cáo phát hành CP để tăng vốn cổ phần từ nguồn vốn CSH",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-28",
@@ -40980,7 +40980,7 @@
    "t": "Các Quyết định của HĐQT về việc chấp thuận niêm yết trái phiếu",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-04-25",
@@ -40989,7 +40989,7 @@
    "detail": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam (HOSE:BID) công bố lợi nhuận sau thuế công ty mẹ Quý 1.2026 ổn định đạt 6.801 tỷ đồng (+16.4% YoY). Các chỉ số tài chính khả quan với tăng trưởng tín dụng 15.3% và nợ xấu ở mức 1.8%.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-04-24",
@@ -40997,7 +40997,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-04-21",
@@ -41006,7 +41006,7 @@
    "detail": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam (HOSE:BID) công bố lợi nhuận sau thuế công ty mẹ Quý 4.2025 tích cực đạt 11.356 tỷ đồng (+45.4% YoY), đưa lũy kế cả năm 2025 lên mức 29.904 tỷ đồng, tăng 19.0% so với kết quả năm 2024. Các chỉ số tài chính khả quan với tăng trưởng tín dụng 15.3%, nợ xấu ở mức 1.5% và NIM đạt 2.1%.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-03-06",
@@ -41014,7 +41014,7 @@
    "t": "Lấy ý kiến cổ đông bằng văn bản năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-11-14",
@@ -41022,7 +41022,7 @@
    "t": "Trả cổ tức năm 2024 bằng tiền 450 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-04-04",
@@ -41030,7 +41030,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2025",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-12-23",
@@ -41038,7 +41038,7 @@
    "t": "Thưởng cổ phiếu tỷ lệ 100:21",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-11-26",
@@ -41046,7 +41046,7 @@
    "t": "Lấy ý kiến CĐ bằng văn bản năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-04-27",
@@ -41054,7 +41054,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   }
  ],
  "macro": {
@@ -65642,7 +65642,7 @@
     }
    ]
   },
-  "src": "WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202700, 7079, 241732, 75847, 265963"
+  "src": "Wi MCP macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202700, 7079, 241732, 75847, 265963"
  },
  "signals": [
   {
@@ -66784,7 +66784,7 @@
  },
  "sources": [
   {
-   "n": "WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
+   "n": "Wi MCP — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
    "u": "https://widata.vn/BID"
   },
   {
@@ -66810,9 +66810,9 @@
   },
   "recovTarget": " (mục tiêu thu hồi nợ ngoại bảng 14.000 tỷ năm 2026 — VDS 06/2026)",
   "tpSpread": "Chênh lệch giữa các CTCK chủ yếu ở chất lượng tài sản (LLR thấp nhất nhiều năm) và tốc độ phục hồi NIM; nhiều CTCK đã hạ TP trong 2026.",
-  "divNote": "<b>Năm trống trong dữ liệu — lợi nhuận được giữ lại để tăng vốn bằng cổ phiếu (cần Bộ Tài chính, NHNN phê duyệt), không phải do lỗ:</b><br><b>2016–2019:</b> cổ tức tiền mặt 7–8%/năm.<br><b>2020:</b> 2% tiền mặt và 25,77% cổ phiếu (thực hiện 12/2021).<br><b>2021:</b> cổ phiếu 12,69% từ lợi nhuận 2021 (11/2023), vốn điều lệ lên 57.004 tỷ.<br><b>2022:</b> không chi tiền mặt — lợi nhuận 2022 trả bằng cổ phiếu 21% (12/2024; WiData ghi vào năm 2023), vốn điều lệ lên ~68.975 tỷ.<br><b>2024–2025:</b> tiền mặt quay lại ở 4,5%; thêm cổ phiếu thưởng 6,84% từ quỹ dự trữ bổ sung vốn điều lệ (08/2026).<br>Bối cảnh: CAR và vốn cấp 1 mỏng nhất nhóm Big 4 nên ưu tiên giữ lại lợi nhuận.",
+  "divNote": "<b>Năm trống trong dữ liệu — lợi nhuận được giữ lại để tăng vốn bằng cổ phiếu (cần Bộ Tài chính, NHNN phê duyệt), không phải do lỗ:</b><br><b>2016–2019:</b> cổ tức tiền mặt 7–8%/năm.<br><b>2020:</b> 2% tiền mặt và 25,77% cổ phiếu (thực hiện 12/2021).<br><b>2021:</b> cổ phiếu 12,69% từ lợi nhuận 2021 (11/2023), vốn điều lệ lên 57.004 tỷ.<br><b>2022:</b> không chi tiền mặt — lợi nhuận 2022 trả bằng cổ phiếu 21% (12/2024; Wi MCP ghi vào năm 2023), vốn điều lệ lên ~68.975 tỷ.<br><b>2024–2025:</b> tiền mặt quay lại ở 4,5%; thêm cổ phiếu thưởng 6,84% từ quỹ dự trữ bổ sung vốn điều lệ (08/2026).<br>Bối cảnh: CAR và vốn cấp 1 mỏng nhất nhóm Big 4 nên ưu tiên giữ lại lợi nhuận.",
   "divInsight": "Cổ tức tiền mặt thấp và đều đặn đi cùng cổ tức cổ phiếu lớn: lợi nhuận được giữ lại để nâng vốn cấp 1, nên năm không chi tiền mặt là lựa chọn giữ vốn chứ không phải tín hiệu kinh doanh xấu.",
-  "divSrc": "WiData co_events, ratio_common_year; Mekong ASEAN (11/2023, 12/2024); Tạp chí Công Thương (11/2024); HOSE CBTT (08/2026)",
+  "divSrc": "Wi MCP co_events, ratio_common_year; Mekong ASEAN (11/2023, 12/2024); Tạp chí Công Thương (11/2024); HOSE CBTT (08/2026)",
   "eventsNote": "Mốc chưa có lịch chính thức (các cấu phần tăng vốn 2026–2027) là mốc theo dõi, chưa xác nhận.",
   "modelNote": "",
   "risks": [

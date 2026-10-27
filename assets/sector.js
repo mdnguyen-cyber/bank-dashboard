@@ -1,4 +1,4 @@
-/* Ngành Ngân hàng · CSTT — renderer. Dữ liệu: window.SECTOR_DATA (data/sector-data.js, sinh từ WiData bằng
+/* Ngành Ngân hàng · CSTT — renderer. Dữ liệu: window.SECTOR_DATA (data/sector-data.js, sinh từ Wi MCP bằng
    scripts/build_sector_data.py). Lời đọc (insight) do AI viết từ số đang hiển thị; quan điểm FinSuccess chỉ ở ô
    "Nhận định FinSuccess" (lưu trên trình duyệt). Layout theo dashboard ngành của công ty (bản Dầu khí). */
 (function () {
@@ -502,13 +502,13 @@ function subPeer() {
   <div class="gcards gap">${GROUPS.map(g => groupCard(g)).join('')}</div>
   ${card({ id: 'chCompare', title: 'So sánh tài chính & định giá', h: 'tall', sub: `Chọn chỉ tiêu và nhóm · ${BQ[QI]} (NIM, COF, CIR, ROE: TTM) · P/B, P/E theo giá ${dvn(D.latest.priceDate)}`,
     body: `<div class="picker" id="cmpMetric">${CMP.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div><div class="picker" id="cmpGroup">${['Tất cả', ...GROUPS].map(g => `<button type="button" data-g="${g}">${g}</button>`).join('')}</div>`,
-    insight: '<span id="cmpIns"></span>', src: 'WiData ratio_bank, ratio_bank_ttm, ratio_common_ttm, ratio_daily' })}
+    insight: '<span id="cmpIns"></span>', src: 'Wi MCP ratio_bank, ratio_bank_ttm, ratio_common_ttm, ratio_daily' })}
   <div class="grid g2 gap">
     ${card({ id: 'chRoePb', title: 'ROE và P/B: ai đang được định giá cao/thấp so với khả năng sinh lời', sub: `ROE TTM ${BQ[QI]} (trục ngang) · P/B ${dvn(D.latest.priceDate)} (trục dọc) · màu theo nhóm (bấm chú thích để ẩn/hiện nhóm) · đường đứt = hồi quy P/B theo ROE của các mã đang hiện · tick ô "Chọn" ở bảng bên cạnh để làm nổi hoặc chỉ hiện các mã đó`, h: 'tall',
       body: `<div class="picker" id="rpMode"><button type="button" data-m="all">Tất cả, làm nổi mã đã chọn</button><button type="button" data-m="sel">Chỉ mã đã chọn</button><button type="button" data-m="clr">Bỏ chọn</button></div>`,
-      insight: '<span id="rpIns"></span>', src: 'WiData ratio_common_ttm, ratio_daily · hồi quy tuyến tính bình phương nhỏ nhất, tự tính' })}
+      insight: '<span id="rpIns"></span>', src: 'Wi MCP ratio_common_ttm, ratio_daily · hồi quy tuyến tính bình phương nhỏ nhất, tự tính' })}
     <article class="card"><h3 class="sub">Bảng so sánh ${M.banks.length} ngân hàng</h3><p class="chart-sub">Bấm tiêu đề cột để sắp xếp · tick "Chọn" để đưa mã lên chart ROE–P/B · % · P/B, P/E: lần</p>
-      <div class="tscroll" id="cmpTable"></div><div class="src">Nguồn: WiData</div></article>
+      <div class="tscroll" id="cmpTable"></div><div class="src">Nguồn: Wi MCP</div></article>
   </div>`;
 }
 function chPeer() {
@@ -999,14 +999,14 @@ function subIntlOverview() {
   <div class="grid g2 gap">
     ${card({ id: 'chRates', title: 'Lãi suất Mỹ: Fed funds và lợi suất 10 năm', sub: '%/năm · cuối tháng · EFFR, UST 10Y; thêm TPCP VN 10Y để so mặt bằng', ctl: true,
       insight: `Sau chu kỳ hạ 2024–2025 (EFFR về 3,63%), Fed đảo chiều tăng 25 bps tháng 9/2026. UST 10Y lên <b>${pc(lastv(intl.ust10).v, 2)}</b> — cao nhất trong chuỗi từ 08/2023 — trong khi TPCP VN 10Y chỉ <b>${pc(lastv(intl.vn10).v, 2)}</b>: chênh âm <b>${sg((lastv(intl.vn10).v - lastv(intl.ust10).v) * 100, 0, ' bps')}</b>, giữ USD hấp dẫn hơn VND (R-02).`,
-      src: 'WiData 7079, bonds_gov_yield_curve 234521, 234526' })}
+      src: 'Wi MCP 7079, bonds_gov_yield_curve 234521, 234526' })}
     ${card({ id: 'chUsd', title: 'Đồng USD: DXY và USD/CNY', sub: 'Điểm · cuối tháng · trục phải USD/CNY (tăng = CNY mất giá)',
       insight: `DXY ${nf(lastv(intl.dxy).v, 1)} tăng lại từ đáy 96,4 (01/2026) nhưng vẫn thấp hơn đỉnh 108 cuối 2024. CNY mạnh lên liên tục (USD/CNY ${nf(lastv(intl.cny).v, 3)}, thấp nhất kể từ ${(p => p ? mvn(p.d.slice(0, 7)) : 'đầu chuỗi')([...intl.cny].reverse().slice(1).find(p => p.v <= lastv(intl.cny).v))}) — kênh Trung Quốc đang <b>đỡ</b> cho VND (R-08), áp lực đến từ lãi suất Mỹ chứ không từ đồng USD mạnh toàn diện.`,
-      src: 'WiData 235028, 235032' })}
+      src: 'Wi MCP 235028, 235032' })}
   </div>
   ${card({ id: 'chBrent', title: 'Giá dầu Brent', sub: 'USD/thùng · cuối tháng · đường đỏ = ngưỡng +20% YoY của R-06 so với cùng kỳ',
     insight: `Brent <b>${nf(b.v, 1)} USD</b>, ${sg(yoyAt(intl.brent, b.d), 0)} so với cùng kỳ — vượt xa ngưỡng +20% của R-06. Cú sốc tháng 3–4/2026 (118 USD) trùng thời điểm LS huy động 12T NHTM Nhà nước tăng 5,2% → 5,9% và tỷ giá tự do vọt 28.080. CPI VN đang ${pc(lastv(dom.cpi).v, 2)}, CPI bình quân 9T ${pc(lastv(dom.cpiAvg).v, 2)} — sát mục tiêu ~4,5%.`,
-    src: 'WiData commodity 203084' })}`;
+    src: 'Wi MCP commodity 203084' })}`;
 }
 /* ---- Quốc tế theo nước: số liệu public tự cập nhật hằng ngày (data/global-data.js) ---- */
 const GD = window.GLOBAL_DATA || { s: {}, ladder: [], taylor: {}, label: {}, src: {} };
@@ -1651,7 +1651,7 @@ function subMM() {
   <p class="muted">Cách đọc: chênh VND − USD dương và lớn hơn mức VND mất giá kỳ vọng → nắm giữ VND có lợi hơn (đường đỏ dùng mức thay đổi tỷ giá 12 tháng qua làm mốc tham chiếu, không phải dự báo) (tiền chảy vào VND, đỡ tỷ giá). Chênh co lại hoặc thấp hơn mức mất giá → động cơ giữ USD tăng, áp lực lên tỷ giá. VNIBOR USD cao hơn SOFR = USD trong nước khan hơn quốc tế.${prem != null ? ` Hiện VNIBOR USD 3M ${prem >= 0 ? 'cao' : 'thấp'} hơn SOFR 3M <b>${nf(Math.abs(prem) * 100, 0)} bps</b>.` : ''}</p>
   ${subFxIntl()}`;
 }
-/* ---------- Tỷ giá quốc tế (ECB theo ngày; vàng Stooq, dự phòng WiData) ---------- */
+/* ---------- Tỷ giá quốc tế (ECB theo ngày; vàng Stooq, dự phòng Wi MCP) ---------- */
 // [mã, tên, chuỗi, đảo (USD/xxx → giá trị đồng tiền tính bằng USD), cách niêm yết]
 const FXG = {
   g7: { t: 'Nhóm G7', s: [['EUR', 'EUR', 'eurusd_d', false, 'EUR/USD'], ['JPY', 'JPY', 'usdjpy_d', true, 'USD/JPY'], ['GBP', 'GBP', 'gbpusd_d', false, 'GBP/USD'], ['CAD', 'CAD', 'usdcad_d', true, 'USD/CAD'], ['USD', 'USD (DXY)', 'dxy_d', false, 'DXY']] },
@@ -1668,7 +1668,7 @@ function fxAxis(keys) {   // trục ngày chung (ngày có số ECB/DXY), từ 2
   return base.d.filter(d => d >= '2021-01-01');
 }
 function fxAlign(key, inv, days) {
-  if (key === 'gold' && gs('gold_d').d.length <= 200) {   // vàng từ WiData (tháng/tuần/ngày): nội suy tuyến tính giữa các điểm có số
+  if (key === 'gold' && gs('gold_d').d.length <= 200) {   // vàng từ Wi MCP (tháng/tuần/ngày): nội suy tuyến tính giữa các điểm có số
     const r = fxRaw('gold'), t = r.d.map(d => +new Date(d)); let j = 0;
     return days.map(d => { const x = +new Date(d); while (j + 1 < t.length && t[j + 1] <= x) j++;
       if (!t.length || x < t[0]) return null; if (j + 1 >= t.length) return x - t[j] <= 5 * 864e5 ? r.v[j] : null;
@@ -1703,16 +1703,16 @@ function subFxIntl() {
   return `<h3 class="ovh dsec" id="m-intl">Tỷ giá quốc tế</h3>
   <article class="card"><h3 class="sub">Bảng tỷ giá quốc tế</h3><p class="chart-sub">giá niêm yết gần nhất · % thay đổi giá trị đồng tiền so với USD (xanh = mạnh lên so với USD; riêng DXY xanh = USD yếu đi; vàng, Brent xanh = giá tăng)</p>
     <div class="tscroll"><table><thead><tr><th>Cặp</th><th class="n">Hiện tại</th><th class="n">1 tuần</th><th class="n">1 tháng</th><th class="n">Từ đầu năm</th><th class="n">1 năm</th><th>Ngày</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>
-    <div class="src">Nguồn: ECB (tỷ giá tham chiếu, tính chéo theo USD); DXY theo công thức ICE; vàng: Stooq (XAU/USD) hoặc WiData 74407 (CME); USD/VND: NHTM bán ra.</div></article>
+    <div class="src">Nguồn: ECB (tỷ giá tham chiếu, tính chéo theo USD); DXY theo công thức ICE; vàng: Stooq (XAU/USD) hoặc Wi MCP 74407 (CME); USD/VND: NHTM bán ra.</div></article>
   <div class="grid g2 gap">
     ${['g7', 'apac'].map(g => card({ id: 'fxI_' + g, title: FXG[g].t + ': ' + FXG[g].s.map(x => x[1]).join(', '), h: 'tall',
       sub: '% thay đổi từ đầu khung đang xem, theo ngày · dương = đồng tiền mạnh lên so với USD (USD theo DXY; vàng theo giá USD/ounce) · đổi khung bằng nút 1M–5Y',
-      insight: fxIntlIns(g), src: 'ECB · DXY tính theo công thức ICE' + (g === 'safe' ? ' · vàng: Stooq / WiData' : g === 'apac' ? ' · USD/VND: NHTM bán ra (WiData)' : '') })).join('')}
+      insight: fxIntlIns(g), src: 'ECB · DXY tính theo công thức ICE' + (g === 'safe' ? ' · vàng: Stooq / Wi MCP' : g === 'apac' ? ' · USD/VND: NHTM bán ra (Wi MCP)' : '') })).join('')}
     </div>
   <h3 class="sec2">Nhóm trú ẩn an toàn — so với DXY (nét đứt, trục phải)</h3>
   <div class="grid g2 gap">
     ${SAFE.map(([id, t, k, u]) => card({ id: 'fxS_' + id, title: t, h: 'tall', sub: `${u} theo ngày (trục trái) · nét đứt xám = DXY (trục phải) để tham chiếu sức mạnh đồng USD`,
-      insight: safeIns(id), src: { jpy: 'ECB · can thiệp: Bộ Tài chính Nhật (FEIO), tháng 7–8/2026 ước tính', chf: 'ECB', xau: 'Stooq (XAU/USD) hoặc WiData 74407 (CME)', oil: 'EIA qua FRED (Brent và WTI giao ngay)' }[id] + ' · DXY tính theo công thức ICE từ tỷ giá ECB' })).join('')}
+      insight: safeIns(id), src: { jpy: 'ECB · can thiệp: Bộ Tài chính Nhật (FEIO), tháng 7–8/2026 ước tính', chf: 'ECB', xau: 'Stooq (XAU/USD) hoặc Wi MCP 74407 (CME)', oil: 'EIA qua FRED (Brent và WTI giao ngay)' }[id] + ' · DXY tính theo công thức ICE từ tỷ giá ECB' })).join('')}
 </div>`;
 }
 const SAFE = [['jpy', 'USD/JPY', 'usdjpy_d', 'JPY cho 1 USD'], ['xau', 'Vàng XAU/USD', 'gold', 'USD/ounce'], ['chf', 'USD/CHF', 'usdchf_d', 'CHF cho 1 USD'], ['oil', 'Dầu Brent và WTI', 'us_brent_d', 'USD/thùng']];
@@ -1877,34 +1877,34 @@ function subDom(mode = 'n') {   // 'n' = trang Ngành (Vĩ mô tiền tệ, kèm
   <div class="grid g2 gap">
     ${card({ id: 'chFx', title: FSFX.TITLE, h: 'tall', sub: FSFX.SUB, insight: FSFX.insight({ nhtmSell: dom.nhtmSell, free: dom.free, freeD: dom.freeD, nhtmD: dom.nhtmD }), src: FSFX.SRC })}
     ${card({ id: 'chFxGap', title: 'Chênh lệch tỷ giá tự do − NHTM bán ra', sub: 'VND · theo ngày từ 07/2025, theo tuần trước đó · dương = USD ngoài hệ thống đắt hơn ngân hàng (kỳ vọng mất giá)',
-      insight: fxGapIns(), src: 'WiData 82226, 82223' })}
+      insight: fxGapIns(), src: 'Wi MCP 82226, 82223' })}
     ${mode === 'n' ? usMiniCards() : ''}
   </div>
   <h3 class="ovh dsec" id="d-flow">Cung tiền, tín dụng và dòng tiền</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chMoney', title: 'Tín dụng, tiền gửi và M2', sub: '% YoY · tháng · chênh tín dụng − tiền gửi dương = ngân hàng phải tìm thêm nguồn vốn (R-09)', ctl: true,
       insight: `Tín dụng <b>${pc(cr.v, 1)}</b> YoY (${mvn(cr.d)}) so với tiền gửi <b>${pc(dp.v, 1)}</b> (${mvn(dp.d)}) — chênh ${nf(cr.v - dp.v, 1)} điểm %, duy trì 5–6 điểm % từ cuối 2024 (đỉnh 8,7 điểm % tháng 9/2022). M2 chậm lại còn ${pc(m2.v, 1)} (đỉnh 18,8% giữa 2025): tiền mới tạo ra ít hơn trong khi nhu cầu vốn vẫn cao. Lưu ý: số tiền gửi NHNN chưa gồm GTCG, liên ngân hàng (deck slide 58).`,
-      src: 'WiData 75847, 265963, 265954' })}
+      src: 'Wi MCP 75847, 265963, 265954' })}
     ${card({ id: 'chCredit', title: 'Tín dụng toàn hệ thống so với đầu năm', sub: '% · tháng · mỗi đường một năm · đường đỏ = chỉ tiêu 2026 ~15%',
       insight: `Đến ${mvn(ytdNow.d)}, tín dụng tăng <b>${pc(ytdNow.v, 2)}</b> so với đầu năm, thấp hơn cùng kỳ ${pc(ytdLY && ytdLY.v, 2)} dù YoY vẫn cao — nhiều khả năng bị giới hạn bởi nguồn vốn (tiền gửi tăng chậm) hơn là room. Cho vay kinh doanh BĐS tăng 19,6% đến cuối tháng 8 (Phó Thống đốc, 14/10).`,
-      src: 'WiData 241732; vietnambiz 14/10/2026' })}
+      src: 'Wi MCP 241732; vietnambiz 14/10/2026' })}
     ${card({ id: 'chExt', title: 'Đối ngoại: cán cân thương mại, FDI và dự trữ', sub: 'Tỷ USD · cột = cán cân XNK tháng, đường = FDI giải ngân lũy kế 12 tháng; trục phải = dự trữ ngoại hối',
       insight: `Cán cân thương mại thâm hụt liên tục từ 12/2025 (đáy −5,3 tỷ USD tháng 5) rồi dương lại 09/2026; FDI giải ngân 12 tháng vẫn tăng. Dự trữ ${nf(res.v / 1000, 1)} tỷ USD (${mvn(res.d)}) — thấp hơn mức 109 tỷ đầu 2022, dư địa bán USD can thiệp có hạn.`,
-      src: 'WiData 255693, 76951, 76885' })}
+      src: 'Wi MCP 255693, 76951, 76885' })}
     ${card({ id: 'chFiscal', title: 'Tài khóa: chi − thu ngân sách theo quý', sub: 'Nghìn tỷ đồng · dương = Kho bạc bơm tiền ra hệ thống (R-12) · quý 4 luôn chi lớn theo mùa vụ',
     insight: `${mvn(lastF.d).replace(/^0?(\d+)\//, (m, a) => 'Q' + Math.ceil(a / 3) + '/')}: chi − thu <b>${nf(lastF.bal / 1000, 1)} nghìn tỷ</b> (cùng kỳ ${nf(lyF ? lyF.bal / 1000 : null, 1)}) — ${lastF.bal > 0 ? 'chi vượt thu, Kho bạc đang đưa tiền ra hệ thống' : 'thu vượt chi, Kho bạc đang hút tiền về'}. Chưa có số tiền gửi KBNN theo tháng (deck slide 58); thường quý IV đảo chiều mạnh khi giải ngân đầu tư công dồn cuối năm.`,
-    src: 'WiData 82420, 75598' })}
+    src: 'Wi MCP 82420, 75598' })}
   </div>
   <h3 class="ovh dsec" id="d-cost">Chi phí vốn và thanh khoản</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chOn', title: 'Thanh khoản liên ngân hàng (TT2)', sub: '% / tỷ đồng · theo phiên từ 2021 (mặc định hiện 3 tháng) · LNH qua đêm, lãi suất OMO; cột = NHNN bơm (+)/hút (−) ròng', h: 'tall',
       insight: `LNH qua đêm dao động <b>${nf(Math.min(...on3(dom.onDaily)), 2)}–${nf(Math.max(...on3(dom.onDaily)), 2)}%</b> trong 3 tháng gần nhất (đỉnh 5 năm ${nf(Math.max(...dom.onDaily.map(p => p.v)), 2)}% ngày ${dvn(dom.onDaily.reduce((m, p) => p.v > m.v ? p : m).d)}), đỉnh rơi vào cuối tháng. OMO lưu hành giảm từ đỉnh 255,2 nghìn tỷ giữa tháng 9 xuống 110,9 nghìn tỷ (14/10) — NHNN rút bớt tiền khi áp lực tỷ giá tăng. R-10: OMO chỉ xử lý thanh khoản ngắn, không giúp tuân thủ LDR.`,
-      src: 'WiData 82237, 81522, 82268; ai_news 14/10/2026' })}
+      src: 'Wi MCP 82237, 81522, 82268; ai_news 14/10/2026' })}
     ${dom.lnh ? card({ id: 'chLnhTen', title: 'Lãi suất liên ngân hàng theo kỳ hạn (TT2)', h: 'tall', sub: '%/năm, theo phiên · bình quân liên ngân hàng NHNN công bố: qua đêm, 1 tuần, 1, 3, 6, 9 tháng · nét đứt = lãi suất OMO', insight: lnhIns(), src: 'NHNN (lãi suất bình quân liên ngân hàng) qua dulieukinhte.com' }) : ''}
     ${dom.omoOut ? card({ id: 'chOmoOut', title: 'OMO và tín phiếu NHNN đang lưu hành', h: 'tall', sub: 'nghìn tỷ đồng, theo phiên (cột) · đường = lãi suất LNH qua đêm (trục phải) · OMO lưu hành giảm = NHNN rút tiền khỏi TT2', insight: omoOutIns(), src: 'NHNN (kết quả đấu thầu thị trường mở) qua dulieukinhte.com; LNH qua đêm: NHNN' }) : ''}
     ${card({ id: 'chDep', title: 'Lãi suất huy động 12 tháng theo nhóm (TT1)', sub: '%/năm · theo ngày từ 10/2024 · bình quân niêm yết NHTM Nhà nước, NHTM lớn (MBB, ACB, TCB, VPB), NHTM khác',
       insight: depIns(),
-      src: 'WiData 202886, 202874, 202880' })}
+      src: 'Wi MCP 202886, 202874, 202880' })}
     ${card({ id: 'bBig4', title: 'Lợi suất trái phiếu Big 4 khi phát hành', sub: '%/năm · lãi suất coupon tại thời điểm phát hành, bình quân gia quyền theo giá trị trong tháng · điểm = từng ngân hàng · đường đỏ = huy động 12T Big 4 · đường xám = TPCP 10 năm (cuối tháng)', insight: bBig4Ins(), src: BD.src.big4 + '; ' + BD.src.curve })}
     ${card({ id: 'dMmCurve', title: 'Đường cong lãi suất liên ngân hàng VND và USD', sub: VR.d.length ? `%/năm theo kỳ hạn · phiên ${dvn(VR.d[mmIdx()])} so với 1 tuần và 1 tháng trước · VNIBOR VND, VNIBOR USD, SOFR kỳ hạn` : '', insight: VR.d.length ? mmCurveIns(mmIdx(), mmIdx(7), mmIdx(30)) : '', src: 'VIRA Market Watch (VNIBOR do NHNN công bố; SOFR kỳ hạn)' })}
       ${card({ id: 'bCurve', title: 'Đường cong lợi suất TPCP Việt Nam', sub: `%/năm theo kỳ hạn · ${dvn(lastv(BD.gb.curve.d))} so với 3 tháng trước, đầu năm và 1 năm trước`, insight: bCurveIns(bondNums()), src: BD.src.curve })}
@@ -2533,16 +2533,16 @@ const BMET = [['nim', 'NIM'], ['cof', 'COF'], ['yea', 'YEA'], ['casa', 'CASA'], 
 function subBank() {
   return `<div class="grid g2 gap">
     ${card({ id: 'chGrp', title: 'Chỉ số ngân hàng theo nhóm, theo quý', sub: 'Bình quân gia quyền theo dư nợ tín dụng · NIM, COF, YEA, ROE, CIR: TTM', h: 'tall',
-      body: `<div class="picker" id="grpMetric">${BMET.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div>`, insight: '<span id="grpIns"></span>', src: 'WiData ratio_bank, ratio_bank_ttm · tự tính bình quân gia quyền' })}
+      body: `<div class="picker" id="grpMetric">${BMET.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div>`, insight: '<span id="grpIns"></span>', src: 'Wi MCP ratio_bank, ratio_bank_ttm · tự tính bình quân gia quyền' })}
     ${card({ id: 'chNimDep', title: 'NIM, COF ngành và lãi suất huy động 12T', sub: '% · quý · NIM, COF ngành (TTM) so với LS huy động 12T NHTM Nhà nước cuối quý — R-13: COF đi sau 1–3 quý', h: 'tall',
-      insight: nimDepInsight(), src: 'WiData ratio_bank_ttm; macro 202886' })}
+      insight: nimDepInsight(), src: 'Wi MCP ratio_bank_ttm; macro 202886' })}
     ${D.ppopSector ? card({ id: 'chPpopBurden', title: 'Lợi nhuận trước dự phòng, chi phí dự phòng và LNST toàn ngành', h: 'tall', ctl: true, sub: 'nghìn tỷ đồng, cộng 4 quý · đường nét liền = PPOP, dự phòng, LNST · nét đứt vàng = chi phí dự phòng / lợi nhuận trước dự phòng (%, trục phải) · đổi sang cột bằng nút bên phải tiêu đề', insight: ppopBurdenIns(), src: 'BCTC hợp nhất 26 ngân hàng niêm yết · tự tính' }) : ''}
     ${card({ id: 'chPbBand', title: 'Định giá ngành: P/B và dải ±1σ', sub: `Lần · cuối tháng từ ${mvn(SV.from)} · ngành Ngân hàng (GICS 107, toàn bộ NH niêm yết)`, ctl: true,
       insight: `P/B ngành <b>${x(SV.now.pb)}</b> thấp hơn trung bình ${x(SV.pb.mean)} (${sg((SV.now.pb - SV.pb.mean) / SV.pb.sd, 1, 'σ')}) dù ROE ngành ~17–18%. Thị trường đang chiết khấu rủi ro lãi suất tăng (R-16 chưa thỏa); P/E ${x(SV.now.pe)} so với TB ${x(SV.pe.mean)}.`,
-      src: 'WiData sector_ratio_daily (sector 107)' })}
+      src: 'Wi MCP sector_ratio_daily (sector 107)' })}
     ${D.fee ? feeSecCards() : ''}
     ${card({ id: 'chAQ', title: 'Chất lượng tài sản theo nhóm', sub: `% · ${BQ[QI]} · NPL, nợ nhóm 2 (cột) và bao phủ nợ xấu (đường, trục phải)`,
-      insight: aqInsight(), src: 'WiData ratio_bank' })}
+      insight: aqInsight(), src: 'Wi MCP ratio_bank' })}
   </div>`;
 }
 const FEE_COL = { pay: '#002060', ins: '#59C5C8', trust: '#861C52', sec: '#9a7400', adv: '#97BAFF', cash: '#9aa3b2', oth: '#FFD45D' };
@@ -2877,7 +2877,7 @@ function subIdx() {
   const s = SCN[NOW.q];
   return `${chainCard()}<div class="grid g2 gap">
     ${card({ id: 'chMatrix', title: `Ma trận kịch bản · ${mvn(NOW.m)}`, sub: 'Trục ngang IDX-FX (áp lực tỷ giá), trục dọc IDX-LIQ (thanh khoản) · nét đứt = ±1 · đường mờ = 12 tháng gần nhất', h: 'tall',
-      insight: `Vị trí hiện tại: IDX-FX <b>${sg(NOW.fx, 2, '')}</b>, IDX-LIQ <b>${sg(NOW.liq, 2, '')}</b> → <b>${s.t}</b> (${s.rate} → ${s.bank}). Ô này bắt đầu từ 03/2026 sau gần 2 năm ở "Nới lỏng mạnh"; cả hai chỉ số chưa vượt ±1 nên đây là thắt chặt mức vừa.`, src: 'Tự tính từ WiData theo công thức deck slide 52' })}
+      insight: `Vị trí hiện tại: IDX-FX <b>${sg(NOW.fx, 2, '')}</b>, IDX-LIQ <b>${sg(NOW.liq, 2, '')}</b> → <b>${s.t}</b> (${s.rate} → ${s.bank}). Ô này bắt đầu từ 03/2026 sau gần 2 năm ở "Nới lỏng mạnh"; cả hai chỉ số chưa vượt ±1 nên đây là thắt chặt mức vừa.`, src: 'Tự tính từ Wi MCP theo công thức deck slide 52' })}
     ${card({ id: 'chIdxHist', title: 'IDX-FX và IDX-LIQ theo thời gian', sub: 'z-score · tháng · nền màu = kịch bản; ±1 = ngưỡng mạnh', h: 'tall',
       insight: `Chỉ số bắt đúng các giai đoạn deck nêu để kiểm tra: <b>2022</b> (tỷ giá và thanh khoản căng: IDX-FX lên +1,8, IDX-LIQ xuống −2,4) và nới lỏng <b>2024–2025</b>. Quý 2/2024 (NHNN phát hành tín phiếu, bán USD) chỉ hiện là "hút tiền về" mức nhẹ vì tính theo tháng làm mờ biến động phiên.`, src: 'Tự tính' })}
   </div>
@@ -2894,7 +2894,7 @@ function subIdx() {
         ${[b3, b6].map(b => `<tr><td>${b.h} tháng</td><td class="n">${b.hit}</td><td class="n">${b.miss}</td><td class="n">${b.flat}</td><td class="n"><b>${pc(b.rate, 0)}</b></td></tr>`).join('')}</tbody></table></div>
       <div class="verdict bad">Bản trọng số bằng nhau đúng hướng <b>${pc(b6.rate, 0)}</b> (6 tháng) và ${pc(b3.rate, 0)} (3 tháng) — dưới ngưỡng ${bt.target}% của deck. Theo deck cần hiệu chỉnh trọng số trước khi dùng ma trận để ra quyết định; tạm thời đọc ma trận như bản đồ áp lực, kết hợp bảng tín hiệu R-xx.</div>
       <div class="note">Lý do chính: LS huy động niêm yết thay đổi theo bậc (đứng yên nhiều tháng) nên nhiều kỳ "đi ngang"; áp lực tỷ giá 2023 và Q2/2024 được NHNN xử lý bằng tín phiếu, bán USD thay vì tăng LS huy động.</div></article>
-    <article class="card"><h3 class="sub">Chỗ lệch so với deck (do dữ liệu)</h3><p class="chart-sub">Công thức giữ đúng slide 52; thành phần thay thế khi WiData chưa có chuỗi</p>
+    <article class="card"><h3 class="sub">Chỗ lệch so với deck (do dữ liệu)</h3><p class="chart-sub">Công thức giữ đúng slide 52; thành phần thay thế khi Wi MCP chưa có chuỗi</p>
       <ul style="margin:0;padding-left:18px;font-size:12.5px;color:var(--ink2)">${I.deviations.map(d => `<li>${esc(d)}</li>`).join('')}</ul>
       <div class="note keep">Ô kịch bản ở tab Vĩ mô của dashboard CTG đọc cùng kết quả này.</div></article>
   </div>
@@ -2995,7 +2995,7 @@ function panePolicy() {
   ${card({ id: 'chLdrSens', title: 'Tiền gửi Kho bạc trong LDR: ai hưởng lợi khi hệ số thay đổi', h: 'tall', ctl: false,
     sub: `% · ${S.quarter} · chọn hệ số tiền gửi KBNN tính vào mẫu số LDR · đường đỏ = trần 85% (TT22)`,
     body: `<div class="picker" id="kbPick">${[['0', '0% (Q1/2026)'], ['20', '20% (Q2/2026 · mặc định TT50)'], ['50', '50% (từ Q3/2026)']].map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div>`,
-    insight: '<span id="kbIns"></span>', src: 'WiData ratio_bank (ldr), fs_bank (bs160_1, bs330), fs_bank_notes (fnx107) · tự tính' })}
+    insight: '<span id="kbIns"></span>', src: 'Wi MCP ratio_bank (ldr), fs_bank (bs160_1, bs330), fs_bank_notes (fnx107) · tự tính' })}
   <article class="card"><h3 class="sub">Độ nhạy LDR theo hệ số KBNN</h3><p class="chart-sub">${esc(S.formula)}</p>
     <div class="tscroll"><table><thead><tr><th>Ngân hàng</th><th>Nhóm</th><th class="n">Tiền gửi KBNN (tỷ)</th><th class="n">% tiền gửi KH</th><th class="n">LDR 0%</th><th class="n">LDR 20%</th><th class="n">LDR 50%</th><th class="n">Giảm khi 20%→50%</th></tr></thead><tbody>
     ${S.rows.map(r => `<tr><td><b>${r.s}</b></td><td style="white-space:nowrap">${gdot(r.group)}${r.group}</td><td class="n">${nf(r.kbnn)}</td><td class="n">${pc(r.kbnnPctDep, 1)}</td><td class="n">${pc(r.ldr0, 2)}</td><td class="n">${pc(r.ldr20, 2)}</td><td class="n">${pc(r.ldr50, 2)}</td><td class="n">${sg(r.ldr50 - r.ldr20, 2, ' đ%')}</td></tr>`).join('')}</tbody></table></div></article>
@@ -3026,7 +3026,7 @@ function paneCatalyst() {
   <h2 class="sec">Catalyst · Risk</h2>
   <p class="sec-sub">Quy tắc nếu–thì R-01…R-16 của deck chạy trên số mới nhất; ngưỡng là giả định ban đầu, chưa backtest. Sự kiện có nguồn, dấu ± là tác động lên ngành.</p>
   <div class="banner warn"><b>${risk}/${D.signals.length} tín hiệu ở mức Rủi ro, ${ok} Hỗ trợ.</b> Áp lực đến từ bên ngoài (Fed, dầu, UST) và cuộc đua tiền gửi; điểm đỡ là CNY mạnh lên và NHNN nới hệ số KBNN.</div>
-  <article class="card"><h3 class="sub">Tín hiệu theo quy tắc R-xx <span class="pill ai">quy tắc</span></h3><p class="chart-sub">Deck slide 50–51 · R-04, R-05, R-07 (Nhật, đấu giá UST, carry) chưa có dữ liệu trong WiData nên chưa hiện</p>
+  <article class="card"><h3 class="sub">Tín hiệu theo quy tắc R-xx <span class="pill ai">quy tắc</span></h3><p class="chart-sub">Deck slide 50–51 · R-04, R-05, R-07 (Nhật, đấu giá UST, carry) chưa có dữ liệu trong Wi MCP nên chưa hiện</p>
     <div class="tscroll"><table><thead><tr><th>Mã</th><th>Lớp</th><th>Nếu…</th><th>Số hiện tại</th><th>Trạng thái</th><th>Thì (tác động)</th></tr></thead><tbody>
     ${D.signals.map(s => `<tr><td style="white-space:nowrap"><b>${s.id}</b></td><td style="white-space:nowrap">${esc(s.layer)}</td><td>${esc(s.rule)}</td><td>${esc(s.now)}</td><td>${pill(s.state)}</td><td>${esc(s.impact)}</td></tr>`).join('')}
     </tbody></table></div></article>
@@ -3084,9 +3084,9 @@ function paneCons() {
     <div class="src">BCTC (giá trị sổ sách); giá đóng cửa; báo cáo CTCK (giá mục tiêu)</div></article>
   <div class="grid g2 gap">
     ${card({ id: 'chUp', title: 'Upside theo giá mục tiêu trung vị', h: 'tall', sub: 'Mỗi CTCK lấy bản mới nhất · số trong ngoặc = số giá mục tiêu · màu nhạt = dưới 3 CTCK (kém tin cậy)',
-      insight: consIns(full), src: 'WiData co_reports, ratio_daily' })}
+      insight: consIns(full), src: 'Wi MCP co_reports, ratio_daily' })}
     ${card({ id: 'chPeFwd', title: 'P/E forward 2026 theo LNST dự phóng trung vị', h: 'tall', sub: 'Lần · vốn hóa hiện tại / LNST 2026F trung vị các CTCK',
-      insight: `P/E fwd thấp nhất: ${[...full].sort((a, b) => a.peFwd - b.peFwd).slice(0, 3).map(r => `<b>${r.s} ${x(r.peFwd)}</b>`).join(', ')}; cao nhất ${[...full].sort((a, b) => b.peFwd - a.peFwd).slice(0, 2).map(r => `${r.s} ${x(r.peFwd)}`).join(', ')}. Big 4 (trừ VCB) được định giá dưới 8,5x dù LNST 2026F tăng hai chữ số.`, src: 'WiData co_reports, ratio_daily' })}
+      insight: `P/E fwd thấp nhất: ${[...full].sort((a, b) => a.peFwd - b.peFwd).slice(0, 3).map(r => `<b>${r.s} ${x(r.peFwd)}</b>`).join(', ')}; cao nhất ${[...full].sort((a, b) => b.peFwd - a.peFwd).slice(0, 2).map(r => `${r.s} ${x(r.peFwd)}`).join(', ')}. Big 4 (trừ VCB) được định giá dưới 8,5x dù LNST 2026F tăng hai chữ số.`, src: 'Wi MCP co_reports, ratio_daily' })}
     ${card({ id: 'chPbTp', title: 'Định giá P/B: hiện tại so với tại giá mục tiêu', h: 'tall', sub: `Lần · cột = P/B theo giá ${dvn(D.latest.priceDate)} · chấm = P/B tại giá mục tiêu trung vị (giá mục tiêu / giá trị sổ sách mỗi cổ phiếu hiện tại) · màu nhạt = dưới 3 CTCK · đường = P/B ngành và trung bình`, insight: consPbIns(full), src: 'Báo cáo CTCK (giá mục tiêu); BCTC (giá trị sổ sách); giá đóng cửa' })}
     ${card({ id: 'chPbRoeF', title: 'P/B theo nhóm: hiện tại và tại giá mục tiêu', h: 'tall', sub: 'Lần · P/B trung vị theo nhóm hiện tại, tại giá mục tiêu và trung bình 5 năm của ngành', src: 'Báo cáo CTCK; BCTC; giá đóng cửa' })}
   </div>
@@ -3204,7 +3204,7 @@ function paneHot() {
       <div class="src">Xem: Chính sách · Quy định (bảng độ nhạy LDR); báo cáo TT50 FinSuccess</div></article>
     <article class="card"><h3 class="sub">Tin ngành mới nhất</h3><p class="chart-sub">Báo chí gắn chủ đề Ngân hàng · ${dvn(news.length ? news[Math.min(13, news.length - 1)].d : '')} – ${dvn(news.length ? news[0].d : '')} · chỉ tiêu đề và link</p>
       <ul class="news" style="padding-left:18px;margin:0">${news.filter(n => n.sym.length || /NHNN|tín dụng|lãi suất|nợ xấu|Thông tư|Thống đốc/i.test(n.t)).slice(0, 14).map(n => `<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.t)}</a> <small>· ${esc(n.src)} · ${dvn(n.d)}${n.sym.length ? ' · ' + n.sym.slice(0, 4).join(', ') : ''}</small></li>`).join('')}</ul>
-      <div class="src">Nguồn: WiData news_feed</div></article>
+      <div class="src">Nguồn: Wi MCP news_feed</div></article>
   </div>`;
 }
 
@@ -3214,8 +3214,8 @@ function paneHot() {
 function paneSrc() {
   $('#src').innerHTML = `
   <h2 class="sec">Sources</h2>
-  <p class="sec-sub">Mọi số là WiData (lưu nguyên văn trong data/raw/wi, không công khai); số tự tính ghi công thức. Lời đọc dưới chart do AI viết từ số đang hiển thị.</p>
-  <article class="card"><h3 class="sub">Nguồn dữ liệu theo nhóm</h3><div class="tscroll"><table><thead><tr><th>Nhóm</th><th>Mã chỉ tiêu / endpoint WiData</th></tr></thead><tbody>
+  <p class="sec-sub">Mọi số là Wi MCP (lưu nguyên văn trong data/raw/wi, không công khai); số tự tính ghi công thức. Lời đọc dưới chart do AI viết từ số đang hiển thị.</p>
+  <article class="card"><h3 class="sub">Nguồn dữ liệu theo nhóm</h3><div class="tscroll"><table><thead><tr><th>Nhóm</th><th>Mã chỉ tiêu / endpoint Wi MCP</th></tr></thead><tbody>
     ${D.sources.map(([a, b]) => `<tr><td style="white-space:nowrap"><b>${esc(a)}</b></td><td>${esc(b)}</td></tr>`).join('')}</tbody></table></div></article>
   <div class="grid g2 gap">
     <article class="card"><h3 class="sub">Công thức tự tính</h3><ul style="margin:0;padding-left:18px;font-size:12.5px;color:var(--ink2)">
@@ -3229,7 +3229,7 @@ function paneSrc() {
       ${I.deviations.map(d => `<li>${esc(d)}</li>`).join('')}
       <li>Tiền gửi hệ thống (NHNN) chưa gồm GTCG, liên ngân hàng — tín dụng lớn hơn huy động không có nghĩa thiếu vốn hoàn toàn (deck slide 58).</li>
       <li>Room tín dụng từng ngân hàng không công bố chính thức — chưa đưa vào.</li>
-      <li>LDR là công thức WiData (TT22 + hệ số KBNN), chưa phải LDR theo TT50.</li></ul></article>
+      <li>LDR là công thức Wi MCP (TT22 + hệ số KBNN), chưa phải LDR theo TT50.</li></ul></article>
   </div>`;
 }
 

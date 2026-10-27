@@ -1,4 +1,4 @@
-/* Bank Tracker — renderer dùng chung cho các trang ngân hàng. Dữ liệu: window.PVS_DATA (data/<mã>-data.js, sinh từ WiData).
+/* Bank Tracker — renderer dùng chung cho các trang ngân hàng. Dữ liệu: window.PVS_DATA (data/<mã>-data.js, sinh từ Wi MCP).
    Quy ước: lời đọc (insight) do AI viết theo số đang hiển thị; quan điểm analyst chỉ nằm ở tab FinSuccess
    và lưu trên trình duyệt (localStorage) — chưa đồng bộ server. */
 (function () {
@@ -266,7 +266,7 @@ function paneOverview() {
       <div class="fact"><span>NPL · LLR</span><b>${pc(M.npl, 2)} · ${pc(M.llr, 0)}</b><small>${QL.q}</small></div>
       <div class="fact"><span>CAR · LDR</span><b>${pc(car.car, 2)} · ${pc(QL.ldr)}</b><small>CAR ${car.period} (TT41) · LDR ${QL.q}</small></div>
     </div>
-    <div class="src">Nguồn: ${esc(M.src)}; CAR từ báo cáo TT41 (bán niên/năm). LDR theo công thức WiData (tiền gửi KBNN tính theo hệ số TT26/TT08).</div>
+    <div class="src">Nguồn: ${esc(M.src)}; CAR từ báo cáo TT41 (bán niên/năm). LDR theo công thức Wi MCP (tiền gửi KBNN tính theo hệ số TT26/TT08).</div>
   </article>
   ${card({ id: 'chPrice', title: 'Giá cổ phiếu so với ngành ngân hàng và VN-Index', sub: `đ/CP · giá đóng cửa đã điều chỉnh · lịch sử từ ${dvn(D.price.series[0].d)} · đường ngang là đỉnh và đáy 52 tuần · chỉ số ngành và VN-Index quy về cùng điểm xuất phát với giá ${T} ở đầu khung đang xem (có từ ${dvn(D.price.series.find(p => p.s != null)?.d)}), nên khoảng cách giữa các đường là chênh lệch hiệu suất`, h: 'short',
     insight: `${perfTxt()} Giá hiện tại <b>${nf(M.price)}đ</b> thấp hơn đỉnh 52 tuần <b>${nf(D.price.high52.c)}đ</b> (${dvn(D.price.high52.d)}) <b>${sg((M.price / D.price.high52.c - 1) * 100)}</b> và cao hơn đáy <b>${nf(D.price.low52.c)}đ</b> (${dvn(D.price.low52.d)}) <b>${sg((M.price / D.price.low52.c - 1) * 100)}</b>. ${P ? `LNTT ${esc(P.ytdLabel)} ${P.pbtYTDyoy >= 0 ? 'tăng' : 'giảm'} ${sg(P.pbtYTDyoy)} YoY; ` : ''}P/B hiện tại ${x(M.pb)} ${M.pb < VB.pbBand.mean ? 'dưới' : 'trên'} trung bình 5 năm ${x(VB.pbBand.mean)}.`,
@@ -324,15 +324,15 @@ function govSection() {
         <tr><td>Cổ đông khác (tự do chuyển nhượng, tổ chức và cá nhân &lt; 0,5%)</td><td class="n">—</td><td class="n">${nf(G.other, 2)}%</td><td></td></tr></tbody></table></div>
         ${G.holderNote ? `<div class="note keep">⚠ ${esc(G.holderNote)}</div>` : ''}`,
       insight: `${esc(top.name)} nắm <b>${nf(top.percent, 1)}%</b>; ${big.length ? `nhóm cổ đông lớn (≥ 5%) <b>${nf(big.reduce((a, h) => a + h.percent, 0), 1)}%</b>` : 'không cổ đông nào nắm từ 5% trở lên'}, phần lưu hành tự do còn khoảng <b>${nf(G.other, 1)}%</b>. ${NR.ownerInsight || 'Các NHTM có vốn Nhà nước chi phối phải giữ sở hữu Nhà nước ≥ 65% khi tăng vốn — ràng buộc của mọi phương án phát hành (xem Catalyst); room ngoại tối đa 30% với ngân hàng.'}`,
-      src: 'WiData co_holders' })}
+      src: 'Wi MCP co_holders' })}
     <article class="card"><h3 class="sub">Cơ cấu quản trị</h3><p class="chart-sub">HĐQT, Ban điều hành, Ban kiểm soát · người đương nhiệm</p><div class="tscroll"><table><thead><tr><th>Họ tên</th><th>Vai trò</th><th>Bổ nhiệm</th></tr></thead><tbody>
       ${G.leadership.map(l => `<tr><td>${esc(l.name)}</td><td>${esc(l.role)}</td><td>${dvn(l.since)}</td></tr>`).join('')}
-      </tbody></table></div><div class="src">Nguồn: WiData co_leaders (chỉ tên, chức vụ, ngày bổ nhiệm)</div></article>
+      </tbody></table></div><div class="src">Nguồn: Wi MCP co_leaders (chỉ tên, chức vụ, ngày bổ nhiệm)</div></article>
   </div>
   <article class="card"><h3 class="sub">Công ty con · liên doanh, liên kết</h3><p class="chart-sub">tỷ lệ lợi ích của ngân hàng · vốn điều lệ tỷ đồng</p>
     ${G.subs.length ? `<div class="tscroll"><table><thead><tr><th>Đơn vị</th><th>Loại</th><th class="n">Sở hữu</th><th class="n">Vốn điều lệ</th><th>Mã CK</th><th>Ngày chốt</th></tr></thead><tbody>
       ${G.subs.map(r => `<tr><td>${esc(r.name)}</td><td>${r.kind}</td><td class="n">${r.pct == null ? '—' : nf(r.pct, 2) + '%'}</td><td class="n">${r.capital == null ? '—' : nf(r.capital)}</td><td>${r.ticker || '—'}</td><td>${dvn(r.asOf)}</td></tr>`).join('')}
-      </tbody></table></div><div class="src">Nguồn: WiData co_subsidiaries (theo BCTC năm gần nhất)</div>` : '<div class="note keep">Chưa có danh sách công ty con trong dữ liệu đã lấy — xem thuyết minh BCTC hợp nhất.</div>'}</article>
+      </tbody></table></div><div class="src">Nguồn: Wi MCP co_subsidiaries (theo BCTC năm gần nhất)</div>` : '<div class="note keep">Chưa có danh sách công ty con trong dữ liệu đã lấy — xem thuyết minh BCTC hợp nhất.</div>'}</article>
   <article class="card"><h3 class="sub">Giao dịch cổ đông lớn &amp; người nội bộ</h3>
     <div class="grid g2 gap gov2">
       <div><p class="chart-sub"><b>Giá ${T} và giao dịch đã thực hiện</b></p><div class="cbox"><canvas id="chGovPx" role="img" aria-label="Giá và giao dịch nội bộ"></canvas></div></div>
@@ -343,7 +343,7 @@ function govSection() {
     <div class="picker" id="govSide">${[['all', 'Tất cả'], ['Mua', 'Mua'], ['Bán', 'Bán']].map(([k, l]) => `<button type="button" data-k="${k}" class="${k === GT.side ? 'on' : ''}">${l}</button>`).join('')}<input id="govQ" class="gov-q" placeholder="Tìm cổ đông / người nội bộ" aria-label="Tìm giao dịch"></div>
     <div id="govTbl"></div>
     <div class="insight" id="govIns"></div>
-    <div class="src">Nguồn: WiData co_insider; giá đóng cửa điều chỉnh (eod_adjust). Lợi suất tính từ phiên đầu sau ngày kết thúc giao dịch tới mốc 1/3/12 tháng, không hàm ý giao dịch gây ra biến động giá.</div></article>`;
+    <div class="src">Nguồn: Wi MCP co_insider; giá đóng cửa điều chỉnh (eod_adjust). Lợi suất tính từ phiên đầu sau ngày kết thúc giao dịch tới mốc 1/3/12 tháng, không hàm ý giao dịch gây ra biến động giá.</div></article>`;
 }
 function drawGov() {
   const G = D.governance, PS = D.price.series, TR = G.trades.filter(t => t.type !== 'Đăng ký' || t.executed);
@@ -871,12 +871,12 @@ function peerSub() {
       <div class="cbox tall"><canvas id="chPeer" role="img" aria-label="So sánh nhóm theo kỳ"></canvas></div>
       <div class="insight" id="peerIns"></div>
       <details class="more" open><summary>Bảng so sánh theo kỳ</summary><div class="tscroll" id="peerTbl"></div></details>
-      <div class="src">Nguồn: BCTC các ngân hàng niêm yết qua WiData (ratio_bank, ratio_bank_ttm, ratio_common_ttm); nhóm theo dashboard ngành</div></article>
+      <div class="src">Nguồn: BCTC các ngân hàng niêm yết qua Wi MCP (ratio_bank, ratio_bank_ttm, ratio_common_ttm); nhóm theo dashboard ngành</div></article>
     <article class="card"><h3 class="sub">${BIG ? 'Big 4' : GRP} niêm yết theo thời gian<span class="ctl" data-ctl="chPeerTs"></span></h3>
       <p class="chart-sub">${LTK.join(', ')} theo quý ${BIG ? 'từ 2009 (BID từ 2012)' : 'từ khi có số liệu'} · đường đứt = bình quân ${GRP} và toàn ngành từ 2021 (gia quyền dư nợ) · dùng nút khung thời gian để xem dài hạn</p>
       <div class="cbox tall"><canvas id="chPeerTs" role="img" aria-label="${GRP} theo thời gian"></canvas></div>
       <div class="insight" id="peerTsIns"></div>
-      <div class="src">Nguồn: BCTC hợp nhất ${LTK.join(', ')} qua WiData; bình quân nhóm từ dashboard ngành</div></article>`;
+      <div class="src">Nguồn: BCTC hợp nhất ${LTK.join(', ')} qua Wi MCP; bình quân nhóm từ dashboard ngành</div></article>`;
 }
 function peer(k) {
   const SB = (window.SECTOR_DATA || {}).banks; if (!SB) return;
@@ -935,7 +935,7 @@ function camel() {
   return `<article class="card"><h3 class="sub">Bảng CAMEL</h3><p class="chart-sub">Năm = số Q4 (chỉ số TTM); hai cột cuối là quý gần nhất. * = tự tính (xem công thức ở chân trang).</p><div class="tscroll"><table>
     <thead><tr><th></th><th>Chỉ tiêu</th>${cols.map(c => `<th class="n">${c.quarter === 4 && c !== QL && c !== QP ? c.year : c.q}</th>`).join('')}</tr></thead><tbody>
     ${rows.map(([g, l, f]) => `<tr><td><b>${g}</b></td><td>${l}</td>${cols.map(c => `<td class="n">${f(c)}</td>`).join('')}</tr>`).join('')}
-    </tbody></table></div><div class="src">Nguồn: WiData fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm, bank_car_tt41</div></article>${camelTT21()}`;
+    </tbody></table></div><div class="src">Nguồn: Wi MCP fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm, bank_car_tt41</div></article>${camelTT21()}`;
 }
 function camelTT21() {   // điểm TT21 của ngân hàng và vị trí trong nhóm NH quy mô lớn (dữ liệu từ dashboard ngành)
   const CM = (window.SECTOR_DATA || {}).camel; if (!CM) return '';
@@ -980,7 +980,7 @@ function paneEvents() {
   <article class="card"><h3 class="sub">Dòng sự kiện</h3>
     <div class="filter" id="evFilter">${types.map((t, i) => `<button type="button" data-t="${esc(t)}" class="${i ? '' : 'on'}">${esc(t)}</button>`).join('')}</div>
     <div class="tscroll"><table><thead><tr><th>Ngày</th><th>Loại</th><th>±</th><th>Sự kiện</th><th>Trạng thái</th></tr></thead><tbody id="evBody"></tbody></table></div>
-    <div class="src">Nguồn: HOSE CBTT, WiData co_events, ai_news</div></article>`;
+    <div class="src">Nguồn: HOSE CBTT, Wi MCP co_events, ai_news</div></article>`;
   const draw = t => { $('#evBody').innerHTML = D.events.filter(e => t === 'Tất cả' || e.type === t).map(e => `<tr><td style="white-space:nowrap">${dvn(e.d)}</td><td>${esc(e.type)}</td><td>${impact(e.impact)}</td><td>${esc(e.t)}${e.detail ? `<details class="more"><summary>Chi tiết</summary><div class="note">${esc(e.detail)}</div></details>` : ''}<div class="src">${esc(e.src)}</div></td><td>${e.status === 'pending' ? '<span class="pill pending">Chờ</span>' : '<span class="pill ok">Xác nhận</span>'}</td></tr>`).join('');
     $$('#evFilter button').forEach(b => b.classList.toggle('on', b.dataset.t === t)); };
   $$('#evFilter button').forEach(b => b.onclick = () => draw(b.dataset.t)); draw('Tất cả');
@@ -1115,7 +1115,7 @@ function paneVal() {
       </div>
       <div class="insight">P/B <b>${x(M.pb)}</b> ${M.pb < pbB.lo ? 'thấp hơn mốc −1σ' : M.pb < pbB.mean ? 'dưới trung bình, trên mốc −1σ' : 'trên trung bình'} (${x(pbB.lo)}–${x(pbB.mean)}) trong khi ROE TTM <b>${pc(QL.roe)}</b>${QL.roe >= maxIn('roe', 32) ? ' cao nhất 8 năm' : ''} — theo deck, P/B thấp kèm ROE ổn định là vùng hấp dẫn; điều kiện ngược lại là chất lượng tài sản (LLR ${pc(QL.llr, 0)}, hình thành nợ xấu ${pc(QL.nplFormationRate, 2)}) và CAR ${pc(D.car[D.car.length - 1].car, 2)}.</div>
     </article>
-    ${card({ id: 'chVal', title: 'P/B và P/E TTM theo quý', sub: 'lần · cuối quý · đường đứt = trung bình 20 quý', ctl: true, src: 'WiData ratio_common_ttm' })}
+    ${card({ id: 'chVal', title: 'P/B và P/E TTM theo quý', sub: 'lần · cuối quý · đường đứt = trung bình 20 quý', ctl: true, src: 'Wi MCP ratio_common_ttm' })}
   </div>
   <div class="sub" data-vp="2">
     <article class="card"><h3 class="sub">Định giá theo kịch bản lãi suất (thu nhập thặng dư)</h3>
@@ -1196,7 +1196,7 @@ function paneVal() {
 function footer() {
   $('#foot').innerHTML = `<b>Nguồn:</b> ${D.sources.map(s => s.u ? `<a href="${s.u}" target="_blank" rel="noopener">${esc(s.n)}</a>` : esc(s.n)).join(' · ')}<br>
   <b>Công thức tự tính:</b> ${Object.entries(D.formula).map(([k, v]) => `${k}: ${esc(v)}`).join(' · ')}<br>
-  ${esc(D.quarterlyNote)} Lời đọc dưới chart do AI viết từ số đang hiển thị; quan điểm FinSuccess chỉ là phần analyst nhập ở tab 💎 FinSuccess. Dữ liệu WiData lấy qua connector ngày ${dvn(M.updated)}.`;
+  ${esc(D.quarterlyNote)} Lời đọc dưới chart do AI viết từ số đang hiển thị; quan điểm FinSuccess chỉ là phần analyst nhập ở tab 💎 FinSuccess. Dữ liệu Wi MCP lấy qua connector ngày ${dvn(M.updated)}.`;
 }
 
 /* ---------- tabs ---------- */

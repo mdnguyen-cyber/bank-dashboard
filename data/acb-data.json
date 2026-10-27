@@ -19,7 +19,7 @@
   "view": null,
   "irUrl": "https://acb.com.vn/nha-dau-tu",
   "strategic": null,
-  "src": "WiData eod_adjust 2026-10-21 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "Wi MCP eod_adjust 2026-10-21 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 16.8,
   "roa": 1.57,
   "nim": 2.92,
@@ -5067,7 +5067,7 @@
    "llrInclAccrued": 52.3
   }
  ],
- "quarterlyNote": "BCTC hợp nhất từ WiData (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
+ "quarterlyNote": "BCTC hợp nhất từ Wi MCP (fs_bank, ratio_bank, ratio_bank_ttm, ratio_common_ttm). NIM, YEA, COF, CIR là TTM theo công thức Wi. Chi phí tín dụng, hình thành nợ xấu, NIM điều chỉnh và LLR gồm lãi dự thu là số TỰ TÍNH (xem formula).",
  "formula": {
   "creditCost": "Chi phí dự phòng 4 quý gần nhất / dư nợ cho vay KH bình quân 5 quý (BNK-13)",
   "nplFormation": "Hình thành nợ xấu ròng = NPL cuối − NPL đầu + nợ xử lý bằng dự phòng. Nợ xử lý lấy số thực tế trong thuyết minh (sử dụng dự phòng rủi ro tín dụng) khi có; kỳ không có thì ước tính = dự phòng đầu kỳ + chi phí dự phòng − dự phòng cuối kỳ. Ròng: đã trừ nợ xấu thu hồi, bán, nâng nhóm",
@@ -5612,7 +5612,7 @@
   "ytdLabel": "6T/2026",
   "pbtYTD": 10735.0,
   "npatYTD": 8612.9,
-  "src": "WiData co_plans (ĐHĐCĐ 09/04/2026); YTD cộng từ BCTC quý",
+  "src": "Wi MCP co_plans (ĐHĐCĐ 09/04/2026); YTD cộng từ BCTC quý",
   "pbtDone": 48.1,
   "npatDone": 48.2,
   "pbtYTDyoy": 0.4,
@@ -24127,7 +24127,7 @@
     }
    }
   ],
-  "src": "WiData co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
+  "src": "Wi MCP co_holders, co_leaders, co_insider (chỉ tên, chức vụ, ngày bổ nhiệm; không lưu thông tin cá nhân khác)",
   "subs": [
    {
     "name": "Công ty TNHH Chứng khoán ACB",
@@ -43685,7 +43685,7 @@
    "s": 463.08,
    "v": 1652.79
   },
-  "src": "WiData eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
+  "src": "Wi MCP eod_adjust (giá đã điều chỉnh, VN-Index), sector_price_daily (chỉ số giá ngành ngân hàng, gia quyền vốn hóa)"
  },
  "valuation": {
   "history": [
@@ -44343,7 +44343,7 @@
    "divPaid": 0.0,
    "rightsCash": 0
   },
-  "src": "WiData co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
+  "src": "Wi MCP co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
  },
  "events": [
   {
@@ -44369,7 +44369,7 @@
    "t": "Nghị quyết HĐQT về phương án phát hành và hồ sơ chào bán trái phiếu lần 2.2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-26",
@@ -44377,7 +44377,7 @@
    "t": "Thông báo thay đổi nhân sự (kèm Nghị quyết HĐQT)",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-08-01",
@@ -44386,7 +44386,7 @@
    "impact": "+",
    "status": "done",
    "detail": "Ngân hàng tư nhân giữ ít tiền gửi KBNN nên hưởng lợi ít hơn Big 4. ",
-   "src": "Công thức LDR WiData; WiData ai_news"
+   "src": "Công thức LDR Wi MCP; Wi MCP ai_news"
   },
   {
    "d": "2026-07-27",
@@ -44394,7 +44394,7 @@
    "t": "Thông báo về việc ký Hợp đồng kiểm toán BCTC năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "HOSE CBTT qua WiData"
+   "src": "HOSE CBTT qua Wi MCP"
   },
   {
    "d": "2026-07-22",
@@ -44403,7 +44403,7 @@
    "detail": "Ngân hàng TMCP Á Châu (HOSE: ACB) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 2.2026 suy giảm đạt 4.292 tỷ đồng (-12.1%YoY). Lũy kế 6 tháng đầu năm 2026, LNST cổ đông công ty mẹ ổn định đạt 8.613 tỷ đồng (+0.6%YoY), hoàn thành 48.2% kế hoạch năm và 47.2% lợi nhuận dự phóng từ các CTCK (Kỳ vọng 2026F: 18.245 tỷ đồng, tăng 16.8%YoY). Về định giá P/E forward ở mức 7.3 lần so với P/E trailing 8.3 lần.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-06-23",
@@ -44411,7 +44411,7 @@
    "t": "Trả cổ tức năm 2025 bằng tiền 700 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-06-15",
@@ -44419,7 +44419,7 @@
    "t": "Trả cổ tức năm 2025 bằng cổ phiếu tỷ lệ 100:13",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2026-04-23",
@@ -44428,7 +44428,7 @@
    "detail": "Ngân hàng TMCP Á Châu (HOSE:ACB) công bố lợi nhuận sau thuế công ty mẹ Quý 1.2026 ổn định đạt 4.320 tỷ đồng (+17.5% YoY), hoàn thành 24.2% kế hoạch năm. Các chỉ số tài chính khả quan với tăng trưởng tín dụng 18.7% và nợ xấu ở mức 1.0%.",
    "impact": "+",
    "status": "done",
-   "src": "WiData ai_news"
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-04-09",
@@ -44436,7 +44436,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2026",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-10-13",
@@ -44444,7 +44444,7 @@
    "t": "Lấy ý kiến CĐ bằng văn bản năm 2025",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-06-05",
@@ -44452,7 +44452,7 @@
    "t": "Trả cổ tức năm 2024 bằng tiền 1000 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-05-23",
@@ -44460,7 +44460,7 @@
    "t": "Trả cổ tức năm 2024 bằng cổ phiếu tỷ lệ 100:15",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2025-04-08",
@@ -44468,7 +44468,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2025",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-06-13",
@@ -44476,7 +44476,7 @@
    "t": "Trả cổ tức năm 2023 bằng tiền 1000 đồng/CP",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-05-31",
@@ -44484,7 +44484,7 @@
    "t": "Trả cổ tức năm 2023 bằng cổ phiếu tỷ lệ 100:15",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   },
   {
    "d": "2024-04-04",
@@ -44492,7 +44492,7 @@
    "t": "Họp ĐHCĐ thường niên năm 2024",
    "impact": "0",
    "status": "done",
-   "src": "WiData co_events"
+   "src": "Wi MCP co_events"
   }
  ],
  "macro": {
@@ -69080,7 +69080,7 @@
     }
    ]
   },
-  "src": "WiData macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202676, 7079, 241732, 75847, 265963"
+  "src": "Wi MCP macro: 82223, 82226, 82227, 82228, 82231, 235028, 82237, 81522, 82268, 202886, 202880, 202676, 7079, 241732, 75847, 265963"
  },
  "signals": [
   {
@@ -70486,7 +70486,7 @@
  },
  "sources": [
   {
-   "n": "WiData (MCP) — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
+   "n": "Wi MCP — BCTC, chỉ số, giá, báo cáo CTCK, vĩ mô",
    "u": "https://widata.vn/ACB"
   },
   {
@@ -70512,7 +70512,7 @@
   "tpSpread": "Các CTCK đồng thuận chất lượng tài sản thuộc nhóm tốt nhất ngành; chênh lệch nằm ở tốc độ phục hồi NIM, chi phí dự phòng tăng trong 2026 và cạnh tranh ở mảng bán lẻ, SME. Giá mục tiêu của phần lớn CTCK được hạ dần trong 2026.",
   "divNote": "",
   "divInsight": "Chính sách cổ tức ổn định: tiền mặt 1.000đ/CP (năm 2022–2024), 700đ/CP cho năm 2025 cùng cổ tức cổ phiếu 13–15% mỗi năm.",
-  "divSrc": "WiData co_events, ratio_common_year",
+  "divSrc": "Wi MCP co_events, ratio_common_year",
   "eventsNote": "",
   "modelNote": "",
   "risks": [

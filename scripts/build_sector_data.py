@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Dựng data/sector-data.js (window.SECTOR_DATA) cho dashboard CSTT + ngành Ngân hàng.
 
-- Mọi số lấy từ response WiData gốc trong data/raw/wi/ (lưu bởi scripts/wi_capture_transcript.py).
+- Mọi số lấy từ response Wi MCP gốc trong data/raw/wi/ (lưu bởi scripts/wi_capture_transcript.py).
 - Chỉ số tổng hợp IDX-FX, IDX-LIQ theo deck "Hướng dẫn xây dựng dashboard ngân hàng" (slide 39, 52):
   z = (x − TB 36 tháng) / ĐLC 36 tháng; chỉ số = trung bình (dấu × z), trọng số bằng nhau.
   Tính theo THÁNG (Wi nén chuỗi ngày về giá trị cuối tháng); chuỗi tháng/quý giữ số gần nhất tới khi có số mới.
-- Các chỗ lệch so với deck (do dữ liệu WiData) ghi ở D['idx']['deviations'] và hiện trên dashboard.
+- Các chỗ lệch so với deck (do dữ liệu Wi MCP) ghi ở D['idx']['deviations'] và hiện trên dashboard.
 
 Dùng: python3 scripts/build_sector_data.py
 """
@@ -230,7 +230,7 @@ def main():
 
     D = {'meta': {'title': 'CSTT & Ngành Ngân hàng', 'updated': TODAY,
                   'banks': BANKS, 'groups': GROUP,
-                  'note': 'Số liệu WiData; phần tự tính có công thức ở chân trang và tab Sources.'}}
+                  'note': 'Số liệu Wi MCP; phần tự tính có công thức ở chân trang và tab Sources.'}}
     D['idx'] = {
         'now': now, 'history': hist,
         'fxComp': comps(FXC, fx_raw, zfx, now['m']), 'liqComp': comps(LQC, liq_raw, zlq, now['m']),
@@ -238,7 +238,7 @@ def main():
                      'rule': 'P = IDX-FX − IDX-LIQ, chỉ xét tháng có |P| ≥ 0,5. P > 0 → dự báo LS huy động 12T NHTM Nhà nước tăng; P < 0 → giảm. Thay đổi < 5 bps = đi ngang (không tính vào tỷ lệ đúng hướng).'},
         'deviations': [
             'Tính theo tháng (giá trị cuối tháng Wi nén từ chuỗi ngày), deck đề xuất theo tuần.',
-            'Tiền cơ sở (DOM-12) chưa có trong WiData → dùng M2 % YoY.',
+            'Tiền cơ sở (DOM-12) chưa có trong Wi MCP → dùng M2 % YoY.',
             'USD/VND liên ngân hàng → dùng tỷ giá NHTM bán ra (82223).',
             'Chênh lệch VND–USD dùng LNH qua đêm trung bình 3 cuối tháng − EFFR (deck: LNH 1 tháng − SOFR).',
             'Cán cân đối ngoại chưa gồm kiều hối và khối ngoại ròng (deck DOM-06).',
@@ -477,7 +477,7 @@ def main():
                              'sym': x.get('symbol') or []})
     D['news'] = news
 
-    # ------------------------------------------------ giá vàng thế giới (WiData 74407, CME, USD/ounce): tháng → tuần → ngày tuỳ độ dài mỗi lần kéo; dự phòng khi chưa có chuỗi ngày Stooq
+    # ------------------------------------------------ giá vàng thế giới (Wi MCP 74407, CME, USD/ounce): tháng → tuần → ngày tuỳ độ dài mỗi lần kéo; dự phòng khi chưa có chuỗi ngày Stooq
     gold = {}
     for d in raw:
         if d['tool'] == 'wi_data_commodity':
@@ -618,7 +618,7 @@ def main():
     SIG = [
         ('R-01', 'Quốc tế', 'DXY tăng > 1σ trong tháng', f'DXY {vn(dxy[km], 1)} · {vn(dxy1, 1, True)}% 1 tháng (z {vn(dxy1z or 0, 1, True)})', 'risk' if (dxy1z or 0) > 1 else ('watch' if dxy1 > 0 else 'ok'), 'Áp lực USD/VND, NHNN ưu tiên ổn định tỷ giá'),
         ('R-02', 'Quốc tế', 'Fed hạ lãi suất / kỳ vọng cắt tăng', 'Fed TĂNG 25 bps ngày 16/09/2026 lên 3,75–4,00%; EFFR ' + vn(effr[max(effr)], 2) + '%' + fw_txt, fw_state, 'Chênh lệch VND–USD hẹp lại, dư địa nới của NHNN giảm'),
-        ('R-03', 'Quốc tế', 'Thanh khoản ròng Fed giảm / SOFR > IORB', 'Chưa có chuỗi trong WiData (FRED WALCL, WTREGEN, RRP)', 'na', '—'),
+        ('R-03', 'Quốc tế', 'Thanh khoản ròng Fed giảm / SOFR > IORB', 'Chưa có chuỗi trong Wi MCP (FRED WALCL, WTREGEN, RRP)', 'na', '—'),
         ('R-06', 'Quốc tế', 'Brent tăng > 20% YoY', f'Brent {vn(brent[km], 1)} USD/thùng · {vn(br_yoy, 0, True)}% YoY', 'risk' if br_yoy > 20 else 'ok', 'Kỳ vọng lạm phát tăng, NHNN thận trọng hơn'),
         ('R-08', 'Quốc tế', 'USD/CNY tăng > 1σ', f'USD/CNY {vn(S(235032)[km], 3)} · {vn(cny3, 1, True)}% 3 tháng (CNY mạnh lên)', 'ok' if cny3 < 0 else 'watch', 'CNY mạnh lên giảm sức ép cạnh tranh lên VND'),
         ('R-09', 'Nội địa → NH', 'Tín dụng tăng nhanh hơn huy động', f'Tín dụng {vn(cr, 1)}% YoY ({kc[5:]}/{kc[:4]}) vs tiền gửi {vn(depy[kd], 1)}% ({kd[5:]}/{kd[:4]}) · chênh {vn(gap, 1)} điểm %', 'risk' if gap > 3 else ('watch' if gap > 0 else 'ok'), 'LDR căng, tranh giành tiền gửi → LS huy động TT1 tăng'),
@@ -639,22 +639,22 @@ def main():
         {'d': '2026-10-28', 'type': 'Quốc tế', 't': 'FOMC 27–28/10: Fed sau đợt tăng 25 bps tháng 9', 'impact': '?', 'status': 'pending',
          'detail': 'Tăng tiếp → chênh lệch VND–USD hẹp thêm, IDX-FX tăng; giữ nguyên → áp lực tỷ giá hạ nhiệt.', 'src': 'fedratecalc.com/fomc-meeting-schedule'},
         {'d': '2026-11-06', 'type': 'Vĩ mô VN', 't': 'CPI tháng 10 (NSO) — CPI bình quân 9T đã 4,52%, sát mục tiêu ~4,5%', 'impact': '−', 'status': 'pending',
-         'detail': 'Vượt mục tiêu làm NHNN khó hạ lãi suất điều hành; Brent +60% YoY là nguồn đẩy giá.', 'src': 'WiData 75804, 203084; ngày công bố dự kiến'},
+         'detail': 'Vượt mục tiêu làm NHNN khó hạ lãi suất điều hành; Brent +60% YoY là nguồn đẩy giá.', 'src': 'Wi MCP 75804, 203084; ngày công bố dự kiến'},
         {'d': '2026-12-01', 'type': 'Quy định', 't': 'TT50/2026/TT-NHNN có hiệu lực: LDR mới, LCR, NSFR thay SMLR', 'impact': '?', 'status': 'pending',
          'detail': 'Liên ngân hàng tính vị thế ròng; tiền gửi KBNN mặc định 20% theo TT50 (Thống đốc có thể điều chỉnh) — xem bảng độ nhạy LDR tab Chính sách.', 'src': 'Deck slide 21, 53; báo cáo TT50 FinSuccess; NHNN tập huấn 12/10/2026'},
         {'d': '2026-12-09', 'type': 'Quốc tế', 't': 'FOMC 8–9/12 kèm dự phóng kinh tế (SEP)', 'impact': '?', 'status': 'pending', 'detail': '', 'src': 'fedratecalc.com/fomc-meeting-schedule'},
         {'d': '2026-12-31', 'type': 'Quy định', 't': 'Hết hạn loại trừ khỏi room theo CV 4551 (dự án trọng điểm, NOXH, KCN)', 'impact': '?', 'status': 'pending',
          'detail': 'Room 2027 và chỉ tiêu tín dụng năm mới là catalyst đầu năm.', 'src': 'CV 4551/NHNN-CSTT'},
         {'d': '2026-09-16', 'type': 'Quốc tế', 't': 'Fed tăng 25 bps lên 3,75–4,00% (12–0)', 'impact': '−', 'status': 'done',
-         'detail': 'Đảo chiều sau chu kỳ hạ 2024–2025; UST 10Y lên 5,2%.', 'src': 'fedratecalc.com; WiData 7079, 234521'},
+         'detail': 'Đảo chiều sau chu kỳ hạ 2024–2025; UST 10Y lên 5,2%.', 'src': 'fedratecalc.com; Wi MCP 7079, 234521'},
         {'d': '2026-09-15', 'type': 'Thanh khoản', 't': 'OMO lưu hành đạt đỉnh 255,2 nghìn tỷ, sau đó NHNN rút dần về 110,9 nghìn tỷ (14/10)', 'impact': '0', 'status': 'done',
-         'detail': 'LNH qua đêm dao động 0,5–7% quanh các kỳ cuối tháng.', 'src': 'WiData ai_news 14/10/2026'},
+         'detail': 'LNH qua đêm dao động 0,5–7% quanh các kỳ cuối tháng.', 'src': 'Wi MCP ai_news 14/10/2026'},
         {'d': '2026-08-01', 'type': 'Quy định', 't': 'QĐ 1743: tiền gửi có kỳ hạn KBNN tính vào LDR lên 50% (1/8/2026 – 31/7/2028)', 'impact': '+', 'status': 'done',
          'detail': 'Big 4 hưởng lợi nhiều nhất (VCB, BID, CTG giữ ~185–195 nghìn tỷ tiền gửi KBNN mỗi bên).', 'src': 'QĐ 1743/QĐ-NHNN (VnEconomy 31/7/2026); tiền gửi KBNN theo thuyết minh BCTC Q2/2026'},
         {'d': '2026-03-31', 'type': 'Lãi suất', 't': 'LS huy động 12T NHTM Nhà nước tăng 5,2% → 5,9%; tỷ giá tự do vọt 28.080', 'impact': '−', 'status': 'done',
-         'detail': 'Brent lên 118 USD/thùng cùng tháng; chênh tự do − NHTM +1.723đ.', 'src': 'WiData 202886, 82226, 203084'},
+         'detail': 'Brent lên 118 USD/thùng cùng tháng; chênh tự do − NHTM +1.723đ.', 'src': 'Wi MCP 202886, 82226, 203084'},
         {'d': '2026-10-14', 'type': 'Doanh nghiệp', 't': 'Eximbank bỏ trần sở hữu nước ngoài 6%; MSB dự kiến chào bán 936 triệu CP; SHB vay 340 triệu USD từ SMBC', 'impact': '+', 'status': 'done',
-         'detail': 'Dòng vốn ngoại và tăng vốn — hỗ trợ CAR nhóm tư nhân.', 'src': 'WiData news_feed 13–14/10/2026'},
+         'detail': 'Dòng vốn ngoại và tăng vốn — hỗ trợ CAR nhóm tư nhân.', 'src': 'Wi MCP news_feed 13–14/10/2026'},
         {'d': '2026-10-14', 'type': 'Tín dụng', 't': 'Phó Thống đốc: cho vay kinh doanh BĐS tăng 19,6% đến cuối tháng 8; VIS Rating điểm tên NH có dư nợ BĐS lớn', 'impact': '−', 'status': 'done',
          'detail': 'Rủi ro tập trung BĐS khi LS tăng (R-14).', 'src': 'vietnambiz, kinhtechungkhoan 14/10/2026'},
     ], key=lambda e: e['d'], reverse=True)

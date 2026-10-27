@@ -51,8 +51,8 @@
   /* ---------- thông tin thẻ ---------- */
   const txt = el => el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
   const plain = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
-  function cleanSrc(s) {   // ảnh đem đi chia sẻ: ghi nguồn gốc công bố, không ghi kho dữ liệu nội bộ
-    s = s.replace(/^Nguồn:\s*/i, '').replace(/WiData\s+fs_bank/gi, 'BCTC ngân hàng').replace(/\(?\s*WiData[^·;,)]*\)?/gi, '').replace(/\s*·\s*(?=·|$)/g, '').replace(/^[\s·;,]+|[\s·;,]+$/g, '').replace(/\s{2,}/g, ' ');
+  function cleanSrc(s) {   // ảnh đem đi chia sẻ: số lấy từ Wi MCP ghi "Wi MCP" (bỏ mã bảng nội bộ), số lấy ngoài ghi nguồn ngoài
+    s = s.replace(/^Nguồn:\s*/i, '').replace(/Wi(?:Data| MCP)\b[^·;)]*/gi, 'Wi MCP').replace(/\s*·\s*(?=·|$)/g, '').replace(/^[\s·;,]+|[\s·;,]+$/g, '').replace(/\s{2,}/g, ' ');
     return s || 'FinSuccess tổng hợp';
   }
   function meta(c) {
