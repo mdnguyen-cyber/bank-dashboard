@@ -3335,26 +3335,40 @@ function drPbHist() {
   const M = withLast(H.median, medNow);
   const st = a => { const v = a.map(p => p[1]); const m = v.reduce((x, y) => x + y, 0) / v.length; return { m, sd: Math.sqrt(v.reduce((x, y) => x + (y - m) ** 2, 0) / v.length), now: v[v.length - 1], lo: Math.min(...v), hi: Math.max(...v), pct: v.filter(y => y <= v[v.length - 1]).length / v.length * 100 }; };
   const lab = d => /-(03-31|06-30|09-30|12-31)$/.test(d) ? `Q${+d.slice(5, 7) / 3}/${d.slice(0, 4)}` : dvn(d);
-  let ds, S, title, cr = null;
+  let ds, S, title, cr = null, daily = false, ser, medSer;
+  const PS = D.pbDailyS, dser = k => PS && PS.v[k] ? PS.d.map((d, i) => [d, PS.v[k][i]]).filter(p => p[1] != null) : null;
   if (consSel && H.banks[consSel]) {
-    const L0 = Lr.find(r => r.s === consSel) || {}, B = withLast(H.banks[consSel], L0.pb), mm = new Map(M.map(([d, v]) => [d, v]));
+    const L0 = Lr.find(r => r.s === consSel) || {};
     cr = (D.consensus.rows || []).find(r => r.s === consSel);
-    S = st(B); title = `P/B lịch sử ${consSel} so với trung vị ngành`;
-    ds = [L(consSel, B.map(p => p[1]), GC[L0.group] || C.navy, { unit: 'x', dp: 2, borderWidth: 2.6, pointRadius: 2 }),
-      L('Trung vị ngành', B.map(p => mm.get(p[0]) ?? null), C.grey, { unit: 'x', dp: 2, borderWidth: 1.6, borderDash: [5, 4] })];
-    ds.labels = B.map(p => lab(p[0]));
+    ser = dser(consSel); daily = !!ser; if (!ser) ser = withLast(H.banks[consSel], L0.pb);
+    medSer = daily ? dser('_median') : M; title = `P/B ${consSel} ${daily ? 'theo phiên ' : ''}so với trung vị ngành`;
   } else {
-    S = st(M); title = 'P/B trung vị ngành ngân hàng (26 ngân hàng niêm yết)';
-    ds = [L('P/B trung vị ngành', M.map(p => p[1]), C.navy, { unit: 'x', dp: 2, borderWidth: 2.6, pointRadius: 2 })];
-    ds.labels = M.map(p => lab(p[0]));
+    ser = dser('_median'); daily = !!ser; if (!ser) ser = M; title = `P/B trung vị ngành ngân hàng (26 ngân hàng niêm yết)${daily ? ' theo phiên' : ''}`;
   }
+  S = st(ser);
+  const now = S.now, last = ser[ser.length - 1][0], yEnd = `${last.slice(0, 4)}-12-31`;
+  const pbT = consSel ? (cr && cr.pbTP) : med((D.consensus.rows || []).filter(r => r.nTP >= 3).map(r => r.pbTP).filter(v => v != null));
+  const fut = [];
+  if (pbT != null && yEnd > last) { const d = new Date(last + 'T00:00:00Z'); for (;;) { d.setUTCDate(d.getUTCDate() + (daily ? 1 : 7)); const iso = d.toISOString().slice(0, 10); if (iso > yEnd) break; if (d.getUTCDay() % 6) fut.push(iso); } if (fut[fut.length - 1] !== yEnd) fut.push(yEnd); }
+  const dates = ser.map(p => p[0]).concat(fut), n0 = ser.length, nm = consSel || 'Trung vị ngành';
+  const col = consSel ? (GC[(Lr.find(r => r.s === consSel) || {}).group] || C.navy) : C.navy;
+  ds = [{ ...L(consSel ? 'P/B ' + consSel : 'P/B trung vị ngành', ser.map(p => p[1]).concat(fut.map(() => null)), col, { unit: 'x', dp: 2, borderWidth: daily ? 1.8 : 2.6, pointRadius: daily ? 0 : 2 }), endLbl: [`${nm} hiện tại`, `${x(now)} (${dvn(last)})`] }];
+  if (consSel && medSer) { const mm = new Map(medSer); ds.push(L(daily ? 'Trung vị 26 NH niêm yết' : 'Trung vị ngành (cuối quý)', dates.map(d => mm.has(d) ? mm.get(d) : null), C.grey, { unit: 'x', dp: 2, borderWidth: 1.3, borderDash: [4, 3], pointRadius: 0, spanGaps: true })); }
+  if (pbT != null && fut.length) ds.push({ ...L(`Tới P/B tại giá mục tiêu trung vị ${x(pbT)} (31/12)`, dates.map((d, i) => i < n0 - 1 ? null : +(now + (pbT - now) * (i - (n0 - 1)) / (dates.length - n0)).toFixed(3)), C.red, { unit: 'x', dp: 2, borderWidth: 1.8, borderDash: [6, 4], pointRadius: 0 }), keep: true,
+    endLbl: [`Nếu đạt giá mục tiêu trung vị`, `vào 31/12 → P/B ${x(pbT)}`, consSel ? `(${cr.nTP} giá mục tiêu)` : `(trung vị các NH ≥ 3 CTCK)`] });
   const lines = [{ value: S.m, label: `TB ${x(S.m)}`, color: C.grey, dash: [2, 3] }, { value: S.m + S.sd, label: `+1σ ${x(S.m + S.sd)}`, color: '#c9a227', dash: [6, 4] }, { value: S.m - S.sd, label: `−1σ ${x(S.m - S.sd)}`, color: '#c9a227', dash: [6, 4] }];
-  if (cr && cr.pbTP != null) lines.push({ value: cr.pbTP, label: `P/B tại giá mục tiêu trung vị ${x(cr.pbTP)}`, color: C.red, dash: [5, 4] });
-  mk('chPbHist', { type: 'line', data: { labels: ds.labels, datasets: ds }, options: { plugins: { refLines: { lines } }, scales: { y: numAxis('', { beginAtZero: false, ticks: { callback: v => nf(v, 1) + 'x' } }) } } });
+  const wide = ($('#chPbHist').parentElement.clientWidth || 800) >= 640;
+  const endLbl = { id: 'pbhEnd', afterDatasetsDraw(ch) { if (!wide) return;
+    const { ctx, chartArea: ar } = ch, Lb = [];
+    ch.data.datasets.forEach((d, i) => { if (!d.endLbl || !ch.isDatasetVisible(i)) return; const meta = ch.getDatasetMeta(i); let k = d.data.length - 1; while (k >= 0 && d.data[k] == null) k--; if (k < 0 || !meta.data[k]) return; Lb.push({ y: meta.data[k].y, t: d.endLbl, c: d.borderColor }); });
+    Lb.sort((p, q) => p.y - q.y); for (let i = 1; i < Lb.length; i++) Lb[i].y = Math.max(Lb[i].y, Lb[i - 1].y + 13 * Lb[i - 1].t.length + 4);
+    ctx.save(); ctx.font = '600 10.5px Arial'; ctx.textBaseline = 'middle'; Lb.forEach(l => { ctx.fillStyle = l.c; l.t.forEach((t, j) => ctx.fillText(t, ar.right + 10, l.y + j * 13)); }); ctx.restore(); } };
+  mk('chPbHist', { type: 'line', data: { labels: dates.map(d => daily ? dvn(d) : lab(d)), datasets: ds }, plugins: [endLbl],
+    options: { layout: { padding: { right: wide ? 175 : 0 } }, plugins: { refLines: { lines }, tooltip: { filter: it => !it.dataset.keep || it.dataIndex >= n0 } }, scales: { y: numAxis('', { beginAtZero: false, ticks: { callback: v => nf(v, 1) + 'x' } }) } } });
   $('#pbHistH').textContent = title;
-  $('#pbHistSub').textContent = `Lần · cuối mỗi quý từ ${lab(H.median[0][0])} và phiên ${dvn(D.latest.priceDate)} · đường xám = trung bình, đường vàng = ± 1 độ lệch chuẩn của chính chuỗi · ${consSel ? `bấm lại ${consSel} để về trung vị ngành` : 'bấm một ngân hàng ở các biểu đồ hoặc bảng bên dưới để xem P/B của ngân hàng đó'}`;
+  $('#pbHistSub').textContent = `Lần · ${daily ? `theo phiên từ ${dvn(ser[0][0])}` : `cuối mỗi quý từ ${lab(ser[0][0])} và phiên ${dvn(D.latest.priceDate)}`} · nét đứt đỏ = P/B đi từ hiện tại tới P/B tại giá mục tiêu trung vị vào 31/12 · đường xám = trung bình, đường vàng = ± 1 độ lệch chuẩn của chính chuỗi · ${consSel ? `bấm lại ${consSel} để về trung vị ngành` : 'bấm một ngân hàng ở các biểu đồ hoặc bảng bên dưới để xem P/B của ngân hàng đó'}`;
   const z = S.sd ? (S.now - S.m) / S.sd : 0;
-  $('#pbHistIns').innerHTML = `${consSel || 'Trung vị ngành'}: P/B hiện tại <b>${x(S.now)}</b>, ${z >= 0 ? 'cao' : 'thấp'} hơn trung bình ${x(S.m)} <b>${nf(Math.abs(z), 1)} độ lệch chuẩn</b>; cao hơn ${nf(S.pct, 0)}% số quý trong chuỗi (thấp nhất ${x(S.lo)}, cao nhất ${x(S.hi)}).`
+  $('#pbHistIns').innerHTML = `${consSel || 'Trung vị ngành'}: P/B hiện tại <b>${x(S.now)}</b>, ${z >= 0 ? 'cao' : 'thấp'} hơn trung bình ${x(S.m)} <b>${nf(Math.abs(z), 1)} độ lệch chuẩn</b>; cao hơn ${nf(S.pct, 0)}% số ${daily ? "phiên" : "quý"} trong chuỗi (thấp nhất ${x(S.lo)}, cao nhất ${x(S.hi)}).`
     + (cr && cr.pbTP != null ? ` Giá mục tiêu trung vị của CTCK tương ứng P/B <b>${x(cr.pbTP)}</b> (${cr.nTP} giá mục tiêu).` : '')
     + (consSel ? ` Trung vị ngành hiện ${x(medNow)}.` : '')
     + how('P/B dưới trung bình lịch sử của chính ngân hàng đó thường phản ánh lo ngại về chất lượng tài sản hoặc ROE giảm; cần đối chiếu với xu hướng ROE và nợ xấu trước khi coi là rẻ.');

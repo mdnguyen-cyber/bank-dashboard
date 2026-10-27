@@ -377,6 +377,13 @@ def main():
             medv.append([k, r(statistics.median(xs))])
     D['pbHist'] = {'banks': {s_: sorted([k, v] for k, v in pbh[s_].items()) for s_ in BANKS}, 'median': medv,
                    'note': 'cuối mỗi quý và các phiên gần đây'}
+    # P/B theo phiên (data/backfill/pb_daily.json, Wi MCP ratio_daily): trục ngày chung + giá trị từng mã; null = không có phiên
+    _pdf = ROOT / 'data/backfill/pb_daily.json'
+    if _pdf.exists():
+        _pd = json.loads(_pdf.read_text(encoding='utf-8'))
+        _days = sorted(d_ for d_ in _pd.get('_median', {}) if d_ >= '2022-10-21')
+        D['pbDailyS'] = {'d': _days, 'v': {k: [round(_pd[k][d_], 3) if d_ in _pd[k] else None for d_ in _days]
+                                           for k in BANKS + ['_median'] if k in _pd and sum(1 for d_ in _days if d_ in _pd[k]) >= 200}}
 
     # tổng hợp ngành: trung vị theo nhóm + bình quân gia quyền theo dư nợ cho NPL, LDR, CASA (xấp xỉ)
     def wavg(key, qi, grp=None):
