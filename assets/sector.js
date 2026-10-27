@@ -2125,7 +2125,7 @@ function subEco() {
     ${card({ id: 'eCpiC', title: 'CPI theo nhóm hàng', h: 'tall', sub: `% so cùng kỳ · cột = ${tm(c.d)} · chấm = cùng kỳ năm trước`, insight: eCpiCIns(), src: 'Cục Thống kê' })}
     ${card({ id: 'eCpiTs', title: 'CPI theo nhóm hàng qua thời gian', h: 'tall', sub: '% so cùng kỳ, theo tháng · chọn nhóm', body: tfPick('eCpiG', cpiTabs), src: 'Cục Thống kê' })}
     ${ECO.fc ? card({ id: 'eCpiFc', title: 'Dự báo lạm phát 2026 của các tổ chức', h: 'tall', sub: 'CPI bình quân năm 2026, % · mỗi cột một tổ chức (bản công bố gần nhất) · đường đỏ = mục tiêu ~4,5%', insight: eCpiFcIns(), src: 'Báo cáo của các tổ chức (IMF, World Bank, CTCK, ngân hàng); khảo sát chuyên gia VIRA' }) : ''}
-    ${card({ id: 'chOilChg', title: 'Truyền dẫn giá dầu vào giá xăng dầu trong nước', sub: '% thay đổi so với kỳ cuối năm 2025 · dầu thô tính bằng USD, giá bán lẻ tính bằng VND', insight: oilChgIns(), src: BD ? BD.src.oil : '' })}
+    ${card({ id: 'chOilChg', title: 'Truyền dẫn giá dầu vào giá xăng dầu trong nước', sub: '% thay đổi so với kỳ cuối năm 2025 · dầu thô tính bằng USD, giá bán lẻ tính bằng VND · chấm = CPI giao thông % so cùng kỳ (trục phải)', insight: oilChgIns(), src: BD ? BD.src.oil + ' · CPI giao thông: Cục Thống kê' : '' })}
     ${card({ id: 'chOil', title: 'Giá dầu thế giới và giá xăng dầu bán lẻ trong nước', h: 'tall', sub: 'nghìn đồng/lít (trục trái): RON 95-III, E5 RON 92, dầu DO 0,05S — Petrolimex vùng 1 · USD/thùng (trục phải): Brent, WTI', insight: oilIns(), src: BD ? BD.src.oil : '' })}
   </div>
   <h3 class="ovh dsec" id="e-trade">Thương mại</h3>
@@ -2617,9 +2617,21 @@ function oilIns() {
   return `${dvn(o.d[n])}: Brent <b>${nf(o.brent[n], 1)} USD/thùng</b>, RON 95 <b>${nf(o.r95[n], 2)}</b>, E5 RON 92 ${nf(o.e5[n], 2)}, dầu DO <b>${nf(o.do[n], 2)} nghìn đồng/lít</b>. Đỉnh năm: Brent ${nf(bp.v, 1)} USD (${dvn(o.d[bp.i])}), DO ${nf(dp.v, 2)} (${dvn(o.d[dp.i])}).${o.do[n] > o.r95[n] ? ' Dầu DO đắt hơn xăng RON 95 — ngược với thông thường, do giá diesel thế giới tăng mạnh hơn xăng trong đợt sốc năm nay.' : ''}`
     + how('Xăng dầu chiếm khoảng 3–4% rổ CPI và đi vào chi phí vận tải, sản xuất; dầu DO tác động mạnh tới vận tải hàng hóa. Giá trong nước điều chỉnh theo kỳ điều hành của Bộ Công Thương và có quỹ bình ổn nên trễ và mượt hơn giá thế giới. Giá xăng dầu cao kéo dài là lý do CPI và lạm phát cơ bản cùng tăng, làm hẹp dư địa hạ lãi suất của NHNN.');
 }
+function zeroAlign(a, b) {   // min/max hai trục sao cho vạch 0 trùng nhau
+  const f = x => x.filter(v => v != null), A = f(a), B = f(b), lmin = Math.min(0, ...A), lmax = Math.max(0, ...A) * 1.08, rmin = Math.min(0, ...B), rmax = Math.max(0, ...B) * 1.08;
+  if (!(lmax > 0 && rmax > 0)) return {}; const q = Math.max(-lmin * 1.08 / (lmax - lmin * 1.08), -rmin * 1.08 / (rmax - rmin * 1.08)), m = q / (1 - q);
+  return { l: { min: +(-m * lmax).toFixed(2), max: +lmax.toFixed(2) }, r: { min: +(-m * rmax).toFixed(2), max: +rmax.toFixed(2), beginAtZero: false } };
+}
+function cpiTransOn(od) {   // CPI giao thông (% YoY) đặt tại phiên cuối mỗi tháng trên trục ngày của chOilChg
+  if (!ECO || !ECO.s.cpi_trans) return null; const out = od.map(() => null), last = {};
+  od.forEach((d, i) => { last[d.slice(0, 7)] = i; });
+  ECO.m.forEach((m, j) => { const v = ECO.s.cpi_trans[j]; if (last[m] != null && v != null) out[last[m]] = +v.toFixed(2); });
+  return out.some(v => v != null) ? out : null;
+}
 function oilChgIns() {
   if (!BD) return ''; const o = BD.oil, n = o.d.length - 1, b = o.d.findIndex(d => d >= '2026-01-01') - 1, ch = k => o[k][b] ? (o[k][n] / o[k][b] - 1) * 100 : null;
   return `So với cuối 2025: Brent ${sg(ch('brent'), 0)}, WTI ${sg(ch('wti'), 0)}; trong nước RON 95 ${sg(ch('r95'), 0)}, E5 ${sg(ch('e5'), 0)}, dầu DO <b>${sg(ch('do'), 0)}</b>. Xăng trong nước tăng ${ch('r95') < ch('brent') ? 'ít' : 'nhiều'} hơn dầu thô — thuế, phí cố định theo lít làm phần trăm thay đổi của giá bán lẻ nhỏ hơn giá dầu thô.`
+    + (ECO && ECO.s.cpi_trans ? (() => { const j = ECO.s.cpi_trans.length - 1, v = ECO.s.cpi_trans[j], pk = ECO.s.cpi_trans.reduce((m, x, k) => ECO.m[k] >= '2026-01' && x > m.v ? { v: x, k } : m, { v: -1e9, k: 0 }); return ` CPI giao thông tháng ${mvn(ECO.m[j])} <b>${sg(v, 1)}</b> so cùng kỳ (đỉnh năm ${sg(pk.v, 1)} tháng ${mvn(ECO.m[pk.k])}) — nhóm giao thông là kênh xăng dầu đi thẳng vào CPI.`; })() : '')
     + how('Mức tăng giá bán lẻ trong nước là phần đã truyền vào CPI; phần dầu thô tăng chưa truyền hết (chênh giữa hai nhóm đường) là áp lực còn lại nếu giá thế giới giữ ở mức cao.');
 }
 function big4Y10() {   // TPCP 10 năm cuối tháng theo trục tháng của big4
@@ -2808,8 +2820,10 @@ function chBond() {
     L('Brent', o.brent, C.red, { yAxisID: 'y1', unit: ' USD/thùng', dp: 1, borderDash: [5, 4] }), L('WTI', o.wti, C.gold, { yAxisID: 'y1', unit: ' USD/thùng', dp: 1, borderDash: [2, 3] })] },
     options: { scales: { y: numAxis('nghìn đồng/lít', { beginAtZero: false, ticks: { callback: v => nf(v, 0) } }), y1: { position: 'right', beginAtZero: false, grid: { display: false }, title: { display: true, text: 'USD/thùng' }, ticks: { callback: v => nf(v, 0) } } } } });
   const b0 = o.d.findIndex(d => d >= '2026-01-01') - 1, od = o.d.slice(b0), rel = k => o[k].slice(b0).map(v => v == null || !o[k][b0] ? null : +((v / o[k][b0] - 1) * 100).toFixed(1));
-  mk('chOilChg', { type: 'line', data: { labels: od.map(dvn), datasets: [L('Brent', rel('brent'), C.red, { borderDash: [5, 4] }), L('WTI', rel('wti'), C.gold, { borderDash: [2, 3] }), L('RON 95', rel('r95'), C.navy, { borderWidth: 2.4 }), L('E5 RON 92', rel('e5'), C.teal), L('Dầu DO', rel('do'), C.purple, { borderWidth: 2.4 })] },
-    options: { plugins: { refLines: { lines: [{ value: 0, label: '', color: C.grey }] } }, scales: { y: pctAxis('') } } });
+  const ctr = cpiTransOn(od), za = ctr ? zeroAlign(['brent', 'wti', 'r95', 'e5', 'do'].flatMap(rel), ctr) : {};
+  mk('chOilChg', { type: 'line', data: { labels: od.map(dvn), datasets: [L('Brent', rel('brent'), C.red, { borderDash: [5, 4] }), L('WTI', rel('wti'), C.gold, { borderDash: [2, 3] }), L('RON 95', rel('r95'), C.navy, { borderWidth: 2.4 }), L('E5 RON 92', rel('e5'), C.teal), L('Dầu DO', rel('do'), C.purple, { borderWidth: 2.4 }),
+    ...(ctr ? [L('CPI giao thông (% YoY, trục phải)', ctr, C.tealInk, { yAxisID: 'y1', borderWidth: 2.2, pointRadius: ctr.map(v => v == null ? 0 : 3.5), pointHoverRadius: 5, pointBackgroundColor: '#fff', pointBorderWidth: 2 })] : [])] },
+    options: { plugins: { refLines: { lines: [{ value: 0, label: '', color: C.grey }] } }, scales: { y: pctAxis('', za.l || {}), ...(ctr ? { y1: pctAxis('', Object.assign({ position: 'right', grid: { display: false }, title: { display: true, text: 'CPI giao thông, % YoY' } }, za.r || {})) } : {}) } } });
   { const B = BD.big4, BC = { VCB: C.tealInk, CTG: C.navy, BID: C.purple, AGRIBANK: C.gold };
     mk('bBig4', { type: 'line', data: { labels: B.months.map(mvn), datasets: [
       ...Object.keys(B.names).map(k => L(B.names[k], B.bank[k], BC[k], { showLine: false, pointRadius: 2.5, pointHoverRadius: 5, pointBorderWidth: 0 })),
