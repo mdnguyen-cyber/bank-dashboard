@@ -6,8 +6,8 @@
 const D = window.SECTOR_DATA;
 const PAGE = document.body.dataset.page || 'nganh';   // 'nganh' = Ngành ngân hàng · 'vimo' = Vĩ mô
 const ECO = window.ECO_DATA || null;
-const C = { navy: '#1D2678', blue: '#2938A8', teal: '#59C5C8', tealInk: '#1f8a8d', purple: '#861C52', gold: '#d9a400', red: '#c0392b', grey: '#9aa3b2',
-  steps: ['#1D2678', '#2938A8', '#4354B7', '#6171C5', '#8997D6', '#B3BDE8', '#D9DEF4'] };
+const C = { navy: '#002060', blue: '#97BAFF', teal: '#59C5C8', tealInk: '#1f8a8d', purple: '#861C52', gold: '#d9a400', red: '#c0392b', grey: '#9aa3b2',
+  steps: ['#002060', '#3D5C99', '#5576B8', '#6171C5', '#8997D6', '#B3BDE8', '#D9DEF4'] };
 const GC = { 'Big 4': C.navy, 'Tư nhân lớn': C.tealInk, 'Tư nhân vừa': C.purple, 'Tư nhân nhỏ': C.grey };
 const GROUPS = ['Big 4', 'Tư nhân lớn', 'Tư nhân vừa', 'Tư nhân nhỏ'];
 const SCN = {
@@ -50,23 +50,30 @@ Chart.defaults.plugins.legend.position = 'bottom';
 Chart.defaults.maintainAspectRatio = false;
 Chart.defaults.animation = false;
 Chart.defaults.plugins.tooltip.callbacks.label = ctx => {
-  const v = ctx.parsed.y ?? ctx.parsed.x; const ds = ctx.dataset;
+  const v = ctx.chart.options.indexAxis === 'y' ? ctx.parsed.x : (ctx.parsed.y ?? ctx.parsed.x); const ds = ctx.dataset;
   if (ds.$tip) return ds.$tip(ctx.dataIndex);
   return `${ds.label}: ${nf(v, ds.dp ?? 1)}${ds.unit || ''}`;
 };
-const refLines = { id: 'refLines', afterDatasetsDraw(chart, _a, opt) {
-  const lines = opt && opt.lines; if (!lines) return; const { ctx, chartArea: a } = chart;
-  lines.forEach(l => {
-    const sc = chart.scales[l.axis || 'y']; if (!sc) return; const p = sc.getPixelForValue(l.value);
-    if (p < a.top - 1 || p > a.bottom + 1 && !sc.isHorizontal()) return;
-    ctx.save(); ctx.strokeStyle = l.color || C.red; ctx.lineWidth = l.width || 1.5; ctx.setLineDash(l.dash || [5, 4]);
-    ctx.beginPath();
-    if (sc.isHorizontal()) { ctx.moveTo(p, a.top); ctx.lineTo(p, a.bottom); } else { ctx.moveTo(a.left, p); ctx.lineTo(a.right, p); }
-    ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = l.color || C.red; ctx.font = '600 11px Arial';
-    if (l.label) { if (sc.isHorizontal()) ctx.fillText(l.label, p + 4, a.top + 12); else ctx.fillText(l.label, a.left + 6, p - 5); }
+const refLines = { id: 'refLines',
+  afterDatasetsDraw(chart, _a, opt) {
+    const lines = opt && opt.lines; if (!lines) return; const { ctx, chartArea: a } = chart, tags = [];
+    lines.forEach(l => {
+      const sc = chart.scales[l.axis || 'y']; if (!sc) return; const p = sc.getPixelForValue(l.value), hz = sc.isHorizontal();
+      if (!hz && (p < a.top - 1 || p > a.bottom + 1)) return; if (hz && (p < a.left - 1 || p > a.right + 1)) return;
+      ctx.save(); ctx.strokeStyle = l.color || C.red; ctx.lineWidth = l.width || 1.5; ctx.setLineDash(l.dash || [5, 4]);
+      ctx.beginPath(); if (hz) { ctx.moveTo(p, a.top); ctx.lineTo(p, a.bottom); } else { ctx.moveTo(a.left, p); ctx.lineTo(a.right, p); }
+      ctx.stroke(); ctx.restore();
+      if (l.label) tags.push({ l, p, hz });
+    });
+    ctx.save(); ctx.font = '600 11px Arial'; ctx.textBaseline = 'middle';
+    const pill = (t, x, y, c, align) => { const w = ctx.measureText(t).width; let x0 = align === 'right' ? x - w : x; x0 = Math.max(a.left + 1, Math.min(x0, chart.width - w - 4));
+      ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fillRect(x0 - 3, y - 7, w + 6, 14); ctx.fillStyle = c; ctx.textAlign = 'left'; ctx.fillText(t, x0, y); };
+    tags.filter(t => t.hz).forEach(t => { const w = ctx.measureText(t.l.label).width, right = t.p + 4 + w > a.right; pill(t.l.label, right ? t.p - 4 : t.p + 4, a.top - 9, t.l.color || C.red, right ? 'right' : 'left'); });
+    const hs = tags.filter(t => !t.hz).map(t => ({ ...t, y: t.p - 9 })).sort((u, v) => u.y - v.y);
+    for (let i = 1; i < hs.length; i++) if (hs[i].y - hs[i - 1].y < 15) hs[i].y = hs[i - 1].y + 15;
+    hs.forEach(t => pill(t.l.label, a.left + 6, Math.max(a.top + 7, t.y), t.l.color || C.red, 'left'));
     ctx.restore();
-  });
-} };
+  } };
 /* nền 4 ô kịch bản cho chart ma trận */
 const quadBg = { id: 'quadBg', beforeDatasetsDraw(chart, _a, opt) {
   if (!opt || !opt.on) return; const { ctx, chartArea: a, scales: { x: sx, y: sy } } = chart;
@@ -134,6 +141,8 @@ function mk(id, cfg, opt = {}) {
   if (charts[id]) charts[id].destroy();
   cfg.options = cfg.options || {};
   cfg.options.interaction = cfg.options.interaction || { mode: 'index', intersect: false, axis: cfg.options.indexAxis === 'y' ? 'y' : 'x' };
+  { const rl = ((cfg.options.plugins || {}).refLines || {}).lines;   // đường dọc có nhãn: chừa khoảng trắng phía trên cho nhãn
+    if (rl && rl.some(l => l.label && /^x/.test(l.axis || 'y'))) { const L = cfg.options.layout = cfg.options.layout || {}, pd = L.padding; L.padding = typeof pd === 'number' ? { top: Math.max(pd, 18), right: pd, bottom: pd, left: pd } : Object.assign({}, pd || {}, { top: Math.max((pd || {}).top || 0, 18) }); } }
   FSK.prep(cfg);
   if (!id.startsWith('cb-') && !id.startsWith('qu-')) SPEC[id] = { cfg: cl(cfg), el };
   charts[id] = new Chart(el, cfg);
@@ -2508,7 +2517,7 @@ function subBank() {
       insight: aqInsight(), src: 'WiData ratio_bank' })}
   </div>`;
 }
-const FEE_COL = { pay: '#1D2678', ins: '#59C5C8', trust: '#861C52', sec: '#9a7400', adv: '#2938A8', cash: '#9aa3b2', oth: '#FFD45D' };
+const FEE_COL = { pay: '#002060', ins: '#59C5C8', trust: '#861C52', sec: '#9a7400', adv: '#97BAFF', cash: '#9aa3b2', oth: '#FFD45D' };
 function feeSecCards() {
   const F = D.fee, T = F.table, R = T.rows.filter(r => r.k === '_tot' || r.inc > 0), tot = R.find(r => r.k === '_tot');
   const g = k => R.find(r => r.k === k) || {};

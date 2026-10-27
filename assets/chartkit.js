@@ -52,12 +52,50 @@
     if (k === 'ytd' && i0 > 0 && ds[i0 - 1].getMonth() === 11 && ds[i0 - 1].getFullYear() === end.getFullYear() - 1) i0--;   // giữ điểm cuối năm trước làm mốc
     return [i0, n - 1];
   }
+  // di chuột lên một cấu phần/đường: làm nổi chuỗi đó trên MỌI kỳ, làm mờ các chuỗi khác (rời chart thì trả lại)
+  function alpha(c, a) {
+    if (typeof c !== 'string') return c;
+    let m = c.match(/^#([0-9a-f]{3})$/i); if (m) c = '#' + m[1].split('').map(h => h + h).join('');
+    m = c.match(/^#([0-9a-f]{6})([0-9a-f]{2})?$/i);
+    if (m) { const base = m[2] ? parseInt(m[2], 16) / 255 : 1; return '#' + m[1] + Math.round(base * a * 255).toString(16).padStart(2, '0'); }
+    m = c.match(/^rgba?\(([^)]+)\)$/i);
+    if (m) { const p = m[1].split(',').map(x => x.trim()); const base = p[3] != null ? +p[3] : 1; return `rgba(${p[0]},${p[1]},${p[2]},${base * a})`; }
+    return c;
+  }
+  function hiWire(ch, on) {
+    const cv = ch.canvas; let cur = -1;
+    const fade = c => Array.isArray(c) ? c.map(fade) : alpha(c, 0.15);
+    const apply = i => {
+      if (i === cur) return; cur = i;
+      ch.data.datasets.forEach((d, k) => {
+        if (!d._hc0) d._hc0 = { b: d.backgroundColor, l: d.borderColor };
+        const keep = i < 0 || k === i || d.keep && d.type === 'line' && !d.label;
+        d.backgroundColor = keep ? d._hc0.b : fade(d._hc0.b); d.borderColor = keep ? d._hc0.l : fade(d._hc0.l);
+      });
+      ch.update();
+    };
+    cv.addEventListener('mousemove', e => {
+      if ((ch.data.datasets || []).length < 2) return;
+      const pos = Chart.helpers.getRelativePosition(e, ch), els = ch.getElementsAtEventForMode(e, 'nearest', { intersect: false, axis: 'xy' }, false);
+      let hit = -1;
+      for (const el of els) {
+        const t = ch.getDatasetMeta(el.datasetIndex).type || ch.config.type, P = el.element;
+        if (t === 'bar' ? P.inRange(pos.x, pos.y, 'none') : Math.hypot(P.x - pos.x, P.y - pos.y) < 18) { hit = el.datasetIndex; break; }
+      }
+      if (hit < 0 && ch.config.type === 'bar') {   // cột chồng: tìm cột chứa con trỏ
+        ch.data.datasets.forEach((d, k) => { if (hit >= 0 || !ch.isDatasetVisible(k)) return; ch.getDatasetMeta(k).data.forEach(P => { if (hit < 0 && P && P.inRange && P.inRange(pos.x, pos.y, 'none')) hit = k; }); });
+      }
+      apply(hit);
+    }, on);
+    cv.addEventListener('mouseleave', () => apply(-1), on);
+  }
   function enhance(ch, opt = {}) {
     if (!ch) return;
     const canvas = ch.canvas, box = canvas.parentElement;
     if (canvas._fskAC) canvas._fskAC.abort();   // mk() vẽ lại trên cùng canvas: gỡ listener cũ
     const ac = new AbortController(), on = { signal: ac.signal }; canvas._fskAC = ac;
     const old = box.previousElementSibling; if (old && old.classList && old.classList.contains('rng')) old.remove();
+    hiWire(ch, on);
     if (ch.config.type === 'scatter' || ch.options.indexAxis === 'y') return;
     const labels = ch.data.labels || [];
     const ds = labels.length >= 6 ? dates(labels, opt.today) : null;
@@ -70,6 +108,25 @@
       return `<button type="button" data-k="${k}"${dis ? ' disabled' : ''}>${l}</button>`;
     }).join('') + '<span class="ysel"><button type="button" data-y="fit" title="Trục Y co theo dữ liệu đang hiện">Y vừa dữ liệu</button><button type="button" data-y="man" title="Tự đặt giá trị nhỏ nhất, lớn nhất của trục Y">Y tuỳ chỉnh</button><button type="button" data-y="def" title="Trục Y mặc định">Y mặc định</button><span class="yman" hidden><input type="number" step="any" placeholder="min" data-yi="min"><input type="number" step="any" placeholder="max" data-yi="max"></span></span><span class="rng-hint">kéo trên chart để zoom · kéo trên trục Y để chỉnh trục</span>';
     box.parentElement.insertBefore(bar, box);
+    {   // chuyển Cột ↔ Đường cho chart một loại (toàn cột hoặc toàn đường, không chồng) chưa có nút riêng
+      const base = d => d.type || ch.config.type, D0 = ch.data.datasets.filter(d => !d.keep);
+      const t0 = D0.length ? base(D0[0]) : null, sx = (ch.options.scales || {}).x || {}, sy = (ch.options.scales || {}).y || {};
+      const ok = (t0 === 'line' || t0 === 'bar') && D0.every(d => base(d) === t0 && !(d.data || []).some(v => Array.isArray(v)) && d.stack == null && !d.fill)
+        && !sx.stacked && !sy.stacked && !document.querySelector(`[data-ctl="${canvas.id}"] button`) && !canvas.closest('[data-nosw]');
+      if (ok) {
+        const sw = document.createElement('span'); sw.className = 'tsw';
+        sw.innerHTML = '<button type="button" data-tt="bar">Cột</button><button type="button" data-tt="line">Đường</button>';
+        bar.querySelector('.ysel').before(sw);
+        const mark = t => sw.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.tt === t));
+        sw.querySelectorAll('button').forEach(b => b.onclick = () => {
+          const t = b.dataset.tt;
+          ch.data.datasets.forEach(d => { if (d.keep) return; if (d._pr0 === undefined) d._pr0 = d.pointRadius; d.type = t; d.fill = false; d.pointRadius = t === 'line' ? (d._pr0 ?? 2) : 0; });
+          (ch.options.scales.x = ch.options.scales.x || {}).offset = t === 'bar';
+          ch.update(); mark(t);
+        });
+        mark(t0);
+      }
+    }
     // ---- trục Y: mặc định / co theo dữ liệu đang hiện / tự nhập min-max
     const Y = () => { const co = ch.config.options; co.scales = co.scales || {}; return (co.scales.y = co.scales.y || {}); };   // Chart.js tạo lại object scales mỗi lần update → luôn lấy mới
     const y00 = Y(), y0 = { min: y00.min, max: y00.max, beginAtZero: y00.beginAtZero };
