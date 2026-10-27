@@ -20,7 +20,7 @@
   const freqs = [...new Set(all.map(r => r.f))].filter(Boolean);
   const kpi = (l, v, s) => `<div class="kpi"><span>${l}</span><b>${v}</b><em>${s || ''}</em></div>`;
   $('#be').innerHTML = `
-  <h2 class="sec">Backend · Dữ liệu và phương pháp</h2>
+  <h2 class="sec">Database · Dữ liệu và phương pháp</h2>
   <p class="sec-sub">Toàn bộ chuỗi dữ liệu dashboard đang dùng: nguồn, tần suất, kỳ mới nhất, cách cập nhật và công thức các chỉ số tự tính. Danh mục dựng lại mỗi lần chạy cập nhật số liệu (lần gần nhất ${esc(C.built)}).</p>
   <div class="kpis k4">${kpi('Số chuỗi dữ liệu', C.n.toLocaleString('vi-VN'), `${C.groups.length} nhóm`)}${kpi('Cập nhật tự động', nAuto.toLocaleString('vi-VN'), 'GitHub Actions, không cần AI')}${kpi('Qua Wi MCP', (C.n - nAuto).toLocaleString('vi-VN'), 'AI gọi trong phiên làm việc, rồi build')}${kpi('Chuỗi đang trễ', nStale, 'kỳ mới nhất cũ hơn mức thông thường của tần suất')}</div>
 

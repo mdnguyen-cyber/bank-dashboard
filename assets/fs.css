@@ -750,3 +750,6 @@ table.fdrv td{font-size:12.8px}table.fdrv td:first-child{min-width:160px}table.f
 /* cột đầu cố định khi cuộn ngang */
 table.fz th:first-child,table.fz td:first-child{position:sticky;left:0;z-index:2;background:#fff;box-shadow:inset -1px 0 0 var(--line2)}
 table.fz thead th:first-child{background:var(--soft);z-index:3}
+/* thanh menu dài: khối phải xuống dòng thay vì đè lên menu */
+.logo-bar .wrap{flex-wrap:wrap}.logo-left{min-width:auto}.logo-right{margin-left:auto}
+.logo-left{flex-wrap:wrap;max-width:100%}.site-nav{flex-wrap:wrap;max-width:100%;border-radius:18px}
