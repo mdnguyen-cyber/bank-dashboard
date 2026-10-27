@@ -132,7 +132,6 @@
       const hlCells = new Set([...tr.cells, ...(td.cellIndex > 0 ? colCells(td) : [])]), hl = { cells: hlCells, on: td.cellIndex > 0 ? td : null };
       const m = meta(), lab = (tr.cells[0].textContent || '').replace(/\s*i\s*$/, '').trim(), cr = td.getBoundingClientRect();
       const it = [];
-      if (td.cellIndex > 0) it.push(['Chép ảnh ô này', () => copy(render(sc, { ...m, title: lab, sub: '', rows: [tr], cols: [cr.left, cr.right], compact: 1 }), m.file + '_o')]);
       it.push(['Chép ảnh dòng này', () => copy(render(sc, { ...m, sub: '', rows: [tr] }), m.file + '_dong')]);
       it.push(['⇪ Chia sẻ ảnh bảng, tô sáng ô này (thêm caption)', () => share(sc, m, { hl })]);
       it.push(['Chép ảnh bảng, tô sáng ô này', () => copy(render(sc, { ...m, hl }), m.file + '_to-sang')]);
