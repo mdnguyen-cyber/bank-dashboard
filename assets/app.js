@@ -498,11 +498,11 @@ function drawVal(id) {
 }
 const FIN_OLD = { bs: 'tong', pl: 'tong', room: 'safe', eff: 'nim', peer: 'pv', camel: 'safe', val: 'pv' };
 function paneFin() {
-  const subs = [['tong', 'Tổng quan'], ['nim', 'Biên lãi'], ['aq', 'Chất lượng tài sản'], ['nfi', 'Thu nhập ngoài lãi'], ['safe', 'Các tỉ lệ an toàn'], ['pv', 'Định giá & so sánh nhóm']];
+  const subs = [['tong', 'Tổng quan'], ['nim', 'Biên lãi'], ['nfi', 'Thu nhập ngoài lãi'], ['aq', 'Chất lượng tài sản'], ['safe', 'Các tỉ lệ an toàn'], ['pv', 'Định giá & so sánh nhóm']];
   const A = D.annual; const P = D.plan; const X = D.ctx;
   const prevY = A[A.length - 1], car = D.car[D.car.length - 1];
   const gh = (t, s) => `<h3 class="grp-h">${t}${s ? `<small>${s}</small>` : ''}</h3>`;
-  $('#fin').innerHTML = `<h2 class="sec">Tài chính</h2><p class="sec-sub">Tổng quan bảng cân đối và kết quả kinh doanh → biên lãi (tăng trưởng, NIM, hiệu quả) → chất lượng tài sản và vốn → thu nhập ngoài lãi → các tỉ lệ an toàn → định giá. Tỷ đồng, BCTC hợp nhất; số mới nhất ${QL.q}.</p>
+  $('#fin').innerHTML = `<h2 class="sec">Tài chính</h2><p class="sec-sub">Tổng quan bảng cân đối và kết quả kinh doanh → biên lãi (tăng trưởng, NIM, hiệu quả) → thu nhập ngoài lãi → chất lượng tài sản và vốn → các tỉ lệ an toàn → định giá. Tỷ đồng, BCTC hợp nhất; số mới nhất ${QL.q}.</p>
   <div class="subtabs" role="tablist">${subs.map(([k, l], i) => `<button type="button" data-sub="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
   <div class="sub on" data-subp="tong">
     ${gh('Bảng cân đối', QL.q)}
