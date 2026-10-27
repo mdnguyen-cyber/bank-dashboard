@@ -2415,12 +2415,18 @@ function hmRender() {
   box.innerHTML = html + `<p class="hm-note">${note} · cuộn ngang để xem các tháng trước.</p>`;
   const sc = $('.tscroll', box); if (sc) sc.scrollLeft = sc.scrollWidth;   // mở ở tháng mới nhất
   if (sc && window.FSTbl) { const W = HM_W.find(w => w[0] === hmS.w), bar = document.createElement('div'); bar.className = 'tbl-bar';
-    bar.appendChild(FSTbl.button(sc, () => ({ title: hmS.v === 'vn' ? 'Kinh tế, tiền tệ Việt Nam theo tháng' : `${W ? W[1] : ''} theo tháng: Việt Nam và thế giới`, sub: note, src: ($('#hmCard .src') || {}).textContent || '', file: 'FinSuccess_ban-do-nhiet_' + (hmS.v === 'vn' ? 'viet-nam' : hmS.w) })));
-    box.insertBefore(bar, sc); }
+    const meta = () => ({ title: hmS.v === 'vn' ? 'Kinh tế, tiền tệ Việt Nam theo tháng' : `${W ? W[1] : ''} theo tháng: Việt Nam và thế giới`, sub: note, src: ($('#hmCard .src') || {}).textContent || '', file: 'FinSuccess_ban-do-nhiet_' + (hmS.v === 'vn' ? 'viet-nam' : hmS.w) });
+    bar.innerHTML = '<span class="muted tbl-tip">Chuột phải vào một ô: chép ảnh ô, dòng, bảng; vẽ chart; so sánh nhiều dòng</span>';
+    bar.appendChild(FSTbl.button(sc, meta)); box.insertBefore(bar, sc);
+    const C_ = () => hmCmp[hmS.v];
+    FSTbl.enhance(sc, { meta, onChart: tr => tr.click(),
+      onCompare: tr => { const k = tr.dataset.hk; if (!k) return; const a = C_(), i = a.indexOf(k); if (i >= 0) a.splice(i, 1); else a.push(k); hmLine(); $('#hmLineCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); },
+      isCompared: tr => C_().includes(tr.dataset.hk), nCompare: () => C_().length, clearCompare: () => { C_().length = 0; hmLine(); } }); }
   $$('tr[data-hk]', box).forEach(tr => tr.onclick = () => { hmSel[hmS.v] = tr.dataset.hk; $$('tr.hm-sel', box).forEach(x => x.classList.remove('hm-sel')); tr.classList.add('hm-sel'); hmLine(); $('#hmLineCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   hmLine();
 }
-const hmSel = { world: 'vn', vn: 'CPI (YoY)' };
+const CMP_CC = ['#C0392B', '#1f8a8d', '#9a7400', '#861C52', '#2938A8', '#596272'];
+const hmSel = { world: 'vn', vn: 'CPI (YoY)' }, hmCmp = { world: [], vn: [] };
 function hmLine() {   // biểu đồ toàn bộ lịch sử của dòng đang chọn trên bản đồ nhiệt; khung mở sẵn theo nút 1/3/5/10/20 năm
   if (!$('#hmLine')) return;
   const all = (() => { const o = []; let m = TODAY.slice(0, 7); while (m >= '1990-01') { o.unshift(m); m = ePrevM(m); } return o; })();
@@ -2433,18 +2439,25 @@ function hmLine() {   // biểu đồ toàn bộ lịch sử của dòng đang c
     const add = (k, lb, col) => { const w2 = HM_W.find(w => w[0] === k); ds.push(L(`${lb} ${c[1]}`, all.map(m => { const v = w2[3](c, m); return v == null ? null : +v; }), col, { borderWidth: 1.4, dp: w2[5], unit: '%' })); };
     if (W[0] === 'pol') add('cpi', 'CPI', C.gold);   // lãi suất điều hành đặt cạnh lạm phát
     if (W[0] === 'real') { add('pol', 'Lãi suất điều hành', C.tealInk); add('cpi', 'CPI', C.gold); }
+    hmCmp.world.filter(k => k !== c[0] && k !== 'vn').forEach((k, j) => { const cc = HM_C.find(x => x[0] === k); if (cc) ds.push(L(cc[1], ser(cc), CMP_CC[j % CMP_CC.length], { borderWidth: 1.8, dp: W[5], unit: ds[0].unit })); });
     title = `${W[1]}: ${c[1]}${c[0] !== 'vn' ? ' so với Việt Nam' : ''}`; sub = W[6]; unit = W[0] === 'pmi' ? 'điểm' : '%'; dp = W[5]; ref = W[0] === 'pmi' ? 50 : ['real', 'fx'].includes(W[0]) ? 0 : null;
   } else {
     const r = HM_V.find(x => x[0] === hmSel.vn && x.length > 1) || HM_V.find(x => x.length > 1);
     ds = [L(r[0], all.map(m => { const v = r[1](m); return v == null ? null : +v; }), C.navy, { borderWidth: 2.4, dp: r[3], unit: /tỷ USD|đồng\)/.test(r[0]) ? '' : r[2] === 'pmi' ? '' : '%' })];
+    const uOf = x => /tỷ USD/.test(x[0]) ? 'tỷ USD' : /đồng\)/.test(x[0]) ? 'đồng' : x[2] === 'pmi' ? 'điểm' : '%', u0 = uOf(r); let two = false;
+    hmCmp.vn.filter(k => k !== r[0]).forEach((k, j) => { const x = HM_V.find(z => z[0] === k && z.length > 1); if (!x) return; const ax = uOf(x) === u0 ? 'y' : 'y1'; if (ax === 'y1') two = true;
+      ds.push(L(x[0] + (ax === 'y1' ? ' (trục phải)' : ''), all.map(m => { const v = x[1](m); return v == null ? null : +v; }), CMP_CC[j % CMP_CC.length], { borderWidth: 1.8, dp: x[3], unit: uOf(x) === '%' ? '%' : ' ' + uOf(x), yAxisID: ax })); });
+    hmLine.two = two;
     title = `Việt Nam: ${r[0]}`; sub = 'số theo tháng · toàn bộ lịch sử hiện có'; unit = /tỷ USD/.test(r[0]) ? 'tỷ USD' : /đồng\)/.test(r[0]) ? 'đồng' : r[2] === 'pmi' ? 'điểm' : '%'; dp = r[3]; ref = r[2] === 'pmi' ? 50 : r[2] === 'sign' ? 0 : null;
   }
   let i0 = all.findIndex((_, i) => ds.some(d => d.data[i] != null)); if (i0 < 0) i0 = all.length - 1;
   ds.forEach(d => { d.data = d.data.slice(i0); });
-  $('#hmLineH').textContent = title; $('#hmLineSub').textContent = `${sub} · bấm tên dòng khác trên bản đồ nhiệt để đổi biểu đồ`;
+  const nc = hmCmp[hmS.v].length;
+  $('#hmLineH').textContent = title + (nc ? ` và ${nc} dòng so sánh` : ''); $('#hmLineSub').textContent = `${sub} · bấm tên dòng khác trên bản đồ nhiệt để đổi biểu đồ · chuột phải vào một ô để thêm dòng vào so sánh`;
   const n = hmS.n === 'all' ? 0 : +hmS.n - 1;
+  const y1 = hmS.v === 'vn' && hmLine.two ? { y1: { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 1) } } } : {};
   mk('hmLine', { type: 'line', data: { labels: all.slice(i0).map(mvn), datasets: ds },
-    options: { scales: { x: { ticks: { maxTicksLimit: 12 } }, y: numAxis(unit, { beginAtZero: false, ticks: { callback: v => nf(v, dp > 1 ? 1 : dp) + (unit === '%' ? '%' : '') } }) },
+    options: { scales: { x: { ticks: { maxTicksLimit: 12 } }, y: numAxis(unit, { beginAtZero: false, ticks: { callback: v => nf(v, dp > 1 ? 1 : dp) + (unit === '%' ? '%' : '') } }), ...y1 },
       plugins: ref != null ? { refLines: { lines: [{ value: ref, label: '', color: C.grey }] } } : {} } }, { win: n });
 }
 function heatIns() {
@@ -2526,6 +2539,15 @@ function cmdDraw() {
   const s = $('#cmdSel'); if (s) s.value = it.k;
   const h = $('#cmdOneH'); if (h) h.textContent = `${it.n} (${it.u})`;
   const sr = $('#cmdOneSrc'); if (sr) sr.textContent = it.src;
+  const cmp = cmdCmp.filter(k => k !== it.k).map(cmdI).filter(Boolean);
+  if (cmp.length) {   // so sánh: quy về chỉ số, 3 năm trước = 100 (đơn vị khác nhau)
+    const all = [it, ...cmp], d0 = new Date(Date.now() - 3 * 365.25 * 864e5).toISOString().slice(0, 10);
+    const days = [...new Set(all.flatMap(x => x.d.filter(d => d >= d0)))].sort();
+    const ds = all.map((x, j) => { const a = cmdAlign(x, days), b = a.find(v => v != null); return L(x.n, a.map(v => v == null || !b ? null : +(v / b * 100).toFixed(2)), j ? CMP_CC[(j - 1) % CMP_CC.length] : C.navy, { unit: '', dp: 1, borderWidth: j ? 1.6 : 2.2, spanGaps: true }); });
+    if (h) h.textContent = `${it.n} so với ${cmp.map(x => x.n).join(', ')} (chỉ số, đầu kỳ 3 năm = 100)`;
+    mk('cmdOne', { type: 'line', data: { labels: days.map(dvn), datasets: ds }, options: { plugins: { refLines: { lines: [{ value: 100, color: C.grey, label: '' }] } }, scales: { x: { ticks: { maxTicksLimit: 10 } }, y: numAxis('chỉ số', { beginAtZero: false, ticks: { callback: v => nf(v, 0) } }) } } });
+    return;
+  }
   mk('cmdOne', { type: 'line', data: { labels: it.d.map(dvn), datasets: [L(it.n, it.v, C.navy, { unit: ' ' + it.u, dp: it.dp, borderWidth: 2 })] },
     options: { plugins: { legend: { display: false } }, scales: { x: { ticks: { maxTicksLimit: 10 } }, y: numAxis(it.u, { beginAtZero: false, ticks: { callback: v => nf(v, it.dp > 1 ? 1 : 0) } }) } } }, { win: 36 });
 }
@@ -2535,6 +2557,7 @@ function cmdAlign(it, days) {   // giá theo trục ngày chung, lấp ngày thi
     out.push(j >= 0 && it.v[j] != null && (new Date(d) - new Date(it.d[j])) / 864e5 <= 10 ? it.v[j] : null); }
   return out;
 }
+let cmdCmp = [];
 const CMD_CC = [C.navy, C.red, C.tealInk, C.gold, C.purple, C.grey];
 function chCmd() {
   if (!$('#cmdOne')) return;
@@ -2576,7 +2599,12 @@ function paneCmd() {
       sub: '% thay đổi giá so với điểm đầu khung đang xem, theo ngày (cước Baltic, giá Trung Quốc và giá trong nước trước 3 tháng gần nhất: số cuối tuần) · đổi khung bằng nút phía trên biểu đồ',
       insight: cmdGrpIns(g), src: [...new Set(CMD.items.filter(it => it.g === g).map(it => it.src))].join('; ') })).join('')}
   </div>`;
-  if (window.FSTbl) $('#cmdShotBar').appendChild(FSTbl.button($('#cmdTab').closest('.tscroll'), () => ({ title: 'Bảng giá hàng hóa', sub: 'Giá gần nhất và % thay đổi theo các khung thời gian (xanh = tăng, đỏ = giảm)', src: srcs, file: 'FinSuccess_bang-gia-hang-hoa' })));
+  if (window.FSTbl) { const sc = $('#cmdTab').closest('.tscroll'), meta = () => ({ title: 'Bảng giá hàng hóa', sub: 'Giá gần nhất và % thay đổi theo các khung thời gian (xanh = tăng, đỏ = giảm)', src: srcs, file: 'FinSuccess_bang-gia-hang-hoa' });
+    $('#cmdShotBar').innerHTML = '<span class="muted tbl-tip">Chuột phải vào một ô: chép ảnh ô, dòng, bảng; vẽ chart; so sánh nhiều hàng hóa</span>'; $('#cmdShotBar').appendChild(FSTbl.button(sc, meta));
+    const go = () => $('#cmdOne').closest('article').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    FSTbl.enhance(sc, { meta, onChart: tr => { if (!tr.dataset.k) return; cmdSel = tr.dataset.k; cmdDraw(); go(); },
+      onCompare: tr => { const k = tr.dataset.k; if (!k) return; const i = cmdCmp.indexOf(k); if (i >= 0) cmdCmp.splice(i, 1); else cmdCmp.push(k); cmdDraw(); go(); },
+      isCompared: tr => cmdCmp.includes(tr.dataset.k), nCompare: () => cmdCmp.length, clearCompare: () => { cmdCmp.length = 0; cmdDraw(); } }); }
   $$('#cmdTab tbody tr[data-k]').forEach(r => r.onclick = () => { cmdSel = r.dataset.k; cmdDraw(); $('#cmdOne').closest('article').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   $('#cmdSel').onchange = e => { cmdSel = e.target.value; cmdDraw(); };
   chCmd();
