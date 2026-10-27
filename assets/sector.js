@@ -3064,45 +3064,97 @@ function panePolicy() {
 /* =====================================================================
    TAB 4 · CATALYST · RISK
 ===================================================================== */
+/* ---- danh sách rủi ro theo dõi (quốc tế → nội địa → ngành): số hiện tại + xu hướng, bấm dòng để mở chart và cách tác động ---- */
+const dvAt = (a, d) => { let r = null; for (const p of a) { if (p.d <= d) r = p; else break; } return r; };   // a: [{d,v}] tăng dần
+const gdv = k => { const x = gs(k); return x.d.map((d, i) => ({ d, v: x.v[i] })).filter(p => p.v != null); };
+function riskRows() {
+  const R = [], add = r => R.push(r);
+  const ch = (a, n) => { const l = lastv(a), o = dvAt(a, dAgo(l.d, n)); return o ? l.v - o.v : null; };
+  const chp = (a, n) => { const l = lastv(a), o = dvAt(a, dAgo(l.d, n)); return o && o.v ? (l.v / o.v - 1) * 100 : null; };
+  // Quốc tế
+  { const a = intl.dxy, l = lastv(a), m1 = chp(a, 31), y1 = chp(a, 366);
+    add({ g: 'Quốc tế', n: 'Đồng USD (DXY)', now: `${nf(l.v, 1)} (${mvn(l.d)})`, tr: `${sg(m1, 1)} 1 tháng · ${sg(y1, 1)} 1 năm`, lvl: m1 > 2 ? 'risk' : m1 > 0.5 || y1 > 5 ? 'watch' : 'ok',
+      how: 'USD mạnh lên đẩy USD/VND, NHNN phải bán dự trữ và hút VND về → thanh khoản hệ thống căng, lãi suất liên ngân hàng tăng, chi phí vốn tăng theo. Mức độ phụ thuộc cả tốc độ (1 tháng) chứ không chỉ mức tuyệt đối.',
+      draw: id => mk(id, { type: 'line', data: { labels: a.filter(p => p.d >= '2021-01').map(p => mvn(p.d)), datasets: [L('DXY', a.filter(p => p.d >= '2021-01').map(p => p.v), C.navy, { unit: '', dp: 1 })] }, options: { scales: { y: numAxis('', { beginAtZero: false }) } } }) }); }
+  if (GD.fedwatch && GD.fedwatch.meetings) { const F = GD.fedwatch, M = F.meetings, mid = (F.target[0] + F.target[1]) / 2, dec = M.filter(m => m.date.slice(0, 4) === M[0].date.slice(0, 4)).pop() || M[0], fy = M[Math.min(M.length - 1, 7)];
+    const S_ = typeof oisSnaps === 'function' ? oisSnaps() : null, o1 = S_ && S_.O.hist[S_.last]['1Y'], sp = S_ && S_.O.sofr;
+    add({ g: 'Quốc tế', n: 'Kỳ vọng lãi suất Fed', now: `Khoảng ${nf(F.target[0], 2)}–${nf(F.target[1], 2)}%; kỳ vọng sau phiên ${dvn(dec.date)} ${pc(dec.exp_rate, 2)}`, tr: `${sg((fy.exp_rate - mid) * 100, 0, ' bps')} tới ${dvn(fy.date)}${o1 && sp ? ` · OIS 1 năm ${sg((o1 - sp.v) * 100, 0, ' bps')} so với SOFR` : ''}`,
+      lvl: fy.exp_rate - mid > 0.1 ? 'risk' : fy.exp_rate - mid < -0.1 ? 'ok' : 'watch',
+      how: 'Fed giữ cao hoặc tăng → chênh lệch lãi suất VND − USD hẹp lại → áp lực tỷ giá → NHNN khó hạ lãi suất, có thể hút tiền. Tác động lên ngân hàng đi qua tỷ giá và thanh khoản là chính (cơ chế "như thế nào"); mức độ truyền dẫn bằng số khó ước lượng ổn định.',
+      draw: id => mk(id, { type: 'line', data: { labels: M.map(m => dvn(m.date)), datasets: [L('Lãi suất kỳ vọng sau phiên', M.map(m => m.exp_rate), C.navy, { pointRadius: 3 }), L('Điểm giữa khoảng hiện hành', M.map(() => mid), C.red, { borderDash: [3, 3] })] }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } }) }); }
+  { const a = gdv('us_walcl'); if (a.length) { const l = lastv(a), m1 = ch(a, 30), y1 = ch(a, 365);
+    add({ g: 'Quốc tế', n: 'Bảng cân đối Fed', now: `${nf(l.v / 1000, 2)} nghìn tỷ USD (${dvn(l.d)})`, tr: `${sg(m1, 0, ' tỷ USD')} 1 tháng · ${sg(y1, 0, ' tỷ USD')} 1 năm`, lvl: m1 < -20 ? 'risk' : m1 < 0 || y1 < 0 ? 'watch' : 'ok',
+      how: 'Fed thu hẹp bảng cân đối (QT) rút thanh khoản USD toàn cầu → USD mạnh, dòng vốn rời thị trường mới nổi. Mở rộng → ngược lại. Xem tốc độ 1 tháng để biết Fed đang tăng hay giảm nhịp.',
+      draw: id => { const b = a.filter(p => p.d >= '2021-01-01'); mk(id, { type: 'line', data: { labels: b.map(p => dvn(p.d)), datasets: [L('Tổng tài sản Fed (tỷ USD)', b.map(p => p.v), C.navy, { unit: ' tỷ USD', dp: 0 })] }, options: { scales: { y: numAxis('tỷ USD', { beginAtZero: false }) } } }); } }); } }
+  { const a = gdv('us_10y_d'); if (a.length) { const l = lastv(a), m1 = ch(a, 30);
+    add({ g: 'Quốc tế', n: 'Lợi suất TPCP Mỹ 10Y', now: pc(l.v, 2) + ` (${dvn(l.d)})`, tr: `${sg(m1 * 100, 0, ' bps')} 1 tháng · ${sg(ch(a, 365) * 100, 0, ' bps')} 1 năm`, lvl: l.v > 5 || m1 > 0.25 ? 'risk' : l.v > 4.5 ? 'watch' : 'ok',
+      how: 'UST 10Y là mặt bằng lãi suất USD dài hạn; cao và tăng nhanh làm USD hấp dẫn hơn VND, kéo áp lực tỷ giá và giảm định giá cổ phiếu (lãi suất chiết khấu cao).',
+      draw: id => { const b = a.filter(p => p.d >= '2023-01-01'); mk(id, { type: 'line', data: { labels: b.map(p => dvn(p.d)), datasets: [L('UST 10Y', b.map(p => p.v), C.red)] }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } }); } }); } }
+  { const a = gdv('us_brent_d'), w = gdv('us_wti_d'); if (a.length) { const l = lastv(a), y1 = chp(a, 365);
+    add({ g: 'Quốc tế', n: 'Giá dầu Brent / WTI', now: `Brent ${nf(l.v, 1)} · WTI ${w.length ? nf(lastv(w).v, 1) : '—'} USD/thùng`, tr: `Brent ${sg(chp(a, 30), 0)} 1 tháng · ${sg(y1, 0)} 1 năm`, lvl: y1 > 20 ? 'risk' : y1 > 0 ? 'watch' : 'ok',
+      how: 'Dầu tăng đi vào CPI qua xăng dầu (nhóm giao thông) và chi phí sản xuất → lạm phát cao làm NHNN thận trọng hạ lãi suất. Xem mô hình truyền dẫn ở trang Vĩ mô › Catalyst · Risk.',
+      draw: id => { const b = a.filter(p => p.d >= '2023-01-01'), wm = Object.fromEntries(w.map(p => [p.d, p.v])); mk(id, { type: 'line', data: { labels: b.map(p => dvn(p.d)), datasets: [L('Brent', b.map(p => p.v), C.red, { unit: ' USD', dp: 1 }), L('WTI', b.map(p => wm[p.d] ?? null), C.gold, { unit: ' USD', dp: 1 })] }, options: { scales: { y: numAxis('USD/thùng', { beginAtZero: false }) } } }); } }); } }
+  // Nội địa → ngân hàng
+  { const c = dom.creditYoY, dp = dom.depYoY, lc = lastv(c), ld = dvAt(dp, lc.d) || lastv(dp), gap = lc.v - ld.v, c3 = dvAt(c, dAgo(lc.d, 92)), d3 = c3 && dvAt(dp, c3.d), g3 = c3 && d3 ? c3.v - d3.v : null;
+    add({ g: 'Nội địa → NH', n: 'Tín dụng so với huy động', now: `Tín dụng ${pc(lc.v, 1)} · tiền gửi ${pc(ld.v, 1)} so cùng kỳ (${mvn(lc.d)})`, tr: `Chênh ${sg(gap, 1, ' đ%')}${g3 != null ? ` (3 tháng trước ${sg(g3, 1, ' đ%')})` : ''}`, lvl: gap > 3 ? 'risk' : gap > 1.5 ? 'watch' : 'ok',
+      how: 'Tín dụng tăng nhanh hơn huy động kéo LDR lên sát trần → ngân hàng phải tranh giành tiền gửi → lãi suất huy động (thị trường 2) và chi phí vốn tăng. Chênh lệch thu hẹp là dấu hiệu áp lực giảm.',
+      draw: id => { const b = c.filter(p => p.d >= '2021-01'); const dm = Object.fromEntries(dp.map(p => [p.d, p.v])); mk(id, { type: 'line', data: { labels: b.map(p => mvn(p.d)), datasets: [L('Tín dụng', b.map(p => p.v), C.navy), L('Tiền gửi', b.map(p => dm[p.d] ?? null), C.tealInk)] }, options: { scales: { y: pctAxis('') } } }); } }); }
+  { const on = dom.onDaily, om = dom.omoDaily, l = lastv(on), avg = (a, d0, d1) => { const x = a.filter(p => p.d > d0 && p.d <= d1); return x.length ? x.reduce((s_, p) => s_ + p.v, 0) / x.length : null; };
+    const a1 = avg(on, dAgo(l.d, 30), l.d), a0 = avg(on, dAgo(l.d, 60), dAgo(l.d, 30)), omo = lastv(om).v;
+    add({ g: 'Nội địa → NH', n: 'Lãi suất thị trường 1 (liên ngân hàng)', now: `Qua đêm ${pc(l.v, 2)} (${dvn(l.d)}); bình quân 30 ngày ${pc(a1, 2)} · OMO ${pc(omo, 2)}`, tr: `${sg((a1 - a0) * 100, 0, ' bps')} so với 30 ngày trước đó`, lvl: a1 > omo + 0.5 ? 'risk' : a1 > omo - 0.25 ? 'watch' : 'ok',
+      how: 'Liên ngân hàng cao hơn lãi suất OMO kéo dài = hệ thống thiếu VND, NHNN đang để thanh khoản căng (thường để giữ tỷ giá) → ngân hàng thiếu vốn phải huy động giá cao. Thấp hơn OMO = dư thừa.',
+      draw: id => { const b = on.filter(p => p.d >= '2025-01-01'), om2 = b.map(p => (dvAt(om, p.d) || {}).v ?? null); mk(id, { type: 'line', data: { labels: b.map(p => dvn(p.d)), datasets: [L('Qua đêm', b.map(p => p.v), C.navy, { borderWidth: 1.4 }), L('OMO', om2, C.red, { borderDash: [4, 3] })] }, options: { scales: { y: pctAxis('') } } }); } }); }
+  { const a = dom.dep12StateD, l = lastv(a), m3 = ch(a, 92), y0 = dvAt(a, (l.d.slice(0, 4) - 1) + '-12-31');
+    add({ g: 'Nội địa → NH', n: 'Lãi suất thị trường 2 (huy động 12 tháng)', now: `NHTM Nhà nước ${pc(l.v, 2)} · lớn ${pc(lastv(dom.dep12LargeD).v, 2)} · khác ${pc(lastv(dom.dep12OtherD).v, 2)}`, tr: `${sg(m3, 2, ' đ%')} 3 tháng${y0 ? ` · ${sg(l.v - y0.v, 2, ' đ%')} từ đầu năm` : ''}`, lvl: m3 > 0.2 ? 'risk' : m3 < -0.2 ? 'ok' : 'watch',
+      how: 'Lãi suất huy động là phần lớn nhất của chi phí vốn (tiền gửi chiếm khoảng 2/3 nguồn vốn nợ). Thay đổi ngấm vào COF sau 1–3 quý theo kỳ hạn đáo hạn của tiền gửi.',
+      draw: id => { const b = a.filter(p => p.d >= '2024-01-01'), A2 = dom.dep12LargeD, A3 = dom.dep12OtherD; mk(id, { type: 'line', data: { labels: b.map(p => dvn(p.d)), datasets: [L('NHTM Nhà nước', b.map(p => p.v), C.navy), L('NHTM lớn', b.map(p => (dvAt(A2, p.d) || {}).v ?? null), C.tealInk), L('NHTM khác', b.map(p => (dvAt(A3, p.d) || {}).v ?? null), C.gold)] }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } }); } }); }
+  { const rv = dom.revQ, ex = dom.expQ, l = lastv(rv), e = dvAt(ex, l.d), bal = e ? (l.v - e.v) / 1000 : null, py = dvAt(rv, dAgo(l.d, 360)), pe = py && dvAt(ex, py.d);
+    add({ g: 'Nội địa → NH', n: 'Thu, chi ngân sách', now: `Quý ${Math.ceil(+l.d.slice(5, 7) / 3)}/${l.d.slice(0, 4)}: thu ${nf(l.v / 1000, 1)} · chi ${e ? nf(e.v / 1000, 1) : '—'} nghìn tỷ`, tr: `${bal >= 0 ? 'Thu vượt chi' : 'Chi vượt thu'} ${nf(Math.abs(bal), 1)} nghìn tỷ${pe ? ` (cùng kỳ: ${sg((py.v - pe.v) / 1000, 1, ' nghìn tỷ')})` : ''}`, lvl: bal > 50 ? 'risk' : bal > 0 ? 'watch' : 'ok',
+      how: 'Thu vượt chi → tiền nằm lại ở Kho bạc (rút khỏi hệ thống ngân hàng) → thanh khoản căng. Chi vượt thu (giải ngân đầu tư công) → bơm tiền trở lại hệ thống.',
+      draw: id => { const b = rv.filter(p => p.d >= '2021-01'); mk(id, { type: 'bar', data: { labels: b.map(p => `Q${Math.ceil(+p.d.slice(5, 7) / 3)}/${p.d.slice(2, 4)}`), datasets: [{ label: 'Thu', data: b.map(p => +(p.v / 1000).toFixed(1)), backgroundColor: 'rgba(31,138,141,.75)', unit: ' nghìn tỷ', dp: 1 }, { label: 'Chi', data: b.map(p => { const x = dvAt(ex, p.d); return x ? +(x.v / 1000).toFixed(1) : null; }), backgroundColor: 'rgba(192,57,43,.7)', unit: ' nghìn tỷ', dp: 1 }] }, options: { scales: { y: numAxis('nghìn tỷ đồng') } } }); } }); }
+  // Ngành
+  const qn = BQ.length - 1, qd = (k, g = 'all', n = 4) => AG[k][g][qn] != null && AG[k][g][qn - n] != null ? AG[k][g][qn] - AG[k][g][qn - n] : null;
+  const grpLine = (id, k, lab) => mk(id, { type: 'line', data: { labels: BQ, datasets: [['all', 'Toàn ngành', C.navy, 2.6], ['Big 4', 'Big 4', C.purple, 1.6], ['Tư nhân lớn', 'Tư nhân lớn', C.tealInk, 1.6], ['Tư nhân vừa', 'Tư nhân vừa', C.gold, 1.6], ['Tư nhân nhỏ', 'Tư nhân nhỏ', C.grey, 1.4]].map(([g, n, c, w]) => L(n, AG[k][g], c, { borderWidth: w, pointRadius: 2 })) }, options: { scales: { y: pctAxis(lab, { beginAtZero: false }) } } });
+  { const d4 = qd('nim'), d1 = qd('nim', 'all', 1);
+    add({ g: 'Ngành', n: 'Biên lãi thuần (NIM)', now: `${pc(AG.nim.all[qn], 2)} toàn ngành (${BQ[qn]})`, tr: `${sg(d1, 2, ' đ%')} so với quý trước · ${sg(d4, 2, ' đ%')} so cùng kỳ`, lvl: d4 < -0.2 ? 'risk' : d4 < 0 || d1 < 0 ? 'watch' : 'ok',
+      how: 'NIM co lại khi chi phí vốn tăng nhanh hơn lợi suất cho vay (lãi suất cho vay bị yêu cầu giảm, tiền gửi phải trả cao hơn). Xu hướng 2–4 quý quan trọng hơn một quý lẻ.', draw: id => grpLine(id, 'nim', 'NIM') }); }
+  { const d2 = qd('cof', 'all', 2), FM = D.fundMix, fm = g => FM && FM.groups[g];
+    const mix = FM ? ['Big 4', 'Tư nhân lớn', 'Tư nhân vừa', 'Tư nhân nhỏ'].map(g => `${g}: tiền gửi ${nf(fm(g).dep, 0)}%, liên NH ${nf(fm(g).ib, 0)}%, GTCG ${nf(fm(g).gtcg, 0)}%`).join('; ') : '';
+    const fi = BD && BD.fi && BD.fi.cpnPriv13.filter(v => v != null).slice(-1)[0];
+    add({ g: 'Ngành', n: 'Chi phí vốn (COF)', now: `${pc(AG.cof.all[qn], 2)} toàn ngành (${BQ[qn]})`, tr: `${sg(d2, 2, ' đ%')} 2 quý · huy động 12T ${sg(ch(dom.dep12StateD, 92), 2, ' đ%')} 3 tháng`, lvl: d2 > 0.15 ? 'risk' : d2 > 0 ? 'watch' : 'ok',
+      how: `COF = bình quân có trọng số của ba kênh: tiền gửi (đi theo lãi suất thị trường 2, trễ 1–3 quý), liên ngân hàng (thị trường 1, ngấm ngay) và giấy tờ có giá (lãi suất phát hành trái phiếu${fi ? `, coupon trái phiếu NH riêng lẻ 1–3 năm gần nhất ${pc(fi, 2)}` : ''}). Tỷ trọng từng kênh quyết định ngân hàng nào nhạy với kênh nào${mix ? ` — ${FM.q}: ${mix}` : ''}. Nhóm tư nhân dựa nhiều vào liên ngân hàng và trái phiếu nên chi phí vốn phản ứng nhanh hơn Big 4.`, draw: id => grpLine(id, 'cof', 'COF') }); }
+  { const d4 = qd('npl'), g4 = qd('g2');
+    add({ g: 'Ngành', n: 'Nợ xấu (NPL) và nợ nhóm 2', now: `NPL ${pc(AG.npl.all[qn], 2)} · nhóm 2 ${pc(AG.g2.all[qn], 2)} (${BQ[qn]})`, tr: `NPL ${sg(d4, 2, ' đ%')} · nhóm 2 ${sg(g4, 2, ' đ%')} so cùng kỳ`, lvl: d4 > 0.2 || g4 > 0.3 ? 'risk' : d4 > 0 || g4 > 0 ? 'watch' : 'ok',
+      how: 'Nợ nhóm 2 tăng thường đi trước nợ xấu 1–2 quý. Lãi suất cao kéo dài và bất động sản trầm lắng là hai nguồn chính; chi phí dự phòng tăng sau 2–4 quý.', draw: id => grpLine(id, 'npl', 'NPL') }); }
+  return R;
+}
+function riskTable(R, tid) {
+  const lvlTxt = { risk: '<span class="pill risk">Cao</span>', watch: '<span class="pill watch">Trung bình</span>', ok: '<span class="pill ok">Thấp</span>' };
+  return `<div class="tscroll"><table class="risk-t" id="${tid}"><thead><tr><th>Lớp</th><th>Rủi ro</th><th>Số hiện tại</th><th>Xu hướng</th><th>Mức rủi ro</th><th></th></tr></thead><tbody>
+    ${R.map((r, i) => `<tr class="rk" data-i="${i}" style="cursor:pointer"><td style="white-space:nowrap">${esc(r.g)}</td><td><b>${esc(r.n)}</b></td><td>${r.now}</td><td>${r.tr}</td><td>${lvlTxt[r.lvl]}</td><td class="muted">▾</td></tr>
+      <tr class="rkd" data-i="${i}" hidden><td colspan="6"><p class="cnote" style="margin:0 0 8px">${r.how}</p>${r.draw ? `<div class="cbox" style="height:260px"><canvas id="${tid}c${i}"></canvas></div>` : ''}${r.extra || ''}</td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+function wireRisk(R, tid) {
+  $$(`#${tid} tr.rk`).forEach(tr => tr.onclick = () => { const i = tr.dataset.i, d = $(`#${tid} tr.rkd[data-i="${i}"]`); d.hidden = !d.hidden; tr.lastElementChild.textContent = d.hidden ? '▾' : '▴';
+    if (!d.hidden && !d.dataset.drawn && R[i].draw) { R[i].draw(`${tid}c${i}`); d.dataset.drawn = 1; } });
+}
 function paneCatalyst() {
-  const up = D.events.filter(e => e.status === 'pending').sort((a, b) => a.d.localeCompare(b.d));
   const types = ['Tất cả', ...new Set(D.events.map(e => e.type))];
-  const risk = D.signals.filter(s => s.state === 'risk').length, ok = D.signals.filter(s => s.state === 'ok').length;
+  const R = riskRows(), nR = R.filter(r => r.lvl === 'risk'), nW = R.filter(r => r.lvl === 'watch');
   $('#catalyst').innerHTML = `
   <h2 class="sec">Catalyst · Risk</h2>
-  <p class="sec-sub">Quy tắc nếu–thì R-01…R-16 của deck chạy trên số mới nhất; ngưỡng là giả định ban đầu, chưa backtest. Sự kiện có nguồn, dấu ± là tác động lên ngành.</p>
-  <div class="banner warn"><b>${risk}/${D.signals.length} tín hiệu ở mức Rủi ro, ${ok} Hỗ trợ.</b> Áp lực đến từ bên ngoài (Fed, dầu, UST) và cuộc đua tiền gửi; điểm đỡ là CNY mạnh lên và NHNN nới hệ số KBNN.</div>
-  <article class="card"><h3 class="sub">Tín hiệu theo quy tắc R-xx <span class="pill ai">quy tắc</span></h3><p class="chart-sub">Deck slide 50–51 · R-04, R-05, R-07 (Nhật, đấu giá UST, carry) chưa có dữ liệu trong Wi MCP nên chưa hiện</p>
-    <div class="tscroll"><table><thead><tr><th>Mã</th><th>Lớp</th><th>Nếu…</th><th>Số hiện tại</th><th>Trạng thái</th><th>Thì (tác động)</th></tr></thead><tbody>
-    ${D.signals.map(s => `<tr><td style="white-space:nowrap"><b>${s.id}</b></td><td style="white-space:nowrap">${esc(s.layer)}</td><td>${esc(s.rule)}</td><td>${esc(s.now)}</td><td>${pill(s.state)}</td><td>${esc(s.impact)}</td></tr>`).join('')}
-    </tbody></table></div></article>
-  <div class="grid g2 gap">
-    <article class="card"><h3 class="sub">Sắp tới</h3><div class="tscroll"><table><thead><tr><th>Ngày</th><th>Loại</th><th>±</th><th>Sự kiện</th></tr></thead><tbody>
-      ${up.map(e => `<tr><td style="white-space:nowrap">${dvn(e.d)}</td><td>${esc(e.type)}</td><td>${impact(e.impact)}</td><td><b>${esc(e.t)}</b>${e.detail ? `<div class="note">${esc(e.detail)}</div>` : ''}<div class="src">${esc(e.src)}</div></td></tr>`).join('')}
-    </tbody></table></div></article>
-    <article class="card"><h3 class="sub">Watch KPIs — theo dõi ở đâu để cập nhật nhanh</h3><p class="chart-sub">Mỗi dòng: chỉ số → ngưỡng → tab có chart</p>
-      <div class="tscroll"><table><thead><tr><th>Chỉ số</th><th>Hiện tại</th><th>Đổi quan điểm khi</th></tr></thead><tbody>
-        <tr><td>UST 10Y</td><td>${pc(lastv(intl.ust10).v, 2)}</td><td>&lt; 4,5% → áp lực tỷ giá giảm rõ</td></tr>
-        <tr><td>LS huy động 12T NHTM NN</td><td>${pc(lastv(dom.dep12State).v, 2)}</td><td>Giảm ≥ 0,3 điểm % → tín hiệu nới sớm</td></tr>
-        <tr><td>Tín dụng YoY − tiền gửi YoY</td><td>${sg(lastv(dom.creditYoY).v - lastv(dom.depYoY).v, 1, ' đ%')}</td><td>&lt; 2 điểm % → hết cuộc đua tiền gửi</td></tr>
-        <tr><td>CPI bình quân</td><td>${pc(lastv(dom.cpiAvg).v, 2)}</td><td>&gt; 4,5% cả năm → NHNN không hạ LS</td></tr>
-        <tr><td>Tỷ giá tự do − NHTM</td><td>${sg(lastv(dom.free).v - lastv(dom.nhtmSell).v, 0, 'đ')}</td><td>&gt; +500đ → áp lực ngoài hệ thống quay lại</td></tr>
-        <tr><td>COF ngành</td><td>${pc(AG.cof.all[QI], 2)}</td><td>Tăng tiếp Q3 mà YEA đứng → NIM co</td></tr>
-      </tbody></table></div></article>
-  </div>
+  <div class="banner warn"><b>${nR.length}/${R.length} rủi ro ở mức cao</b>${nR.length ? `: ${nR.map(r => r.n).join(', ')}` : ''}. ${nW.length} ở mức trung bình. Bấm từng dòng để xem chart và cách rủi ro tác động tới ngân hàng.</div>
+  <article class="card"><h3 class="sub">Rủi ro cần theo dõi</h3><p class="chart-sub">Mức rủi ro xét cả số hiện tại và xu hướng; ngưỡng là quy ước của FinSuccess</p>
+    ${riskTable(R, 'rkN')}</article>
   <article class="card"><h3 class="sub">Dòng sự kiện</h3>
-    <div class="filter" id="evF">${types.map((t, i) => `<button type="button" data-t="${t}" class="${i ? '' : 'on'}">${t}</button>`).join('')}</div>
-    <div class="tscroll"><table><thead><tr><th>Ngày</th><th>Loại</th><th>±</th><th>Sự kiện</th><th>Trạng thái</th></tr></thead><tbody id="evB"></tbody></table></div></article>
-  <article class="card"><h3 class="sub">Rủi ro chính <span class="pill ai">AI tổng hợp</span></h3><p class="chart-sub">Từ số liệu dashboard và tin ngành 09–10/2026</p>
-    <div class="tscroll"><table><thead><tr><th>Rủi ro</th><th>Dấu hiệu hiện tại</th><th>Nhóm chịu nhiều nhất</th></tr></thead><tbody>
-      <tr><td>Fed tăng tiếp, UST trên 5%</td><td>EFFR ${pc(lastv(intl.effr).v, 2)}, UST 10Y ${pc(lastv(intl.ust10).v, 2)}; chênh VND–USD hẹp</td><td>Cả ngành (định giá), tư nhân phụ thuộc vốn ngắn</td></tr>
-      <tr><td>Cuộc đua tiền gửi kéo COF</td><td>Tín dụng hơn tiền gửi ${nf(lastv(dom.creditYoY).v - lastv(dom.depYoY).v, 1)} điểm %; COF ${pc(AG.cof.all[QI], 2)}</td><td>Tư nhân lớn (LDR ~85–90%), VPB LDR &gt; 100%</td></tr>
-      <tr><td>Lạm phát vượt mục tiêu</td><td>CPI ${pc(lastv(dom.cpi).v, 2)}, lõi ${pc(lastv(dom.cpiCore).v, 2)}; Brent ${nf(lastv(intl.brent).v, 0)} USD</td><td>Cả ngành — đóng cửa khả năng hạ LS điều hành</td></tr>
-      <tr><td>Nợ xấu khi LS cao kéo dài</td><td>NPL nhóm vừa ${pc(AG.npl['Tư nhân vừa'][QI], 2)}, bao phủ ${pc(AG.llr['Tư nhân vừa'][QI], 0)}; dư nợ BĐS +19,6%</td><td>Tư nhân vừa, nhỏ</td></tr>
-      <tr><td>Lỗ danh mục TPCP</td><td>TPCP 10Y ${pc(lastv(intl.vn10).v, 2)}, +64 bps 12 tháng</td><td>Big 4 và NH giữ nhiều TPCP</td></tr>
-    </tbody></table></div></article>`;
-  const draw = t => { $('#evB').innerHTML = D.events.filter(e => t === 'Tất cả' || e.type === t).map(e => `<tr><td style="white-space:nowrap">${dvn(e.d)}</td><td>${esc(e.type)}</td><td>${impact(e.impact)}</td><td>${esc(e.t)}${e.detail ? `<details class="more"><summary>Chi tiết</summary><div class="note">${esc(e.detail)}</div></details>` : ''}<div class="src">${esc(e.src)}</div></td><td>${e.status === 'pending' ? '<span class="pill pending">Chờ</span>' : '<span class="pill ok">Đã diễn ra</span>'}</td></tr>`).join(''); $$('#evF button').forEach(b => b.classList.toggle('on', b.dataset.t === t)); };
-  $$('#evF button').forEach(b => b.onclick = () => draw(b.dataset.t)); draw('Tất cả');
+    <div class="filter" id="evF">${types.map((t, i) => `<button type="button" data-t="${t}" class="${i ? '' : 'on'}">${t}</button>`).join('')}
+      <span class="muted" style="margin-left:auto">Hiện <select id="evN"><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="9999">Tất cả</option></select> tin</span></div>
+    <div class="tscroll"><table><thead><tr><th>Ngày</th><th>Loại</th><th>±</th><th>Sự kiện</th><th>Trạng thái</th></tr></thead><tbody id="evB"></tbody></table></div></article>`;
+  wireRisk(R, 'rkN');
+  let curT = 'Tất cả';
+  const draw = t => { curT = t; const n = +$('#evN').value; $('#evB').innerHTML = D.events.filter(e => t === 'Tất cả' || e.type === t).sort((a, b) => b.d.localeCompare(a.d)).slice(0, n).map(e => `<tr><td style="white-space:nowrap">${dvn(e.d)}</td><td>${esc(e.type)}</td><td>${impact(e.impact)}</td><td>${esc(e.t)}${e.detail ? `<details class="more"><summary>Chi tiết</summary><div class="note">${esc(e.detail)}</div></details>` : ''}<div class="src">${esc(e.src)}</div></td><td>${e.status === 'pending' ? '<span class="pill pending">Chờ</span>' : '<span class="pill ok">Đã diễn ra</span>'}</td></tr>`).join(''); $$('#evF button').forEach(b => b.classList.toggle('on', b.dataset.t === t)); };
+  $$('#evF button').forEach(b => b.onclick = () => draw(b.dataset.t)); $('#evN').onchange = () => draw(curT); draw('Tất cả');
 }
 
 /* =====================================================================

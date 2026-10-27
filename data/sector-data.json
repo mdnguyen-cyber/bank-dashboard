@@ -122135,5 +122135,41 @@
    "Lịch Fed",
    "fedratecalc.com/fomc-meeting-schedule (FOMC 27–28/10, 8–9/12/2026; tăng 25 bps ngày 16/09/2026)"
   ]
- ]
+ ],
+ "fundMix": {
+  "q": "Q2/2026",
+  "note": "Cơ cấu nguồn vốn nợ: tiền gửi khách hàng, vay liên ngân hàng (tiền gửi và vay TCTD khác), giấy tờ có giá phát hành, vay Chính phủ/NHNN (gồm tiền gửi KBNN)",
+  "groups": {
+   "Tư nhân nhỏ": {
+    "dep": 63.0,
+    "ib": 24.2,
+    "gtcg": 9.6,
+    "gov": 3.2
+   },
+   "all": {
+    "dep": 67.2,
+    "ib": 18.6,
+    "gtcg": 9.8,
+    "gov": 4.4
+   },
+   "Tư nhân lớn": {
+    "dep": 63.5,
+    "ib": 19.4,
+    "gtcg": 16.0,
+    "gov": 1.1
+   },
+   "Big 4": {
+    "dep": 71.4,
+    "ib": 15.2,
+    "gtcg": 5.9,
+    "gov": 7.6
+   },
+   "Tư nhân vừa": {
+    "dep": 66.0,
+    "ib": 22.3,
+    "gtcg": 8.4,
+    "gov": 3.2
+   }
+  }
+ }
 }

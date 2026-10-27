@@ -633,6 +633,9 @@ def main():
     D['signals'] = [{'id': a, 'layer': b, 'rule': c, 'now': d_, 'state': e, 'impact': f} for a, b, c, d_, e, f in SIG]
 
     # ------------------------------------------------ catalyst & sự kiện (có nguồn)
+    _fm = ROOT / 'data/backfill/fund_mix.json'   # cơ cấu nguồn vốn nợ theo nhóm (fs_bank bs330/bs320/bs360/bs310 quý mới nhất)
+    if _fm.exists():
+        D['fundMix'] = json.loads(_fm.read_text(encoding='utf-8'))
     D['events'] = sorted([
         {'d': '2026-10-20', 'type': 'Doanh nghiệp', 't': 'Mùa công bố KQKD Q3/2026 của các ngân hàng niêm yết', 'impact': '?', 'status': 'pending',
          'detail': 'Theo dõi NIM khi COF tăng (R-13), chi phí dự phòng và tín dụng 9 tháng so với room.', 'src': 'Quy định CBTT; tin báo chí 14/10/2026'},
