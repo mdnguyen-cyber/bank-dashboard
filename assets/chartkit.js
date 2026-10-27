@@ -62,32 +62,41 @@
     if (m) { const p = m[1].split(',').map(x => x.trim()); const base = p[3] != null ? +p[3] : 1; return `rgba(${p[0]},${p[1]},${p[2]},${base * a})`; }
     return c;
   }
-  function hiWire(ch, on) {
-    const cv = ch.canvas; let cur = -1;
-    const fade = c => Array.isArray(c) ? c.map(fade) : alpha(c, 0.15);
-    const apply = i => {
-      if (i === cur) return; cur = i;
+  function hiWire(ch, on) {   // rê chuột: làm nổi đúng ô/đường đang chọn, các phần khác chỉ nhạt đi nhẹ
+    const cv = ch.canvas; let cur = '';
+    const fadeA = (c, a) => Array.isArray(c) ? c.map(x => alpha(x, a)) : alpha(c, a);
+    const apply = (k0, j0) => {
+      const key = k0 + ':' + j0; if (key === cur) return; cur = key;
+      const isBar = ch.config.type === 'bar';
       ch.data.datasets.forEach((d, k) => {
         if (!d._hc0) d._hc0 = { b: d.backgroundColor, l: d.borderColor };
-        const keep = i < 0 || k === i || d.keep && d.type === 'line' && !d.label;
-        d.backgroundColor = keep ? d._hc0.b : fade(d._hc0.b); d.borderColor = keep ? d._hc0.l : fade(d._hc0.l);
+        const keep = k0 < 0 || d.keep && d.type === 'line' && !d.label;
+        if (keep) { d.backgroundColor = d._hc0.b; d.borderColor = d._hc0.l; return; }
+        const t = d.type || ch.config.type;
+        if (isBar && t === 'bar' && j0 >= 0) {   // cột: giữ nguyên ô đang chọn, các ô khác còn 55%
+          const n = (d.data || []).length, per = (c, i) => Array.isArray(c) ? c[i] : c;
+          d.backgroundColor = Array.from({ length: n }, (_, i) => k === k0 && i === j0 ? per(d._hc0.b, i) : alpha(per(d._hc0.b, i), 0.55));
+          d.borderColor = Array.from({ length: n }, (_, i) => k === k0 && i === j0 ? per(d._hc0.l, i) : alpha(per(d._hc0.l, i), 0.55));
+        } else if (k === k0) { d.backgroundColor = d._hc0.b; d.borderColor = d._hc0.l; }
+        else { d.backgroundColor = fadeA(d._hc0.b, 0.4); d.borderColor = fadeA(d._hc0.l, 0.4); }
       });
-      ch.update();
+      ch.update('none');
     };
     cv.addEventListener('mousemove', e => {
-      if ((ch.data.datasets || []).length < 2) return;
+      if ((ch.data.datasets || []).length < 2 && ch.config.type !== 'bar') return;
       const pos = Chart.helpers.getRelativePosition(e, ch), els = ch.getElementsAtEventForMode(e, 'nearest', { intersect: false, axis: 'xy' }, false);
-      let hit = -1;
+      let hit = -1, idx = -1;
       for (const el of els) {
         const t = ch.getDatasetMeta(el.datasetIndex).type || ch.config.type, P = el.element;
-        if (t === 'bar' ? P.inRange(pos.x, pos.y, 'none') : Math.hypot(P.x - pos.x, P.y - pos.y) < 18) { hit = el.datasetIndex; break; }
+        if (t === 'bar' ? P.inRange(pos.x, pos.y, 'none') : Math.hypot(P.x - pos.x, P.y - pos.y) < 18) { hit = el.datasetIndex; idx = el.index; break; }
       }
-      if (hit < 0 && ch.config.type === 'bar') {   // cột chồng: tìm cột chứa con trỏ
-        ch.data.datasets.forEach((d, k) => { if (hit >= 0 || !ch.isDatasetVisible(k)) return; ch.getDatasetMeta(k).data.forEach(P => { if (hit < 0 && P && P.inRange && P.inRange(pos.x, pos.y, 'none')) hit = k; }); });
+      if (hit < 0 && ch.config.type === 'bar') {   // cột chồng: tìm ô chứa con trỏ
+        ch.data.datasets.forEach((d, k) => { if (hit >= 0 || !ch.isDatasetVisible(k)) return; ch.getDatasetMeta(k).data.forEach((P, j) => { if (hit < 0 && P && P.inRange && P.inRange(pos.x, pos.y, 'none')) { hit = k; idx = j; } }); });
       }
-      apply(hit);
+      if (hit < 0 || (ch.data.datasets.length < 2 && ch.config.type !== 'bar')) return apply(-1, -1);
+      apply(hit, idx);
     }, on);
-    cv.addEventListener('mouseleave', () => apply(-1), on);
+    cv.addEventListener('mouseleave', () => apply(-1, -1), on);
   }
   function enhance(ch, opt = {}) {
     if (!ch) return;
