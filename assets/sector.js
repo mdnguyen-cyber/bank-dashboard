@@ -3231,6 +3231,30 @@ function vRiskRows() {
       draw: id => mk(id, { type: 'bar', data: { labels: rows.map(r => mvn(r.m)), datasets: [{ label: 'Chênh LNH qua đêm VND − EFFR (điểm %)', data: rows.map(r => r.gap), backgroundColor: rows.map(r => r.gap < 0 ? 'rgba(192,57,43,.55)' : 'rgba(41,56,168,.35)'), yAxisID: 'y', dp: 2, unit: ' đ%', order: 2 },
         { type: 'line', label: 'USD/VND NHTM bán ra, % so cùng kỳ (trục phải)', data: rows.map(r => r.fx), borderColor: C.navy, borderWidth: 2.2, pointRadius: 0, yAxisID: 'y1', dp: 1, unit: '%', order: 1 }] },
         options: { scales: { y: numAxis('điểm %'), y1: { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 0) + '%' } } } } }) }); }
+  // Tỷ giá: chênh thị trường tự do − ngân hàng
+  { const F = dom.freeD, N = dom.nhtmD, nm = new Map(N.map(p => [p.d, p.v])), rows = F.filter(p => p.d >= '2025-01-01').map(p => ({ d: p.d, v: p.v - ((dvAt(N, p.d) || {}).v ?? NaN) })).filter(p => isFinite(p.v));
+    const l = rows[rows.length - 1], o = dvAt(rows, dAgo(l.d, 30));
+    R.push({ g: 'Tỷ giá', n: 'Chênh tỷ giá tự do − ngân hàng', now: `${sg(l.v, 0, ' đ')} (${dvn(l.d)}): tự do ${nf(lastv(F).v)} · NHTM bán ${nf(lastv(N).v)}`, tr: o ? `${sg(l.v - o.v, 0, ' đ')} so với 1 tháng trước` : '—', lvl: l.v > 400 ? 'risk' : l.v > 150 ? 'watch' : 'ok',
+      how: 'Giá USD ngoài ngân hàng cao hơn giá ngân hàng nghĩa là cầu USD (tích trữ, nhập hàng, chuyển tiền) không được đáp ứng hết trong hệ thống; chênh lệch nới rộng thường đi trước các đợt điều chỉnh tỷ giá trung tâm và buộc NHNN bán thêm dự trữ, hút VND. Chênh âm hoặc gần 0 = áp lực tỷ giá thấp.',
+      draw: id => mk(id, { type: 'line', data: { labels: rows.map(p => dvn(p.d)), datasets: [L('Tự do − NHTM bán ra', rows.map(p => p.v), C.red, { unit: ' đ', dp: 0, borderWidth: 1.6 })] }, options: { plugins: { refLines: { lines: [{ value: 0, color: C.grey }] } }, scales: { y: numAxis('đồng/USD') } } }) }); }
+  // Dự trữ ngoại hối
+  { const a = dom.reserves, l = lastv(a), o6 = dvAt(a, dAgo(l.d, 183)), o12 = dvAt(a, dAgo(l.d, 366)), c6 = o6 ? (l.v - o6.v) / 1000 : null;
+    R.push({ g: 'Tỷ giá', n: 'Dự trữ ngoại hối', now: `${nf(l.v / 1000, 1)} tỷ USD (${mvn(l.d)})`, tr: `${sg(c6, 1, ' tỷ USD')} 6 tháng${o12 ? ` · ${sg((l.v - o12.v) / 1000, 1, ' tỷ USD')} 1 năm` : ''}`, lvl: c6 < -5 ? 'risk' : c6 < 0 ? 'watch' : 'ok',
+      how: 'Dự trữ giảm là dấu hiệu NHNN đang bán USD để giữ tỷ giá; mỗi đồng USD bán ra rút một lượng VND tương ứng khỏi hệ thống, làm thanh khoản căng và lãi suất liên ngân hàng tăng. Dự trữ mỏng cũng thu hẹp dư địa can thiệp ở lần căng thẳng sau.',
+      draw: id => { const b = a.filter(p => p.d >= '2019-01'); mk(id, { type: 'line', data: { labels: b.map(p => mvn(p.d)), datasets: [L('Dự trữ ngoại hối', b.map(p => p.v / 1000), C.purple, { unit: ' tỷ USD', dp: 1 })] }, options: { scales: { y: numAxis('tỷ USD', { beginAtZero: false }) } } }); } }); }
+  // Vàng: chênh SJC − thế giới
+  { const it = window.CMD_DATA && CMD_DATA.items, gi = it && it.find(x => x.k === 'gold'), si = it && it.find(x => x.k === 'sjc');
+    if (gi && si) { const G_ = gi.d.map((d, i) => ({ d, v: gi.v[i] })).filter(p => p.v != null), N = dom.nhtmD;
+      const rows = si.d.map((d, i) => ({ d, v: si.v[i] })).filter(p => p.v != null && p.d >= '2024-01-01').map(p => { const g = dvAt(G_, p.d), f = dvAt(N, p.d); return g && f ? { d: p.d, v: (p.v / (g.v * 1.20565 * f.v / 1000) - 1) * 100 } : null; }).filter(Boolean);
+      if (rows.length) { const l = rows[rows.length - 1], o = dvAt(rows, dAgo(l.d, 30));
+        R.push({ g: 'Tỷ giá', n: 'Chênh giá vàng SJC − thế giới', now: `${sg(l.v, 1)} (${dvn(l.d)})`, tr: o ? `${sg(l.v - o.v, 1, ' đ%')} so với 1 tháng trước` : '—', lvl: l.v > 10 ? 'risk' : l.v > 5 ? 'watch' : 'ok',
+          how: 'Vàng trong nước đắt hơn thế giới nhiều tạo động cơ nhập lậu vàng, đẩy cầu USD ngoài hệ thống và gây áp lực lên tỷ giá tự do; người dân chuyển tiền gửi sang vàng làm chậm huy động của ngân hàng. Chênh lệch thu hẹp khi NHNN tăng cung vàng hoặc cầu tích trữ giảm. Giá thế giới quy đổi = USD/ounce × 1,20565 ounce/lượng × tỷ giá NHTM bán ra.',
+          draw: id => mk(id, { type: 'line', data: { labels: rows.map(p => dvn(p.d)), datasets: [L('SJC so với giá thế giới quy đổi', rows.map(p => p.v), C.gold, { unit: '%', dp: 1, borderWidth: 1.8 })] }, options: { plugins: { refLines: { lines: [{ value: 0, color: C.grey }] } }, scales: { y: pctAxis('') } } }) }); } } }
+  // Thương mại
+  { const a = dom.trade, l = lastv(a), s3 = a.slice(-3).reduce((x, p) => x + p.v, 0) / 1000, s12 = a.slice(-12).reduce((x, p) => x + p.v, 0) / 1000;
+    R.push({ g: 'Tỷ giá', n: 'Cán cân thương mại', now: `${sg(l.v / 1000, 2, ' tỷ USD')} (${mvn(l.d)})`, tr: `3 tháng ${sg(s3, 1, ' tỷ USD')} · 12 tháng ${sg(s12, 1, ' tỷ USD')}`, lvl: s3 < 0 ? 'risk' : s12 < 10 ? 'watch' : 'ok',
+      how: 'Thặng dư thương mại là nguồn cung USD lớn nhất của nền kinh tế. Thâm hụt kéo dài làm cầu USD vượt cung, NHNN phải dùng dự trữ; xuất khẩu chậm lại do thuế quan hoặc cầu thế giới yếu là kênh truyền dẫn chính từ bên ngoài vào tỷ giá.',
+      draw: id => { const b = a.filter(p => p.d >= '2022-01'); mk(id, { type: 'bar', data: { labels: b.map(p => mvn(p.d)), datasets: [{ label: 'Cán cân thương mại', data: b.map(p => p.v / 1000), backgroundColor: b.map(p => p.v < 0 ? 'rgba(192,57,43,.6)' : 'rgba(30,143,90,.55)'), dp: 2, unit: ' tỷ USD' }] }, options: { plugins: { legend: { display: false } }, scales: { y: numAxis('tỷ USD') } } }); } }); }
   return R;
 }
 function paneVRisk() {
