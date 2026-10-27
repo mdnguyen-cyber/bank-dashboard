@@ -409,7 +409,7 @@ function paneOverview() {
   <h3 class="ovh" id="ov7">6 · Khung pháp lý chủ chốt: các tỷ lệ an toàn</h3>
   <p class="ovintro">${S(`Thông tư 50/2026/TT-NHNN thay Thông tư 22/2019 từ 01/12/2026: chuyển cách giám sát thanh khoản từ kỳ hạn hợp đồng sang chất lượng tài sản và độ ổn định của nguồn vốn. LCR và NSFR bắt buộc từ 01/10/2028; ngân hàng được đăng ký áp dụng sớm từ 01/01/2027.${rp ? ` Phân tích đầy đủ: <a href="${rp.u}" target="_blank" rel="noopener">${esc(rp.t)}</a>.` : ''}`, `TT 50/2026 thay TT 22/2019 từ 01/12/2026; LCR, NSFR bắt buộc từ 10/2028.${rp ? ` <a href="${rp.u}" target="_blank" rel="noopener">Phân tích đầy đủ</a>` : ''}`)}</p>
   <div class="ratg gap">${RAT.map(([k, n, what, now, tt50, imp]) => `<article class="card rcard"><div class="rh"><b>${k}</b><span>${n}</span></div>
-    <dl><dt>Đo gì</dt><dd>${T(what)}</dd><dt>Đang áp dụng</dt><dd>${T(now)}</dd><dt>Theo TT 50/2026</dt><dd>${T(tt50)}</dd><dt>Hàm ý</dt><dd>${T(imp)}</dd></dl></article>`).join('')}</div>
+    <dl><dt>Công thức</dt><dd>${T(what)}</dd><dt>Đang áp dụng</dt><dd>${T(now)}</dd><dt>Theo TT 50/2026</dt><dd>${T(tt50)}</dd><dt>Hàm ý</dt><dd>${T(imp)}</dd></dl></article>`).join('')}</div>
   <article class="card"><h3 class="sub">Lộ trình áp dụng: ba lựa chọn của mỗi ngân hàng</h3>
     <div class="tscroll"><table><thead><tr><th>Lộ trình</th><th>Bắt đầu</th><th>LCR</th><th>NSFR</th><th>LDR</th></tr></thead><tbody>
       <tr><td><b>1. Bắt buộc</b> (không đăng ký)</td><td>01/10/2028</td><td>50%, +10 điểm/năm, 100% từ 01/10/2033</td><td>90%, 95%, 100% từ 01/10/2030</td><td>85% (cách cũ) đến 30/09/2028; 95% (cách mới); bỏ từ 10/2033</td></tr>
