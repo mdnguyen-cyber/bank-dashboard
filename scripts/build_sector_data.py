@@ -358,6 +358,7 @@ def main():
     # P/B lịch sử từng NH: cuối mỗi quý (ratio_bank) + mọi phiên có trong các lần kéo ratio_daily; trung vị ngành theo cùng ngày
     import calendar as _cal
     pbh = {s_: {} for s_ in BANKS}
+    _recent = (dt.date.fromisoformat(D['latest']['priceDate']) - dt.timedelta(days=45)).isoformat() if D.get('latest', {}).get('priceDate') else '2026-09-01'
     for qi, ql in enumerate(QL):
         q_, y_ = int(ql[1]), int(ql[3:])
         dq = f'{y_}-{q_ * 3:02d}-{_cal.monthrange(y_, q_ * 3)[1]:02d}'
@@ -367,7 +368,7 @@ def main():
     for d in raw:
         if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily':
             for x in rows(d['response']):
-                if x.get('symbol') in pbh and x.get('pb'):
+                if x.get('symbol') in pbh and x.get('pb') and x['trading_date'][:10] >= _recent:   # chuỗi theo phiên đầy đủ ở pbDailyS
                     pbh[x['symbol']][x['trading_date'][:10]] = r(x['pb'])
     days = sorted({k for v in pbh.values() for k in v})
     medv = []
