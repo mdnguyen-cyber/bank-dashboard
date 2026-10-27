@@ -1311,7 +1311,8 @@ function stk(id, labels, obj, o = {}) {   // obj = {tên: [giá trị]}; o.pct =
     borderColor: '#1f2433', backgroundColor: '#1f2433', borderWidth: 2.2, pointRadius: 0, fill: false, stack: 'tot', unit: o.unit ?? '', dp: o.dp ?? 0, spanGaps: true });
   return mk(id, { type: o.type === 'line' ? 'line' : 'bar', data: { labels, datasets: [...ds, ...extra] }, options: Object.assign({
     plugins: { tooltip: { callbacks: { footer: o.pct ? undefined : items => { const t = items.filter(x => x.dataset.stack === 's').reduce((a, x) => a + (x.raw || 0), 0); return 'Tổng: ' + nf(t, o.dp ?? 0) + (o.unit || ''); } } } },
-    scales: Object.assign({ x: { stacked: true }, y: Object.assign({ stacked: true, beginAtZero: true, ticks: { callback: v => nf(v, 0) + (o.pct ? '%' : '') }, grid: { color: '#eef0f4' } }, o.pct ? { min: 0, max: 100 } : {}, o.y || {}) }, o.scales || {}) }, o.options || {}) });
+    scales: Object.assign({ x: { stacked: true }, y: Object.assign({ stacked: true, beginAtZero: true, ticks: { callback: v => nf(v, 0) + (o.pct ? '%' : '') }, grid: { color: '#eef0f4' } }, o.pct ? { min: 0, max: 100 } : {}, o.y || {}) }, o.scales || {}) }, o.options || {},
+    o.plugins ? { plugins: Object.assign({ tooltip: { callbacks: { footer: o.pct ? undefined : items => { const t = items.filter(x => x.dataset.stack === 's').reduce((a, x) => a + (x.raw || 0), 0); return 'Tổng: ' + nf(t, o.dp ?? 0) + (o.unit || ''); } } } }, o.plugins) } : {}) });
 }
 function deltaBars(id, labels, obj, back, o = {}) {   // thay đổi nắm giữ theo nhóm trong `back` kỳ → cột ngang
   const n = labels.length - 1, rows = Object.entries(obj).filter(([k]) => !(o.skip || []).includes(k)).map(([k, v]) => [k, v[n] != null && v[n - back] != null ? +(v[n] - v[n - back]).toFixed(1) : null]).filter(r => r[1] != null).sort((a, b) => b[1] - a[1]);
@@ -1976,6 +1977,28 @@ const eLy = m => m ? (+m.slice(0, 4) - 1) + m.slice(4) : null;
 const ePrevM = m => { const [y, mm] = m.split('-').map(Number); return mm === 1 ? `${y - 1}-12` : `${y}-${String(mm - 1).padStart(2, '0')}`; };
 const eFrom = (from = '2021-01') => { const i = EM.indexOf(from); return i < 0 ? 0 : i; };
 const eSl = (k, from) => es(k).slice(eFrom(from));
+// Quyền số rổ CPI (gốc 2019, Cục Thống kê), %: dùng để quy CPI nhóm (% so cùng kỳ) thành điểm % đóng góp vào CPI chung
+const CPI_W = { cpi_food: 33.56, cpi_bev: 2.73, cpi_cloth: 5.70, cpi_house: 15.73, cpi_equip: 6.74, cpi_health: 5.39, cpi_trans: 9.67, cpi_post: 3.14, cpi_edu: 6.17, cpi_cult: 4.55, cpi_other: 6.62 };
+const CPI_G6 = [['Hàng ăn & dịch vụ ăn uống', ['cpi_food'], '#002060'], ['Nhà ở, điện nước, VLXD', ['cpi_house'], '#97BAFF'], ['Giao thông', ['cpi_trans'], '#C0392B'],
+  ['Giáo dục', ['cpi_edu'], '#FFC000'], ['Thuốc & dịch vụ y tế', ['cpi_health'], '#1F8A8D'], ['Nhóm khác', ['cpi_bev', 'cpi_cloth', 'cpi_equip', 'cpi_post', 'cpi_cult', 'cpi_other'], '#BFBFBF']];
+const CPI_G11 = [['Hàng ăn & dịch vụ ăn uống', ['cpi_food'], '#002060'], ['Nhà ở, điện nước, VLXD', ['cpi_house'], '#97BAFF'], ['Giao thông', ['cpi_trans'], '#C0392B'],
+  ['Giáo dục', ['cpi_edu'], '#FFC000'], ['Thuốc & dịch vụ y tế', ['cpi_health'], '#1F8A8D'], ['Đồ uống, thuốc lá', ['cpi_bev'], '#7B5EA7'], ['May mặc, giày dép', ['cpi_cloth'], '#FFE8A3'],
+  ['Thiết bị, đồ dùng gia đình', ['cpi_equip'], '#5576B8'], ['Bưu chính viễn thông', ['cpi_post'], '#8FD3D5'], ['Văn hoá, giải trí, du lịch', ['cpi_cult'], '#D98880'], ['Hàng hoá, dịch vụ khác', ['cpi_other'], '#BFBFBF']];
+function cpiContrib(k, from) {
+  if (!ECO || !ECO.s.cpi_food) return null;
+  const G = k === 'g11' ? CPI_G11 : CPI_G6, i0 = eFrom(from), d = EM.slice(i0), tot = es('cpi').slice(i0), obj = {};
+  const raw = G.map(([, ks]) => d.map((_, j) => { let v = 0; for (const kk of ks) { const x = es(kk)[i0 + j]; if (x == null) return null; v += x * CPI_W[kk] / 100; } return v; }));
+  const sum = d.map((_, j) => raw.some(r => r[j] == null) ? null : raw.reduce((a, r) => a + r[j], 0));
+  G.forEach(([n], gi) => { obj[n] = raw[gi].map((v, j) => v == null || !sum[j] || tot[j] == null ? null : +(v * tot[j] / sum[j]).toFixed(2)); });
+  return { d, obj, tot: tot.map(v => v == null ? null : +v.toFixed(2)), cols: G.map(g => g[2]) };
+}
+function eCpiCtIns() {
+  const R = cpiContrib('g6', '2021-01'); if (!R) return '';
+  const n = R.tot.length - 1, y = n - 12, names = Object.keys(R.obj), top = names.map(k => [k, R.obj[k][n], R.obj[k][y]]).sort((a, b) => b[1] - a[1]);
+  const up = top.map(r => [r[0], r[1] - (r[2] ?? 0)]).sort((a, b) => b[1] - a[1]);
+  return `${tm(R.d[n])}: CPI <b>${pc(R.tot[n], 2)}</b>, trong đó ${top.slice(0, 3).map(r => `${r[0]} <b>${nf(r[1], 2)}</b>`).join(', ')} điểm %. So cùng kỳ năm trước (${pc(R.tot[y], 2)}), tăng mạnh nhất là ${up[0][0]} (${sg(up[0][1], 2, ' điểm %')}), giảm nhiều nhất là ${up[up.length - 1][0]} (${sg(up[up.length - 1][1], 2, ' điểm %')}).`
+    + how('Đóng góp của một nhóm = mức tăng giá của nhóm × tỷ trọng trong rổ CPI. Nhóm ăn uống chiếm khoảng 1/3 rổ nên chỉ cần tăng vừa phải đã đóng góp lớn; giao thông (xăng dầu) và nhà ở (điện, vật liệu xây dựng) là các nhóm biến động theo giá năng lượng. Phần do giá điều hành (y tế, giáo dục, điện) phụ thuộc lộ trình điều chỉnh của Nhà nước, nên dễ dự báo hơn phần do giá thị trường.');
+}
 const eLab = from => EM.slice(eFrom(from)).map(mvn);
 const tm = m => m ? `T${+m.slice(5)}/${m.slice(0, 4)}` : '—';
 const mAvg = (arr, m) => { const v = (arr || []).filter(p => p.d.slice(0, 7) === m).map(p => p.v); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
@@ -2123,6 +2146,7 @@ function subEco() {
       insight: `CPI ${pc(lastv(dom.cpi).v, 2)} và lạm phát cơ bản ${pc(lastv(dom.cpiCore).v, 2)} cùng ở vùng cao nhất kể từ đầu 2023 — giá tăng đã lan vào lõi, không chỉ do xăng dầu. CPI bình quân từ đầu năm <b>${pc(lastv(dom.cpiAvg).v, 2)}</b> so với mục tiêu ~4,5%: NHNN gần như không có dư địa hạ lãi suất điều hành.`,
       src: 'Cục Thống kê' })}
     ${card({ id: 'eCpiC', title: 'CPI theo nhóm hàng', h: 'tall', sub: `% so cùng kỳ · cột = ${tm(c.d)} · chấm = cùng kỳ năm trước`, insight: eCpiCIns(), src: 'Cục Thống kê' })}
+    ${card({ id: 'eCpiCt', title: 'Đóng góp vào lạm phát CPI theo nhóm hàng', h: 'tall', sub: 'điểm % · cột chồng = đóng góp từng nhóm (CPI nhóm % so cùng kỳ × quyền số rổ CPI, quy tỷ lệ cho tổng khớp CPI chung), đường = CPI chung % so cùng kỳ · đường đỏ = mục tiêu ~4,5%', body: tfPick('eCpiCtK', [['g6', '6 nhóm chính'], ['g11', 'Đủ 11 nhóm']]), insight: eCpiCtIns(), src: 'Cục Thống kê (CPI theo nhóm, quyền số rổ CPI)' })}
     ${card({ id: 'eCpiTs', title: 'CPI theo nhóm hàng qua thời gian', h: 'tall', sub: '% so cùng kỳ, theo tháng · chọn nhóm', body: tfPick('eCpiG', cpiTabs), src: 'Cục Thống kê' })}
     ${ECO.fc ? card({ id: 'eCpiFc', title: 'Dự báo lạm phát 2026 của các tổ chức', h: 'tall', sub: 'CPI bình quân năm 2026, % · mỗi cột một tổ chức (bản công bố gần nhất) · đường đỏ = mục tiêu ~4,5%', insight: eCpiFcIns(), src: 'Báo cáo của các tổ chức (IMF, World Bank, CTCK, ngân hàng); khảo sát chuyên gia VIRA' }) : ''}
     ${card({ id: 'chOilChg', title: 'Truyền dẫn giá dầu vào giá xăng dầu trong nước', sub: '% thay đổi so với kỳ cuối năm 2025 · dầu thô tính bằng USD, giá bán lẻ tính bằng VND · chấm = CPI giao thông % so cùng kỳ (trục phải)', insight: oilChgIns(), src: BD ? BD.src.oil + ' · CPI giao thông: Cục Thống kê' : '' })}
@@ -2173,6 +2197,10 @@ function chEco() {
   const CG = { core: [['cpi', 'CPI', C.navy, 2.6], ['cpi_core', 'Lạm phát cơ bản', C.red, 2.2], ['cpi_food', 'Hàng ăn', C.tealInk, 1.6]],
     food: [['cpi_food', 'Hàng ăn và dịch vụ ăn uống', C.tealInk, 2], ['cpi_house', 'Nhà ở, điện nước, VLXD', C.purple, 2], ['cpi_trans', 'Giao thông', C.gold, 2], ['cpi', 'CPI', C.navy, 1.4]],
     svc: [['cpi_health', 'Thuốc, dịch vụ y tế', C.red, 1.8], ['cpi_edu', 'Giáo dục', C.navy, 1.8], ['cpi_cult', 'Văn hoá, giải trí, du lịch', C.tealInk, 1.6], ['cpi_other', 'Hàng hoá, dịch vụ khác', C.gold, 1.6], ['cpi_bev', 'Đồ uống, thuốc lá', C.grey, 1.4]] };
+  wireTf('eCpiCtK', k => { const R = cpiContrib(k || 'g6', '2021-01'); if (!R) return;
+    stk('eCpiCt', R.d.map(mvn), R.obj, { unit: ' điểm %', dp: 2, colors: R.cols, y: { beginAtZero: false, ticks: { callback: v => nf(v, 1) } },
+      extra: [L('CPI chung', R.tot, '#111', { type: 'line', unit: '%', dp: 2, borderWidth: 2.2, pointRadius: 0, stack: 'tot' })],
+      plugins: { refLines: { lines: [{ value: 4.5, label: 'Mục tiêu ~4,5%', color: C.red }] } } }); });
   wireTf('eCpiG', k => mk('eCpiTs', { type: 'line', data: { labels: eLab('2019-01'), datasets: CG[k || 'core'].map(([kk, n, c, w]) => L(n, eSl(kk, '2019-01'), c, { borderWidth: w })) },
     options: { scales: { y: pctAxis('') }, plugins: { refLines: { lines: [{ value: 4.5, label: '4,5%', color: C.grey }] } } } }, { win: 36 }));
   if (ECO.fc) { const A = ECO.fc.avg.slice().sort((a, b) => b[2] - a[2]);
