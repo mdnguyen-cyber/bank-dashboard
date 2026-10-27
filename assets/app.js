@@ -985,6 +985,7 @@ function drCpb() {
   const qEnd = d => /-(03-31|06-30|09-30|12-31)$/.test(d);
   let ser, daily = false;   // [[ngày ISO, P/B]]
   if (cpbSel !== '_med' && PD[cpbSel]) { ser = PD[cpbSel]; daily = true; }
+  else if (cpbSel === '_med' && PD._median) { ser = PD._median; daily = true; }
   else if (cpbSel === '_med' && H) { const a = H.median; ser = a.filter(p => qEnd(p[0])).concat(qEnd(a[a.length - 1][0]) ? [] : [a[a.length - 1]]); }
   else if (H && H.banks[cpbSel]) { const a = H.banks[cpbSel]; ser = a.filter(p => qEnd(p[0])).concat(qEnd(a[a.length - 1][0]) ? [] : [a[a.length - 1]]); }
   if (!ser || !ser.length) return;
@@ -998,11 +999,22 @@ function drCpb() {
   const dates = ser.map(p => p[0]).concat(fut), n0 = ser.length;
   const medM = H ? new Map(H.median.map(p => [p[0], p[1]])) : new Map();
   const ds = [{ label: 'P/B ' + nm, data: v.concat(fut.map(() => null)), borderColor: own ? C.navy : C.blue, backgroundColor: own ? C.navy : C.blue, borderWidth: daily ? 1.8 : 2.6, pointRadius: daily ? 0 : 1.5, dp: 2, unit: 'x' }];
-  const medAt = new Map(); if (H) { const td = ser.map(p => p[0]); H.median.filter(p => qEnd(p[0]) || p === H.median[H.median.length - 1]).forEach(([q, val]) => { let k = -1; for (let i = 0; i < td.length && td[i] <= q; i++) k = i; if (k >= 0 && (q <= last)) medAt.set(td[k], val); }); }
-  if (cpbSel !== '_med' && H) ds.push({ label: 'Trung vị ngành (cuối quý)', data: dates.map(d => medAt.has(d) ? medAt.get(d) : null), borderColor: C.grey, backgroundColor: C.grey, borderDash: [5, 4], borderWidth: 1.4, pointRadius: 0, dp: 2, unit: 'x', spanGaps: true });
-  tgt.forEach(t => ds.push({ label: `Tới ${t.l} ${nf(t.tp)}đ (P/B ${x(t.pb)} cuối năm)`, data: dates.map((d, i) => i < n0 - 1 ? null : +(now + (t.pb - now) * (i - (n0 - 1)) / (dates.length - n0)).toFixed(3)), borderColor: t.c, backgroundColor: t.c, borderDash: [6, 4], borderWidth: 2, pointRadius: dates.map((d, i) => i === dates.length - 1 ? 4 : 0), dp: 2, unit: 'x', keep: true }));
+  const medAt = new Map(PD._median && daily ? PD._median : []);
+  if (!daily && H) { const td = ser.map(p => p[0]); H.median.filter(p => qEnd(p[0])).forEach(([q, val]) => { let k = -1; for (let i = 0; i < td.length && td[i] <= q; i++) k = i; if (k >= 0) medAt.set(td[k], val); }); }
+  if (cpbSel !== '_med' && medAt.size) ds.push({ label: daily && PD._median ? 'Trung vị 26 NH niêm yết' : 'Trung vị ngành (cuối quý)', data: dates.map(d => medAt.has(d) ? medAt.get(d) : null), borderColor: C.grey, backgroundColor: C.grey, borderDash: [4, 3], borderWidth: 1.3, pointRadius: 0, dp: 2, unit: 'x', spanGaps: !daily, endLbl: ['Trung vị 26 NH', (() => { const a = [...medAt.entries()].filter(e => e[0] <= last).sort(); return a.length ? `${x(a[a.length - 1][1])} (${dvn(a[a.length - 1][0])})` : ''; })()] });
+  tgt.forEach(t => ds.push({ endLbl: [`Nếu đạt ${t.l}`, `${nf(t.tp)}đ vào 31/12`, `→ P/B ${x(t.pb)} (BVPS 2026F)`], label: `Tới ${t.l} ${nf(t.tp)}đ (P/B ${x(t.pb)} cuối năm)`, data: dates.map((d, i) => i < n0 - 1 ? null : +(now + (t.pb - now) * (i - (n0 - 1)) / (dates.length - n0)).toFixed(3)), borderColor: t.c, backgroundColor: t.c, borderDash: [6, 4], borderWidth: 2, pointRadius: dates.map((d, i) => i === dates.length - 1 ? 4 : 0), dp: 2, unit: 'x', keep: true }));
   const lines = [{ value: m, label: `TB ${x(m)}`, color: C.grey, dash: [2, 3] }, { value: m + sd, label: `+1σ ${x(m + sd)}`, color: '#c9a227', dash: [6, 4] }, { value: m - sd, label: `−1σ ${x(m - sd)}`, color: '#c9a227', dash: [6, 4] }];
-  mk('chCpb', { type: 'line', data: { labels: dates.map(dvn), datasets: ds }, options: { plugins: { refLines: { lines } }, scales: { x: { ticks: { maxTicksLimit: 12 } }, y: numAxis('', { beginAtZero: false, ticks: { callback: z => nf(z, 1) + 'x' } }) } } }, { win: 36 });
+  ds[0].endLbl = [`${nm} hiện tại`, `${x(now)} (${dvn(last)})`];
+  const wide = ($('#chCpb').parentElement.clientWidth || 800) >= 640;
+  const endLbl = { id: 'cpbEnd', afterDatasetsDraw(ch) { if (!wide) return;   // nhãn giải thích ở khoảng trắng bên phải, mỗi đường một nhãn, tránh chồng nhau
+    const { ctx, chartArea: a } = ch, L = [];
+    ch.data.datasets.forEach((d, i) => { if (!d.endLbl || !ch.isDatasetVisible(i)) return; const meta = ch.getDatasetMeta(i); let k = d.data.length - 1; while (k >= 0 && d.data[k] == null) k--; if (k < 0 || !meta.data[k]) return;
+      L.push({ y: meta.data[k].y, x: meta.data[k].x, t: [].concat(d.endLbl), c: d.borderColor }); });
+    L.sort((p, q) => p.y - q.y); for (let i = 1; i < L.length; i++) L[i].y = Math.max(L[i].y, L[i - 1].y + 13 * L[i - 1].t.length + 4);
+    ctx.save(); ctx.font = '600 10.5px Arial'; ctx.textBaseline = 'middle';
+    L.forEach(l => { ctx.fillStyle = l.c; l.t.forEach((t, j) => ctx.fillText(t, a.right + 10, l.y + j * 13)); });
+    ctx.restore(); } };
+  mk('chCpb', { type: 'line', data: { labels: dates.map(dvn), datasets: ds }, plugins: [endLbl], options: { layout: { padding: { right: wide ? 165 : 0 } }, plugins: { refLines: { lines } }, scales: { x: { ticks: { maxTicksLimit: 12 } }, y: numAxis('', { beginAtZero: false, ticks: { callback: z => nf(z, 1) + 'x' } }) } } }, { win: 36 });
   $('#cpbH').textContent = own ? `P/B ${T} theo phiên và P/B ngụ ý tại giá mục tiêu` : cpbSel === '_med' ? 'P/B trung vị ngành ngân hàng (26 ngân hàng niêm yết)' : `P/B ${cpbSel} theo phiên so với trung vị ngành`;
   $('#cpbSub').textContent = `Lần · ${daily ? `theo phiên từ ${dvn(ser[0][0])}` : `cuối mỗi quý từ ${dvn(ser[0][0])}`} · đường xám = trung bình, vàng = ±1 độ lệch chuẩn của chính chuỗi${tgt.length ? ` · nét đứt = P/B đi từ hiện tại tới giá mục tiêu vào 31/12, tính trên BVPS 2026F ${nf(FW.bvps2026F)}đ` : ''} · bấm lại mã đang chọn để về ${T}`;
   const peers = H ? Object.keys(H.banks).filter(b => b !== T && (D.peers.rows || []).some(r => (r.symbol || r.s) === b && r.group === GRP)) : [];

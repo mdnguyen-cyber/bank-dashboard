@@ -414,11 +414,26 @@ def build(raw):
                 sy = r.get('symbol'); sy = sy[0] if isinstance(sy, list) else sy
                 if sy and r.get('pb') is not None and r.get('trading_date'):
                     _pd.setdefault(sy, {})[r['trading_date'][:10]] = round(float(r['pb']), 4)
+    # trung vị P/B 26 NH theo phiên: từ các lần gom (aggregate median:pb theo trading_date) và từ bảng ratio_daily đủ ≥ 20 mã/phiên
+    _md, _cnt = _pd.setdefault('_median', {}), {}
+    for d in raw:
+        rq = d['request']
+        if d['tool'] == 'wi_data_companies' and rq.get('endpoint_name') == 'ratio_daily' and rq.get('action') == 'aggregate' and rq.get('metric') == 'median:pb':
+            for g in (d['response'].get('nhom') or []):
+                if (g.get('n') or 0) >= 20 and g.get('gia_tri_do') is not None:
+                    _md[str(g['gia_tri'])[:10]] = round(float(g['gia_tri_do']), 4)
+        elif d['tool'] == 'wi_data_companies' and rq.get('endpoint_name') == 'ratio_daily' and len(syms(rq)) >= 20:
+            for r in rows(d['response']):
+                if r.get('pb') is not None and r.get('trading_date'):
+                    _cnt.setdefault(r['trading_date'][:10], {})[r.get('symbol')] = float(r['pb'])
+    for dt, mp in _cnt.items():
+        if len(mp) >= 20:
+            _md[dt] = round(statistics.median(mp.values()), 4)
     _pd = {k: dict(sorted(v.items())) for k, v in sorted(_pd.items())}
     _pf.write_text(json.dumps(_pd, separators=(',', ':')), encoding='utf-8')
     _own = [k for k in json.loads((ROOT / 'data/banks.json').read_text(encoding='utf-8')) if not k.startswith('_')]
-    D['pbDaily'] = {k: [[d_, v_] for d_, v_ in _pd[k].items() if d_ >= '2021-01-01'] for k in _own
-                    if k in _pd and (k == TICKER or PEER_GROUPS.get(k) == GRP)}
+    D['pbDaily'] = {k: [[d_, v_] for d_, v_ in _pd[k].items() if d_ >= '2021-01-01'] for k in _own + ['_median']
+                    if k in _pd and (k == TICKER or k == '_median' or PEER_GROUPS.get(k) == GRP)}
     _ir = ROOT / f'data/backfill/{TICKER.lower()}_ir_segments.json'   # phân khúc khách hàng theo cách ngân hàng tự trình bày (tài liệu nhà đầu tư)
     if _ir.exists():
         _j = json.loads(_ir.read_text(encoding='utf-8'))
