@@ -636,6 +636,9 @@ def main():
     _fm = ROOT / 'data/backfill/fund_mix.json'   # cơ cấu nguồn vốn nợ theo nhóm (fs_bank bs330/bs320/bs360/bs310 quý mới nhất)
     if _fm.exists():
         D['fundMix'] = json.loads(_fm.read_text(encoding='utf-8'))
+    _bt = ROOT / 'data/backfill/idx_bank_bt.json'   # kiểm định khung kịch bản với giá, lợi nhuận ngân hàng (scripts/idx_bank_backtest.py)
+    if _bt.exists():
+        D['idxBankBt'] = json.loads(_bt.read_text(encoding='utf-8'))
     _rr = ROOT / 'data/backfill/reg_ratios.json'   # LDR, vốn ngắn hạn cho vay TDH theo TT 22 (scripts/reg_ratios.py) + số NH tự công bố
     if _rr.exists():
         D['regRatios'] = json.loads(_rr.read_text(encoding='utf-8'))

@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu Wi MCP; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-27T05:04Z"
+  "auto": "2026-10-27T05:09Z"
  },
  "idx": {
   "now": {
@@ -146301,6 +146301,111 @@
     "ib": 22.3,
     "gtcg": 8.4,
     "gov": 3.2
+   }
+  }
+ },
+ "idxBankBt": {
+  "from": "2021-03",
+  "to": "2026-10",
+  "price": {
+   "h3": {
+    "n": 65,
+    "byq": {
+     "ease": {
+      "n": 17,
+      "mean": 5.4,
+      "pos": 65,
+      "nx": 17,
+      "ex": -1.0
+     },
+     "room": {
+      "n": 7,
+      "mean": 2.5,
+      "pos": 57,
+      "nx": 6,
+      "ex": -0.9
+     },
+     "drain": {
+      "n": 17,
+      "mean": 4.2,
+      "pos": 59,
+      "nx": 14,
+      "ex": 0.0
+     },
+     "tight": {
+      "n": 24,
+      "mean": -0.1,
+      "pos": 54,
+      "nx": 24,
+      "ex": 3.2
+     }
+    },
+    "hit": 51,
+    "base": 58,
+    "hitX": 41,
+    "baseX": 57,
+    "nX": 61
+   },
+   "h6": {
+    "n": 62,
+    "byq": {
+     "ease": {
+      "n": 17,
+      "mean": 8.2,
+      "pos": 76,
+      "nx": 17,
+      "ex": -2.8
+     },
+     "room": {
+      "n": 7,
+      "mean": 12.9,
+      "pos": 86,
+      "nx": 6,
+      "ex": 2.6
+     },
+     "drain": {
+      "n": 17,
+      "mean": 8.0,
+      "pos": 88,
+      "nx": 14,
+      "ex": 0.6
+     },
+     "tight": {
+      "n": 21,
+      "mean": -2.8,
+      "pos": 52,
+      "nx": 21,
+      "ex": 6.5
+     }
+    },
+    "hit": 50,
+    "base": 73,
+    "hitX": 41,
+    "baseX": 60,
+    "nX": 58
+   }
+  },
+  "earn": {
+   "n": 58,
+   "median": 9.0,
+   "hit": 59,
+   "byq": {
+    "ease": {
+     "n": 15,
+     "mean": 9.3
+    },
+    "room": {
+     "n": 7,
+     "mean": 4.8
+    },
+    "drain": {
+     "n": 17,
+     "mean": 8.3
+    },
+    "tight": {
+     "n": 19,
+     "mean": 9.2
+    }
    }
   }
  },

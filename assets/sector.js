@@ -399,13 +399,11 @@ function paneOverview() {
 
   <h3 class="ovh" id="ov6">5 · Chu kỳ ngành</h3>
   ${card({ id: 'ovCycle', title: 'Chỉ số giá cổ phiếu ngân hàng qua các chu kỳ', h: 'xl', sub: 'chỉ số giá ngành Ngân hàng (20/03/2012 = 100, cuối tháng, trục trái, thang log) · nét đứt = tăng trưởng tín dụng toàn hệ thống so cùng kỳ (%, trục phải) · nền màu = giai đoạn chu kỳ theo FinSuccess', insight: cycleIns(), src: 'Chỉ số giá ngành Ngân hàng; NHNN (tăng trưởng tín dụng); phân giai đoạn: FinSuccess' })}
-  <div class="grid g2 gap">
+  <div class="gap">
     <article class="card"><h3 class="sub">Ngân hàng đi theo chu kỳ lãi suất và tín dụng</h3><p class="chart-sub">${S('Mô tả xu hướng điển hình; mỗi chu kỳ có khác biệt về độ trễ', 'Xu hướng điển hình')}</p>
       <div class="tscroll"><table><thead><tr><th>Giai đoạn</th><th>Lãi suất</th><th>Tín dụng</th><th>NIM</th><th>Nợ xấu</th><th>P/B</th></tr></thead>
       <tbody>${CYC.map(r => `<tr>${r.map((c, j) => `<td>${j ? T(c) : `<b>${c}</b>`}</td>`).join('')}</tr>`).join('')}</tbody></table></div></article>
-    <article class="card"><h3 class="sub">Khung bốn kịch bản: áp lực tỷ giá × thanh khoản</h3>
-      <p class="chart-sub">${S('Hai biến quyết định NHNN nới hay siết. Ô sáng là vị trí hiện tại; bấm (i) để xem từng biến đo gì. Cách tính chi tiết ở trang Vĩ mô › Quốc tế › Kịch bản IDX-FX × IDX-LIQ.', 'Ô sáng là vị trí hiện tại.')}</p>
-      ${miniMatrix()}</article>
+
   </div>
 
   <h3 class="ovh" id="ov7">6 · Khung pháp lý chủ chốt: các tỷ lệ an toàn</h3>
@@ -2931,6 +2929,19 @@ function chBond() {
   mk('bFx', { type: 'bar', data: { labels: f.months.slice(f0).map(mvn), datasets: [{ label: 'Mua/bán ròng', data: f.net.slice(f0), backgroundColor: f.net.slice(f0).map(v => v < 0 ? 'rgba(192,57,43,.7)' : 'rgba(31,138,141,.75)'), unit: ' tỷ', dp: 0 }] }, options: { plugins: { legend: { display: false } }, scales: { y: numAxis('tỷ đồng') } } });
 }
 
+/* kiểm định khung bốn kịch bản với giá cổ phiếu và lợi nhuận ngành ngân hàng */
+function bankBtCard() {
+  const K = D.idxBankBt; if (!K) return '';
+  const p6 = K.price.h6, p3 = K.price.h3, qs = ['ease', 'room', 'drain', 'tight'], exp = { ease: 'tăng', room: 'tăng', drain: 'giảm', tight: 'giảm' };
+  return `<article class="card"><h3 class="sub">Kiểm định với cổ phiếu và lợi nhuận ngân hàng <span class="pill risk">không đạt</span></h3>
+    <p class="chart-sub">Tín hiệu theo tháng ${mvn(K.from)}–${mvn(K.to)} · giá: chỉ số giá ngành Ngân hàng 3 và 6 tháng sau tín hiệu; vượt trội = so với VN-Index · lợi nhuận: tăng trưởng LNST 4 quý của 26 ngân hàng trong 2 quý sau</p>
+    <div class="tscroll"><table><thead><tr><th>Ô kịch bản</th><th>Khung kỳ vọng</th><th class="n">Số tháng</th><th class="n">Giá 3 tháng</th><th class="n">Giá 6 tháng</th><th class="n">% lần tăng (6 tháng)</th><th class="n">Vượt trội VN-Index 6 tháng</th><th class="n">LNST 2 quý sau</th></tr></thead><tbody>
+    ${qs.map(q => `<tr><td><b>${SCN[q].t}</b></td><td>${exp[q]}</td><td class="n">${p6.byq[q].n}</td><td class="n">${sg(p3.byq[q].mean, 1, '%')}</td><td class="n">${sg(p6.byq[q].mean, 1, '%')}</td><td class="n">${pc(p6.byq[q].pos, 0)}</td><td class="n">${sg(p6.byq[q].ex, 1, ' đ%')}</td><td class="n">${K.earn.byq[q] ? sg(K.earn.byq[q].mean, 1, '%') : '—'}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="verdict bad">Đoán đúng hướng giá <b>${pc(p6.hit, 0)}</b> (6 tháng) và ${pc(p3.hit, 0)} (3 tháng), thấp hơn cách đoán "luôn tăng" (${pc(p6.base, 0)} và ${pc(p3.base, 0)}); so với VN-Index chỉ đúng ${pc(p6.hitX, 0)}, tức sai nhiều hơn đúng. Ô "Thắt chặt kéo dài" lại có mức vượt trội VN-Index cao nhất. Lợi nhuận ngành cũng không đi theo khung: Thắt chặt kéo dài ${sg(K.earn.byq.tight.mean, 1, '%')} ngang Nới lỏng mạnh ${sg(K.earn.byq.ease.mean, 1, '%')}, còn Dư địa bơm tiền thấp nhất. Kết luận: khung này không dùng được để dự báo cổ phiếu hay lợi nhuận ngân hàng; chỉ đọc như bản đồ áp lực tỷ giá, thanh khoản.</div>
+    <div class="note">Mẫu ngắn (từ 2021) và các cửa sổ chồng lên nhau: 6 tháng chỉ tương đương khoảng 11 cửa sổ độc lập, nên kết quả chỉ đủ để bác bỏ, không đủ để tìm quy luật mới.</div>
+    <div class="src">Nguồn: chỉ số giá ngành Ngân hàng; VN-Index (Wi MCP eod_adjust); LNST 26 ngân hàng (Wi MCP fs_bank) · tự tính</div></article>`;
+}
 function subIdx() {
   const bt = I.backtest, b6 = bt.h6, b3 = bt.h3;
   const comp = (arr, name) => `<div class="tscroll"><table><thead><tr><th>ID</th><th>${name}: thành phần</th><th class="n">Giá trị</th><th class="n">z (36 tháng)</th><th class="n">Dấu</th><th class="n">Đóng góp</th></tr></thead><tbody>
@@ -2959,6 +2970,7 @@ function subIdx() {
       <ul style="margin:0;padding-left:18px;font-size:12.5px;color:var(--ink2)">${I.deviations.map(d => `<li>${esc(d)}</li>`).join('')}</ul>
       <div class="note keep">Ô kịch bản ở tab Vĩ mô của dashboard CTG đọc cùng kết quả này.</div></article>
   </div>
+  ${bankBtCard()}
   <article class="card"><h3 class="sub">Kịch bản → tác động lên từng nhóm ngân hàng</h3><p class="chart-sub">Theo deck slide 38–39, 54 · nhóm in đậm = nhạy nhất trong kịch bản hiện tại</p>
     <div class="tscroll"><table><thead><tr><th>Kịch bản</th><th>Lãi suất</th><th>Big 4</th><th>Tư nhân lớn</th><th>Tư nhân vừa, nhỏ</th></tr></thead><tbody>
       <tr class="${NOW.q === 'ease' ? 'hl' : ''}"><td><b>Nới lỏng mạnh</b></td><td>Giảm nhanh</td><td>NIM mở rộng chậm (CASA cao, cho vay hạ tầng lãi thấp)</td><td>NIM mở rộng nhanh nhất; tín dụng bán lẻ tăng</td><td>COF giảm mạnh nhất; P/B được định giá lại</td></tr>
