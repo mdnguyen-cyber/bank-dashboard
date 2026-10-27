@@ -6,21 +6,20 @@ OUT = Path(__file__).resolve().parents[1] / 'data/probe'
 UA = {'User-Agent': 'Mozilla/5.0 (FinSuccess dashboard; +https://github.com/mdnguyen-cyber/bank-dashboard)'}
 FD = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
 BOJ = 'https://www.stat-search.boj.or.jp/api/v1'
-URLS = {
-    'tcbs_bars': 'https://apipubaws.tcbs.com.vn/stock-insight/v2/stock/bars-long-term?ticker=VCB&type=stock&resolution=D&countBack=30&to=1792800000',
-    'tcbs_ratio': 'https://apipubaws.tcbs.com.vn/tcanalysis/v1/finance/VCB/financialratio?yearly=0&isAll=false',
-    'tcbs_overview': 'https://apipubaws.tcbs.com.vn/tcanalysis/v1/ticker/VCB/overview',
-    'vnd_prices': 'https://api-finfo.vndirect.com.vn/v4/stock_prices?sort=date&q=code:VCB&size=5',
-    'vnd_ratios': 'https://api-finfo.vndirect.com.vn/v4/ratios/latest?filter=ratioCode:PRICE_TO_BOOK,PRICE_TO_EARNINGS&where=code:VCB&order=reportDate&fields=ratioCode,value,reportDate',
-    'vnd_fin': 'https://api-finfo.vndirect.com.vn/v4/financial_statements?q=code:VCB~reportType:QUARTER~modelType:1&sort=fiscalDate&size=5',
-    'ssi_chart': 'https://iboard-api.ssi.com.vn/statistics/charts/history?resolution=1D&symbol=VCB&from=1790000000&to=1792800000',
-    'vps_chart': 'https://histdatafeed.vps.com.vn/tradingview/history?symbol=VCB&resolution=D&from=1790000000&to=1792800000',
-    'yahoo_gold': 'https://query1.finance.yahoo.com/v8/finance/chart/GC=F?range=1mo&interval=1d',
-    'cafef_rss_nh': 'https://cafef.vn/tai-chinh-ngan-hang.rss',
-    'vnexpress_rss_kd': 'https://vnexpress.net/rss/kinh-doanh.rss',
-    'sbv_home_raw': 'https://www.sbv.gov.vn/',
-    'hnx_yield_raw': 'https://hnx.vn/vi-vn/trai-phieu/duong-cong-loi-suat.html',
-    'vbma_raw': 'https://vbma.org.vn/vi/market-data/yield-curve',
+URLS = {   # dò nguồn đường cong OIS Mỹ (10/2026)
+    'y_sr3_z26': 'https://query1.finance.yahoo.com/v8/finance/chart/SR3Z26.CME?range=5d&interval=1d',
+    'y_sr3_h28': 'https://query1.finance.yahoo.com/v8/finance/chart/SR3H28.CME?range=5d&interval=1d',
+    'y_sr1_x26': 'https://query1.finance.yahoo.com/v8/finance/chart/SR1X26.CME?range=5d&interval=1d',
+    'y_sr3_front': 'https://query1.finance.yahoo.com/v8/finance/chart/SR3=F?range=5d&interval=1d',
+    'y_zq_z27': 'https://query1.finance.yahoo.com/v8/finance/chart/ZQZ27.CBT?range=5d&interval=1d',
+    'cme_sr3_quotes': 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/8462/G',
+    'cme_term_sofr_raw': 'https://www.cmegroup.com/market-data/cme-group-benchmark-administration/term-sofr.html',
+    'cf_rates_raw': 'https://cf.com/rates/us',
+    'chatham_rates_raw': 'https://rates.chathamfinancial.com/us-market/rates',
+    'nyfed_sofr': 'https://markets.newyorkfed.org/api/rates/secured/sofr/last/5.json',
+    'nyfed_sofrai': 'https://markets.newyorkfed.org/api/rates/secured/sofrai/last/5.json',
+    'ice_isr_raw': 'https://www.ice.com/iba/ice-swap-rate',
+    'eris_raw': 'https://www.erisfutures.com/',
 }
 KEEP = re.compile(r'government|bond|yield', re.I)
 KEEP = re.compile(r'government|bond|yield', re.I)
