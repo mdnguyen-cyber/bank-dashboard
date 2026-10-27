@@ -1248,7 +1248,7 @@ function oisSnaps() {
   const at = n => { const t = new Date(new Date(last) - n * 864e5).toISOString().slice(0, 10); return ds.filter(d => d <= t).pop(); };
   return { O, ds, last, w: at(7), m: at(30) };
 }
-function oisCards() {
+function oisCards(o = {}) {   // o.cv/o.ts = id chart; o.mini = chỉ đường cong (trang Ngành)
   const S = oisSnaps(); if (!S) return '';
   const { O, last, w, m } = S, c = O.hist[last], cw = w && O.hist[w], cm = m && O.hist[m], sp = O.sofr;
   const bp = (a, b) => a != null && b != null ? (a - b) * 100 : null;
@@ -1259,24 +1259,27 @@ function oisCards() {
     + (ust('2Y') != null ? ` Chênh OIS − TPCP: 2 năm ${sg(bp(c['2Y'], ust('2Y')), 0, ' bps')}${c['5Y'] != null && ust('5Y') != null ? `, 5 năm ${sg(bp(c['5Y'], ust('5Y')), 0, ' bps')}` : ''}.` : '')
     + how('OIS là lãi suất cố định đổi lấy SOFR cộng dồn trong suốt kỳ hạn, nên phản ánh gần như thuần túy kỳ vọng lãi suất qua đêm (ít rủi ro tín dụng, không có phần bù kỳ hạn lớn như TPCP). OIS thấp hơn SOFR = thị trường định giá Fed hạ lãi suất trong kỳ hạn đó; OIS cao hơn = định giá tăng. Chênh OIS − TPCP âm nghĩa là TPCP đang phải trả lợi suất cao hơn mức kỳ vọng lãi suất thuần, thường do nguồn cung TPCP lớn.');
   const tl = O.tenors.filter(t => c[t] != null);
+  const cv = o.cv || 'gUsOis', ts = o.ts || 'gUsOisTs';
+  const cvCard = card({ id: cv, title: 'Đường cong OIS (SOFR) Mỹ', h: 'tall', sub: `%/năm · lãi suất cố định của hoán đổi chỉ số qua đêm theo kỳ hạn, so với 1 tuần và 1 tháng trước · đường xám = lợi suất TPCP cùng kỳ hạn · đỏ = SOFR`, insight: ins,
+      src: 'Ước tính FinSuccess từ giá hợp đồng tương lai SOFR 1 tháng và 3 tháng (CME, qua Yahoo Finance), chưa điều chỉnh độ lồi; SOFR: Fed New York; lợi suất TPCP: U.S. Treasury' });
+  if (o.mini) return cvCard;
   return `<div class="grid g2 gap">
-    ${card({ id: 'gUsOis', title: 'Đường cong OIS (SOFR) Mỹ', h: 'tall', sub: `%/năm · lãi suất cố định của hoán đổi chỉ số qua đêm theo kỳ hạn, so với 1 tuần và 1 tháng trước · đường xám = lợi suất TPCP cùng kỳ hạn · đỏ = SOFR`, insight: ins,
-      src: 'Ước tính FinSuccess từ giá hợp đồng tương lai SOFR 1 tháng và 3 tháng (CME, qua Yahoo Finance), chưa điều chỉnh độ lồi; SOFR: Fed New York; lợi suất TPCP: U.S. Treasury' })}
-    ${card({ id: 'gUsOisTs', title: 'OIS (SOFR) Mỹ theo thời gian', h: 'tall', sub: '%/năm, theo phiên · kỳ hạn 3 tháng, 1 năm, 2 năm, 5 năm so với SOFR',
+    ${cvCard}
+    ${card({ id: ts, title: 'OIS (SOFR) Mỹ theo thời gian', h: 'tall', sub: '%/năm, theo phiên · kỳ hạn 3 tháng, 1 năm, 2 năm, 5 năm so với SOFR',
       src: 'Ước tính FinSuccess từ hợp đồng tương lai SOFR (CME); SOFR: Fed New York' })}
   </div>`;
 }
-function drawOis() {
-  const S = oisSnaps(); if (!S || !document.getElementById('gUsOis')) return;
+function drawOis(cv = 'gUsOis', ts = 'gUsOisTs') {
+  const S = oisSnaps(); if (!S || !document.getElementById(cv)) return;
   const { O, ds, last, w, m } = S, T = O.tenors.filter(t => O.hist[last][t] != null);
   const U = GD.ustCurve, uc = U && U.c[0];
   const set = [[last, 'Hiện tại', C.navy, []], [w, '1 tuần trước', C.tealInk, [4, 3]], [m, '1 tháng trước', C.gold, [2, 3]]].filter((x, i) => x[0] && (i === 0 || x[0] !== last));
   const dsets = set.map(([d, lab, col, dash], i) => L(`${lab} (${dvn(d)})`, T.map(t => O.hist[d][t] ?? null), col, { borderDash: dash, pointRadius: i ? 2 : 3, borderWidth: i ? 1.6 : 2.6 }));
   if (uc) dsets.push(L(`Lợi suất TPCP (${dvn(uc.d)})`, T.map(t => { const k = t === '18M' || t === '9M' || t === '4Y' ? -1 : U.t.indexOf(t); return k < 0 ? null : uc.v[k]; }), C.grey, { borderDash: [5, 4], pointRadius: 2, spanGaps: true }));
   if (O.sofr) dsets.push(L(`SOFR (${dvn(O.sofr.d)})`, T.map(() => O.sofr.v), C.red, { borderDash: [2, 3], borderWidth: 1.2 }));
-  mk('gUsOis', { type: 'line', data: { labels: T, datasets: dsets }, options: { plugins: { legend: { display: true, position: 'bottom' } }, scales: { y: pctAxis('', { beginAtZero: false }) } } });
+  mk(cv, { type: 'line', data: { labels: T, datasets: dsets }, options: { plugins: { legend: { display: true, position: 'bottom' } }, scales: { y: pctAxis('', { beginAtZero: false }) } } });
   const sh = O.sofrHist || {}, sd = Object.keys(sh).sort(), lastS = d => { const k = sd.filter(x => x <= d).pop(); return k ? sh[k] : null; };
-  mk('gUsOisTs', { type: 'line', data: { labels: ds.map(dvn), datasets: [
+  if (document.getElementById(ts)) mk(ts, { type: 'line', data: { labels: ds.map(dvn), datasets: [
     L('OIS 3 tháng', ds.map(d => O.hist[d]['3M'] ?? null), C.tealInk), L('OIS 1 năm', ds.map(d => O.hist[d]['1Y'] ?? null), C.navy, { borderWidth: 2.4 }),
     L('OIS 2 năm', ds.map(d => O.hist[d]['2Y'] ?? null), C.gold), L('OIS 5 năm', ds.map(d => O.hist[d]['5Y'] ?? null), C.purple),
     L('SOFR', ds.map(lastS), C.red, { borderDash: [2, 3], borderWidth: 1.2 })] }, options: { scales: { y: pctAxis('', { beginAtZero: false }) } } });
@@ -2565,10 +2568,11 @@ function drUsd(id) {
 }
 function usMiniCards() {
   return `${fedWatchCard({ id: 'nFedPath', compact: true })}
+    ${oisCards({ cv: 'nUsOis', mini: true })}
     ${card({ id: 'nUsCurve', title: 'Đường cong lợi suất trái phiếu Kho bạc Mỹ', h: 'tall', sub: '%/năm theo kỳ hạn 1 tháng – 30 năm · hôm nay so với 1 tuần, 1 tháng trước, đầu năm và 1 năm trước', insight: usCurveIns(), src: 'U.S. Treasury (Daily Treasury Par Yield Curve)' })}
     ${card({ id: 'nUsd', title: 'Đồng USD: DXY và USD/CNY', sub: 'Điểm · cuối tháng · trục phải USD/CNY (tăng = CNY mất giá)', insight: `DXY <b>${nf(lastv(intl.dxy).v, 1)}</b>, ${sg(yoyAt(intl.dxy, lastv(intl.dxy).d), 1)} so cùng kỳ; USD/CNY ${nf(lastv(intl.cny).v, 3)}.` + how('USD mạnh lên toàn diện (DXY tăng) đẩy USD/VND theo; CNY mạnh lên giúp giảm áp lực lên VND vì Trung Quốc là đối tác nhập khẩu lớn nhất.'), src: 'ICE (DXY), ECB; cuối tháng' })}`;
 }
-function drUsMini() { drawFedPath('nFedPath'); drUsCurve('nUsCurve'); drUsd('nUsd'); }
+function drUsMini() { drawFedPath('nFedPath'); drawOis('nUsOis'); drUsCurve('nUsCurve'); drUsd('nUsd'); }
 
 /* ---- Ngân hàng ---- */
 const BMET = [['nim', 'NIM'], ['cof', 'COF'], ['yea', 'YEA'], ['casa', 'CASA'], ['npl', 'NPL'], ['g2', 'Nợ nhóm 2'], ['llr', 'Bao phủ nợ xấu'], ['ldr', 'LDR'], ['creditYoY', 'Tín dụng YoY'], ['roe', 'ROE'], ['cir', 'CIR']];
