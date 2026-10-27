@@ -693,3 +693,4 @@ h3.grp-h small{font-size:12px;font-weight:400;color:#8a93a3}
 .pill.rs-bad{background:#fde4e1;color:#a3261a;border:1px solid #f0a49b}
 .l22 td,.l22 th{white-space:nowrap}.l22 td:last-child{white-space:normal}
 .l22 td:last-child{font-size:12px;min-width:220px;max-width:300px}
+.rkt{font:700 13px Arial;color:var(--navy);margin:6px 0 4px}.rkt span{font-weight:400;color:var(--ink2)}
