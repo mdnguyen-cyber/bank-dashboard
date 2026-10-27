@@ -27,6 +27,7 @@ jobs:
           python scripts/fetch_jgb_auct.py || echo "fetch_jgb_auct lỗi"
           python scripts/fetch_daily.py || echo "fetch_daily lỗi"
           python scripts/fetch_fedwatch.py || echo "fetch_fedwatch lỗi"
+          python scripts/fetch_ois.py || echo "fetch_ois lỗi"
           python scripts/fetch_calendar.py || echo "fetch_calendar lỗi"
           python scripts/fetch_dlkt.py || echo "fetch_dlkt lỗi"
           python scripts/fetch_market.py || echo "fetch_market lỗi"

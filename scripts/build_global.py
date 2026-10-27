@@ -482,6 +482,12 @@ if _ja.exists():
                      'tail5y': round(sum(tl) / len(tl), 1) if tl else None, 'prev': rr[-2][1] if len(rr) > 1 else None}
     G['jgbAuct'] = {'s': bt, 'stats': stats, 'fetched': JA.get('fetched'), 'report': JA.get('report')}
 
+# đường cong OIS (SOFR) Mỹ (scripts/fetch_ois.py): giữ 400 phiên gần nhất
+_oi = ROOT / 'data/global/ois.json'
+if _oi.exists():
+    G['ois'] = json.loads(_oi.read_text(encoding='utf-8'))
+    G['ois']['hist'] = dict(sorted(G['ois']['hist'].items())[-400:])
+    G['ois'].pop('contracts', None)
 # kỳ vọng lãi suất Fed theo phiên FOMC (scripts/fetch_fedwatch.py)
 _fw = ROOT / 'data/global/fedwatch.json'
 if _fw.exists():
