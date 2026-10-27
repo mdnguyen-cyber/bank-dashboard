@@ -1012,7 +1012,7 @@ function drCpb() {
   const medAt = new Map(PD._median && daily ? PD._median : []);
   if (!daily && H) { const td = ser.map(p => p[0]); H.median.filter(p => qEnd(p[0])).forEach(([q, val]) => { let k = -1; for (let i = 0; i < td.length && td[i] <= q; i++) k = i; if (k >= 0) medAt.set(td[k], val); }); }
   if (cpbSel !== '_med' && medAt.size) ds.push({ label: daily && PD._median ? 'Trung vị 26 NH niêm yết' : 'Trung vị ngành (cuối quý)', data: dates.map(d => medAt.has(d) ? medAt.get(d) : null), borderColor: C.grey, backgroundColor: C.grey, borderDash: [4, 3], borderWidth: 1.3, pointRadius: 0, dp: 2, unit: 'x', spanGaps: !daily, endLbl: ['Trung vị 26 NH', (() => { const a = [...medAt.entries()].filter(e => e[0] <= last).sort(); return a.length ? `${x(a[a.length - 1][1])} (${dvn(a[a.length - 1][0])})` : ''; })()] });
-  tgt.forEach(t => ds.push({ endLbl: [`Nếu đạt ${t.l}`, `${nf(t.tp)}đ vào 31/12`, `→ P/B ${x(t.pb)} (BVPS 2026F)`], label: `Tới ${t.l} ${nf(t.tp)}đ (P/B ${x(t.pb)} cuối năm)`, data: dates.map((d, i) => i < n0 - 1 ? null : +(now + (t.pb - now) * (i - (n0 - 1)) / (dates.length - n0)).toFixed(3)), borderColor: t.c, backgroundColor: t.c, borderDash: [6, 4], borderWidth: 2, pointRadius: dates.map((d, i) => i === dates.length - 1 ? 4 : 0), dp: 2, unit: 'x', keep: true }));
+  tgt.forEach(t => ds.push({ endLbl: [`Nếu đạt ${t.l}`, `${nf(t.tp)}đ vào 31/12`, `→ P/B ${x(t.pb)} (BVPS 2026F)`], label: `Tới ${t.l} ${nf(t.tp)}đ (P/B ${x(t.pb)} cuối năm)`, data: dates.map((d, i) => i < n0 - 1 ? null : +(now + (t.pb - now) * (i - (n0 - 1)) / (dates.length - n0)).toFixed(3)), borderColor: t.c, backgroundColor: t.c, borderDash: [6, 4], borderWidth: 2, pointRadius: dates.map((d, i) => i === dates.length - 1 ? 4 : 0), dp: 2, unit: 'x', keep: true, clip: false }));
   const lines = [{ value: m, label: `TB ${x(m)}`, color: C.grey, dash: [2, 3] }, { value: m + sd, label: `+1σ ${x(m + sd)}`, color: '#c9a227', dash: [6, 4] }, { value: m - sd, label: `−1σ ${x(m - sd)}`, color: '#c9a227', dash: [6, 4] }];
   ds[0].endLbl = [`${nm} hiện tại`, `${x(now)} (${dvn(last)})`];
   const wide = ($('#chCpb').parentElement.clientWidth || 800) >= 640;
@@ -1040,7 +1040,6 @@ function paneCons() {
   const np = [...rows.filter(r => r.npF), ...CS.forecastOnly];
   const runRate = P ? P.npatYTD * 4 / P.ytdQuarters : null;
   $('#cons').innerHTML = `<h2 class="sec">Consensus CTCK</h2>
-  <div class="banner warn">Báo cáo trước ${dvn(CS.fadeBefore)} (> 3 tháng) hiển thị mờ và không vào thống kê. ${D.lastStockDiv ? `TP trong báo cáo trước ${dvn(D.lastStockDiv.ex)} chưa điều chỉnh theo đợt cổ phiếu ${nf(D.lastStockDiv.ratio, 1)}% (cột TP là giá công bố gốc).` : ''} Khuyến nghị là nhãn gộp của WiData (MUA gồm Khả quan/Outperform).</div>
   <div class="kpis">
     ${kpi('Median TP', nf(S.median) + 'đ', sg(S.upsideMedian) + ' vs giá', 'pos')}
     ${kpi('TB TP', nf(S.mean) + 'đ', 'min ' + nf(S.min) + ' · max ' + nf(S.max))}
@@ -1058,14 +1057,16 @@ function paneCons() {
   <h3 class="sub" style="margin:6px 0 10px">Dải dự phóng của các công ty chứng khoán</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chTp', title: 'Giá mục tiêu từng CTCK', sub: 'đ/CP · đường đỏ = thị giá ' + nf(M.price) + 'đ · nhãn = upside', h: 'tall',
+      body: `<p class="cnote">Màu xám = báo cáo trước ${dvn(CS.fadeBefore)} (> 3 tháng), không vào thống kê.${D.lastStockDiv ? ` TP trong báo cáo trước ${dvn(D.lastStockDiv.ex)} là giá công bố gốc, chưa điều chỉnh theo đợt chia cổ phiếu ${nf(D.lastStockDiv.ratio, 1)}%.` : ''}</p>`,
       insight: (() => { const live = rows.filter(r => r.tp && !r.stale), hi = live.reduce((a, b) => b.tp > a.tp ? b : a, live[0]), lo = live.reduce((a, b) => b.tp < a.tp ? b : a, live[0]), below = live.filter(r => r.tp < M.price).length;
         return `Dải TP <b>${nf(S.min)}–${nf(S.max)}đ</b> (upside ${sg((S.min / M.price - 1) * 100, 0)} đến ${sg((S.max / M.price - 1) * 100, 0)}); ${below ? below + ' CTCK có TP dưới thị giá' : 'không CTCK nào có TP dưới thị giá'}. Cao nhất ${esc(hi.broker)} (${nf(hi.tp)}đ, ${dvn(hi.date)}), thấp nhất ${esc(lo.broker)} (${nf(lo.tp)}đ, ${dvn(lo.date)}). ${esc(NR.tpSpread || '')}`; })() })}
     ${card({ id: 'chNp', title: 'LNST 2026F từng CTCK và kế hoạch ĐHĐCĐ', sub: 'tỷ đồng · nhãn = YoY so với LNST 2025 ' + nf(FW.npat2025) + ' tỷ · xám = run-rate ' + (P ? P.ytdLabel : '') + ' × 2', h: 'tall',
+      body: `<p class="cnote">Màu nhạt = báo cáo trước ${dvn(CS.fadeBefore)} (> 3 tháng), không vào thống kê. Xám = run-rate ${P ? P.ytdLabel : ''} × 2.</p>`,
       insight: `Dự phóng 2026 nằm trong khoảng <b>${nf(S.npMin)}–${nf(S.npMax)}</b> tỷ (${sg((S.npMin / FW.npat2025 - 1) * 100, 0)} đến ${sg((S.npMax / FW.npat2025 - 1) * 100, 0)} YoY), ${S.npMin > P.npat ? 'đều cao hơn' : S.npMax < P.npat ? 'đều thấp hơn' : 'bao quanh'} KH ĐHĐCĐ <b>${nf(P.npat)}</b> tỷ. ${P.ytdLabel} đã đạt <b>${nf(FW.npatH1)}</b> tỷ (${sg(P.npatYTDyoy)} YoY, ${pc(P.npatDone)} KH). Để khớp median, H2 cần <b>${nf(FW.impliedH2)}</b> tỷ — <b>${sg((FW.impliedH2 / FW.h2_2025 - 1) * 100)}</b> so với H2/2025 (${nf(FW.h2_2025)} tỷ), ${(FW.impliedH2 / FW.h2_2025 - 1) * 100 < P.npatYTDyoy ? `thấp hơn tốc độ H1 (${sg(P.npatYTDyoy)}): consensus đã giả định lợi nhuận chậm lại nửa cuối năm` : `cao hơn tốc độ H1 (${sg(P.npatYTDyoy)}): consensus kỳ vọng lợi nhuận tăng tốc nửa cuối năm`}.` })}
   </div>
   <article class="card"><h3 class="sub">Chi tiết báo cáo</h3><div class="tscroll"><table><thead><tr><th>CTCK</th><th>Ngày</th><th>KN</th><th class="n">TP</th><th class="n">Upside</th><th class="n">TOI 2026F</th><th class="n">TOI 2027F</th><th class="n">LNST 2026F</th><th class="n">LNST 2027F</th><th>Luận điểm</th></tr></thead><tbody>
     ${[...rows, ...CS.forecastOnly].map(r => `<tr class="${r.stale ? 'stale' : ''}"><td><b>${esc(r.broker)}</b></td><td>${dvn(r.date)}</td><td>${esc(r.rating)}</td><td class="n">${r.tp ? nf(r.tp) : '—'}</td><td class="n">${r.tp ? sg(r.upside, 0) : '—'}</td><td class="n">${nf(r.toiF)}</td><td class="n">${nf(r.toiF1)}</td><td class="n">${nf(r.npF)}</td><td class="n">${nf(r.npF1)}</td><td>${esc(r.thesis)}${r.summary ? `<details class="more"><summary>Tóm tắt</summary><div class="note">${esc(r.summary)}</div></details>` : ''}</td></tr>`).join('')}
-  </tbody></table></div><div class="src">Nguồn: ${esc(CS.src)}</div></article>`;
+  </tbody></table></div><p class="cnote">Dòng mờ = báo cáo trước ${dvn(CS.fadeBefore)} (> 3 tháng). KN là khuyến nghị quy về 3 mức: MUA gồm cả Khả quan/Outperform.${D.lastStockDiv ? ` TP trong báo cáo trước ${dvn(D.lastStockDiv.ex)} là giá công bố gốc, chưa điều chỉnh theo đợt chia cổ phiếu ${nf(D.lastStockDiv.ratio, 1)}%.` : ''}</p><div class="src">Nguồn: ${esc(CS.src)}</div></article>`;
   cpbSel = T; drCpb();
   const tr = [...rows].sort((a, b) => a.tp - b.tp);
   const fade = (c, r) => r.stale ? c + '55' : c;

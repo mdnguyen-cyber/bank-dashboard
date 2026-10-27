@@ -677,3 +677,5 @@ h3.grp-h{margin:22px 0 10px;font-size:15px;font-weight:700;color:var(--navy);bor
 h3.grp-h small{font-size:12px;font-weight:400;color:#8a93a3}
 .sub > h3.grp-h:first-child{margin-top:4px}
 .rng .tsw{display:inline-flex;gap:0;margin-left:8px;padding-left:8px;border-left:1px solid var(--line)}.rng .tsw button{border-radius:0}.rng .tsw button:first-child{border-radius:999px 0 0 999px}.rng .tsw button:last-child{border-radius:0 999px 999px 0}
+
+.cnote{margin:8px 0 0;padding:6px 10px;font-size:12px;line-height:1.45;color:#5b6475;background:#FFF8E1;border-left:3px solid #FFC000;border-radius:4px}
