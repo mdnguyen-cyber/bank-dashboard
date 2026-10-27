@@ -333,6 +333,8 @@ if DP.exists():
     merge_d('us_10y_d', {d: x.get('10Y') for d, x in u.items()}, 3)
     put('us_3m_d', {d: x['3M'] for d, x in u.items() if x.get('3M') is not None and d >= DAILY_FROM}, 3)
     put('us_30y_d', {d: x['30Y'] for d, x in u.items() if x.get('30Y') is not None and d >= DAILY_FROM}, 3)
+    put('us_6m_d', {d: x['6M'] for d, x in u.items() if x.get('6M') is not None and d >= DAILY_FROM}, 3)
+    put('us_1y_d', {d: x['1Y'] for d, x in u.items() if x.get('1Y') is not None and d >= DAILY_FROM}, 3)
     j = DY.get('jgb', {})
     for t in ['2Y', '5Y', '10Y', '30Y']:
         put(f'jp_{t.lower()}_d', {d: x[t] for d, x in j.items() if x.get(t) is not None and d >= DAILY_FROM}, 3)

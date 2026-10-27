@@ -2336,6 +2336,7 @@ const HM_W = [
   ['pmi', 'PMI sản xuất', 'xanh = trên 50', (c, m) => c[6] ? gM(c[6], m) : null, 'pmi', 1, 'điểm · Mỹ: ISM · Trung Quốc: NBS · khu vực euro: HCOB'],
 ];
 const vnFree = m => { const a = mEnd(dom.freeD, m) ?? byM(dom.free)[m], b = mEnd(dom.nhtmD, m) ?? byM(dom.nhtmSell)[m]; return a == null || b == null ? null : a - b; };
+const vrAvg = (blk, t, m) => { const a = (VR[blk] || {})[t]; if (!a) return null; const v = []; VR.d.forEach((d, i) => { if (d.slice(0, 7) === m && a[i] != null) v.push(a[i]); }); return v.length ? v.reduce((x, y) => x + y, 0) / v.length : null; };
 const HM_V = [
   ['Hoạt động kinh tế'],
   ['GDP thực (quý, YoY)', m => { const i = (ECO.q || []).indexOf(m); return (i < 0 ? null : ECO.gq.gdp[i]) ?? hV('gdp', m); }, 'hi-green', 2],
@@ -2349,9 +2350,11 @@ const HM_V = [
   ['Tín dụng (YoY)', m => byM(dom.creditYoY)[m] ?? hV('credit', m), 'hi-green', 1], ['Tiền gửi (YoY)', m => byM(dom.depYoY)[m] ?? hV('dep', m), 'hi-green', 1], ['Cung tiền M2 (YoY)', m => byM(dom.m2)[m] ?? hV('m2', m), 'hi-green', 1],
   ['Lãi suất OMO (cuối tháng)', m => m > nowM() ? null : polM('vn', m) ?? hV('omo', m), 'hi-red', 2], ['Lãi suất tái cấp vốn', m => m > nowM() ? null : hV('refi', m), 'hi-red', 2],
   ['LNH qua đêm (bình quân tháng)', m => mAvg(dom.onDaily, m) ?? hV('on', m), 'hi-red', 2],
-  ['Chênh LNH qua đêm − lãi suất Fed', m => { const a = mAvg(dom.onDaily, m) ?? hV('on', m), b = gMAvg('us_effr_d', m) ?? byM(intl.effr)[m] ?? hW('pol', 'us', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
   ['Huy động 12T NHTM Nhà nước', m => mEnd(dom.dep12StateD, m) ?? byM(dom.dep12State)[m] ?? hV('dep12s', m) ?? hV('dep12vcb', m), 'hi-red', 2], ['Huy động 12T NHTM lớn', m => mEnd(dom.dep12LargeD, m) ?? byM(dom.dep12Large)[m], 'hi-red', 2],
   ['TPCP 10 năm', m => byM(intl.vn10)[m] ?? hV('vn10', m), 'hi-red', 2],
+  ['Chênh LNH − SOFR qua đêm', m => { const a = mAvg(dom.onDaily, m) ?? hV('on', m), b = gMAvg('us_sofr_d', m) ?? gMAvg('us_effr_d', m) ?? byM(intl.effr)[m] ?? hW('pol', 'us', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
+  ['Chênh LNH − USD kỳ hạn 6 tháng', m => { const a = mAvg((dom.lnh || {})['6M'], m) ?? vrAvg('vnd', '6M', m), b = vrAvg('sofr', '6M', m) ?? gMAvg('us_6m_d', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
+  ['Chênh LNH − USD kỳ hạn 1 năm', m => { const a = vrAvg('vnd', '1Y', m), b = vrAvg('sofr', '1Y', m) ?? gMAvg('us_1y_d', m); return a == null || b == null ? null : a - b; }, 'hi-green', 2],
   ['USD/VND từ đầu năm (%; dương = VND mất giá)', m => { const v = vnFxYtd(m); return v != null ? -v : hV('fx_ytd', m); }, 'hi-red', 2], ['Chênh tự do − NHTM (đồng)', m => vnFree(m) ?? hV('free_gap', m), 'hi-red', 0],
   ['Dự trữ ngoại hối (tỷ USD)', m => { const v = byM(dom.reserves)[m] ?? hV('res', m); return v == null ? null : v / 1000; }, 'hi-green', 1],
 ];
@@ -2407,10 +2410,13 @@ function hmRender() {
     rows.sel = hmSel.vn;
     cols = hmTrim(cols, rows);
     html = hmTable(cols, rows);
-    note = 'Màu theo từng dòng (so với chính chỉ tiêu đó trong khung thời gian đang xem): xanh = tốt cho tăng trưởng hoặc thanh khoản, đỏ = áp lực (lạm phát, lãi suất, tỷ giá tăng). PMI: xanh trên 50. GDP chỉ có ở tháng cuối quý.';
+    note = 'Màu theo từng dòng (so với chính chỉ tiêu đó trong khung thời gian đang xem): xanh = tốt cho tăng trưởng hoặc thanh khoản, đỏ = áp lực (lạm phát, lãi suất, tỷ giá tăng). PMI: xanh trên 50. GDP chỉ có ở tháng cuối quý. Chênh lãi suất VND − USD (bình quân tháng): qua đêm = LNH qua đêm − SOFR; 6 tháng = LNH 6 tháng (NHNN) − SOFR kỳ hạn 6 tháng (VIRA, trước 07/2026 dùng lợi suất tín phiếu Kho bạc Mỹ 6 tháng); 1 năm = VNIBOR 1 năm − SOFR kỳ hạn 1 năm (VIRA, trước 07/2026 dùng tín phiếu Kho bạc Mỹ 1 năm); dương = giữ VND có lợi hơn giữ USD.';
   }
   box.innerHTML = html + `<p class="hm-note">${note} · cuộn ngang để xem các tháng trước.</p>`;
   const sc = $('.tscroll', box); if (sc) sc.scrollLeft = sc.scrollWidth;   // mở ở tháng mới nhất
+  if (sc && window.FSTbl) { const W = HM_W.find(w => w[0] === hmS.w), bar = document.createElement('div'); bar.className = 'tbl-bar';
+    bar.appendChild(FSTbl.button(sc, () => ({ title: hmS.v === 'vn' ? 'Kinh tế, tiền tệ Việt Nam theo tháng' : `${W ? W[1] : ''} theo tháng: Việt Nam và thế giới`, sub: note, src: ($('#hmCard .src') || {}).textContent || '', file: 'FinSuccess_ban-do-nhiet_' + (hmS.v === 'vn' ? 'viet-nam' : hmS.w) })));
+    box.insertBefore(bar, sc); }
   $$('tr[data-hk]', box).forEach(tr => tr.onclick = () => { hmSel[hmS.v] = tr.dataset.hk; $$('tr.hm-sel', box).forEach(x => x.classList.remove('hm-sel')); tr.classList.add('hm-sel'); hmLine(); $('#hmLineCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   hmLine();
 }
@@ -2556,6 +2562,7 @@ function paneCmd() {
   <p class="sec-sub">Giá năng lượng, cước vận tải biển, kim loại, nguyên liệu và nông sản trong nước và thế giới, kèm mức thay đổi theo các khung thời gian. Bấm vào một dòng để xem lịch sử giá.</p>
   <article class="card"><h3 class="sub">Bảng giá hàng hóa</h3>
     <p class="chart-sub">giá gần nhất · % thay đổi so với phiên trước, 1 tuần, 1 tháng, 3 tháng, cuối năm trước, 1 năm và 3 năm trước (xanh = giá tăng, đỏ = giá giảm) · ngày mờ = số chưa cập nhật hơn 10 ngày</p>
+    <div class="tbl-bar" id="cmdShotBar"></div>
     <div class="tscroll"><table class="etab cm" id="cmdTab"><thead><tr><th>Hàng hóa</th><th>Đơn vị</th><th class="n">Giá gần nhất</th>${CMD_B.map(([, l]) => `<th class="n">${l}</th>`).join('')}<th>Ngày</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div class="insight">${cmdTabIns()}</div>
     <div class="src">${srcs}</div></article>
@@ -2569,6 +2576,7 @@ function paneCmd() {
       sub: '% thay đổi giá so với điểm đầu khung đang xem, theo ngày (cước Baltic, giá Trung Quốc và giá trong nước trước 3 tháng gần nhất: số cuối tuần) · đổi khung bằng nút phía trên biểu đồ',
       insight: cmdGrpIns(g), src: [...new Set(CMD.items.filter(it => it.g === g).map(it => it.src))].join('; ') })).join('')}
   </div>`;
+  if (window.FSTbl) $('#cmdShotBar').appendChild(FSTbl.button($('#cmdTab').closest('.tscroll'), () => ({ title: 'Bảng giá hàng hóa', sub: 'Giá gần nhất và % thay đổi theo các khung thời gian (xanh = tăng, đỏ = giảm)', src: srcs, file: 'FinSuccess_bang-gia-hang-hoa' })));
   $$('#cmdTab tbody tr[data-k]').forEach(r => r.onclick = () => { cmdSel = r.dataset.k; cmdDraw(); $('#cmdOne').closest('article').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   $('#cmdSel').onchange = e => { cmdSel = e.target.value; cmdDraw(); };
   chCmd();
