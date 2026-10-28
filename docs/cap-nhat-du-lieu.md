@@ -51,7 +51,7 @@ Không chép tay số liệu.
 
 ## 3. Build và kiểm tra
 ```
-python3 scripts/build_sector_data.py && for t in CTG VCB BID TCB MBB ACB; do python3 scripts/build_ctg_data.py --ticker $t; done && python3 scripts/build_big3.py && python3 scripts/build_bond_data.py && python3 scripts/build_bot_context.py
+python3 scripts/build_sector_data.py && for t in CTG VCB BID TCB MBB ACB STB; do python3 scripts/build_ctg_data.py --ticker $t; done && python3 scripts/build_big3.py && python3 scripts/build_bond_data.py && python3 scripts/build_bot_context.py
 python3 scripts/cmd_wi_backfill.py && python3 scripts/build_cmd.py && python3 scripts/fin_wi_backfill.py && python3 scripts/build_fin_data.py && python3 scripts/build_catalog.py && python3 scripts/build_guide.py
 python3 tests/test_sector_data.py
 ```

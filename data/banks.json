@@ -268,13 +268,55 @@
    "risks": [
     [
      "NIM",
-     "NIM thấp nhất nhóm tư nhân lớn; CTCK kỳ vọng phục hồi khi phần lớn dư nợ định giá lại dưới 3 tháng (VPBS 10/2026)",
+     "NIM TTM Q3/2026 2,99% (cùng kỳ 3,18%) khi COF tăng lên 5,02%; CTCK kỳ vọng phục hồi khi phần lớn dư nợ định giá lại dưới 3 tháng (VPBS 10/2026)",
      "Biên lãi"
     ],
     [
-     "Chi phí dự phòng",
-     "Dự phòng tăng mạnh làm lợi nhuận 6T/2026 đi ngang (VDS, SSI 08–09/2026)",
-     "Lợi nhuận"
+     "Chi phí dự phòng và nợ nhóm 2",
+     "Dự phòng Q3/2026 934 tỷ (cùng kỳ 289 tỷ); nợ nhóm 2 0,93% (cùng kỳ 0,47%), NPL 1,19% (BCTC Q3/2026)",
+     "Chất lượng tài sản"
+    ],
+    [
+     "Huy động",
+     "CASA 19,9% (cùng kỳ 22,8%); tín dụng tăng 14,7% YoY, nhanh hơn tiền gửi",
+     "Biên lãi, tỷ lệ an toàn"
+    ]
+   ]
+  },
+  "events": [],
+  "kbnnNote": ""
+ },
+ "STB": {
+  "name": "Ngân hàng TMCP Sài Gòn Thương Tín",
+  "short": "Sacombank",
+  "exchange": "HOSE",
+  "irUrl": "https://www.sacombank.com.vn/trang-chu/nha-dau-tu.html",
+  "dep12": 202790,
+  "page": "stb.html",
+  "strategic": null,
+  "narr": {
+   "ownerSub": "Ngân hàng TMCP tư nhân, không có vốn Nhà nước; đang thực hiện đề án tái cơ cấu sau sáp nhập Ngân hàng Phương Nam (2015).",
+   "ownerInsight": "Khoảng 32,5% cổ phần của nhóm ông Trầm Bê là tài sản bảo đảm cho khoản nợ tại VAMC và chờ xử lý theo phương án được NHNN phê duyệt; việc bán lô này là điều kiện để hoàn tất đề án tái cơ cấu. Tài liệu ĐHĐCĐ 2026 đề xuất gia hạn đề án tới 2030 (Diễn đàn Doanh nghiệp, 28/03/2026).",
+   "carWhy": "Ngân hàng chưa chia cổ tức trong thời gian thực hiện đề án tái cơ cấu nên giữ lại toàn bộ lợi nhuận; vốn chủ tăng chủ yếu bằng lợi nhuận giữ lại.",
+   "nplFormCheck": "",
+   "llrRef": null,
+   "recovTarget": "",
+   "tpSpread": "Chênh lệch giữa các CTCK nằm ở thời điểm bán lô 32,5% cổ phần qua VAMC và mức thu hồi, tốc độ xử lý nợ xấu sau đợt trích lập năm 2025, và thời điểm được chia cổ tức, tăng vốn trở lại.",
+   "divNote": "",
+   "divInsight": "Không chia cổ tức trong thời gian thực hiện đề án tái cơ cấu; cổ đông kỳ vọng được chia cổ tức và tăng vốn khi đề án hoàn tất.",
+   "divSrc": "Wi MCP co_events, ratio_common_year; Diễn đàn Doanh nghiệp 28/03/2026",
+   "eventsNote": "",
+   "modelNote": "",
+   "risks": [
+    [
+     "Tiến độ tái cơ cấu",
+     "Đề án xin gia hạn tới 2030; thời điểm bán lô 32,5% cổ phần qua VAMC chưa xác định (Diễn đàn Doanh nghiệp, 03/2026)",
+     "Catalyst"
+    ],
+    [
+     "Chất lượng tài sản",
+     "Năm 2025 trích lập hơn 11.300 tỷ, nợ xấu lên 6,4% sau đợt làm sạch bảng cân đối (Diễn đàn Doanh nghiệp, 03/2026)",
+     "Chất lượng tài sản"
     ]
    ]
   },

@@ -36910,6 +36910,14 @@
  },
  "events": [
   {
+   "d": "2027-01-20",
+   "type": "KQKD",
+   "t": "Hạn công bố BCTC hợp nhất Q4/2026 (≤ 20 ngày sau quý, TT96/2020)",
+   "impact": "?",
+   "status": "pending",
+   "src": "Quy định công bố thông tin"
+  },
+  {
    "d": "2026-12-01",
    "type": "Luật/Chính sách",
    "t": "TT50/2026/TT-NHNN có hiệu lực: LDR mới, LCR, NSFR thay SMLR",
@@ -36926,14 +36934,6 @@
    "impact": "+",
    "status": "done",
    "src": "Wi MCP ai_news"
-  },
-  {
-   "d": "2026-10-20",
-   "type": "KQKD",
-   "t": "Hạn công bố BCTC hợp nhất Q3/2026 (≤ 20 ngày sau quý, TT96/2020)",
-   "impact": "?",
-   "status": "pending",
-   "src": "Quy định CBTT; ngày công bố thực tế theo TCB"
   },
   {
    "d": "2026-09-10",

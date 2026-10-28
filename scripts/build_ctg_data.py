@@ -108,6 +108,17 @@ def syms(req):
     return [s.strip() for s in str(f.get('symbol') or req.get('symbol') or req.get('codetag') or '').split(',') if s.strip()]
 
 
+def _next_deadline(Q):
+    """Hạn công bố BCTC quý kế tiếp (≤ 20 ngày sau quý theo TT96/2020)."""
+    y, q = Q[-1]['year'], Q[-1]['quarter'] + 1
+    if q > 4:
+        y, q = y + 1, 1
+    m = q * 3 + 1
+    d = f'{y + (m > 12)}-{(m - 1) % 12 + 1:02d}-20'
+    return {'d': d, 'type': 'KQKD', 't': f'Hạn công bố BCTC hợp nhất Q{q}/{y} (≤ 20 ngày sau quý, TT96/2020)', 'impact': '?', 'status': 'pending',
+            'src': 'Quy định công bố thông tin'}
+
+
 def own(req):
     """Lần kéo riêng cho mã này (1–3 mã/lần), không phải bảng toàn ngành."""
     s = syms(req)
@@ -791,10 +802,16 @@ def build(raw):
         if n.get('category_name') == 'Kết quả kinh doanh':
             ev.append({'d': n['publish_date'][:10], 'type': 'KQKD', 't': n['title'].replace(f'{TICKER}: ', ''), 'detail': n['ai_summary'],
                        'impact': '+', 'status': 'done', 'src': 'Wi MCP ai_news'})
+    # KQKD quý mới nhất từ BCTC (nếu chưa có tin KQKD cùng quý)
+    _ql = Q[-1]; _q0 = next((x for x in Q if x['year'] == _ql['year'] - 1 and x['quarter'] == _ql['quarter']), None)
+    _lbl = f"Q{_ql['quarter']}/{_ql['year']}"
+    if not any(e['type'] == 'KQKD' and (_lbl in e['t'] or f"Quý {_ql['quarter']}/{_ql['year']}" in e['t']) for e in ev):
+        _y = (_ql['pbt'] / _q0['pbt'] - 1) * 100 if _q0 and _q0.get('pbt') else None
+        ev.append({'d': qend_of(_ql['year'], _ql['quarter']), 'type': 'KQKD', 't': f"BCTC hợp nhất {_lbl}: LNTT {_ql['pbt']:,.0f} tỷ".replace(',', '.') + (f" ({_y:+.1f}% so cùng kỳ)".replace('.', ',') if _y is not None else ''),
+                   'impact': '+' if _y and _y > 0 else ('−' if _y is not None and _y < 0 else '0'), 'status': 'done', 'src': 'Wi MCP fs_bank'})
     # Mốc sắp tới: chỉ những mốc có nguồn (quy định / CBTT / báo cáo CTCK trên Wi MCP)
     ev += [
-        {'d': '2026-10-20', 'type': 'KQKD', 't': 'Hạn công bố BCTC hợp nhất Q3/2026 (≤ 20 ngày sau quý, TT96/2020)', 'impact': '?', 'status': 'pending',
-         'src': f'Quy định CBTT; ngày công bố thực tế theo {TICKER}'},
+        _next_deadline(Q),
         {'d': '2026-12-01', 'type': 'Luật/Chính sách', 't': 'TT50/2026/TT-NHNN có hiệu lực: LDR mới, LCR, NSFR thay SMLR', 'impact': '?', 'status': 'pending',
          'detail': 'Tiền gửi KBNN mặc định 20% trong LDR theo TT50 (Thống đốc có thể điều chỉnh); liên ngân hàng chỉ tính vị thế ròng.', 'src': 'Deck slide 21, 53; báo cáo TT50 FinSuccess'},
         {'d': '2026-08-01', 'type': 'Luật/Chính sách', 't': 'Hệ số tiền gửi KBNN tính vào LDR nâng lên 50% (từ Q3/2026)', 'impact': '+', 'status': 'done',

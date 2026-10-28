@@ -46860,7 +46860,7 @@
     "npF1": null,
     "thesis": "KQKD đúng lộ trình cùng định giá hấp dẫn",
     "stale": true,
-    "summary": "Yuanta duy trì khuyến nghị Mua đối với cổ phiếu ACB với giá mục tiêu 12 tháng là 31,640 đồng, phản ánh mức tăng giá kỳ vọng 33% và tổng tỷ suất sinh lời 36% dựa trên nền tảng chất lượng tài sản vững mạnh, hiệu quả hoạt động cao cùng định giá hấp dẫn với P/B dự phóng năm 2026 ở mức 1.1x. Động lực tăng trưởng của ngân hàng được thúc đẩy bởi chiến lược mở rộng mảng bảo hiểm phi nhân thọ thông qua ACB Insurance và dư địa gia tăng cho vay trung dài hạn khi tỷ lệ vốn ngắn hạn cho vay trung dài hạn hiện chỉ ở mức 24%. Theo dự báo cho năm 2026, lợi nhuận trước thuế dự kiến đạt 22,338 tỷ đồng, tăng 14% so với cùng kỳ, trong khi cả tín dụng và huy động vốn cùng tăng trưởng 16% với tỷ lệ nợ xấu được kiểm soát chặt chẽ dưới 2%. Kết quả kinh doanh quý 1/2026 đã cho thấy tín hiệu khả quan với lợi nhuận trước thuế đạt 5,400 tỷ đồng, tăng 17% so với cùng kỳ và hoàn thành 24% kế hoạch năm, nổi bật là sự bứt phá 33% từ thu nhập mảng Bancassurance. Song hành với đà tăng trưởng, ACB duy trì chính sách cổ tức ổn định với kế hoạch chi trả 7% tiền mặt và 13% cổ phiếu cho năm 2026, tiếp nối bằng mức 10% tiền mặt và 15% cổ phiếu cho năm tiếp theo. Tuy nhiên, triển vọng này vẫn đối mặt với rủi ro biên lãi thuần (NIM) thu hẹp nhanh hơn dự kiến do áp lực cạnh tranh huy động tiền gửi gay gắt, kết hợp với khẩu vị rủi ro thận trọng có thể hạn chế khả năng đẩy mạnh cho vay vào các lĩnh vực có lợi suất cao như kinh doanh bất động sản để cải thiện biên lợi nhuận."
+    "summary": null
    },
    {
     "broker": "SSV",
@@ -46910,6 +46910,14 @@
  },
  "events": [
   {
+   "d": "2027-01-20",
+   "type": "KQKD",
+   "t": "Hạn công bố BCTC hợp nhất Q4/2026 (≤ 20 ngày sau quý, TT96/2020)",
+   "impact": "?",
+   "status": "pending",
+   "src": "Quy định công bố thông tin"
+  },
+  {
    "d": "2026-12-01",
    "type": "Luật/Chính sách",
    "t": "TT50/2026/TT-NHNN có hiệu lực: LDR mới, LCR, NSFR thay SMLR",
@@ -46919,12 +46927,13 @@
    "src": "Deck slide 21, 53; báo cáo TT50 FinSuccess"
   },
   {
-   "d": "2026-10-20",
+   "d": "2026-10-28",
    "type": "KQKD",
-   "t": "Hạn công bố BCTC hợp nhất Q3/2026 (≤ 20 ngày sau quý, TT96/2020)",
-   "impact": "?",
-   "status": "pending",
-   "src": "Quy định CBTT; ngày công bố thực tế theo ACB"
+   "t": "Kết quả kinh doanh Quý 3/2026",
+   "detail": "Ngân hàng TMCP Á Châu (HOSE: ACB) công bố lợi nhuận sau thuế cổ đông công ty mẹ Quý 3.2026 ổn định đạt 4.699 tỷ đồng (+9.8%YoY). Lũy kế 9 tháng đầu năm 2026, LNST cổ đông công ty mẹ ổn định đạt 13.312 tỷ đồng (+3.7%YoY), hoàn thành 74.5% kế hoạch năm và 74.7% lợi nhuận dự phóng từ các CTCK (Kỳ vọng 2026F: 17.815 tỷ đồng, tăng 14.0%YoY). Về định giá P/E forward ở mức 6.6 lần so với P/E trailing 7.7 lần.",
+   "impact": "+",
+   "status": "done",
+   "src": "Wi MCP ai_news"
   },
   {
    "d": "2026-10-14",
@@ -73161,13 +73170,18 @@
   "risks": [
    [
     "NIM",
-    "NIM thấp nhất nhóm tư nhân lớn; CTCK kỳ vọng phục hồi khi phần lớn dư nợ định giá lại dưới 3 tháng (VPBS 10/2026)",
+    "NIM TTM Q3/2026 2,99% (cùng kỳ 3,18%) khi COF tăng lên 5,02%; CTCK kỳ vọng phục hồi khi phần lớn dư nợ định giá lại dưới 3 tháng (VPBS 10/2026)",
     "Biên lãi"
    ],
    [
-    "Chi phí dự phòng",
-    "Dự phòng tăng mạnh làm lợi nhuận 6T/2026 đi ngang (VDS, SSI 08–09/2026)",
-    "Lợi nhuận"
+    "Chi phí dự phòng và nợ nhóm 2",
+    "Dự phòng Q3/2026 934 tỷ (cùng kỳ 289 tỷ); nợ nhóm 2 0,93% (cùng kỳ 0,47%), NPL 1,19% (BCTC Q3/2026)",
+    "Chất lượng tài sản"
+   ],
+   [
+    "Huy động",
+    "CASA 19,9% (cùng kỳ 22,8%); tín dụng tăng 14,7% YoY, nhanh hơn tiền gửi",
+    "Biên lãi, tỷ lệ an toàn"
    ]
   ]
  },

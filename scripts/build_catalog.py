@@ -246,7 +246,7 @@ def main():
         pr = (X.get('price') or {}).get('series') or []
         rows.append({'k': t, 'n': f'{t.upper()}: BCTC quý, năm, giá điều chỉnh, P/B theo phiên, đồng thuận, sự kiện quyền', 'src': 'Wi MCP fs_bank, fs_bank_notes, ratio_daily, eod_adjust, co_reports, co_events, bank_car_tt41; tài liệu IR',
                      'from': pr[0]['d'] if pr else None, 'to': pr[-1]['d'] if pr else None, 'c': len(pr), 'f': 'Ngày (giá) · Quý (BCTC)'})
-    grp('banks', 'Trang từng ngân hàng (CTG, VCB, BID, TCB, MBB, ACB)', 'index.html, vcb.html, bid.html, tcb.html, mbb.html, acb.html', 'data/<mã>-data.js', 'Wi MCP; tài liệu IR, BCTC của ngân hàng', 'wi',
+    grp('banks', 'Trang từng ngân hàng (CTG, VCB, BID, TCB, MBB, ACB, STB)', 'index.html, vcb.html, bid.html, tcb.html, mbb.html, acb.html, stb.html', 'data/<mã>-data.js', 'Wi MCP; tài liệu IR, BCTC của ngân hàng', 'wi',
         'P/B điều chỉnh theo sự kiện quyền: số cổ phiếu và vốn chủ tại mỗi ngày được tính lại khi có chia cổ tức cổ phiếu, phát hành thêm, phát hành riêng lẻ (cộng tiền thu về vào vốn chủ), cổ tức tiền (trừ vào vốn chủ); giá mục tiêu công bố trước ngày GDKHQ quy về cùng cơ sở: (P − cổ tức tiền + tỷ lệ quyền × giá phát hành) / (1 + tỷ lệ cổ phiếu mới).', rows)
 
     # ---------------- Chỉ số tự tính
