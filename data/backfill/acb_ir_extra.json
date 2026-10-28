@@ -307,6 +307,84 @@
     }
    ],
    "ins": "Giấy tờ có giá (chủ yếu chứng chỉ tiền gửi) lên <b>22%</b> nguồn huy động Q2/2026, từ 10% năm 2023, trong khi tiền gửi cá nhân giảm từ 72% xuống 61%. CASA giữ khoảng 22–23% (Q2/2026: 22%). Nguồn vốn dịch sang giấy tờ có giá đắt hơn tiền gửi không kỳ hạn là một lý do chi phí vốn tăng."
+  },
+  {
+   "id": "chIrLiq",
+   "title": "Các tỷ lệ thanh khoản theo quy định",
+   "sub": "% · riêng lẻ · năm 2022–2024 là cuối năm · ngưỡng NHNN: vốn ngắn hạn cho vay trung dài hạn ≤ 30% (≤ 40% từ Q2/2026), LDR ≤ 85%, dự trữ thanh khoản VND ≥ 10%, khả năng chi trả 30 ngày VND ≥ 50% · Q3/2026 theo slide tài liệu tiếng Anh của ACB",
+   "type": "line",
+   "unit": "%",
+   "labels": [
+    "2022",
+    "2023",
+    "2024",
+    "Q2/2025",
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "LDR (TT22)",
+     "v": [
+      78.4,
+      78.1,
+      78.0,
+      80.2,
+      83.5,
+      79.1,
+      81.0,
+      81.4,
+      79.3
+     ]
+    },
+    {
+     "n": "Vốn ngắn hạn cho vay trung dài hạn",
+     "v": [
+      19.6,
+      17.3,
+      18.8,
+      18.9,
+      21.8,
+      24.4,
+      24.9,
+      29.1,
+      28.2
+     ]
+    },
+    {
+     "n": "Dự trữ thanh khoản (VND)",
+     "v": [
+      16.1,
+      16.7,
+      14.9,
+      11.9,
+      12.1,
+      14.7,
+      11.6,
+      10.6,
+      12.7
+     ]
+    },
+    {
+     "n": "Khả năng chi trả 30 ngày (VND)",
+     "v": [
+      71.9,
+      66.1,
+      61.9,
+      63.4,
+      59.0,
+      64.4,
+      85.1,
+      111.7,
+      129.0
+     ],
+     "axis": "y1"
+    }
+   ],
+   "ins": "Q3/2026: LDR <b>79,3%</b> (trần 85%), giảm từ 81,4% quý trước; dự trữ thanh khoản VND <b>12,7%</b>, cách ngưỡng 10% thêm 2,7 điểm % (Q2/2026 chỉ 0,6 điểm %); khả năng chi trả 30 ngày VND tăng lên 129%. Tỷ lệ vốn ngắn hạn cho vay trung dài hạn 28,2% — vẫn cao gần gấp rưỡi mức 2024 (18,8%) khi cho vay dài hạn tăng nhanh, nhưng còn xa trần 40%."
   }
  ],
  "facts": [
