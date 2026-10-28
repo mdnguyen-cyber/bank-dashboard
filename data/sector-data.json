@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu Wi MCP; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-28T10:46Z"
+  "auto": "2026-10-28T16:30Z"
  },
  "idx": {
   "now": {
@@ -42169,6 +42169,10 @@
     {
      "d": "2026-10-26",
      "v": 4.27
+    },
+    {
+     "d": "2026-10-27",
+     "v": 4.9
     }
    ],
    "1W": [
@@ -47963,6 +47967,10 @@
     {
      "d": "2026-10-26",
      "v": 5.0
+    },
+    {
+     "d": "2026-10-27",
+     "v": 5.57
     }
    ],
    "1M": [
@@ -53757,6 +53765,10 @@
     {
      "d": "2026-10-26",
      "v": 4.83
+    },
+    {
+     "d": "2026-10-27",
+     "v": 5.57
     }
    ],
    "3M": [
@@ -59551,6 +59563,10 @@
     {
      "d": "2026-10-26",
      "v": 7.12
+    },
+    {
+     "d": "2026-10-27",
+     "v": 7.43
     }
    ],
    "6M": [
@@ -65345,6 +65361,10 @@
     {
      "d": "2026-10-26",
      "v": 7.59
+    },
+    {
+     "d": "2026-10-27",
+     "v": 6.13
     }
    ],
    "9M": [
@@ -71139,6 +71159,10 @@
     {
      "d": "2026-10-26",
      "v": 8.7
+    },
+    {
+     "d": "2026-10-27",
+     "v": 8.7
     }
    ]
   },
@@ -71830,6 +71854,10 @@
    {
     "d": "2026-10-27",
     "v": 96358.1
+   },
+   {
+    "d": "2026-10-28",
+    "v": 104408.5
    }
   ],
   "tpOut": [
@@ -74639,6 +74667,10 @@
    },
    {
     "d": "2026-10-27",
+    "v": 0.0
+   },
+   {
+    "d": "2026-10-28",
     "v": 0.0
    }
   ]
@@ -102903,10 +102935,10 @@
    {
     "s": "VCB",
     "group": "Big 4",
-    "price": 56200,
-    "pb": 1.95,
-    "pe": 11.28,
-    "mcap": 469589,
+    "price": 57500,
+    "pb": 2.0,
+    "pe": 11.54,
+    "mcap": 480451,
     "bvps": 28824,
     "nim": 2.81,
     "cof": 2.6,
@@ -102923,17 +102955,17 @@
     "npYoY": 20.16,
     "credit": 1765527.0,
     "ppop": 55974.0,
-    "pppop": 8.38,
+    "pppop": 8.57,
     "provRatio": 8.3,
     "ppopYoY": 24.0
    },
    {
     "s": "BID",
     "group": "Big 4",
-    "price": 33700,
+    "price": 33650,
     "pb": 1.4,
-    "pe": 8.12,
-    "mcap": 262134,
+    "pe": 8.11,
+    "mcap": 261745,
     "bvps": 24106.0,
     "nim": 2.15,
     "cof": 3.6,
@@ -102950,17 +102982,17 @@
     "npYoY": 26.21,
     "credit": 2508616.0,
     "ppop": 64294.0,
-    "pppop": 4.08,
+    "pppop": 4.07,
     "provRatio": 36.8,
     "ppopYoY": 17.9
    },
    {
     "s": "CTG",
     "group": "Big 4",
-    "price": 30350,
-    "pb": 1.21,
-    "pe": 5.87,
-    "mcap": 235727,
+    "price": 30700,
+    "pb": 1.22,
+    "pe": 5.94,
+    "mcap": 238445,
     "bvps": 25071.0,
     "nim": 2.75,
     "cof": 3.49,
@@ -102977,17 +103009,17 @@
     "npYoY": 33.41,
     "credit": 2094806.0,
     "ppop": 69607.0,
-    "pppop": 3.39,
+    "pppop": 3.43,
     "provRatio": 27.6,
     "ppopYoY": 15.0
    },
    {
     "s": "MBB",
     "group": "Tư nhân lớn",
-    "price": 19600,
-    "pb": 1.34,
-    "pe": 6.56,
-    "mcap": 197348,
+    "price": 19700,
+    "pb": 1.35,
+    "pe": 6.59,
+    "mcap": 198355,
     "bvps": 14652.0,
     "nim": 4.03,
     "cof": 3.99,
@@ -103004,17 +103036,17 @@
     "npYoY": 22.67,
     "credit": 1253927.0,
     "ppop": 52240.0,
-    "pppop": 3.78,
+    "pppop": 3.8,
     "provRatio": 26.2,
     "ppopYoY": 18.9
    },
    {
     "s": "TCB",
     "group": "Tư nhân lớn",
-    "price": 33700,
-    "pb": 1.32,
-    "pe": 8.34,
-    "mcap": 238799,
+    "price": 33500,
+    "pb": 1.31,
+    "pe": 8.29,
+    "mcap": 237382,
     "bvps": 25541.0,
     "nim": 3.67,
     "cof": 4.44,
@@ -103031,17 +103063,17 @@
     "npYoY": 30.26,
     "credit": 961233.0,
     "ppop": 39847.0,
-    "pppop": 6.0,
+    "pppop": 5.96,
     "provRatio": 9.8,
     "ppopYoY": 31.2
    },
    {
     "s": "ACB",
     "group": "Tư nhân lớn",
-    "price": 21100,
-    "pb": 1.21,
-    "pe": 7.61,
-    "mcap": 122479,
+    "price": 21350,
+    "pb": 1.22,
+    "pe": 7.7,
+    "mcap": 123930,
     "bvps": 17473.0,
     "nim": 2.99,
     "cof": 5.02,
@@ -103058,17 +103090,17 @@
     "npYoY": -7.41,
     "credit": 768083.0,
     "ppop": 23576.0,
-    "pppop": 5.19,
+    "pppop": 5.25,
     "provRatio": 16.9,
     "ppopYoY": 3.4
    },
    {
     "s": "VPB",
     "group": "Tư nhân lớn",
-    "price": 23050,
-    "pb": 1.25,
-    "pe": 7.4,
-    "mcap": 230490,
+    "price": 23500,
+    "pb": 1.27,
+    "pe": 7.54,
+    "mcap": 234990,
     "bvps": 18557.0,
     "nim": 5.15,
     "cof": 5.74,
@@ -103085,17 +103117,17 @@
     "npYoY": 51.01,
     "credit": 1230425.0,
     "ppop": 66661.0,
-    "pppop": 3.46,
+    "pppop": 3.53,
     "provRatio": 42.6,
     "ppopYoY": 36.1
    },
    {
     "s": "HDB",
     "group": "Tư nhân lớn",
-    "price": 21900,
-    "pb": 1.68,
-    "pe": 7.47,
-    "mcap": 142500,
+    "price": 22850,
+    "pb": 1.75,
+    "pe": 7.79,
+    "mcap": 148682,
     "bvps": 13058.0,
     "nim": 4.21,
     "cof": 5.38,
@@ -103112,17 +103144,17 @@
     "npYoY": 33.66,
     "credit": 686836.0,
     "ppop": 32577.0,
-    "pppop": 4.37,
+    "pppop": 4.56,
     "provRatio": 24.9,
     "ppopYoY": 20.5
    },
    {
     "s": "LPB",
     "group": "Tư nhân lớn",
-    "price": 38550,
-    "pb": 2.55,
-    "pe": 9.53,
-    "mcap": 115160,
+    "price": 38100,
+    "pb": 2.52,
+    "pe": 9.42,
+    "mcap": 113816,
     "bvps": 15140.0,
     "nim": 2.74,
     "cof": 5.6,
@@ -103139,17 +103171,17 @@
     "npYoY": 16.7,
     "credit": 481570.0,
     "ppop": 16392.0,
-    "pppop": 7.03,
+    "pppop": 6.95,
     "provRatio": 14.1,
     "ppopYoY": 15.0
    },
    {
     "s": "SHB",
     "group": "Tư nhân vừa",
-    "price": 10750,
-    "pb": 0.82,
-    "pe": 4.73,
-    "mcap": 57445,
+    "price": 10650,
+    "pb": 0.81,
+    "pe": 4.69,
+    "mcap": 56911,
     "bvps": 13214.0,
     "nim": 2.16,
     "cof": 5.7,
@@ -103166,17 +103198,17 @@
     "npYoY": 10.71,
     "credit": 664280.0,
     "ppop": 23388.0,
-    "pppop": 2.46,
+    "pppop": 2.44,
     "provRatio": 34.9,
     "ppopYoY": -0.9
    },
    {
     "s": "STB",
     "group": "Tư nhân vừa",
-    "price": 67700,
-    "pb": 2.09,
-    "pe": 83.67,
-    "mcap": 127626,
+    "price": 68000,
+    "pb": 2.1,
+    "pe": 84.04,
+    "mcap": 128192,
     "bvps": 32466.0,
     "nim": 2.44,
     "cof": 4.78,
@@ -103193,17 +103225,17 @@
     "npYoY": -87.59,
     "credit": 700347.0,
     "ppop": 21828.0,
-    "pppop": 5.85,
+    "pppop": 5.88,
     "provRatio": 79.7,
     "ppopYoY": 31.1
    },
    {
     "s": "VIB",
     "group": "Tư nhân vừa",
-    "price": 14000,
-    "pb": 1.1,
-    "pe": 7.05,
-    "mcap": 52295,
+    "price": 14150,
+    "pb": 1.11,
+    "pe": 7.13,
+    "mcap": 52855,
     "bvps": 12683.0,
     "nim": 3.06,
     "cof": 4.89,
@@ -103220,17 +103252,17 @@
     "npYoY": -1.52,
     "credit": 397083.0,
     "ppop": 14170.0,
-    "pppop": 3.69,
+    "pppop": 3.73,
     "provRatio": 34.6,
     "ppopYoY": 11.1
    },
    {
     "s": "TPB",
     "group": "Tư nhân vừa",
-    "price": 12700,
-    "pb": 0.9,
-    "pe": 5.35,
-    "mcap": 40515,
+    "price": 13000,
+    "pb": 0.92,
+    "pe": 5.48,
+    "mcap": 41472,
     "bvps": 14080.0,
     "nim": 3.0,
     "cof": 5.2,
@@ -103247,17 +103279,17 @@
     "npYoY": 18.37,
     "credit": 343282.0,
     "ppop": 12765.0,
-    "pppop": 3.17,
+    "pppop": 3.24,
     "provRatio": 25.0,
     "ppopYoY": 12.4
    },
    {
     "s": "MSB",
     "group": "Tư nhân vừa",
-    "price": 15750,
-    "pb": 1.31,
-    "pe": 10.01,
-    "mcap": 58968,
+    "price": 16000,
+    "pb": 1.33,
+    "pe": 10.17,
+    "mcap": 59904,
     "bvps": 11990.0,
     "nim": 3.27,
     "cof": 3.98,
@@ -103274,17 +103306,17 @@
     "npYoY": 15.53,
     "credit": 230796.0,
     "ppop": 9182.0,
-    "pppop": 6.42,
+    "pppop": 6.52,
     "provRatio": 20.4,
     "ppopYoY": 9.5
    },
    {
     "s": "SSB",
     "group": "Tư nhân vừa",
-    "price": 15700,
-    "pb": 1.32,
-    "pe": 18.24,
-    "mcap": 54460,
+    "price": 15850,
+    "pb": 1.33,
+    "pe": 18.41,
+    "mcap": 54980,
     "bvps": 11888.0,
     "nim": 2.4,
     "cof": 5.07,
@@ -103301,17 +103333,17 @@
     "npYoY": -56.47,
     "credit": 266678.0,
     "ppop": 6480.0,
-    "pppop": 8.41,
+    "pppop": 8.49,
     "provRatio": 42.7,
     "ppopYoY": -38.7
    },
    {
     "s": "OCB",
     "group": "Tư nhân vừa",
-    "price": 10850,
-    "pb": 0.9,
-    "pe": 7.32,
-    "mcap": 33228,
+    "price": 10700,
+    "pb": 0.89,
+    "pe": 7.22,
+    "mcap": 32769,
     "bvps": 11999.0,
     "nim": 3.13,
     "cof": 5.54,
@@ -103328,17 +103360,17 @@
     "npYoY": 16.71,
     "credit": 223477.0,
     "ppop": 8347.0,
-    "pppop": 3.98,
+    "pppop": 3.92,
     "provRatio": 32.9,
     "ppopYoY": 29.7
    },
    {
     "s": "EIB",
     "group": "Tư nhân vừa",
-    "price": 16850,
-    "pb": 1.32,
-    "pe": 63.81,
-    "mcap": 31389,
+    "price": 16650,
+    "pb": 1.3,
+    "pe": 63.05,
+    "mcap": 31016,
     "bvps": 12775.0,
     "nim": 2.39,
     "cof": 4.74,
@@ -103355,17 +103387,17 @@
     "npYoY": -85.19,
     "credit": 191030.0,
     "ppop": 2698.0,
-    "pppop": 11.64,
+    "pppop": 11.5,
     "provRatio": 74.0,
     "ppopYoY": -46.0
    },
    {
     "s": "NAB",
     "group": "Tư nhân nhỏ",
-    "price": 12700,
+    "price": 12650,
     "pb": 1.08,
-    "pe": 5.84,
-    "mcap": 27417,
+    "pe": 5.82,
+    "mcap": 27309,
     "bvps": 11712.0,
     "nim": 2.37,
     "cof": 5.3,
@@ -103382,7 +103414,7 @@
     "npYoY": 21.94,
     "credit": 218790.0,
     "ppop": 7406.0,
-    "pppop": 3.7,
+    "pppop": 3.69,
     "provRatio": 20.4,
     "ppopYoY": 26.1
    },
@@ -103416,10 +103448,10 @@
    {
     "s": "KLB",
     "group": "Tư nhân nhỏ",
-    "price": 11100,
-    "pb": 0.92,
-    "pe": 4.17,
-    "mcap": 8314,
+    "price": 10950,
+    "pb": 0.91,
+    "pe": 4.11,
+    "mcap": 8202,
     "bvps": 12046.0,
     "nim": 3.94,
     "cof": 5.96,
@@ -103436,17 +103468,17 @@
     "npYoY": 32.34,
     "credit": 78465.0,
     "ppop": 3224.0,
-    "pppop": 2.58,
+    "pppop": 2.55,
     "provRatio": 20.1,
     "ppopYoY": 30.2
    },
    {
     "s": "VAB",
     "group": "Tư nhân nhỏ",
-    "price": 8950,
+    "price": 9000,
     "pb": 0.74,
-    "pe": 5.62,
-    "mcap": 8074,
+    "pe": 5.65,
+    "mcap": 8119,
     "bvps": 12157.0,
     "nim": 2.54,
     "cof": 5.93,
@@ -103463,17 +103495,17 @@
     "npYoY": 34.44,
     "credit": 96680.0,
     "ppop": 2941.0,
-    "pppop": 2.74,
+    "pppop": 2.76,
     "provRatio": 40.3,
     "ppopYoY": 71.7
    },
    {
     "s": "BVB",
     "group": "Tư nhân nhỏ",
-    "price": 10650,
-    "pb": 1.48,
-    "pe": 13.14,
-    "mcap": 10237,
+    "price": 10600,
+    "pb": 1.47,
+    "pe": 13.08,
+    "mcap": 10189,
     "bvps": 7217.0,
     "nim": 2.64,
     "cof": 5.75,
@@ -103490,7 +103522,7 @@
     "npYoY": 195.04,
     "credit": 83385.0,
     "ppop": 1702.0,
-    "pppop": 6.01,
+    "pppop": 5.98,
     "provRatio": 42.7,
     "ppopYoY": 77.1
    },
@@ -103524,10 +103556,10 @@
    {
     "s": "PGB",
     "group": "Tư nhân nhỏ",
-    "price": 9500,
-    "pb": 0.84,
-    "pe": 9.9,
-    "mcap": 6961,
+    "price": 9700,
+    "pb": 0.86,
+    "pe": 10.11,
+    "mcap": 7108,
     "bvps": 11353.0,
     "nim": 2.42,
     "cof": 4.7,
@@ -103544,7 +103576,7 @@
     "npYoY": 43.22,
     "credit": 50615.0,
     "ppop": 1453.0,
-    "pppop": 4.79,
+    "pppop": 4.89,
     "provRatio": 38.0,
     "ppopYoY": 44.8
    },
@@ -103578,10 +103610,10 @@
    {
     "s": "NVB",
     "group": "Tư nhân nhỏ",
-    "price": 14200,
-    "pb": 3.02,
-    "pe": 156.98,
-    "mcap": 41529,
+    "price": 14700,
+    "pb": 3.13,
+    "pe": 162.51,
+    "mcap": 42991,
     "bvps": 4702.0,
     "nim": 2.04,
     "cof": 5.45,
@@ -103598,7 +103630,7 @@
     "npYoY": -8369550.0,
     "credit": 133527.0,
     "ppop": 1188.0,
-    "pppop": 34.96,
+    "pppop": 36.19,
     "provRatio": 77.6,
     "ppopYoY": null
    }
@@ -139491,7 +139523,7 @@
     "tpMed": 75000.0,
     "tpMin": 65000,
     "tpMax": 81400,
-    "upside": 33.5,
+    "upside": 30.4,
     "np26": 43995.0,
     "peFwd": 10.65,
     "pbTP": 2.6,
@@ -139654,7 +139686,7 @@
     "tpMed": 42600,
     "tpMin": 38839.0,
     "tpMax": 49100,
-    "upside": 26.4,
+    "upside": 26.6,
     "np26": 32516,
     "peFwd": 8.05,
     "pbTP": 1.77,
@@ -139781,7 +139813,7 @@
     "tpMed": 41400.0,
     "tpMin": 36950,
     "tpMax": 48800,
-    "upside": 36.4,
+    "upside": 34.9,
     "np26": 42625,
     "peFwd": 5.53,
     "pbTP": 1.65,
@@ -139944,7 +139976,7 @@
     "tpMed": 25300.0,
     "tpMin": 19575.0,
     "tpMax": 33200,
-    "upside": 29.1,
+    "upside": 28.4,
     "np26": 31673.0,
     "peFwd": 6.25,
     "pbTP": 1.73,
@@ -140152,7 +140184,7 @@
     "tpMed": 39860,
     "tpMin": 33100,
     "tpMax": 48500,
-    "upside": 18.3,
+    "upside": 19.0,
     "np26": 29548.0,
     "peFwd": 8.05,
     "pbTP": 1.56,
@@ -140378,7 +140410,7 @@
     "tpMed": 27000,
     "tpMin": 25000,
     "tpMax": 28300,
-    "upside": 28.0,
+    "upside": 26.5,
     "np26": 17776,
     "peFwd": 6.96,
     "pbTP": 1.55,
@@ -140523,7 +140555,7 @@
     "tpMed": 27900,
     "tpMin": 24602.0,
     "tpMax": 32300,
-    "upside": 21.0,
+    "upside": 18.7,
     "np26": 32724,
     "peFwd": 7.18,
     "pbTP": 1.5,
@@ -140704,7 +140736,7 @@
     "tpMed": 25379.0,
     "tpMin": 23533.0,
     "tpMax": 29501.0,
-    "upside": 15.9,
+    "upside": 11.1,
     "np26": 21576.0,
     "peFwd": 6.89,
     "pbTP": 1.94,
@@ -140941,7 +140973,7 @@
     "tpMed": 52800,
     "tpMin": 52800,
     "tpMax": 52800,
-    "upside": -22.0,
+    "upside": -22.4,
     "np26": 6528.0,
     "peFwd": 19.75,
     "pbTP": 1.63,
@@ -141005,7 +141037,7 @@
     "tpMed": 15428.0,
     "tpMin": 12968.0,
     "tpMax": 16801.0,
-    "upside": 10.2,
+    "upside": 9.0,
     "np26": 8444.0,
     "peFwd": 6.24,
     "pbTP": 1.22,
@@ -141105,7 +141137,7 @@
     "tpMed": 16795.0,
     "tpMin": 16600,
     "tpMax": 17046.0,
-    "upside": 32.2,
+    "upside": 29.2,
     "np26": 8338,
     "peFwd": 4.86,
     "pbTP": 1.19,
@@ -141169,7 +141201,7 @@
     "tpMed": 13665.0,
     "tpMin": 13200,
     "tpMax": 16667.0,
-    "upside": -13.2,
+    "upside": -14.6,
     "np26": 6190,
     "peFwd": 9.53,
     "pbTP": 1.14,
@@ -141279,7 +141311,7 @@
     "tpMed": 11747.0,
     "tpMin": 11300,
     "tpMax": 12194,
-    "upside": 8.3,
+    "upside": 9.8,
     "np26": 4311,
     "peFwd": 7.71,
     "pbTP": 0.98,
@@ -141445,6 +141477,191 @@
    "url": "https://vnexpress.net/tpbank-may-do-trai-nghiem-ngan-hang-so-cho-tung-nhom-doanh-nghiep-5137585.html",
    "sym": [
     "TPB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Cuộc cạnh tranh mới của những chiếc thẻ ngân hàng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/cuoc-canh-tranh-moi-cua-nhung-chiec-the-ngan-hang-188261028211501793.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Ngày 28/10, gửi dưới 1 tỷ đồng kỳ hạn 6 tháng tại MB, VPBank, Techcombank, Sacombank, SHB, HDBank và ACB được hưởng lãi suất bao nhiêu?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngay-28-10-gui-duoi-1-ty-dong-ky-han-6-thang-tai-mb-vpbank-techcombank-sacombank-shb-hdbank-va-acb-duoc-huong-lai-suat-bao-nhieu-188261028170555711.chn",
+   "sym": [
+    "TCB",
+    "ACB",
+    "VPB",
+    "HDB",
+    "SHB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Sovico đề xuất giải pháp đưa cơ hội hợp tác thành giao dịch thực chất tại VIFC-HCMC",
+   "src": "CafeF",
+   "url": "https://cafef.vn/sovico-de-xuat-giai-phap-dua-co-hoi-hop-tac-thanh-giao-dich-thuc-chat-tai-vifc-hcmc-18826102821283462.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Agribank thông báo: Khách hàng chuyển tiền tới Techcombank, ACB, MSB và 9 ngân hàng khác cần lưu ý",
+   "src": "CafeF",
+   "url": "https://cafef.vn/agribank-thong-bao-khach-hang-chuyen-tien-toi-techcombank-acb-msb-va-9-ngan-hang-khac-can-luu-y-188261028210642938.chn",
+   "sym": [
+    "TCB",
+    "ACB",
+    "MSB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Một nhóm cổ đông sở hữu hơn 8,6% vốn tại VIB",
+   "src": "CafeF",
+   "url": "https://cafef.vn/mot-nhom-co-dong-so-huu-hon-86-von-tai-vib-188261028210509683.chn",
+   "sym": [
+    "VIB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "TPBank lãi trước thuế gần 7.500 tỷ đồng sau 9 tháng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/tpbank-lai-truoc-thue-gan-7500-ty-dong-sau-9-thang-188261028192125199.chn",
+   "sym": [
+    "TPB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "VietinBank ra mắt sản phẩm vay thấu chi bảo đảm bằng tiền gửi trực tuyến",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vietinbank-ra-mat-san-pham-vay-thau-chi-bao-dam-bang-tien-gui-truc-tuyen-188261028191841867.chn",
+   "sym": [
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Techcombank và Masterise Group mang hòa nhạc kinh điển Châu Âu - “Four Seasons with Love” trở lại Hà Nội",
+   "src": "CafeF",
+   "url": "https://cafef.vn/techcombank-va-masterise-group-mang-hoa-nhac-kinh-dien-chau-au-four-seasons-with-love-tro-lai-ha-noi-188261028170537593.chn",
+   "sym": [
+    "TCB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Fitch nâng xếp hạng tín nhiệm của Techcombank lên BB, đánh giá cao năng lực kiểm soát rủi ro và khả năng sinh lời",
+   "src": "CafeF",
+   "url": "https://cafef.vn/fitch-nang-xep-hang-tin-nhiem-cua-techcombank-len-bb-danh-gia-cao-nang-luc-kiem-soat-rui-ro-va-kha-nang-sinh-loi-188261028172514705.chn",
+   "sym": [
+    "TCB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "NCB giữ vững đà tăng trưởng, vượt kế hoạch kinh doanh năm 2026 sau 9 tháng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ncb-giu-vung-da-tang-truong-vuot-ke-hoach-kinh-doanh-nam-2026-sau-9-thang-18826102817022184.chn",
+   "sym": [
+    "NVB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "SACOMBANK củng cố nền tảng, hướng tới mục tiêu hoàn thành đề án tái cơ cấu theo kế hoạch",
+   "src": "CafeF",
+   "url": "https://cafef.vn/sacombank-cung-co-nen-tang-huong-toi-muc-tieu-hoan-thanh-de-an-tai-co-cau-theo-ke-hoach-188261028164227332.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Mr Hunter Lê Khắc Ngọ xin định giá lại 143 miếng vàng bị thu giữ",
+   "src": "CafeF",
+   "url": "https://cafef.vn/mr-hunter-le-khac-ngo-xin-dinh-gia-lai-143-mieng-vang-bi-thu-giu-188261028144446063.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Ngân hàng tăng cường kết nối nguồn lực toàn cầu, thúc đẩy ESG và công nghệ tại AEF 2026",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngan-hang-tang-cuong-ket-noi-nguon-luc-toan-cau-thuc-day-esg-va-cong-nghe-tai-aef-2026-188261028140033553.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Thị trường tài chính Việt Nam năm 2027 đối diện áp lực thanh khoản và chất lượng tín dụng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/thi-truong-tai-chinh-viet-nam-nam-2027-doi-dien-ap-luc-thanh-khoan-va-chat-luong-tin-dung-188261028122953447.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "180 cán bộ Ủy ban Chứng khoán từng xin nghỉ việc khi thị trường 'nóng'",
+   "src": "CafeF",
+   "url": "https://cafef.vn/180-can-bo-uy-ban-chung-khoan-tung-xin-nghi-viec-khi-thi-truong-nong-188261028122537844.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "20 năm BIGBANG và vai trò mới của VPBank",
+   "src": "CafeF",
+   "url": "https://cafef.vn/20-nam-bigbang-va-vai-tro-moi-cua-vpbank-188261028113027433.chn",
+   "sym": [
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Sau những concert triệu đô, VPBank đã bỏ túi được điều gì lớn hơn cả triệu lượt tương tác?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/sau-nhung-concert-trieu-do-vpbank-da-bo-tui-duoc-dieu-gi-lon-hon-ca-trieu-luot-tuong-tac-188261028111314129.chn",
+   "sym": [
+    "VPB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "VIB đạt gần 7.600 tỷ đồng lợi nhuận 9 tháng, tiếp tục nâng cao hiệu quả hoạt động",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vib-dat-gan-7600-ty-dong-loi-nhuan-9-thang-tiep-tuc-nang-cao-hieu-qua-hoat-dong-188261028110104805.chn",
+   "sym": [
+    "VIB"
+   ]
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Phó thủ tướng: Trung tâm tài chính phấn đấu có ngân hàng thành viên vào tháng 11",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/pho-thu-tuong-trung-tam-tai-chinh-phan-dau-co-ngan-hang-thanh-vien-vao-thang-11-5138043.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "Nhóm cổ đông nắm hơn 8,6% vốn tại Ngân hàng Quốc tế",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/nhom-co-dong-nam-hon-8-6-von-tai-ngan-hang-quoc-te-5137978.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "10 thành viên Trung tâm tài chính quốc tế TP HCM sẽ huy động 2,7 tỷ USD",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/10-thanh-vien-trung-tam-tai-chinh-quoc-te-tp-hcm-se-huy-dong-2-7-ty-usd-5137827.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-28",
+   "t": "VIB lãi trước thuế gần 7.600 tỷ đồng trong 9 tháng",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/vib-lai-truoc-thue-gan-7-600-ty-dong-trong-9-thang-5137882.html",
+   "sym": [
+    "VIB"
    ]
   },
   {
@@ -143492,339 +143709,6 @@
    "url": "https://dautu.kinhtechungkhoan.vn/toan-canh-cac-chi-dao-dieu-hanh-lai-suat-cua-nhnn-tu-dau-nam-2026-1471701.html",
    "sym": [
     "VPX"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "NHNN sửa quy định về thông tin giám sát QTDND và tài chính vi mô",
-   "src": "Hiệp hội Ngân hàng Việt Nam",
-   "url": "https://vnba.org.vn/vi/nhnn-sua-quy-dinh-ve-thong-tin-giam-sat-qtdnd-va-tai-chinh-vi-mo-23951.htm",
-   "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Ngân hàng có vợ chồng tỷ phú Phạm Nhật Vượng nắm gần 10% vốn tăng mạnh thu nhập nhân viên",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/ngan-hang-co-vo-chong-ty-phu-pham-nhat-vuong-nam-gan-10-von-tang-manh-thu-nhap-nhan-vien-1471670.html",
-   "sym": [
-    "LPB",
-    "VIC"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "PGS.TS. Phùng Thế Đông: Cần phát triển thị trường vốn dài hạn để giảm áp lực cho tín dụng ngân hàng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/pgs-ts-phung-the-dong-can-phat-trien-thi-truong-von-dai-han-de-giam-ap-luc-cho-tin-dung-ngan-hang-1471667.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Phó Thống đốc: AI phải tạo giá trị thực chất thay vì chỉ tạo ấn tượng về công nghệ",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/pho-thong-doc-ai-phai-tao-gia-tri-thuc-chat-thay-vi-chi-tao-an-tuong-ve-cong-nghe-d152464.html",
-   "sym": [
-    "TPB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Chuyển đổi số ngành Ngân hàng: Lấy AI thực chất làm động lực, lấy niềm tin và khả năng chống chịu làm nền tảng",
-   "src": "Hiệp hội Ngân hàng Việt Nam",
-   "url": "https://vnba.org.vn/vi/chuyen-doi-so-nganh-ngan-hang--lay-ai-thuc-chat-lam-dong-luc--lay-niem-tin-va-kha-nang-chong-chiu-lam-nen-tang-23982.htm",
-   "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Chưa dứt cơn khát vốn: Ngân hàng giảm lãi suất tiết kiệm, tăng lãi chứng chỉ tiền gửi",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/chua-dut-con-khat-von-ngan-hang-giam-lai-suat-tiet-kiem-tang-lai-chung-chi-tien-gui-d152449.html",
-   "sym": [
-    "ABB",
-    "BAB",
-    "BVB",
-    "HDB",
-    "KLB",
-    "LPB",
-    "MBB",
-    "NAB",
-    "NVB",
-    "OCB",
-    "SGB",
-    "SSI",
-    "STB",
-    "TCB",
-    "TPB",
-    "VBB",
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Agribank Chi nhánh Bắc Giang ký kết hợp tác toàn diện với Công ty cổ phần Đầu tư Minh Hùng",
-   "src": "Báo Bắc Ninh",
-   "url": "https://baobacninhtv.vn/agribank-chi-nhanh-bac-giang-ky-ket-hop-tac-toan-dien-voi-cong-ty-co-phan-dau-tu-minh-hung-postid456835.bbg",
-   "sym": []
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Ngân hàng tư nhân đầu tiên có vốn chủ sở hữu vượt 200.000 tỷ",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/ngan-hang-tu-nhan-dau-tien-co-von-chu-so-huu-vuot-200000-ty-d152466.html",
-   "sym": [
-    "VPB",
-    "CTG",
-    "TCB",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Chưa cần thêm room tín dụng, Tổng Giám đốc Techcombank hé lộ chiến lược rót vốn vào hạ tầng quốc gia",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/chua-can-them-room-tin-dung-tong-giam-doc-techcombank-he-lo-chien-luoc-rot-von-vao-ha-tang-quoc-gia-1471639.html",
-   "sym": [
-    "TCB",
-    "VCI"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "TS. Cấn Văn Lực: Thị trường vốn cần chiếm ít nhất 30% để giảm phụ thuộc vào ngân hàng",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/ts-can-van-luc-thi-truong-von-can-chiem-it-nhat-30-de-giam-phu-thuoc-vao-ngan-hang-1471637.html",
-   "sym": [
-    "BID",
-    "DTR",
-    "MBB",
-    "OCB",
-    "PLX",
-    "TCB",
-    "VCG"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "LPBank lãi hơn 10.400 tỷ đồng, doanh thu từ bảo hiểm tăng vọt 163%",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/lpbank-lai-hon-10400-ty-dong-doanh-thu-tu-bao-hiem-tang-vot-163-d152444.html",
-   "sym": [
-    "LPB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "4 ngày 2 công văn: NHNN yêu cầu các nhà băng giảm lãi suất",
-   "src": "Nhà Đầu Tư",
-   "url": "https://nhadautu.vn/4-ngay-2-cong-van-nhnn-yeu-cau-cac-nha-bang-giam-lai-suat-d108419.html",
-   "sym": [
-    "ACB",
-    "BAB",
-    "BVB",
-    "KLB",
-    "LPB",
-    "NAB",
-    "NVB",
-    "OCB",
-    "PGB",
-    "SSB",
-    "STB",
-    "TPB",
-    "VBB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Cập nhật số liệu CTCK quý 3/2026: Loạt tên tuổi lớn báo lãi \"đi lùi\", xuất hiện hai khoản lỗ hàng trăm tỷ của ngành chứng khoán",
-   "src": "MarketTimes",
-   "url": "https://markettimes.vn/cap-nhat-so-lieu-ctck-quy-3-2026-loat-ten-tuoi-lon-bao-lai-di-lui-xuat-hien-hai-khoan-lo-hang-tram-ty-cua-nganh-chung-khoan-133311.html",
-   "sym": [
-    "ACB",
-    "BID",
-    "EVS",
-    "HCM",
-    "KAI",
-    "LPB",
-    "MBS",
-    "OCB",
-    "ORS",
-    "SHS",
-    "SSI",
-    "STB",
-    "TCX",
-    "VCB",
-    "VCI",
-    "VCK",
-    "VDS",
-    "VIX",
-    "VND",
-    "VPB",
-    "VPX",
-    "BSI",
-    "CSI",
-    "VUA"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Hai cổ phiếu ngân hàng được tự doanh CTCK '\"gom\" mạnh phiên tăng điểm",
-   "src": "MarketTimes",
-   "url": "https://markettimes.vn/hai-co-phieu-ngan-hang-duoc-tu-doanh-ctck-gom-manh-phien-tang-diem-133310.html",
-   "sym": [
-    "FPT",
-    "FRT",
-    "GAS",
-    "HDB",
-    "KDH",
-    "MBB",
-    "MCH",
-    "MSN",
-    "MWG",
-    "SSI",
-    "STB",
-    "TCB",
-    "VCB",
-    "VHM",
-    "VIC",
-    "VPB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Tự doanh xả hơn trăm tỷ một cổ phiếu ngân hàng",
-   "src": "Dòng vốn kinh doanh",
-   "url": "https://dongvon.doanhnhanvn.vn/tu-doanh-xa-hon-tram-ty-mot-co-phieu-ngan-hang-422026102219252176.htm",
-   "sym": [
-    "HDB",
-    "MSN",
-    "ORS",
-    "VCB",
-    "ACB",
-    "BID",
-    "CII",
-    "DCM",
-    "FPT",
-    "FRT",
-    "GAS",
-    "HPG",
-    "KDH",
-    "MSB",
-    "MWG",
-    "PVD",
-    "SSI",
-    "STB",
-    "TCB",
-    "VHM",
-    "VIC",
-    "VPB",
-    "GEE",
-    "GMD",
-    "LPB",
-    "NKG"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "CII gia hạn phân phối lô trái phiếu chuyển đổi gần 6.720 tỷ đồng",
-   "src": "vietnambiz",
-   "url": "https://vietnambiz.vn/cii-gia-han-phan-phoi-lo-trai-phieu-chuyen-doi-gan-6720-ty-dong-2026102215621255.htm",
-   "sym": [
-    "CII",
-    "VCI"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "CII tiếp tục tìm nhà đầu tư cho lô trái phiếu 6.720 tỷ đồng, lãi suất 14,5%/năm",
-   "src": "cafef",
-   "url": "https://cafef.vn/cii-tiep-tuc-tim-nha-dau-tu-cho-lo-trai-phieu-6720-ty-dong-lai-suat-145-nam-188261022111737445.chn",
-   "sym": [
-    "CII",
-    "VCI"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Cho vay margin \"gánh\" doanh thu TCBS, chi phí lãi vay tăng mạnh",
-   "src": "Người Đưa Tin",
-   "url": "https://www.nguoiduatin.vn/cho-vay-margin-ganh-doanh-thu-tcbs-chi-phi-lai-vay-tang-manh-204261022170923805.htm",
-   "sym": [
-    "TCB",
-    "TCX"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "DN cơ điện gắn với tên tuổi nữ tướng Mai Thanh muốn lập công ty tài chính tại VIFC",
-   "src": "vietnamfinance",
-   "url": "https://vietnamfinance.vn/dn-co-dien-gan-voi-ten-tuoi-nu-tuong-mai-thanh-muon-lap-cong-ty-tai-chinh-tai-vifc-d152479.html",
-   "sym": [
-    "REE",
-    "HCM",
-    "HDB",
-    "LPB",
-    "MBB",
-    "MSB",
-    "NAB",
-    "SHB",
-    "TPB",
-    "VCB"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Toàn cảnh các chỉ đạo điều hành lãi suất của NHNN từ đầu năm 2026",
-   "src": "Kiến thức Đầu tư - Tạp chí Kinh tế Chứng khoán Việt Nam",
-   "url": "https://dautu.kinhtechungkhoan.vn/toan-canh-cac-chi-dao-dieu-hanh-lai-suat-cua-nhnn-tu-dau-nam-2026-1471701.html",
-   "sym": [
-    "VPX"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Cổ phiếu Novaland: Vợ nhà sáng lập muốn hạ sở hữu, cổ đông lớn tranh thủ gom thêm",
-   "src": "Người Đưa Tin",
-   "url": "https://www.nguoiduatin.vn/co-phieu-novaland-vo-nha-sang-lap-muon-ha-so-huu-co-dong-lon-tranh-thu-gom-them-204261022144551984.htm",
-   "sym": [
-    "NVL",
-    "SSI"
-   ]
-  },
-  {
-   "d": "2026-10-22",
-   "t": "Khối ngoại liên tục mua ròng, hai cổ phiếu 'họ Vin' hút 400 tỷ đồng",
-   "src": "Dòng vốn kinh doanh",
-   "url": "https://dongvon.doanhnhanvn.vn/khoi-ngoai-lien-tuc-mua-rong-hai-co-phieu-ho-vin-hut-400-ty-dong-422026102215360542.htm",
-   "sym": [
-    "MSN",
-    "ACB",
-    "ACV",
-    "BID",
-    "CII",
-    "DCM",
-    "FPT",
-    "HPG",
-    "MBS",
-    "MSB",
-    "MSR",
-    "PVD",
-    "PVS",
-    "SHS",
-    "STB",
-    "TCB",
-    "VCB",
-    "VHM",
-    "VIC",
-    "DRI",
-    "FOC",
-    "GCF",
-    "GEE",
-    "GMD",
-    "HUT",
-    "LPB",
-    "NVB",
-    "SBS",
-    "VTK"
    ]
   }
  ],
