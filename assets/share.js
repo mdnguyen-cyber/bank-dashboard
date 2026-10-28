@@ -284,7 +284,7 @@
   const M = document.createElement('div'); M.className = 'fss-modal'; M.hidden = true; M.setAttribute('role', 'dialog'); M.setAttribute('aria-modal', 'true'); M.setAttribute('aria-label', 'Chia sẻ ảnh');
   M.innerHTML = `<div class="fss-box"><div class="fss-hd"><b>⇪ Chia sẻ ảnh</b><button type="button" class="fss-x" aria-label="Đóng">×</button></div>
     <div class="fss-body"><div class="fss-left">
-      <div class="fss-tools">${TOOLS.map(([k, i, l]) => `<button type="button" data-tool="${k}" title="${l}"><span>${i}</span>${l}</button>`).join('')}
+      <div class="fss-tools">${TOOLS.map(([k, i, l]) => k === 'none' ? `<button type="button" data-tool="none" class="fss-ptr" title="Chọn (Esc)" aria-label="Chọn"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 3l13 8.2-6 1.2 3.6 7-2.6 1.3-3.6-7L5 18z" fill="currentColor"/></svg></button>` : `<button type="button" data-tool="${k}" title="${l}"><span>${i}</span>${l}</button>`).join('')}
         <span class="fss-sep"></span>${SW.map(([k, l]) => `<button type="button" class="fss-sw" data-c="${k}" title="${l}" style="background:${FIN[k]}"></button>`).join('')}
         <span class="fss-sep"></span><button type="button" data-act="dash" class="fss-dash" title="Nét đứt cho mũi tên, khung, vòng (áp dụng cả hình đang chọn)"><span>┄</span>Nét đứt</button>
         <span class="fss-sep"></span><button type="button" data-act="del" class="fss-del" title="Xóa hình đang chọn (Delete)" disabled>🗑 Xóa hình</button><button type="button" data-act="undo" title="Hoàn tác (Ctrl+Z)">↶ Hoàn tác</button><button type="button" data-act="clear" title="Xóa hết hình vẽ">Xóa vẽ</button></div>
@@ -487,7 +487,7 @@
   M.querySelector('.fss-key').addEventListener('input', e => { clearTimeout(keyT); keyT = setTimeout(() => { st.key = e.target.value.trim(); M.querySelector('.fss-cap').value = caption(); build(); }, 450); });
   document.addEventListener('keydown', e => {
     if (M.hidden || !MX.hidden) return; const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
-    if (e.key === 'Escape' && M.querySelector('.fss-txt').hidden) { if (!PK.hidden) PK.hidden = true; else if (st.sel >= 0) { st.sel = -1; render(); } else close(); }
+    if (e.key === 'Escape' && M.querySelector('.fss-txt').hidden) { if (!PK.hidden) PK.hidden = true; else if (st.sel >= 0) { st.sel = -1; render(); } else if (st.tool !== 'none') { st.tool = 'none'; syncUi(); render(); } else close(); }
     if ((e.key === 'Delete' || e.key === 'Backspace') && !typing && st.sel >= 0) { e.preventDefault(); act('del'); }
     if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !typing) { e.preventDefault(); act('undo'); }
   });

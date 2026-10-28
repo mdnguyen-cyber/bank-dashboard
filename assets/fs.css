@@ -810,3 +810,5 @@ body.fsx-open{overflow:hidden}
 .cpick input{border:1px solid var(--line);border-radius:7px;padding:1px 6px;font:600 11.5px Arial,sans-serif;color:var(--navy);background:#fff;height:22px}
 .cp-chips{display:inline-flex;flex-wrap:wrap;gap:4px}.cp-chips button{border:1px solid;background:#fff;border-radius:99px;padding:1px 8px;font:700 11px Arial,sans-serif;cursor:pointer}
 body.print-all .cpick,body.pdf-cap .cpick{display:none!important}
+
+.fss-tools .fss-ptr{width:32px;justify-content:center;padding:5px 0}
