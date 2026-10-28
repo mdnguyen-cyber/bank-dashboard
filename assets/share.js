@@ -572,7 +572,7 @@
     if (opt.size) {   // đúng kích thước chart khi ghép ảnh (cùng tỷ lệ, cùng cỡ chữ); màn hình nhỏ hơn thì thu theo tỷ lệ
       tbox.classList.add('fsx-target'); const rg = tbox.previousElementSibling; if (rg && rg.classList.contains('rng')) rg.classList.add('fsx-target');
       // chỉ giữ tên chart, nút điều khiển và đúng chart này (ẩn bảng, nhận định, chart khác trong cùng thẻ)
-      const KEEP = 'h3.sub,.chart-sub,.ctl,.picker,.mode-sw,.tf,.tsw,[data-ctl],.lgall,.fsx-target';
+      const KEEP = 'h3.sub,.chart-sub,.ctl,.picker,.mode-sw,.tf,.tsw,[data-ctl],.lgall,.cpick,.fsx-target';
       for (let el = tbox; el && el !== card; el = el.parentElement) [...el.parentElement.children].forEach(sib => {
         if (sib === el || sib.contains(tbox) || sib.matches(KEEP) || sib.querySelector('.fsx-target') || sib.style.display === 'none') return;
         if (sib.matches('.chart-sub') && sib.nextElementSibling && !sib.nextElementSibling.contains(tbox) && !sib.nextElementSibling.classList.contains('fsx-target')) { hid.push([sib, sib.style.display]); sib.style.display = 'none'; return; }

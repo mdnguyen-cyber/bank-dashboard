@@ -1,0 +1,21 @@
+name: Dò lịch sử hợp đồng SOFR (thủ công)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/probe_ois.py
+      - run: |
+          git config user.name "fs-data-bot"
+          git config user.email "fs-data-bot@users.noreply.github.com"
+          git add -A data/probe
+          git diff --cached --quiet && exit 0
+          git commit -m "Dò lịch sử hợp đồng SOFR (tự động)"
+          for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
