@@ -336,6 +336,17 @@ def extend(out, allsym):
     for c in co.values():
         if '_rz' in c:
             c['rz'] = [[q] + v for q, v in sorted(c.pop('_rz').items())]
+    # Bảo hiểm: bảng cân đối chi tiết (cho waterfall tài sản / nguồn vốn)
+    BSW = ['bs110', 'bs120', 'bs130', 'bs190', 'bs210', 'bs220', 'bsx10', 'bs250', 'bs270', 'bs300', 'bs311', 'bs312_1', 'bs329', 'bs334', 'bs400']
+    for req, rows2 in pick_all('fs_ins', lambda f: True):
+        if 'bs329' not in (req.get('columns') or ''):
+            continue
+        for r in rows2:
+            if r.get('symbol') in co and r.get('bs270'):
+                co[r['symbol']].setdefault('_bsw', {})[f"{r['year']}Q{r['quarter']}"] = {k: ty(r.get(k)) for k in BSW}
+    for c in co.values():
+        if '_bsw' in c:
+            b = c.pop('_bsw'); c['bsw'] = [[q, b[q]] for q in sorted(b)]
     out['co'] = co
     return out
 

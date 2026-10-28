@@ -1338,6 +1338,45 @@ function drawGov() {
 
 /* ---------------- TAB 2 · TÀI CHÍNH ---------------- */
 let pct100 = {};
+/* waterfall cơ cấu bảng cân đối (như trang ngân hàng): % tổng, tooltip ghi tỷ đồng */
+const WF_COL = [C.grey, C.gold, C.tealInk, C.navy, C.teal, C.purple, '#b9c0cf'];
+function wfParts() {   // [tài sản], [nguồn vốn], tổng, kỳ — số tỷ đồng, kỳ BCTC mới nhất
+  const A = QS(), rq = last(A); if (!rq) return null;
+  if (!IS_INS) {
+    const v = k => sv(rq, k) || 0, ta = v('bs270'); if (!ta) return null;
+    const a = [['Tiền', v('bs111')], ['FVTPL', v('bs112')], ['HTM', v('bs113')], ['Cho vay ký quỹ & ứng trước', v('bs114')], ['AFS', v('bs115')]];
+    a.push(['Phải thu & tài sản khác', ta - a.reduce((x, p) => x + p[1], 0)]);
+    const bonds = v('bs316') + v('bs346'), l = [['Vay ngắn hạn', v('bs311')], ['Trái phiếu phát hành', bonds], ['Nợ khác', ta - v('bs400') - v('bs311') - bonds], ['Vốn chủ sở hữu', v('bs400')]];
+    return { a, l, ta, q: rq[0] };
+  }
+  const B = X.bsw && X.bsw.length ? X.bsw[X.bsw.length - 1] : null; if (!B) return null;
+  const b = B[1], v = k => b[k] || 0, ta = v('bs270'); if (!ta) return null;
+  const a = [['Tiền', v('bs110')], ['Đầu tư tài chính ngắn hạn', v('bs120')], ['Phải thu', v('bs130') + v('bs210')], ['Tài sản tái bảo hiểm', v('bs190')], ['Đầu tư tài chính dài hạn', v('bs250')], ['TSCĐ & BĐS đầu tư', v('bs220') + v('bsx10')]];
+  a.push(['Tài sản khác', ta - a.reduce((x, p) => x + p[1], 0)]);
+  const debt = v('bs311') + v('bs334'), l = [['Dự phòng nghiệp vụ', v('bs329')], ['Phải trả hoạt động bảo hiểm', v('bs312_1')], ['Vay', debt], ['Nợ khác', v('bs300') - v('bs329') - v('bs312_1') - debt], ['Vốn chủ sở hữu', v('bs400')]];
+  return { a: a.filter(p => Math.abs(p[1]) > ta * 0.001), l: l.filter(p => Math.abs(p[1]) > ta * 0.001), ta, q: B[0] };
+}
+function wfCards() {
+  const W0 = wfParts(); if (!W0) return '';
+  const sh = (arr, n) => (arr.find(p => p[0] === n) || [0, 0])[1] / W0.ta * 100;
+  const top = arr => arr.slice().filter(p => p[0] !== 'Vốn chủ sở hữu').sort((x, y) => y[1] - x[1]).slice(0, 2).map(p => `${/^[A-Z]{2,}/.test(p[0]) ? p[0] : p[0][0].toLowerCase() + p[0].slice(1)} <b>${nf(p[1] / W0.ta * 100, 1)}%</b>`).join(', ');
+  const insA = `${qLbl(W0.q)}: tổng tài sản ${nf(W0.ta / 1000, 1)} nghìn tỷ; lớn nhất là ${top(W0.a)}.`;
+  const insL = IS_INS ? `Dự phòng nghiệp vụ chiếm <b>${nf(sh(W0.l, 'Dự phòng nghiệp vụ'), 1)}%</b> nguồn vốn — tiền thu phí trước, chi bồi thường sau là nguồn vốn chính để đầu tư; vốn chủ ${nf(sh(W0.l, 'Vốn chủ sở hữu'), 1)}%.`
+    : `Nợ vay (vay ngắn hạn và trái phiếu) chiếm <b>${nf(sh(W0.l, 'Vay ngắn hạn') + sh(W0.l, 'Trái phiếu phát hành'), 1)}%</b> nguồn vốn, vốn chủ ${nf(sh(W0.l, 'Vốn chủ sở hữu'), 1)}%.`;
+  return card({ id: 'dnWfA', title: `Cơ cấu tài sản ${qLbl(W0.q)}`, sub: '% tổng tài sản · rê chuột xem tỷ đồng', ins: insA, src: WI + ' (BCTC hợp nhất)' })
+    + card({ id: 'dnWfL', title: `Cơ cấu nguồn vốn ${qLbl(W0.q)}`, sub: '% tổng nguồn vốn · rê chuột xem tỷ đồng', ins: insL, src: WI + ' (BCTC hợp nhất)' });
+}
+function wfDraw() {
+  const W0 = wfParts(); if (!W0) return;
+  const one = (id, parts, tl) => {
+    let acc = 0; const P = parts.map(([l, v]) => [l, v / W0.ta * 100, v]), data = P.map(([, p]) => { const r = [acc, acc + p]; acc += p; return r; }), tyv = P.map(p => p[2]).concat([W0.ta]);
+    mk(id, { type: 'bar', data: { labels: parts.map(p => p[0]).concat([tl]), datasets: [{ label: '% tổng', data: data.concat([[0, 100]]), backgroundColor: parts.map((_, i) => WF_COL[i % WF_COL.length]).concat([C.navy]), dp: 1 }] },
+      options: { layout: { padding: { top: 18 } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${nf(c.raw[1] - c.raw[0], 1)}% · ${nf(tyv[c.dataIndex])} tỷ đồng` } } },
+        scales: { y: { min: 0, max: 100, ticks: { callback: v => v + '%' } }, x: { grid: { display: false }, ticks: { autoSkip: false, maxRotation: 0, callback: function (v) { const l = this.getLabelForValue(v); if (l.length <= 12) return l; const w = l.split(' '), h = Math.ceil(w.length / 2); return [w.slice(0, h).join(' '), w.slice(h).join(' ')]; } } } } },
+      plugins: [{ id: 'wfLabels', afterDatasetsDraw(ch) { const ctx = ch.ctx; ch.getDatasetMeta(0).data.forEach((b, i) => { const r = ch.data.datasets[0].data[i]; ctx.save(); ctx.fillStyle = '#303540'; ctx.font = '600 11px Arial'; ctx.textAlign = 'center'; ctx.fillText(nf(r[1] - r[0], 1) + '%', b.x, Math.min(b.y, b.base) - 4); ctx.restore(); }); } }] });
+  };
+  one('dnWfA', W0.a, 'Tổng tài sản'); one('dnWfL', W0.l, 'Tổng nguồn vốn');
+}
 function stackCard(id, title, sub, ins, src) { return card({ id, title, sub: sub + ' · bấm nút để xem tỷ trọng', ins, src, body: `<div class="picker" data-pct="${id}"><button type="button" data-m="abs" class="on">Giá trị</button><button type="button" data-m="pct">100% tỷ trọng</button></div>` }); }
 function stackDraw(id, labels, sets, unit) {   // cột chồng có chế độ 100%
   const draw = m => { const tot = labels.map((_, i) => sets.reduce((a, s) => a + Math.max(0, s.data[i] || 0), 0));
@@ -1361,6 +1400,7 @@ function dnFin() {
     const yldT = (() => { const a = ttm(A, q, x => sv(x, 'is03')), b = avgBal(A, q, x => sv(x, 'bs114')); return a != null && b ? a / b : null; })();
     html = `${sec(1, 'Bảng cân đối')}
     <div class="grid g2 gap">
+      ${wfCards()}
       ${stackCard('dnA', 'Tài sản theo quý', 'nghìn tỷ đồng · cột chồng', `${qLbl(q)}: tổng tài sản ${nf(sv(rq, 'bs270') / 1000, 1)} nghìn tỷ; cho vay ${pc(sv(rq, 'bs114') / sv(rq, 'bs270'), 0)}, FVTPL ${pc(sv(rq, 'bs112') / sv(rq, 'bs270'), 0)}, HTM + AFS ${pc(((sv(rq, 'bs113') || 0) + (sv(rq, 'bs115') || 0)) / sv(rq, 'bs270'), 0)} tổng tài sản.`, WI + ' (BCTC hợp nhất)')}
       ${stackCard('dnL', 'Nguồn vốn theo quý', 'nghìn tỷ đồng · cột chồng', `Vay và trái phiếu phát hành ${nf(debt / 1000, 1)} nghìn tỷ, bằng ${pc(debt / eq, 0)} vốn chủ (cùng kỳ ${pc(debtOf(rq0) / sv(rq0, 'bs400'), 0)}).`, WI + ' (BCTC hợp nhất)')}
       ${card({ id: 'dnMg', title: 'Cho vay ký quỹ và ứng trước', sub: 'nghìn tỷ đồng · đường: cho vay / VCSH (trục phải), vạch đỏ: trần 200%', ins: `${mg ? `Dư nợ ký quỹ ${nf(mg / 1000, 1)} nghìn tỷ, bằng ${pc(mg / eq, 0)} vốn chủ. ` : ''}${sv(rq, 'bs114') / eq > 1.7 ? 'Cho vay đã từ 170% vốn chủ: dư nợ năm sau chỉ tăng theo mức tăng vốn chủ.' : 'Còn dư địa mở rộng cho vay trước trần 200% vốn chủ.'}`, src: WI + ' (thuyết minh cho vay)' })}
@@ -1387,6 +1427,7 @@ function dnFin() {
     const invY = (() => { const p = ttm(A, q, x => iv(x, 'is25')), a = avgBal(A, q, x => (iv(x, 'bs120') || 0) + (iv(x, 'bs250') || 0)); return p != null && a ? p / a : null; })();
     html = `${sec(1, 'Bảng cân đối')}
     <div class="grid g2 gap">
+      ${wfCards()}
       ${stackCard('dnA', 'Tài sản theo quý', 'nghìn tỷ đồng · cột chồng', `${qLbl(q)}: đầu tư tài chính ${nf(((iv(rq, 'bs120') || 0) + (iv(rq, 'bs250') || 0)) / 1000, 1)} nghìn tỷ, bằng ${nf(m.invEq, 2)} lần vốn chủ.`, WI + ' (BCTC hợp nhất)')}
       ${stackCard('dnL', 'Nguồn vốn theo quý', 'nghìn tỷ đồng · cột chồng', `Nợ phải trả, chủ yếu dự phòng nghiệp vụ, bằng ${pc(1 - iv(rq, 'bs400') / iv(rq, 'bs270'), 0)} tổng nguồn vốn.`, WI + ' (BCTC hợp nhất)')}
       ${X.inv ? stackCard('dnInv', 'Cơ cấu danh mục đầu tư', 'nghìn tỷ đồng · cuối quý', 'Tiền gửi và trái phiếu chiếm phần lớn danh mục, nên lợi suất đầu tư đi theo lãi suất huy động và lợi suất trái phiếu với độ trễ.', WI + ' (thuyết minh đầu tư tài chính)') : ''}
@@ -1417,6 +1458,7 @@ function dnPlanIns() {
   return done.slice(0, 4).map(d => `${d.y}: <b>${pc(d.r, 0)}</b> kế hoạch${d.n < 4 ? ` (${d.n} quý)` : ''}`).join(' · ') + '.';
 }
 function dnFinDraw(A, R, L, years, cy, P) {
+  wfDraw();
   const st = { x: { stacked: true, grid: { display: false } }, y: yNum('nghìn tỷ đồng', { stacked: true }) };
   const tyy = (r, k) => { const v = qv(r, k); return v == null ? null : v / 1000; };
   const yr = (y, f) => A.filter(r => r[0].startsWith(y)).reduce((a, r) => a + (f(r) || 0), 0), nQ = y => A.filter(r => r[0].startsWith(y)).length;

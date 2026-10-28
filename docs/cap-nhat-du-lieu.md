@@ -95,3 +95,8 @@ Khi ACB đăng "Tài liệu NĐT" quý mới (acb.com.vn › Nhà đầu tư ›
 - `data/backfill/acb_ir_segments.json`: cho vay hợp nhất theo phân khúc (Cá nhân, SME, MMLC, Công ty con = tổng dư nợ × tỷ trọng); tiền gửi riêng lẻ theo phân khúc (tới Q3/2025).
 - `data/backfill/acb_ir_extra.json`: cho vay cá nhân theo mục đích, doanh nghiệp theo ngành, NIM quý / 12 tháng, lợi tức tài sản, chi phí vốn, nợ xấu ACB và chênh lệch CIC, huy động gồm giấy tờ có giá, các chỉ tiêu khác; sửa lời đọc (`ins`) theo số mới.
 Tài liệu 2024 và 1Q25 là ảnh (không có lớp chữ) — phải xem ảnh slide. Sau đó `python3 scripts/build_ctg_data.py --ticker ACB`.
+
+## Bảng cân đối chi tiết doanh nghiệp bảo hiểm (waterfall trang BH)
+Mỗi quý, sau khi các DN bảo hiểm công bố BCTC: `wi_data_companies get_data fs_ins` với `filters={"symbol":"BVH,PVI,MIG,BMI,BIC,PTI","year":"<năm trước>,<năm nay>","quarter":"1,2,3,4","consolidation_id":"2"}`,
+`columns=symbol,year,quarter,bs110,bs120,bs130,bs190,bs210,bs220,bsx10,bs250,bs270,bs311,bs312_1,bs329,bs334,bs300,bs400` → lưu raw (wi_capture_transcript.py) → `python3 scripts/fin_wi_backfill.py && python3 scripts/build_fin_data.py`.
+CTCK dùng các cột bảng cân đối đã có trong `fs_sec` (bs111–bs115, bs270, bs311, bs316, bs346, bs400).

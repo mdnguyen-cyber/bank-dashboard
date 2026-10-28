@@ -23,7 +23,7 @@
       if (c.querySelector(':scope > .ibar .sharepill, :scope > .sharerow')) return;
       const cv = [...c.querySelectorAll('canvas')].find(x => window.Chart && Chart.getChart(x)); if (!cv) return;
       const b = document.createElement('button'); b.type = 'button'; b.className = 'sharepill'; b.innerHTML = '⇪ Chia sẻ ảnh'; b.title = 'Chia sẻ ảnh chart này';
-      b.onclick = e => { e.stopPropagation(); open([c]); };
+      b.onclick = e => { e.stopPropagation(); if (mxs) maxClose(false); open([c]); };
       const z = document.createElement('button'); z.type = 'button'; z.className = 'sharepill fsx-zoom'; z.textContent = '⤢'; z.title = 'Phóng to'; z.setAttribute('aria-label', 'Phóng to');
       z.onclick = e => { e.stopPropagation(); maxOpen(c); };
       const g = document.createElement('button'); g.type = 'button'; g.className = 'sharepill fss-add'; g.textContent = '＋ Ghép'; g.title = 'Chọn chart này để ghép nhiều chart vào một ảnh';
@@ -553,7 +553,7 @@
   /* ---------- phóng to chart (trên trang) và chỉnh chart trong ảnh (đúng tỷ lệ, cỡ chữ như ảnh xuất) ---------- */
   const MX = document.createElement('div'); MX.className = 'fsx'; MX.hidden = true; MX.setAttribute('role', 'dialog'); MX.setAttribute('aria-modal', 'true');
   MX.innerHTML = `<div class="fsx-box"><div class="fsx-hd"><div class="fsx-tt"><b class="fsx-t"></b><small class="fsx-s"></small></div>
-    <div class="fsx-act"><button type="button" class="fsx-ok" hidden>✓ Xong · áp dụng vào ảnh</button><button type="button" class="fsx-x" title="Thu nhỏ (Esc)" aria-label="Thu nhỏ">✕</button></div></div>
+    <div class="fsx-act"><button type="button" class="fsx-ok" hidden>✓ Xong · áp dụng vào ảnh</button><button type="button" class="fsx-cp" title="Chép ảnh" aria-label="Chép ảnh"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><button type="button" class="fsx-x" title="Thu nhỏ (Esc)" aria-label="Thu nhỏ">✕</button></div></div>
     <div class="fsx-body"></div></div>`;
   document.body.appendChild(MX);
   let mxs = null;   // { card, ph, cbox, style, done }
@@ -567,7 +567,7 @@
     const boxes = [...new Set(cvs.map(c => c.closest('.cbox') || c.parentElement))], saved = boxes.map(b => [b, b.getAttribute('style')]), hid = [];
     MX.querySelector('.fsx-t').textContent = opt.title || [txt(document.querySelector('.site-nav a.on')) || (document.title || '').split('·')[0].trim(), ...pathOf(card)].filter(Boolean).join(' › ');
     MX.querySelector('.fsx-s').textContent = opt.sub || '';
-    MX.querySelector('.fsx-ok').hidden = !opt.done; MX.querySelector('.fsx-x').title = opt.done ? 'Đóng (Esc)' : 'Thu nhỏ (Esc)';
+    MX.querySelector('.fsx-ok').hidden = !opt.done; MX.querySelector('.fsx-cp').hidden = !!opt.done; MX.querySelector('.fsx-x').title = opt.done ? 'Đóng (Esc)' : 'Thu nhỏ (Esc)';
     MX.hidden = false; document.body.classList.add('fsx-open');
     if (opt.size) {   // đúng kích thước chart khi ghép ảnh (cùng tỷ lệ, cùng cỡ chữ); màn hình nhỏ hơn thì thu theo tỷ lệ
       tbox.classList.add('fsx-target'); const rg = tbox.previousElementSibling; if (rg && rg.classList.contains('rng')) rg.classList.add('fsx-target');
@@ -601,7 +601,19 @@
     [...card.querySelectorAll('canvas')].forEach(c => { const ch = window.Chart && Chart.getChart(c); if (ch) ch.resize(); });
     if (done) done(apply);
   }
-  MX.addEventListener('click', e => { if (e.target === MX || e.target.closest('.fsx-x')) maxClose(!!(mxs && mxs.done)); else if (e.target.closest('.fsx-ok')) maxClose(true); });
+  function quickCopy(card, btn) {   // chép ảnh có thương hiệu của chart đang phóng to (khung ngang 16:9)
+    const keep = { items: st.items, fmt: st.fmt, lay: st.lay, rng: st.rng, key: st.key, shapes: st.shapes };
+    let cvs = null;
+    try {
+      st.items = [{ card, meta: meta(card), note: '', rng: 'cur' }]; st.fmt = 'wide'; st.lay = 'auto'; st.rng = 'cur'; st.key = ''; st.shapes = [];
+      const L = compose(); cvs = document.createElement('canvas'); cvs.width = L.bg.width; cvs.height = L.bg.height;
+      const x = cvs.getContext('2d'); x.drawImage(L.bg, 0, 0); x.drawImage(L.fg, 0, 0);
+    } catch (e) { cvs = null; } finally { Object.assign(st, keep); }
+    const done = ok => { btn.classList.add(ok ? 'ok' : 'err'); btn.title = ok ? 'Đã chép ảnh' : 'Trình duyệt chưa cho chép ảnh'; setTimeout(() => { btn.classList.remove('ok', 'err'); btn.title = 'Chép ảnh'; }, 1600); };
+    if (!cvs || !window.ClipboardItem) return done(false);
+    navigator.clipboard.write([new ClipboardItem({ 'image/png': new Promise(r => cvs.toBlob(r, 'image/png')) })]).then(() => done(true), () => done(false));
+  }
+  MX.addEventListener('click', e => { const cp = e.target.closest('.fsx-cp'); if (cp && mxs) return quickCopy(mxs.card, cp); if (e.target === MX || e.target.closest('.fsx-x')) maxClose(!!(mxs && mxs.done)); else if (e.target.closest('.fsx-ok')) maxClose(true); });
   document.addEventListener('keydown', e => { if (!MX.hidden && e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); maxClose(!!(mxs && mxs.done)); } }, true);
   function editChart(i) {
     const it = st.items[i], c = st.cells.find(x => x.i === i); if (!it || !it.meta.ch || !c || !it.card || !it.card.isConnected) return;
