@@ -267,7 +267,7 @@
   function render() {
     const cv = M.querySelector('.fss-cv'); if (!st.base) return;
     if (cv.width !== st.base.width || cv.height !== st.base.height) { cv.width = st.base.width; cv.height = st.base.height; }
-    const x = cv.getContext('2d'); x.clearRect(0, 0, cv.width, cv.height); paint(x, true); syncSel();
+    const x = cv.getContext('2d'); x.clearRect(0, 0, cv.width, cv.height); paint(x, true); syncSel(); save();
   }
   function finalCanvas() { const c = document.createElement('canvas'); c.width = st.base.width; c.height = st.base.height; paint(c.getContext('2d'), false); return c; }
   function pt(e) { const cv = M.querySelector('.fss-cv'), r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * cv.width, y: (e.clientY - r.top) / r.height * cv.height }; }
@@ -282,7 +282,7 @@
         <span class="fss-sep"></span><button type="button" data-act="dash" class="fss-dash" title="Nét đứt cho mũi tên, khung, vòng (áp dụng cả hình đang chọn)"><span>┄</span>Nét đứt</button>
         <span class="fss-sep"></span><button type="button" data-act="del" class="fss-del" title="Xóa hình đang chọn (Delete)" disabled>🗑 Xóa hình</button><button type="button" data-act="undo" title="Hoàn tác (Ctrl+Z)">↶ Hoàn tác</button><button type="button" data-act="clear" title="Xóa hết hình vẽ">Xóa vẽ</button></div>
       <div class="fss-stage"><canvas class="fss-cv" aria-label="Ảnh xem trước"></canvas><button type="button" class="fss-ebtn" hidden>✎ Chỉnh chart</button><div class="fss-wait">Đang tạo ảnh…</div></div>
-      <p class="fss-hint">Chọn <b>↖ Chọn</b> rồi rê lên chart để chỉnh chart.</p></div>
+</div>
     <div class="fss-right">
       <div class="fss-fmt">${Object.entries(FMT).map(([k, f]) => `<button type="button" data-fmt="${k}"><b>${f.t}</b><small>${f.s}</small></button>`).join('')}</div>
       <div class="fss-lab">CHART TRONG ẢNH <small>tối đa ${MAXN} · nhận định ngắn hiện ngay dưới tên chart</small></div>
@@ -348,6 +348,43 @@
   }
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   function refresh() { drawItems(); M.querySelector('.fss-cap').value = caption(); build(); }
+  /* ---------- giữ phiên đang làm khi tải lại trang: chart, khung thời gian, Cột/Đường, hình vẽ, thông điệp, nhận định ---------- */
+  const SKEY = 'fss-sess:' + location.pathname.split('/').pop() + (new URLSearchParams(location.search).get('s') || '');
+  let svT = null;
+  function save() {
+    clearTimeout(svT); svT = setTimeout(() => {
+      if (M.hidden || !st.base) return;
+      const items = st.items.filter(it => it.meta.ch && it.meta.cv && it.meta.cv.id).map(it => {
+        const ch = it.meta.ch, x = (ch.options.scales && ch.options.scales.x) || {}, lb = ch.data.labels || [];
+        return { id: it.meta.cv.id, note: it.note, rng: it.rng, win: typeof x.min === 'number' || typeof x.max === 'number' ? [lb[x.min ?? 0], lb[x.max ?? lb.length - 1]].map(String) : null, ty: ch.data.datasets.map(d => d.type || null) };
+      });
+      if (!items.length) return;
+      try { localStorage.setItem(SKEY, JSON.stringify({ t: Date.now(), items, fmt: st.fmt, lay: st.lay, rng: st.rng, key: st.key, shapes: st.shapes, w: st.base.width, h: st.base.height })); } catch (e) {}
+    }, 400);
+  }
+  function restore() {
+    let S = null; try { S = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) {}
+    if (!S || !S.items || Date.now() - S.t > 3 * 864e5) return;
+    try { if (window.FSSHARE && FSSHARE.prep) FSSHARE.prep(); } catch (e) {}
+    const cards = [], extra = [];
+    S.items.forEach(o => {
+      const cv = document.getElementById(o.id), ch = cv && window.Chart && Chart.getChart(cv), c = cv && cv.closest('article.card'); if (!ch || !c) return;
+      if (o.ty && o.ty.length === ch.data.datasets.length && o.ty.some((t, i) => t !== (ch.data.datasets[i].type || null))) {
+        ch.data.datasets.forEach((d, i) => { if (d._pr0 === undefined) d._pr0 = d.pointRadius; d.type = o.ty[i] || d.type; if (d.type === 'line' || d.type === 'bar') d.pointRadius = d.type === 'line' ? (d._pr0 ?? 2) : 0; });
+        (ch.options.scales.x = ch.options.scales.x || {}).offset = ch.data.datasets.some(d => (d.type || ch.config.type) === 'bar');
+        const sw = c.querySelector('.tsw'); if (sw) sw.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.tt === o.ty[0]));
+      }
+      if (o.win) { const lb = (ch.data.labels || []).map(String), a = lb.indexOf(o.win[0]), b = lb.indexOf(o.win[1]), x = ch.options.scales.x = ch.options.scales.x || {}; if (a >= 0 && b > a) { x.min = a; x.max = b; } }
+      ch.update('none'); cards.push(c); extra.push(o);
+    });
+    if (!cards.length) return;
+    open(cards);
+    st.items.forEach((it, i) => { it.note = extra[i].note || ''; it.rng = extra[i].rng || ''; });
+    st.fmt = S.fmt || st.fmt; st.lay = S.lay || 'auto'; st.rng = S.rng || 'cur'; st.key = S.key || ''; M.querySelector('.fss-key').value = st.key;
+    st.shapes = S.shapes || []; st.base = { width: S.w, height: S.h };   // build() co hình vẽ theo khung mới nếu cỡ khác
+    syncUi(); refresh();
+  }
+  setTimeout(restore, 1800);
   function open(cards) {
     st.shapes = []; st.hist = []; st.sel = -1; st.hover = -1; st.base = null; st.fg = null; st.cells = []; st.key = ''; st.rng = 'cur'; M.querySelector('.fss-key').value = ''; st.tool = 'none'; st.color = 'navy'; st.dash = false; st.picked = false; msg('');
     setItems(cards, false); if (!st.items.length) return;
@@ -358,7 +395,7 @@
     st.fmt = o.img.height > o.img.width * 0.62 ? 'tall' : 'wide';   // bảng cao thì mở sẵn khung dọc 4:5
     open([{ _fssMeta: { ch: null, img: o.img, title: o.title || 'Bảng số liệu', sub: o.sub || '', src: cleanSrc(o.src || ''), last: o.last || '', page, ins: o.ins || '', path: [page] } }]);
   };
-  function close() { M.hidden = true; PK.hidden = true; document.body.classList.remove('fss-open'); M.querySelector('.fss-txt').hidden = true; }
+  function close() { clearTimeout(svT); try { localStorage.removeItem(SKEY); } catch (e) {} M.hidden = true; PK.hidden = true; document.body.classList.remove('fss-open'); M.querySelector('.fss-txt').hidden = true; }
   const blob = () => new Promise(r => finalCanvas().toBlob(r, 'image/png'));
   const fname = () => 'FinSuccess_' + plain(st.key && st.items.length > 1 ? st.key : first().title).replace(/[^\w\- ]+/g, '').trim().slice(0, 60) + '_' + new Date().toLocaleDateString('vi-VN').replace(/\//g, '-') + '.png';
   async function copyText(t) { try { await navigator.clipboard.writeText(t); return true; } catch (e) { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (er) {} a.remove(); return ok; } }
