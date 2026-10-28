@@ -801,6 +801,12 @@ body.fsx-open{overflow:hidden}
 .fsx-fix .fsx-card{width:calc(var(--fsxw,600px) + 46px);max-width:100%;box-sizing:border-box;overflow:hidden}
 .fsx-fix .fsx-card .insight,.fsx-fix .fsx-card .src,.fsx-fix .fsx-card .rng-hint{display:none}
 .fsx-fix .fsx-card .cbox:not(.fsx-target),.fsx-fix .fsx-card .rng:not(.fsx-target){display:none}
-.fsx-fix .fsx-card .cbox.fsx-target{outline:2px dashed var(--teal);outline-offset:6px;border-radius:2px;width:var(--fsxw0)!important;height:var(--fsxh0)!important;max-width:none!important;flex:none!important}
+.fsx-fix .fsx-card .cbox.fsx-target{width:var(--fsxw0)!important;height:var(--fsxh0)!important;max-width:none!important;flex:none!important}
 .fsx-fix .fsx-card .rng{max-width:100%;flex-wrap:wrap}
 @media (max-width:700px){.fsx{padding:0}.fsx-box{border-radius:0;height:100%}.fsx-s{display:none}.fsx-act button{padding:6px 10px}}
+
+.cpick{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:2px 0 8px;font:600 11.5px Arial,sans-serif;color:var(--ink2)}
+.cpick label{display:inline-flex;align-items:center;gap:6px}
+.cpick input{border:1px solid var(--line);border-radius:7px;padding:1px 6px;font:600 11.5px Arial,sans-serif;color:var(--navy);background:#fff;height:22px}
+.cp-chips{display:inline-flex;flex-wrap:wrap;gap:4px}.cp-chips button{border:1px solid;background:#fff;border-radius:99px;padding:1px 8px;font:700 11px Arial,sans-serif;cursor:pointer}
+body.print-all .cpick,body.pdf-cap .cpick{display:none!important}

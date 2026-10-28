@@ -327,9 +327,9 @@
     }, 30);
   }
   function caption() {
-    const m = first(), n = st.items.length, url = 'Xem đầy đủ: ' + location.href.split('?')[0].split('#')[0];
-    if (n === 1) return [...(st.key ? [st.key, ''] : []), ...(st.items[0].note ? [st.items[0].note, ''] : []), m.page, '', m.title + (m.sub ? ' (' + m.sub + ')' : ''), m.ins ? '\n' + m.ins : '', '', (m.last ? 'Kỳ dữ liệu: ' + m.last + '\n' : '') + 'Nguồn: ' + m.src, url].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
-    return [...(st.key ? [st.key, ''] : []), m.page, '', ...st.items.map((it, i) => `${i + 1}. ${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}${it.note ? '\n' + it.note : ''}`), '', 'Nguồn: ' + srcAll(), url].join('\n');
+    const m = first(), n = st.items.length;
+    if (n === 1) return [...(st.key ? [st.key, ''] : []), ...(st.items[0].note ? [st.items[0].note, ''] : []), m.page, '', m.title + (m.sub ? ' (' + m.sub + ')' : ''), m.ins ? '\n' + m.ins : '', '', (m.last ? 'Kỳ dữ liệu: ' + m.last + '\n' : '') + 'Nguồn: ' + m.src].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
+    return [...(st.key ? [st.key, ''] : []), m.page, '', ...st.items.map((it, i) => `${i + 1}. ${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}${it.note ? '\n' + it.note : ''}`), '', 'Nguồn: ' + srcAll()].join('\n');
   }
   function setItems(cards, keepNotes) {
     const old = new Map(st.items.map(it => [it.card, it.note]));
@@ -349,7 +349,7 @@
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   function refresh() { drawItems(); M.querySelector('.fss-cap').value = caption(); build(); }
   function open(cards) {
-    st.shapes = []; st.hist = []; st.sel = -1; st.hover = -1; st.base = null; st.fg = null; st.cells = []; st.key = ''; st.rng = 'cur'; M.querySelector('.fss-key').value = ''; st.tool = 'arrow'; st.color = 'navy'; st.dash = false; st.picked = false; msg('');
+    st.shapes = []; st.hist = []; st.sel = -1; st.hover = -1; st.base = null; st.fg = null; st.cells = []; st.key = ''; st.rng = 'cur'; M.querySelector('.fss-key').value = ''; st.tool = 'none'; st.color = 'navy'; st.dash = false; st.picked = false; msg('');
     setItems(cards, false); if (!st.items.length) return;
     M.hidden = false; document.body.classList.add('fss-open'); syncUi(); refresh();
   }

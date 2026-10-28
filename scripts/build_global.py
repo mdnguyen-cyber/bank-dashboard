@@ -445,6 +445,8 @@ if DP.exists():
         ld = _d.fromisoformat(last)
         snaps = [('Hiện tại', last), ('1 tuần trước', at((ld - _t(days=7)).isoformat())), ('1 tháng trước', at((ld - _t(days=30)).isoformat())), ('Đầu năm', next((d for d in ds if d >= f'{ld.year}-01-01'), None)), ('1 năm trước', at((ld - _t(days=365)).isoformat()))]
         G['ustCurve'] = {'t': TEN, 'c': [{'n': n, 'd': d, 'v': [U[d].get(t) for t in TEN]} for n, d in snaps if d]}
+        hd = [d for d in ds if d >= DAILY_FROM]   # lịch sử theo ngày: chọn ngày bất kỳ để so sánh trên chart
+        G['ustCurve']['h'] = {'d': hd, 'v': [[None if U[d].get(t) is None else round(U[d][t], 3) for t in TEN] for d in hd]}
     # Nhật: đường cong JGB (mọi kỳ hạn MOF công bố), độ dốc theo ngày, kết quả đấu thầu
     J = {d: x for d, x in DY.get('jgb', {}).items() if isinstance(x, dict)}
     if J:
@@ -459,6 +461,8 @@ if DP.exists():
                ('Đầu năm', next((d for d in jd if d >= f'{jl.year}-01-01'), None)), ('1 năm trước', jat((jl - _t(days=365)).isoformat())), ('5 năm trước', jat((jl - _t(days=1826)).isoformat()))]
         JT = [t for t in JT if J[jd[-1]].get(t) is not None]
         G['jgbCurve'] = {'t': JT, 'c': [{'n': n, 'd': d, 'v': [J[d].get(t) for t in JT]} for n, d in jsn if d]}
+        jh = [d for d in jd if d >= DAILY_FROM]
+        G['jgbCurve']['h'] = {'d': jh, 'v': [[None if J[d].get(t) is None else round(J[d][t], 3) for t in JT] for d in jh]}
         for t in ['1Y', '20Y', '40Y']:
             put(f'jp_{t.lower()}_d', {d: x[t] for d, x in J.items() if x.get(t) is not None and d >= DAILY_FROM}, 3)
         put('jp_s30_10_d', {d: (x['30Y'] - x['10Y']) * 100 for d, x in J.items() if x.get('30Y') is not None and x.get('10Y') is not None and d >= DAILY_FROM}, 1)

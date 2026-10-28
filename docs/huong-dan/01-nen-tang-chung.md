@@ -502,6 +502,7 @@ Mục đích: ghép ảnh có thương hiệu từ 1–6 chart để đăng Zalo
 - **Lớp ảnh**: `compose()` trả `{bg, fg, cells}` — `bg` nền + chữ, `fg` chỉ các chart (nền trong suốt), `cells` vị trí từng chart `{i, X, Y, w, h, zs}`. Ảnh cuối = `bg` → hình tô sáng (`hl`, `hle`, màu 16% đậm đặc, tức trong suốt ~84%) → `fg` → các hình khác; nên vùng tô sáng nằm sau đường/cột, không làm mờ chart.
 - **Sửa hình đã vẽ**: thả chuột xong hình được chọn ngay (khung nét đứt teal + ô vuông trắng viền navy). Kéo thân để di chuyển, kéo ô vuông để đổi cỡ/đổi đầu mũi tên, bấm màu hoặc `Nét đứt` để đổi hình đang chọn, Delete để xóa, nhấp đúp chữ để sửa; bấm ra vùng trống thì chỉ bỏ chọn (không vẽ mới). Khung/vòng/tô sáng chỉ bắt chuột ở viền khi chưa chọn, để vẫn vẽ được mũi tên vào trong vùng.
 - **Chỉnh chart trong ảnh** (`editChart`): rê chuột lên một chart trong khung xem trước → viền teal + nút `✎ Chỉnh chart` ở góc phải trên (hoặc bấm `✎` trong danh sách, hoặc công cụ `Chọn` rồi bấm vào chart). Thẻ chart mở trong `.fsx.fsx-fix`: chart đặt đúng cỡ khi xuất (`w/zs × h/zs` px CSS — cùng tỷ lệ, cùng cỡ chữ như trong ảnh, bố cục 2–3 chart thì vuông hơn), màn hình nhỏ thì thu cả khối bằng `transform: scale` (chartkit quy đổi toạ độ chuột theo `offsetWidth / rect.width`); chỉ giữ tên chart, nút điều khiển và đúng chart đó. `✓ Xong` → chart đó dùng khung đang hiện (`rng = 'cur'`), dựng lại ảnh. Dropdown khung thời gian riêng từng chart đã bỏ; còn **Khung thời gian chung** (chọn lại sẽ ghi đè khung đã chỉnh riêng).
+- Mở hộp thoại mặc định ở công cụ `Chọn` (rê lên chart hiện nút `✎ Chỉnh chart`); chọn công cụ vẽ thì nút không hiện. Caption không kèm đường link trang.
 - Tên file: `FinSuccess_<tiêu đề không dấu, ≤60 ký tự>_<dd-mm-yyyy>.png`.
 - **API cho trang**: renderer khai báo `window.FSSHARE = { prep(), path(card) }` — `prep()` dựng mọi tab ẩn để hộp chọn liệt kê đủ chart; `path(card)` trả `[tab, tab con]` (`app.js:1215-1222`, `sector.js:3839`, `finsec.js:1693`). Không khai báo → đường dẫn lấy từ nút tab của `.pane` chứa card.
 - `window.FSShareImage({img, title, sub, src, last})` — mở hộp với ảnh dựng sẵn (bảng từ tblshot); bảng cao (h > 0,62w) mặc định khung 4:5.
@@ -794,6 +795,12 @@ Quy ước ý nghĩa: đỏ `#c0392b` = xấu/giảm/thị giá/trần; xanh `#1
 5. Thêm `scripts/gom_site.sh`, `build_pdfs.js`, `pages.yml` (2 job), các workflow dữ liệu với cron mục 6.2 và bước `gh workflow run pages.yml`.
 6. `build_catalog.py` chạy cuối mỗi lượt dữ liệu; `backend.html` đọc `data/catalog.js`.
 7. Kiểm: mở trang local (version-check tự bỏ qua vì còn `__BUILD__`), thử 1M…Tất cả, kéo zoom, kéo trục Y, Ẩn tất cả, Chia sẻ ảnh, PDF bản đang xem, User/Developer view; push → xem `version.json`, `?v=` trong HTML và `pdf/index.json` trên web.
+
+## Đường cong lợi suất: so sánh ngày tự chọn (`curvePick`, `sector.js`)
+
+- Áp dụng cho `gGlCurve`, `mmUsCurve`, `nUsCurve` (UST), `gJpCurve` (JGB), `gUsOis`, `nUsOis` (OIS), `mmCurve`, `dMmCurve` (liên ngân hàng VND, VIRA), `bCurve` (TPCP VN). `mk()` gọi `curvePick(id)` sau khi vẽ.
+- Hàng `.cpick` trên chart: "So sánh ngày" + ô chọn ngày (giới hạn theo dữ liệu có); ngày không có số → lấy phiên kế tiếp gần nhất có số. Tối đa 4 ngày, mỗi ngày một đường nét đứt màu riêng (`#861C52`, `#e67e22`, `#16a085`, `#6c3483`), chip `dd/mm/yyyy ✕` để bỏ.
+- Dữ liệu theo ngày: `GD.ustCurve.h`, `GD.jgbCurve.h` = `{d:[ngày từ 2021], v:[[lợi suất theo kỳ hạn]]}` (`build_global.py`); OIS dùng `GD.ois.hist`; VIRA dùng `VIRA_DATA`; TPCP VN dùng `BOND_DATA.gb.curve`.
 
 ## Tìm chart toàn dashboard (`assets/chartsearch.js`)
 

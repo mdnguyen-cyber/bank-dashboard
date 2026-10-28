@@ -147,6 +147,7 @@ function mk(id, cfg, opt = {}) {
   if (!id.startsWith('cb-') && !id.startsWith('qu-')) SPEC[id] = { cfg: cl(cfg), el };
   charts[id] = new Chart(el, cfg);
   FSK.enhance(charts[id], { today: new Date(TODAY), last: opt.last, win: opt.win });
+  if (CURVE_IDS.test(id)) curvePick(id);
   if (opt.switch) {
     const box = document.querySelector(`[data-ctl="${id}"]`);
     if (box) {
@@ -160,6 +161,39 @@ function mk(id, cfg, opt = {}) {
 }
 const pctAxis = (title, extra = {}) => Object.assign({ ticks: { callback: v => nf(v, 1) + '%' }, title: title ? { display: true, text: title } : undefined, grid: { color: '#eef0f4' } }, extra);
 const numAxis = (title, extra = {}) => Object.assign({ ticks: { callback: v => nf(v, 0) }, title: title ? { display: true, text: title } : undefined, grid: { color: '#eef0f4' } }, extra);
+/* ---- Đường cong lợi suất: thêm đường của ngày tự chọn (ngày không có số → phiên kế tiếp gần nhất có số) ---- */
+const CURVE_IDS = /^(gGlCurve|mmUsCurve|nUsCurve|gJpCurve|gUsOis|nUsOis|mmCurve|dMmCurve|bCurve)$/;
+const CP = {}, CP_COL = ['#861C52', '#e67e22', '#16a085', '#6c3483'];
+function curveSrc(id) {
+  if (/^(gGlCurve|mmUsCurve|nUsCurve)$/.test(id)) { const U = GD.ustCurve; return U && U.h ? { d: U.h.d, at: i => U.h.v[i] } : null; }
+  if (id === 'gJpCurve') { const J = GD.jgbCurve; return J && J.h ? { d: J.h.d, at: i => J.h.v[i] } : null; }
+  if (/^(gUsOis|nUsOis)$/.test(id)) { const S = oisSnaps(), T = charts[id].data.labels; return S ? { d: S.ds, at: i => T.map(t => S.O.hist[S.ds[i]][t] ?? null) } : null; }
+  if (/^(mmCurve|dMmCurve)$/.test(id)) return VR.d.length ? { d: VR.d, at: i => mmCurve('vnd', i), pre: 'VND ' } : null;
+  if (id === 'bCurve') { const cv = window.BOND_DATA && BOND_DATA.gb.curve, T = charts[id].data.labels; return cv ? { d: cv.d, at: i => T.map(t => cv[t] ? cv[t][i] : null) } : null; }
+  return null;
+}
+function curvePick(id) {
+  let S = null; try { S = curveSrc(id); } catch (e) {} const ch = charts[id]; if (!S || !S.d || !S.d.length || !ch) return;
+  const box = ch.canvas.parentElement, has = i => (S.at(i) || []).some(v => v != null);
+  let bar = box.parentElement.querySelector(`:scope > .cpick[data-for="${id}"]`);
+  if (!bar) {
+    bar = document.createElement('div'); bar.className = 'cpick'; bar.dataset.for = id;
+    bar.innerHTML = `<label>So sánh ngày <input type="date" min="${S.d[0].slice(0, 10)}" max="${S.d[S.d.length - 1].slice(0, 10)}"></label><span class="cp-chips"></span>`;
+    box.before(bar);
+    bar.querySelector('input').addEventListener('change', e => {
+      const v = e.target.value; e.target.value = ''; if (!v) return; const S2 = curveSrc(id);
+      let i = S2.d.findIndex((d, k) => d.slice(0, 10) >= v && (S2.at(k) || []).some(x => x != null)); if (i < 0) i = S2.d.length - 1;
+      const L0 = CP[id] = CP[id] || []; if (!L0.includes(S2.d[i])) { if (L0.length >= CP_COL.length) L0.shift(); L0.push(S2.d[i]); }
+      curvePick(id);
+    });
+    bar.addEventListener('click', e => { const b = e.target.closest('[data-cpd]'); if (!b) return; CP[id] = (CP[id] || []).filter(d => d !== b.dataset.cpd); curvePick(id); });
+  }
+  const picks = (CP[id] || []).filter(d => S.d.includes(d));
+  ch.data.datasets = ch.data.datasets.filter(d => !d._cp);
+  picks.forEach((d, j) => { const i = S.d.indexOf(d); if (has(i)) ch.data.datasets.push(L((S.pre || '') + dvn(d.slice(0, 10)), S.at(i), CP_COL[j], { borderDash: [6, 3], borderWidth: 1.8, pointRadius: 2, _cp: true })); });
+  ch.update('none');
+  bar.querySelector('.cp-chips').innerHTML = picks.map((d, j) => `<button type="button" data-cpd="${d}" style="border-color:${CP_COL[j]};color:${CP_COL[j]}">${dvn(d.slice(0, 10))} ✕</button>`).join('');
+}
 const L = (label, data, color, o = {}) => Object.assign({ type: 'line', label, data, borderColor: color, backgroundColor: color, borderWidth: 2, pointRadius: 0, pointBorderWidth: 0, pointHoverBorderWidth: 0, dp: 2, unit: '%', spanGaps: true }, o);
 
 /* ---------- templates ---------- */
