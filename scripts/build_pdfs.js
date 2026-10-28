@@ -11,7 +11,7 @@ const srv = http.createServer((q, r) => {
   const f = path.join(SITE, decodeURIComponent(q.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
   fs.readFile(f, (e, b) => { if (e) { r.writeHead(404); r.end(); } else { r.writeHead(200, { 'Content-Type': MIME[path.extname(f)] || 'application/octet-stream' }); r.end(b); } });
 });
-const PAGES = (process.env.PDF_PAGES || fs.readdirSync(SITE).filter(f => f.endsWith('.html')).map(f => f.replace('.html', '')).join(',')).split(',');
+const PAGES = (process.env.PDF_PAGES || fs.readdirSync(SITE).filter(f => f.endsWith('.html') && !/^(bh|ck|dn|fin|backend)\.html$/.test(f))   /* trang developer view (khóa mật khẩu) không dựng PDF */.map(f => f.replace('.html', '')).join(',')).split(',');
 const today = new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);   // giờ Việt Nam
 const files = {};
 

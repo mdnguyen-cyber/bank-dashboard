@@ -753,3 +753,17 @@ table.fz thead th:first-child{background:var(--soft);z-index:3}
 /* thanh menu dài: khối phải xuống dòng thay vì đè lên menu */
 .logo-bar .wrap{flex-wrap:wrap}.logo-left{min-width:auto}.logo-right{margin-left:auto}
 .logo-left{flex-wrap:wrap;max-width:100%}.site-nav{flex-wrap:wrap;max-width:100%;border-radius:18px}
+/* Database › Hướng dẫn xây dựng */
+.gd{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px;align-items:start}
+.gd-toc{position:sticky;top:58px;max-height:calc(100vh - 76px);overflow:auto;background:#fff;border:1px solid var(--line2);border-radius:12px;padding:10px}
+.gd-toc input{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font:13px Arial;margin-bottom:8px}
+.gd-toc summary{cursor:pointer;font-weight:700;font-size:13px;padding:4px 0}.gd-toc summary a{color:var(--navy);text-decoration:none}
+.gd-toc nav a{display:block;font-size:12.5px;color:var(--ink2);text-decoration:none;padding:2px 0 2px 10px;line-height:1.35}.gd-toc nav a.l3{padding-left:22px;font-size:12px;color:var(--muted)}
+.gd-toc nav a:hover{color:var(--navy)}
+.gd-body{min-width:0}.gd-ch{font-size:14px;line-height:1.6}
+.gd-ch h1{font-size:20px;color:var(--navy);margin:0 0 10px}.gd-ch h2{font-size:17px;color:var(--navy);margin:22px 0 8px;scroll-margin-top:60px}.gd-ch h3{font-size:15px;color:var(--navy);margin:16px 0 6px;scroll-margin-top:60px}
+.gd-ch table{border-collapse:collapse;margin:8px 0;font-size:12.5px;display:block;overflow-x:auto;max-width:100%}.gd-ch th,.gd-ch td{border:1px solid var(--line2);padding:4px 8px;text-align:left;vertical-align:top}.gd-ch th{background:var(--soft)}
+.gd-ch code{background:#f1f3f8;border-radius:4px;padding:1px 4px;font-size:12.5px}
+.gd-ch pre{position:relative;background:#f6f8fc;border:1px solid var(--line2);border-radius:8px;padding:10px 12px;overflow-x:auto;font-size:12px}.gd-ch pre code{background:none;padding:0}
+.gd-cp{position:absolute;top:6px;right:6px;font-size:11px;padding:2px 8px}
+@media (max-width:900px){.gd{grid-template-columns:1fr}.gd-toc{position:static;max-height:none}}
