@@ -31,8 +31,22 @@ def table(resp):
     return []
 
 
+def newest(rows):
+    """Kỳ/ngày mới nhất trong một lần kéo (để chọn lần kéo mới hơn khi có nhiều file cùng loại)."""
+    m = ''
+    for r in rows:
+        if not isinstance(r, dict):
+            continue
+        y = r.get('year') or r.get('period_year')
+        v = r.get('trading_date') or r.get('date') or (f"{y}Q{r.get('quarter') or r.get('period_quarter')}" if y else '')
+        if v and str(v) > m:
+            m = str(v)
+    return m
+
+
 def pick(endpoint, test):
-    best = []
+    """Lần kéo khớp điều kiện có kỳ mới nhất; cùng kỳ thì lấy lần nhiều dòng hơn."""
+    best, bk = [], ('', -1)
     for f in sorted(glob.glob(str(RAW / '*.json'))):
         try:
             req, resp = load(f)
@@ -40,8 +54,9 @@ def pick(endpoint, test):
             continue
         if req.get('endpoint_name') == endpoint and test(req.get('filters') or ''):
             rows = table(resp)
-            if len(rows) > len(best):
-                best = rows
+            k = (newest(rows), len(rows))
+            if rows and k > bk:
+                best, bk = rows, k
     return best
 
 
@@ -145,8 +160,13 @@ def main():
     plans = [{'s': r['symbol'], 'y': r['year'], 'rev': r.get('planned_revenue'), 'pbt': r.get('planned_profit_before_tax'), 'pat': r.get('planned_profit_after_tax')}
              for r in pick('co_plans', lambda f: 'SSI' in f)]
     holders = [{'s': r['symbol'], 'n': r['name'], 'pct': r.get('ownership_ratio'), 'sh': r.get('shares_held'), 'd': r.get('last_update')} for r in pick('co_holders', lambda f: 'SSI' in f)]
+    evr = {}
+    for _, rows_e in pick_all('co_events', lambda f: 'SSI' in f):
+        for r in rows_e:
+            if r.get('symbol') in allsym:
+                evr[r.get('id') or (r['symbol'], r.get('ex_date'), r.get('event_title'))] = r
     events = [{'s': r['symbol'], 't': r.get('event_type'), 'title': r.get('event_title'), 'ex': r.get('ex_date'), 'rec': r.get('record_date'), 'exe': r.get('execution_date'),
-               'cash': r.get('cash_dividend'), 'stk': r.get('stock_dividend_ratio'), 'iss': r.get('issuance_ratio'), 'ip': r.get('issuance_price')} for r in pick('co_events', lambda f: 'SSI' in f)]
+               'cash': r.get('cash_dividend'), 'stk': r.get('stock_dividend_ratio'), 'iss': r.get('issuance_ratio'), 'ip': r.get('issuance_price')} for r in evr.values()]
     roe = {}
     for r in pick('ratio_common_ttm', lambda f: 'SSI' in f and 'BVH' in f):
         roe.setdefault(r['symbol'], []).append([f"{r['year']}Q{r['quarter']}", r.get('roe'), r.get('roa')])
@@ -180,13 +200,42 @@ def extend(out, allsym):
     out['vniD'] = {k: vl[k] for k in sorted(vl) if k >= '2021-10-01'}
     for sid in ('406', '408'):
         m = dict(zip(out['spx'][sid]['d'], out['spx'][sid]['c']))
-        for req, rows in pick_all('sector_price_daily', lambda f, sid=sid: f'"{sid}"' in f):
+        for req, rows in pick_all('sector_price_daily', lambda f, sid=sid: sid in f):
             for r in rows:
-                m[r['trading_date']] = r['close']
+                if str(r.get('sector_id', sid)) == sid and r.get('close') is not None:
+                    m[r['trading_date']] = r['close']
         for r in raw_fin(f'sector{sid}_px_2021-10_2025-09.txt'):
             m[r['trading_date']] = r['close']
         ds = sorted(m)
         out['spx'][sid] = {'d': ds, 'c': [m[d] for d in ds]}
+    # định giá ngành theo phiên: nối các lần kéo sector_ratio_daily mới
+    for sid in ('406', '408'):
+        sv = out['secVal'][sid]; m = {d: (sv['pb'][i], sv['pe'][i], sv['mcap'][i]) for i, d in enumerate(sv['d'])}
+        for req, rows in pick_all('sector_ratio_daily', lambda f, sid=sid: f'"{sid}"' in f):
+            for r in rows:
+                if str(r.get('sector_id', sid)) == sid and r.get('pb') is not None:
+                    m[r['trading_date']] = (r['pb'], r.get('pe'), ty(r.get('market_cap')))
+        ds = sorted(m)
+        out['secVal'][sid] = {'d': ds, 'pb': [m[d][0] for d in ds], 'pe': [m[d][1] for d in ds], 'mcap': [m[d][2] for d in ds]}
+    # định giá từng mã: phiên mới nhất qua mọi lần kéo; nối chuỗi P/B theo phiên
+    last = {}
+    for req, rows in pick_all('ratio_daily', lambda f: True):
+        for r in rows:
+            sy = r.get('symbol')
+            if sy in allsym and r.get('trading_date') and r.get('pb') is not None:
+                if sy not in last or r['trading_date'] >= last[sy]['trading_date']:
+                    last[sy] = r
+                p = out['pb'].get(sy)
+                if p and r['trading_date'] > p['d'][-1]:
+                    p.setdefault('_x', {})[r['trading_date']] = (r['pb'], r.get('pe'))
+    for sy, r in last.items():
+        o = out['val'].get(sy, {})
+        if r['trading_date'] >= (o.get('d') or ''):
+            out['val'][sy] = {'d': r['trading_date'], 'pb': r.get('pb'), 'pe': r.get('pe'), 'mcap': ty(r.get('market_cap')) if r.get('market_cap') else o.get('mcap'), 'bvps': r.get('bvps') or o.get('bvps')}
+    for p in out['pb'].values():
+        for d, (b_, e_) in sorted(p.pop('_x', {}).items()):
+            p['d'].append(d); p['pb'].append(b_); p['pe'].append(e_)
+    out['px'] = {k: v for k, v in out['px'].items() if k in allsym}
     # báo cáo CTCK: gộp mọi lần lấy
     seen = {}
     for req, rows in pick_all('co_reports', lambda f: True):

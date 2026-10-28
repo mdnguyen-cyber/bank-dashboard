@@ -54,7 +54,9 @@ def daily_fx(raw, iid):
 
 
 def rows(resp):
-    data = resp.get('data', resp)
+    if not isinstance(resp, (dict, list)):
+        return []
+    data = resp.get('data', resp) if isinstance(resp, dict) else resp
     if isinstance(data, dict) and 'cot' in data:
         return [dict(zip(data['cot'], r)) for r in data['dong']]
     if isinstance(data, list):
@@ -170,7 +172,14 @@ def build(raw):
     subs = [r for d in raw if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'co_subsidiaries' and own(d['request'])
             for r in mine(rows(d['response']))]
     events = mine(rows(find(raw, 'wi_data_companies', 'co_events', own)['response']))
-    reports = mine(rows(find(raw, 'wi_data_companies', 'co_reports', own)['response']))
+    # báo cáo CTCK: gộp mọi lần kéo có mã này (riêng mã hoặc cả nhóm ngân hàng), trùng CTCK + ngày thì lấy bản sau
+    _rp = {}
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'co_reports' and TICKER in syms(d['request']):
+            for r in mine(rows(d['response'])):
+                k = (r.get('source'), r.get('recommendation_date'), r.get('report_title'), r.get('year'))
+                _rp[k] = {**_rp.get(k, {}), **{a: v for a, v in r.items() if v is not None}}   # giữ cột mà lần kéo sau không có
+    reports = list(_rp.values())
     ainews = rows(find(raw, 'wi_data_news', 'ai_news', lambda q: q.get('codetag') == TICKER)['response'])
     exnews = mine(rows(find(raw, 'wi_data_news', 'exchange_news', lambda q: q.get('symbol') == TICKER)['response']))
     pxd = {}   # gộp mọi lần kéo giá điều chỉnh của mã này
@@ -178,6 +187,10 @@ def build(raw):
         if d['tool'] == 'wi_data_stock' and d['request'].get('endpoint_name') == 'eod_adjust' and syms(d['request']) == [TICKER]:
             for r in rows(d['response']):
                 pxd[r['trading_date']] = r
+    for d in raw:   # phiên chưa có trong các lần kéo riêng: lấy từ lần kéo nhiều mã
+        if d['tool'] == 'wi_data_stock' and d['request'].get('endpoint_name') == 'eod_adjust' and TICKER in syms(d['request']) and len(syms(d['request'])) > 1:
+            for r in mine(rows(d['response'])):
+                pxd.setdefault(r['trading_date'], r)
     prices = [pxd[k] for k in sorted(pxd)]
     rd = {}   # định giá theo phiên (ratio_daily) — lấy giá trị mới nhất có số cho từng trường
     for d in raw:
@@ -675,12 +688,16 @@ def build(raw):
     secd, vnid = {}, {}
     for d in raw:
         ep = d['request'].get('endpoint_name')
-        if d['tool'] == 'wi_data_sector' and ep == 'sector_price_daily' and str(flt(d['request']).get('sector_id')) == '405':
+        if d['tool'] == 'wi_data_sector' and ep == 'sector_price_daily' and '405' in [x.strip() for x in str(flt(d['request']).get('sector_id')).split(',')]:
             for r in rows(d['response']):
-                if r.get('close') is not None: secd[r['trading_date']] = r['close']
+                if r.get('close') is not None and str(r.get('sector_id', 405)) == '405': secd[r['trading_date']] = r['close']
         elif d['tool'] == 'wi_data_stock' and ep == 'eod_adjust' and syms(d['request']) == ['VNINDEX']:
             for r in rows(d['response']):
                 if r.get('close') is not None: vnid[r['trading_date']] = r['close']
+    for d in raw:   # VN-Index từ index_eod cho phiên chưa có
+        if d['tool'] == 'wi_data_stock' and d['request'].get('endpoint_name') == 'index_eod':
+            for r in rows(d['response']):
+                if r.get('indicator_id') == 235211 and r.get('value') is not None: vnid.setdefault(r['date'], r['value'])
     for p in px:
         if p['d'] in secd: p['s'] = round(secd[p['d']], 2)
         if p['d'] in vnid: p['v'] = round(vnid[p['d']], 2)

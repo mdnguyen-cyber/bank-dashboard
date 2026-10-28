@@ -290,14 +290,22 @@ def main():
            'credit_growth_yoy', 'roe', 'roa', 'profit_parent_yoy']
     REN = {'casa_ratio': 'casa', 'npl_ratio': 'npl', 'group2_loan_ratio': 'g2', 'npl_coverage_ratio': 'llr',
            'credit_growth_yoy': 'creditYoY', 'profit_parent_yoy': 'npYoY', 'market_cap': 'mcap', 'credit_balance': 'credit'}
-    quarters = sorted({(y, q) for (_, y, q) in panel})
+    # chỉ giữ quý đã có đủ ngân hàng công bố (≥ 20/26), để số toàn ngành không bị lệch trong mùa BCTC
+    _nq = defaultdict(set)
+    for (s_, y, q), row in panel.items():
+        if any(v is not None for v in row.values()):
+            _nq[(y, q)].add(s_)
+    quarters = sorted(k for k in _nq if len(_nq[k]) >= 20)
     QL = [f'Q{q}/{y}' for y, q in quarters]
     banks = {}
+    ALLK = sorted({k for row in panel.values() for k in row})
     for s in BANKS:
         ser = defaultdict(list)
+        has = {k for (s2, _, _), row in panel.items() if s2 == s for k in row}
         for (y, q) in quarters:
             row = panel.get((s, y, q), {})
-            for k, v in row.items():
+            for k in [k for k in ALLK if k in has]:   # mọi quý đều có giá trị (None nếu NH chưa công bố) để chuỗi thẳng hàng với QL
+                v = row.get(k)
                 name = REN.get(k, k)
                 if v is None:
                     val = None
@@ -363,7 +371,8 @@ def main():
         q_, y_ = int(ql[1]), int(ql[3:])
         dq = f'{y_}-{q_ * 3:02d}-{_cal.monthrange(y_, q_ * 3)[1]:02d}'
         for s_ in BANKS:
-            v = (banks[s_].get('pb') or [None] * len(QL))[qi]
+            _pb = banks[s_].get('pb') or []
+            v = _pb[qi] if qi < len(_pb) else None
             if v: pbh[s_][dq] = v
     for d in raw:
         if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily':
@@ -440,11 +449,15 @@ def main():
                    'profitTTM': r(sec[-1]['profit'] / 1e12, 1)}
 
     # ------------------------------------------------ consensus theo ngân hàng (báo cáo ≤ 92 ngày, mỗi CTCK lấy bản mới nhất)
-    rep = None
+    rep = {}   # gộp mọi lần kéo cả nhóm ngân hàng; trùng mã + CTCK + ngày thì lấy bản sau
     for d in raw:
         if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'co_reports' and \
                 flt(d['request']).get('symbol', '').count(',') >= 10:
-            rep = rows(d['response'])
+            for x in rows(d['response']):
+                if x.get('symbol') in BANKS:
+                    k = (x['symbol'], x.get('source'), x.get('recommendation_date'), x.get('report_title'), x.get('year'))
+                    rep[k] = {**rep.get(k, {}), **{a: v for a, v in x.items() if v is not None}}
+    rep = list(rep.values())
     cons = []
     for s in BANKS:
         rs = sorted([x for x in rep if x['symbol'] == s], key=lambda x: x['recommendation_date'], reverse=True)
@@ -454,24 +467,24 @@ def main():
                 continue
             seen.add(x['source'])
             use.append(x)
-        tps = [x['target_price_adjusted'] for x in use if x['target_price_adjusted']]
-        nps = [x['net_income_forecast'] for x in use if x['net_income_forecast']]
+        tps = [x.get('target_price_adjusted') for x in use if x.get('target_price_adjusted')]
+        nps = [x.get('net_income_forecast') for x in use if x.get('net_income_forecast')]
         L = next(x for x in latest if x['s'] == s)
         if not use:
             continue
         mtp = statistics.median(tps) if tps else None
         mnp = statistics.median(nps) if nps else None
         cons.append({'s': s, 'group': GROUP[s], 'n': len(use), 'nTP': len(tps),
-                     'buy': sum(1 for x in use if x['recommendation'] == 'MUA'),
-                     'hold': sum(1 for x in use if x['recommendation'] == 'TRUNG LẬP'),
-                     'sell': sum(1 for x in use if x['recommendation'] == 'BÁN'),
+                     'buy': sum(1 for x in use if x.get('recommendation') == 'MUA'),
+                     'hold': sum(1 for x in use if x.get('recommendation') == 'TRUNG LẬP'),
+                     'sell': sum(1 for x in use if x.get('recommendation') == 'BÁN'),
                      'tpMed': r(mtp, 0), 'tpMin': r(min(tps), 0) if tps else None, 'tpMax': r(max(tps), 0) if tps else None,
                      'upside': r((mtp / L['price'] - 1) * 100, 1) if mtp and L['price'] else None,
                      'np26': r(mnp, 0), 'peFwd': r(L['mcap'] / mnp, 2) if mnp and L['mcap'] else None,
                      'pbTP': r(mtp / L['bvps'], 2) if mtp and L['bvps'] else None,
                      'latest': rs[0]['recommendation_date'],
-                     'reports': [{'src': x['source'], 'd': x['recommendation_date'], 'rec': x['recommendation'],
-                                  'tp': r(x['target_price_adjusted'], 0), 'np26': x['net_income_forecast'], 'np27': x['net_income_forecast_n1'],
+                     'reports': [{'src': x['source'], 'd': x['recommendation_date'], 'rec': x.get('recommendation'),
+                                  'tp': r(x.get('target_price_adjusted'), 0), 'np26': x.get('net_income_forecast'), 'np27': x.get('net_income_forecast_n1'),
                                   'title': x['report_title'].strip()} for x in use]})
     D['consensus'] = {'from': '2026-07-14', 'to': TODAY, 'rows': cons,
                       'note': 'Mỗi CTCK lấy báo cáo mới nhất trong 92 ngày. Upside tính trên giá đóng cửa ' + '/'.join(lastday.split('-')[::-1]) + '. P/E fwd = vốn hóa / LNST 2026F trung vị.'}
@@ -504,9 +517,10 @@ def main():
             if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == endpoint and \
                     flt(d['request']).get('symbol', '').count(',') >= 10 and need in d['request'].get('columns', ''):
                 for r in rows(d['response']):
-                    out[(r.get('symbol'), r.get('year'), r.get('quarter'))] = r
+                    k = (r.get('symbol'), r.get('year'), r.get('quarter'))
+                    out[k] = {**out.get(k, {}), **{a: v for a, v in r.items() if v is not None}}
         return list(out.values())
-    kb = {x['symbol']: x['fnx107'] for x in sorted(latest_rows('fs_bank_notes', 'fnx107'), key=lambda r: (r.get('year') or 0, r.get('quarter') or 0))}   # kỳ mới nhất
+    kb = {x['symbol']: x['fnx107'] for x in sorted([x for x in latest_rows('fs_bank_notes', 'fnx107') if x.get('fnx107') is not None], key=lambda r: (r.get('year') or 0, r.get('quarter') or 0))}   # kỳ mới nhất
     fs = {x['symbol']: x for x in latest_rows('fs_bank', 'bs160_1') if x.get('year') == 2026 and x.get('quarter') == 2}
     sens = []
     for s, K in kb.items():
