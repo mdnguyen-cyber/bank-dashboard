@@ -24,13 +24,13 @@
       const cv = [...c.querySelectorAll('canvas')].find(x => window.Chart && Chart.getChart(x)); if (!cv) return;
       const b = document.createElement('button'); b.type = 'button'; b.className = 'sharepill'; b.innerHTML = '⇪ Chia sẻ ảnh'; b.title = 'Chia sẻ ảnh chart này';
       b.onclick = e => { e.stopPropagation(); open([c]); };
-      const z = document.createElement('button'); z.type = 'button'; z.className = 'sharepill fsx-zoom'; z.innerHTML = '⤢ Phóng to'; z.title = 'Mở to chart để xem kỹ (Esc để thu nhỏ)';
+      const z = document.createElement('button'); z.type = 'button'; z.className = 'sharepill fsx-zoom'; z.textContent = '⤢'; z.title = 'Phóng to'; z.setAttribute('aria-label', 'Phóng to');
       z.onclick = e => { e.stopPropagation(); maxOpen(c); };
       const g = document.createElement('button'); g.type = 'button'; g.className = 'sharepill fss-add'; g.textContent = '＋ Ghép'; g.title = 'Chọn chart này để ghép nhiều chart vào một ảnh';
       g.onclick = e => { e.stopPropagation(); toggleBasket(c); };
       let row = c.querySelector(':scope > .ibar');
       if (!row) { row = document.createElement('div'); row.className = 'ibar sharerow'; c.appendChild(row); }
-      row.appendChild(z); row.appendChild(g); row.appendChild(b);
+      row.appendChild(g); row.appendChild(b); row.appendChild(z);
     });
   }
   let tmr = null; new MutationObserver(() => { clearTimeout(tmr); tmr = setTimeout(() => { addButtons(); syncBasket(); }, 250); }).observe(document.body, { childList: true, subtree: true });
@@ -509,7 +509,7 @@
   /* ---------- phóng to chart (trên trang) và chỉnh chart trong ảnh (đúng tỷ lệ, cỡ chữ như ảnh xuất) ---------- */
   const MX = document.createElement('div'); MX.className = 'fsx'; MX.hidden = true; MX.setAttribute('role', 'dialog'); MX.setAttribute('aria-modal', 'true');
   MX.innerHTML = `<div class="fsx-box"><div class="fsx-hd"><div class="fsx-tt"><b class="fsx-t"></b><small class="fsx-s"></small></div>
-    <div class="fsx-act"><button type="button" class="fsx-ok" hidden>✓ Xong · áp dụng vào ảnh</button><button type="button" class="fsx-x" title="Esc">✕ Thu nhỏ</button></div></div>
+    <div class="fsx-act"><button type="button" class="fsx-ok" hidden>✓ Xong · áp dụng vào ảnh</button><button type="button" class="fsx-x" title="Thu nhỏ (Esc)" aria-label="Thu nhỏ">✕</button></div></div>
     <div class="fsx-body"></div></div>`;
   document.body.appendChild(MX);
   let mxs = null;   // { card, ph, cbox, style, done }
@@ -522,8 +522,8 @@
     const tgt = opt.cv || cvs[0], tbox = tgt.closest('.cbox') || tgt.parentElement;
     const boxes = [...new Set(cvs.map(c => c.closest('.cbox') || c.parentElement))], saved = boxes.map(b => [b, b.getAttribute('style')]), hid = [];
     MX.querySelector('.fsx-t').textContent = opt.title || [txt(document.querySelector('.site-nav a.on')) || (document.title || '').split('·')[0].trim(), ...pathOf(card)].filter(Boolean).join(' › ');
-    MX.querySelector('.fsx-s').textContent = opt.sub || 'Esc hoặc bấm ra ngoài để thu nhỏ · kéo trên chart để zoom, dùng nút khung thời gian phía trên chart';
-    MX.querySelector('.fsx-ok').hidden = !opt.done; MX.querySelector('.fsx-x').textContent = opt.done ? '✕ Đóng' : '✕ Thu nhỏ';
+    MX.querySelector('.fsx-s').textContent = opt.sub || '';
+    MX.querySelector('.fsx-ok').hidden = !opt.done; MX.querySelector('.fsx-x').title = opt.done ? 'Đóng (Esc)' : 'Thu nhỏ (Esc)';
     MX.hidden = false; document.body.classList.add('fsx-open');
     if (opt.size) {   // đúng kích thước chart khi ghép ảnh (cùng tỷ lệ, cùng cỡ chữ); màn hình nhỏ hơn thì thu theo tỷ lệ
       tbox.classList.add('fsx-target'); const rg = tbox.previousElementSibling; if (rg && rg.classList.contains('rng')) rg.classList.add('fsx-target');

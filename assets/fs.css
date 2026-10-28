@@ -776,7 +776,7 @@ table.fz thead th:first-child{background:var(--soft);z-index:3}
 .fss-iedit:hover{background:var(--soft);border-color:var(--navy)}
 .fss-iown{font-size:11px;color:var(--teal-ink)}
 /* phóng to chart */
-.sharepill.fsx-zoom{margin-left:auto}.ibar .fsx-zoom+.fss-add{margin-left:6px}
+.ibar .sharepill.fsx-zoom{margin-left:6px;width:30px;padding:5px 0;font-size:14px;line-height:1}
 body.print-all .fsx-zoom,body.pdf-cap .fsx-zoom{display:none!important}
 body.fsx-open{overflow:hidden}
 .fsx{position:fixed;inset:0;z-index:10050;background:rgba(15,20,45,.55);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;padding:16px}
@@ -792,6 +792,8 @@ body.fsx-open{overflow:hidden}
 .fsx-act button:hover{border-color:var(--navy)}
 .fsx-act .fsx-ok{background:var(--navy);border-color:var(--navy);color:#fff}.fsx-act .fsx-ok:hover{background:var(--teal);border-color:var(--teal);color:var(--navy)}
 .fsx-act .fsx-ok[hidden]{display:none}
+.fsx-act .fsx-x{width:34px;height:34px;padding:0;font-size:15px;display:inline-flex;align-items:center;justify-content:center}
+.fsx-s:empty{display:none}
 .fsx-body{flex:1;min-height:0;overflow:auto;padding:16px 18px}
 .fsx-body > .card.fsx-card{margin:0;box-shadow:none}
 .fsx-card .ibar{display:none!important}

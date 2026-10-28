@@ -13,10 +13,10 @@
   const pushRecent = k => { try { localStorage.setItem(RK, JSON.stringify([k, ...recent().filter(x => x !== k)].slice(0, 8))); } catch (e) {} };
 
   /* ---------- mở tới chart trên trang hiện tại ---------- */
-  function reveal(id, tries = 0) {
+  function reveal(id, tries = 0, quiet = false) {
     let el = document.getElementById(id);
     if (!el && window.FSSHARE && tries === 0) { try { FSSHARE.prep(); } catch (e) {} el = document.getElementById(id); }
-    if (!el) { if (tries < 8) setTimeout(() => reveal(id, tries + 1), 300); return false; }
+    if (!el) { if (tries < 8) setTimeout(() => reveal(id, tries + 1, quiet), 300); return false; }
     const card = el.closest('article.card') || el, pane = el.closest('.pane');
     if (pane && !pane.classList.contains('active')) { const tb = $(`#tabbar [data-tab="${pane.id}"]`); if (tb) tb.click(); }
     // mở các tab con / khối thu gọn bao quanh chart, từ ngoài vào trong
@@ -33,11 +33,38 @@
     });
     setTimeout(() => { const c = document.getElementById(id); const k = c && (c.closest('article.card') || c); if (!k) return;
       const to = (b = 'smooth') => { const tb = document.querySelector('.tabs'), off = (tb ? tb.offsetHeight : 0) + 12; window.scrollTo({ top: window.scrollY + k.getBoundingClientRect().top - off, behavior: b }); };
-      to(); k.classList.add('flash'); setTimeout(() => k.classList.remove('flash'), 2400);
+      to(quiet ? 'auto' : 'smooth'); if (!quiet) { k.classList.add('flash'); setTimeout(() => k.classList.remove('flash'), 2400); }
       // chart khác còn đang dựng làm trang dài ra trong lúc cuộn: chỉnh lại cho đúng vị trí
       [900, 1800].forEach(t => setTimeout(() => { const y = k.getBoundingClientRect().top; if (Math.abs(y - 70) > 40) to('auto'); }, t)); }, 350);
     return true;
   }
+
+  function revealAny(ids, quiet, tries = 0) {   // mở chart đầu tiên trong danh sách có trên trang
+    let id = ids.find(i => document.getElementById(i));
+    if (!id && tries === 0 && window.FSSHARE) { try { FSSHARE.prep(); } catch (e) {} id = ids.find(i => document.getElementById(i)); }
+    if (!id) { if (tries < 8) setTimeout(() => revealAny(ids, quiet, tries + 1), 300); return; }
+    reveal(id, 0, quiet);
+  }
+
+  /* ---------- đổi ngân hàng / doanh nghiệp: giữ nguyên tab, tab con và chart đang xem ---------- */
+  const kind = u => { const f = (u.split(/[?#]/)[0].split('/').pop()) || 'index.html'; return /^(index|vcb|bid|tcb|mbb|acb|stb|vpb|hdb)\.html$/.test(f) ? 'bank' : f === 'dn.html' ? 'dn' : null; };
+  function carry(url) {
+    const pane = document.querySelector('.pane.active'), tab = pane ? pane.id : '';
+    const off = (document.querySelector('.tabs') || { offsetHeight: 0 }).offsetHeight + 8;
+    const cvOf = c => [...c.querySelectorAll('canvas[id]')].find(x => x.offsetParent && !/^cb-/.test(x.id));
+    const cards = [...(pane || document).querySelectorAll('article.card')].filter(c => c.offsetParent && cvOf(c));
+    let ids = [];
+    if (window.scrollY > 150) {
+      const i = cards.findIndex(c => c.getBoundingClientRect().bottom > off + 60);   // thẻ chart đầu tiên còn thấy trên màn hình
+      if (i >= 0) ids = [...cards.slice(i, i + 5), ...cards.slice(Math.max(0, i - 3), i).reverse()].map(c => cvOf(c).id);   // chart này không có ở NH kia → chart kế bên
+    }
+    return url + (ids.length ? (url.includes('?') ? '&' : '?') + 'chart=' + encodeURIComponent(ids.join(',')) + '&keep=1' : '') + (tab ? '#' + tab : '');
+  }
+  document.addEventListener('change', e => {
+    const sel = e.target; if (!sel.matches || !sel.matches('.bank-pick select') || !sel.value) return;
+    const from = kind(location.pathname), to = kind(sel.value); if (!from || from !== to) return;
+    e.stopImmediatePropagation(); location.href = carry(sel.value);
+  }, true);
 
   /* ---------- hộp tìm ---------- */
   let IDX = null, box = null, sel = 0, grp = 'all', hits = [];
@@ -161,8 +188,8 @@
   });
   const init = () => {
     mount(); setTimeout(mount, 800);
-    const id = new URLSearchParams(location.search).get('chart');
-    if (id) setTimeout(() => { reveal(id); try { const u = new URL(location.href); u.searchParams.delete('chart'); history.replaceState(null, '', u.pathname + u.search + u.hash); } catch (e) {} }, 700);
+    const q = new URLSearchParams(location.search), id = q.get('chart'), quiet = q.get('keep') === '1';
+    if (id) setTimeout(() => { revealAny(id.split(',').filter(Boolean), quiet); try { const u = new URL(location.href); u.searchParams.delete('chart'); u.searchParams.delete('keep'); history.replaceState(null, '', u.pathname + u.search + u.hash); } catch (e) {} }, 700);
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   window.FSCHART = { open, reveal };
