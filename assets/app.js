@@ -19,7 +19,7 @@ const Q = D.quarterly, QL = Q[Q.length - 1], QP = Q[Q.length - 2];
 const M = D.meta, CS = D.consensus, FW = CS.fwd, VB = D.valuation;
 const TODAY = M.updated;
 const T = M.ticker, NR = D.narr || {}, GRP = M.peerGroup || 'Big 4', BIG = GRP === 'Big 4';
-const LTK = BIG ? ['VCB', 'BID', 'CTG'] : ['TCB', 'MBB', 'ACB'];   // nhóm có chuỗi dài hạn (data/big3-data.js)
+const LTK = BIG ? ['VCB', 'BID', 'CTG'] : GRP === 'Tư nhân lớn' ? ['TCB', 'MBB', 'ACB'] : [T, 'TCB', 'MBB', 'ACB'];   // nhóm có chuỗi dài hạn (data/big3-data.js); NH ngoài 2 nhóm so với nhóm tư nhân lớn
 const big4 = () => (D.peers.rows || []).filter(r => r.group === 'Big 4');
 const rankIn = (rows, k, me, desc = true) => { const s = rows.filter(r => r[k] != null).sort((a, b) => desc ? b[k] - a[k] : a[k] - b[k]); const i = s.findIndex(r => (r.symbol || r.s) === me); return i < 0 ? null : { i: i + 1, n: s.length }; };
 const maxIn = (k, n) => Math.max(...lastN(Q, n).map(q => q[k]).filter(v => v != null));
@@ -907,7 +907,7 @@ function peer(k) {
 function peerTs() {
   const B = window.BIG3, SB = (window.SECTOR_DATA || {}).banks, X = D.ctx; if (!B) return;
   const [key, lab, dp] = PEER_M.find(m => m[0] === pst.k), unit = key === 'pb' ? 'x' : '%';
-  const col = { VCB: C.teal, BID: C.purple, CTG: C.navy, TCB: C.red, MBB: C.blue, ACB: C.teal };
+  const col = { VCB: C.teal, BID: C.purple, CTG: C.navy, TCB: C.red, MBB: C.blue, ACB: C.teal, STB: C.navy };
   const agg = g => { if (!X || !X.agg[key] || !X.agg[key][g]) return B.quarters.map(() => null); return B.quarters.map(q => { const i = X.quarters.indexOf(q); return i < 0 ? null : X.agg[key][g][i]; }); };
   const ds = LTK.filter(s => B.series[s]).map(s => ({ label: s, data: B.series[s][key] || B.quarters.map(() => null), borderColor: col[s], backgroundColor: col[s], borderWidth: s === T ? 3 : 1.6, dp, unit, spanGaps: true }));
   if (X && X.agg[key]) ds.push({ label: 'Bình quân ' + GRP, data: agg(GRP), borderColor: C.gold, backgroundColor: C.gold, borderDash: [5, 4], dp, unit, spanGaps: true }, { label: 'Bình quân ngành', data: agg('all'), borderColor: C.grey, backgroundColor: C.grey, borderDash: [5, 4], dp, unit, spanGaps: true });
