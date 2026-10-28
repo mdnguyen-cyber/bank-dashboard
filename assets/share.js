@@ -282,7 +282,7 @@
         <span class="fss-sep"></span><button type="button" data-act="dash" class="fss-dash" title="Nét đứt cho mũi tên, khung, vòng (áp dụng cả hình đang chọn)"><span>┄</span>Nét đứt</button>
         <span class="fss-sep"></span><button type="button" data-act="del" class="fss-del" title="Xóa hình đang chọn (Delete)" disabled>🗑 Xóa hình</button><button type="button" data-act="undo" title="Hoàn tác (Ctrl+Z)">↶ Hoàn tác</button><button type="button" data-act="clear" title="Xóa hết hình vẽ">Xóa vẽ</button></div>
       <div class="fss-stage"><canvas class="fss-cv" aria-label="Ảnh xem trước"></canvas><button type="button" class="fss-ebtn" hidden>✎ Chỉnh chart</button><div class="fss-wait">Đang tạo ảnh…</div></div>
-      <p class="fss-hint">Kéo trên ảnh để vẽ · bấm vào hình đã vẽ để chọn: kéo để di chuyển, kéo ô vuông để đổi cỡ, đổi màu/nét đứt, Delete để xóa · bấm ra chỗ khác để bỏ chọn · rê chuột lên chart rồi bấm <b>✎ Chỉnh chart</b> để đổi khung thời gian, Cột/Đường.</p></div>
+      <p class="fss-hint">Chọn <b>↖ Chọn</b> rồi rê lên chart để chỉnh chart.</p></div>
     <div class="fss-right">
       <div class="fss-fmt">${Object.entries(FMT).map(([k, f]) => `<button type="button" data-fmt="${k}"><b>${f.t}</b><small>${f.s}</small></button>`).join('')}</div>
       <div class="fss-lab">CHART TRONG ẢNH <small>tối đa ${MAXN} · nhận định ngắn hiện ngay dưới tên chart</small></div>
@@ -381,7 +381,7 @@
   }
   M.addEventListener('click', e => {
     if (e.target === M || e.target.closest('.fss-x')) return close();
-    const t = e.target.closest('[data-tool]'); if (t) { st.tool = t.dataset.tool; st.sel = -1; if (!st.picked) st.color = BACK(st.tool) ? 'gold' : 'navy'; syncUi(); return render(); }
+    const t = e.target.closest('[data-tool]'); if (t) { st.tool = t.dataset.tool; st.sel = -1; st.hover = -1; M.querySelector('.fss-ebtn').hidden = true; if (!st.picked) st.color = BACK(st.tool) ? 'gold' : 'navy'; syncUi(); return render(); }
     const c = e.target.closest('[data-c]'); if (c) { st.color = c.dataset.c; st.picked = true; const sh = st.shapes[st.sel]; if (sh && sh.c !== st.color) { snapH(); sh.c = st.color; } syncUi(); return render(); }
     const ed = e.target.closest('[data-ed]'); if (ed) return editChart(+ed.dataset.ed);
     if (e.target.closest('.fss-ebtn')) return editChart(st.hover);
@@ -474,7 +474,7 @@
     if (!d) {   // rê chuột: con trỏ theo vị trí, nút "Chỉnh chart" trên chart đang rê
       const cur = st.shapes[st.sel], h = cur && hitHandle(cur, p);
       cv.style.cursor = h ? 'nwse-resize' : topHit(p) >= 0 ? 'move' : st.tool === 'none' ? (cellAt(p) ? 'pointer' : 'default') : 'crosshair';
-      const c = cellAt(p), hv = c ? c.i : -1; if (hv !== st.hover) { st.hover = hv; render(); } placeEbtn(c);
+      const c = st.tool === 'none' && !h && topHit(p) < 0 ? cellAt(p) : null, hv = c ? c.i : -1; if (hv !== st.hover) { st.hover = hv; render(); } placeEbtn(c);   // đang vẽ thì không hiện nút chỉnh chart
       return;
     }
     if (d.move === 'h') { const sh = d.sh; if (d.k === 'a') sh.a = p; else if (d.k === 'b') sh.b = p; else if (d.k === 'ab') { sh.b = { x: p.x, y: sh.b.y }; sh.a = { x: sh.a.x, y: p.y }; } else { sh.a = { x: p.x, y: sh.a.y }; sh.b = { x: sh.b.x, y: p.y }; } }
@@ -528,7 +528,7 @@
     if (opt.size) {   // đúng kích thước chart khi ghép ảnh (cùng tỷ lệ, cùng cỡ chữ); màn hình nhỏ hơn thì thu theo tỷ lệ
       tbox.classList.add('fsx-target'); const rg = tbox.previousElementSibling; if (rg && rg.classList.contains('rng')) rg.classList.add('fsx-target');
       // chỉ giữ tên chart, nút điều khiển và đúng chart này (ẩn bảng, nhận định, chart khác trong cùng thẻ)
-      const KEEP = 'h3.sub,.chart-sub,.ctl,.picker,.mode-sw,.tf,.tsw,[data-ctl],.fsx-target';
+      const KEEP = 'h3.sub,.chart-sub,.ctl,.picker,.mode-sw,.tf,.tsw,[data-ctl],.lgall,.fsx-target';
       for (let el = tbox; el && el !== card; el = el.parentElement) [...el.parentElement.children].forEach(sib => {
         if (sib === el || sib.contains(tbox) || sib.matches(KEEP) || sib.querySelector('.fsx-target') || sib.style.display === 'none') return;
         if (sib.matches('.chart-sub') && sib.nextElementSibling && !sib.nextElementSibling.contains(tbox) && !sib.nextElementSibling.classList.contains('fsx-target')) { hid.push([sib, sib.style.display]); sib.style.display = 'none'; return; }
@@ -565,8 +565,8 @@
     if (win && sx) { const n = (ch.data.labels || []).length; if (win[0] <= 0 && win[1] >= n - 1) { delete sx.min; delete sx.max; } else { sx.min = win[0]; sx.max = win[1]; } ch.update('none'); }   // mở ra đúng khung đang hiện trong ảnh
     ebtn.hidden = true; st.hover = -1;
     const F = FMT[st.fmt];
-    maxOpen(it.card, { cv: ch.canvas, size: { w: c.w / c.zs, h: c.h / c.zs }, title: `Chỉnh chart ${st.items.length > 1 ? (i + 1) + '/' + st.items.length + ' · ' : ''}${it.meta.title}`,
-      sub: `Đúng tỷ lệ và cỡ chữ của chart trong ảnh ${F.t}${st.items.length > 1 ? ' (bố cục ' + st.items.length + ' chart)' : ''} · đổi khung thời gian, Cột/Đường, trục Y rồi bấm Xong`,
+    maxOpen(it.card, { cv: ch.canvas, size: { w: c.w / c.zs, h: c.h / c.zs }, title: `${st.items.length > 1 ? (i + 1) + '. ' : ''}${it.meta.title}`,
+      sub: '',
       done: () => { it.rng = 'cur'; drawItems(); M.querySelector('.fss-cap').value = caption(); build(); } });
   }
 })();
