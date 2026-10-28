@@ -322,5 +322,89 @@
   },
   "events": [],
   "kbnnNote": ""
+ },
+ "VPB": {
+  "name": "Ngân hàng TMCP Việt Nam Thịnh Vượng",
+  "short": "VPBank",
+  "exchange": "HOSE",
+  "irUrl": "https://www.vpbank.com.vn/nha-dau-tu",
+  "dep12": 202868,
+  "page": "vpb.html",
+  "strategic": null,
+  "narr": {
+   "ownerSub": "Ngân hàng TMCP tư nhân, không có vốn Nhà nước; Sumitomo Mitsui Banking Corporation (SMBC) là cổ đông chiến lược nắm 15%; hệ sinh thái gồm FE Credit (50%, liên doanh với SMBC), Chứng khoán VPBank (VPBankS) và Bảo hiểm OPES.",
+   "ownerInsight": "SMBC giữ 15% sau đợt phát hành riêng lẻ 2023; ĐHĐCĐ 2026 thông qua phát hành riêng lẻ thêm hơn 624 triệu cổ phiếu cho một nhà đầu tư nước ngoài (quý III–IV/2026), đưa vốn điều lệ lên trên 106.200 tỷ đồng (Tạp chí Công Thương, 22/04/2026).",
+   "carWhy": "Vốn điều lệ tăng theo hai bước năm 2026: phát hành cổ phiếu từ vốn chủ sở hữu hơn 26% (lên 100.000 tỷ, quý II–III) và phát hành riêng lẻ cho nhà đầu tư nước ngoài (quý III–IV); cổ tức tiền mặt duy trì 5% cho năm 2024 và 2025.",
+   "nplFormCheck": "",
+   "llrRef": null,
+   "recovTarget": "",
+   "tpSpread": "Chênh lệch giữa các CTCK nằm ở tốc độ phục hồi lợi nhuận FE Credit, chi phí tín dụng của ngân hàng mẹ khi tín dụng tăng hơn 30%, và mức pha loãng từ hai đợt tăng vốn năm 2026.",
+   "divNote": "",
+   "divInsight": "Cổ tức tiền mặt 10% cho năm 2022–2023 và 5% cho năm 2024–2025 theo cam kết chi tiền mặt 5 năm từ ĐHĐCĐ 2023; năm 2026 thêm cổ phiếu từ vốn chủ sở hữu hơn 26%.",
+   "divSrc": "Wi MCP co_events, ratio_common_year; Tạp chí Công Thương 22/04/2026",
+   "eventsNote": "",
+   "modelNote": "",
+   "risks": [
+    [
+     "Tăng trưởng tín dụng nhanh",
+     "Kế hoạch 2026 tín dụng hợp nhất +34%, LDR theo BCTC hơn 100% — áp lực huy động và giới hạn tín dụng",
+     "Thanh khoản"
+    ],
+    [
+     "Chất lượng tài sản",
+     "Nợ xấu hợp nhất trên 3% (FE Credit chiếm phần lớn); mục tiêu ngân hàng mẹ dưới 2,5% năm 2026",
+     "Chất lượng tài sản"
+    ],
+    [
+     "Pha loãng",
+     "Phát hành riêng lẻ hơn 624 triệu cổ phiếu cho nhà đầu tư nước ngoài dự kiến quý III–IV/2026",
+     "Catalyst"
+    ]
+   ]
+  },
+  "events": [],
+  "kbnnNote": ""
+ },
+ "HDB": {
+  "name": "Ngân hàng TMCP Phát triển Thành phố Hồ Chí Minh",
+  "short": "HDBank",
+  "exchange": "HOSE",
+  "irUrl": "https://hdbank.com.vn/vi/investor",
+  "dep12": 202730,
+  "page": "hdb.html",
+  "strategic": null,
+  "narr": {
+   "ownerSub": "Ngân hàng TMCP tư nhân; CTCP Tập đoàn Sovico là cổ đông lớn nhất (khoảng 10%); hệ sinh thái gồm Ngân hàng số Vikki (100%, tiếp nhận DongA Bank theo phương án chuyển giao bắt buộc), Công ty Tài chính HD SAISON (50%) và Chứng khoán HD (HDS).",
+   "ownerInsight": "Cuối 2024 HDBank tiếp nhận DongA Bank theo phương án của Chính phủ và NHNN, đổi tên thành Ngân hàng số Vikki (SGGP, 24/04/2025); ĐHĐCĐ 2026 thông qua chủ trương góp vốn, mua cổ phần tổ chức tín dụng khác và lập ngân hàng con tại Trung tâm Tài chính quốc tế (Mekong ASEAN, 24/04/2026).",
+   "carWhy": "Năm 2026 dự kiến phát hành cổ phiếu từ vốn chủ sở hữu tỷ lệ khoảng 30% để tăng vốn điều lệ; lợi nhuận giữ lại là nguồn tăng vốn chính.",
+   "nplFormCheck": "",
+   "llrRef": null,
+   "recovTarget": "",
+   "tpSpread": "Chênh lệch giữa các CTCK nằm ở mức đóng góp của Vikki Bank, chi phí tín dụng khi dư nợ tăng mạnh (kế hoạch +37%), và khả năng hoàn thành kế hoạch lợi nhuận tăng 41%.",
+   "divNote": "",
+   "divInsight": "Chủ yếu chia cổ tức bằng cổ phiếu (15–30%/năm từ 2020, 30% cho năm 2025); tiền mặt 10% chỉ ở năm 2022 và 2023. Năm 2026 dự kiến phát hành khoảng 30% từ vốn chủ sở hữu.",
+   "divSrc": "Wi MCP co_events, ratio_common_year; Mekong ASEAN 24/04/2026",
+   "eventsNote": "",
+   "modelNote": "",
+   "risks": [
+    [
+     "Kế hoạch lợi nhuận cao",
+     "LNTT 2026 kế hoạch 30.100 tỷ (+41%) và dư nợ +37% (ĐHĐCĐ 24/04/2026)",
+     "Tăng trưởng"
+    ],
+    [
+     "Chất lượng tài sản",
+     "Nợ xấu quanh 2,5–2,9% các quý gần đây; dư nợ tăng nhanh làm loãng tỷ lệ",
+     "Chất lượng tài sản"
+    ],
+    [
+     "Vikki Bank và M&A",
+     "Tái cơ cấu ngân hàng nhận chuyển giao và chủ trương mua cổ phần tổ chức tín dụng khác",
+     "Catalyst"
+    ]
+   ]
+  },
+  "events": [],
+  "kbnnNote": ""
  }
 }

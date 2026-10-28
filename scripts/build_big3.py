@@ -7,8 +7,8 @@ Chạy sau khi đã dựng cả ba ngân hàng.
 import json, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-TICKERS = ['VCB', 'BID', 'CTG', 'TCB', 'MBB', 'ACB', 'STB']
-GROUP = {'VCB': 'Big 4', 'BID': 'Big 4', 'CTG': 'Big 4', 'TCB': 'Tư nhân lớn', 'MBB': 'Tư nhân lớn', 'ACB': 'Tư nhân lớn', 'STB': 'Tư nhân vừa'}
+TICKERS = ['VCB', 'BID', 'CTG', 'TCB', 'MBB', 'ACB', 'STB', 'VPB', 'HDB']
+GROUP = {'VCB': 'Big 4', 'BID': 'Big 4', 'CTG': 'Big 4', 'TCB': 'Tư nhân lớn', 'MBB': 'Tư nhân lớn', 'ACB': 'Tư nhân lớn', 'STB': 'Tư nhân vừa', 'VPB': 'Tư nhân lớn', 'HDB': 'Tư nhân lớn'}
 KEYS = ['nim', 'yea', 'cof', 'cir', 'casa', 'npl', 'g2', 'llr', 'ldr', 'creditYoY', 'fundingYoY', 'roe', 'roa', 'nfiShare',
         'pb', 'pe', 'creditCost', 'nplFormationRate', 'accruedToTA', 'llrInclAccrued', 'nimAdj']
 

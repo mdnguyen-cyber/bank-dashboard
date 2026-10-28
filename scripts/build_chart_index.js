@@ -11,7 +11,7 @@ const srv = http.createServer((q, r) => {
   fs.readFile(f, (e, b) => { if (e) { r.writeHead(404); r.end(); } else { r.writeHead(200, { 'Content-Type': MIME[path.extname(f)] || 'application/octet-stream' }); r.end(b); } });
 });
 // trang (file, nhãn, nhóm, chỉ developer?)
-const BANKS = [['index', 'CTG'], ['vcb', 'VCB'], ['bid', 'BID'], ['tcb', 'TCB'], ['mbb', 'MBB'], ['acb', 'ACB'], ['stb', 'STB']];
+const BANKS = [['index', 'CTG'], ['vcb', 'VCB'], ['bid', 'BID'], ['tcb', 'TCB'], ['mbb', 'MBB'], ['acb', 'ACB'], ['stb', 'STB'], ['vpb', 'VPB'], ['hdb', 'HDB']];
 const FIN = ['BVH', 'PVI', 'MIG', 'BMI', 'BIC', 'PTI', 'SSI', 'TCX', 'VCK', 'VPX', 'HCM', 'VCI', 'MBS', 'VND', 'SHS'];
 const PAGES = [['vimo.html', 'Vĩ mô', 'Vĩ mô', 0], ['nganh.html', 'Ngành Ngân hàng', 'Ngành Ngân hàng', 0],
   ...BANKS.filter(([f]) => fs.existsSync(path.join(SITE, f + '.html'))).map(([f, t]) => [f + '.html', t, 'Cổ phiếu ngân hàng', 0]),

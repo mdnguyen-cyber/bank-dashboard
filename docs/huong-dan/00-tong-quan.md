@@ -98,7 +98,7 @@ Biên tập tay                  →   data/banks.json, sbv-log.json, quick-upda
 3. **Build:**
    ```
    python3 scripts/build_sector_data.py
-   for t in CTG VCB BID TCB MBB ACB STB; do python3 scripts/build_ctg_data.py --ticker $t; done
+   for t in CTG VCB BID TCB MBB ACB STB VPB HDB; do python3 scripts/build_ctg_data.py --ticker $t; done
    python3 scripts/build_big3.py && python3 scripts/build_bond_data.py
    python3 scripts/cmd_wi_backfill.py && python3 scripts/build_cmd.py
    python3 scripts/fin_wi_backfill.py && python3 scripts/build_fin_data.py
