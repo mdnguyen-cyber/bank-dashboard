@@ -790,3 +790,14 @@ Quy ước ý nghĩa: đỏ `#c0392b` = xấu/giảm/thị giá/trần; xanh `#1
 5. Thêm `scripts/gom_site.sh`, `build_pdfs.js`, `pages.yml` (2 job), các workflow dữ liệu với cron mục 6.2 và bước `gh workflow run pages.yml`.
 6. `build_catalog.py` chạy cuối mỗi lượt dữ liệu; `backend.html` đọc `data/catalog.js`.
 7. Kiểm: mở trang local (version-check tự bỏ qua vì còn `__BUILD__`), thử 1M…Tất cả, kéo zoom, kéo trục Y, Ẩn tất cả, Chia sẻ ảnh, PDF bản đang xem, User/Developer view; push → xem `version.json`, `?v=` trong HTML và `pdf/index.json` trên web.
+
+## Tìm chart toàn dashboard (`assets/chartsearch.js`)
+
+- **Mở:** nút "🔍 Tìm chart" ở đầu `.logo-right`, phím tắt Ctrl/⌘ + K hoặc phím `/` (khi không đang gõ trong ô nhập).
+- **Mục lục:** `data/chart-index.js` (`window.CHART_INDEX = {built, n, c:[{u, l, g, d, id, t, s, p}]}`), chỉ tải khi mở hộp lần đầu.
+  - `u`: trang (vd `stb.html`, `dn.html?s=SSI`); `l`: nhãn trang; `g`: nhóm lọc (Vĩ mô, Ngành Ngân hàng, Cổ phiếu ngân hàng, Bảo hiểm · Chứng khoán); `d = 1`: trang Developer view (chỉ hiện khi đang ở Developer view).
+  - `id`: mã canvas; `t`: tiêu đề thẻ (card nhiều chart thì nối thêm nhãn riêng của chart); `s`: dòng phụ (≤ 160 ký tự); `p`: đường dẫn tab › tab con lấy từ `FSSHARE.path()`.
+- **Dựng mục lục:** `node scripts/build_chart_index.js [thư mục site]`. Script mở từng trang bằng Chromium, đặt `fsDevView=1`, gọi `FSSHARE.prep()` để dựng mọi tab, bỏ chart trong Chart book (`#book`, mã `cb-…`) và khối dựng ẩn `#vmx`, bỏ trùng tiêu đề trong cùng tab. Job `pdf` của `pages.yml` chạy lại bước này trên `_site` mỗi lần deploy, nên chart mới tự vào mục lục. Chạy offline: đặt `CHARTJS_LOCAL`.
+- **Tìm:** không phân biệt dấu (chuẩn hoá NFD, đ→d), nhiều từ = phải khớp đủ các từ. Điểm: khớp tiêu đề 6–10, nhãn trang/tab 4, dòng phụ 2, mã chart 1, cùng trang đang xem +3. Tối đa 80 kết quả, tô vàng phần khớp. Ô trống: hiện "Mở gần đây" (`localStorage['fs-chart-recent']`, 8 mục) hoặc chart của trang hiện tại.
+- **Mở kết quả:** cùng trang → `FSCHART.reveal(id)`: dựng các tab nếu chưa có, bấm nút tab của `.pane` chứa chart, mở các tab con (`data-pp`, `data-subp`, `data-c`), mở `details`/khối thu gọn, cuộn tới thẻ (trừ chiều cao thanh tab) và viền teal 2,4 giây; chỉnh lại vị trí sau 0,9 và 1,8 giây vì các chart khác còn đang dựng. Trang khác → chuyển tới `<trang>?chart=<mã>` (hoặc `&chart=`); khi tải trang, script đọc tham số, mở tới chart rồi xoá tham số khỏi địa chỉ.
+- Mỗi trang HTML nạp `<script src="assets/chartsearch.js">` ngay trước `</body>`, sau renderer.

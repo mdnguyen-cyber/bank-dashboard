@@ -56,6 +56,7 @@ jobs:
         run: |
           npm i --no-save --no-package-lock playwright@1.47.2
           npx playwright install --with-deps chromium
+          node scripts/build_chart_index.js _site || echo "::warning::không dựng được mục lục chart"
           node scripts/build_pdfs.js _site
           N=$(ls _site/pdf/*.pdf | wc -l); echo "::notice title=PDF::$N file PDF, $(du -sh _site/pdf | cut -f1)"
       - uses: actions/configure-pages@v5
