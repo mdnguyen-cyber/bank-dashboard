@@ -285,7 +285,7 @@ def main():
     for ep in ['ratio_bank_ttm', 'ratio_bank', 'ratio_common_ttm']:
         for row in bank_rows(ep, None):
             key = (row['symbol'], row['year'], row['quarter'])
-            panel[key].update({k: v for k, v in row.items() if k not in ('symbol', 'year', 'quarter')})
+            panel[key].update({k: v for k, v in row.items() if k not in ('symbol', 'year', 'quarter') and (v is not None or k not in panel[key])})
     PCT = ['nim', 'cof', 'yea', 'cir', 'casa_ratio', 'npl_ratio', 'group2_loan_ratio', 'npl_coverage_ratio', 'ldr',
            'credit_growth_yoy', 'roe', 'roa', 'profit_parent_yoy']
     REN = {'casa_ratio': 'casa', 'npl_ratio': 'npl', 'group2_loan_ratio': 'g2', 'npl_coverage_ratio': 'llr',
@@ -295,10 +295,13 @@ def main():
     for (s_, y, q), row in panel.items():
         if any(v is not None for v in row.values()):
             _nq[(y, q)].add(s_)
-    quarters = sorted(k for k in _nq if len(_nq[k]) >= 20)
+    # quý đang mùa BCTC vẫn đưa vào (từ 5 NH đã công bố) để NH công bố trước hiện ngay; số toàn ngành của quý đó chỉ gồm NH đã có số (nRep ghi số NH)
+    quarters = sorted(k for k in _nq if len(_nq[k]) >= 5)
+    NREP = [len(_nq[k]) for k in quarters]
+    QCI = max(i for i, n in enumerate(NREP) if n >= 20)   # quý gần nhất đã đủ NH công bố — dùng cho tín hiệu rủi ro, độ nhạy
     QL = [f'Q{q}/{y}' for y, q in quarters]
     banks = {}
-    ALLK = sorted({k for row in panel.values() for k in row})
+    ALLK = sorted({k for row in panel.values() for k in row} - {'npl'})   # 'npl' (số dư nợ xấu) trùng tên với npl_ratio sau đổi tên → bỏ
     for s in BANKS:
         ser = defaultdict(list)
         has = {k for (s2, _, _), row in panel.items() if s2 == s for k in row}
@@ -320,19 +323,25 @@ def main():
                     val = None
                 ser[name].append(val)
         banks[s] = {'group': GROUP[s], **ser}
-    D['banks'] = {'quarters': QL, 'series': banks}
+    D['banks'] = {'quarters': QL, 'series': banks, 'nRep': NREP, 'nAll': len(BANKS), 'completeQ': QL[QCI]}
 
     # định giá theo phiên gần nhất
     daily = None
     for d in raw:
         if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily':
             daily = rows(d['response'])
-    lastday = max(x['trading_date'] for x in daily)
-    val = {x['symbol']: x for x in daily if x['trading_date'] == lastday}
+    val = {}   # phiên mới nhất của từng mã (một số mã có thể có phiên muộn hơn trong lần kéo riêng)
+    for d in raw:
+        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily' and 'bvps' in (d['request'].get('columns') or 'bvps'):
+            for x in rows(d['response']):
+                if x.get('symbol') in BANKS and x.get('pb') and x.get('bvps') and x['trading_date'] >= val.get(x['symbol'], {}).get('trading_date', ''):
+                    val[x['symbol']] = x
+    from collections import Counter as _C
+    lastday = _C(v['trading_date'] for v in val.values()).most_common(1)[0][0]
     latest = []
     for s in BANKS:
         b, v = banks[s], val.get(s, {})
-        g = lambda k: (b.get(k) or [None])[-1]
+        g = lambda k: next((x for x in reversed(b.get(k) or []) if x is not None), None)   # số mới nhất NH đã công bố
         price = r(v['pb'] * v['bvps'], 0) if v.get('pb') and v.get('bvps') else None
         latest.append({'s': s, 'group': GROUP[s], 'price': price, 'pb': r(v.get('pb')), 'pe': r(v.get('pe')),
                        'mcap': r((v.get('market_cap') or 0) / 1e9, 0), 'bvps': r(v.get('bvps'), 0),
@@ -361,7 +370,7 @@ def main():
                            'prov': [r(-pttm(i, 'is140') / 1e3, 1) for i in range(3, len(pqs))],
                            'npat': [r(pttm(i, 'is190') / 1e3, 1) for i in range(3, len(pqs))],
                            'src': 'BCTC hợp nhất 26 ngân hàng niêm yết, cộng 4 quý gần nhất'}
-    D['latest'] = {'quarter': QL[-1], 'priceDate': lastday, 'rows': latest}
+    D['latest'] = {'quarter': QL[-1], 'nRep': NREP[-1], 'priceDate': lastday, 'rows': latest}
 
     # P/B lịch sử từng NH: cuối mỗi quý (ratio_bank) + mọi phiên có trong các lần kéo ratio_daily; trung vị ngành theo cùng ngày
     import calendar as _cal
@@ -525,7 +534,7 @@ def main():
     sens = []
     for s, K in kb.items():
         L = fs.get(s, {}).get('bs160_1')
-        ldr20 = banks[s]['ldr'][-1]
+        ldr20 = (banks[s].get('ldr') or [None] * len(QL))[QL.index('Q2/2026')] if 'Q2/2026' in QL else None
         if not L or not ldr20:
             continue
         D20 = L / (ldr20 / 100)
@@ -565,7 +574,7 @@ def main():
                 'group': {g: {str(y): v for y, v in d.items()} for g, d in grp.items()}, 'table': FL.table(sec), 'banks': per,
                 'n': len(BANKS)}
 
-    D['ldrSens'] = {'quarter': QL[-1], 'rows': sens,
+    D['ldrSens'] = {'quarter': 'Q2/2026', 'rows': sens,
                     'formula': 'LDR(c) = Cho vay KH / (Mẫu số LDR Wi ở hệ số 20% + (c − 20%) × Tiền gửi KBNN). Wi tính Q2/2026 với hệ số 20%; tiền gửi KBNN lấy tổng (fnx107) chứ không riêng có kỳ hạn → mức nhạy là cận trên.'}
 
     # ------------------------------------------------ mô phỏng xếp hạng TT21 + room ngụ ý (26 NH)
@@ -622,8 +631,8 @@ def main():
     dep_txt = f'{vn(dep_1m, 2, True)} điểm % từ {_b[8:]}/{_b[5:7]} đến {_dl[8:]}/{_dl[5:7]}'
     vn10 = S(234526)
     vn10_chg = (vn10[km] - vn10[M[M.index(km) - 12]]) * 100
-    npl_now, npl_ly = agg['npl']['all'][-1], agg['npl']['all'][-5]
-    cof_now, cof_ly = agg['cof']['all'][-1], agg['cof']['all'][-5]
+    npl_now, npl_ly = agg['npl']['all'][QCI], agg['npl']['all'][QCI - 4]
+    cof_now, cof_ly = agg['cof']['all'][QCI], agg['cof']['all'][QCI - 4]
     sv = D['secVal']
     # kỳ vọng Fed theo phiên FOMC (scripts/fetch_fedwatch.py: phương pháp CME FedWatch từ giá ZQ)
     fw_txt, fw_state = '', 'risk'

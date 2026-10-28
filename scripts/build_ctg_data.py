@@ -168,9 +168,10 @@ def build(raw):
     rbmix = sort_q(mine(rows(find(raw, 'wi_data_companies', 'ratio_bank', lambda q: own(q) and flt(q).get('quarter') == '2,4' and 'pct_loans' in q.get('columns', ''))['response'])))
     rct = sort_q(merged(raw, 'wi_data_companies', 'ratio_common_ttm', own, TICKER))
     def peer_rows(ep):   # mọi lần kéo toàn ngành có Q2/2026 (bảng 26 NH theo quý + bảng 12 NH kỳ Q2/2026), gộp theo mã
-        pq = lambda q: len(syms(q)) >= 10 and '2026' in str(flt(q).get('year', '')) and '2' in str(flt(q).get('quarter', '')).split(',')
+        pq = lambda q: len(syms(q)) >= 10 and str(PEER_Y) in str(flt(q).get('year', '')) and str(PEER_Q) in str(flt(q).get('quarter', '')).split(',')
         return [r for r in merged(raw, 'wi_data_companies', ep, pq) if r['year'] == PEER_Y and r['quarter'] == PEER_Q]
-    PEER_Y, PEER_Q = 2026, 2
+    # kỳ so sánh nhóm = quý BCTC mới nhất của chính ngân hàng; NH chưa công bố quý đó để trống
+    PEER_Y, PEER_Q = max((r['year'], r['quarter']) for r in fsq)
     peers_rbt, peers_rb, peers_rc = peer_rows('ratio_bank_ttm'), peer_rows('ratio_bank'), peer_rows('ratio_common_ttm')
     car = mine(rows(find(raw, 'wi_data_companies', 'bank_car_tt41', own)['response']))
     car_all = rows(find(raw, 'wi_data_companies', 'bank_car_tt41', lambda q: len(syms(q)) >= 10)['response'])
@@ -650,7 +651,8 @@ def build(raw):
                                               'accruedToTA': pct(r.get('accrued_interest_to_total_assets'))})
     for r in peers_rc:
         P.setdefault(r['symbol'], {}).update({'roe': pct(r.get('roe'), 1), 'roa': pct(r.get('roa')), 'npatYoY': pct(r.get('profit_parent_yoy'), 1)})
-    D['peers'] = {'period': 'Q2/2026 (NIM, COF, YEA, CIR, ROE, ROA: TTM)',
+    _nrep = sum(1 for v in P.values() if v.get('nim') is not None or v.get('npl') is not None)
+    D['peers'] = {'period': f'Q{PEER_Q}/{PEER_Y} (NIM, COF, YEA, CIR, ROE, ROA: TTM)' + (f' · {_nrep}/26 NH đã công bố, đang cập nhật' if _nrep < 26 else ''), 'nRep': _nrep,
                   'rows': [dict(symbol=s, group=PEER_GROUPS.get(s, 'Khác'), **v) for s, v in sorted(P.items(), key=lambda kv: (list(PEER_GROUPS).index(kv[0]) if kv[0] in PEER_GROUPS else 99))]}
 
     # ------------------------------------------------ governance
@@ -905,13 +907,14 @@ def build(raw):
     try:
         _S = json.loads((ROOT / 'data/sector-data.json').read_text(encoding='utf-8'))
         _ls = next((r for r in _S['ldrSens']['rows'] if r['s'] == TICKER), None)
-        _cm = next((r for r in _S['camel']['periods']['TTM2Q26']['rows'] if r['s'] == TICKER), None)
+        _cmk = next(k for k in reversed(list(_S['camel']['periods'])) if any(r['s'] == TICKER for r in _S['camel']['periods'][k]['rows']))   # kỳ mới nhất có NH này
+        _cm = next((r for r in _S['camel']['periods'][_cmk]['rows'] if r['s'] == TICKER), None)
         _bigNim = _S['agg']['series']['nim'][GRP][-1]
     except Exception:  # noqa: BLE001
         _ls = _cm = _bigNim = None
     try:   # bối cảnh ngành cho các tab Tài chính (từ dashboard ngành)
         _ag = _S['agg']['series']; _bq = _S['banks']['quarters']
-        D['ctx'] = {'quarters': _bq, 'ldrSens': _ls,
+        D['ctx'] = {'quarters': _bq, 'ldrSens': _ls, 'nRep': _S['banks'].get('nRep'), 'nAll': _S['banks'].get('nAll', 26), 'camelPeriod': _cmk,
                     'camel': {k: _cm.get(k) for k in ('room', 'creditYtd', 'grade', 'total')} if _cm else None,
                     'roomCoef': _S['camel']['roomCoef'],
                     'agg': {m: {g: _ag[m][g] for g in dict.fromkeys(('Big 4', GRP, 'all')) if g in _ag[m]} for m in ('nim', 'cof', 'yea', 'npl', 'g2', 'llr', 'ldr', 'casa', 'cir', 'roe') if m in _ag},

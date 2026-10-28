@@ -182,6 +182,10 @@ const gdot = g => `<span class="grpdot" style="background:${GC[g]}"></span>`;
 
 /* ---------- số dùng nhiều nơi ---------- */
 const QI = BQ.length - 1, QY = BQ.length - 5;
+// quý đang mùa BCTC: số toàn ngành/nhóm chỉ gồm NH đã công bố → nhãn kèm số NH, dấu * trên trục
+const NREP = D.banks.nRep || BQ.map(() => null), NALL = D.banks.nAll || 26;
+const qL = i => BQ[i] + (NREP[i] != null && NREP[i] < NALL ? ` (${NREP[i]}/${NALL} NH đã công bố, đang cập nhật)` : '');
+const BQX = BQ.map((q, i) => NREP[i] != null && NREP[i] < NALL ? q + '*' : q);
 const dom = D.dom, intl = D.intl;
 const ytdNow = lastv(dom.creditYtd), ytdLY = dom.creditYtd.find(p => p.d.slice(5, 7) === ytdNow.d.slice(5, 7) && +p.d.slice(0, 4) === +ytdNow.d.slice(0, 4) - 1);
 const grpMed = (k, g) => med(Lr.filter(r => r.group === g).map(r => r[k]));
@@ -205,7 +209,7 @@ function header() {
   if (PAGE === 'vimo') return headerVimo();
   const v = view();
   $('#stockHead').innerHTML = `<div class="tick">NGÀNH</div>
-    <div class="cname">Ngân hàng Việt Nam · Chính sách tiền tệ<small>${M.banks.length} NH niêm yết · BCTC mới nhất ${D.latest.quarter} · giá ${dvn(D.latest.priceDate)}</small></div>
+    <div class="cname">Ngân hàng Việt Nam · Chính sách tiền tệ<small>${M.banks.length} NH niêm yết · BCTC mới nhất ${D.latest.quarter}${D.latest.nRep && D.latest.nRep < NALL ? ` (${D.latest.nRep}/${NALL} NH)` : ''} · giá ${dvn(D.latest.priceDate)}</small></div>
     <div class="hstats">
       <div class="hstat"><span>P/B ngành</span><b>${x(SV.now.pb)}</b></div>
       <div class="hstat"><span>P/E ngành</span><b>${x(SV.now.pe)}</b></div>
@@ -500,18 +504,18 @@ function subPeer() {
   <div class="kpis">
     ${kpi('P/B ngành', x(SV.now.pb), `TB từ ${mvn(SV.from)}: ${x(SV.pb.mean)} (${sg(pbZ, 1, 'σ')})`, pbZ < 0 ? 'pos' : '')}
     ${kpi('P/E ngành', x(SV.now.pe), `TB ${x(SV.pe.mean)} · LNST TTM ${nf(SV.profitTTM, 1)} nghìn tỷ`)}
-    ${kpi('NIM ngành ' + BQ[QI], pc(nimN, 2), `cùng kỳ ${pc(nimY, 2)}`, nimN < nimY ? 'neg' : 'pos')}
+    ${kpi('NIM ngành ' + BQX[QI], pc(nimN, 2), `cùng kỳ ${pc(nimY, 2)}${NREP[QI] < NALL ? ` · ${NREP[QI]}/${NALL} NH đã công bố` : ''}`, nimN < nimY ? 'neg' : 'pos')}
     ${kpi('NPL ngành', pc(AG.npl.all[QI], 2), `cùng kỳ ${pc(AG.npl.all[QY], 2)} · nhóm 2 ${pc(AG.g2.all[QI], 2)}`)}
     ${kpi('Tín dụng so đầu năm', pc(ytdNow.v, 2), `${mvn(ytdNow.d)} · cùng kỳ ${pc(ytdLY && ytdLY.v, 2)}`, ytdLY && ytdNow.v < ytdLY.v ? 'neg' : '')}
     ${kpi('Huy động 12T NHTM NN', pc(lastv(dom.dep12State).v, 2), `${sg(lastv(dom.dep12State).v - (byM(dom.dep12State)['2025-12']), 2, ' điểm %')} từ đầu năm`, 'neg')}
   </div>
-  <h3 class="sub" style="margin:6px 0 10px">Chỉ số theo nhóm · trung vị, ${BQ[QI]}</h3>
+  <h3 class="sub" style="margin:6px 0 10px">Chỉ số theo nhóm · trung vị, ${qL(QI)}</h3>
   <div class="gcards gap">${GROUPS.map(g => groupCard(g)).join('')}</div>
-  ${card({ id: 'chCompare', title: 'So sánh tài chính & định giá', h: 'tall', sub: `Chọn chỉ tiêu và nhóm · ${BQ[QI]} (NIM, COF, CIR, ROE: TTM) · P/B, P/E theo giá ${dvn(D.latest.priceDate)}`,
+  ${card({ id: 'chCompare', title: 'So sánh tài chính & định giá', h: 'tall', sub: `Chọn chỉ tiêu và nhóm · ${qL(QI)} (NIM, COF, CIR, ROE: TTM) · P/B, P/E theo giá ${dvn(D.latest.priceDate)}`,
     body: `<div class="picker" id="cmpMetric">${CMP.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div><div class="picker" id="cmpGroup">${['Tất cả', ...GROUPS].map(g => `<button type="button" data-g="${g}">${g}</button>`).join('')}</div>`,
     insight: '<span id="cmpIns"></span>', src: 'Wi MCP ratio_bank, ratio_bank_ttm, ratio_common_ttm, ratio_daily' })}
   <div class="grid g2 gap">
-    ${card({ id: 'chRoePb', title: 'ROE và P/B: ai đang được định giá cao/thấp so với khả năng sinh lời', sub: `ROE TTM ${BQ[QI]} (trục ngang) · P/B ${dvn(D.latest.priceDate)} (trục dọc) · màu theo nhóm (bấm chú thích để ẩn/hiện nhóm) · đường đứt = hồi quy P/B theo ROE của các mã đang hiện · tick ô "Chọn" ở bảng bên cạnh để làm nổi hoặc chỉ hiện các mã đó`, h: 'tall',
+    ${card({ id: 'chRoePb', title: 'ROE và P/B: ai đang được định giá cao/thấp so với khả năng sinh lời', sub: `ROE TTM ${qL(QI)} (trục ngang) · P/B ${dvn(D.latest.priceDate)} (trục dọc) · màu theo nhóm (bấm chú thích để ẩn/hiện nhóm) · đường đứt = hồi quy P/B theo ROE của các mã đang hiện · tick ô "Chọn" ở bảng bên cạnh để làm nổi hoặc chỉ hiện các mã đó`, h: 'tall',
       body: `<div class="picker" id="rpMode"><button type="button" data-m="all">Tất cả, làm nổi mã đã chọn</button><button type="button" data-m="sel">Chỉ mã đã chọn</button><button type="button" data-m="clr">Bỏ chọn</button></div>`,
       insight: '<span id="rpIns"></span>', src: 'Wi MCP ratio_common_ttm, ratio_daily · hồi quy tuyến tính bình phương nhỏ nhất, tự tính' })}
     <article class="card"><h3 class="sub">Bảng so sánh ${M.banks.length} ngân hàng</h3><p class="chart-sub">Bấm tiêu đề cột để sắp xếp · tick "Chọn" để đưa mã lên chart ROE–P/B · % · P/B, P/E: lần</p>
@@ -853,23 +857,23 @@ function cmRender() {
     <td class="c"><span class="gr g${cmGrade(r.T.pt)}">${cmGrade(r.T.pt)}</span></td><td class="n">${nf(r.T.pt * CM.roomCoef, 1)}%</td><td class="n">${r.creditYtd == null ? '—' : pc(r.creditYtd, 1)}</td></tr>`).join('');
   $$('#cmBody tr').forEach(tr => tr.onclick = e => { if (e.target.tagName === 'INPUT') return; cmS.sel = tr.dataset.s; cmRender(); });
   $$('#cmBody .qin').forEach(inp => inp.onchange = () => { const v = Math.min(5, Math.max(1, +inp.value || CM.qualDefault)); const q = store.get().qual || {}; q[inp.dataset.s] = v; store.set({ qual: q }); cmRender(); });
-  const ctg = R.find(r => r.s === 'CTG'), rk = R.indexOf(ctg) + 1, big = R.filter(r => r.big), rkB = big.indexOf(ctg) + 1;
+  const ctg = R.find(r => r.s === cmS.sel) || R.find(r => r.s === 'CTG') || R[0], rk = R.indexOf(ctg) + 1, big = R.filter(r => r.big), rkB = big.indexOf(ctg) + 1;
   const cnt = g => R.filter(r => cmGrade(r.T.pt) === g).length;
-  $('#cmK').innerHTML = kpi('CTG · điểm ước tính', nf(ctg.T.pt, 2) + ' · ' + cmGrade(ctg.T.pt), `hạng ${rk}/${R.length} toàn ngành · ${rkB}/${big.length} nhóm lớn`) +
-    kpi('Room ngụ ý CTG', nf(ctg.T.pt * CM.roomCoef, 1) + '%', `trung vị ngành ${nf(med(R.map(r => r.T.pt * CM.roomCoef)), 1)}%`) +
+  $('#cmK').innerHTML = kpi(ctg.s + ' · điểm ước tính', nf(ctg.T.pt, 2) + ' · ' + cmGrade(ctg.T.pt), `hạng ${rk}/${R.length} toàn ngành · ${rkB}/${big.length} nhóm lớn`) +
+    kpi('Room ngụ ý ' + ctg.s, nf(ctg.T.pt * CM.roomCoef, 1) + '%', `trung vị ngành ${nf(med(R.map(r => r.T.pt * CM.roomCoef)), 1)}%`) +
     kpi('Phân bố hạng', `${cnt('A')} A · ${cnt('B')} B · ${cnt('C') + cnt('D') + cnt('E')} C–E`, 'với định tính hiện tại') +
     kpi('Độ phủ dữ liệu', `${med(R.map(r => r.cov))}%`, 'trọng số định lượng có số công khai');
-  const half = cmS.p === 'TTM2Q26', f = half ? 0.5 : 1;   // H1/2026: so với nửa room cả năm
+  const half = /^TTM\dQ/.test(cmS.p), f = half ? +cmS.p[3] / 4 : 1, fl = half ? `${cmS.p[3] * 3} tháng` : '';   // kỳ TTM giữa năm: so với phần room tương ứng số tháng đã qua
   const pts = R.map(r => ({ x: r.T.pt * CM.roomCoef, y: half ? r.creditYtd : r.creditYoY, s: r.s, g: r.group })).filter(p => p.y != null);
   const mx = Math.max(...pts.map(p => p.x)), mn = Math.min(...pts.map(p => p.x));
   mk('chCmRoom', { type: 'scatter', data: { datasets: [...GROUPS.map(g => ({ label: g, data: pts.filter(p => p.g === g), backgroundColor: GC[g], pointRadius: 5, pointHoverRadius: 7 })),
-      { type: 'line', label: half ? 'Nửa room ngụ ý (nhịp 6 tháng)' : 'Tăng trưởng = room ngụ ý', data: [{ x: mn - 0.3, y: (mn - 0.3) * f }, { x: mx + 0.3, y: (mx + 0.3) * f }], borderColor: '#c0392b', borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0, fill: false }] },
+      { type: 'line', label: half ? `Room ngụ ý × ${nf(f, 2)} (nhịp ${fl})` : 'Tăng trưởng = room ngụ ý', data: [{ x: mn - 0.3, y: (mn - 0.3) * f }, { x: mx + 0.3, y: (mx + 0.3) * f }], borderColor: '#c0392b', borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0, fill: false }] },
     options: { plugins: { tooltip: { callbacks: { label: c => c.raw.s ? `${c.raw.s}: room ngụ ý ${nf(c.raw.x, 1)}% · tín dụng ${pc(c.raw.y, 1)}` : '' } } },
-      scales: { x: { title: { display: true, text: 'Room ngụ ý (%)' }, ticks: { callback: v => nf(v, 1) + '%' } }, y: { title: { display: true, text: half ? 'Tín dụng tăng từ đầu năm 2026 (%)' : 'Tín dụng 2025 (%)' }, ticks: { callback: v => nf(v, 0) + '%' } } } },
+      scales: { x: { title: { display: true, text: 'Room ngụ ý (%)' }, ticks: { callback: v => nf(v, 1) + '%' } }, y: { title: { display: true, text: half ? `Tín dụng tăng từ đầu năm ${cmS.p.slice(5) ? '20' + cmS.p.slice(5) : ''} (%)` : 'Tín dụng 2025 (%)' }, ticks: { callback: v => nf(v, 0) + '%' } } } },
     plugins: [{ id: 'cmLbl', afterDatasetsDraw(ch) { const { ctx } = ch; ctx.save(); ctx.font = '600 10px Arial'; ctx.fillStyle = '#3f4656';
       ch.data.datasets.forEach((d, i) => { if (!d.data[0] || !d.data[0].s) return; ch.getDatasetMeta(i).data.forEach((e, j) => ctx.fillText(d.data[j].s, e.x + 6, e.y - 4)); }); ctx.restore(); } }] });
   const over = pts.filter(p => p.y > p.x * f + (half ? 1.5 : 3)).sort((a, b) => (b.y - b.x * f) - (a.y - a.x * f));
-  $('#cmIns').innerHTML = `CTG xếp <b>${rk}/${R.length}</b> (${nf(ctg.T.pt, 2)} điểm, hạng ${cmGrade(ctg.T.pt)}) → room ngụ ý <b>${nf(ctg.T.pt * CM.roomCoef, 1)}%</b>; tiêu chí kéo điểm xuống: ${CK.filter(k => ctg.crit[k].pt < 4).map(k => `${k} ${nf(ctg.crit[k].pt, 1)}`).join(', ') || 'không có'}. ${over.length ? `${half ? 'Nửa đầu 2026 đã tăng vượt nửa room ngụ ý trên 1,5 điểm %' : 'Năm 2025 tăng vượt room ngụ ý trên 3 điểm %'}: ${over.slice(0, 6).map(p => `<b>${p.s}</b> ${pc(p.y, 0)}`).join(', ')} — phần lớn là NH được ưu tiên (★) hoặc được nới room trong năm; NH khác vượt chỉ tiêu bị trừ 1 điểm M định tính (Điều 16.6).` : ''}`;
+  $('#cmIns').innerHTML = `${CM.periods[cmS.p].partial ? `<b>${CM.periods[cmS.p].label}</b>: xếp hạng chỉ trong các NH đã công bố. ` : ''}${ctg.s} xếp <b>${rk}/${R.length}</b> (${nf(ctg.T.pt, 2)} điểm, hạng ${cmGrade(ctg.T.pt)}) → room ngụ ý <b>${nf(ctg.T.pt * CM.roomCoef, 1)}%</b>; tiêu chí kéo điểm xuống: ${CK.filter(k => ctg.crit[k].pt < 4).map(k => `${k} ${nf(ctg.crit[k].pt, 1)}`).join(', ') || 'không có'}. ${over.length ? `${half ? `${fl} đầu năm đã tăng vượt phần room tương ứng trên 1,5 điểm %` : 'Năm 2025 tăng vượt room ngụ ý trên 3 điểm %'}: ${over.slice(0, 6).map(p => `<b>${p.s}</b> ${pc(p.y, 0)}`).join(', ')} — phần lớn là NH được ưu tiên (★) hoặc được nới room trong năm; NH khác vượt chỉ tiêu bị trừ 1 điểm M định tính (Điều 16.6).` : ''}`;
   cmDetail(); cmHistDraw(); decorate && decorate();
 }
 function chCamel() {
@@ -2675,7 +2679,7 @@ function subBank() {
       insight: `P/B ngành <b>${x(SV.now.pb)}</b> thấp hơn trung bình ${x(SV.pb.mean)} (${sg((SV.now.pb - SV.pb.mean) / SV.pb.sd, 1, 'σ')}) dù ROE ngành ~17–18%. Thị trường đang chiết khấu rủi ro lãi suất tăng (R-16 chưa thỏa); P/E ${x(SV.now.pe)} so với TB ${x(SV.pe.mean)}.`,
       src: 'Wi MCP sector_ratio_daily (sector 107)' })}
     ${D.fee ? feeSecCards() : ''}
-    ${card({ id: 'chAQ', title: 'Chất lượng tài sản theo nhóm', sub: `% · ${BQ[QI]} · NPL, nợ nhóm 2 (cột) và bao phủ nợ xấu (đường, trục phải)`,
+    ${card({ id: 'chAQ', title: 'Chất lượng tài sản theo nhóm', sub: `% · ${qL(QI)} · NPL, nợ nhóm 2 (cột) và bao phủ nợ xấu (đường, trục phải)`,
       insight: aqInsight(), src: 'Wi MCP ratio_bank' })}
   </div>`;
 }
@@ -2703,7 +2707,7 @@ function drawFeeSec() {
 }
 function nimDepInsight() {
   const d0 = AG.cof.all[QI - 2], d1 = AG.cof.all[QI];
-  return `COF ngành tăng từ ${pc(d0, 2)} (${BQ[QI - 2]}) lên <b>${pc(d1, 2)}</b> (${BQ[QI]}) — đi sau cú tăng LS huy động 12T từ 12/2025 đúng như R-13. NIM ngành ${pc(AG.nim.all[QI], 2)} giữ được nhờ YEA tăng theo (${pc(AG.yea.all[QI], 2)}), nhưng COF Q4 vẫn phản ánh mức 5,9% của 12T (tiền gửi cũ còn kỳ hạn); đợt hạ về 5,4% ngày 20–21/10/2026 chỉ ngấm dần vào COF từ năm 2027.`;
+  return `COF ngành tăng từ ${pc(d0, 2)} (${BQ[QI - 2]}) lên <b>${pc(d1, 2)}</b> (${qL(QI)}) — đi sau cú tăng LS huy động 12T từ 12/2025 đúng như R-13. NIM ngành ${pc(AG.nim.all[QI], 2)} giữ được nhờ YEA tăng theo (${pc(AG.yea.all[QI], 2)}), nhưng COF Q4 vẫn phản ánh mức 5,9% của 12T (tiền gửi cũ còn kỳ hạn); đợt hạ về 5,4% ngày 20–21/10/2026 chỉ ngấm dần vào COF từ năm 2027.`;
 }
 function aqInsight() {
   const g = GROUPS.map(gg => `${gg}: NPL ${pc(AG.npl[gg][QI], 2)}, bao phủ ${pc(AG.llr[gg][QI], 0)}`).join(' · ');
@@ -2716,7 +2720,7 @@ function chBank() {
   $$('#grpMetric button').forEach(b => b.onclick = () => drawGrp(b.dataset.k));
   const qEnd = { 1: '03', 2: '06', 3: '09', 4: '12' };
   const depQ = BQ.map(q => byM(dom.dep12State)[`${q.slice(3)}-${qEnd[q[1]]}`] ?? null);
-  mk('chNimDep', { type: 'line', data: { labels: BQ, datasets: [L('NIM ngành', AG.nim.all, C.navy, { borderWidth: 2.6, pointRadius: 2 }), L('COF ngành', AG.cof.all, C.red, { pointRadius: 2 }), L('YEA ngành', AG.yea.all, C.tealInk, { pointRadius: 2, borderDash: [4, 3] }), L('LS huy động 12T NN', depQ, C.gold, { pointRadius: 2, borderDash: [2, 3] })] },
+  mk('chNimDep', { type: 'line', data: { labels: BQX, datasets: [L('NIM ngành', AG.nim.all, C.navy, { borderWidth: 2.6, pointRadius: 2 }), L('COF ngành', AG.cof.all, C.red, { pointRadius: 2 }), L('YEA ngành', AG.yea.all, C.tealInk, { pointRadius: 2, borderDash: [4, 3] }), L('LS huy động 12T NN', depQ, C.gold, { pointRadius: 2, borderDash: [2, 3] })] },
     options: { scales: { y: pctAxis() } } });
   const sm = SV.monthly, mean = SV.pb.mean, sd = SV.pb.sd;
   mk('chPbBand', { type: 'line', data: { labels: sm.map((p, i) => i === sm.length - 1 && SV.now && p.d === SV.now.d ? dvn(p.d) + ' (mới nhất)' : mvn(p.d)), datasets: [L('P/B ngành', sm.map(p => p.pb), C.navy, { unit: 'x', borderWidth: 2.4 }),
@@ -2730,11 +2734,11 @@ function chBank() {
 function drawGrp(k) {
   $$('#grpMetric button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
   const lab = Object.fromEntries(BMET)[k];
-  mk('chGrp', { type: 'line', data: { labels: BQ, datasets: [L('Ngành', AG[k].all, '#000', { borderWidth: 2.6, borderDash: [5, 3] }), ...GROUPS.map(g => L(g, AG[k][g], GC[g], { pointRadius: 2 }))] },
+  mk('chGrp', { type: 'line', data: { labels: BQX, datasets: [L('Ngành', AG[k].all, '#000', { borderWidth: 2.6, borderDash: [5, 3] }), ...GROUPS.map(g => L(g, AG[k][g], GC[g], { pointRadius: 2 }))] },
     options: { scales: { y: pctAxis() } } });
   const a = AG[k].all, ch = a[QI] - a[QY];
   const rk = GROUPS.map(g => [g, AG[k][g][QI]]).sort((p, q) => q[1] - p[1]);
-  $('#grpIns').innerHTML = `${lab} ngành ${BQ[QI]} <b>${pc(a[QI], 2)}</b>, ${sg(ch, 2, ' điểm %')} so với cùng kỳ. Cao nhất ${rk[0][0]} ${pc(rk[0][1], 2)}, thấp nhất ${lastv(rk)[0]} ${pc(lastv(rk)[1], 2)}.`;
+  $('#grpIns').innerHTML = `${lab} ngành ${qL(QI)} <b>${pc(a[QI], 2)}</b>, ${sg(ch, 2, ' điểm %')} so với cùng kỳ. Cao nhất ${rk[0][0]} ${pc(rk[0][1], 2)}, thấp nhất ${lastv(rk)[0]} ${pc(lastv(rk)[1], 2)}.`;
 }
 
 /* ---- Kịch bản IDX ---- */
@@ -3275,17 +3279,17 @@ function riskRows() {
       draw: id => { const b = rv.filter(p => p.d >= '2021-01'); mk(id, { type: 'bar', data: { labels: b.map(p => `Q${Math.ceil(+p.d.slice(5, 7) / 3)}/${p.d.slice(2, 4)}`), datasets: [{ label: 'Thu', data: b.map(p => +(p.v / 1000).toFixed(1)), backgroundColor: 'rgba(31,138,141,.75)', unit: ' nghìn tỷ', dp: 1 }, { label: 'Chi', data: b.map(p => { const x = dvAt(ex, p.d); return x ? +(x.v / 1000).toFixed(1) : null; }), backgroundColor: 'rgba(192,57,43,.7)', unit: ' nghìn tỷ', dp: 1 }] }, options: { scales: { y: numAxis('nghìn tỷ đồng') } } }); } }); }
   // Ngành
   const qn = BQ.length - 1, qd = (k, g = 'all', n = 4) => AG[k][g][qn] != null && AG[k][g][qn - n] != null ? AG[k][g][qn] - AG[k][g][qn - n] : null;
-  const grpLine = (id, k, lab) => mk(id, { type: 'line', data: { labels: BQ, datasets: [['all', 'Toàn ngành', C.navy, 2.6], ['Big 4', 'Big 4', C.purple, 1.6], ['Tư nhân lớn', 'Tư nhân lớn', C.tealInk, 1.6], ['Tư nhân vừa', 'Tư nhân vừa', C.gold, 1.6], ['Tư nhân nhỏ', 'Tư nhân nhỏ', C.grey, 1.4]].map(([g, n, c, w]) => L(n, AG[k][g], c, { borderWidth: w, pointRadius: 2 })) }, options: { scales: { y: pctAxis(lab, { beginAtZero: false }) } } });
+  const grpLine = (id, k, lab) => mk(id, { type: 'line', data: { labels: BQX, datasets: [['all', 'Toàn ngành', C.navy, 2.6], ['Big 4', 'Big 4', C.purple, 1.6], ['Tư nhân lớn', 'Tư nhân lớn', C.tealInk, 1.6], ['Tư nhân vừa', 'Tư nhân vừa', C.gold, 1.6], ['Tư nhân nhỏ', 'Tư nhân nhỏ', C.grey, 1.4]].map(([g, n, c, w]) => L(n, AG[k][g], c, { borderWidth: w, pointRadius: 2 })) }, options: { scales: { y: pctAxis(lab, { beginAtZero: false }) } } });
   { const d4 = qd('nim'), d1 = qd('nim', 'all', 1);
-    add({ g: 'Ngành', n: 'Biên lãi thuần (NIM)', now: `${pc(AG.nim.all[qn], 2)} toàn ngành (${BQ[qn]})`, tr: `${sg(d1, 2, ' đ%')} so với quý trước · ${sg(d4, 2, ' đ%')} so cùng kỳ`, lvl: d4 < -0.2 ? 'risk' : d4 < 0 || d1 < 0 ? 'watch' : 'ok',
+    add({ g: 'Ngành', n: 'Biên lãi thuần (NIM)', now: `${pc(AG.nim.all[qn], 2)} toàn ngành (${qL(qn)})`, tr: `${sg(d1, 2, ' đ%')} so với quý trước · ${sg(d4, 2, ' đ%')} so cùng kỳ`, lvl: d4 < -0.2 ? 'risk' : d4 < 0 || d1 < 0 ? 'watch' : 'ok',
       how: 'NIM co lại khi chi phí vốn tăng nhanh hơn lợi suất cho vay (lãi suất cho vay bị yêu cầu giảm, tiền gửi phải trả cao hơn). Xu hướng 2–4 quý quan trọng hơn một quý lẻ.', draw: id => grpLine(id, 'nim', 'NIM') }); }
   { const d2 = qd('cof', 'all', 2), FM = D.fundMix, fm = g => FM && FM.groups[g];
     const mix = FM ? ['Big 4', 'Tư nhân lớn', 'Tư nhân vừa', 'Tư nhân nhỏ'].map(g => `${g}: tiền gửi ${nf(fm(g).dep, 0)}%, liên NH ${nf(fm(g).ib, 0)}%, GTCG ${nf(fm(g).gtcg, 0)}%`).join('; ') : '';
     const fi = BD && BD.fi && BD.fi.cpnPriv13.filter(v => v != null).slice(-1)[0];
-    add({ g: 'Ngành', n: 'Chi phí vốn (COF)', now: `${pc(AG.cof.all[qn], 2)} toàn ngành (${BQ[qn]})`, tr: `${sg(d2, 2, ' đ%')} 2 quý · huy động 12T ${sg(ch(dom.dep12StateD, 92), 2, ' đ%')} 3 tháng`, lvl: d2 > 0.15 ? 'risk' : d2 > 0 ? 'watch' : 'ok',
+    add({ g: 'Ngành', n: 'Chi phí vốn (COF)', now: `${pc(AG.cof.all[qn], 2)} toàn ngành (${qL(qn)})`, tr: `${sg(d2, 2, ' đ%')} 2 quý · huy động 12T ${sg(ch(dom.dep12StateD, 92), 2, ' đ%')} 3 tháng`, lvl: d2 > 0.15 ? 'risk' : d2 > 0 ? 'watch' : 'ok',
       how: `COF = bình quân có trọng số của ba kênh: tiền gửi (đi theo lãi suất thị trường 2, trễ 1–3 quý), liên ngân hàng (thị trường 1, ngấm ngay) và giấy tờ có giá (lãi suất phát hành trái phiếu${fi ? `, coupon trái phiếu NH riêng lẻ 1–3 năm gần nhất ${pc(fi, 2)}` : ''}). Tỷ trọng từng kênh quyết định ngân hàng nào nhạy với kênh nào${mix ? ` — ${FM.q}: ${mix}` : ''}. Nhóm tư nhân dựa nhiều vào liên ngân hàng và trái phiếu nên chi phí vốn phản ứng nhanh hơn Big 4.`, draw: id => grpLine(id, 'cof', 'COF') }); }
   { const d4 = qd('npl'), g4 = qd('g2');
-    add({ g: 'Ngành', n: 'Nợ xấu (NPL) và nợ nhóm 2', now: `NPL ${pc(AG.npl.all[qn], 2)} · nhóm 2 ${pc(AG.g2.all[qn], 2)} (${BQ[qn]})`, tr: `NPL ${sg(d4, 2, ' đ%')} · nhóm 2 ${sg(g4, 2, ' đ%')} so cùng kỳ`, lvl: d4 > 0.2 || g4 > 0.3 ? 'risk' : d4 > 0 || g4 > 0 ? 'watch' : 'ok',
+    add({ g: 'Ngành', n: 'Nợ xấu (NPL) và nợ nhóm 2', now: `NPL ${pc(AG.npl.all[qn], 2)} · nhóm 2 ${pc(AG.g2.all[qn], 2)} (${qL(qn)})`, tr: `NPL ${sg(d4, 2, ' đ%')} · nhóm 2 ${sg(g4, 2, ' đ%')} so cùng kỳ`, lvl: d4 > 0.2 || g4 > 0.3 ? 'risk' : d4 > 0 || g4 > 0 ? 'watch' : 'ok',
       how: 'Nợ nhóm 2 tăng thường đi trước nợ xấu 1–2 quý. Lãi suất cao kéo dài và bất động sản trầm lắng là hai nguồn chính; chi phí dự phòng tăng sau 2–4 quý.', draw: id => grpLine(id, 'npl', 'NPL') }); }
   return R;
 }
@@ -3523,7 +3527,7 @@ function paneHot() {
       <p><b>Nhận định:</b> kênh bị chỉ đạo (tiết kiệm) rẻ đi, kênh chưa bị chỉ đạo (chứng chỉ tiền gửi, trái phiếu) vẫn đắt — chi phí vốn biên chưa hạ thật. Ngân hàng LDR cao, phụ thuộc chứng chỉ tiền gửi chịu nhiều nhất.</p>
       <div class="src">Xem: Bức tranh ngành › Nội địa (Chi phí vốn &amp; thanh khoản); Chính sách · Nhật ký NHNN</div></article>
     <article class="card hot"><h3 class="sub">2 · NIM bị ép từ phía cho vay trước khi chi phí vốn kịp hạ</h3>
-      <p>Cho vay phải giảm <b>1,5–2%/năm</b>, áp dụng cả khách hàng hiện hữu; tiền gửi chỉ giảm 0,5 điểm % và chỉ với giao dịch mới. NIM ngành <b>${pc(AG.nim.all[QI], 2)}</b> (${BQ[QI]})${nim0 != null ? `, từ ${pc(nim0, 2)} ở Q1/2023` : ''}; COF ${pc(AG.cof.all[QY], 2)} → <b>${pc(AG.cof.all[QI], 2)}</b> trong 1 năm. Tín dụng vẫn nhanh hơn tiền gửi <b>${nf(gapNow, 1)} điểm %</b> (${mvn(lastv(dom.creditYoY).d)}).</p>
+      <p>Cho vay phải giảm <b>1,5–2%/năm</b>, áp dụng cả khách hàng hiện hữu; tiền gửi chỉ giảm 0,5 điểm % và chỉ với giao dịch mới. NIM ngành <b>${pc(AG.nim.all[QI], 2)}</b> (${qL(QI)})${nim0 != null ? `, từ ${pc(nim0, 2)} ở Q1/2023` : ''}; COF ${pc(AG.cof.all[QY], 2)} → <b>${pc(AG.cof.all[QI], 2)}</b> trong 1 năm. Tín dụng vẫn nhanh hơn tiền gửi <b>${nf(gapNow, 1)} điểm %</b> (${mvn(lastv(dom.creditYoY).d)}).</p>
       <p><b>Nhận định:</b> phần tiền gửi cũ lãi suất cao còn trả tới khi đáo hạn, nên NIM Q4/2026 – Q1/2027 bị ép rõ nhất ở ngân hàng CASA thấp và cho vay doanh nghiệp nhiều. Cần theo dõi số giải ngân thực của các gói lãi suất thấp (MSB 10.000 tỷ, VIB 15.000 tỷ, VPBank giảm 1,5%) — có thể chỉ mang tính truyền thông.</p>
       <div class="src">Xem: Bức tranh ngành › Ngân hàng (NIM, COF theo nhóm); BCTC Q4/2026</div></article>
     <article class="card hot"><h3 class="sub">3 · Fed nghiêng về tăng + dầu ~110 USD: NHNN còn dư địa nới?</h3>

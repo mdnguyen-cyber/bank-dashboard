@@ -107,7 +107,7 @@ Biên tập tay                  →   data/banks.json, sbv-log.json, quick-upda
 4. **Kiểm tra:** chạy `tests/test_sector_data.py` và `tests/test_ctg_data.py`, rồi xem từng trang bằng Playwright.
 5. **Đẩy lên:** commit "Cập nhật dữ liệu dd/mm/yyyy", push, dispatch `pages.yml`.
 
-Mùa BCTC (tháng 1, 4, 7, 10): số toàn ngành ngân hàng chỉ lấy những quý đã có ít nhất 20/26 ngân hàng công bố. Quý đang công bố dở vẫn hiện ở trang từng ngân hàng đã có số, nhưng chưa vào số toàn ngành.
+Mùa BCTC (tháng 1, 4, 7, 10): quý mới hiện ngay khi có từ 5 ngân hàng công bố. Trang từng ngân hàng, so sánh nhóm và CAMELS (kỳ TTM mới) dùng quý BCTC mới nhất của chính ngân hàng đó; bình quân nhóm, toàn ngành của quý đang công bố dở chỉ gồm NH đã có số và mọi chỗ đều ghi "n/26 NH đã công bố, đang cập nhật" (`banks.nRep`). Tín hiệu rủi ro R-xx và độ nhạy LDR vẫn dùng quý gần nhất đã đủ ≥ 20/26 NH (`banks.completeQ`).
 
 ## Những điểm dễ hỏng khi cập nhật hoặc dựng lại
 

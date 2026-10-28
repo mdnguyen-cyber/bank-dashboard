@@ -539,7 +539,9 @@ function paneFin() {
   const A = D.annual; const P = D.plan; const X = D.ctx;
   const prevY = A[A.length - 1], car = D.car[D.car.length - 1];
   const gh = (t, s) => `<h3 class="grp-h">${t}${s ? `<small>${s}</small>` : ''}</h3>`;
-  $('#fin').innerHTML = `<h2 class="sec">Tài chính</h2><p class="sec-sub">Tổng quan bảng cân đối và kết quả kinh doanh → biên lãi (tăng trưởng, NIM, hiệu quả) → thu nhập ngoài lãi → chất lượng tài sản và vốn → các tỉ lệ an toàn → định giá. Tỷ đồng, BCTC hợp nhất; số mới nhất ${QL.q}.</p>
+  const _nr = X && X.nRep ? X.nRep[X.nRep.length - 1] : null, _ql = X ? X.quarters[X.quarters.length - 1] : '';
+  const partialNote = _nr != null && _nr < (X.nAll || 26) ? `<div class="banner warn"><b>${_ql}: mới ${_nr}/${X.nAll || 26} ngân hàng công bố BCTC.</b> Số của ${T} đã cập nhật; bình quân nhóm, toàn ngành và so sánh nhóm của ${_ql} chỉ gồm các ngân hàng đã có số và sẽ thay đổi khi các ngân hàng còn lại công bố (đang cập nhật).</div>` : '';
+  $('#fin').innerHTML = `<h2 class="sec">Tài chính</h2>${partialNote}<p class="sec-sub">Tổng quan bảng cân đối và kết quả kinh doanh → biên lãi (tăng trưởng, NIM, hiệu quả) → thu nhập ngoài lãi → chất lượng tài sản và vốn → các tỉ lệ an toàn → định giá. Tỷ đồng, BCTC hợp nhất; số mới nhất ${QL.q}.</p>
   <div class="subtabs" role="tablist">${subs.map(([k, l], i) => `<button type="button" data-sub="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
   <div class="sub on" data-subp="tong">
     ${gh('Bảng cân đối', QL.q)}
@@ -922,7 +924,7 @@ function peer(k) {
   // bảng: các chỉ tiêu chính kỳ chọn và thay đổi so với kỳ so sánh
   const cols = [['nim', 'NIM', 2], ['cof', 'COF', 2], ['casa', 'CASA', 1], ['npl', 'NPL', 2], ['g2', 'Nhóm 2', 2], ['llr', 'LLR', 0], ['cir', 'CIR', 1], ['roe', 'ROE', 1], ['creditYoY', 'TD YoY', 1], ['ldr', 'LDR', 1]];
   const tr = Object.entries(SB.series).filter(([s, v]) => pst.g === 'Tất cả' || v.group === pst.g || s === T).sort((a, b) => ((b[1][key] || [])[qi] ?? -1e9) - ((a[1][key] || [])[qi] ?? -1e9));
-  $('#peerTbl').innerHTML = `<table><thead><tr><th>Mã</th><th>Nhóm</th>${cols.map(([, l]) => `<th class="n">${l}</th>`).join('')}</tr></thead><tbody>${tr.map(([s, v]) => `<tr class="${s === T ? 'hl' : ''}"><td><b>${s}</b></td><td>${v.group}</td>${cols.map(([c, , d]) => { const a = v[c] ? v[c][qi] : null, b = v[c] ? v[c][q0i] : null; return `<td class="n">${a == null ? '—' : nf(a, d) + '%'}${a != null && b != null ? `<div class="pdl ${a - b > 0 ? "pdl-u" : a - b < 0 ? "pdl-d" : ""}">${sg(a - b, d, '')}</div>` : ''}</td>`; }).join('')}</tr>`).join('')}</tbody></table><div class="note keep">Dòng nhỏ dưới mỗi số = thay đổi (điểm %) so với ${pst.q0}.</div>`;
+  $('#peerTbl').innerHTML = `<table><thead><tr><th>Mã</th><th>Nhóm</th>${cols.map(([, l]) => `<th class="n">${l}</th>`).join('')}</tr></thead><tbody>${tr.map(([s, v]) => `<tr class="${s === T ? 'hl' : ''}"><td><b>${s}</b></td><td>${v.group}</td>${cols.map(([c, , d]) => { const a = v[c] ? v[c][qi] : null, b = v[c] ? v[c][q0i] : null; return `<td class="n">${a == null ? '—' : nf(a, d) + '%'}${a != null && b != null ? `<div class="pdl ${a - b > 0 ? "pdl-u" : a - b < 0 ? "pdl-d" : ""}">${sg(a - b, d, '')}</div>` : ''}</td>`; }).join('')}</tr>`).join('')}</tbody></table><div class="note keep">Dòng nhỏ dưới mỗi số = thay đổi (điểm %) so với ${pst.q0}.${(() => { const i = SB.quarters.indexOf(pst.q), n = SB.nRep ? SB.nRep[i] : null; return n != null && n < (SB.nAll || 26) ? ` ${pst.q}: mới ${n}/${SB.nAll || 26} ngân hàng công bố BCTC — ô trống là NH chưa công bố, bình quân nhóm và ngành của quý này chỉ gồm NH đã có số (đang cập nhật).` : ''; })()}</div>`;
   $$('#peerPick button').forEach(b => { b.classList.toggle('on', b.dataset.k === pst.k); b.onclick = () => { peer(b.dataset.k); peerTs(); }; });
   $$('#peerGrp button').forEach(b => { b.classList.toggle('on', b.dataset.g === pst.g); b.onclick = () => { pst.g = b.dataset.g; peer(); }; });
   const qS = $('#peerQ'), q0S = $('#peerQ0'); if (qS) qS.onchange = () => { pst.q = qS.value; peer(); }; if (q0S) q0S.onchange = () => { pst.q0 = q0S.value; peer(); };
@@ -962,7 +964,7 @@ function camel() {
 }
 function camelTT21() {   // điểm TT21 của ngân hàng và vị trí trong nhóm NH quy mô lớn (dữ liệu từ dashboard ngành)
   const CM = (window.SECTOR_DATA || {}).camel; if (!CM) return '';
-  const P = CM.periods.TTM2Q26, R = P.rows, me = R.find(r => r.s === T); if (!me) return '';
+  const P = CM.periods[(D.ctx && D.ctx.camelPeriod) || 'TTM2Q26'] || CM.periods.TTM2Q26, R = P.rows, me = R.find(r => r.s === T); if (!me) return '';
   const peers = R.filter(r => r.big === me.big);
   const qual = CM.qualDefault, wl = Object.values(CM.crit).reduce((a, c) => a + c.wl, 0) / 100;
   const tot = r => r.quant.pt + wl * qual, gr = t => t >= 4.5 ? 'A' : t >= 3.5 ? 'B' : t >= 2.5 ? 'C' : t >= 1.5 ? 'D' : 'E';

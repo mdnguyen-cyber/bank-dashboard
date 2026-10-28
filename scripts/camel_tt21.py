@@ -81,6 +81,21 @@ def build(fs_rows, note_rows, ratio_rows, car_rows, banks_panel, quarters, BANKS
         'TTM2Q26': {'label': 'TTM Q2/2026', 'end': (2026, 2), 'qs': [(2025, 3), (2025, 4), (2026, 1), (2026, 2)],
                     'car': [(2026, 2), (2025, 0)]},
     }
+    # quý mới nhất đang mùa BCTC: thêm kỳ TTM, chỉ gồm NH đã công bố (thuyết minh, tỷ lệ Q2/Q4 lấy kỳ gần nhất trước đó)
+    from collections import Counter
+    cnt = Counter((y, q) for (_, y, q) in fs)
+    lq = max((k for k, n in cnt.items() if n >= 5 and k[1] in (1, 2, 3, 4)), default=None)
+    if lq and lq > (2026, 2):
+        ly, lqq = lq
+        qs = []
+        y, q = ly, lqq
+        for _ in range(4):
+            qs.insert(0, (y, q)); q -= 1
+            if not q: y, q = y - 1, 4
+        periods[f'TTM{lqq}Q{str(ly)[2:]}'] = {'label': f'TTM Q{lqq}/{ly}', 'end': lq, 'qs': qs, 'car': [(ly, 2), (ly - 1, 0)], 'partial': cnt[lq]}
+    def latest_before(tbl, s, ey, eq):
+        ks = sorted((k for k in tbl if k[0] == s and (k[1], k[2]) <= (ey, eq)), key=lambda k: (k[1], k[2]))
+        return tbl[ks[-1]] if ks else {}
     out = {'periods': {}, 'crit': {k: {'name': v[0], 'wq': v[1], 'wl': v[2]} for k, v in CRIT.items()},
            'ind': [{'id': i[0], 'c': i[1], 'name': i[2], 'dir': i[3], 'thL': i[4], 'thS': i[5], 'wL': i[6], 'wS': i[7],
                     'note': NOTE.get(i[0], ''), 'missing': MISSING_WHY.get(i[0], '')} for i in IND],
@@ -98,8 +113,8 @@ def build(fs_rows, note_rows, ratio_rows, car_rows, banks_panel, quarters, BANKS
             end = fs[(s, ey, eq)]
             ta_avg = avg('bs100')
             big = ta_avg > 300000
-            n = nt.get((s, ey, eq), {})
-            r = rb.get((s, ey, eq), {})
+            n = nt.get((s, ey, eq)) or (latest_before(nt, s, ey, eq) if P.get('partial') else {})
+            r = rb.get((s, ey, eq)) or (latest_before(rb, s, ey, eq) if P.get('partial') else {})
             c = next((car[(s, y, q)] for y, q in P['car'] if (s, y, q) in car), None)
             loans = T(n.get('fnx25'))
             npl = T(n.get('fnx28')) + T(n.get('fnx29')) + T(n.get('fnx30'))
@@ -137,6 +152,10 @@ def build(fs_rows, note_rows, ratio_rows, car_rows, banks_panel, quarters, BANKS
                 'S1': None,
                 'S2': r['interest_rate_gap'] / 1e9 / T(end.get('bsx12')) * 100 if r.get('interest_rate_gap') is not None and end.get('bsx12') else None,
             }
+            if P.get('partial') and (s, ey, eq) not in nt and qlab in qidx:   # quý chưa có thuyết minh: NPL, nhóm 2 theo tỷ lệ công bố của quý
+                _pv = lambda k: (banks_panel[s].get(k) or [None] * len(quarters))[qidx[qlab]] if qidx[qlab] < len(banks_panel[s].get(k) or []) else None
+                if _pv('npl') is not None: v['A1'] = v['A4'] = _pv('npl')
+                if _pv('g2') is not None: v['A2'] = _pv('g2')
             det, crit = {}, {}
             for (iid, ci, name, d, thL, thS, wL, wS) in IND:
                 th, w = (thL, wL) if big else (thS, wS)
@@ -168,5 +187,5 @@ def build(fs_rows, note_rows, ratio_rows, car_rows, banks_panel, quarters, BANKS
                          'creditYtd': round((c_end / c_ye - 1) * 100, 2) if c_end and c_ye else None,
                          'creditYoY': round((c_end / c_ly - 1) * 100, 2) if c_end and c_ly else None,
                          'priority': s in PRIORITY})
-        out['periods'][pk] = {'label': P['label'], 'rows': rows}
+        out['periods'][pk] = {'label': P['label'] + (f" · {len(rows)}/{len(BANKS)} NH đã công bố, đang cập nhật" if P.get('partial') and len(rows) < len(BANKS) else ''), 'rows': rows, 'partial': bool(P.get('partial'))}
     return out
