@@ -21,8 +21,8 @@ TODAY = __import__('datetime').date.today().isoformat()   # ngày dựng dữ li
 BANKS = ['VCB', 'BID', 'CTG', 'MBB', 'TCB', 'ACB', 'VPB', 'HDB', 'LPB', 'SHB', 'STB', 'VIB', 'TPB', 'MSB',
          'SSB', 'OCB', 'EIB', 'NAB', 'ABB', 'KLB', 'VAB', 'BVB', 'BAB', 'PGB', 'SGB', 'NVB']
 GROUP = {'VCB': 'Big 4', 'BID': 'Big 4', 'CTG': 'Big 4'}
-GROUP.update({s: 'Tư nhân lớn' for s in ['MBB', 'TCB', 'ACB', 'VPB', 'HDB', 'LPB']})
-GROUP.update({s: 'Tư nhân vừa' for s in ['SHB', 'STB', 'VIB', 'TPB', 'MSB', 'SSB', 'OCB', 'EIB']})
+GROUP.update({s: 'Tư nhân lớn' for s in ['MBB', 'TCB', 'ACB', 'VPB']})
+GROUP.update({s: 'Tư nhân vừa' for s in ['HDB', 'LPB', 'SHB', 'STB', 'VIB', 'TPB', 'MSB', 'SSB', 'OCB', 'EIB']})
 GROUP.update({s: 'Tư nhân nhỏ' for s in ['NAB', 'ABB', 'KLB', 'VAB', 'BVB', 'BAB', 'PGB', 'SGB', 'NVB']})
 WIN, MINW = 36, 24  # cửa sổ z-score (tháng) và số điểm tối thiểu
 

@@ -20,8 +20,8 @@ GRP = 'Big 4'
 BIG4 = ['VCB', 'BID', 'CTG']
 PEER_GROUPS = {   # cùng cách nhóm với dashboard ngành (build_sector_data.py)
     'VCB': 'Big 4', 'BID': 'Big 4', 'CTG': 'Big 4',
-    'MBB': 'Tư nhân lớn', 'TCB': 'Tư nhân lớn', 'ACB': 'Tư nhân lớn', 'VPB': 'Tư nhân lớn', 'HDB': 'Tư nhân lớn', 'LPB': 'Tư nhân lớn',
-    'SHB': 'Tư nhân vừa', 'STB': 'Tư nhân vừa', 'VIB': 'Tư nhân vừa', 'TPB': 'Tư nhân vừa', 'MSB': 'Tư nhân vừa', 'SSB': 'Tư nhân vừa', 'OCB': 'Tư nhân vừa', 'EIB': 'Tư nhân vừa',
+    'MBB': 'Tư nhân lớn', 'TCB': 'Tư nhân lớn', 'ACB': 'Tư nhân lớn', 'VPB': 'Tư nhân lớn',
+    'HDB': 'Tư nhân vừa', 'LPB': 'Tư nhân vừa', 'SHB': 'Tư nhân vừa', 'STB': 'Tư nhân vừa', 'VIB': 'Tư nhân vừa', 'TPB': 'Tư nhân vừa', 'MSB': 'Tư nhân vừa', 'SSB': 'Tư nhân vừa', 'OCB': 'Tư nhân vừa', 'EIB': 'Tư nhân vừa',
     'NAB': 'Tư nhân nhỏ', 'ABB': 'Tư nhân nhỏ', 'KLB': 'Tư nhân nhỏ', 'VAB': 'Tư nhân nhỏ', 'BVB': 'Tư nhân nhỏ', 'BAB': 'Tư nhân nhỏ', 'PGB': 'Tư nhân nhỏ', 'SGB': 'Tư nhân nhỏ', 'NVB': 'Tư nhân nhỏ'}
 
 
