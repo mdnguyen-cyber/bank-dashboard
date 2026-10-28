@@ -153,12 +153,17 @@
         y += Math.round(4 * k); x.fillStyle = FIN.grey; x.font = font('700', 18);
         wrap(x, m.title, W - 2 * P, 1).forEach(l => { x.fillText(l, P, y); y += Math.round(24 * k); });
         if (m.sub) { x.font = font('400', 16); wrap(x, m.sub, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(21 * k); }); }
+      } else if (st.items[0].note) {   // nhận định ngắn lên trên (navy, lớn), tên chart xuống dưới (đỏ mận, nhỏ)
+        x.fillStyle = FIN.navy; x.font = font('700', 34);
+        wrap(x, st.items[0].note, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(42 * k); });
+        x.fillStyle = FIN.purple; x.font = font('700', 19); wrap(x, m.title, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(25 * k); });
+        if (m.sub) { x.fillStyle = FIN.grey; x.font = font('400', 16); wrap(x, m.sub, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(21 * k); }); }
       } else {
         x.fillStyle = FIN.navy; x.font = font('700', 34);
         wrap(x, m.title, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(42 * k); });
         if (m.sub) { x.fillStyle = FIN.grey; x.font = font('400', 18); wrap(x, m.sub, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(24 * k); }); }
       }
-      const note = st.items[0].note;
+      const note = st.key ? st.items[0].note : '';   // có thông điệp chính thì nhận định ngắn vẫn là dòng đỏ mận bên dưới
       if (note) { y += Math.round(4 * k); x.fillStyle = FIN.purple; x.font = font('700', 19); wrap(x, note, W - 2 * P, 2).forEach(l => { x.fillText(l, P, y); y += Math.round(25 * k); }); }
     } else if (st.key) {
       x.fillStyle = FIN.navy; x.font = font('700', 34);
@@ -177,8 +182,10 @@
         const r = Math.floor(i / C), c = i % C, inRow = Math.min(C, n - r * C), off = (C - inRow) * (cw + g) / 2;   // hàng cuối thiếu ô thì căn giữa
         const X = P + off + c * (cw + g), Y = y + r * (chh + gy); let yy = Y; const mm = it.meta;
         x.fillStyle = FIN.navy; x.font = font('700', small ? 17 : 20);
-        x.fillStyle = FIN.navy; wrap(x, `${i + 1}. ${mm.title}`, cw, 2).forEach(l => { x.fillText(l, X, yy); yy += Math.round((small ? 21 : 25) * k); });
-        if (it.note) { x.fillStyle = FIN.purple; x.font = font('700', small ? 15 : 16.5); wrap(x, it.note, cw, 2).forEach(l => { x.fillText(l, X, yy); yy += Math.round((small ? 19 : 21) * k); }); }
+        // có nhận định ngắn: nhận định lên trên (navy, lớn), tên chart xuống dưới (đỏ mận, nhỏ)
+        const top = it.note ? it.note : mm.title, low = it.note ? mm.title : '';
+        x.fillStyle = FIN.navy; wrap(x, `${i + 1}. ${top}`, cw, 2).forEach(l => { x.fillText(l, X, yy); yy += Math.round((small ? 21 : 25) * k); });
+        if (low) { x.fillStyle = FIN.purple; x.font = font('700', small ? 15 : 16.5); wrap(x, low, cw, 2).forEach(l => { x.fillText(l, X, yy); yy += Math.round((small ? 19 : 21) * k); }); }
         const f0 = firstLab(it), l1 = lastLab(it);
         const sub = [mm.sub, l1 ? (f0 && f0 !== l1 ? f0 + ' – ' + l1 : 'đến ' + l1) : ''].filter(Boolean).join(' · ');
         if (sub) { x.fillStyle = FIN.grey; x.font = font('400', small ? 12.5 : 13.5); wrap(x, sub, cw, 1).forEach(l => { x.fillText(l, X, yy); yy += Math.round(18 * k); }); }
@@ -329,7 +336,7 @@
   function caption() {
     const m = first(), n = st.items.length;
     if (n === 1) return [...(st.key ? [st.key, ''] : []), ...(st.items[0].note ? [st.items[0].note, ''] : []), m.page, '', m.title + (m.sub ? ' (' + m.sub + ')' : ''), m.ins ? '\n' + m.ins : '', '', (m.last ? 'Kỳ dữ liệu: ' + m.last + '\n' : '') + 'Nguồn: ' + m.src].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
-    return [...(st.key ? [st.key, ''] : []), m.page, '', ...st.items.map((it, i) => `${i + 1}. ${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}${it.note ? '\n' + it.note : ''}`), '', 'Nguồn: ' + srcAll()].join('\n');
+    return [...(st.key ? [st.key, ''] : []), m.page, '', ...st.items.map((it, i) => it.note ? `${i + 1}. ${it.note}\n${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}` : `${i + 1}. ${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}`), '', 'Nguồn: ' + srcAll()].join('\n');
   }
   function setItems(cards, keepNotes) {
     const old = new Map(st.items.map(it => [it.card, it.note]));
