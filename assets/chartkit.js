@@ -194,7 +194,8 @@
     bar.querySelectorAll('[data-yi]').forEach(i => i.oninput = () => { if (ymode === 'man') applyY(); });
     // kéo trực tiếp trên trục Y: nửa dưới trục kéo giá trị nhỏ nhất (kéo lên = nâng đáy), nửa trên kéo giá trị lớn nhất (kéo xuống = hạ trần); nhấp đúp trên trục = mặc định
     let yd = null;
-    const onAxis = e => { const r = canvas.getBoundingClientRect(), a = ch.chartArea, x = e.clientX - r.left, yy = e.clientY - r.top; return x < a.left && x > 0 && yy >= a.top && yy <= a.bottom ? yy : null; };
+    const kx = r => r.width ? canvas.offsetWidth / r.width : 1, ky = r => r.height ? canvas.offsetHeight / r.height : 1;   // chart nằm trong khung bị thu nhỏ (transform) → đổi về toạ độ của chart
+    const onAxis = e => { const r = canvas.getBoundingClientRect(), a = ch.chartArea, x = (e.clientX - r.left) * kx(r), yy = (e.clientY - r.top) * ky(r); return x < a.left && x > 0 && yy >= a.top && yy <= a.bottom ? yy : null; };
     canvas.addEventListener('pointermove', e => { if (!yd && !sel) canvas.style.cursor = onAxis(e) != null ? 'ns-resize' : ''; }, on);
     canvas.addEventListener('pointerdown', e => {
       const yy = onAxis(e); if (yy == null || e.button > 0) return;
@@ -206,7 +207,7 @@
     canvas.addEventListener('pointermove', e => {
       if (!yd) return;
       const r = canvas.getBoundingClientRect(), span = yd.max - yd.min;
-      const dv = (yd.y0 - (e.clientY - r.top)) / (yd.bot - yd.top) * span;   // kéo lên = tăng, kéo xuống = giảm
+      const dv = (yd.y0 - ((e.clientY - r.top) * ky(r))) / (yd.bot - yd.top) * span;   // kéo lên = tăng, kéo xuống = giảm
       const y = Y(); y.beginAtZero = false;
       if (yd.h === 'min') { y.min = Math.min(yd.min + dv, yd.max - span * 0.05); y.max = yd.max; } else { y.min = yd.min; y.max = Math.max(yd.max + dv, yd.min + span * 0.05); }
       ymode = 'man';
@@ -244,20 +245,20 @@
     const idxAt = px => { const v = ch.scales.x.getValueForPixel(px); return Math.max(0, Math.min(n - 1, Math.round(v))); };
     canvas.addEventListener('pointerdown', e => {
       if (e.pointerType !== 'mouse' || e.button !== 0) return;
-      const r = canvas.getBoundingClientRect(), x = e.clientX - r.left, a = ch.chartArea;
-      if (x < a.left || x > a.right || e.clientY - r.top < a.top || e.clientY - r.top > a.bottom) return;
+      const r = canvas.getBoundingClientRect(), x = (e.clientX - r.left) * kx(r), a = ch.chartArea;
+      if (x < a.left || x > a.right || (e.clientY - r.top) * ky(r) < a.top || (e.clientY - r.top) * ky(r) > a.bottom) return;
       x0 = x; sel = document.createElement('div'); sel.className = 'zsel';
       sel.style.top = a.top + 'px'; sel.style.height = (a.bottom - a.top) + 'px'; sel.style.left = x + 'px'; sel.style.width = '0px';
       box.appendChild(sel); canvas.setPointerCapture(e.pointerId);
     }, on);
     canvas.addEventListener('pointermove', e => {
       if (!sel) return;
-      const r = canvas.getBoundingClientRect(), a = ch.chartArea, x = Math.max(a.left, Math.min(a.right, e.clientX - r.left));
+      const r = canvas.getBoundingClientRect(), a = ch.chartArea, x = Math.max(a.left, Math.min(a.right, (e.clientX - r.left) * kx(r)));
       sel.style.left = Math.min(x0, x) + 'px'; sel.style.width = Math.abs(x - x0) + 'px';
     }, on);
     const end = e => {
       if (!sel) return;
-      const r = canvas.getBoundingClientRect(), a = ch.chartArea, x = Math.max(a.left, Math.min(a.right, e.clientX - r.left));
+      const r = canvas.getBoundingClientRect(), a = ch.chartArea, x = Math.max(a.left, Math.min(a.right, (e.clientX - r.left) * kx(r)));
       sel.remove(); sel = null;
       if (Math.abs(x - x0) < 8) return;   // nhấp thường, không phải kéo
       dragged = true;

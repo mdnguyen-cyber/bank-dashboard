@@ -1,4 +1,4 @@
-/* Tìm chart trên toàn dashboard: nút 🔍 ở thanh trên cùng, phím tắt Ctrl/⌘ + K hoặc "/".
+/* Tìm chart trên toàn dashboard: thanh tìm ngay dưới thanh tab (đầu <main>), phím tắt Ctrl/⌘ + K hoặc "/".
    Mục lục: data/chart-index.js (scripts/build_chart_index.js), tải khi mở hộp tìm lần đầu.
    Mở kết quả: cùng trang → mở đúng tab, tab con rồi cuộn tới chart; trang khác → chuyển trang kèm ?chart=<mã> (hoặc &chart=). */
 (function () {
@@ -91,14 +91,15 @@
     if (!box) build();
     box.hidden = false; document.body.classList.add('cs-open');
     const q = $('.cs-q', box); q.value = ''; sel = 0; q.focus();
-    if (!IDX) { $('.cs-head', box).textContent = 'Đang tải mục lục chart…'; IDX = await loadIdx(); $('.cs-foot b', box).textContent = IDX ? IDX.c.filter(r => isDev() || !r.d).length : 0; }
+    if (!IDX) { $('.cs-head', box).textContent = 'Đang tải mục lục chart…'; IDX = await loadIdx(); }
+    $('.cs-foot b', box).textContent = rows().length.toLocaleString('vi-VN');
     render();
   }
   function close() { if (box) { box.hidden = true; document.body.classList.remove('cs-open'); } }
   function build() {
     box = document.createElement('div'); box.className = 'cs-ov'; box.hidden = true;
     box.innerHTML = `<div class="cs-box" role="dialog" aria-label="Tìm chart">
-      <div class="cs-top"><span class="cs-ic">🔍</span><input class="cs-q" type="search" placeholder="Tìm chart: NIM, tỷ giá, P/B, nợ xấu, SSI…" aria-label="Tìm chart" autocomplete="off"><button type="button" class="cs-x" aria-label="Đóng">Esc</button></div>
+      <div class="cs-top"><span class="cs-ic"><svg class="cs-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><input class="cs-q" type="search" placeholder="Tìm chart: NIM, tỷ giá, P/B, nợ xấu, SSI…" aria-label="Tìm chart" autocomplete="off"><button type="button" class="cs-x" aria-label="Đóng">Esc</button></div>
       <div class="cs-grp"></div><div class="cs-head"></div><ul class="cs-list"></ul>
       <div class="cs-foot"><span><b>0</b> chart · không phân biệt dấu · gõ nhiều từ để thu hẹp</span><span>↑↓ chọn · Enter mở · Esc đóng</span></div></div>`;
     document.body.appendChild(box);
@@ -112,31 +113,46 @@
       else if (e.key === 'Enter') { e.preventDefault(); go(hits[sel]); }
       else if (e.key === 'Escape') close();
     };
-    const st = document.createElement('style');
-    st.textContent = `.cs-btn{border:1px solid var(--line,#dfe3ec);background:#fff;color:var(--navy,#1D2678);border-radius:99px;padding:5px 12px;font:700 12px Arial,sans-serif;cursor:pointer;white-space:nowrap}
-      .cs-btn kbd{font:600 10px Arial;color:#8a90a0;border:1px solid #dfe3ec;border-radius:4px;padding:0 4px;margin-left:6px}
-      .cs-ov{position:fixed;inset:0;background:rgba(20,26,60,.35);z-index:1000;display:flex;justify-content:center;align-items:flex-start;padding:8vh 16px 16px}
+    const st = document.createElement('style'); st.id = 'cs-style';
+    st.textContent = `.cs-bar{display:flex;align-items:center;gap:12px;width:100%;margin:-6px 0 20px;padding:0 8px 0 16px;height:46px;background:#fff;border:1px solid var(--line,#d9dde4);border-radius:14px;
+        color:var(--muted,#8a93a3);font:500 14px Arial,sans-serif;cursor:text;text-align:left;box-shadow:0 1px 2px rgba(29,38,120,.04);transition:border-color .15s,box-shadow .15s}
+      .cs-bar:hover{border-color:#b9c0d4;box-shadow:0 4px 14px rgba(29,38,120,.08)}
+      .cs-bar:focus-visible{outline:none;border-color:var(--teal,#59C5C8);box-shadow:0 0 0 3px rgba(89,197,200,.25)}
+      .cs-bar .cs-svg{color:var(--navy,#1D2678);flex:none}
+      .cs-bar .cs-ph{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .cs-bar .cs-ph b{color:var(--navy,#1D2678);font-weight:700;margin-right:6px}
+      .cs-bar .cs-n{flex:none;background:var(--soft,#F0F4FF);color:var(--navy,#1D2678);border-radius:99px;padding:4px 10px;font:700 11.5px Arial,sans-serif}
+      .cs-kbd{display:inline-flex;gap:4px;flex:none}.cs-kbd kbd{font:700 11px Arial,sans-serif;color:var(--ink2,#596272);background:#f5f7fb;border:1px solid var(--line,#d9dde4);border-bottom-width:2px;border-radius:6px;padding:2px 7px}
+      .cs-ov{position:fixed;inset:0;background:rgba(20,26,60,.38);backdrop-filter:blur(2px);z-index:1000;display:flex;justify-content:center;align-items:flex-start;padding:9vh 16px 16px}
       .cs-ov[hidden]{display:none}body.cs-open{overflow:hidden}
-      .cs-box{background:#fff;width:min(760px,100%);max-height:80vh;border-radius:14px;box-shadow:0 20px 60px rgba(20,26,60,.3);display:flex;flex-direction:column;overflow:hidden;font-family:Arial,sans-serif}
-      .cs-top{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #eef0f4}.cs-ic{font-size:16px}
-      .cs-q{flex:1;border:0;outline:0;font:15px Arial;min-width:0}.cs-x{border:1px solid #dfe3ec;background:#f5f7fb;border-radius:6px;font:11px Arial;color:#5b6475;padding:3px 8px;cursor:pointer}
-      .cs-grp{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px 0}.cs-grp button{border:1px solid #dfe3ec;background:#fff;border-radius:99px;padding:3px 10px;font:12px Arial;cursor:pointer}.cs-grp button.on{background:var(--navy,#1D2678);border-color:var(--navy,#1D2678);color:#fff}
-      .cs-head{padding:10px 14px 4px;font:700 11px Arial;color:#8a90a0;text-transform:uppercase;letter-spacing:.05em}
-      .cs-list{list-style:none;margin:0;padding:0 6px 6px;overflow:auto;flex:1}
-      .cs-list li{padding:8px 10px;border-radius:8px;cursor:pointer}.cs-list li.on{background:#eef1fb}
-      .cs-t{font:700 13.5px Arial;color:var(--navy,#1D2678)}.cs-p{font-size:12px;color:#3f4656;margin-top:2px}.cs-s{font-size:11.5px;color:#8a90a0;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .cs-list mark{background:#fff3c4;color:inherit;border-radius:2px}.cs-here{background:#e6f6f6;color:#1f8a8d;border-radius:99px;padding:0 6px;font-size:10.5px}.cs-dev{background:#fff1d6;color:#8a5a00;border-radius:99px;padding:0 6px;font-size:10.5px}
-      .cs-none{color:#8a90a0;cursor:default!important}
-      .cs-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 14px;border-top:1px solid #eef0f4;font-size:11px;color:#8a90a0}
-      @media (max-width:600px){.cs-ov{padding:12px}.cs-btn kbd{display:none}.cs-foot span:last-child{display:none}}`;
+      .cs-box{background:#fff;width:min(760px,100%);max-height:80vh;border-radius:16px;border:1px solid var(--line,#d9dde4);box-shadow:0 24px 64px rgba(20,26,60,.28);display:flex;flex-direction:column;overflow:hidden;font-family:Arial,sans-serif}
+      .cs-top{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line2,#e9ecf2)}.cs-ic{display:flex;color:var(--navy,#1D2678)}
+      .cs-q{flex:1;border:0;outline:0;font:15px Arial,sans-serif;color:var(--ink,#303540);min-width:0;background:none}
+      .cs-x{border:1px solid var(--line,#d9dde4);border-bottom-width:2px;background:#f5f7fb;border-radius:6px;font:700 11px Arial,sans-serif;color:var(--ink2,#596272);padding:2px 8px;cursor:pointer}
+      .cs-grp{display:flex;gap:6px;flex-wrap:wrap;padding:12px 16px 0}.cs-grp button{border:1px solid var(--line,#d9dde4);background:#fff;color:var(--ink2,#596272);border-radius:99px;padding:4px 12px;font:600 12px Arial,sans-serif;cursor:pointer}
+      .cs-grp button:hover{border-color:var(--navy,#1D2678);color:var(--navy,#1D2678)}.cs-grp button.on{background:var(--navy,#1D2678);border-color:var(--navy,#1D2678);color:#fff}
+      .cs-head{padding:12px 16px 4px;font:700 11px Arial,sans-serif;color:var(--muted,#8a93a3);text-transform:uppercase;letter-spacing:.06em}
+      .cs-list{list-style:none;margin:0;padding:0 8px 8px;overflow:auto;flex:1}
+      .cs-list li{padding:9px 12px;border-radius:10px;cursor:pointer;border-left:3px solid transparent}.cs-list li.on{background:var(--soft,#F0F4FF);border-left-color:var(--teal,#59C5C8)}
+      .cs-t{font:700 13.5px Arial,sans-serif;color:var(--navy,#1D2678)}.cs-p{font-size:12px;color:var(--ink2,#596272);margin-top:2px}.cs-s{font-size:11.5px;color:var(--muted,#8a93a3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .cs-list mark{background:#fff1bf;color:inherit;border-radius:2px}.cs-here{background:#e6f6f6;color:var(--teal-ink,#1f8a8d);border-radius:99px;padding:0 7px;font-size:10.5px;font-weight:700}.cs-dev{background:#fff1d6;color:#8a5a00;border-radius:99px;padding:0 7px;font-size:10.5px;font-weight:700}
+      .cs-none{color:var(--muted,#8a93a3);cursor:default!important}
+      .cs-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:9px 16px;border-top:1px solid var(--line2,#e9ecf2);background:#fafbfd;font-size:11px;color:var(--muted,#8a93a3)}
+      @media print{.cs-bar{display:none}}body.pdf-cap .cs-bar,body.print-all .cs-bar{display:none}
+      @media (max-width:600px){.cs-ov{padding:12px}.cs-kbd,.cs-bar .cs-n,.cs-foot span:last-child{display:none}}`;
     document.head.appendChild(st);
   }
 
   /* ---------- gắn nút + phím tắt; mở chart theo ?chart= ---------- */
   function mount() {
-    const host = document.querySelector('.logo-right'); if (!host || $('.cs-btn')) return;
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'cs-btn'; b.title = 'Tìm chart trên toàn dashboard (Ctrl + K)';
-    b.innerHTML = '🔍 Tìm chart<kbd>Ctrl K</kbd>'; b.onclick = open; host.prepend(b);
+    const host = document.querySelector('main > .wrap'); if (!host || $('.cs-bar')) return;
+    if (!document.getElementById('cs-style')) { if (!box) build(); }
+    const mac = /Mac|iPhone|iPad/.test(navigator.platform || '');
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'cs-bar'; b.title = 'Tìm chart trên toàn dashboard';
+    b.innerHTML = `<svg class="cs-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="cs-ph"><b>Tìm chart</b>NIM, tỷ giá, P/B, nợ xấu, lợi suất, SSI…</span><span class="cs-n" hidden></span><span class="cs-kbd"><kbd>${mac ? '⌘' : 'Ctrl'}</kbd><kbd>K</kbd></span>`;
+    b.onclick = open; host.prepend(b);
+    const setN = () => { if (window.CHART_INDEX) { const n = rows().length; const c = $('.cs-n', b); c.textContent = n.toLocaleString('vi-VN') + ' chart'; c.hidden = false; } };
+    setTimeout(() => loadIdx().then(ix => { IDX = IDX || ix; setN(); }), 1200);
   }
   document.addEventListener('keydown', e => {
     const t = e.target, typing = t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
@@ -144,7 +160,7 @@
     else if (e.key === '/' && !typing) { e.preventDefault(); open(); }
   });
   const init = () => {
-    mount(); setTimeout(mount, 800);   // thanh trên cùng có nút do script khác chèn sau
+    mount(); setTimeout(mount, 800);
     const id = new URLSearchParams(location.search).get('chart');
     if (id) setTimeout(() => { reveal(id); try { const u = new URL(location.href); u.searchParams.delete('chart'); history.replaceState(null, '', u.pathname + u.search + u.hash); } catch (e) {} }, 700);
   };

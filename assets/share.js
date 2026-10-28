@@ -1,15 +1,18 @@
-/* Chia sẻ ảnh chart: ghép ảnh có thương hiệu (16:9 hoặc 4:5) từ 1 hoặc nhiều chart (tối đa 6), vẽ chú thích (mũi tên, mũi tên đứt,
-   tô sáng, khung, vòng, chữ), rồi Chia sẻ / Tải ảnh / Chép ảnh / Chép caption. Dùng chung cho trang ngành và trang ngân hàng.
+/* Chia sẻ ảnh chart: ghép ảnh có thương hiệu (16:9 hoặc 4:5) từ 1 hoặc nhiều chart (tối đa 6), vẽ chú thích (mũi tên, khung, vòng — nét liền
+   hoặc nét đứt; tô sáng chữ nhật/elip nằm sau chart; chữ), chọn lại hình đã vẽ để kéo, đổi cỡ, đổi màu, xóa; "Chỉnh chart" mở to từng chart đúng
+   tỷ lệ trong ảnh để đổi khung thời gian, Cột/Đường; rồi Chia sẻ / Tải ảnh / Chép ảnh / Chép caption. Nút "⤢ Phóng to" trên từng thẻ chart.
    Chọn nhiều chart: nút "＋ Ghép" trên từng thẻ (giỏ chart ở góc dưới) hoặc "＋ Thêm chart" trong hộp thoại (lọc theo tab, tìm theo tên).
    Trang có thể khai báo window.FSSHARE = { prep() — dựng các tab ẩn để có đủ chart, path(card) — [tab, tab con] }. */
 (function () {
   const FIN = { navy: '#1D2678', purple: '#861C52', gold: '#FFD45D', red: '#c0392b', teal: '#59C5C8', ink: '#1f2433', grey: '#6b7385', line: '#e3e6ee' };
   const SW = [['navy', 'Xanh FinSuccess'], ['purple', 'Đỏ mận'], ['gold', 'Vàng'], ['red', 'Đỏ'], ['teal', 'Xanh ngọc']];
-  const TOOLS = [['none', '↖', 'Không vẽ'], ['arrow', '➝', 'Mũi tên'], ['darrow', '⇢', 'Mũi tên đứt'], ['hl', '▬', 'Tô sáng'], ['box', '▢', 'Khung'], ['ring', '◯', 'Khoanh tròn'], ['text', 'T', 'Chữ']];
+  const TOOLS = [['none', '↖', 'Chọn'], ['arrow', '➝', 'Mũi tên'], ['hl', '▬', 'Tô sáng'], ['hle', '⬬', 'Tô sáng elip'], ['box', '▢', 'Khung'], ['ring', '◯', 'Khoanh tròn'], ['text', 'T', 'Chữ']];
+  const BACK = t => t === 'hl' || t === 'hle';   // tô sáng: khối màu trong suốt nằm SAU đường/cột của chart
+  const DASHABLE = t => t === 'arrow' || t === 'box' || t === 'ring';
   const FMT = { wide: { w: 1600, h: 900, t: 'Ngang 16:9', s: 'X · Telegram · Zalo' }, tall: { w: 1080, h: 1350, t: 'Dọc 4:5', s: 'Facebook · Instagram' } };
   const MAXN = 6, LAY = [['auto', 'Tự động'], ['1', '1 cột'], ['2', '2 cột'], ['3', '3 cột']];
   const RNG = [['cur', 'Như trên chart'], ['match', 'Khớp chart ngắn nhất'], ['1', '1M'], ['3', '3M'], ['6', '6M'], ['ytd', 'YTD'], ['12', '1Y'], ['36', '3Y'], ['60', '5Y'], ['0', 'Tất cả']];
-  const st = { items: [], fmt: 'wide', lay: 'auto', rng: 'cur', base: null, shapes: [], tool: 'arrow', color: 'navy', picked: false, drag: null, key: '' };
+  const st = { items: [], fmt: 'wide', lay: 'auto', rng: 'cur', base: null, fg: null, cells: [], shapes: [], tool: 'arrow', color: 'navy', dash: false, picked: false, drag: null, sel: -1, hist: [], hover: -1, key: '' };
   const basket = [];   // thẻ chart đã bấm "＋ Ghép"
   const first = () => st.items[0] && st.items[0].meta;
   let logo = null; { const im = new Image(); im.onload = () => { logo = im; }; im.src = 'assets/fin-success-logo.png'; }
@@ -21,11 +24,13 @@
       const cv = [...c.querySelectorAll('canvas')].find(x => window.Chart && Chart.getChart(x)); if (!cv) return;
       const b = document.createElement('button'); b.type = 'button'; b.className = 'sharepill'; b.innerHTML = '⇪ Chia sẻ ảnh'; b.title = 'Chia sẻ ảnh chart này';
       b.onclick = e => { e.stopPropagation(); open([c]); };
+      const z = document.createElement('button'); z.type = 'button'; z.className = 'sharepill fsx-zoom'; z.innerHTML = '⤢ Phóng to'; z.title = 'Mở to chart để xem kỹ (Esc để thu nhỏ)';
+      z.onclick = e => { e.stopPropagation(); maxOpen(c); };
       const g = document.createElement('button'); g.type = 'button'; g.className = 'sharepill fss-add'; g.textContent = '＋ Ghép'; g.title = 'Chọn chart này để ghép nhiều chart vào một ảnh';
       g.onclick = e => { e.stopPropagation(); toggleBasket(c); };
       let row = c.querySelector(':scope > .ibar');
       if (!row) { row = document.createElement('div'); row.className = 'ibar sharerow'; c.appendChild(row); }
-      row.appendChild(g); row.appendChild(b);
+      row.appendChild(z); row.appendChild(g); row.appendChild(b);
     });
   }
   let tmr = null; new MutationObserver(() => { clearTimeout(tmr); tmr = setTimeout(() => { addButtons(); syncBasket(); }, 250); }).observe(document.body, { childList: true, subtree: true });
@@ -133,6 +138,7 @@
   function compose() {
     const m = first(), n = st.items.length, F = FMT[st.fmt], W = F.w, H = F.h, k = W / 1600 * (st.fmt === 'tall' ? 1.25 : 1);
     const cvs = document.createElement('canvas'); cvs.width = W; cvs.height = H; const x = cvs.getContext('2d');
+    const fgc = document.createElement('canvas'); fgc.width = W; fgc.height = H; const xf = fgc.getContext('2d'), cells = [];   // lớp chart riêng (nền trong suốt) để tô sáng nằm sau chart
     const P = Math.round(48 * k), font = (wt, px) => `${wt} ${Math.round(px * k)}px Arial, sans-serif`;
     x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = FIN.navy; x.fillRect(0, 0, W, Math.round(8 * k));
     let y = Math.round(30 * k); const lh = Math.round(46 * k);
@@ -162,7 +168,7 @@
     x.font = font('400', 16);
     const foot = wrap(x, (n === 1 && lastLab(st.items[0]) ? 'Kỳ dữ liệu: ' + lastLab(st.items[0]) + ' · ' : '') + 'Nguồn: ' + (n === 1 ? m.src : srcAll()), W - 2 * P - Math.round(260 * k), n === 1 ? 2 : 3);
     const fh = foot.length * Math.round(22 * k) + Math.round(34 * k), cy1 = H - fh;
-    if (n === 1) put(x, m, P, y, W - 2 * P, cy1 - y, st.fmt === 'tall' ? 1.3 : 1.6, winOf(st.items[0]));
+    if (n === 1) { const zs = st.fmt === 'tall' ? 1.3 : 1.6; cells.push({ i: 0, X: P, Y: y, w: W - 2 * P, h: cy1 - y, zs }); put(xf, m, P, y, W - 2 * P, cy1 - y, zs, winOf(st.items[0])); }
     else {   // lưới chart: mỗi ô có tên chart, nhận định ngắn (nếu có), mô tả và kỳ dữ liệu
       const C = cols(n), R = Math.ceil(n / C), g = Math.round(28 * k), gy = Math.round(22 * k);
       const cw = (W - 2 * P - (C - 1) * g) / C, chh = (cy1 - Math.round(12 * k) - y - (R - 1) * gy) / R;
@@ -177,7 +183,7 @@
         const sub = [mm.sub, l1 ? (f0 && f0 !== l1 ? f0 + ' – ' + l1 : 'đến ' + l1) : ''].filter(Boolean).join(' · ');
         if (sub) { x.fillStyle = FIN.grey; x.font = font('400', small ? 12.5 : 13.5); wrap(x, sub, cw, 1).forEach(l => { x.fillText(l, X, yy); yy += Math.round(18 * k); }); }
         yy += Math.round(4 * k);
-        const hh = Y + chh - yy; if (hh > 40) put(x, mm, X, yy, cw, hh, Math.max(1, Math.min(1.5, cw / 640)), winOf(it));
+        const hh = Y + chh - yy, zs = Math.max(1, Math.min(1.5, cw / 640)); if (hh > 40) { cells.push({ i, X, Y: yy, w: cw, h: hh, zs }); put(xf, mm, X, yy, cw, hh, zs, winOf(it)); }
         if (c < inRow - 1) { x.fillStyle = FIN.line; x.fillRect(X + cw + g / 2, Y, 1, chh); }
       });
     }
@@ -186,7 +192,7 @@
     foot.forEach(l => { x.fillText(l, P, fy); fy += Math.round(22 * k); });
     x.textAlign = 'right'; x.fillStyle = FIN.navy; x.font = font('700', 16); x.fillText('FinSuccess Research', W - P, cy1 + Math.round(14 * k));
     x.fillStyle = FIN.grey; x.font = font('400', 13); x.fillText('Tổng hợp có sự hỗ trợ của AI', W - P, cy1 + Math.round(36 * k)); x.textAlign = 'left';
-    return cvs;
+    return { bg: cvs, fg: fgc, cells };
   }
 
   /* ---------- vẽ chú thích ---------- */
@@ -196,29 +202,76 @@
     x.setLineDash(dash ? [14 * s, 10 * s] : []); x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(ex, ey); x.stroke(); x.setLineDash([]);
     x.beginPath(); x.moveTo(b.x, b.y); x.lineTo(b.x - hd * Math.cos(ang - 0.42), b.y - hd * Math.sin(ang - 0.42)); x.lineTo(b.x - hd * Math.cos(ang + 0.42), b.y - hd * Math.sin(ang + 0.42)); x.closePath(); x.fill();
   }
+  function rectOf(sh) { const a = sh.a, b = sh.b || sh.a; return { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(b.x - a.x), h: Math.abs(b.y - a.y) }; }
+  function textBox(x, sh, W) {   // khung chữ (để vẽ và để chọn)
+    const s = W / 1000 * 1.6, fs = Math.round(11 * s); x.font = `700 ${fs}px Arial, sans-serif`;
+    const lines = sh.s.split('\n'), tw = Math.max(...lines.map(l => x.measureText(l).width)), pd = fs * 0.4;
+    return { fs, lines, pd, x: sh.a.x - pd, y: sh.a.y - pd, w: tw + 2 * pd, h: lines.length * fs * 1.25 + pd * 1.6 };
+  }
   function drawShape(x, sh, W) {
     const s = W / 1000 * 1.6; x.save(); x.lineCap = 'round'; x.lineJoin = 'round'; x.strokeStyle = col(sh.c); x.fillStyle = col(sh.c); x.lineWidth = 2.5 * s;
-    const a = sh.a, b = sh.b || sh.a, rx = Math.min(a.x, b.x), ry = Math.min(a.y, b.y), rw = Math.abs(b.x - a.x), rh = Math.abs(b.y - a.y);
-    if (sh.t === 'arrow' || sh.t === 'darrow') arrow(x, a, b, s, sh.t === 'darrow');
-    else if (sh.t === 'hl') { x.fillStyle = col(sh.c, 0.28); x.fillRect(rx, ry, rw, rh); }
-    else if (sh.t === 'box') x.strokeRect(rx, ry, rw, rh);
-    else if (sh.t === 'ring') { x.beginPath(); x.ellipse(rx + rw / 2, ry + rh / 2, Math.max(rw / 2, 1), Math.max(rh / 2, 1), 0, 0, Math.PI * 2); x.stroke(); }
+    const a = sh.a, b = sh.b || sh.a, R = rectOf(sh), dash = sh.d || sh.t === 'darrow';
+    if (sh.t === 'arrow' || sh.t === 'darrow') arrow(x, a, b, s, dash);
+    else if (sh.t === 'hl') { x.fillStyle = col(sh.c, 0.16); x.fillRect(R.x, R.y, R.w, R.h); }
+    else if (sh.t === 'hle') { x.fillStyle = col(sh.c, 0.16); x.beginPath(); x.ellipse(R.x + R.w / 2, R.y + R.h / 2, Math.max(R.w / 2, 1), Math.max(R.h / 2, 1), 0, 0, Math.PI * 2); x.fill(); }
+    else if (sh.t === 'box') { x.setLineDash(dash ? [12 * s, 8 * s] : []); x.strokeRect(R.x, R.y, R.w, R.h); }
+    else if (sh.t === 'ring') { x.setLineDash(dash ? [12 * s, 8 * s] : []); x.beginPath(); x.ellipse(R.x + R.w / 2, R.y + R.h / 2, Math.max(R.w / 2, 1), Math.max(R.h / 2, 1), 0, 0, Math.PI * 2); x.stroke(); }
     else if (sh.t === 'text') {
-      const fs = Math.round(11 * s); x.font = `700 ${fs}px Arial, sans-serif`; x.textBaseline = 'top';
-      const lines = sh.s.split('\n'), tw = Math.max(...lines.map(l => x.measureText(l).width)), pd = fs * 0.4;
-      x.fillStyle = 'rgba(255,255,255,0.92)'; x.fillRect(a.x - pd, a.y - pd, tw + 2 * pd, lines.length * fs * 1.25 + pd * 1.6);
-      x.strokeStyle = col(sh.c); x.lineWidth = 1.5 * s; x.strokeRect(a.x - pd, a.y - pd, tw + 2 * pd, lines.length * fs * 1.25 + pd * 1.6);
-      x.fillStyle = sh.c === 'gold' ? FIN.ink : col(sh.c); lines.forEach((l, i) => x.fillText(l, a.x, a.y + i * fs * 1.25));
+      const T = textBox(x, sh, W); x.textBaseline = 'top';
+      x.fillStyle = 'rgba(255,255,255,0.92)'; x.fillRect(T.x, T.y, T.w, T.h);
+      x.strokeStyle = col(sh.c); x.lineWidth = 1.5 * s; x.strokeRect(T.x, T.y, T.w, T.h);
+      x.fillStyle = sh.c === 'gold' ? FIN.ink : col(sh.c); T.lines.forEach((l, i) => x.fillText(l, a.x, a.y + i * T.fs * 1.25));
     }
     x.restore();
   }
+  /* ---------- chọn & sửa hình đã vẽ: kéo thân để di chuyển, kéo nút vuông để đổi cỡ/đầu mũi tên ---------- */
+  const scl = () => { const cv = M.querySelector('.fss-cv'), r = cv.getBoundingClientRect(); return r.width ? cv.width / r.width : 1; };
+  function handles(sh) {
+    if (sh.t === 'text') return [];
+    if (sh.t === 'arrow' || sh.t === 'darrow') return [{ k: 'a', x: sh.a.x, y: sh.a.y }, { k: 'b', x: sh.b.x, y: sh.b.y }];
+    const a = sh.a, b = sh.b; return [{ k: 'a', x: a.x, y: a.y }, { k: 'ab', x: b.x, y: a.y }, { k: 'b', x: b.x, y: b.y }, { k: 'ba', x: a.x, y: b.y }];
+  }
+  function hitHandle(sh, p) { const t = 9 * scl(); return handles(sh).find(h => Math.abs(h.x - p.x) <= t && Math.abs(h.y - p.y) <= t) || null; }
+  function hitShape(sh, p, inside) {   // inside = tính cả phần trong (khi hình đang được chọn)
+    const t = 8 * scl(), x = M.querySelector('.fss-cv').getContext('2d');
+    if (sh.t === 'arrow' || sh.t === 'darrow') { const a = sh.a, b = sh.b, dx = b.x - a.x, dy = b.y - a.y, L = dx * dx + dy * dy || 1, u = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / L)); return Math.hypot(a.x + u * dx - p.x, a.y + u * dy - p.y) <= t * 1.3; }
+    if (sh.t === 'text') { const T = textBox(x, sh, st.base.width); return p.x >= T.x && p.x <= T.x + T.w && p.y >= T.y && p.y <= T.y + T.h; }
+    const R = rectOf(sh);
+    if (sh.t === 'ring' || sh.t === 'hle') {
+      const rx = Math.max(R.w / 2, 1), ry = Math.max(R.h / 2, 1), q = Math.hypot((p.x - R.x - rx) / rx, (p.y - R.y - ry) / ry);
+      return inside ? q <= 1 + t / Math.min(rx, ry) : Math.abs(q - 1) * Math.min(rx, ry) <= t;
+    }
+    const inR = p.x >= R.x - t && p.x <= R.x + R.w + t && p.y >= R.y - t && p.y <= R.y + R.h + t;
+    if (inside) return inR;
+    return inR && !(p.x > R.x + t && p.x < R.x + R.w - t && p.y > R.y + t && p.y < R.y + R.h - t);   // chỉ viền: để vẫn vẽ được mũi tên vào trong vùng
+  }
+  function drawSel(x, sh) {
+    const k = scl(), R = sh.t === 'text' ? textBox(x, sh, st.base.width) : rectOf(sh), pad = 6 * k;
+    x.save(); x.strokeStyle = FIN.teal; x.lineWidth = 1.5 * k; x.setLineDash([5 * k, 4 * k]);
+    if (sh.t !== 'arrow' && sh.t !== 'darrow') x.strokeRect(R.x - pad, R.y - pad, R.w + 2 * pad, R.h + 2 * pad);
+    x.setLineDash([]); const hs = 5 * k;
+    handles(sh).forEach(h => { x.fillStyle = '#fff'; x.strokeStyle = FIN.navy; x.lineWidth = 1.5 * k; x.fillRect(h.x - hs, h.y - hs, 2 * hs, 2 * hs); x.strokeRect(h.x - hs, h.y - hs, 2 * hs, 2 * hs); });
+    x.restore();
+  }
+  function paint(x, preview) {   // nền → tô sáng → chart → hình vẽ khác
+    const W = st.base.width, all = st.drag && !st.drag.move ? [...st.shapes, st.drag] : st.shapes;
+    x.drawImage(st.base, 0, 0);
+    all.forEach(s => { if (BACK(s.t)) drawShape(x, s, W); });
+    if (st.fg) x.drawImage(st.fg, 0, 0);
+    all.forEach(s => { if (!BACK(s.t)) drawShape(x, s, W); });
+    if (!preview) return;
+    const c = st.cells.find(c => c.i === st.hover);
+    if (c && !st.drag) { const k = scl(); x.save(); x.strokeStyle = FIN.teal; x.lineWidth = 2 * k; x.setLineDash([8 * k, 5 * k]); x.strokeRect(c.X - 4 * k, c.Y - 4 * k, c.w + 8 * k, c.h + 8 * k); x.restore(); }
+    if (st.shapes[st.sel]) drawSel(x, st.shapes[st.sel]);
+  }
   function render() {
     const cv = M.querySelector('.fss-cv'); if (!st.base) return;
-    cv.width = st.base.width; cv.height = st.base.height; const x = cv.getContext('2d'); x.drawImage(st.base, 0, 0);
-    st.shapes.forEach(s => drawShape(x, s, cv.width)); if (st.drag) drawShape(x, st.drag, cv.width);
+    if (cv.width !== st.base.width || cv.height !== st.base.height) { cv.width = st.base.width; cv.height = st.base.height; }
+    const x = cv.getContext('2d'); x.clearRect(0, 0, cv.width, cv.height); paint(x, true); syncSel();
   }
-  function finalCanvas() { const c = document.createElement('canvas'); c.width = st.base.width; c.height = st.base.height; const x = c.getContext('2d'); x.drawImage(st.base, 0, 0); st.shapes.forEach(s => drawShape(x, s, c.width)); return c; }
+  function finalCanvas() { const c = document.createElement('canvas'); c.width = st.base.width; c.height = st.base.height; paint(c.getContext('2d'), false); return c; }
   function pt(e) { const cv = M.querySelector('.fss-cv'), r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * cv.width, y: (e.clientY - r.top) / r.height * cv.height }; }
+  const snapH = () => { st.hist.push(JSON.stringify(st.shapes)); if (st.hist.length > 60) st.hist.shift(); };
 
   /* ---------- hộp thoại ---------- */
   const M = document.createElement('div'); M.className = 'fss-modal'; M.hidden = true; M.setAttribute('role', 'dialog'); M.setAttribute('aria-modal', 'true'); M.setAttribute('aria-label', 'Chia sẻ ảnh');
@@ -226,9 +279,10 @@
     <div class="fss-body"><div class="fss-left">
       <div class="fss-tools">${TOOLS.map(([k, i, l]) => `<button type="button" data-tool="${k}" title="${l}"><span>${i}</span>${l}</button>`).join('')}
         <span class="fss-sep"></span>${SW.map(([k, l]) => `<button type="button" class="fss-sw" data-c="${k}" title="${l}" style="background:${FIN[k]}"></button>`).join('')}
-        <span class="fss-sep"></span><button type="button" data-act="undo" title="Hoàn tác">↶ Hoàn tác</button><button type="button" data-act="clear" title="Xóa hết hình vẽ">Xóa vẽ</button></div>
-      <div class="fss-stage"><canvas class="fss-cv" aria-label="Ảnh xem trước"></canvas><div class="fss-wait">Đang tạo ảnh…</div></div>
-      <p class="fss-hint">Kéo trên ảnh để vẽ. Chữ: chọn T rồi bấm vào vị trí cần ghi.</p></div>
+        <span class="fss-sep"></span><button type="button" data-act="dash" class="fss-dash" title="Nét đứt cho mũi tên, khung, vòng (áp dụng cả hình đang chọn)"><span>┄</span>Nét đứt</button>
+        <span class="fss-sep"></span><button type="button" data-act="del" class="fss-del" title="Xóa hình đang chọn (Delete)" disabled>🗑 Xóa hình</button><button type="button" data-act="undo" title="Hoàn tác (Ctrl+Z)">↶ Hoàn tác</button><button type="button" data-act="clear" title="Xóa hết hình vẽ">Xóa vẽ</button></div>
+      <div class="fss-stage"><canvas class="fss-cv" aria-label="Ảnh xem trước"></canvas><button type="button" class="fss-ebtn" hidden>✎ Chỉnh chart</button><div class="fss-wait">Đang tạo ảnh…</div></div>
+      <p class="fss-hint">Kéo trên ảnh để vẽ · bấm vào hình đã vẽ để chọn: kéo để di chuyển, kéo ô vuông để đổi cỡ, đổi màu/nét đứt, Delete để xóa · bấm ra chỗ khác để bỏ chọn · rê chuột lên chart rồi bấm <b>✎ Chỉnh chart</b> để đổi khung thời gian, Cột/Đường.</p></div>
     <div class="fss-right">
       <div class="fss-fmt">${Object.entries(FMT).map(([k, f]) => `<button type="button" data-fmt="${k}"><b>${f.t}</b><small>${f.s}</small></button>`).join('')}</div>
       <div class="fss-lab">CHART TRONG ẢNH <small>tối đa ${MAXN} · nhận định ngắn hiện ngay dưới tên chart</small></div>
@@ -253,16 +307,21 @@
   const msg = t => { M.querySelector('.fss-msg').textContent = t; };
   function syncUi() {
     M.querySelectorAll('[data-tool]').forEach(b => b.classList.toggle('on', b.dataset.tool === st.tool));
+    M.querySelector('.fss-dash').classList.toggle('on', st.dash);
     M.querySelectorAll('[data-c]').forEach(b => b.classList.toggle('on', b.dataset.c === st.color));
     M.querySelectorAll('[data-fmt]').forEach(b => b.classList.toggle('on', b.dataset.fmt === st.fmt));
-    M.querySelector('.fss-stage').classList.toggle('draw', st.tool !== 'none');
+    M.querySelector('.fss-stage').classList.toggle('draw', st.tool !== 'none'); syncSel();
     M.querySelector('.fss-stage').classList.toggle('tall', st.fmt === 'tall');
+  }
+  function syncSel() {   // thanh công cụ phản ánh hình đang chọn
+    const sh = st.shapes[st.sel]; M.querySelector('.fss-del').disabled = !sh;
+    if (sh) { M.querySelectorAll('[data-c]').forEach(b => b.classList.toggle('on', b.dataset.c === sh.c)); M.querySelector('.fss-dash').classList.toggle('on', !!(sh.d || sh.t === 'darrow')); }
   }
   function build() {
     M.querySelector('.fss-wait').hidden = false;
     setTimeout(() => {
-      try { const old = st.base; st.base = compose();
-        if (old && (old.width !== st.base.width || old.height !== st.base.height)) st.shapes = st.shapes.map(s => ({ ...s, a: { x: s.a.x / old.width * st.base.width, y: s.a.y / old.height * st.base.height }, b: s.b && { x: s.b.x / old.width * st.base.width, y: s.b.y / old.height * st.base.height } }));
+      try { const old = st.base, L = compose(); st.base = L.bg; st.fg = L.fg; st.cells = L.cells;
+        if (old && (old.width !== st.base.width || old.height !== st.base.height)) { st.sel = -1; st.shapes = st.shapes.map(s => ({ ...s, a: { x: s.a.x / old.width * st.base.width, y: s.a.y / old.height * st.base.height }, b: s.b && { x: s.b.x / old.width * st.base.width, y: s.b.y / old.height * st.base.height } })); }
         render(); } catch (e) { msg('Không tạo được ảnh: ' + e.message); }
       M.querySelector('.fss-wait').hidden = true;
     }, 30);
@@ -283,14 +342,14 @@
     const ol = M.querySelector('.fss-items'), n = st.items.length;
     ol.innerHTML = st.items.map((it, i) => `<li><div class="fss-it"><span class="fss-in">${i + 1}</span><span class="fss-tt" title="${esc(it.meta.path.join(' › '))}">${esc(it.meta.title)}</span>
       <button type="button" data-mv="-1" data-i="${i}" title="Lên" ${i ? '' : 'disabled'}>↑</button><button type="button" data-mv="1" data-i="${i}" title="Xuống" ${i < n - 1 ? '' : 'disabled'}>↓</button><button type="button" data-rm="${i}" title="Bỏ chart này" ${n > 1 ? '' : 'disabled'}>×</button></div>
-      <div class="fss-ir"><input class="fss-inote" data-i="${i}" value="${esc(it.note)}" placeholder="Nhận định ngắn cho chart này (tuỳ chọn)">${tdates(it.meta.ch) ? `<select class="fss-irg" data-i="${i}" title="Khung thời gian của chart này"><option value="">Theo khung chung</option>${RNG.filter(r => r[0] !== 'match').map(([k, l]) => `<option value="${k}"${it.rng === k ? ' selected' : ''}>${l}</option>`).join('')}</select>` : ''}</div></li>`).join('');
+      <div class="fss-ir"><input class="fss-inote" data-i="${i}" value="${esc(it.note)}" placeholder="Nhận định ngắn cho chart này (tuỳ chọn)">${it.meta.ch ? `<button type="button" class="fss-iedit" data-ed="${i}" title="Mở to chart này đúng tỷ lệ trong ảnh để chỉnh khung thời gian, Cột/Đường">✎</button>` : ''}</div>${it.rng === 'cur' && st.rng !== 'cur' ? '<small class="fss-iown">Khung thời gian chỉnh riêng</small>' : ''}</li>`).join('');
     M.querySelector('.fss-lay').hidden = n < 2; M.querySelector('.fss-lay').value = st.lay;
     M.querySelector('.fss-rg').value = st.rng;
   }
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   function refresh() { drawItems(); M.querySelector('.fss-cap').value = caption(); build(); }
   function open(cards) {
-    st.shapes = []; st.base = null; st.key = ''; st.rng = 'cur'; M.querySelector('.fss-key').value = ''; st.tool = 'arrow'; st.color = 'navy'; st.picked = false; msg('');
+    st.shapes = []; st.hist = []; st.sel = -1; st.hover = -1; st.base = null; st.fg = null; st.cells = []; st.key = ''; st.rng = 'cur'; M.querySelector('.fss-key').value = ''; st.tool = 'arrow'; st.color = 'navy'; st.dash = false; st.picked = false; msg('');
     setItems(cards, false); if (!st.items.length) return;
     M.hidden = false; document.body.classList.add('fss-open'); syncUi(); refresh();
   }
@@ -306,8 +365,11 @@
   async function act(k) {
     const cap = M.querySelector('.fss-cap').value;
     if (k === 'cap') { msg(await copyText(cap) ? 'Đã chép caption.' : 'Không chép được caption.'); return; }
-    if (k === 'undo') { st.shapes.pop(); render(); return; }
-    if (k === 'clear') { st.shapes = []; render(); return; }
+    if (k === 'undo') { if (st.hist.length) { st.shapes = JSON.parse(st.hist.pop()); st.sel = -1; } render(); return; }
+    if (k === 'clear') { if (st.shapes.length) snapH(); st.shapes = []; st.sel = -1; render(); return; }
+    if (k === 'del') { if (st.shapes[st.sel]) { snapH(); st.shapes.splice(st.sel, 1); st.sel = -1; render(); } return; }
+    if (k === 'dash') { const sh = st.shapes[st.sel]; st.dash = !st.dash; if (sh && DASHABLE(sh.t === 'darrow' ? 'arrow' : sh.t)) { snapH(); if (sh.t === 'darrow') sh.t = 'arrow'; sh.d = !(sh.d); st.dash = sh.d; } syncUi(); render(); return; }
+    st.sel = -1; render();
     const b = await blob();
     if (k === 'dl') { const u = URL.createObjectURL(b), a = document.createElement('a'); a.href = u; a.download = fname(); document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); msg('Đã tải ảnh.'); return; }
     if (k === 'copy') { try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]); msg('Đã chép ảnh — dán vào bài đăng.'); } catch (e) { msg('Trình duyệt chưa cho chép ảnh. Hãy dùng Tải ảnh.'); } return; }
@@ -319,15 +381,16 @@
   }
   M.addEventListener('click', e => {
     if (e.target === M || e.target.closest('.fss-x')) return close();
-    const t = e.target.closest('[data-tool]'); if (t) { st.tool = t.dataset.tool; if (!st.picked) st.color = st.tool === 'hl' ? 'gold' : 'navy'; return syncUi(); }
-    const c = e.target.closest('[data-c]'); if (c) { st.color = c.dataset.c; st.picked = true; return syncUi(); }
+    const t = e.target.closest('[data-tool]'); if (t) { st.tool = t.dataset.tool; st.sel = -1; if (!st.picked) st.color = BACK(st.tool) ? 'gold' : 'navy'; syncUi(); return render(); }
+    const c = e.target.closest('[data-c]'); if (c) { st.color = c.dataset.c; st.picked = true; const sh = st.shapes[st.sel]; if (sh && sh.c !== st.color) { snapH(); sh.c = st.color; } syncUi(); return render(); }
+    const ed = e.target.closest('[data-ed]'); if (ed) return editChart(+ed.dataset.ed);
+    if (e.target.closest('.fss-ebtn')) return editChart(st.hover);
     const f = e.target.closest('[data-fmt]'); if (f && f.dataset.fmt !== st.fmt) { st.fmt = f.dataset.fmt; syncUi(); return build(); }
     const mv = e.target.closest('[data-mv]'); if (mv) { const i = +mv.dataset.i, j = i + +mv.dataset.mv, a = st.items; [a[i], a[j]] = [a[j], a[i]]; if (st.shapes.length) { st.shapes = []; msg('Bố cục thay đổi nên hình vẽ đã được xoá.'); } return refresh(); }
     const rm = e.target.closest('[data-rm]'); if (rm) { setItems(st.items.filter((_, i) => i !== +rm.dataset.rm).map(it => it.card), true); return refresh(); }
     const a = e.target.closest('[data-act]'); if (a) { if (a.dataset.act === 'add') return openPick(); act(a.dataset.act); }
   });
-  M.querySelector('.fss-rg').addEventListener('change', e => { st.rng = e.target.value; st.items.forEach(it => { it.rng = ''; }); drawItems(); M.querySelector('.fss-cap').value = caption(); build(); });
-  M.querySelector('.fss-items').addEventListener('change', e => { const t = e.target.closest('.fss-irg'); if (!t) return; st.items[+t.dataset.i].rng = t.value; M.querySelector('.fss-cap').value = caption(); build(); });
+  M.querySelector('.fss-rg').addEventListener('change', e => { st.rng = e.target.value; st.items.forEach(it => { it.rng = ''; }); drawItems(); M.querySelector('.fss-cap').value = caption(); build(); });   // khung chung ghi đè khung đã chỉnh riêng
   M.querySelector('.fss-lay').addEventListener('change', e => { st.lay = e.target.value; if (st.shapes.length) { st.shapes = []; msg('Bố cục thay đổi nên hình vẽ đã được xoá.'); } build(); });
   let noteT = null;
   M.querySelector('.fss-items').addEventListener('input', e => { const t = e.target.closest('.fss-inote'); if (!t) return; st.items[+t.dataset.i].note = t.value.trim(); clearTimeout(noteT); noteT = setTimeout(() => { M.querySelector('.fss-cap').value = caption(); build(); }, 450); });
@@ -378,22 +441,132 @@
   });
   let keyT = null;
   M.querySelector('.fss-key').addEventListener('input', e => { clearTimeout(keyT); keyT = setTimeout(() => { st.key = e.target.value.trim(); M.querySelector('.fss-cap').value = caption(); build(); }, 450); });
-  document.addEventListener('keydown', e => { if (M.hidden) return; if (e.key === 'Escape' && M.querySelector('.fss-txt').hidden) { if (!PK.hidden) PK.hidden = true; else close(); } if ((e.ctrlKey || e.metaKey) && e.key === 'z' && document.activeElement.tagName !== 'TEXTAREA') { e.preventDefault(); act('undo'); } });
-  const cv = M.querySelector('.fss-cv');
-  cv.addEventListener('pointerdown', e => {
-    if (st.tool === 'none' || !st.base) return; const p = pt(e);
-    if (st.tool === 'text') { textAt(p, e); return; }
-    cv.setPointerCapture(e.pointerId); st.drag = { t: st.tool, c: st.color, a: p, b: p }; e.preventDefault();
+  document.addEventListener('keydown', e => {
+    if (M.hidden || !MX.hidden) return; const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    if (e.key === 'Escape' && M.querySelector('.fss-txt').hidden) { if (!PK.hidden) PK.hidden = true; else if (st.sel >= 0) { st.sel = -1; render(); } else close(); }
+    if ((e.key === 'Delete' || e.key === 'Backspace') && !typing && st.sel >= 0) { e.preventDefault(); act('del'); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !typing) { e.preventDefault(); act('undo'); }
   });
-  cv.addEventListener('pointermove', e => { if (!st.drag) return; st.drag.b = pt(e); render(); });
-  const end = () => { if (!st.drag) return; const d = st.drag; st.drag = null; if (Math.hypot(d.b.x - d.a.x, d.b.y - d.a.y) > 8) st.shapes.push(d); render(); };
+  const cv = M.querySelector('.fss-cv'), ebtn = M.querySelector('.fss-ebtn');
+  const topHit = p => { for (let i = st.shapes.length - 1; i >= 0; i--) if (hitShape(st.shapes[i], p, i === st.sel)) return i; return -1; };
+  const cellAt = p => st.cells.find(c => p.x >= c.X && p.x <= c.X + c.w && p.y >= c.Y && p.y <= c.Y + c.h && st.items[c.i] && st.items[c.i].meta.ch);
+  function placeEbtn(c) {
+    if (!c) { ebtn.hidden = true; return; }
+    const r = cv.getBoundingClientRect(), sr = M.querySelector('.fss-stage').getBoundingClientRect(), k = r.width / cv.width;
+    ebtn.style.left = (r.left - sr.left + (c.X + c.w) * k - 8) + 'px'; ebtn.style.top = (r.top - sr.top + c.Y * k + 8) + 'px'; ebtn.hidden = false;
+  }
+  cv.addEventListener('pointerdown', e => {
+    if (!st.base || e.button > 0) return; const p = pt(e);
+    const cur = st.shapes[st.sel];
+    if (cur) {
+      const h = hitHandle(cur, p);
+      if (h) { snapH(); st.drag = { move: 'h', k: h.k, sh: cur }; cv.setPointerCapture(e.pointerId); e.preventDefault(); return; }
+    }
+    const hit = topHit(p);
+    if (hit >= 0) { st.sel = hit; snapH(); const sh = st.shapes[hit]; st.drag = { move: 'm', p0: p, a0: { ...sh.a }, b0: sh.b && { ...sh.b }, sh, moved: false }; cv.setPointerCapture(e.pointerId); e.preventDefault(); render(); return; }
+    if (st.sel >= 0) { st.sel = -1; render(); return; }   // bấm ra chỗ khác: chỉ bỏ chọn
+    if (st.tool === 'none') { const c = cellAt(p); if (c) editChart(c.i); return; }
+    if (st.tool === 'text') { textAt(p, e); return; }
+    cv.setPointerCapture(e.pointerId); st.drag = { t: st.tool, c: st.color, a: p, b: p, ...(DASHABLE(st.tool) && st.dash ? { d: true } : {}) }; e.preventDefault();
+  });
+  cv.addEventListener('pointermove', e => {
+    const p = pt(e), d = st.drag;
+    if (!d) {   // rê chuột: con trỏ theo vị trí, nút "Chỉnh chart" trên chart đang rê
+      const cur = st.shapes[st.sel], h = cur && hitHandle(cur, p);
+      cv.style.cursor = h ? 'nwse-resize' : topHit(p) >= 0 ? 'move' : st.tool === 'none' ? (cellAt(p) ? 'pointer' : 'default') : 'crosshair';
+      const c = cellAt(p), hv = c ? c.i : -1; if (hv !== st.hover) { st.hover = hv; render(); } placeEbtn(c);
+      return;
+    }
+    if (d.move === 'h') { const sh = d.sh; if (d.k === 'a') sh.a = p; else if (d.k === 'b') sh.b = p; else if (d.k === 'ab') { sh.b = { x: p.x, y: sh.b.y }; sh.a = { x: sh.a.x, y: p.y }; } else { sh.a = { x: p.x, y: sh.a.y }; sh.b = { x: sh.b.x, y: p.y }; } }
+    else if (d.move === 'm') { const dx = p.x - d.p0.x, dy = p.y - d.p0.y; if (Math.hypot(dx, dy) > 2) d.moved = true; d.sh.a = { x: d.a0.x + dx, y: d.a0.y + dy }; if (d.b0) d.sh.b = { x: d.b0.x + dx, y: d.b0.y + dy }; }
+    else d.b = p;
+    render();
+  });
+  cv.addEventListener('pointerleave', () => { if (!st.drag && st.hover >= 0) { setTimeout(() => { if (!ebtn.matches(':hover')) { st.hover = -1; ebtn.hidden = true; render(); } }, 60); } });
+  ebtn.addEventListener('pointerleave', e => { if (e.relatedTarget !== cv) { st.hover = -1; ebtn.hidden = true; render(); } });
+  const end = () => {
+    const d = st.drag; if (!d) return; st.drag = null;
+    if (d.move) { if (d.move === 'm' && !d.moved) st.hist.pop(); render(); return; }   // chỉ bấm chọn, không đổi gì
+    if (Math.hypot(d.b.x - d.a.x, d.b.y - d.a.y) > 8) { snapH(); st.shapes.push(d); st.sel = st.shapes.length - 1; }
+    render();
+  };
   cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
-  function textAt(p, e) {
+  cv.addEventListener('dblclick', e => { const i = topHit(pt(e)); if (i >= 0 && st.shapes[i].t === 'text') textAt(st.shapes[i].a, e, i); });
+  function textAt(p, e, idx) {
     const box = M.querySelector('.fss-txt'), ta = box.querySelector('textarea');
     e.preventDefault(); const t0 = Date.now();
-    box.hidden = false; box.style.left = Math.min(e.clientX, innerWidth - 260) + 'px'; box.style.top = Math.min(e.clientY, innerHeight - 70) + 'px'; ta.value = ''; setTimeout(() => ta.focus(), 30);
-    const done = ok => { box.hidden = true; ta.onkeydown = ta.onblur = null; const s = ta.value.trim(); if (ok && s) { st.shapes.push({ t: 'text', c: st.color, a: p, s }); render(); } };
+    box.hidden = false; box.style.left = Math.min(e.clientX, innerWidth - 260) + 'px'; box.style.top = Math.min(e.clientY, innerHeight - 70) + 'px'; ta.value = idx != null ? st.shapes[idx].s : ''; setTimeout(() => ta.focus(), 30);
+    const done = ok => {
+      box.hidden = true; ta.onkeydown = ta.onblur = null; const s = ta.value.trim(); if (!ok) return;
+      if (idx != null) { if (s !== st.shapes[idx].s) { snapH(); if (s) st.shapes[idx].s = s; else { st.shapes.splice(idx, 1); st.sel = -1; } } }
+      else if (s) { snapH(); st.shapes.push({ t: 'text', c: st.color, a: p, s }); st.sel = st.shapes.length - 1; }
+      render();
+    };
     ta.onkeydown = ev => { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); done(true); } else if (ev.key === 'Escape') { ev.stopPropagation(); done(false); } };
     ta.onblur = () => { if (Date.now() - t0 < 400) { setTimeout(() => ta.focus(), 0); return; } done(true); };
+  }
+
+  /* ---------- phóng to chart (trên trang) và chỉnh chart trong ảnh (đúng tỷ lệ, cỡ chữ như ảnh xuất) ---------- */
+  const MX = document.createElement('div'); MX.className = 'fsx'; MX.hidden = true; MX.setAttribute('role', 'dialog'); MX.setAttribute('aria-modal', 'true');
+  MX.innerHTML = `<div class="fsx-box"><div class="fsx-hd"><div class="fsx-tt"><b class="fsx-t"></b><small class="fsx-s"></small></div>
+    <div class="fsx-act"><button type="button" class="fsx-ok" hidden>✓ Xong · áp dụng vào ảnh</button><button type="button" class="fsx-x" title="Esc">✕ Thu nhỏ</button></div></div>
+    <div class="fsx-body"></div></div>`;
+  document.body.appendChild(MX);
+  let mxs = null;   // { card, ph, cbox, style, done }
+  function maxOpen(card, opt = {}) {
+    if (mxs) maxClose(false);
+    const cvs = [...card.querySelectorAll('canvas')].filter(x => window.Chart && Chart.getChart(x)); if (!cvs.length) return;
+    const ph = document.createComment('fsx'); card.before(ph);
+    const body = MX.querySelector('.fsx-body'); body.innerHTML = ''; body.appendChild(card);
+    card.classList.add('fsx-card'); MX.classList.toggle('fsx-fix', !!opt.size);
+    const tgt = opt.cv || cvs[0], tbox = tgt.closest('.cbox') || tgt.parentElement;
+    const boxes = [...new Set(cvs.map(c => c.closest('.cbox') || c.parentElement))], saved = boxes.map(b => [b, b.getAttribute('style')]), hid = [];
+    MX.querySelector('.fsx-t').textContent = opt.title || [txt(document.querySelector('.site-nav a.on')) || (document.title || '').split('·')[0].trim(), ...pathOf(card)].filter(Boolean).join(' › ');
+    MX.querySelector('.fsx-s').textContent = opt.sub || 'Esc hoặc bấm ra ngoài để thu nhỏ · kéo trên chart để zoom, dùng nút khung thời gian phía trên chart';
+    MX.querySelector('.fsx-ok').hidden = !opt.done; MX.querySelector('.fsx-x').textContent = opt.done ? '✕ Đóng' : '✕ Thu nhỏ';
+    MX.hidden = false; document.body.classList.add('fsx-open');
+    if (opt.size) {   // đúng kích thước chart khi ghép ảnh (cùng tỷ lệ, cùng cỡ chữ); màn hình nhỏ hơn thì thu theo tỷ lệ
+      tbox.classList.add('fsx-target'); const rg = tbox.previousElementSibling; if (rg && rg.classList.contains('rng')) rg.classList.add('fsx-target');
+      // chỉ giữ tên chart, nút điều khiển và đúng chart này (ẩn bảng, nhận định, chart khác trong cùng thẻ)
+      const KEEP = 'h3.sub,.chart-sub,.ctl,.picker,.mode-sw,.tf,.tsw,[data-ctl],.fsx-target';
+      for (let el = tbox; el && el !== card; el = el.parentElement) [...el.parentElement.children].forEach(sib => {
+        if (sib === el || sib.contains(tbox) || sib.matches(KEEP) || sib.querySelector('.fsx-target') || sib.style.display === 'none') return;
+        if (sib.matches('.chart-sub') && sib.nextElementSibling && !sib.nextElementSibling.contains(tbox) && !sib.nextElementSibling.classList.contains('fsx-target')) { hid.push([sib, sib.style.display]); sib.style.display = 'none'; return; }
+        if (sib.querySelector('button') && !sib.querySelector('canvas,table') && !sib.matches('.ibar') && (sib.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)) return;   // hàng nút chọn chế độ của chart
+        hid.push([sib, sib.style.display]); sib.style.display = 'none';
+      });
+      const fit = Math.min(1, (innerWidth * 0.9 - 64) / opt.size.w, (innerHeight * 0.88 - 220) / opt.size.h), W0 = Math.round(opt.size.w), H0 = Math.round(opt.size.h);
+      MX.style.setProperty('--fsxw0', W0 + 'px'); MX.style.setProperty('--fsxh0', H0 + 'px');   // đúng cỡ chart khi xuất ảnh → cùng cỡ chữ; màn hình nhỏ thì thu cả khối lại
+      if (fit < 1) { tbox.style.transform = `scale(${fit})`; tbox.style.transformOrigin = '0 0'; tbox.style.marginRight = (W0 * (fit - 1)) + 'px'; tbox.style.marginBottom = (H0 * (fit - 1)) + 'px'; }
+      MX.style.setProperty('--fsxw', Math.round(W0 * fit) + 'px'); tbox.style.height = Math.round(opt.size.h * fit) + 'px'; tbox.style.maxWidth = 'none';
+    } else {
+      const n = boxes.length;
+      boxes.forEach(b => { b.style.height = (n === 1 ? Math.max(360, innerHeight * 0.62) : Math.max(320, innerHeight * 0.42)) + 'px'; });
+      if (n === 1) requestAnimationFrame(() => { const extra = card.scrollHeight - tbox.offsetHeight, h = body.clientHeight - extra - 4; if (h > 320) tbox.style.height = h + 'px'; });
+    }
+    mxs = { card, ph, saved, hid, tbox, done: opt.done };
+    const sz = opt.size ? [Math.round(opt.size.w), Math.round(opt.size.h)] : null;   // khung bị thu (transform) thì Chart.js đo nhầm cỡ → đặt cỡ thẳng
+    [30, 250].forEach(t => setTimeout(() => cvs.forEach(c => { const ch = Chart.getChart(c); if (!ch) return; if (sz && c === tgt) ch.resize(sz[0], sz[1]); else ch.resize(); }), t));
+  }
+  function maxClose(apply) {
+    if (!mxs) return; const { card, ph, saved, hid, done } = mxs; mxs = null;
+    hid.forEach(([h, d]) => { h.style.display = d; });
+    saved.forEach(([b, s0]) => { if (s0 == null) b.removeAttribute('style'); else b.setAttribute('style', s0); });
+    card.querySelectorAll('.fsx-target').forEach(x => x.classList.remove('fsx-target'));
+    card.classList.remove('fsx-card'); ph.replaceWith(card); MX.hidden = true; MX.classList.remove('fsx-fix'); document.body.classList.remove('fsx-open');
+    [...card.querySelectorAll('canvas')].forEach(c => { const ch = window.Chart && Chart.getChart(c); if (ch) ch.resize(); });
+    if (done) done(apply);
+  }
+  MX.addEventListener('click', e => { if (e.target === MX || e.target.closest('.fsx-x')) maxClose(!!(mxs && mxs.done)); else if (e.target.closest('.fsx-ok')) maxClose(true); });
+  document.addEventListener('keydown', e => { if (!MX.hidden && e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); maxClose(!!(mxs && mxs.done)); } }, true);
+  function editChart(i) {
+    const it = st.items[i], c = st.cells.find(x => x.i === i); if (!it || !it.meta.ch || !c || !it.card || !it.card.isConnected) return;
+    const ch = it.meta.ch, sx = ch.options.scales && ch.options.scales.x, win = winOf(it);
+    if (win && sx) { const n = (ch.data.labels || []).length; if (win[0] <= 0 && win[1] >= n - 1) { delete sx.min; delete sx.max; } else { sx.min = win[0]; sx.max = win[1]; } ch.update('none'); }   // mở ra đúng khung đang hiện trong ảnh
+    ebtn.hidden = true; st.hover = -1;
+    const F = FMT[st.fmt];
+    maxOpen(it.card, { cv: ch.canvas, size: { w: c.w / c.zs, h: c.h / c.zs }, title: `Chỉnh chart ${st.items.length > 1 ? (i + 1) + '/' + st.items.length + ' · ' : ''}${it.meta.title}`,
+      sub: `Đúng tỷ lệ và cỡ chữ của chart trong ảnh ${F.t}${st.items.length > 1 ? ' (bố cục ' + st.items.length + ' chart)' : ''} · đổi khung thời gian, Cột/Đường, trục Y rồi bấm Xong`,
+      done: () => { it.rng = 'cur'; drawItems(); M.querySelector('.fss-cap').value = caption(); build(); } });
   }
 })();
