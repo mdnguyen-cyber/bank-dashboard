@@ -46582,7 +46582,7 @@
    "t": "Hạn công bố BCTC hợp nhất Q3/2026 (≤ 20 ngày sau quý, TT96/2020)",
    "impact": "?",
    "status": "pending",
-   "src": "Quy định CBTT; ngày công bố thực tế theo CTG"
+   "src": "Quy định công bố thông tin"
   },
   {
    "d": "2026-10-12",
@@ -72657,6 +72657,7 @@
   "BID": "bid.html",
   "TCB": "tcb.html",
   "MBB": "mbb.html",
-  "ACB": "acb.html"
+  "ACB": "acb.html",
+  "STB": "stb.html"
  }
 }

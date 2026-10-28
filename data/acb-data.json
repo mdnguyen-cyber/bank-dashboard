@@ -22819,6 +22819,494 @@
    ]
   ]
  },
+ "irSeg": {
+  "src": "ACB — Tài liệu nhà đầu tư (acb.com.vn › Nhà đầu tư › Tài liệu nhà đầu tư), các kỳ 1H25, 9M25, FY25, 1Q26, 1H26; nghìn tỷ đồng = tổng dư nợ, tổng tiền gửi công bố × tỷ trọng từng phân khúc (tỷ trọng làm tròn tới 1%)",
+  "depNote": "Cho vay: số hợp nhất, gồm dư nợ của công ty con (ACBS cho vay ký quỹ…). Tiền gửi: số riêng lẻ của ngân hàng, không gồm giấy tờ có giá; từ tài liệu FY25 ACB chuyển sang trình bày huy động gồm giấy tờ có giá (chart riêng bên dưới) nên chuỗi riêng lẻ dừng ở Q3/2025.",
+  "rows": [
+   {
+    "q": "Q4/2023",
+    "loans": {
+     "Cá nhân": 317200.0,
+     "SME": 136600.0,
+     "Doanh nghiệp lớn (MMLC)": 29300.0,
+     "Công ty con": 4900.0
+    },
+    "deps": null
+   },
+   {
+    "q": "Q1/2024",
+    "loans": null,
+    "deps": {
+     "Cá nhân": 390300.0,
+     "SME": 59300.0,
+     "Doanh nghiệp lớn (MMLC)": 44500.0
+    }
+   },
+   {
+    "q": "Q2/2024",
+    "loans": null,
+    "deps": {
+     "Cá nhân": 410400.0,
+     "SME": 61600.0,
+     "Doanh nghiệp lớn (MMLC)": 41000.0
+    }
+   },
+   {
+    "q": "Q3/2024",
+    "loans": {
+     "Cá nhân": 355200.0,
+     "SME": 149800.0,
+     "Doanh nghiệp lớn (MMLC)": 44400.0,
+     "Công ty con": 11100.0
+    },
+    "deps": {
+     "Cá nhân": 411200.0,
+     "SME": 61700.0,
+     "Doanh nghiệp lớn (MMLC)": 36000.0
+    }
+   },
+   {
+    "q": "Q4/2024",
+    "loans": {
+     "Cá nhân": 360200.0,
+     "SME": 156900.0,
+     "Doanh nghiệp lớn (MMLC)": 52300.0,
+     "Công ty con": 11600.0
+    },
+    "deps": {
+     "Cá nhân": 431200.0,
+     "SME": 70100.0,
+     "Doanh nghiệp lớn (MMLC)": 43100.0
+    }
+   },
+   {
+    "q": "Q1/2025",
+    "loans": {
+     "Cá nhân": 371400.0,
+     "SME": 155700.0,
+     "Doanh nghiệp lớn (MMLC)": 59900.0,
+     "Công ty con": 12000.0
+    },
+    "deps": {
+     "Cá nhân": 447100.0,
+     "SME": 66200.0,
+     "Doanh nghiệp lớn (MMLC)": 44200.0
+    }
+   },
+   {
+    "q": "Q2/2025",
+    "loans": {
+     "Cá nhân": 386700.0,
+     "SME": 164800.0,
+     "Doanh nghiệp lớn (MMLC)": 69700.0,
+     "Công ty con": 12700.0
+    },
+    "deps": {
+     "Cá nhân": 449500.0,
+     "SME": 74000.0,
+     "Doanh nghiệp lớn (MMLC)": 45500.0
+    }
+   },
+   {
+    "q": "Q3/2025",
+    "loans": {
+     "Cá nhân": 401400.0,
+     "SME": 167200.0,
+     "Doanh nghiệp lớn (MMLC)": 80300.0,
+     "Công ty con": 20100.0
+    },
+    "deps": {
+     "Cá nhân": 447700.0,
+     "SME": 80400.0,
+     "Doanh nghiệp lớn (MMLC)": 45900.0
+    }
+   },
+   {
+    "q": "Q4/2025",
+    "loans": {
+     "Cá nhân": 406500.0,
+     "SME": 172200.0,
+     "Doanh nghiệp lớn (MMLC)": 89600.0,
+     "Công ty con": 20700.0
+    },
+    "deps": null
+   },
+   {
+    "q": "Q1/2026",
+    "loans": {
+     "Cá nhân": 412400.0,
+     "SME": 177800.0,
+     "Doanh nghiệp lớn (MMLC)": 99500.0,
+     "Công ty con": 21300.0
+    },
+    "deps": null
+   },
+   {
+    "q": "Q2/2026",
+    "loans": {
+     "Cá nhân": 426400.0,
+     "SME": 187000.0,
+     "Doanh nghiệp lớn (MMLC)": 112200.0,
+     "Công ty con": 22400.0
+    },
+    "deps": null
+   }
+  ]
+ },
+ "irExtra": {
+  "_src": "ACB — Tài liệu nhà đầu tư các kỳ 1H25, 9M25, FY25, 1Q26, 1H26 (acb.com.vn › Nhà đầu tư)",
+  "charts": [
+   {
+    "id": "chIrRetail",
+    "title": "Cho vay khách hàng cá nhân theo mục đích",
+    "sub": "nghìn tỷ đồng · cột chồng · Q2/2026 tính từ Q1/2026 và tăng trưởng so quý trước công bố",
+    "type": "stack",
+    "unit": " nghìn tỷ",
+    "labels": [
+     "Q4/2024",
+     "Q2/2025",
+     "Q3/2025",
+     "Q4/2025",
+     "Q1/2026",
+     "Q2/2026"
+    ],
+    "series": [
+     {
+      "n": "Sản xuất kinh doanh",
+      "v": [
+       178,
+       184,
+       187,
+       193,
+       197,
+       200.3
+      ]
+     },
+     {
+      "n": "Mua nhà",
+      "v": [
+       106,
+       115,
+       124,
+       131,
+       135,
+       140.7
+      ]
+     },
+     {
+      "n": "Tiêu dùng",
+      "v": [
+       41,
+       43,
+       45,
+       46,
+       52,
+       56.5
+      ]
+     }
+    ],
+    "ins": "Vay mua nhà tăng nhanh nhất: từ <b>106</b> nghìn tỷ (Q4/2024) lên khoảng <b>141</b> nghìn tỷ (Q2/2026), tỷ trọng trong cho vay cá nhân lên 33%; cho vay sản xuất kinh doanh vẫn lớn nhất (47%). Cho vay tiêu dùng tăng 8,7% trong Q2/2026, nhanh nhất các mảng. Vay mua nhà chiếm khoảng 18% tổng dư nợ, cho vay kinh doanh bất động sản khoảng 5% (cuối 2025)."
+   },
+   {
+    "id": "chIrCorp",
+    "title": "Cho vay khách hàng doanh nghiệp theo ngành",
+    "sub": "nghìn tỷ đồng · cột chồng · bốn ngành lớn nhất ACB trình bày · Q2/2026 tính từ Q1/2026 và tăng trưởng so quý trước công bố",
+    "type": "stack",
+    "unit": " nghìn tỷ",
+    "labels": [
+     "Q4/2024",
+     "Q2/2025",
+     "Q3/2025",
+     "Q4/2025",
+     "Q1/2026",
+     "Q2/2026"
+    ],
+    "series": [
+     {
+      "n": "Thương mại",
+      "v": [
+       100,
+       109,
+       115,
+       120,
+       123,
+       133.3
+      ]
+     },
+     {
+      "n": "Sản xuất và gia công chế biến",
+      "v": [
+       36,
+       42,
+       43,
+       43,
+       50,
+       52.2
+      ]
+     },
+     {
+      "n": "Xây dựng",
+      "v": [
+       28,
+       30,
+       30,
+       34,
+       35,
+       40.3
+      ]
+     },
+     {
+      "n": "Dịch vụ cá nhân và cộng đồng",
+      "v": [
+       19,
+       21,
+       22,
+       21,
+       21,
+       21.4
+      ]
+     }
+    ],
+    "ins": "Thương mại chiếm gần một nửa cho vay doanh nghiệp (45% Q2/2026). Xây dựng tăng nhanh nhất: +15,2% trong Q2/2026 và từ 28 lên khoảng <b>40</b> nghìn tỷ kể từ cuối 2024; tỷ trọng xây dựng trong cho vay doanh nghiệp lên 14%."
+   },
+   {
+    "id": "chIrNim",
+    "title": "NIM theo quý và NIM 12 tháng, lợi tức tài sản và chi phí vốn",
+    "sub": "% · NIM quý, lợi tức tài sản sinh lời và chi phí vốn quy năm theo quý (cách tính của ACB) · NIM 12 tháng gần nhất",
+    "type": "line",
+    "unit": "%",
+    "labels": [
+     "Q1/2025",
+     "Q2/2025",
+     "Q3/2025",
+     "Q4/2025",
+     "Q1/2026",
+     "Q2/2026"
+    ],
+    "series": [
+     {
+      "n": "NIM quý",
+      "v": [
+       3.0,
+       3.01,
+       2.93,
+       2.93,
+       2.83,
+       3.05
+      ]
+     },
+     {
+      "n": "NIM 12 tháng",
+      "v": [
+       3.49,
+       3.27,
+       3.12,
+       2.96,
+       2.92,
+       2.94
+      ],
+      "dash": 1
+     },
+     {
+      "n": "Lợi tức tài sản sinh lời",
+      "v": [
+       6.3,
+       6.44,
+       6.51,
+       6.64,
+       6.98,
+       7.87
+      ],
+      "axis": "y1"
+     },
+     {
+      "n": "Chi phí vốn",
+      "v": [
+       3.29,
+       3.43,
+       3.58,
+       3.71,
+       4.14,
+       4.82
+      ],
+      "axis": "y1"
+     }
+    ],
+    "ins": "NIM quý Q2/2026 <b>3,05%</b>, tăng 22 điểm cơ bản so với Q1/2026 (2,83%) khi lợi tức tài sản tăng mạnh hơn chi phí vốn (<b>7,87%</b> so với 4,82%). NIM 12 tháng dừng giảm ở quanh 2,9%, sau khi giảm từ 3,49% (Q1/2025). Chi phí vốn tăng 1,5 điểm % trong 5 quý, nên NIM chỉ giữ được khi lãi suất cho vay tiếp tục được định giá lại."
+   },
+   {
+    "id": "chIrNpl",
+    "title": "Nợ xấu theo phân loại của ACB và chênh lệch theo CIC",
+    "sub": "tỷ đồng (cột chồng, trục trái) · tỷ lệ nợ xấu và tỷ lệ bao phủ (%, hai trục phải) · năm 2023–2024 là cuối năm",
+    "type": "barline",
+    "unit": " tỷ",
+    "labels": [
+     "2023",
+     "2024",
+     "Q2/2025",
+     "Q3/2025",
+     "Q4/2025",
+     "Q1/2026",
+     "Q2/2026"
+    ],
+    "series": [
+     {
+      "n": "Nợ xấu theo phân loại của ACB",
+      "v": [
+       5393,
+       7979,
+       7405,
+       6646,
+       5993,
+       6125,
+       6860
+      ]
+     },
+     {
+      "n": "Chênh lệch khi phân loại theo CIC",
+      "v": [
+       494,
+       670,
+       559,
+       680,
+       678,
+       731,
+       797
+      ]
+     },
+     {
+      "n": "Tỷ lệ nợ xấu",
+      "v": [
+       1.21,
+       1.49,
+       1.26,
+       1.09,
+       0.97,
+       0.97,
+       1.03
+      ],
+      "axis": "y1",
+      "line": 1
+     },
+     {
+      "n": "Tỷ lệ bao phủ nợ xấu",
+      "v": [
+       91,
+       78,
+       76,
+       84,
+       114,
+       114,
+       105
+      ],
+      "axis": "y2",
+      "line": 1,
+      "dash": 1
+     }
+    ],
+    "ins": "Nợ xấu Q2/2026 <b>6.860</b> tỷ (1,03%), thêm 797 tỷ khi phân loại theo CIC — phần chênh lệch tăng dần từ 559 tỷ (Q2/2025). Dự phòng <b>8.065</b> tỷ, bao phủ 105% (cuối 2024 chỉ 78%). Bình quân các ngân hàng dẫn đầu theo ACB tính là 1,82% (Q1/2026)."
+   },
+   {
+    "id": "chIrDepG",
+    "title": "Huy động gồm giấy tờ có giá theo phân khúc",
+    "sub": "nghìn tỷ đồng · hợp nhất · cuối năm 2023–2025, Q1/2026, Q2/2026",
+    "type": "stack",
+    "unit": " nghìn tỷ",
+    "labels": [
+     "2023",
+     "2024",
+     "2025",
+     "Q1/2026",
+     "Q2/2026"
+    ],
+    "series": [
+     {
+      "n": "Cá nhân",
+      "v": [
+       385.2,
+       428.1,
+       459.5,
+       456.8,
+       473.4
+      ]
+     },
+     {
+      "n": "SME",
+      "v": [
+       64.2,
+       70.3,
+       86.2,
+       79.8,
+       77.6
+      ]
+     },
+     {
+      "n": "Doanh nghiệp lớn (MMLC)",
+      "v": [
+       37.5,
+       38.3,
+       50.3,
+       50.8,
+       54.3
+      ]
+     },
+     {
+      "n": "Giấy tờ có giá",
+      "v": [
+       53.5,
+       102.2,
+       129.2,
+       145.0,
+       170.7
+      ]
+     }
+    ],
+    "ins": "Giấy tờ có giá (chủ yếu chứng chỉ tiền gửi) lên <b>22%</b> nguồn huy động Q2/2026, từ 10% năm 2023, trong khi tiền gửi cá nhân giảm từ 72% xuống 61%. CASA giữ khoảng 22–23% (Q2/2026: 22%). Nguồn vốn dịch sang giấy tờ có giá đắt hơn tiền gửi không kỳ hạn là một lý do chi phí vốn tăng."
+   }
+  ],
+  "facts": [
+   [
+    "Khoản vay có tài sản bảo đảm",
+    "94%",
+    "Q2/2026"
+   ],
+   [
+    "Trong đó bảo đảm bằng bất động sản",
+    "85%",
+    "Q2/2026"
+   ],
+   [
+    "Vốn ngắn hạn cho vay trung dài hạn",
+    "29,1%",
+    "Q2/2026 (cuối 2025: 24,4%)"
+   ],
+   [
+    "Cho vay mua nhà / tổng dư nợ",
+    "18%",
+    "cuối 2025"
+   ],
+   [
+    "Cho vay kinh doanh bất động sản / tổng dư nợ",
+    "5%",
+    "cuối 2025"
+   ],
+   [
+    "CASA cá nhân · doanh nghiệp",
+    "16,8% · 44,1%",
+    "Q2/2025, riêng lẻ"
+   ],
+   [
+    "Công ty con / LNTT",
+    "8%",
+    "6T/2026; LNTT công ty con +42% YoY"
+   ],
+   [
+    "Chi nhánh, PGD · nhân viên · khách hàng",
+    "388 · 13.154 · ~9 triệu",
+    "Q2/2026"
+   ]
+  ]
+ },
  "mixNote": "Thuyết minh BCTC hợp nhất: dư nợ theo kỳ hạn, ngành, loại khách hàng; tiền gửi theo loại và đối tượng; giấy tờ có giá phát hành. Nhiều ngân hàng chỉ công bố cơ cấu ngành và khách hàng ở BCTC bán niên, năm.",
  "car": [
   {
@@ -73191,6 +73679,7 @@
   "BID": "bid.html",
   "TCB": "tcb.html",
   "MBB": "mbb.html",
-  "ACB": "acb.html"
+  "ACB": "acb.html",
+  "STB": "stb.html"
  }
 }

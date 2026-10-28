@@ -88,3 +88,10 @@ Các nguồn dữ liệu thường chỉ cập nhật VCSH sau khi có BCTC quý
 - Giá mục tiêu công bố trước GDKHQ: (TP − cổ tức tiền + tỷ lệ quyền × giá phát hành) / (1 + tỷ lệ CP mới); bảng ghi kèm giá gốc.
 
 Cần trong raw (lấy lại khi có sự kiện mới): `co_events` của 6 mã; `ratio_daily` cột `trading_date,bvps,market_cap,pb` của từng mã; `fs_bank` cột `bsx12,bs390`. Bản dẫn xuất đã commit: `data/backfill/corp_events.json`, `bvps_daily.json`, `shares_daily.json`, `equity_parent.json`, `pb_adj.json`. Dựng lại cả 6 mã 2 lần (lần 2 để đường P/B của các NH cùng nhóm cũng dùng số đã điều chỉnh).
+
+## ACB: số liệu tài liệu nhà đầu tư (nhập tay mỗi quý)
+
+Khi ACB đăng "Tài liệu NĐT" quý mới (acb.com.vn › Nhà đầu tư › Tài liệu nhà đầu tư; danh sách lấy qua API `GET /api/front/v1/posts?search[categories.category_id:in]=<id>` — 1657 = năm 2026, 1658 = 2025, 1659 = 2024, 1660 = 2023, 1661 = 2022, 1662 = 2021): mở PDF trong trình duyệt (shell bị chặn tải acb.com.vn), đọc chữ bằng pdf.js `getTextContent` (vị trí x, y cho biết số thuộc cột/phân khúc nào), rồi cập nhật:
+- `data/backfill/acb_ir_segments.json`: cho vay hợp nhất theo phân khúc (Cá nhân, SME, MMLC, Công ty con = tổng dư nợ × tỷ trọng); tiền gửi riêng lẻ theo phân khúc (tới Q3/2025).
+- `data/backfill/acb_ir_extra.json`: cho vay cá nhân theo mục đích, doanh nghiệp theo ngành, NIM quý / 12 tháng, lợi tức tài sản, chi phí vốn, nợ xấu ACB và chênh lệch CIC, huy động gồm giấy tờ có giá, các chỉ tiêu khác; sửa lời đọc (`ins`) theo số mới.
+Tài liệu 2024 và 1Q25 là ảnh (không có lớp chữ) — phải xem ảnh slide. Sau đó `python3 scripts/build_ctg_data.py --ticker ACB`.

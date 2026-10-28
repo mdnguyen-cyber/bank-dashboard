@@ -623,7 +623,10 @@ def build(raw):
         _qs = sorted(set(_j['loans']) | set(_j['deposits']), key=lambda q: (int(q[3:]), int(q[1])))
         D['irSeg'] = {'src': _j['_src'], 'depNote': _j.get('depNote'),
                       'rows': [{'q': q, 'loans': dict(zip(_j['segs'], [v * 1000 for v in _j['loans'][q]])) if q in _j['loans'] else None,
-                                'deps': dict(zip(_j['segs'], [v * 1000 for v in _j['deposits'][q]])) if q in _j['deposits'] else None} for q in _qs]}
+                                'deps': dict(zip(_j.get('depSegs', _j['segs']), [v * 1000 for v in _j['deposits'][q]])) if q in _j['deposits'] else None} for q in _qs]}
+    _ix = ROOT / f'data/backfill/{TICKER.lower()}_ir_extra.json'   # số liệu chỉ có trong tài liệu nhà đầu tư (nhập tay, có nguồn)
+    if _ix.exists():
+        D['irExtra'] = json.loads(_ix.read_text(encoding='utf-8'))
     D['mixNote'] = ('Thuyết minh BCTC hợp nhất: dư nợ theo kỳ hạn, ngành, loại khách hàng; tiền gửi theo loại và đối tượng; '
                     'giấy tờ có giá phát hành. Nhiều ngân hàng chỉ công bố cơ cấu ngành và khách hàng ở BCTC bán niên, năm.')
 

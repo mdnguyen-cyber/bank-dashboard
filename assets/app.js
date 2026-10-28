@@ -417,6 +417,23 @@ const MX = D.mixQ || [];
 const MIX_COL = [C.navy, C.blue, C.teal, C.purple, C.gold, C.steps[4], '#1f8a8d', C.red, C.steps[5], '#9a7400', C.grey, '#5b6475'];
 const mixRows = (f, src = MX) => src.filter(r => r[f] && Object.keys(r[f]).length);
 const IRS = D.irSeg ? D.irSeg.rows : [];
+const IRX = D.irExtra || null;
+function drawIrx() {   // chart số liệu tài liệu nhà đầu tư: 'stack' (cột chồng), 'line', 'barline' (cột chồng + đường trục phải)
+  if (!IRX) return;
+  const PAL = [C.navy, C.teal, C.gold, C.purple, C.blue, C.grey];
+  IRX.charts.forEach(c => {
+    const y1 = c.series.some(s => s.axis === 'y1' || s.axis === 'y2');
+    const ds = c.series.map((s, i) => {
+      const ln = c.type === 'line' || s.line, col = PAL[i % PAL.length];
+      return { type: ln ? 'line' : 'bar', label: s.n, data: s.v, backgroundColor: col, borderColor: col, borderWidth: ln ? 2 : 0, pointRadius: ln ? 2.5 : 0, borderDash: s.dash ? [5, 4] : [],
+        yAxisID: s.axis || 'y', stack: ln ? undefined : 's', unit: s.axis ? '%' : c.unit, dp: s.axis === 'y2' ? 0 : c.unit === '%' || s.axis === 'y1' ? 2 : 1, order: ln ? 0 : 1 };
+    });
+    const sc = { x: { stacked: c.type !== 'line' }, y: c.unit === '%' ? pctAxis('%') : numAxis(c.unit.trim(), { stacked: c.type !== 'line' }) };
+    if (y1) sc.y1 = pctAxis(c.series.some(s => s.axis === 'y2') ? (c.series.find(s => s.axis === 'y1') || {}).n : '%', { position: 'right', grid: { display: false } });
+    if (c.series.some(s => s.axis === 'y2')) sc.y2 = Object.assign(pctAxis((c.series.find(s => s.axis === 'y2') || {}).n, { position: 'right', grid: { display: false } }), { ticks: { callback: v => nf(v, 0) + '%' } });
+    mk(c.id, { type: 'bar', data: { labels: c.labels, datasets: ds }, options: { scales: sc } });
+  });
+}
 const mixTot = o => Object.values(o || {}).reduce((a, b) => a + b, 0);
 const MIX_FIX = ['tenor', 'dep', 'depCust', 'loans', 'deps'];
 const mixKeys = (rows, f) => { const L = rows[rows.length - 1][f], ks = [...new Set(rows.flatMap(r => Object.keys(r[f])))]; return MIX_FIX.includes(f) ? ks : ks.sort((a, b) => (a === 'Khác') - (b === 'Khác') || (L[b] || 0) - (L[a] || 0)); };
@@ -449,6 +466,10 @@ function irIns() {
   const L = mixRows('loans', IRS), Dp = mixRows('deps', IRS); if (!L.length) return '';
   const a = L[L.length - 1], b = mixAgo(L) || L[0], d = Dp[Dp.length - 1], g = (r, f, k) => shr(r, f, k);
   const gr = k => (a.loans[k] / b.loans[k] - 1) * 100;
+  if (!('Bán lẻ' in a.loans)) {   // phân khúc theo cách trình bày riêng của từng ngân hàng
+    const ks = Object.keys(a.loans), dk = d ? Object.keys(d.deps) : [];
+    return `${a.q}: ${ks.map(k => `${k.toLowerCase().replace(/\s*\(.*\)/, '')} <b>${pc(g(a, 'loans', k))}</b>`).join(', ')} dư nợ. So với ${b.q}: ${ks.filter(k => b.loans[k]).map(k => `${k.toLowerCase().replace(/\s*\(.*\)/, '')} ${sg(gr(k))}`).join(', ')}.${d ? ` Tiền gửi (${d.q}): ${dk.map(k => `${k.toLowerCase().replace(/\s*\(.*\)/, '')} ${pc(g(d, 'deps', k))}`).join(', ')}.` : ''}`;
+  }
   return `${a.q}: bán lẻ <b>${pc(g(a, 'loans', 'Bán lẻ'))}</b> dư nợ, SME ${pc(g(a, 'loans', 'SME'))}, khách hàng doanh nghiệp lớn <b>${pc(g(a, 'loans', 'KHDN lớn'))}</b>, FDI ${pc(g(a, 'loans', 'FDI'))}. So với ${b.q}, dư nợ bán lẻ ${sg(gr('Bán lẻ'))}, SME ${sg(gr('SME'))}, KHDN lớn ${sg(gr('KHDN lớn'))}, FDI ${sg(gr('FDI'))}.${d ? ` Phía huy động (${d.q}): bán lẻ <b>${pc(g(d, 'deps', 'Bán lẻ'))}</b> tiền gửi KH, KHDN lớn ${pc(g(d, 'deps', 'KHDN lớn'))}, FDI ${pc(g(d, 'deps', 'FDI'))}.` : ''} Đây là cách ${T} tự phân khúc theo khối kinh doanh, khác cách phân loại theo loại hình doanh nghiệp trong thuyết minh BCTC.`;
 }
 function tenorIns() {
@@ -538,8 +559,10 @@ function paneFin() {
     <div class="grid g2 gap">
       ${card({ id: 'chLoanSec', title: 'Dư nợ theo ngành kinh tế', sub: '% dư nợ cho vay KH · kỳ có công bố (' + mixFreq('sector') + ') · di chuột để xem số tỷ đồng', h: 'tall', insight: secIns(), src: 'Thuyết minh BCTC hợp nhất (cho vay khách hàng theo ngành)' })}
       ${card({ id: 'chLoanCust', title: 'Dư nợ theo loại khách hàng', sub: '% dư nợ cho vay KH · kỳ có công bố (' + mixFreq('cust') + ') · di chuột để xem số tỷ đồng', h: 'tall', insight: custIns(), src: 'Thuyết minh BCTC hợp nhất (cho vay theo đối tượng khách hàng, loại hình doanh nghiệp)' })}
-      ${IRS.length ? card({ id: 'chIrLoan', title: T + ' · cho vay theo phân khúc khách hàng', sub: '% dư nợ · theo cách phân khúc của ngân hàng (bán lẻ, SME, KHDN lớn, FDI) · di chuột để xem số tỷ đồng', insight: irIns(), src: esc(D.irSeg.src) }) : ''}
+      ${IRS.length ? card({ id: 'chIrLoan', title: T + ' · cho vay theo phân khúc khách hàng', sub: `% dư nợ · theo cách phân khúc của ngân hàng (${Object.keys((IRS.find(r => r.loans) || {}).loans || {}).join(', ')}) · di chuột để xem số tỷ đồng`, insight: irIns(), src: esc(D.irSeg.src) }) : ''}
       ${IRS.some(r => r.deps) ? card({ id: 'chIrDep', title: T + ' · tiền gửi KH theo phân khúc', sub: '% tiền gửi KH · cùng phân khúc với cho vay · di chuột để xem số tỷ đồng', body: D.irSeg.depNote ? `<div class="note">${esc(D.irSeg.depNote)}</div>` : '', src: esc(D.irSeg.src) }) : ''}
+      ${IRX ? IRX.charts.map(c => card({ id: c.id, title: T + ' · ' + c.title, sub: c.sub, insight: c.ins, src: esc(IRX._src) })).join('') : ''}
+      ${IRX && IRX.facts ? `<article class="card"><h3 class="sub">${T} · các chỉ tiêu khác trong tài liệu nhà đầu tư</h3><div class="facts">${IRX.facts.map(f => `<div class="fact"><span>${esc(f[0])}</span><b>${esc(f[1])}</b><small>${esc(f[2])}</small></div>`).join('')}</div><div class="src">Nguồn: ${esc(IRX._src)}</div></article>` : ''}
       ${card({ id: 'chLoanTenor', title: 'Dư nợ theo kỳ hạn', sub: '% dư nợ cho vay KH · quý · di chuột để xem số tỷ đồng', insight: tenorIns(), src: 'Thuyết minh BCTC hợp nhất (cho vay theo thời hạn)' })}
     </div>
     ${gh('Huy động: loại tiền gửi, đối tượng, nguồn khác', 'thuyết minh BCTC')}
@@ -671,7 +694,7 @@ function finCharts(k) {
     wf('chWfL', [['Tiền gửi KH', QL.deposits], ['Tiền gửi & vay TCTD', QL.interbankL], ['GTCG', QL.papers], ['Nợ CP & NHNN', QL.govSbv], ['Nợ khác', QL.otherL], ['VCSH', QL.equity]], 'Tổng nguồn vốn', QL.ta);
     stack('chEA', q12, [['Tiền mặt & NHNN', 'cash'], ['TCTD', 'interbankA'], ['Chứng khoán', 'secs'], ['Cho vay KH ròng', 'loansNet']]);
     stack('chFund', q12, [['Tiền gửi KH', 'deposits'], ['TCTD', 'interbankL'], ['GTCG', 'papers'], ['CP & NHNN', 'govSbv'], ['VCSH', 'equity']]);
-    pctStack('chIrLoan', 'loans', IRS); pctStack('chIrDep', 'deps', IRS); pctStack('chLoanSec', 'sector'); pctStack('chLoanCust', 'cust'); pctStack('chLoanTenor', 'tenor'); pctStack('chDepType', 'dep'); pctStack('chDepCust', 'depCust');
+    pctStack('chIrLoan', 'loans', IRS); pctStack('chIrDep', 'deps', IRS); drawIrx(); pctStack('chLoanSec', 'sector'); pctStack('chLoanCust', 'cust'); pctStack('chLoanTenor', 'tenor'); pctStack('chDepType', 'dep'); pctStack('chDepCust', 'depCust');
     const fo = MX.filter(r => r.gov);
     const gk = [...new Set(fo.flatMap(r => Object.keys(r.gtcg || {})))];
     mk('chFundOth', { type: 'bar', data: { labels: fo.map(r => r.q), datasets: [
