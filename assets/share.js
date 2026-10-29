@@ -125,8 +125,12 @@
   }
   function put(x, mm, X, Y, w, h, zs, win) {   // chart: vẽ lại độ phân giải cao; bảng (ảnh dựng sẵn): đặt vừa khung, giữ tỉ lệ
     if (!mm.img) return snap(x, mm.ch, X, Y, w, h, zs, win);
-    const r = Math.min(w / mm.img.width, h / mm.img.height), dw = mm.img.width * r, dh = mm.img.height * r;
-    x.imageSmoothingQuality = 'high'; x.drawImage(mm.img, X + (w - dw) / 2, Y, dw, dh);
+    let im = mm.img; const r0 = Math.min(1.4, w / im.width);
+    if (mm.re && im.height * r0 < h * 0.97) {   // bảng thấp hơn ô: dựng lại bảng với dòng cao hơn (chữ giữ cỡ) cho kín ô
+      const kk = Math.min(2.2, Math.round(h / (im.height * r0) * 20) / 20); try { im = mm.rc[kk] || (mm.rc[kk] = mm.re(kk)) || im; } catch (e) {}
+    }
+    const r = Math.min(w / im.width, h / im.height, 1.4), dw = im.width * r, dh = im.height * r;
+    x.imageSmoothingQuality = 'high'; x.drawImage(im, X + (w - dw) / 2, Y + Math.max(0, (h - dh) / 2) * 0.35, dw, dh);
   }
   function lastLab(it) {   // kỳ dữ liệu cuối theo khung sẽ vẽ
     if (!it.meta.ch) return it.meta.last; const w = winOf(it); if (!w) return it.meta.last; const l = String((it.meta.ch.data.labels || [])[w[1]] || '');
@@ -186,24 +190,49 @@
     const fh = foot.length * Math.round(22 * k) + Math.round(34 * k), cy1 = H - fh;
     if (n === 1) { const zs = st.fmt === 'tall' ? 1.3 : 1.6; cells.push({ i: 0, X: P, Y: y, w: W - 2 * P, h: cy1 - y, zs }); put(xf, m, P, y, W - 2 * P, cy1 - y, zs, winOf(st.items[0])); }
     else {   // lưới chart: mỗi ô có tên chart, nhận định ngắn (nếu có), mô tả và kỳ dữ liệu
-      const C = cols(n), R = Math.ceil(n / C), g = Math.round(28 * k), gy = Math.round(22 * k);
-      const cw = (W - 2 * P - (C - 1) * g) / C, chh = (cy1 - Math.round(12 * k) - y - (R - 1) * gy) / R;
-      const small = cw < 520 * k;
-      st.items.forEach((it, i) => {
-        const r = Math.floor(i / C), c = i % C, inRow = Math.min(C, n - r * C), off = (C - inRow) * (cw + g) / 2;   // hàng cuối thiếu ô thì căn giữa
-        const X = P + off + c * (cw + g), Y = y + r * (chh + gy); let yy = Y; const mm = it.meta;
-        x.fillStyle = FIN.navy; x.font = font('700', small ? 17 : 20);
-        // có nhận định ngắn: nhận định lên trên (navy, lớn), tên chart xuống dưới (đỏ mận, nhỏ)
-        const top = it.note ? it.note : mm.title, low = it.note ? mm.title : '';
-        x.fillStyle = FIN.navy; wrap(x, `${i + 1}. ${top}`, cw, 2).forEach(l => { x.fillText(l, X, yy); yy += Math.round((small ? 21 : 25) * k); });
-        if (low) { x.fillStyle = FIN.purple; x.font = font('700', small ? 15 : 16.5); wrap(x, low, cw, 2).forEach(l => { x.fillText(l, X, yy); yy += Math.round((small ? 19 : 21) * k); }); }
+      const g = Math.round(28 * k), gy = Math.round(22 * k);
+      const cell = (it, i, X, Y, cw, chh, draw = true) => {   // vẽ đầu ô; trả chiều cao đầu ô (draw=false: chỉ đo)
+        const small = cw < 520 * k, mm = it.meta; let yy = Y;
+        const top = it.note ? it.note : mm.title, low = it.note ? mm.title : '';   // có nhận định: nhận định lên trên (navy, lớn), tên chart xuống dưới (đỏ mận, nhỏ)
+        x.fillStyle = FIN.navy; x.font = font('700', small ? 17 : 20); wrap(x, `${i + 1}. ${top}`, cw, 2).forEach(l => { if (draw) x.fillText(l, X, yy); yy += Math.round((small ? 21 : 25) * k); });
+        if (low) { x.fillStyle = FIN.purple; x.font = font('700', small ? 15 : 16.5); wrap(x, low, cw, 2).forEach(l => { if (draw) x.fillText(l, X, yy); yy += Math.round((small ? 19 : 21) * k); }); }
         const f0 = firstLab(it), l1 = lastLab(it);
         const sub = [mm.sub, l1 ? (f0 && f0 !== l1 ? f0 + ' – ' + l1 : 'đến ' + l1) : ''].filter(Boolean).join(' · ');
-        if (sub) { x.fillStyle = FIN.grey; x.font = font('400', small ? 12.5 : 13.5); wrap(x, sub, cw, 1).forEach(l => { x.fillText(l, X, yy); yy += Math.round(18 * k); }); }
+        if (sub) { x.fillStyle = FIN.grey; x.font = font('400', small ? 12.5 : 13.5); wrap(x, sub, cw, 1).forEach(l => { if (draw) x.fillText(l, X, yy); yy += Math.round(18 * k); }); }
         yy += Math.round(4 * k);
-        const hh = Y + chh - yy, zs = Math.max(1, Math.min(1.5, cw / 640)); if (hh > 40) { cells.push({ i, X, Y: yy, w: cw, h: hh, zs }); put(xf, mm, X, yy, cw, hh, zs, winOf(it)); }
-        if (c < inRow - 1) { x.fillStyle = FIN.line; x.fillRect(X + cw + g / 2, Y, 1, chh); }
-      });
+        if (draw) { const hh = Y + chh - yy, zs = Math.max(1, Math.min(1.5, cw / 640)); if (hh > 40) { cells.push({ i, X, Y: yy, w: cw, h: hh, zs }); put(xf, mm, X, yy, cw, hh, zs, winOf(it)); } }
+        return yy - Y;
+      };
+      const H0 = cy1 - Math.round(12 * k) - y, FW = W - 2 * P;
+      const hasT = st.items.some(it => it.meta.img);
+      if (st.lay === 'auto' && hasT && st.fmt === 'wide' && n <= 3) {
+        // ngang 16:9: một hàng; bảng được ô rộng hơn theo tỷ lệ của bảng để bảng cao gần kín ô, chart chia phần còn lại
+        const wt = st.items.map(it => it.meta.img ? Math.max(1, Math.min(2.2, it.meta.img.width * 0.7 / (FW / n))) : 1);   // bảng rộng hơn để chữ đủ đọc
+        const sw = wt.reduce((a, b) => a + b, 0), avail = FW - (n - 1) * g; let X = P;
+        st.items.forEach((it, i) => { const cw = avail * wt[i] / sw; cell(it, i, X, y, cw, H0); if (i < n - 1) { x.fillStyle = FIN.line; x.fillRect(X + cw + g / 2, y, 1, H0); } X += cw + g; });
+      } else if (st.lay === 'auto' && hasT) {
+        // có bảng: mỗi bảng một hàng rộng hết khung, cao vừa đủ bảng; các chart chia phần còn lại → ảnh luôn kín khung
+        const rows = []; st.items.forEach((it, i) => { if (it.meta.img) rows.push({ t: 1, ids: [i] }); else { const l = rows[rows.length - 1]; if (l && !l.t && l.ids.length < (st.fmt === 'tall' ? 2 : 3)) l.ids.push(i); else rows.push({ t: 0, ids: [i] }); } });
+        const nC = rows.filter(r => !r.t).length, gaps = (rows.length - 1) * gy;
+        rows.forEach(r => { if (r.t) { const it = st.items[r.ids[0]], im = it.meta.img; r.need = cell(it, r.ids[0], P, 0, FW, 0, false) + im.height * Math.min(1.4, FW / im.width); } });
+        const tNeed = rows.filter(r => r.t).reduce((a, r) => a + r.need, 0), cap = nC ? (H0 - gaps) * 0.58 : H0 - gaps, f = tNeed > cap ? cap / tNeed : 1;
+        const cH = nC ? (H0 - gaps - tNeed * f) / nC : 0;
+        if (!nC && f === 1) { const sp = (H0 - gaps - tNeed) / rows.length; rows.forEach(r => { r.need += sp; }); }   // chỉ có bảng: giãn đều cho kín khung
+        let Y = y;
+        rows.forEach(r => {
+          const h = r.t ? r.need * f : cH, C = r.ids.length, cw = (FW - (C - 1) * g) / C;
+          r.ids.forEach((i, c) => { const X = P + c * (cw + g); cell(st.items[i], i, X, Y, cw, h); if (c < C - 1) { x.fillStyle = FIN.line; x.fillRect(X + cw + g / 2, Y, 1, h); } });
+          Y += h + gy;
+        });
+      } else {
+        const C = cols(n), R = Math.ceil(n / C), cw = (FW - (C - 1) * g) / C, chh = (H0 - (R - 1) * gy) / R;
+        st.items.forEach((it, i) => {
+          const r = Math.floor(i / C), c = i % C, inRow = Math.min(C, n - r * C), off = (C - inRow) * (cw + g) / 2;   // hàng cuối thiếu ô thì căn giữa
+          const X = P + off + c * (cw + g), Y = y + r * (chh + gy);
+          cell(it, i, X, Y, cw, chh);
+          if (c < inRow - 1) { x.fillStyle = FIN.line; x.fillRect(X + cw + g / 2, Y, 1, chh); }
+        });
+      }
     }
     x.fillStyle = FIN.line; x.fillRect(P, cy1, W - 2 * P, 1);
     let fy = cy1 + Math.round(14 * k); x.fillStyle = FIN.grey; x.font = font('400', 16);
@@ -411,7 +440,7 @@
   window.FSShareImage = o => {   // o = { img: canvas, title, sub, src, last }
     const page = txt(document.querySelector('.site-nav a.on')) || 'FinSuccess';
     st.fmt = o.img.height > o.img.width * 0.62 ? 'tall' : 'wide';   // bảng cao thì mở sẵn khung dọc 4:5
-    open([{ _fssMeta: { ch: null, img: o.img, title: o.title || 'Bảng số liệu', sub: o.sub || '', src: cleanSrc(o.src || ''), last: o.last || '', page, ins: o.ins || '', path: [page] } }]);
+    open([{ _fssMeta: { ch: null, img: o.img, re: o.re, rc: {}, title: o.title || 'Bảng số liệu', sub: o.sub || '', src: cleanSrc(o.src || ''), last: o.last || '', page, ins: o.ins || '', path: [page] } }]);
   };
   function close() { clearTimeout(svT); try { localStorage.removeItem(SKEY); } catch (e) {} M.hidden = true; PK.hidden = true; document.body.classList.remove('fss-open'); M.querySelector('.fss-txt').hidden = true; }
   const blob = () => new Promise(r => finalCanvas().toBlob(r, 'image/png'));

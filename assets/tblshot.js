@@ -28,7 +28,8 @@
     }
     const keep = [...tbl.rows].filter(tr => tr.parentElement.tagName === 'THEAD' || (!o.rows ? !tr.hidden && !tr.classList.contains('grp-off') : o.rows.includes(tr)));
     const rowY = new Map(); let Hb = 0;
-    keep.forEach(tr => { rowY.set(tr, Hb); Hb += tr.getBoundingClientRect().height; });
+    const RK = o.rowK || 1;   // giãn chiều cao dòng (chữ giữ nguyên cỡ) để bảng kín ô khi ghép ảnh
+    keep.forEach(tr => { rowY.set(tr, Hb); Hb += tr.getBoundingClientRect().height * RK; });
     const W = Math.round(w0 + (visR - visL));
     const pad = o.bare ? 2 : o.compact ? 12 : 24, titleH = o.bare ? 0 : o.compact ? 34 : 54;
     const cv = document.createElement('canvas'), x = cv.getContext('2d');
@@ -51,7 +52,7 @@
       if (grp) { X0 = 0; X1 = W; }
       else if (isSt) { X0 = 0; X1 = w0; }
       else { if (r.right <= visL + 1 || r.left >= visR - 1) return; X0 = w0 + Math.max(r.left, visL) - visL; X1 = w0 + Math.min(r.right, visR) - visL; }
-      const Y0 = rowY.get(tr) + (r.top - tr.getBoundingClientRect().top), h = r.height, cs = getComputedStyle(c);
+      const Y0 = rowY.get(tr) + (r.top - tr.getBoundingClientRect().top) * RK, h = r.height * RK, cs = getComputedStyle(c);
       x.save(); x.translate(pad, top);
       x.fillStyle = tr.classList.contains('hm-sel') && isSt ? '#fff' : bgOf(c, tbl.parentElement); x.fillRect(X0, Y0, X1 - X0, h);
       const hl = o.hl && o.hl.cells.has(c), on = o.hl && o.hl.on === c;
@@ -95,7 +96,7 @@
   function share(sc, m, extra = {}) {   // mở hộp Chia sẻ ảnh (như chart): caption, chú thích, khung 16:9 / 4:5
     if (!window.FSShareImage) { const cv = render(sc, { ...m, ...extra }); if (cv) copy(cv, m.file); return; }
     const cv = render(sc, { ...m, ...extra, bare: 1 }); if (!cv) return;
-    window.FSShareImage({ img: cv, title: extra.title || m.title, sub: m.sub, src: m.src });
+    window.FSShareImage({ img: cv, title: extra.title || m.title, sub: m.sub, src: m.src, re: k => render(sc, { ...m, ...extra, bare: 1, rowK: k }) });
   }
   function button(sc, o) {   // cặp nút: chép ảnh (dán thẳng) + tải PNG
     const g = document.createElement('span'); g.className = 'tbl-btns';
