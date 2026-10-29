@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-29T13:19:21Z",
+ "fetched": "2026-10-29T16:32:52Z",
  "report": {
   "us_cpi": [
    {
@@ -1304,13 +1304,13 @@
   "cpi_au": [
    {
     "id": "oecd:AUS.M.N.CPI.PA._T.N.GY",
-    "n": 18,
-    "last": "2026-09-01"
+    "n": 17,
+    "last": "2026-08-01"
    },
    {
     "id": "oecd:AUS.Q.N.CPI.PA._T.N.GY",
-    "n": 67,
-    "last": "2026-09-01"
+    "n": 66,
+    "last": "2026-06-01"
    },
    {
     "id": "fred:CPALTT01AUQ659N",

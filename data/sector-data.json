@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu Wi MCP; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-29T13:31Z"
+  "auto": "2026-10-29T16:38Z"
  },
  "idx": {
   "now": {
@@ -141623,6 +141623,27 @@
    "sym": []
   },
   {
+   "d": "2026-10-29",
+   "t": "Ngày 29/10, gửi dưới 1 tỷ đồng kỳ hạn 24 tháng tại MB, VPBank, Techcombank, Sacombank, SHB, HDBank và ACB được hưởng lãi suất bao nhiêu?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/ngay-29-10-gui-duoi-1-ty-dong-ky-han-24-thang-tai-mb-vpbank-techcombank-sacombank-shb-hdbank-va-acb-duoc-huong-lai-suat-bao-nhieu-18826102921181167.chn",
+   "sym": [
+    "TCB",
+    "ACB",
+    "VPB",
+    "HDB",
+    "SHB",
+    "STB"
+   ]
+  },
+  {
+   "d": "2026-10-29",
+   "t": "MB sắp lập thêm một ngân hàng 100% vốn, đặt tên “MB toàn cầu”",
+   "src": "CafeF",
+   "url": "https://cafef.vn/mb-sap-lap-them-mot-ngan-hang-100-von-dat-ten-mb-toan-cau-188261029204637009.chn",
+   "sym": []
+  },
+  {
    "d": "2026-10-28",
    "t": "Sức mua dè dặt, hàng Việt xoay xở bài toán lợi nhuận mùa Tết",
    "src": "vnbusiness",
@@ -143696,36 +143717,6 @@
    "sym": [
     "VND",
     "CRE"
-   ]
-  },
-  {
-   "d": "2026-10-23",
-   "t": "Các công ty chứng khoán top đầu đã hoàn thành bao nhiêu kế hoạch lợi nhuận sau 9 tháng?",
-   "src": "Người Đưa Tin - An ninh tiền tệ",
-   "url": "https://antt.nguoiduatin.vn/cac-cong-ty-chung-khoan-top-dau-da-hoan-thanh-bao-nhieu-ke-hoach-loi-nhuan-sau-9-thang-205261022155128664.htm",
-   "sym": [
-    "MSB",
-    "SSI",
-    "TCX",
-    "VCK",
-    "VIX",
-    "VPB",
-    "VPX"
-   ]
-  },
-  {
-   "d": "2026-10-23",
-   "t": "Nhận diện vùng kháng cự của VN-Index và chiến lược giải ngân chọn lọc",
-   "src": "Người Đưa Tin",
-   "url": "https://www.nguoiduatin.vn/nhan-dien-vung-khang-cu-cua-vn-index-va-chien-luoc-giai-ngan-chon-loc-204261022201002755.htm",
-   "sym": [
-    "CCC",
-    "TAL",
-    "CII",
-    "SHS",
-    "TCB",
-    "VCI",
-    "VIC"
    ]
   }
  ],
