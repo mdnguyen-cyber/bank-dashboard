@@ -21,16 +21,27 @@
   function addButtons() {
     document.querySelectorAll('article.card').forEach(c => {
       if (c.querySelector(':scope > .ibar .sharepill, :scope > .sharerow')) return;
-      const cv = [...c.querySelectorAll('canvas')].find(x => window.Chart && Chart.getChart(x)); if (!cv) return;
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'sharepill'; b.innerHTML = '⇪ Chia sẻ ảnh'; b.title = 'Chia sẻ ảnh chart này';
-      b.onclick = e => { e.stopPropagation(); if (mxs) maxClose(false); open([c]); };
-      const z = document.createElement('button'); z.type = 'button'; z.className = 'sharepill fsx-zoom'; z.textContent = '⤢'; z.title = 'Phóng to'; z.setAttribute('aria-label', 'Phóng to');
-      z.onclick = e => { e.stopPropagation(); maxOpen(c); };
-      const g = document.createElement('button'); g.type = 'button'; g.className = 'sharepill fss-add'; g.textContent = '＋ Ghép'; g.title = 'Chọn chart này để ghép nhiều chart vào một ảnh';
-      g.onclick = e => { e.stopPropagation(); toggleBasket(c); };
+      const cv = [...c.querySelectorAll('canvas')].find(x => window.Chart && Chart.getChart(x));
+      const tbls = window.FSTbl && !c.querySelector('.tbl-btns') ? [...c.querySelectorAll('table')].filter(t => t.rows.length > 1 && !t.closest('.fss-modal')) : [];
+      if (!cv && !tbls.length) return;
       let row = c.querySelector(':scope > .ibar');
       if (!row) { row = document.createElement('div'); row.className = 'ibar sharerow'; c.appendChild(row); }
-      row.appendChild(g); row.appendChild(b); row.appendChild(z);
+      tbls.forEach((t, i) => {   // ảnh bảng: chỉ lấy bảng (phần đang hiện), mở hộp chia sẻ như chart
+        const sc = t.closest('.tscroll') || t.parentElement, p = sc.previousElementSibling, own = p && p.matches('p.chart-sub') && p.querySelector('b') ? txt(p.querySelector('b')) : '';
+        const tb = document.createElement('button'); tb.type = 'button'; tb.className = 'sharepill fss-tbl'; tb.textContent = tbls.length > 1 ? `▦ Ảnh bảng ${i + 1}` : '▦ Ảnh bảng'; tb.title = own || 'Xuất ảnh riêng bảng này';
+        tb.onclick = e => { e.stopPropagation(); if (mxs) maxClose(false); const h = c.querySelector(':scope > h3.sub'); let title = 'Bảng số liệu'; if (h) { const k = h.cloneNode(true); k.querySelectorAll('.grip,button,.ctl,select,input,.info').forEach(x => x.remove()); title = txt(k) || title; }
+          FSTbl.share(sc, { title: own || title, sub: own ? title : '', src: txt(c.querySelector(':scope > .src')).replace(/^Nguồn:\s*/i, ''), file: 'FinSuccess_' + plain(own || title).replace(/[^\w\- ]+/g, '').trim().slice(0, 60) }); };
+        row.appendChild(tb);
+      });
+      if (cv) {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'sharepill'; b.innerHTML = '⇪ Chia sẻ ảnh'; b.title = 'Chia sẻ ảnh chart này';
+        b.onclick = e => { e.stopPropagation(); if (mxs) maxClose(false); open([c]); };
+        const z = document.createElement('button'); z.type = 'button'; z.className = 'sharepill fsx-zoom'; z.textContent = '⤢'; z.title = 'Phóng to'; z.setAttribute('aria-label', 'Phóng to');
+        z.onclick = e => { e.stopPropagation(); maxOpen(c); };
+        const g = document.createElement('button'); g.type = 'button'; g.className = 'sharepill fss-add'; g.textContent = '＋ Ghép'; g.title = 'Chọn chart này để ghép nhiều chart vào một ảnh';
+        g.onclick = e => { e.stopPropagation(); toggleBasket(c); };
+        row.appendChild(g); row.appendChild(b); row.appendChild(z);
+      }
     });
   }
   let tmr = null; new MutationObserver(() => { clearTimeout(tmr); tmr = setTimeout(() => { addButtons(); syncBasket(); }, 250); }).observe(document.body, { childList: true, subtree: true });

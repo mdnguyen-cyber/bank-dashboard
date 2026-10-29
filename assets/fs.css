@@ -814,3 +814,6 @@ body .fsx:not(.fsx-fix) .fsx-card .insight,body .fsx:not(.fsx-fix) .fsx-card>.sr
 body.print-all .cpick,body.pdf-cap .cpick{display:none!important}
 
 .fss-tools .fss-ptr{width:32px;justify-content:center;padding:5px 0}
+
+.ibar .fss-tbl{margin-left:auto}.ibar .fss-tbl+.fss-tbl,.ibar .fss-tbl+.fss-add{margin-left:6px}
+body.print-all .fss-tbl,body.pdf-cap .fss-tbl{display:none!important}
