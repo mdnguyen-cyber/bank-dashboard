@@ -79,6 +79,9 @@ def merge_td(rows):
          'soma_accepted': 'somaAccepted', 'fima_noncomp_accepted': 'fimaNoncompetitiveAccepted', 'bid_to_cover_ratio': 'bidToCoverRatio', 'high_yield': 'highYield',
          'high_discnt_rate': 'highDiscountRate', 'high_investment_rate': 'highInvestmentRate', 'floating_rate': 'floatingRate', 'inflation_index_security': 'inflationIndexSecurity'}
     add = 0
+    nb = [t for t in (td if isinstance(td, list) else []) if t.get('securityType') != 'Bill']
+    if nb: TD_STATUS['sample'] = {k: nb[0].get(k) for k in ('auctionDate', 'securityType', 'securityTerm', 'totalAccepted', 'bidToCoverRatio', 'highYield', 'indirectBidderAccepted')}
+    TD_STATUS['types'] = sorted({str(t.get('securityType')) for t in (td if isinstance(td, list) else [])})
     for t in td if isinstance(td, list) else []:
         d = (t.get('auctionDate') or '')[:10]
         if not d or not f(t.get('totalAccepted')):
