@@ -100,3 +100,6 @@ Tài liệu 2024 và 1Q25 là ảnh (không có lớp chữ) — phải xem ản
 Mỗi quý, sau khi các DN bảo hiểm công bố BCTC: `wi_data_companies get_data fs_ins` với `filters={"symbol":"BVH,PVI,MIG,BMI,BIC,PTI","year":"<năm trước>,<năm nay>","quarter":"1,2,3,4","consolidation_id":"2"}`,
 `columns=symbol,year,quarter,bs110,bs120,bs130,bs190,bs210,bs220,bsx10,bs250,bs270,bs311,bs312_1,bs329,bs334,bs300,bs400` → lưu raw (wi_capture_transcript.py) → `python3 scripts/fin_wi_backfill.py && python3 scripts/build_fin_data.py`.
 CTCK dùng các cột bảng cân đối đã có trong `fs_sec` (bs111–bs115, bs270, bs311, bs316, bs346, bs400).
+
+## Đấu thầu trái phiếu Kho bạc Mỹ
+`scripts/fetch_ust.py` lấy kết quả từ Fiscal Data (auctions_query); Fiscal Data cập nhật chậm vài tuần nên các phiên coupon gần đây (60 ngày) được bổ sung từ TreasuryDirect (TA_WS `securities/auctioned`). Cần số ngay sau phiên: chạy workflow **Cập nhật nhanh UST** (`fetch-ust.yml`) rồi `python3 scripts/build_global.py`.
