@@ -63,10 +63,37 @@ def mspd():
     return dict(sorted(out.items()))
 
 
+def merge_td(rows):
+    """Fiscal Data cập nhật kết quả đấu thầu chậm vài tuần → bổ sung các phiên gần đây từ TreasuryDirect (TA_WS), cùng tên trường."""
+    have = {(r['auction_date'][:10], r['security_term'], r['security_type']) for r in rows if f(r.get('total_accepted'))}
+    try:
+        td = json.loads(get('https://www.treasurydirect.gov/TA_WS/securities/auctioned?format=json&days=60'))
+    except Exception as e:  # noqa: BLE001
+        print('TreasuryDirect lỗi', e, file=sys.stderr); return rows
+    M = {'issue_date': 'issueDate', 'security_type': 'securityType', 'security_term': 'securityTerm', 'cash_management_bill_cmb': 'cashManagementBillCMB',
+         'offering_amt': 'offeringAmount', 'total_accepted': 'totalAccepted', 'comp_accepted': 'competitiveAccepted', 'noncomp_accepted': 'noncompetitiveAccepted',
+         'primary_dealer_accepted': 'primaryDealerAccepted', 'direct_bidder_accepted': 'directBidderAccepted', 'indirect_bidder_accepted': 'indirectBidderAccepted',
+         'soma_accepted': 'somaAccepted', 'fima_noncomp_accepted': 'fimaNoncompetitiveAccepted', 'bid_to_cover_ratio': 'bidToCoverRatio', 'high_yield': 'highYield',
+         'high_discnt_rate': 'highDiscountRate', 'high_investment_rate': 'highInvestmentRate', 'floating_rate': 'floatingRate', 'inflation_index_security': 'inflationIndexSecurity'}
+    add = 0
+    for t in td if isinstance(td, list) else []:
+        d = (t.get('auctionDate') or '')[:10]
+        if not d or not f(t.get('totalAccepted')):
+            continue
+        r = {'auction_date': d, **{k: (t.get(v) if t.get(v) not in ('', None) else None) for k, v in M.items()}}
+        r['issue_date'] = (r['issue_date'] or d)[:10]
+        if (d, r['security_term'], r['security_type']) in have:
+            continue
+        rows.append(r); have.add((d, r['security_term'], r['security_type'])); add += 1
+    print('TreasuryDirect bổ sung', add, 'phiên')
+    return rows
+
+
 def auctions():
     fields = ('auction_date,issue_date,security_type,security_term,cash_management_bill_cmb,offering_amt,total_accepted,comp_accepted,noncomp_accepted,'
               'primary_dealer_accepted,direct_bidder_accepted,indirect_bidder_accepted,soma_accepted,fima_noncomp_accepted,bid_to_cover_ratio,high_yield,high_discnt_rate,high_investment_rate,floating_rate,inflation_index_security')
     rows = fd_all('/v1/accounting/od/auctions_query', 'auction_date:gte:2018-01-01', fields)
+    rows = merge_td(rows)
     agg = defaultdict(lambda: defaultdict(float))
     last, hist = [], []
     for r in rows:
