@@ -63,13 +63,16 @@ def mspd():
     return dict(sorted(out.items()))
 
 
+TD_STATUS = {}
+
+
 def merge_td(rows):
     """Fiscal Data cập nhật kết quả đấu thầu chậm vài tuần → bổ sung các phiên gần đây từ TreasuryDirect (TA_WS), cùng tên trường."""
     have = {(r['auction_date'][:10], r['security_term'], r['security_type']) for r in rows if f(r.get('total_accepted'))}
     try:
         td = json.loads(get('https://www.treasurydirect.gov/TA_WS/securities/auctioned?format=json&days=60'))
     except Exception as e:  # noqa: BLE001
-        print('TreasuryDirect lỗi', e, file=sys.stderr); return rows
+        print('TreasuryDirect lỗi', e, file=sys.stderr); TD_STATUS['td'] = 'lỗi: ' + str(e)[:120]; return rows
     M = {'issue_date': 'issueDate', 'security_type': 'securityType', 'security_term': 'securityTerm', 'cash_management_bill_cmb': 'cashManagementBillCMB',
          'offering_amt': 'offeringAmount', 'total_accepted': 'totalAccepted', 'comp_accepted': 'competitiveAccepted', 'noncomp_accepted': 'noncompetitiveAccepted',
          'primary_dealer_accepted': 'primaryDealerAccepted', 'direct_bidder_accepted': 'directBidderAccepted', 'indirect_bidder_accepted': 'indirectBidderAccepted',
@@ -85,7 +88,7 @@ def merge_td(rows):
         if (d, r['security_term'], r['security_type']) in have:
             continue
         rows.append(r); have.add((d, r['security_term'], r['security_type'])); add += 1
-    print('TreasuryDirect bổ sung', add, 'phiên')
+    print('TreasuryDirect bổ sung', add, 'phiên'); TD_STATUS['td'] = f'ok, {len(td) if isinstance(td, list) else 0} dòng, bổ sung {add}'
     return rows
 
 
@@ -207,7 +210,7 @@ def main():
                     res[k] = old[k]
         print(name, rep[name], file=sys.stderr)
     res['fetched'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
-    res['report'] = rep
+    res['report'] = {**rep, **TD_STATUS}
     res['tic_last'] = {k: max(v) for k, v in res.get('tic', {}).items() if v}
     p.write_text(json.dumps(res, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 
