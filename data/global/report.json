@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-29T02:35:28Z",
+ "fetched": "2026-10-29T13:19:21Z",
  "report": {
   "us_cpi": [
    {
@@ -60,36 +60,36 @@
   "us_pce": [
    {
     "id": "fred:PCEPI",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "us_pce_core": [
    {
     "id": "fred:PCEPILFE",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "us_pce_supercore": [
    {
     "id": "fred:IA001260M",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "us_pce_goods": [
    {
     "id": "fred:DGDSRG3M086SBEA",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "us_pce_services": [
    {
     "id": "fred:DSERRG3M086SBEA",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    }
   ],
   "us_pce_trim": [
@@ -168,8 +168,8 @@
   "us_claims": [
    {
     "id": "fred:ICSA",
-    "n": 877,
-    "last": "2026-10-17"
+    "n": 878,
+    "last": "2026-10-24"
    }
   ],
   "us_jolts": [
@@ -182,8 +182,8 @@
   "us_gdp": [
    {
     "id": "fred:GDPC1",
-    "n": 66,
-    "last": "2026-04-01"
+    "n": 67,
+    "last": "2026-07-01"
    }
   ],
   "us_umcsent": [
@@ -224,15 +224,15 @@
   "us_fedtgt_up": [
    {
     "id": "fred:DFEDTARU",
-    "n": 6145,
-    "last": "2026-10-28"
+    "n": 6146,
+    "last": "2026-10-29"
    }
   ],
   "us_fedtgt_lo": [
    {
     "id": "fred:DFEDTARL",
-    "n": 6145,
-    "last": "2026-10-28"
+    "n": 6146,
+    "last": "2026-10-29"
    }
   ],
   "us_iorb": [
@@ -245,22 +245,22 @@
   "us_sofr": [
    {
     "id": "fred:SOFR",
-    "n": 2140,
-    "last": "2026-10-27"
+    "n": 2141,
+    "last": "2026-10-28"
    }
   ],
   "us_tgcr": [
    {
     "id": "fred:TGCRRATE",
-    "n": 2141,
-    "last": "2026-10-27"
+    "n": 2142,
+    "last": "2026-10-28"
    }
   ],
   "us_sofr99": [
    {
     "id": "nyfed:sofr99",
-    "n": 2139,
-    "last": "2026-10-27"
+    "n": 2140,
+    "last": "2026-10-28"
    }
   ],
   "us_2y": [
@@ -837,8 +837,8 @@
   "ea_dfr": [
    {
     "id": "fred:ECBDFR",
-    "n": 6145,
-    "last": "2026-10-28"
+    "n": 6146,
+    "last": "2026-10-29"
    }
   ],
   "ea_assets": [
@@ -1145,8 +1145,8 @@
   "cpi_kr": [
    {
     "id": "bis:KR",
-    "n": 199,
-    "last": "2026-07-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "oecd:KOR.M.N.CPI.PA._T.N.GY",
@@ -1162,8 +1162,8 @@
   "cpi_in": [
    {
     "id": "bis:IN",
-    "n": 199,
-    "last": "2026-07-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "oecd:IND.M.N.CPI.PA._T.N.GY",
@@ -1179,8 +1179,8 @@
   "cpi_id": [
    {
     "id": "bis:ID",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "oecd:IDN.M.N.CPI.PA._T.N.GY",
@@ -1212,8 +1212,8 @@
   "cpi_th": [
    {
     "id": "bis:TH",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "dbn:IMF/CPI/M.TH.PCPI_PC_CP_A_PT",
@@ -1228,8 +1228,8 @@
   "cpi_my": [
    {
     "id": "bis:MY",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "dbn:IMF/CPI/M.MY.PCPI_PC_CP_A_PT",
@@ -1244,8 +1244,8 @@
   "cpi_ph": [
    {
     "id": "bis:PH",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "dbn:IMF/CPI/M.PH.PCPI_PC_CP_A_PT",
@@ -1270,8 +1270,8 @@
   "cpi_gb": [
    {
     "id": "bis:GB",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "oecd:GBR.M.N.CPI.PA._T.N.GY",
@@ -1287,8 +1287,8 @@
   "cpi_ca": [
    {
     "id": "bis:CA",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "oecd:CAN.M.N.CPI.PA._T.N.GY",
@@ -1304,13 +1304,13 @@
   "cpi_au": [
    {
     "id": "oecd:AUS.M.N.CPI.PA._T.N.GY",
-    "n": 17,
-    "last": "2026-08-01"
+    "n": 18,
+    "last": "2026-09-01"
    },
    {
     "id": "oecd:AUS.Q.N.CPI.PA._T.N.GY",
-    "n": 66,
-    "last": "2026-06-01"
+    "n": 67,
+    "last": "2026-09-01"
    },
    {
     "id": "fred:CPALTT01AUQ659N",
@@ -1338,14 +1338,14 @@
    {
     "id": "cbpol:JP",
     "n": 8,
-    "last": "2026-10-20"
+    "last": "2026-10-27"
    }
   ],
   "pol_gb": [
    {
     "id": "cbpol:GB",
     "n": 27,
-    "last": "2026-10-19"
+    "last": "2026-10-26"
    },
    {
     "id": "fred:IRSTCI01GBM156N",
@@ -1357,7 +1357,7 @@
    {
     "id": "cbpol:CA",
     "n": 31,
-    "last": "2026-10-19"
+    "last": "2026-10-26"
    },
    {
     "id": "fred:IRSTCI01CAM156N",
@@ -1369,7 +1369,7 @@
    {
     "id": "cbpol:AU",
     "n": 32,
-    "last": "2026-10-15"
+    "last": "2026-10-22"
    },
    {
     "id": "fred:IRSTCI01AUM156N",
@@ -1381,7 +1381,7 @@
    {
     "id": "cbpol:NZ",
     "n": 35,
-    "last": "2026-10-16"
+    "last": "2026-10-23"
    },
    {
     "id": "fred:IRSTCI01NZM156N",
@@ -1393,7 +1393,7 @@
    {
     "id": "cbpol:CH",
     "n": 14,
-    "last": "2026-10-20"
+    "last": "2026-10-27"
    }
   ],
   "pol_kr": [
@@ -1428,21 +1428,21 @@
    {
     "id": "cbpol:TH",
     "n": 26,
-    "last": "2026-10-14"
+    "last": "2026-10-21"
    }
   ],
   "pol_my": [
    {
     "id": "cbpol:MY",
     "n": 15,
-    "last": "2026-10-20"
+    "last": "2026-10-26"
    }
   ],
   "pol_ph": [
    {
     "id": "cbpol:PH",
     "n": 38,
-    "last": "2026-10-16"
+    "last": "2026-10-23"
    }
   ],
   "cn_cpi": [
