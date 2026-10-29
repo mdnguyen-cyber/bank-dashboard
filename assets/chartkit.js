@@ -582,3 +582,14 @@ window.FSPDF = (function () {
 
 /* gom các lần co giãn liên tiếp (mở lịch, đổi cỡ cửa sổ) thành một lần vẽ lại cho mỗi chart */
 if (window.Chart) { Chart.defaults.resizeDelay = 120; Chart.defaults.devicePixelRatio = Math.max(2, window.devicePixelRatio || 1); }   // vẽ tối thiểu 2x: màn hình 100% hoặc trình duyệt thu nhỏ (DPR ≤ 1) không bị mờ
+
+/* Nhãn trục: nếu mọi mốc đều tận cùng bằng ",0" / ",00" (25,0% · 20,0% …) thì bỏ phần thập phân thừa (25% · 20%). */
+if (window.Chart) {
+  const trimZeros = sc => {
+    const T = sc.ticks; if (!T || T.length < 2) return;
+    const re = /,0+(?=\D*$)/, labs = T.map(t => t.label);
+    if (labs.some(l => typeof l !== 'string')) return;
+    if (labs.some(l => re.test(l)) && labs.every(l => re.test(l) || !/,\d/.test(l))) T.forEach(t => { t.label = t.label.replace(re, ''); });
+  };
+  ['linear', 'logarithmic'].forEach(k => { const d = Chart.defaults.scales[k]; if (d && !d.afterTickToLabelConversion) d.afterTickToLabelConversion = trimZeros; });
+}
