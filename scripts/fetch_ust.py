@@ -73,21 +73,23 @@ def merge_td(rows):
         td = json.loads(get('https://www.treasurydirect.gov/TA_WS/securities/auctioned?format=json&days=60'))
     except Exception as e:  # noqa: BLE001
         print('TreasuryDirect lỗi', e, file=sys.stderr); TD_STATUS['td'] = 'lỗi: ' + str(e)[:120]; return rows
-    M = {'issue_date': 'issueDate', 'security_type': 'securityType', 'security_term': 'securityTerm', 'cash_management_bill_cmb': 'cashManagementBillCMB',
-         'offering_amt': 'offeringAmount', 'total_accepted': 'totalAccepted', 'comp_accepted': 'competitiveAccepted', 'noncomp_accepted': 'noncompetitiveAccepted',
-         'primary_dealer_accepted': 'primaryDealerAccepted', 'direct_bidder_accepted': 'directBidderAccepted', 'indirect_bidder_accepted': 'indirectBidderAccepted',
-         'soma_accepted': 'somaAccepted', 'fima_noncomp_accepted': 'fimaNoncompetitiveAccepted', 'bid_to_cover_ratio': 'bidToCoverRatio', 'high_yield': 'highYield',
-         'high_discnt_rate': 'highDiscountRate', 'high_investment_rate': 'highInvestmentRate', 'floating_rate': 'floatingRate', 'inflation_index_security': 'inflationIndexSecurity'}
+    n = lambda t, *ks: sum(f(t.get(k)) or 0 for k in ks)
     add = 0
-    nb = [t for t in (td if isinstance(td, list) else []) if t.get('securityType') != 'Bill']
-    if nb: TD_STATUS['sample'] = {k: v for k, v in nb[0].items() if v not in ('', None)}
-    TD_STATUS['types'] = sorted({str(t.get('securityType')) for t in (td if isinstance(td, list) else [])})
     for t in td if isinstance(td, list) else []:
-        d = (t.get('auctionDate') or '')[:10]
-        if not d or not f(t.get('totalAccepted')):
-            continue
-        r = {'auction_date': d, **{k: (t.get(v) if t.get(v) not in ('', None) else None) for k, v in M.items()}}
-        r['issue_date'] = (r['issue_date'] or d)[:10]
+        d = (t.get('auctionDate') or t.get('competitiveAuctionCloseDate') or '')[:10]
+        tot = f(t.get('grandTotalParAwarded')) or f(t.get('totalAccepted'))
+        if not d or not tot or t.get('securityType') == 'Bill':
+            continue   # chưa có kết quả; tín phiếu để Fiscal Data (tránh cộng trùng theo tháng)
+        r = {'auction_date': d, 'issue_date': (t.get('issueDate') or d)[:10], 'security_type': t.get('securityType'), 'security_term': t.get('securityTerm'),
+             'cash_management_bill_cmb': t.get('cashManagementBillCMB'), 'offering_amt': t.get('offeringAmount'), 'total_accepted': tot,
+             'comp_accepted': f(t.get('subtotalCompetitiveParAwardedInsideOfOfferingAmount')), 'noncomp_accepted': f(t.get('subtotalNoncompetitiveParAwardedInsideOfOfferingAmount')),
+             'primary_dealer_accepted': n(t, 'primaryDealersCompetitiveParAwarded', 'primaryDealersNoncompetitiveParAwarded'),
+             'direct_bidder_accepted': n(t, 'directBiddersCompetitiveParAwarded', 'directBiddersNoncompetitiveParAwarded'),
+             'indirect_bidder_accepted': n(t, 'indirectBiddersCompetitiveParAwarded', 'indirectBiddersNoncompetitiveParAwarded'),
+             'soma_accepted': n(t, 'somaNoncompetitiveParAwarded'), 'fima_noncomp_accepted': n(t, 'fimaNoncompetitiveParAwarded'),
+             'bid_to_cover_ratio': t.get('bidToCoverRatio'), 'high_yield': t.get('highYield'), 'high_discnt_rate': t.get('highDiscountRate'),
+             'high_investment_rate': t.get('highInvestmentRate'), 'floating_rate': t.get('floatingRate'),
+             'inflation_index_security': t.get('inflationProtected') or t.get('inflationIndexSecurity')}
         if (d, r['security_term'], r['security_type']) in have:
             continue
         rows.append(r); have.add((d, r['security_term'], r['security_type'])); add += 1
