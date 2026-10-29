@@ -1,6 +1,6 @@
 {
- "asOf": "2026-10-28 16:18",
- "fetched": "2026-10-28 16:28 UTC",
+ "asOf": "2026-10-29 02:28",
+ "fetched": "2026-10-29 02:38 UTC",
  "target": [
   3.75,
   4.0
@@ -8,238 +8,210 @@
  "effr": 3.88,
  "meetings": [
   {
-   "date": "2026-10-28",
-   "start": 3.8801,
-   "end": 3.9,
-   "chg_bps": 2.0,
-   "probs": {
-    "3.75-4.00": 92.0,
-    "4.00-4.25": 8.0
-   },
-   "exp_rate": 3.895,
-   "kalshi": {
-    "ticker": "KXFEDDECISION-26OCT",
-    "p": {
-     "Cut >25bps": 0.5,
-     "Cut 25bps": 0.5,
-     "Fed maintains rate": 95.5,
-     "Hike 25bps": 4.5,
-     "Hike >25bps": 0.5
-    }
-   },
-   "poly": {
-    "slug": "fed-decision-in-october-20260617190323537",
-    "p": {
-     "Cut 50+ bps": 0.1,
-     "Cut 25bps": 0.1,
-     "No change": 95.2,
-     "Hike 25bps": 4.5,
-     "Hike 50+ bps": 0.2
-    },
-    "volume": 94882394
-   }
-  },
-  {
    "date": "2026-12-09",
-   "start": 3.9,
-   "end": 4.1184,
-   "chg_bps": 21.8,
+   "start": 3.88,
+   "end": 4.0914,
+   "chg_bps": 21.1,
    "probs": {
-    "3.75-4.00": 11.8,
-    "4.00-4.25": 81.2,
-    "4.25-4.50": 7.0
+    "3.75-4.00": 15.6,
+    "4.00-4.25": 84.4
    },
-   "exp_rate": 4.113,
+   "exp_rate": 4.086,
    "kalshi": {
     "ticker": "KXFEDDECISION-26DEC",
     "p": {
      "Cut >25bps": 0.5,
-     "Cut 25bps": 1.5,
+     "Cut 25bps": 0.5,
      "Fed maintains rate": 19.5,
-     "Hike 25bps": 77.5,
+     "Hike 25bps": 79.5,
      "Hike >25bps": 3.5
     }
    },
    "poly": {
     "slug": "fed-decision-in-december-20260729232808632",
     "p": {
-     "Cut 50+ bps": 0.4,
-     "Cut 25bps": 0.5,
-     "No change": 19.5,
-     "Hike 25bps": 77.5,
-     "Hike 50+ bps": 2.8
+     "Cut 50+ bps": 0.2,
+     "Cut 25bps": 0.4,
+     "No change": 18.5,
+     "Hike 25bps": 78.5,
+     "Hike 50+ bps": 2.5
     },
-    "volume": 5285926
+    "volume": 6961315
    }
   },
   {
    "date": "2027-01-27",
-   "start": 4.1167,
-   "end": 4.22,
-   "chg_bps": 10.3,
+   "start": 4.0881,
+   "end": 4.18,
+   "chg_bps": 9.2,
    "probs": {
-    "3.75-4.00": 6.9,
-    "4.00-4.25": 52.6,
-    "4.25-4.50": 37.6,
-    "4.50-4.75": 2.9
+    "3.75-4.00": 9.9,
+    "4.00-4.25": 59.1,
+    "4.25-4.50": 31.1
    },
-   "exp_rate": 4.216,
+   "exp_rate": 4.178,
    "kalshi": {
     "ticker": "KXFEDDECISION-27JAN",
     "p": {
      "Cut >25bps": 0.5,
      "Cut 25bps": 1.5,
-     "Fed maintains rate": 63.5,
+     "Fed maintains rate": 67.5,
      "Hike 25bps": 30.5,
-     "Hike >25bps": 3.0
+     "Hike >25bps": 2.5
     }
    },
    "poly": {
     "slug": "fed-decision-in-january-20260729233815502",
     "p": {
-     "Cut 50+ bps": 0.7,
-     "Cut 25bps": 1.5,
-     "No change": 63.5,
-     "Hike 25bps": 33.5,
+     "Cut 50+ bps": 0.5,
+     "Cut 25bps": 1.1,
+     "No change": 66.5,
+     "Hike 25bps": 30.5,
      "Hike 50+ bps": 1.1
     },
-    "volume": 979102
+    "volume": 1010571
    }
   },
   {
    "date": "2027-03-17",
-   "start": 4.22,
-   "end": 4.3971,
-   "chg_bps": 17.7,
+   "start": 4.18,
+   "end": 4.3239,
+   "chg_bps": 14.4,
    "probs": {
-    "3.75-4.00": 2.0,
-    "4.00-4.25": 20.3,
-    "4.25-4.50": 48.2,
-    "4.50-4.75": 27.4,
-    "4.75-5.00": 2.0
+    "3.75-4.00": 4.2,
+    "4.00-4.25": 30.7,
+    "4.25-4.50": 47.2,
+    "4.50-4.75": 17.9
    },
-   "exp_rate": 4.393,
+   "exp_rate": 4.322,
    "kalshi": {
     "ticker": "KXFEDDECISION-27MAR",
     "p": {
      "Cut >25bps": 1.5,
      "Cut 25bps": 4.5,
-     "Fed maintains rate": 37.5,
-     "Hike 25bps": 53.0,
+     "Fed maintains rate": 46.5,
+     "Hike 25bps": 44.0,
      "Hike >25bps": 1.5
     }
    },
    "poly": {
     "slug": "fed-decision-in-march-2027",
     "p": {
-     "Cut 50+ bps": 1.9,
-     "Cut 25bps": 5.1,
-     "No change": 42.0,
-     "Hike 25bps": 51.0,
-     "Hike 50+ bps": 4.5
+     "Cut 50+ bps": 3.2,
+     "Cut 25bps": 4.6,
+     "No change": 48.0,
+     "Hike 25bps": 42.0,
+     "Hike 50+ bps": 3.4
     },
-    "volume": 3621
+    "volume": 12777
    }
   },
   {
    "date": "2027-04-28",
-   "start": 4.3986,
-   "end": 4.495,
-   "chg_bps": 9.6,
+   "start": 4.3296,
+   "end": 4.41,
+   "chg_bps": 8.0,
    "probs": {
-    "3.75-4.00": 1.2,
-    "4.00-4.25": 13.3,
-    "4.25-4.50": 37.5,
-    "4.50-4.75": 35.4,
-    "4.75-5.00": 11.8,
-    "5.00-5.25": 0.8
+    "3.75-4.00": 2.8,
+    "4.00-4.25": 22.2,
+    "4.25-4.50": 41.9,
+    "4.50-4.75": 27.3,
+    "4.75-5.00": 5.7
    },
-   "exp_rate": 4.489,
+   "exp_rate": 4.402,
    "kalshi": {
     "ticker": "KXFEDDECISION-27APR",
     "p": {
      "Cut >25bps": 2.5,
-     "Cut 25bps": 8.0,
-     "Fed maintains rate": 56.0,
-     "Hike 25bps": 30.0,
+     "Cut 25bps": 13.0,
+     "Fed maintains rate": 53.0,
+     "Hike 25bps": 21.0,
      "Hike >25bps": 1.5
     }
+   },
+   "poly": {
+    "slug": "fed-decision-in-april-2027",
+    "p": {
+     "Cut 50+ bps": 8.5,
+     "Cut 25bps": 13.5,
+     "No change": 54.5,
+     "Hike 25bps": 22.0,
+     "Hike 50+ bps": 4.5
+    },
+    "volume": 6261
    }
   },
   {
    "date": "2027-06-09",
-   "start": 4.495,
-   "end": 4.6021,
-   "chg_bps": 10.7,
+   "start": 4.41,
+   "end": 4.51,
+   "chg_bps": 10.0,
    "probs": {
-    "3.75-4.00": 0.7,
-    "4.00-4.25": 8.1,
-    "4.25-4.50": 27.1,
-    "4.50-4.75": 36.3,
-    "4.75-5.00": 21.9,
-    "5.00-5.25": 5.5,
-    "5.25-5.50": 0.3
+    "3.75-4.00": 1.7,
+    "4.00-4.25": 14.5,
+    "4.25-4.50": 34.1,
+    "4.50-4.75": 33.1,
+    "4.75-5.00": 14.3,
+    "5.00-5.25": 2.3
    },
-   "exp_rate": 4.596,
+   "exp_rate": 4.502,
    "kalshi": {
     "ticker": "KXFEDDECISION-27JUN",
     "p": {
      "Cut >25bps": 1.0,
      "Cut 25bps": 4.0,
-     "Fed maintains rate": 57.0,
-     "Hike 25bps": 32.0,
+     "Fed maintains rate": 58.5,
+     "Hike 25bps": 31.5,
      "Hike >25bps": 1.0
     }
    }
   },
   {
    "date": "2027-07-28",
-   "start": 4.6063,
-   "end": 4.645,
-   "chg_bps": 3.9,
+   "start": 4.5073,
+   "end": 4.535,
+   "chg_bps": 2.8,
    "probs": {
-    "3.75-4.00": 0.6,
-    "4.00-4.25": 7.0,
-    "4.25-4.50": 24.2,
-    "4.50-4.75": 34.9,
-    "4.75-5.00": 24.2,
-    "5.00-5.25": 8.1,
-    "5.25-5.50": 1.1,
-    "5.50-5.75": 0.1
+    "3.75-4.00": 1.5,
+    "4.00-4.25": 13.0,
+    "4.25-4.50": 31.9,
+    "4.50-4.75": 33.2,
+    "4.75-5.00": 16.4,
+    "5.00-5.25": 3.6,
+    "5.25-5.50": 0.3
    },
-   "exp_rate": 4.635,
+   "exp_rate": 4.53,
    "kalshi": {
     "ticker": "KXFEDDECISION-27JUL",
     "p": {
      "Cut >25bps": 1.5,
      "Cut 25bps": 4.5,
-     "Fed maintains rate": 74.0,
-     "Hike 25bps": 20.0,
+     "Fed maintains rate": 74.5,
+     "Hike 25bps": 17.5,
      "Hike >25bps": 1.5
     }
    }
   },
   {
    "date": "2027-09-15",
-   "start": 4.645,
-   "end": 4.675,
+   "start": 4.535,
+   "end": 4.565,
    "chg_bps": 3.0,
    "probs": {
-    "3.75-4.00": 0.5,
-    "4.00-4.25": 6.2,
-    "4.25-4.50": 22.1,
-    "4.50-4.75": 33.6,
-    "4.75-5.00": 25.4,
-    "5.00-5.25": 10.0,
-    "5.25-5.50": 2.0,
-    "5.50-5.75": 0.2
+    "3.75-4.00": 1.3,
+    "4.00-4.25": 11.7,
+    "4.25-4.50": 29.6,
+    "4.50-4.75": 33.1,
+    "4.75-5.00": 18.5,
+    "5.00-5.25": 5.2,
+    "5.25-5.50": 0.7
    },
-   "exp_rate": 4.665,
+   "exp_rate": 4.56,
    "kalshi": {
     "ticker": "KXFEDDECISION-27SEP",
     "p": {
      "Cut >25bps": 5.5,
-     "Cut 25bps": 5.0,
+     "Cut 25bps": 4.0,
      "Fed maintains rate": 75.0,
      "Hike 25bps": 25.0,
      "Hike >25bps": 3.0
@@ -248,55 +220,54 @@
   },
   {
    "date": "2027-10-27",
-   "start": 4.6807,
-   "end": 4.675,
-   "chg_bps": -0.6,
+   "start": 4.5628,
+   "end": 4.58,
+   "chg_bps": 1.7,
    "probs": {
-    "3.75-4.00": 0.7,
-    "4.00-4.25": 6.6,
-    "4.25-4.50": 22.4,
-    "4.50-4.75": 33.4,
-    "4.75-5.00": 25.1,
-    "5.00-5.25": 9.8,
-    "5.25-5.50": 1.9,
-    "5.50-5.75": 0.2
+    "3.75-4.00": 1.2,
+    "4.00-4.25": 11.0,
+    "4.25-4.50": 28.4,
+    "4.50-4.75": 32.8,
+    "4.75-5.00": 19.5,
+    "5.00-5.25": 6.1,
+    "5.25-5.50": 1.0,
+    "5.50-5.75": 0.1
    },
-   "exp_rate": 4.659,
+   "exp_rate": 4.577,
    "kalshi": {
     "ticker": "KXFEDDECISION-27OCT",
     "p": {
      "Cut >25bps": 1.5,
-     "Cut 25bps": 6.5,
-     "Fed maintains rate": 89.5,
-     "Hike 25bps": 3.5,
-     "Hike >25bps": 1.5
+     "Cut 25bps": 7.5,
+     "Fed maintains rate": 67.5,
+     "Hike 25bps": 6.5,
+     "Hike >25bps": 1.0
     }
    }
   },
   {
    "date": "2027-12-08",
-   "start": 4.5775,
-   "end": 4.655,
-   "chg_bps": 7.8,
+   "start": 4.4981,
+   "end": 4.595,
+   "chg_bps": 9.7,
    "probs": {
-    "3.75-4.00": 0.5,
-    "4.00-4.25": 4.7,
-    "4.25-4.50": 17.4,
-    "4.50-4.75": 30.0,
-    "4.75-5.00": 27.7,
-    "5.00-5.25": 14.6,
-    "5.25-5.50": 4.4,
-    "5.50-5.75": 0.7,
-    "5.75-6.00": 0.1
+    "3.75-4.00": 0.8,
+    "4.00-4.25": 7.2,
+    "4.25-4.50": 21.6,
+    "4.50-4.75": 31.1,
+    "4.75-5.00": 24.6,
+    "5.00-5.25": 11.3,
+    "5.25-5.50": 3.0,
+    "5.50-5.75": 0.4
    },
-   "exp_rate": 4.737,
+   "exp_rate": 4.674,
    "kalshi": {
     "ticker": "KXFEDDECISION-27DEC",
     "p": {
      "Cut >25bps": 0.5,
-     "Cut 25bps": 18.5,
-     "Fed maintains rate": 64.0,
-     "Hike 25bps": 11.0,
+     "Cut 25bps": 19.0,
+     "Fed maintains rate": 68.5,
+     "Hike 25bps": 9.0,
      "Hike >25bps": 2.5
     }
    }
@@ -910,83 +881,83 @@
  "zq": {
   "2026-10": {
    "ticker": "ZQV26.CBT",
-   "px": 96.118,
-   "rate": 3.882
+   "px": 96.12,
+   "rate": 3.88
   },
   "2026-11": {
    "ticker": "ZQX26.CBT",
-   "px": 96.1,
-   "rate": 3.9
+   "px": 96.12,
+   "rate": 3.88
   },
   "2026-12": {
    "ticker": "ZQZ26.CBT",
-   "px": 95.945,
-   "rate": 4.055
+   "px": 95.97,
+   "rate": 4.03
   },
   "2027-01": {
    "ticker": "ZQF27.CBT",
-   "px": 95.87,
-   "rate": 4.13
+   "px": 95.9,
+   "rate": 4.1
   },
   "2027-02": {
    "ticker": "ZQG27.CBT",
-   "px": 95.78,
-   "rate": 4.22
+   "px": 95.82,
+   "rate": 4.18
   },
   "2027-03": {
    "ticker": "ZQH27.CBT",
-   "px": 95.7,
-   "rate": 4.3
+   "px": 95.755,
+   "rate": 4.245
   },
   "2027-04": {
    "ticker": "ZQJ27.CBT",
-   "px": 95.595,
-   "rate": 4.405
+   "px": 95.665,
+   "rate": 4.335
   },
   "2027-05": {
    "ticker": "ZQK27.CBT",
-   "px": 95.505,
-   "rate": 4.495
+   "px": 95.59,
+   "rate": 4.41
   },
   "2027-06": {
    "ticker": "ZQM27.CBT",
-   "px": 95.43,
-   "rate": 4.57
+   "px": 95.52,
+   "rate": 4.48
   },
   "2027-07": {
    "ticker": "ZQN27.CBT",
-   "px": 95.39,
-   "rate": 4.61
+   "px": 95.49,
+   "rate": 4.51
   },
   "2027-08": {
    "ticker": "ZQQ27.CBT",
-   "px": 95.355,
-   "rate": 4.645
+   "px": 95.465,
+   "rate": 4.535
   },
   "2027-09": {
    "ticker": "ZQU27.CBT",
-   "px": 95.34,
-   "rate": 4.66
+   "px": 95.45,
+   "rate": 4.55
   },
   "2027-10": {
    "ticker": "ZQV27.CBT",
-   "px": 95.32,
-   "rate": 4.68
+   "px": 95.435,
+   "rate": 4.565
   },
   "2027-11": {
    "ticker": "ZQX27.CBT",
-   "px": 95.325,
-   "rate": 4.675
+   "px": 95.42,
+   "rate": 4.58
   },
   "2027-12": {
    "ticker": "ZQZ27.CBT",
-   "px": 95.365,
-   "rate": 4.635
+   "px": 95.43,
+   "rate": 4.57
   },
   "2028-01": {
    "ticker": "ZQF28.CBT",
-   "px": 95.345,
-   "rate": 4.655
+   "px": 95.405,
+   "rate": 4.595
   }
  },
  "method": "Kỳ vọng lãi suất Fed theo từng phiên họp FOMC → data/global/fedwatch.json (+ lịch sử fedwatch_hist.json).\n\nPhương pháp: giống CME FedWatch — xác suất ngụ ý từ giá hợp đồng tương lai lãi suất quỹ liên bang 30 ngày (ZQ, CBOT).\n  - Lãi suất bình quân tháng ngụ ý = 100 − giá ZQ tháng đó.\n  - Tháng có họp: avg = f·r_trước + (1−f)·r_sau, f = (ngày hiệu lực − 1)/số ngày tháng (ngày hiệu lực = ngày cuối cuộc họp + 1).\n    Neo r_sau bằng tháng kế tiếp không họp, hoặc r_trước bằng tháng liền trước không họp, hoặc nối chuỗi từ phiên trước.\n  - Mỗi phiên: Δ = r_sau − r_trước (bước 25 bps): k = sàn(Δ/0,25) bước với xác suất 1 − phần lẻ, k+1 bước với xác suất phần lẻ;\n    phân phối khoảng lãi suất mục tiêu sau từng phiên = tích chập các phiên trước.\nNguồn giá: Yahoo Finance (ZQ<tháng><năm>.CBT, giá giao dịch gần nhất); CME chặn truy cập tự động nên số có thể lệch nhẹ với CME FedWatch\n(CME dùng giá thanh toán cuối ngày). Đối chiếu: thị trường dự đoán Kalshi (KXFEDDECISION) theo từng phiên.\nKhoảng mục tiêu hiện hành: FRED DFEDTARL/DFEDTARU (data/global/series.json do fetch_global.py tải trước)."
