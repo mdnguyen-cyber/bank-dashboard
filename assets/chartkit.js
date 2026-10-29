@@ -153,6 +153,7 @@
     };
     const applyY = () => {
       const y = Y();
+      y.ticks = Object.assign({}, y.ticks, { includeBounds: ymode === 'def' });   // trục tự chỉnh: không in nhãn ở mép lẻ (75,8916…)
       if (ymode === 'def') { ['min', 'max', 'beginAtZero'].forEach(k => { if (y0[k] === undefined) delete y[k]; else y[k] = y0[k]; }); }
       else if (ymode === 'fit') { const r = visRange(); if (r) { y.beginAtZero = false; y.min = r[0]; y.max = r[1]; } }
       else { const mi = bar.querySelector('[data-yi="min"]').value, ma = bar.querySelector('[data-yi="max"]').value; y.beginAtZero = false; if (mi === '') delete y.min; else y.min = +mi; if (ma === '') delete y.max; else y.max = +ma; }
@@ -174,13 +175,15 @@
           const len = Math.max(...S.map(d => d.data.length)), tot = Array.from({ length: len }, (_, i) => S.reduce((a, d) => a + Math.max(0, +d.data[i] || 0), 0));
           S.forEach(d => { d.data = d.data.map((v, i) => v == null || !tot[i] ? null : +(Math.max(0, v) / tot[i] * 100).toFixed(2)); d.unit = '%'; d.dp = 1; });
           ch.data.datasets.forEach((d, i) => { if (!S.includes(d) && ch.isDatasetVisible(i)) { saved.hid.push(i); ch.setDatasetVisibility(i, false); } });
-          y.min = 0; y.max = 100; y.beginAtZero = true; y.ticks = Object.assign({}, y.ticks, { callback: v => v + '%' });
+          y.min = 0; y.max = 100; y.beginAtZero = true; y.ticks = Object.assign({}, y.ticks, { callback: v => (Math.round(v * 10) / 10).toLocaleString('vi-VN') + '%' });
+          saved.yt = y.title ? y.title.text : undefined; if (y.title && y.title.text) y.title = Object.assign({}, y.title, { text: '% tổng' });
           pb.classList.add('on'); pb.textContent = 'Giá trị gốc';
         } else {
           S.forEach((d, j) => { d.data = saved.data[j]; d.unit = saved.unit[j]; d.dp = saved.dp[j]; });
           saved.hid.forEach(i => ch.setDatasetVisibility(i, true));
           ['min', 'max', 'beginAtZero'].forEach(k => { if (saved.y[k] === undefined) delete y[k]; else y[k] = saved.y[k]; });
           y.ticks = Object.assign({}, y.ticks); if (saved.y.cb) y.ticks.callback = saved.y.cb; else delete y.ticks.callback;
+          if (saved.yt !== undefined && y.title) y.title = Object.assign({}, y.title, { text: saved.yt });
           saved = null; pb.classList.remove('on'); pb.textContent = '100% tỷ trọng';
         }
         ch.update();
@@ -188,7 +191,7 @@
     }
     bar.querySelectorAll('[data-y]').forEach(b => b.onclick = () => {
       ymode = b.dataset.y;
-      if (ymode === 'man') { const sc = ch.scales.y; const [mi, ma] = bar.querySelectorAll('[data-yi]'); if (mi.value === '' && sc) mi.value = +sc.min.toPrecision(4); if (ma.value === '' && sc) ma.value = +sc.max.toPrecision(4); }
+      if (ymode === 'man') { const sc = ch.scales.y; const [mi, ma] = bar.querySelectorAll('[data-yi]'); if (mi.value === '' && sc) mi.value = +sc.min.toFixed(2); if (ma.value === '' && sc) ma.value = +sc.max.toFixed(2); }
       applyY();
     });
     bar.querySelectorAll('[data-yi]').forEach(i => i.oninput = () => { if (ymode === 'man') applyY(); });
@@ -208,10 +211,10 @@
       if (!yd) return;
       const r = canvas.getBoundingClientRect(), span = yd.max - yd.min;
       const dv = (yd.y0 - ((e.clientY - r.top) * ky(r))) / (yd.bot - yd.top) * span;   // kéo lên = tăng, kéo xuống = giảm
-      const y = Y(); y.beginAtZero = false;
+      const y = Y(); y.beginAtZero = false; y.ticks = Object.assign({}, y.ticks, { includeBounds: false });
       if (yd.h === 'min') { y.min = Math.min(yd.min + dv, yd.max - span * 0.05); y.max = yd.max; } else { y.min = yd.min; y.max = Math.max(yd.max + dv, yd.min + span * 0.05); }
       ymode = 'man';
-      const [mi, ma] = bar.querySelectorAll('[data-yi]'); mi.value = +(+y.min).toPrecision(4); ma.value = +(+y.max).toPrecision(4);
+      const [mi, ma] = bar.querySelectorAll('[data-yi]'), rd = v => +(+v).toFixed(Math.abs(y.max - y.min) < 10 ? 2 : 1); mi.value = rd(y.min); ma.value = rd(y.max);
       bar.querySelectorAll('[data-y]').forEach(b => b.classList.toggle('on', b.dataset.y === 'man')); bar.querySelector('.yman').hidden = false;
       ch.update('none');
     }, on);
@@ -219,8 +222,8 @@
       if (!yd) return; yd = null;
       const y = Y(); if (y.min == null || y.max == null) return;
       const st = Math.pow(10, Math.floor(Math.log10((y.max - y.min) / 20 || 1)));
-      y.min = Math.floor(y.min / st) * st; y.max = Math.ceil(y.max / st) * st;
-      const [mi, ma] = bar.querySelectorAll('[data-yi]'); mi.value = +y.min.toPrecision(6); ma.value = +y.max.toPrecision(6);
+      y.min = +(Math.floor(y.min / st) * st).toFixed(10); y.max = +(Math.ceil(y.max / st) * st).toFixed(10);
+      const [mi, ma] = bar.querySelectorAll('[data-yi]'); mi.value = +y.min.toFixed(4); ma.value = +y.max.toFixed(4);
       ch.update('none');
     };
     canvas.addEventListener('pointerup', yEnd, on); canvas.addEventListener('pointercancel', yEnd, on);
