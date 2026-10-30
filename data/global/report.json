@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-30T10:31:02Z",
+ "fetched": "2026-10-30T16:22:09Z",
  "report": {
   "us_cpi": [
    {
@@ -224,15 +224,15 @@
   "us_fedtgt_up": [
    {
     "id": "fred:DFEDTARU",
-    "n": 6146,
-    "last": "2026-10-29"
+    "n": 6147,
+    "last": "2026-10-30"
    }
   ],
   "us_fedtgt_lo": [
    {
     "id": "fred:DFEDTARL",
-    "n": 6146,
-    "last": "2026-10-29"
+    "n": 6147,
+    "last": "2026-10-30"
    }
   ],
   "us_iorb": [
@@ -245,22 +245,22 @@
   "us_sofr": [
    {
     "id": "fred:SOFR",
-    "n": 2141,
-    "last": "2026-10-28"
+    "n": 2142,
+    "last": "2026-10-29"
    }
   ],
   "us_tgcr": [
    {
     "id": "fred:TGCRRATE",
-    "n": 2142,
-    "last": "2026-10-28"
+    "n": 2143,
+    "last": "2026-10-29"
    }
   ],
   "us_sofr99": [
    {
     "id": "nyfed:sofr99",
-    "n": 2140,
-    "last": "2026-10-28"
+    "n": 2141,
+    "last": "2026-10-29"
    }
   ],
   "us_2y": [
@@ -837,8 +837,8 @@
   "ea_dfr": [
    {
     "id": "fred:ECBDFR",
-    "n": 6146,
-    "last": "2026-10-29"
+    "n": 6147,
+    "last": "2026-10-30"
    }
   ],
   "ea_assets": [
@@ -1304,8 +1304,8 @@
   "cpi_au": [
    {
     "id": "oecd:AUS.M.N.CPI.PA._T.N.GY",
-    "n": 17,
-    "last": "2026-08-01"
+    "n": 18,
+    "last": "2026-09-01"
    },
    {
     "id": "oecd:AUS.Q.N.CPI.PA._T.N.GY",

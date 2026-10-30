@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu Wi MCP; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-30T10:49Z"
+  "auto": "2026-10-30T16:27Z"
  },
  "idx": {
   "now": {
@@ -6548,6 +6548,10 @@
    {
     "d": "2026-10-28",
     "v": 26080
+   },
+   {
+    "d": "2026-10-30",
+    "v": 26210.0
    }
   ],
   "nhtmD": [
@@ -42177,6 +42181,10 @@
     {
      "d": "2026-10-28",
      "v": 4.1
+    },
+    {
+     "d": "2026-10-29",
+     "v": 3.74
     }
    ],
    "1W": [
@@ -47979,6 +47987,10 @@
     {
      "d": "2026-10-28",
      "v": 5.25
+    },
+    {
+     "d": "2026-10-29",
+     "v": 5.19
     }
    ],
    "1M": [
@@ -53781,6 +53793,10 @@
     {
      "d": "2026-10-28",
      "v": 5.85
+    },
+    {
+     "d": "2026-10-29",
+     "v": 5.06
     }
    ],
    "3M": [
@@ -59583,6 +59599,10 @@
     {
      "d": "2026-10-28",
      "v": 7.7
+    },
+    {
+     "d": "2026-10-29",
+     "v": 7.56
     }
    ],
    "6M": [
@@ -65384,6 +65404,10 @@
     },
     {
      "d": "2026-10-28",
+     "v": 8.0
+    },
+    {
+     "d": "2026-10-29",
      "v": 8.0
     }
    ],
@@ -71187,6 +71211,10 @@
     {
      "d": "2026-10-28",
      "v": 7.11
+    },
+    {
+     "d": "2026-10-29",
+     "v": 7.11
     }
    ]
   },
@@ -71886,6 +71914,10 @@
    {
     "d": "2026-10-29",
     "v": 107157.9
+   },
+   {
+    "d": "2026-10-30",
+    "v": 123226.6
    }
   ],
   "tpOut": [
@@ -74703,6 +74735,10 @@
    },
    {
     "d": "2026-10-29",
+    "v": 0.0
+   },
+   {
+    "d": "2026-10-30",
     "v": 0.0
    }
   ]
@@ -141592,6 +141628,55 @@
    "sym": []
   },
   {
+   "d": "2026-10-30",
+   "t": "Vụ tấn công Binance: Cảnh báo rủi ro trong quản trị tài sản số",
+   "src": "CafeF",
+   "url": "https://cafef.vn/vu-tan-cong-binance-canh-bao-rui-ro-trong-quan-tri-tai-san-so-188261030223600419.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-30",
+   "t": "Giá vàng lao dốc trong đêm 30/10",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-lao-doc-trong-dem-30-10-188261030214344189.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-30",
+   "t": "Dân giữ 500 tấn vàng, gửi ngân hàng 11,2 triệu tỷ, vốn vẫn không vào sản xuất",
+   "src": "CafeF",
+   "url": "https://cafef.vn/dan-giu-500-tan-vang-gui-ngan-hang-112-trieu-ty-von-van-khong-vao-san-xuat-188261030201332643.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-30",
+   "t": "Cập nhật lợi nhuận ngân hàng tối 30/10: Vietcombank, MB, VietinBank, BIDV, Eximbank,....",
+   "src": "CafeF",
+   "url": "https://cafef.vn/cap-nhat-loi-nhuan-ngan-hang-toi-30-10-vietcombank-mb-vietinbank-bidv-eximbank-188261030182505541.chn",
+   "sym": [
+    "VCB",
+    "BID",
+    "CTG",
+    "EIB"
+   ]
+  },
+  {
+   "d": "2026-10-30",
+   "t": "Thêm nhiều ngân hàng giảm lãi suất",
+   "src": "CafeF",
+   "url": "https://cafef.vn/them-nhieu-ngan-hang-giam-lai-suat-188261030160735795.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-30",
+   "t": "Lợi nhuận trước thuế quý III MSB tăng 27%",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/loi-nhuan-truoc-thue-quy-iii-msb-tang-27-5138878.html",
+   "sym": [
+    "MSB"
+   ]
+  },
+  {
    "d": "2026-10-29",
    "t": "Cập nhật lợi nhuận 18 ngân hàng đến sáng 29/10: Thêm VIB và TPBank công bố, xuất hiện nhà băng lãi gấp 4,5 lần cùng kỳ",
    "src": "CafeF",
@@ -143493,55 +143578,6 @@
    "sym": [
     "BID"
    ]
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Tuần tới, một ngân hàng lăn chốt trả cổ tức 50% - mức cao nhất ngành trong năm 2026",
-   "src": "CafeF",
-   "url": "https://cafef.vn/tuan-toi-mot-ngan-hang-lan-chot-tra-co-tuc-50-muc-cao-nhat-nganh-trong-nam-2026-188261024092318197.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Công an sẽ điều tra khi phát hiện tài khoản ngân hàng có giao dịch nhận tiền, chuyển tiền như sau",
-   "src": "CafeF",
-   "url": "https://cafef.vn/cong-an-se-dieu-tra-khi-phat-hien-tai-khoan-ngan-hang-co-giao-dich-nhan-tien-chuyen-tien-nhu-sau-188261022153139678.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Đất ngân hàng đang xử lý nợ có đánh thuế như đất bỏ hoang?",
-   "src": "CafeF",
-   "url": "https://cafef.vn/dat-ngan-hang-dang-xu-ly-no-co-danh-thue-nhu-dat-bo-hoang-188261024083556793.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Ngày 24/10, gửi 50 triệu đồng tại MB, VPBank, Techcombank, Sacombank, SHB, HDBank và ACB nhận bao nhiêu tiền lãi sau 12 tháng?",
-   "src": "CafeF",
-   "url": "https://cafef.vn/ngay-24-10-gui-50-trieu-dong-tai-mb-vpbank-techcombank-sacombank-shb-hdbank-va-acb-nhan-bao-nhieu-tien-lai-sau-12-thang-188261024081430114.chn",
-   "sym": [
-    "TCB",
-    "ACB",
-    "VPB",
-    "HDB",
-    "SHB",
-    "STB"
-   ]
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Lãi suất vay ngân hàng hơn 10%/năm, doanh nghiệp khó làm ăn có lãi",
-   "src": "CafeF",
-   "url": "https://cafef.vn/lai-suat-vay-ngan-hang-hon-10-nam-doanh-nghiep-kho-lam-an-co-lai-18826102322111483.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Ngân hàng đầu tiên báo lãi quý 3 tăng trưởng âm",
-   "src": "CafeF",
-   "url": "https://cafef.vn/ngan-hang-dau-tien-bao-lai-quy-3-tang-truong-am-188261023203732713.chn",
-   "sym": []
   }
  ],
  "goldWi": [
