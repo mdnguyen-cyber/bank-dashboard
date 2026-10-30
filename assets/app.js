@@ -1066,7 +1066,7 @@ function drCpb() {
     const key = i0 + '-' + i1; if (key === cpbW) return; cpbW = key; cpbInsW(i0, i1); } };
   mk('chCpb', { type: 'line', data: { labels: dates.map(dvn), datasets: ds }, plugins: [endLbl, cpbStat], options: { layout: { padding: { right: wide ? 165 : 0 } }, plugins: { refLines: { lines }, tooltip: { filter: it => !it.dataset.keep || it.dataIndex >= n0, callbacks: { title: its => its.length && its[0].dataIndex >= n0 ? 'Dự phóng 31/12/' + dates[dates.length - 1].slice(0, 4) : its.length ? its[0].label : '', label: c => c.dataset.keep ? `${c.dataset.tl}: P/B ${x(c.dataset.pbEnd)} (TP ${nf(c.dataset.tpEnd)}đ, BVPS 2026F)` : c.parsed.y == null ? null : `${c.dataset.label}: ${x(c.parsed.y)}` } } }, scales: { x: { ticks: { maxTicksLimit: 12 } }, y: numAxis('', { beginAtZero: false, ticks: { callback: z => nf(z, 1) + 'x' } }) } } }, { win: 36, anchor: n0 - 1 });
   $('#cpbH').textContent = own ? `P/B ${T} theo phiên và P/B ngụ ý tại giá mục tiêu` : cpbSel === '_med' ? 'P/B trung vị ngành ngân hàng (26 ngân hàng niêm yết)' : `P/B ${cpbSel} theo phiên so với trung vị ngành`;
-  $('#cpbSub').textContent = `Lần · ${daily ? `theo phiên từ ${dvn(ser[0][0])}` : `cuối mỗi quý từ ${dvn(ser[0][0])}`} · đường xám = trung bình, vàng = ±1 độ lệch chuẩn trong khung thời gian đang xem${tgt.length ? ` · nét đứt = P/B đi từ hiện tại tới giá mục tiêu vào 31/12, tính trên BVPS 2026F ${nf(FW.bvps2026F)}đ` : ''} · bấm lại mã đang chọn để về ${T}`;
+  $('#cpbSub').textContent = `Lần · ${daily ? 'theo phiên' : 'cuối mỗi quý'} · đường xám = trung bình, vàng = ±1 độ lệch chuẩn trong khung thời gian đang xem${tgt.length ? ` · nét đứt = P/B đi từ hiện tại tới giá mục tiêu vào 31/12, tính trên BVPS 2026F ${nf(FW.bvps2026F)}đ` : ''}`;
   const peers = H ? Object.keys(H.banks).filter(b => b !== T && (D.peers.rows || []).some(r => (r.symbol || r.s) === b && r.group === GRP)) : [];
   $('#cpbPick').innerHTML = [T, ...peers, '_med'].map(b => `<button type="button" data-b="${b}" class="${b === cpbSel ? 'on' : ''}">${b === '_med' ? 'Trung vị ngành' : b}</button>`).join('');
   $$('#cpbPick button').forEach(b => b.onclick = () => { cpbSel = b.dataset.b === cpbSel ? T : b.dataset.b; drCpb(); });
@@ -1096,7 +1096,7 @@ function paneCons() {
     <div class="cbox"><canvas id="chCpb" role="img" aria-label="P/B lịch sử"></canvas></div>
     <p class="cnote">${pbNote}</p>
     <div class="insight" id="cpbIns"></div>
-    <div class="src">Nguồn: BCTC (giá trị sổ sách), giá đóng cửa, báo cáo CTCK (giá mục tiêu) · tự tính</div></article>
+    <div class="src">Nguồn: Wi MCP (giá đóng cửa, BCTC); báo cáo của các CTCK (giá mục tiêu)</div></article>
   <h3 class="sub" style="margin:6px 0 10px">Dải dự phóng của các công ty chứng khoán</h3>
   <div class="grid g2 gap">
     ${card({ id: 'chTp', title: 'Giá mục tiêu từng CTCK', sub: 'đ/CP · đường đỏ = thị giá ' + nf(M.price) + 'đ · nhãn = upside', h: 'tall',

@@ -68,7 +68,7 @@
   const txt = el => el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
   const plain = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
   function cleanSrc(s) {   // ảnh đem đi chia sẻ: số lấy từ Wi MCP ghi "Wi MCP" (bỏ mã bảng nội bộ), số lấy ngoài ghi nguồn ngoài
-    s = s.replace(/^Nguồn:\s*/i, '').replace(/Wi(?:Data| MCP)\b[^·;)]*/gi, 'Wi MCP').replace(/\s*·\s*(?=·|$)/g, '').replace(/^[\s·;,]+|[\s·;,]+$/g, '').replace(/\s{2,}/g, ' ');
+    s = s.replace(/^Nguồn:\s*/i, '').replace(/Wi(?:Data| MCP)\b(?:\s*\([^)]*\))?[^·;)]*/gi, 'Wi MCP').replace(/\s*·\s*(?=·|$)/g, '').replace(/^[\s·;,]+|[\s·;,]+$/g, '').replace(/\s{2,}/g, ' ');
     return s || 'FinSuccess tổng hợp';
   }
   function meta(c) {
@@ -143,7 +143,9 @@
     x.imageSmoothingQuality = 'high'; x.drawImage(im, X + (w - dw) / 2, Y + Math.max(0, (h - dh) / 2) * 0.35, dw, dh);
   }
   function lastLab(it) {   // kỳ dữ liệu cuối theo khung sẽ vẽ
-    if (!it.meta.ch) return it.meta.last; const w = winOf(it); if (!w) return it.meta.last; const l = String((it.meta.ch.data.labels || [])[w[1]] || '');
+    if (!it.meta.ch) return it.meta.last; const ch = it.meta.ch, w = winOf(it) || curWin(ch);
+    let k = w[1]; const d0 = (ch.data.datasets[0] || {}).data || []; while (k > w[0] && d0[k] == null) k--;   // bỏ phần dự phóng phía sau điểm dữ liệu thật cuối cùng
+    const l = String((ch.data.labels || [])[k] || '');
     return /\d{4}|\d{1,2}\/\d{1,2}|Q\d/.test(l) ? l : it.meta.last;
   }
   function firstLab(it) {
