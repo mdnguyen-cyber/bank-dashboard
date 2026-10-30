@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-30T02:39:02Z",
+ "fetched": "2026-10-30T10:31:02Z",
  "report": {
   "us_cpi": [
    {
@@ -851,8 +851,8 @@
   "ea_unrate": [
    {
     "id": "ecb:LFSI/M.I9.S.UNEHRT.TOTAL0.15_74.T",
-    "n": 200,
-    "last": "2026-08-01"
+    "n": 201,
+    "last": "2026-09-01"
    },
    {
     "id": "fred:LRHUTTTTEZM156S",
@@ -1304,8 +1304,8 @@
   "cpi_au": [
    {
     "id": "oecd:AUS.M.N.CPI.PA._T.N.GY",
-    "n": 18,
-    "last": "2026-09-01"
+    "n": 17,
+    "last": "2026-08-01"
    },
    {
     "id": "oecd:AUS.Q.N.CPI.PA._T.N.GY",
