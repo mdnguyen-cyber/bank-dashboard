@@ -162,7 +162,7 @@
       ch.update();
     };
     // ---- chart chồng (stacked): chuyển qua lại giá trị ↔ tỷ trọng 100%
-    const stk = () => ch.data.datasets.filter(d => (!d.yAxisID || d.yAxisID === 'y') && (d.stack != null || (d.fill && d.fill !== false)));
+    const stk = () => ch.data.datasets.filter(d => !d.total && (!d.yAxisID || d.yAxisID === 'y') && (d.stack != null || (d.fill && d.fill !== false)));
     const allPos = () => stk().every(d => d.data.every(v => v == null || isNaN(v) || +v >= 0));   // chỉ chart cấu phần luôn dương mới có tỷ trọng 100%
     if (Y().stacked && Y().max !== 100 && stk().length > 1 && allPos()) {
       const pb = document.createElement('button'); pb.type = 'button'; pb.dataset.pct = '1'; pb.textContent = '100% tỷ trọng'; pb.title = 'Chuyển sang tỷ trọng từng cấu phần trên tổng (%)';

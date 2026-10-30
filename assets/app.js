@@ -694,8 +694,8 @@ function finCharts(k) {
   if (k === 'tong') {
     wf('chWfA', [['Tiền mặt & NHNN', QL.cash], ['TCTD', QL.interbankA], ['Chứng khoán', QL.secs], ['Cho vay KH ròng', QL.loansNet], ['Góp vốn, TSCĐ, khác', QL.ta - QL.cash - QL.interbankA - QL.secs - QL.loansNet]], 'Tổng tài sản', QL.ta);
     wf('chWfL', [['Tiền gửi KH', QL.deposits], ['Tiền gửi & vay TCTD', QL.interbankL], ['GTCG', QL.papers], ['Nợ CP & NHNN', QL.govSbv], ['Nợ khác', QL.otherL], ['VCSH', QL.equity]], 'Tổng nguồn vốn', QL.ta);
-    stack('chEA', q12, [['Tiền mặt & NHNN', 'cash'], ['TCTD', 'interbankA'], ['Chứng khoán', 'secs'], ['Cho vay KH ròng', 'loansNet']]);
-    stack('chFund', q12, [['Tiền gửi KH', 'deposits'], ['TCTD', 'interbankL'], ['GTCG', 'papers'], ['CP & NHNN', 'govSbv'], ['VCSH', 'equity']]);
+    stack('chEA', q12, [['Tiền mặt & NHNN', 'cash'], ['TCTD', 'interbankA'], ['Chứng khoán', 'secs'], ['Cho vay KH ròng', 'loansNet']], ['Tổng tài sản', 'ta']);
+    stack('chFund', q12, [['Tiền gửi KH', 'deposits'], ['TCTD', 'interbankL'], ['GTCG', 'papers'], ['CP & NHNN', 'govSbv'], ['VCSH', 'equity']], ['Tổng nguồn vốn', 'ta']);
     pctStack('chIrLoan', 'loans', IRS); pctStack('chIrDep', 'deps', IRS); drawIrx(); pctStack('chLoanSec', 'sector'); pctStack('chLoanCust', 'cust'); pctStack('chLoanTenor', 'tenor'); pctStack('chDepType', 'dep'); pctStack('chDepCust', 'depCust');
     const fo = MX.filter(r => r.gov);
     const gk = [...new Set(fo.flatMap(r => Object.keys(r.gtcg || {})))];
@@ -872,8 +872,10 @@ function wf(id, parts, totalLabel, total) {   // waterfall theo % tổng; toolti
       scales: { y: pctAxis('% tổng', { min: 0, max: 100 }), x: { ticks: { autoSkip: false, maxRotation: 0, callback: function (v) { const l = this.getLabelForValue(v); if (l.length <= 12) return l; const w = l.split(' '); const h = Math.ceil(w.length / 2); return [w.slice(0, h).join(' '), w.slice(h).join(' ')]; } } } } },
     plugins: [{ id: 'wfLabels', afterDatasetsDraw(ch) { const ctx = ch.ctx; ch.getDatasetMeta(0).data.forEach((b, i) => { const r = ch.data.datasets[0].data[i]; ctx.save(); ctx.fillStyle = '#303540'; ctx.font = '600 11px Arial'; ctx.textAlign = 'center'; ctx.fillText(nf(r[1] - r[0], 1) + '%', b.x, Math.min(b.y, b.base) - 4); ctx.restore(); }); } }] });
 }
-function stack(id, qs, keys) {
-  mk(id, { type: 'bar', data: { labels: qs.map(q => q.q), datasets: keys.map(([l, kk], i) => ({ label: l, data: qs.map(q => q[kk]), backgroundColor: [C.navy, C.blue, C.teal, C.purple, C.steps[4], C.gold][i], stack: 's', dp: 0 })) },
+function stack(id, qs, keys, tot) {   // tot = [nhãn, khóa] → đường tổng (vd tổng tài sản), gồm cả khoản mục khác không có cột riêng
+  const ds = keys.map(([l, kk], i) => ({ label: l, data: qs.map(q => q[kk]), backgroundColor: [C.navy, C.blue, C.teal, C.purple, C.steps[4], C.gold][i], stack: 's', dp: 0 }));
+  if (tot) ds.unshift({ type: 'line', label: tot[0], data: qs.map(q => q[tot[1]]), borderColor: C.red, backgroundColor: C.red, borderWidth: 2, pointRadius: 0, stack: 'tot', dp: 0, order: 0, total: true });
+  mk(id, { type: 'bar', data: { labels: qs.map(q => q.q), datasets: ds },
     options: { scales: { x: { stacked: true }, y: numAxis('tỷ đồng', { stacked: true }) } } });
 }
 /* ---------- So sánh nhóm nhiều kỳ ----------
