@@ -113,3 +113,8 @@ CTCK dùng các cột bảng cân đối đã có trong `fs_sec` (bs111–bs115,
 - Mỗi mã một file `data/backfill/sec_detail/<MÃ>.json`, trích từ thuyết minh BCTC quý (Wi MCP, document_miner loại 7): từng khoản vay theo bên cho vay, đồng tiền, lãi suất, kỳ hạn; trái phiếu phát hành; cho vay ký quỹ, chất lượng dư nợ; FVTPL/AFS/HTM/đầu tư dài hạn khác theo nhóm, mã niêm yết có `tk`; mục đích nắm giữ `cls` (holding, fi, cw, trading); chứng quyền đang lưu hành `cwList`; lời đọc `ins`.
 - Giá các mã niêm yết trong danh mục (cuối quý BCTC và phiên gần nhất): `data/backfill/sec_detail/_px.json`, lấy từ Wi MCP `eod_adjust`. Cập nhật mỗi lần build để cột "Diễn biến" mới.
 - Build: `python3 scripts/build_sec_detail.py` → `data/sec-detail.js`. Hiển thị: `assets/secdet.js` (tab Tài chính: mục Chi tiết; tab Tổng quan: top khoản đầu tư).
+
+## Lịch công bố BCTC quý (HOSE)
+- Workflow `fetch-hose.yml` (4 lần/ngày) chạy `scripts/fetch_hose_reports.py` (api.hsx.vn, mục "Các báo cáo định kỳ" của từng mã, ngày công bố = ngày đầu tên file HOSE đăng) rồi `scripts/build_report_dates.py` → `data/report-dates.js`.
+- `assets/rptcal.js` hiện thanh "BCTC Qx" dưới tiêu đề trang ngân hàng, trang doanh nghiệp, trang ngành: đã công bố chưa, so với ngày thường lệ (trung vị 6 quý gần nhất); đỏ khi đã quá ngày muộn nhất của 6 quý trước. Mã niêm yết HNX (MBS, SHS, PVI, PTI) chưa có nguồn.
+- Thêm mã: sửa danh sách `SYMS` trong `fetch_hose_reports.py` và nhóm `G` trong `rptcal.js`.
