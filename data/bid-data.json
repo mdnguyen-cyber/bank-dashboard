@@ -6,20 +6,20 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Big 4",
-  "updated": "2026-10-28",
+  "updated": "2026-10-30",
   "price": 33650,
   "priceDate": "2026-10-27",
-  "mcap": 261737,
+  "mcap": 259793,
   "pb": 1.38,
   "pe": 8.11,
   "bvps": 24398,
   "eps": 4147,
-  "sharesOut": 7778.2,
+  "sharesOut": 7720.4,
   "latestQuarter": "Q2/2026",
   "view": null,
   "irUrl": "https://bidv.com.vn/vn/quan-he-nha-dau-tu",
   "strategic": "KEB Hana",
-  "src": "Wi MCP eod_adjust 2026-10-27 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "Wi MCP eod_adjust 2026-10-27 (giá), ratio_daily 2026-10-30 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 18.1,
   "roa": 1.02,
   "nim": 2.15,
@@ -10057,6 +10057,18 @@
    [
     "2026-10-27",
     1.216
+   ],
+   [
+    "2026-10-28",
+    1.2199
+   ],
+   [
+    "2026-10-29",
+    1.2199
+   ],
+   [
+    "2026-10-30",
+    1.204
    ]
   ],
   "VCB": [
@@ -14058,6 +14070,18 @@
    ],
    [
     "2026-10-27",
+    1.9228
+   ],
+   [
+    "2026-10-28",
+    1.9639
+   ],
+   [
+    "2026-10-29",
+    1.9536
+   ],
+   [
+    "2026-10-30",
     1.9228
    ]
   ],
@@ -18061,6 +18085,18 @@
    [
     "2026-10-27",
     1.3853
+   ],
+   [
+    "2026-10-28",
+    1.3792
+   ],
+   [
+    "2026-10-29",
+    1.3874
+   ],
+   [
+    "2026-10-30",
+    1.369
    ]
   ],
   "_median": [
@@ -22063,6 +22099,18 @@
    [
     "2026-10-27",
     1.241
+   ],
+   [
+    "2026-10-28",
+    1.2491
+   ],
+   [
+    "2026-10-29",
+    1.2458
+   ],
+   [
+    "2026-10-30",
+    1.239
    ]
   ]
  },
@@ -22254,7 +22302,7 @@
    },
    {
     "s": "LPB",
-    "group": "Tư nhân lớn",
+    "group": "Tư nhân vừa",
     "car": 11.18,
     "tier1": 8.34
    },
@@ -22417,7 +22465,7 @@
    },
    {
     "symbol": "HDB",
-    "group": "Tư nhân lớn",
+    "group": "Tư nhân vừa",
     "nim": 4.21,
     "cof": 5.38,
     "yea": 9.25,
@@ -22436,7 +22484,7 @@
    },
    {
     "symbol": "LPB",
-    "group": "Tư nhân lớn",
+    "group": "Tư nhân vừa",
     "nim": 3.02,
     "cof": 5.37,
     "yea": 7.98,
@@ -42787,7 +42835,7 @@
     "summary": "TCBS duy trì khuyến nghị nắm giữ đối với cổ phiếu BID trong bối cảnh định giá P/B chạm mức 1.43 lần, vùng thấp nhất trong vòng 5 năm qua, sau khi lợi nhuận trước thuế quý 2/2026 ghi nhận 10,333 tỷ đồng, tăng 19.8% so với cùng kỳ nhờ sự phục hồi mạnh mẽ của biên lãi ròng (NIM). Động lực tăng trưởng trong nửa cuối năm 2026 dự kiến được thúc đẩy bởi việc nới hạn mức tín dụng và quy định mới từ tháng 8/2026 cho phép tính 50% tiền gửi Kho bạc Nhà nước vào tỷ lệ dư nợ trên tiền gửi (LDR), tạo dư địa mở rộng cho vay trong khi chiến lược dịch chuyển danh mục sang mảng bán lẻ có lợi suất cao tiếp tục hỗ trợ NIM. Tính chung cả năm 2026, lợi nhuận trước thuế dự báo đạt 42,771 tỷ đồng, tăng 13.2% so với năm trước, với kỳ vọng tín dụng tăng 15.5% và NIM đạt 2.22% nhờ tốc độ giải ngân nhanh hơn vào cuối năm theo yếu tố mùa vụ và mặt bằng lãi suất đi lên. Tuy nhiên, chất lượng tài sản đang trở thành biến số rủi ro khi tỷ lệ nợ xấu đã tăng lên 1.83% và tỷ lệ bao phủ nợ xấu giảm mạnh xuống 75.9%, mức thấp nhất trong nhóm ngân hàng quốc doanh, tạo áp lực trích lập dự phòng để khôi phục bộ đệm này lên trên 100% và có thể kìm hãm đà tăng trưởng lợi nhuận. Song song đó, ngân hàng còn đối mặt với rủi ro thanh khoản khi tốc độ tăng trưởng tiền gửi khách hàng thấp hơn đáng kể so với dư nợ, buộc đơn vị này phải phụ thuộc vào nguồn vốn từ giấy tờ có giá với chi phí vốn cao."
    }
   ],
-  "fadeBefore": "2026-07-28",
+  "fadeBefore": "2026-07-30",
   "summary": {
    "n": 11,
    "median": 42600,
@@ -42802,16 +42850,16 @@
    "npN": 11
   },
   "fwd": {
-   "bv2026F": 212625.4,
+   "bv2026F": 212651.4,
    "npat2026F": 32516,
-   "pbFwd": 1.23,
-   "peFwd": 8.05,
-   "bvps2026F": 27336,
+   "pbFwd": 1.22,
+   "peFwd": 7.99,
+   "bvps2026F": 27544,
    "npatH1": 15173.7,
    "impliedH2": 17342.3,
    "npat2025": 30430.1,
    "h2_2025": 17576.7,
-   "divPaid": 3500.2,
+   "divPaid": 3474.2,
    "rightsCash": 0
   },
   "src": "Wi MCP co_reports (giá mục tiêu, dự phóng TOI/LNST) + ai_news (luận điểm tóm tắt). Khuyến nghị là nhãn gộp 4 nhóm của Wi."
