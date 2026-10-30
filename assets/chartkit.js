@@ -3,6 +3,11 @@
    2) enhance(chart): chart chuỗi thời gian có nút 1M · 3M · 6M · YTD · 1Y · 3Y · 5Y · Tất cả
       và kéo chuột trên vùng vẽ để zoom (như FRED); nhấp đúp hoặc "Tất cả" để về toàn bộ. */
 (function () {
+  if (window.Chart) {   // điểm đầu/cuối của đường không bị cắt nửa ở mép vùng vẽ: chừa lề và cho vẽ lấn 6px
+    Chart.defaults.datasets.line.clip = 6;
+    const lp = Chart.defaults.layout.padding;
+    Chart.defaults.layout.padding = typeof lp === 'object' ? Object.assign({ top: 6, right: 6 }, lp) : { top: Math.max(6, lp || 0), right: Math.max(6, lp || 0), bottom: lp || 0, left: lp || 0 };
+  }
   const RANGES = [['1M', 1], ['3M', 3], ['6M', 6], ['YTD', 'ytd'], ['1Y', 12], ['3Y', 36], ['5Y', 60], ['Tất cả', 0]];
   const eom = (y, m) => new Date(y, m, 0);   // m: 1–12 → ngày cuối tháng
 
