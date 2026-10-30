@@ -6,9 +6,9 @@
   "exchange": "HOSE",
   "sector": "bank",
   "peerGroup": "Big 4",
-  "updated": "2026-10-28",
+  "updated": "2026-10-30",
   "price": 30350,
-  "priceDate": "2026-10-27",
+  "priceDate": "2026-10-30",
   "mcap": 235727,
   "pb": 1.21,
   "pe": 5.87,
@@ -19,7 +19,7 @@
   "view": null,
   "irUrl": "https://investor.vietinbank.vn/",
   "strategic": "MUFG",
-  "src": "Wi MCP eod_adjust 2026-10-27 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
+  "src": "Wi MCP eod_adjust 2026-10-30 (giá), ratio_daily 2026-10-27 (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất Q2/2026",
   "roe": 22.2,
   "roa": 1.45,
   "nim": 2.75,
@@ -22644,7 +22644,7 @@
   ]
  },
  "irSeg": {
-  "src": "VietinBank — Điểm tin BCTC (investor.vietinbank.vn › Điểm tin BCTC), các kỳ 2Q2024, 2Q2025, 2Q2026; nghìn tỷ đồng; nhập tay từ infographic, kiểm tra tổng với dư nợ, tiền gửi công bố",
+  "src": "VietinBank — Điểm tin BCTC (investor.vietinbank.vn › Điểm tin BCTC), các kỳ 2Q2024, 2Q2025, 2Q2026, 3Q2026; nghìn tỷ đồng; nhập tay từ infographic, kiểm tra tổng với dư nợ, tiền gửi công bố",
   "depNote": "Từ 2Q2025 VietinBank điều chỉnh cách phân khúc tiền gửi cho khớp với phân khúc cho vay (số 2Q2024–1Q2025 đã được trình bày lại theo cách mới); số trước 2Q2024 theo cách cũ không so sánh được nên không đưa vào.",
   "rows": [
    {
@@ -22843,7 +22843,142 @@
      "FDI": 190000,
      "Khác": 189000
     }
+   },
+   {
+    "q": "Q3/2026",
+    "loans": {
+     "Bán lẻ": 822000,
+     "SME": 488000,
+     "KHDN lớn": 669000,
+     "FDI": 143000,
+     "Khác": 20000
+    },
+    "deps": {
+     "Bán lẻ": 938000,
+     "SME": 259000,
+     "KHDN lớn": 382000,
+     "FDI": 191000,
+     "Khác": 174000
+    }
    }
+  ]
+ },
+ "irExtra": {
+  "_src": "VietinBank — Điểm tin BCTC quý 3/2026 và 9 tháng 2026 (investor.vietinbank.vn)",
+  "charts": [
+   {
+    "id": "chIrCir",
+    "title": "Tỷ lệ chi phí / thu nhập lũy kế",
+    "sub": "% · CIR lũy kế từ đầu năm theo VietinBank công bố",
+    "type": "line",
+    "unit": "%",
+    "labels": [
+     "9T/2025",
+     "2025 (kiểm toán)",
+     "3T/2026",
+     "6T/2026",
+     "9T/2026"
+    ],
+    "series": [
+     {
+      "n": "CIR lũy kế",
+      "v": [
+       27.2,
+       30.4,
+       24.9,
+       24.5,
+       24.7
+      ]
+     }
+    ],
+    "ins": "CIR 9 tháng <b>24,7%</b>, thấp hơn 9T/2025 (27,2%) dù chi phí hoạt động tăng 13,9%, vì thu nhập hoạt động tăng nhanh hơn (+25,5%)."
+   },
+   {
+    "id": "chIrNpl",
+    "title": "Tỷ lệ nợ xấu và bao phủ nợ xấu",
+    "sub": "% · bao phủ nợ xấu (cột, trục trái), tỷ lệ nợ xấu (đường, trục phải)",
+    "type": "barline",
+    "unit": "%",
+    "labels": [
+     "Q3/2025",
+     "Q4/2025",
+     "Q1/2026",
+     "Q2/2026",
+     "Q3/2026"
+    ],
+    "series": [
+     {
+      "n": "Bao phủ nợ xấu",
+      "v": [
+       176.5,
+       158.8,
+       167.2,
+       134,
+       160.4
+      ]
+     },
+     {
+      "n": "Tỷ lệ nợ xấu",
+      "v": [
+       1.09,
+       1.1,
+       1.02,
+       1.2,
+       1.2
+      ],
+      "line": 1,
+      "axis": "y1"
+     }
+    ],
+    "ins": "Nợ xấu giữ <b>1,2%</b> như Q2/2026; bao phủ hồi lên <b>160,4%</b> từ 134% nhờ trích lập 9 tháng 20,8 nghìn tỷ (+22,6%). Nợ xấu tập trung ở xây dựng hạ tầng giao thông, kinh doanh bất động sản, cho vay tiêu dùng, thép, dệt may; mục tiêu cả năm nợ xấu ≤ 1,8%."
+   }
+  ],
+  "facts": [
+   [
+    "Tăng trưởng tín dụng 9 tháng",
+    "7,5% (toàn ngành 11,6%)",
+    "30/09/2026"
+   ],
+   [
+    "Cho vay khách hàng FDI",
+    "+25,1% từ đầu năm",
+    "30/09/2026"
+   ],
+   [
+    "Tỷ lệ CASA",
+    "23,4% (−2,2 điểm % so cuối 2025)",
+    "30/09/2026"
+   ],
+   [
+    "Thu nhập lãi thuần 9 tháng",
+    "60,1 nghìn tỷ (+27,6%)",
+    "9T/2026"
+   ],
+   [
+    "Thu nhập dịch vụ thuần 9 tháng",
+    "8,4 nghìn tỷ (+40,2%)",
+    "bảo hiểm VBI +52,7%, bảo lãnh +32,2%, thanh toán +24,6%"
+   ],
+   [
+    "Thu hồi nợ đã xử lý",
+    "≈ 6,9 nghìn tỷ (+1,7%)",
+    "9T/2026"
+   ],
+   [
+    "Lợi nhuận trước dự phòng",
+    "60,3 nghìn tỷ (+29,8%)",
+    "9T/2026"
+   ],
+   [
+    "LNTT 9 tháng",
+    "39,6 nghìn tỷ (+33,9%)",
+    "9T/2026"
+   ],
+   [
+    "Mục tiêu nợ xấu cuối 2026",
+    "≤ 1,8%",
+    "theo VietinBank"
+   ]
   ]
  },
  "mixNote": "Thuyết minh BCTC hợp nhất: dư nợ theo kỳ hạn, ngành, loại khách hàng; tiền gửi theo loại và đối tượng; giấy tờ có giá phát hành. Nhiều ngân hàng chỉ công bố cơ cấu ngành và khách hàng ở BCTC bán niên, năm.",
@@ -22998,7 +23133,7 @@
    },
    {
     "s": "LPB",
-    "group": "Tư nhân lớn",
+    "group": "Tư nhân vừa",
     "car": 11.18,
     "tier1": 8.34
    },
@@ -23161,7 +23296,7 @@
    },
    {
     "symbol": "HDB",
-    "group": "Tư nhân lớn",
+    "group": "Tư nhân vừa",
     "nim": 4.21,
     "cof": 5.38,
     "yea": 9.25,
@@ -23180,7 +23315,7 @@
    },
    {
     "symbol": "LPB",
-    "group": "Tư nhân lớn",
+    "group": "Tư nhân vừa",
     "nim": 3.02,
     "cof": 5.37,
     "yea": 7.98,
@@ -23788,7 +23923,8 @@
     "after": 0.002048,
     "ret": {
      "m1": -2.76,
-     "m3": 15.12
+     "m3": 15.12,
+     "y1": -10.73
     }
    },
    {
@@ -45883,6 +46019,14 @@
     "c": 30350,
     "s": 483.57,
     "v": 1761.87
+   },
+   {
+    "d": "2026-10-29",
+    "c": 30700
+   },
+   {
+    "d": "2026-10-30",
+    "c": 30350
    }
   ],
   "high52": {
@@ -46511,7 +46655,7 @@
     "summary": "TCBS đánh giá cổ phiếu CTG duy trì vị thế hấp dẫn để nắm giữ và tích lũy trong các nhịp điều chỉnh khi sở hữu ROE đạt 21.8%, cao thứ hai hệ thống, trong khi định giá P/B 1.24 lần hiện thấp hơn mức trung bình ngành và lịch sử của chính doanh nghiệp. Động lực tăng trưởng trong nửa cuối năm 2026 dự kiến được thúc đẩy bởi việc nới hạn mức tín dụng và quy định mới cho phép tính 50% tiền gửi Kho bạc Nhà nước vào tỷ lệ LDR, tạo dư địa mở rộng cho vay với dự báo tăng trưởng tín dụng cả năm đạt 14%, tập trung vào phân khúc bán lẻ và doanh nghiệp FDI. Lợi nhuận trước thuế năm 2026 được kỳ vọng đạt 54,216 tỷ đồng, tăng 24.8% so với năm trước, nhờ NIM duy trì ở mức 2.92% và chỉ số CIR thuộc nhóm thấp nhất ngành phản ánh hiệu quả vận hành tối ưu, nối tiếp đà phục hồi từ quý 2/2026 khi lợi nhuận lập đỉnh lịch sử nhờ biên lãi thuần cải thiện mạnh mẽ do lãi suất tài sản gia tăng nhanh hơn chi phí vốn. Tuy nhiên, chất lượng tài sản vẫn là biến số cần theo dõi sát sao khi nợ xấu có dấu hiệu tăng trở lại trong quý 2/2026 tại các lĩnh vực bất động sản, tiêu dùng và nông nghiệp, đồng thời tỷ lệ bao phủ nợ xấu giảm mạnh xuống mức thấp nhất trong hai năm là 134%, tạo áp lực duy trì chi phí dự phòng cao để củng cố bộ đệm rủi ro. Bên cạnh đó, sự suy giảm của tỷ lệ CASA cùng áp lực chi phí vốn đi lên có thể trở thành rào cản kìm hãm đà cải thiện biên lãi thuần của ngân hàng trong thời gian tới."
    }
   ],
-  "fadeBefore": "2026-07-28",
+  "fadeBefore": "2026-07-30",
   "summary": {
    "n": 10,
    "median": 41400.0,
@@ -72543,7 +72687,7 @@
    },
    "step": "Bước 8 · Định giá",
    "t": "Định giá chưa phản ánh ROE",
-   "evidence": "P/B 1,21x (2026-10-27) vs trung bình 5 năm 1,42x (±1σ 1,24–1,6x); ROE TTM 22,2%",
+   "evidence": "P/B 1,21x (2026-10-30) vs trung bình 5 năm 1,42x (±1σ 1,24–1,6x); ROE TTM 22,2%",
    "status": "holding"
   }
  ],

@@ -1,0 +1,118 @@
+{
+ "_src": "VietinBank — Điểm tin BCTC quý 3/2026 và 9 tháng 2026 (investor.vietinbank.vn)",
+ "charts": [
+  {
+   "id": "chIrCir",
+   "title": "Tỷ lệ chi phí / thu nhập lũy kế",
+   "sub": "% · CIR lũy kế từ đầu năm theo VietinBank công bố",
+   "type": "line",
+   "unit": "%",
+   "labels": [
+    "9T/2025",
+    "2025 (kiểm toán)",
+    "3T/2026",
+    "6T/2026",
+    "9T/2026"
+   ],
+   "series": [
+    {
+     "n": "CIR lũy kế",
+     "v": [
+      27.2,
+      30.4,
+      24.9,
+      24.5,
+      24.7
+     ]
+    }
+   ],
+   "ins": "CIR 9 tháng <b>24,7%</b>, thấp hơn 9T/2025 (27,2%) dù chi phí hoạt động tăng 13,9%, vì thu nhập hoạt động tăng nhanh hơn (+25,5%)."
+  },
+  {
+   "id": "chIrNpl",
+   "title": "Tỷ lệ nợ xấu và bao phủ nợ xấu",
+   "sub": "% · bao phủ nợ xấu (cột, trục trái), tỷ lệ nợ xấu (đường, trục phải)",
+   "type": "barline",
+   "unit": "%",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Bao phủ nợ xấu",
+     "v": [
+      176.5,
+      158.8,
+      167.2,
+      134,
+      160.4
+     ]
+    },
+    {
+     "n": "Tỷ lệ nợ xấu",
+     "v": [
+      1.09,
+      1.1,
+      1.02,
+      1.2,
+      1.2
+     ],
+     "line": 1,
+     "axis": "y1"
+    }
+   ],
+   "ins": "Nợ xấu giữ <b>1,2%</b> như Q2/2026; bao phủ hồi lên <b>160,4%</b> từ 134% nhờ trích lập 9 tháng 20,8 nghìn tỷ (+22,6%). Nợ xấu tập trung ở xây dựng hạ tầng giao thông, kinh doanh bất động sản, cho vay tiêu dùng, thép, dệt may; mục tiêu cả năm nợ xấu ≤ 1,8%."
+  }
+ ],
+ "facts": [
+  [
+   "Tăng trưởng tín dụng 9 tháng",
+   "7,5% (toàn ngành 11,6%)",
+   "30/09/2026"
+  ],
+  [
+   "Cho vay khách hàng FDI",
+   "+25,1% từ đầu năm",
+   "30/09/2026"
+  ],
+  [
+   "Tỷ lệ CASA",
+   "23,4% (−2,2 điểm % so cuối 2025)",
+   "30/09/2026"
+  ],
+  [
+   "Thu nhập lãi thuần 9 tháng",
+   "60,1 nghìn tỷ (+27,6%)",
+   "9T/2026"
+  ],
+  [
+   "Thu nhập dịch vụ thuần 9 tháng",
+   "8,4 nghìn tỷ (+40,2%)",
+   "bảo hiểm VBI +52,7%, bảo lãnh +32,2%, thanh toán +24,6%"
+  ],
+  [
+   "Thu hồi nợ đã xử lý",
+   "≈ 6,9 nghìn tỷ (+1,7%)",
+   "9T/2026"
+  ],
+  [
+   "Lợi nhuận trước dự phòng",
+   "60,3 nghìn tỷ (+29,8%)",
+   "9T/2026"
+  ],
+  [
+   "LNTT 9 tháng",
+   "39,6 nghìn tỷ (+33,9%)",
+   "9T/2026"
+  ],
+  [
+   "Mục tiêu nợ xấu cuối 2026",
+   "≤ 1,8%",
+   "theo VietinBank"
+  ]
+ ]
+}
