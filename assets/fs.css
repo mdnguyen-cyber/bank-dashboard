@@ -450,7 +450,7 @@ body.pdf-cap .card{box-shadow:none}
 body.compact article:has(#chCmHist) .insight{display:block}   /* nhận định lịch sử CAMELS luôn hiện khi chọn ngân hàng */
 
 /* So sánh peer: hiện ở cả chế độ Chi tiết (khi đó chỉ hiện nút này) */
-body:not(.compact) .ibar:has(.peerpill){display:flex}
+body:not(.compact) .ibar:has(.peerpill),.ibar:has(.sharepill){display:flex}
 body:not(.compact) .ibar .ipill:not(.peerpill){display:none}
 .peerpill{background:#fff7e6;border-color:#efd9a8}
 body.print-all .peerpill,body.pdf-cap .peerpill{display:none!important}
@@ -820,3 +820,6 @@ body.print-all .fss-tbl,body.pdf-cap .fss-tbl{display:none!important}
 details.fold{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 22px;margin-bottom:18px}
 details.fold>summary{cursor:pointer;color:var(--navy);font-weight:700;font-size:14px}
 details.fold[open]>summary{margin-bottom:10px}
+#sdTop tbody tr{cursor:pointer}#sdTop tbody tr:hover td{background:#eef1f7}
+.sd-hit{animation:sdHit 2.4s ease-out}@keyframes sdHit{0%,40%{background:#fff1b8}100%{background:transparent}}
+details.fold.sd-hit{animation:none;box-shadow:0 0 0 3px var(--teal)}

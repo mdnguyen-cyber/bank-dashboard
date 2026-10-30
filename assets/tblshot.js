@@ -15,14 +15,15 @@
   /* Vẽ bảng ra canvas. o.rows: chỉ giữ các dòng thân bảng này; o.cols: [trái, phải] theo toạ độ màn hình (mặc định = phần đang hiện, cắt về cột trọn) */
   function render(sc, o = {}) {
     const tbl = sc.querySelector('table'); if (!tbl) return null;
-    if (sc.getBoundingClientRect().width) sc._fsw = sc.getBoundingClientRect().width;
-    else if (!o._ghost) {   // bảng đang ẩn (tab khác, khôi phục phiên): dựng bản sao tạm ngoài màn hình để đo và vẽ
+    if (sc.getBoundingClientRect().width && !o.fitW) sc._fsw = sc.getBoundingClientRect().width;
+    if (!o._ghost && (o.fitW || !sc.getBoundingClientRect().width)) {   // bảng ẩn, hoặc cần dựng lại theo bề rộng ô ghép: bản sao tạm ngoài màn hình   // bảng đang ẩn (tab khác, khôi phục phiên): dựng bản sao tạm ngoài màn hình để đo và vẽ
       const host = document.createElement('main'), wrap = document.createElement('div'), card = document.createElement('article');
       wrap.className = 'wrap'; card.className = (sc.closest('article.card') || {}).className || 'card'; host.appendChild(wrap); wrap.appendChild(card);
-      host.style.cssText = `position:fixed;left:-30000px;top:0;width:${(sc._fsw || 900) + 80}px;visibility:visible;display:block`;
-      const cl = sc.cloneNode(true); cl.hidden = false; cl.style.display = ''; card.appendChild(cl); document.body.appendChild(host);
+      host.style.cssText = `position:fixed;left:-30000px;top:0;width:${o.fitW ? o.fitW : (sc._fsw || 900) + 80}px;visibility:visible;display:block`;
+      if (o.fitW) { wrap.style.cssText = 'padding:0;max-width:none;width:100%'; card.style.cssText = 'padding:0;border:0;margin:0;width:100%'; }
+      const cl = sc.cloneNode(true); cl.hidden = false; cl.style.display = ''; if (o.fitW) { cl.style.overflow = 'visible'; cl.querySelectorAll('table').forEach(t => { t.style.width = '100%'; t.style.minWidth = '0'; t.style.tableLayout = 'auto'; }); cl.querySelectorAll('th,td').forEach(c => { c.style.whiteSpace = 'normal'; c.style.position = 'static'; }); } card.appendChild(cl); document.body.appendChild(host);
       const keepIdx = o.rows ? o.rows.map(tr => [...tbl.rows].indexOf(tr)) : null, t2 = cl.querySelector('table');
-      try { return render(cl, { ...o, _ghost: 1, cols: null, rows: keepIdx ? keepIdx.map(i => t2.rows[i]).filter(Boolean) : undefined }); } finally { host.remove(); }
+      try { const cv0 = render(cl, { ...o, _ghost: 1, cols: null, fitW: 0, rows: keepIdx ? keepIdx.map(i => t2.rows[i]).filter(Boolean) : undefined }); if (cv0) cv0._fw = o.fitW || 0; return cv0; } finally { host.remove(); }
     }
     sc.querySelectorAll('.xh,.xh-on').forEach(c => c.classList.remove('xh', 'xh-on'));
     const R = sc.getBoundingClientRect();
@@ -73,9 +74,11 @@
         x.beginPath(); x.rect(X0, Y0, X1 - X0, h); x.clip();
         x.fillStyle = cs.color; x.font = `${on || +cs.fontWeight >= 600 || cs.fontWeight === 'bold' ? 'bold ' : ''}${parseFloat(cs.fontSize)}px Arial`; x.textBaseline = 'middle';
         const pl = parseFloat(cs.paddingLeft) || 6, pr = parseFloat(cs.paddingRight) || 6, al = cs.textAlign, full = X1 - X0 >= r.width - 1;
-        if (al === 'right' || al === 'end') { x.textAlign = 'right'; x.fillText(txt, X1 - pr, Y0 + h / 2); }
-        else if (al === 'center' && full) { x.textAlign = 'center'; x.fillText(txt, (X0 + X1) / 2, Y0 + h / 2); }
-        else { x.textAlign = 'left'; x.fillText(txt, X0 + pl, Y0 + h / 2); }
+        const ls = full && x.measureText(txt).width > X1 - X0 - pl - pr ? wrapLines(x, txt, X1 - X0 - pl - pr) : [txt], lh = parseFloat(cs.fontSize) * 1.25, y0 = Y0 + h / 2 - (ls.length - 1) * lh / 2;
+        ls.forEach((t, j) => { const yy = y0 + j * lh;
+          if (al === 'right' || al === 'end') { x.textAlign = 'right'; x.fillText(t, X1 - pr, yy); }
+          else if (al === 'center' && full) { x.textAlign = 'center'; x.fillText(t, (X0 + X1) / 2, yy); }
+          else { x.textAlign = 'left'; x.fillText(t, X0 + pl, yy); } });
       }
       x.restore();
       if (on) { x.save(); x.translate(pad, top); x.strokeStyle = '#1D2678'; x.lineWidth = 2.2; x.strokeRect(X0 + 1.1, Y0 + 1.1, X1 - X0 - 2.2, h - 2.2); x.restore(); }
@@ -105,7 +108,7 @@
   function share(sc, m, extra = {}) {   // mở hộp Chia sẻ ảnh (như chart): caption, chú thích, khung 16:9 / 4:5
     if (!window.FSShareImage) { const cv = render(sc, { ...m, ...extra }); if (cv) copy(cv, m.file); return; }
     const cv = render(sc, { ...m, ...extra, bare: 1 }); if (!cv) return;
-    window.FSShareImage({ img: cv, title: extra.title || m.title, sub: m.sub, src: m.src, re: k => render(sc, { ...m, ...extra, bare: 1, rowK: k }) });
+    window.FSShareImage({ img: cv, title: extra.title || m.title, sub: m.sub, src: m.src, re: (k, fw) => render(sc, { ...m, ...extra, bare: 1, rowK: k, fitW: fw }) });
   }
   function button(sc, o) {   // cặp nút: chép ảnh (dán thẳng) + tải PNG
     const g = document.createElement('span'); g.className = 'tbl-btns';

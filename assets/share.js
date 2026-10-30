@@ -126,9 +126,19 @@
   function put(x, mm, X, Y, w, h, zs, win) {   // chart: vẽ lại độ phân giải cao; bảng (ảnh dựng sẵn): đặt vừa khung, giữ tỉ lệ
     if (!mm.img) return snap(x, mm.ch, X, Y, w, h, zs, win);
     let im = mm.img; const r0 = Math.min(1.4, w / im.width);
-    if (mm.re && im.height * r0 < h * 0.97) {   // bảng thấp hơn ô: dựng lại bảng với dòng cao hơn (chữ giữ cỡ) cho kín ô
-      const kk = Math.min(2.2, Math.round(h / (im.height * r0) * 20) / 20); try { im = mm.rc[kk] || (mm.rc[kk] = mm.re(kk)) || im; } catch (e) {}
+    if (mm.re && im.width * r0 < w * 0.8) {}   // bảng hẹp hơn ô: giữ nguyên
+    else if (mm.re) {   // dựng lại bảng theo bề rộng ô (chữ phóng ~1,3 lần, ô tự xuống dòng) để đọc được khi ghép cạnh chart
+      // thử vài bề rộng dựng bảng, chọn bản cho chữ to nhất khi vừa ô (bảng hẹp quá thì cao quá, bị giới hạn theo chiều cao)
+      let best = im, bs = Math.min(w / im.width, h / im.height);
+      [1.5, 1.3, 1.12, 0.95, 0.8].forEach(f => { const fw = Math.round(w / zs / f / 10) * 10; if (fw >= mm.img.width / 2 - 20) return;
+        const key = 'f' + fw; let c = null; try { c = mm.rc[key] || (mm.rc[key] = mm.re(1, fw)); } catch (e) {}
+        if (c) { const sc = Math.min(w / c.width, h / c.height); if (sc > bs * 1.03) { best = c; bs = sc; } } });
+      im = best;
     }
+    { const r1 = Math.min(1.4, w / im.width);
+      if (mm.re && im.height * r1 < h * 0.97) {   // bảng thấp hơn ô: dòng cao hơn (chữ giữ cỡ) cho kín ô
+        const kk = Math.min(2.2, Math.round(h / (im.height * r1) * 20) / 20), fw = im._fw || 0, key = (fw ? 'f' + fw : '') + 'k' + kk;
+        try { im = mm.rc[key] || (mm.rc[key] = mm.re(kk, fw || undefined)) || im; } catch (e) {} } }
     const r = Math.min(w / im.width, h / im.height, 1.4), dw = im.width * r, dh = im.height * r;
     x.imageSmoothingQuality = 'high'; x.drawImage(im, X + (w - dw) / 2, Y + Math.max(0, (h - dh) / 2) * 0.35, dw, dh);
   }

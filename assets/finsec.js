@@ -82,7 +82,9 @@ function mk(id, cfg, o = {}) {
   cfg.options.interaction = cfg.options.interaction || { mode: 'index', intersect: false, axis: cfg.options.indexAxis === 'y' ? 'y' : 'x' };
   if (window.FSK) FSK.prep(cfg);
   charts[id] = new Chart(el, cfg);
-  if (window.FSK && o.ts) FSK.enhance(charts[id], { today: new Date(F.built) });
+  const L0 = cfg.data && Array.isArray(cfg.data.labels) ? cfg.data.labels : [];
+  const ts = o.ts ?? (cfg.type !== 'sankey' && L0.length >= 6 && /^(Q\d\/\d{4}|\d{4}(-\d{2})?(-\d{2})?)$/.test(String(L0[0])));   // chuỗi thời gian: thêm chọn khung, kéo zoom
+  if (window.FSK && ts) FSK.enhance(charts[id], { today: new Date(F.built) });
   return charts[id];
 }
 const grid = { color: '#eef0f4' };

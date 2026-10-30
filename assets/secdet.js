@@ -4,8 +4,8 @@
    Dùng hàm/biến chung của finsec.js (card, tbl, kpi, mk, nf, C, SYM, WI…) — chỉ gọi sau khi finsec.js đã nạp. */
 (function () {
   const SD = window.SEC_DET || { co: {}, px: {} };
-  let W, SYM, IS_INS, QS, sv, last, card, tbl, mk, nf, pc, sg, cls, esc, qLbl, C, WI, bar, yNum;
-  const imp = () => ({ W, SYM, IS_INS, QS, sv, last, card, tbl, mk, nf, pc, sg, cls, esc, qLbl, C, WI, bar, yNum } = window.FSH || {});
+  let W, SYM, IS_INS, QS, sv, last, card, tbl, kpi, mk, nf, pc, sg, cls, esc, qLbl, C, WI, bar, yNum;
+  const imp = () => ({ W, SYM, IS_INS, QS, sv, last, card, tbl, kpi, mk, nf, pc, sg, cls, esc, qLbl, C, WI, bar, yNum } = window.FSH || {});
   const det = () => { imp(); return SYM && !IS_INS ? SD.co[SYM] : null; };
   const CLS = { holding: 'Nắm giữ dài hạn', fi: 'Thu nhập cố định', cw: 'Phòng ngừa chứng quyền', trading: 'Tự doanh ngắn hạn' };
   const CLSC = { holding: '#861C52', fi: '#1D2678', cw: '#d9a400', trading: '#59C5C8' };
@@ -41,11 +41,11 @@
       if (r.cls === 'fi') return '<span class="muted">lãi cố định</span>';
       return `<span class="muted">${/chưa niêm yết|Công ty/.test(r.n) ? 'không niêm yết' : 'không công bố mã'}</span>`;
     };
-    const top = R.slice(0, 10);
+    const top = R.slice(0, 10); window._sdTop = top.map(r => r.a + '|' + r.n + '|' + r.cls);
     const fiSh = tot(R.filter(r => r.cls === 'fi'), 'fv') / T;
     const ins = `Cuối ${qLbl(d.q)}, danh mục tự doanh ${nf(T)} tỷ, <b>${pc(fiSh, 0)}</b> là thu nhập cố định (trái phiếu, chứng chỉ tiền gửi, tiền gửi). `
       + (d.insTop || '') + (bR != null ? ` Rổ cổ phiếu cơ sở chứng quyền ${sg(bR)} từ ${dd(p0.d0)} đến ${dd(p0.d1)} (bình quân giản đơn ${bsk.length} mã).` : '');
-    return `<article class="card"><h3 class="sub">Top khoản đầu tư ${qLbl(d.q)} và diễn biến tới phiên gần nhất</h3>
+    return `<article class="card" id="sdTop"><h3 class="sub">Top khoản đầu tư ${qLbl(d.q)} và diễn biến tới phiên gần nhất</h3>
       <p class="chart-sub">tỷ đồng · giá trị hợp lý cuối quý · diễn biến giá: đóng cửa ${p0 ? dd(p0.d0) + ' → ' + dd(p0.d1) : 'cuối quý → phiên gần nhất'}</p>
       ${tbl(['Khoản đầu tư', 'Tài khoản', 'Loại', 'Giá trị', '% danh mục', 'Diễn biến'], top.map(r => [esc(r.n), ACC[r.a], CLS[r.cls], t1(r.fv), pc(r.fv / T, 1), perf(r)]))}
       <div class="insight">${ins}</div><div class="src">Nguồn: ${srcD(d)}; giá cổ phiếu: ${WI}</div></article>`;
@@ -67,7 +67,7 @@
   const nz = ds => ds.filter(x => x.type === 'line' || x.data.some(v => v && Math.abs(v) > 0.5));
   const stk = (id, Q, ds, y1t) => mk(id, { type: 'bar', data: { labels: Q.L, datasets: nz(ds) },
     options: { scales: Object.assign({ x: { stacked: true }, y: yNum('tỷ đồng', { stacked: true }) }, y1t ? { y1: Object.assign(yNum(y1t), { position: 'right', grid: { display: false }, ticks: { callback: v => nf(v, 0) + '%' } }) } : {}) } }, { ts: true });
-  const fold = (sum, body) => `<details class="fold"><summary>${sum}</summary>${body}</details>`;
+  const fold = (sum, body, id) => `<details class="fold"${id ? ` id="${id}"` : ''}><summary>${sum}</summary>${body}</details>`;
   const lastV = a => { for (let i = a.length - 1; i >= 0; i--) if (a[i] != null) return [a[i], i]; return [null, -1]; };
   const TYPES = Q => [
     ['Trái phiếu', Q.add(Q.f('fn112_11'), Q.f('fn115_11'), Q.f('fn113_2')), C.navy, 1],
@@ -77,6 +77,26 @@
     ['Chứng chỉ quỹ', Q.add(Q.f('fn112_10'), Q.f('fn115_10')), C.gold, 0],
     ['Chứng chỉ tiền gửi và tài sản khác', Q.add(Q.f('fn112_12'), Q.f('fn115_12'), Q.f('fn113_4')), C.grey, 1]];
 
+  function pfKpis(d, Q, R) {   // ô tóm tắt đầu mục danh mục tự doanh
+    const out = [];
+    if (Q) {
+      const pf = Q.add(Q.f('fn112_7'), Q.f('fn115_7'), Q.f('fn113_1')), [p, k] = lastV(pf), ty = TYPES(Q), all = i => ty.reduce((s, t) => s + (t[1][i] || 0), 0), fi = i => ty.filter(t => t[3]).reduce((s, t) => s + (t[1][i] || 0), 0);
+      const ls = ty[2][1], p4 = k >= 4 ? pf[k - 4] : null;
+      if (p) out.push(kpi(`Danh mục ${qLbl(Q.qs[k])}`, nf(p / 1000, 1) + ' nghìn tỷ', `${p4 ? sg(p / p4 - 1) + ' YoY · ' : ''}${pc(p / Q.eq[k], 0)} vốn chủ`, p4 ? cls(p / p4 - 1) : ''));
+      if (p) out.push(kpi('Thu nhập cố định', pc(fi(k) / all(k), 0), k >= 4 && all(k - 4) ? `cùng kỳ ${pc(fi(k - 4) / all(k - 4), 0)} · trái phiếu, tiền gửi, CD` : 'trái phiếu, tiền gửi, CD'));
+      if (p) out.push(kpi('Cổ phiếu niêm yết', nf(ls[k] || 0) + ' tỷ', k >= 1 && ls[k - 1] ? `${sg((ls[k] || 0) / ls[k - 1] - 1)} QoQ · ${pc((ls[k] || 0) / all(k), 1)} danh mục` : pc((ls[k] || 0) / all(k), 1) + ' danh mục', k >= 1 && ls[k - 1] ? cls((ls[k] || 0) / ls[k - 1] - 1) : ''));
+    }
+    const L = R.filter(r => r.tk && pxChg(r.tk) && r.fv > 0.5), w = tot(L, 'fv');
+    if (L.length) {
+      const r = L.reduce((s, x) => s + pxChg(x.tk).r * x.fv, 0) / w, top = L.slice().sort((a, b) => b.fv - a.fv)[0], tr = pxChg(top.tk);
+      out.push(kpi('Diễn biến CP công bố mã', sg(r), `${L.length} mã, ${nf(w)} tỷ · bình quân theo giá trị · từ ${dd(tr.p.d0)}`, cls(r)));
+      out.push(kpi('Mã lớn nhất', `${top.tk} ${sg(tr.r)}`, `${nf(top.fv)} tỷ · ${ACC[top.a]} · ${dd(tr.p.d0)} → ${dd(tr.p.d1)}`, cls(tr.r)));
+    }
+    const bsk = (d.cwList || []).map(c => pxChg(c.t)).filter(Boolean);
+    if (bsk.length) { const b = bsk.reduce((s, x) => s + x.r, 0) / bsk.length; out.push(kpi('Rổ cơ sở chứng quyền', sg(b), `${bsk.length} mã · bình quân giản đơn từ cuối quý`, cls(b))); }
+    if (!L.length) out.push(kpi('Cổ phiếu công bố mã', '—', 'thuyết minh không liệt kê theo mã'));
+    return out.length ? `<div class="kpis">${out.join('')}</div>` : '';
+  }
   window.sdFinHtml = function () {
     const d = det(); if (!d) return '';
     const D = d.debt, M = d.margin, R = rows(d), T = tot(R, 'fv'), T0 = tot(R, 'fv0'), Q = SERQ();
@@ -101,13 +121,14 @@
       return `${nm} ${qLbl(Q.qs[i])} ${nf(v)} tỷ${v4 ? ` (${sg(v / v4 - 1)} so cùng kỳ)` : ''}; ${parts[0][0]} chiếm <b>${pc(parts[0][1] / v, 0)}</b>${parts[1][1] > 0.5 ? `, ${parts[1][0]} ${pc(parts[1][1] / v, 0)}` : ''}.`; };
     const SF = { fn112: ['_8', '_9', '_10', '_11', '_12'], fn115: ['_8', '_9', '_10', '_11', '_12'], fn113: ['_2', '_3', '_4'] };
     const accCard = (id, t, k0) => Q && Q.f(k0).some(v => v > 0.5) ? card({ id, title: t, sub: 'tỷ đồng · cuối quý · cột chồng theo loại tài sản', ins: accIns(k0.split('_')[0], SF[k0.split('_')[0]], t.replace(' theo loại tài sản', '')), src: WI + ' (thuyết minh BCTC)' }) : '';
-    return `<h3 class="sec2">Chi tiết · Nợ vay, cho vay ký quỹ, danh mục tự doanh</h3>
+    return `<h3 class="sec2">Chi tiết · Nợ vay và cho vay ký quỹ</h3>
     <div class="grid g2 gap">
       ${Q ? card({ id: 'sdDebtQ', title: 'Nợ vay theo kỳ hạn và loại', sub: 'tỷ đồng · cuối quý · đường: nợ vay / vốn chủ (trục phải)', ins: insDQ, src: WI + ' (BCTC)' }) : ''}
       ${card({ id: 'sdDebtL', title: 'Nợ vay theo bên cho vay', sub: `tỷ đồng · ${dd(d.asOf)} so với đầu năm · màu theo đồng tiền`, ins: insL, src: srcD(d) })}
     </div>
-    ${fold(`Chi tiết từng khoản vay và trái phiếu phát hành ${qLbl(d.q)}`, tbl(['Khoản vay', 'Đồng tiền', 'Lãi suất', 'Kỳ hạn', dd(d.asOf), 'Đầu năm'], it.map(i => [esc(i.n), i.ccy, esc(i.rate || '—'), esc(i.term || '—'), t1(i.v), t1(i.v0)])) + `<div class="note">${esc(D.cost || '')}</div>${D.note ? `<div class="note">${esc(D.note)}</div>` : ''}<div class="src">Nguồn: ${srcD(d)}</div>`)}
-    ${fold(`Cho vay ký quỹ ${qLbl(d.q)}: chất lượng dư nợ và ghi chú`, `<div class="insight">Dư nợ ký quỹ và ứng trước ${nf(M.total)} tỷ, ${sg(chg(M.total, M.open))} từ đầu năm. ${M.ins || ''}</div>` + (qa.length ? tbl(['Chất lượng dư nợ', 'tỷ đồng', '%'], qa.map(([k, v]) => [esc(k), t1(v), pc(v / M.total, 2)])) : '') + (M.note ? `<div class="note">${esc(M.note)}</div>` : '') + `<div class="src">Nguồn: ${srcD(d)}</div>`)}
+    ${fold(`Chi tiết từng khoản vay và trái phiếu phát hành ${qLbl(d.q)}`, tbl(['Khoản vay', 'Đồng tiền', 'Lãi suất', 'Kỳ hạn', dd(d.asOf), 'Đầu năm'], it.map(i => [esc(i.n), i.ccy, esc(i.rate || '—'), esc(i.term || '—'), t1(i.v), t1(i.v0)])) + `<div class="note">${esc(D.cost || '')}</div><div class="src">Nguồn: ${srcD(d)}</div>`)}
+    ${fold(`Cho vay ký quỹ ${qLbl(d.q)}: chất lượng dư nợ`, `<div class="insight">Dư nợ ký quỹ và ứng trước ${nf(M.total)} tỷ, ${sg(chg(M.total, M.open))} từ đầu năm. ${M.ins || ''}</div>` + (qa.length ? tbl(['Chất lượng dư nợ', 'tỷ đồng', '%'], qa.map(([k, v]) => [esc(k), t1(v), pc(v / M.total, 2)])) : '') + `<div class="src">Nguồn: ${srcD(d)}</div>`)}
+    <h3 class="sec2">Danh mục tự doanh</h3>${pfKpis(d, Q, R)}
     <div class="grid g2 gap">
       ${Q ? card({ id: 'sdPfAcc', title: 'Danh mục tự doanh theo tài khoản', sub: 'tỷ đồng · giá trị hợp lý cuối quý (HTM theo giá gốc) · đường: danh mục / vốn chủ (trục phải)', ins: insAcc, src: WI + ' (thuyết minh BCTC)' }) : ''}
       ${Q ? card({ id: 'sdPfTy', title: 'Danh mục tự doanh: thu nhập cố định và cổ phiếu', sub: 'tỷ đồng · cuối quý · gộp FVTPL, AFS, HTM theo loại tài sản', ins: insTy, src: WI + ' (thuyết minh BCTC)' }) : ''}
@@ -116,10 +137,10 @@
       ${accCard('sdPfH', 'Danh mục HTM theo loại tài sản', 'fn113_1')}
       ${card({ id: 'sdSk', title: `Danh mục tự doanh ${qLbl(d.q)}: tài khoản và nhóm tài sản`, sub: `tỷ đồng · giá trị hợp lý ${dd(d.asOf)}`, ins: `Danh mục ${nf(T)} tỷ (đầu năm ${nf(T0)} tỷ), gồm cả đầu tư dài hạn khác. ${d.portfolio.ins || ''}`, src: srcD(d) })}
     </div>
-    ${fold(`Danh mục tự doanh chi tiết ${qLbl(d.q)}`, tbl(['Khoản đầu tư', 'Tài khoản', 'Mục đích', 'Giá gốc', 'Giá trị', 'Đầu năm', 'Thay đổi'], R.filter(r => r.fv || r.fv0).map(r => [esc(r.full || r.n), ACC[r.a], CLS[r.cls], t1(r.cost), t1(r.fv), t1(r.fv0), r.fv0 > 0.5 ? `<span class="${cls(r.fv / r.fv0 - 1)}">${sg(r.fv / r.fv0 - 1)}</span>` : (r.fv ? 'mới' : 'thoái hết')]))
-      + Object.keys(ACC).map(a => d.portfolio[a] && d.portfolio[a].note ? `<div class="note">${ACC[a]}: ${esc(d.portfolio[a].note)}</div>` : '').join('') + `<div class="src">Nguồn: ${srcD(d)}</div>`)}
+    ${(window._sdDet = R.filter(r => r.fv || r.fv0).map(r => r.a + '|' + r.n), '')}    ${fold(`Danh mục tự doanh chi tiết ${qLbl(d.q)}`, tbl(['Khoản đầu tư', 'Tài khoản', 'Mục đích', 'Giá gốc', 'Giá trị', 'Đầu năm', 'Thay đổi'], R.filter(r => r.fv || r.fv0).map(r => [esc(r.full || r.n), ACC[r.a], CLS[r.cls], t1(r.cost), t1(r.fv), t1(r.fv0), r.fv0 > 0.5 ? `<span class="${cls(r.fv / r.fv0 - 1)}">${sg(r.fv / r.fv0 - 1)}</span>` : (r.fv ? 'mới' : 'thoái hết')]))
+      + `<div class="src">Nguồn: ${srcD(d)}</div>`, 'sdDetail')}
     ${cwL.length ? fold(`Chứng quyền đang lưu hành và cổ phiếu cơ sở ${qLbl(d.q)}`, tbl(['Mã cơ sở', 'CW lưu hành', 'Giá cuối quý', 'Giá gần nhất', 'Thay đổi'], cwL.map(c => { const x = pxChg(c.t); return [`<b>${c.t}</b>`, nf(c.n), x ? nf(x.p.c0) : '—', x ? nf(x.p.c1) : '—', x ? `<span class="${cls(x.r)}">${sg(x.r)}</span>` : '—']; }))
-      + `<div class="note">${esc(d.portfolio.cw && d.portfolio.cw.hedge || '')}</div><div class="src">Nguồn: ${srcD(d)}; giá: ${WI}</div>`) : ''}
+      + `<div class="note">${esc(d.portfolio.cw && d.portfolio.cw.hedge || '')}</div><div class="src">Nguồn: ${srcD(d)}; giá: ${WI}</div>`, 'sdCw') : ''}
     ${d.ir ? `<h3 class="sec2">Chỉ tiêu kinh doanh do ${SYM} công bố</h3><div class="grid g2 gap">${d.ir.charts.map(c => card({ id: c.id, title: c.title, sub: c.sub, ins: c.ins, src: esc(d.ir._src) })).join('')}</div>` : ''}`;
   };
 
@@ -171,4 +192,19 @@
       labels: Object.fromEntries(Object.keys(col).map(k => [k, short(k) + ' · ' + nf(vin[k], vin[k] < 10 ? 1 : 0)])), priority: pri, font: { size: 11 }, nodeWidth: 10, padding: 16 }] },
       options: { interaction: { mode: 'nearest', intersect: true }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => { const x = c.raw; return `${x.from} → ${x.to}: ${nf(x.flow, x.flow < 10 ? 2 : 0)} tỷ`; }, footer: () => '' } } } } });
   };
+  // bấm một dòng top khoản đầu tư → sang tab Tài chính, mở bảng chi tiết và tô sáng đúng dòng
+  document.addEventListener('click', e => {
+    const tr = e.target.closest('#sdTop tbody tr'); if (!tr || !window._sdTop) return;
+    const key = window._sdTop[[...tr.parentElement.children].indexOf(tr)]; if (!key) return;
+    const [a, n, c] = key.split('|'), tab = document.querySelector('[data-tab="fin"]'); if (tab) tab.click();
+    let tries = 0; const go = () => {
+      const cw = c === 'cw' && document.getElementById('sdCw'), box = cw || document.getElementById('sdDetail');
+      if (!box) { if (tries++ < 20) setTimeout(go, 150); return; }
+      box.open = true;
+      const rows = box.querySelectorAll('tbody tr'), i = cw ? -1 : (window._sdDet || []).indexOf(a + '|' + n), row = i >= 0 ? rows[i] : null, el = row || box;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      (row ? [...row.cells] : [box]).forEach(x => { x.classList.remove('sd-hit'); void x.offsetWidth; x.classList.add('sd-hit'); });
+    };
+    setTimeout(go, 80);
+  });
 })();
