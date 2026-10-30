@@ -204,7 +204,7 @@
       const cell = (it, i, X, Y, cw, chh, draw = true) => {   // vẽ đầu ô; trả chiều cao đầu ô (draw=false: chỉ đo)
         const small = cw < 520 * k, mm = it.meta; let yy = Y;
         const top = it.note ? it.note : mm.title, low = it.note ? mm.title : '';   // có nhận định: nhận định lên trên (navy, lớn), tên chart xuống dưới (đỏ mận, nhỏ)
-        x.fillStyle = FIN.navy; x.font = font('700', small ? 17 : 20); wrap(x, `${i + 1}. ${top}`, cw, 2).forEach(l => { if (draw) x.fillText(l, X, yy); yy += Math.round((small ? 21 : 25) * k); });
+        x.fillStyle = FIN.navy; x.font = font('700', small ? 17 : 20); wrap(x, it.note ? top : `${i + 1}. ${top}`, cw, 2).forEach(l => { if (draw) x.fillText(l, X, yy); yy += Math.round((small ? 21 : 25) * k); });
         if (low) { x.fillStyle = FIN.purple; x.font = font('700', small ? 15 : 16.5); wrap(x, low, cw, 2).forEach(l => { if (draw) x.fillText(l, X, yy); yy += Math.round((small ? 19 : 21) * k); }); }
         const f0 = firstLab(it), l1 = lastLab(it);
         const sub = [mm.sub, l1 ? (f0 && f0 !== l1 ? f0 + ' – ' + l1 : 'đến ' + l1) : ''].filter(Boolean).join(' · ');
@@ -386,7 +386,7 @@
   function caption() {
     const m = first(), n = st.items.length;
     if (n === 1) return [...(st.key ? [st.key, ''] : []), ...(st.items[0].note ? [st.items[0].note, ''] : []), m.page, '', m.title + (m.sub ? ' (' + m.sub + ')' : ''), m.ins ? '\n' + m.ins : '', '', (m.last ? 'Kỳ dữ liệu: ' + m.last + '\n' : '') + 'Nguồn: ' + m.src].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
-    return [...(st.key ? [st.key, ''] : []), m.page, '', ...st.items.map((it, i) => it.note ? `${i + 1}. ${it.note}\n${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}` : `${i + 1}. ${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}`), '', 'Nguồn: ' + srcAll()].join('\n');
+    return [...(st.key ? [st.key, ''] : []), m.page, '', ...st.items.map((it, i) => it.note ? `${it.note}\n${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}` : `${i + 1}. ${it.meta.title}${lastLab(it) ? ' (đến ' + lastLab(it) + ')' : ''}`), '', 'Nguồn: ' + srcAll()].join('\n');
   }
   function setItems(cards, keepNotes) {
     const old = new Map(st.items.map(it => [it.card, it.note]));
