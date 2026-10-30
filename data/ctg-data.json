@@ -6714,8 +6714,16 @@
     "sbvBorrow": 262.3,
     "kbnn": 173000.8
    },
-   "gtcg": null,
-   "gtcgTenor": null
+   "gtcg": {
+    "Chứng chỉ tiền gửi": 70365.5,
+    "Trái phiếu": 52721.3,
+    "Khác": 0.1
+   },
+   "gtcgTenor": {
+    "Dưới 12 tháng": 63959.8,
+    "12 tháng – 5 năm": 6406.0,
+    "Trên 5 năm": 52721.1
+   }
   }
  ],
  "pbAdjNote": {

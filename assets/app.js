@@ -702,7 +702,7 @@ function finCharts(k) {
     mk('chFundOth', { type: 'bar', data: { labels: fo.map(r => r.q), datasets: [
       { label: 'Tiền gửi KBNN', data: fo.map(r => r.gov.kbnn), backgroundColor: C.navy, stack: 's', dp: 0 },
       { label: 'Vay NHNN', data: fo.map(r => r.gov.sbvBorrow), backgroundColor: C.red, stack: 's', dp: 0 },
-      ...gk.map((g, i) => ({ label: 'GTCG: ' + g.toLowerCase(), data: fo.map(r => (r.gtcg || {})[g] || 0), backgroundColor: [C.teal, C.gold, C.steps[4]][i % 3], stack: 's', dp: 0 }))] },
+      ...gk.map((g, i) => ({ label: 'GTCG: ' + g.toLowerCase(), data: fo.map(r => r.gtcg ? (r.gtcg[g] || 0) : null), backgroundColor: [C.teal, C.gold, C.steps[4]][i % 3], stack: 's', dp: 0 }))] },
       options: { scales: { x: { stacked: true }, y: numAxis('tỷ đồng', { stacked: true }) } } });
     const yl = A.map(a => String(a.y)).concat(P ? [P.year + ' (KH)'] : []);
     mk('chPlY', { type: 'bar', data: { labels: yl, datasets: [
