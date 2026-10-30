@@ -1,0 +1,414 @@
+{
+ "sym": "TCX",
+ "q": "2026Q3",
+ "asOf": "2026-09-30",
+ "src": "BCTC quý 3/2026 của Công ty Cổ phần Chứng khoán Kỹ Thương – báo cáo riêng (Công ty không có công ty con, không lập BCTC hợp nhất), thuyết minh số 7.1–7.4, 8, 9, 10, 18, 19, 20, 24, 31, 36.1, 36.4; số đầu năm = 31/12/2025; chi tiết trái phiếu đầu năm từ BCTC kiểm toán năm 2025 (TM 21)",
+ "debt": {
+  "total": 46964.72,
+  "open": 34093.98,
+  "items": [
+   {
+    "n": "Vay hợp vốn ngắn hạn bằng USD (Taipei Fubon Commercial Bank làm đại lý)",
+    "lender": "Nhóm ngân hàng hợp vốn – đại lý Taipei Fubon Commercial Bank Co., Ltd.",
+    "ccy": "USD",
+    "rate": "5,74–10,00%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 12854.58,
+    "v0": 0.0
+   },
+   {
+    "n": "Vay hợp vốn ngắn hạn bằng USD (Ngân hàng Cathay United làm đại lý)",
+    "lender": "Nhóm ngân hàng hợp vốn – đại lý Cathay United Bank",
+    "ccy": "USD",
+    "rate": "5,74–10,00%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 6005.45,
+    "v0": 5869.6
+   },
+   {
+    "n": "Vay ngắn hạn bằng USD – vay khác",
+    "lender": "Tổ chức tài chính nước ngoài khác (không nêu tên)",
+    "ccy": "USD",
+    "rate": "5,74–10,00%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 3813.72,
+    "v0": 2587.05
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Hàng Hải Việt Nam (MSB)",
+    "lender": "MSB",
+    "ccy": "VND",
+    "rate": "5,74–10,00%/năm (khoảng chung)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 2740.0,
+    "v0": 1950.0
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Quốc Tế Việt Nam (VIB)",
+    "lender": "VIB",
+    "ccy": "VND",
+    "rate": "5,74–10,00%/năm (khoảng chung)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 3400.0,
+    "v0": 2975.0
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Xuất nhập khẩu Việt Nam (Eximbank)",
+    "lender": "Eximbank",
+    "ccy": "VND",
+    "rate": "5,74–10,00%/năm (khoảng chung)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 1980.0,
+    "v0": 2500.0
+   },
+   {
+    "n": "Vay ngắn hạn bằng VND – vay khác",
+    "lender": "Không nêu tên",
+    "ccy": "VND",
+    "rate": "5,74–10,00%/năm (khoảng chung)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 9695.53,
+    "v0": 15198.05
+   },
+   {
+    "n": "Vay dài hạn Standard Chartered Bank (Hong Kong) Limited",
+    "lender": "Standard Chartered Bank (Hong Kong) Limited",
+    "ccy": "USD",
+    "rate": "Không công bố riêng",
+    "term": "Dài hạn (1–5 năm)",
+    "v": 1578.0,
+    "v0": 0.0
+   },
+   {
+    "n": "Vay chuyển đổi dài hạn DEG (50 triệu USD)",
+    "lender": "DEG – Deutsche Investitions- und Entwicklungsgesellschaft mbH",
+    "ccy": "USD",
+    "rate": "2,25%/năm; 6,5%/năm nếu DEG không chuyển đổi thành cổ phần",
+    "term": "5 năm, giải ngân 10/02/2026 (đáo hạn khoảng 02/2031)",
+    "v": 1329.15,
+    "v0": 0.0
+   },
+   {
+    "n": "Trái phiếu TCX12504",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "7,875–8,625%/năm (khoảng lãi suất chung của các trái phiếu còn dư nợ, không công bố theo từng mã)",
+    "term": "Phát hành 25/12/2025, đáo hạn 25/03/2027 (ngắn hạn)",
+    "v": 67.0,
+    "v0": 500.0
+   },
+   {
+    "n": "Trái phiếu TCX12506",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "7,875–8,625%/năm (khoảng lãi suất chung của các trái phiếu còn dư nợ, không công bố theo từng mã)",
+    "term": "Phát hành 31/12/2025, đáo hạn 31/03/2027 (ngắn hạn) theo BCTC Q3/2026",
+    "v": 500.0,
+    "v0": 5.0
+   },
+   {
+    "n": "Phụ trội/chiết khấu trái phiếu (điều chỉnh mệnh giá → giá trị ghi sổ)",
+    "lender": "",
+    "ccy": "VND",
+    "rate": "",
+    "term": "",
+    "v": 1.29,
+    "v0": 0.36
+   },
+   {
+    "n": "Trái phiếu TCX12501",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "7,875–8,625%/năm (khoảng lãi suất chung của các trái phiếu còn dư nợ, không công bố theo từng mã)",
+    "term": "Phát hành 04/04/2025, đáo hạn 04/04/2028 (dài hạn)",
+    "v": 500.0,
+    "v0": 500.0
+   },
+   {
+    "n": "Trái phiếu TCX12502",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "7,875–8,625%/năm (khoảng lãi suất chung của các trái phiếu còn dư nợ, không công bố theo từng mã)",
+    "term": "Phát hành 12/05/2025, đáo hạn 12/05/2028 (dài hạn)",
+    "v": 500.0,
+    "v0": 500.0
+   },
+   {
+    "n": "Trái phiếu TCXPO2628001 (phát hành ra công chúng)",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "7,875–8,625%/năm (khoảng lãi suất chung của các trái phiếu còn dư nợ, không công bố theo từng mã)",
+    "term": "Phát hành 01/04/2026, đáo hạn 01/04/2028 (dài hạn)",
+    "v": 1000.0,
+    "v0": 0.0
+   },
+   {
+    "n": "Trái phiếu TCXPO2628002 (phát hành ra công chúng)",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "7,875–8,625%/năm (khoảng lãi suất chung của các trái phiếu còn dư nợ, không công bố theo từng mã)",
+    "term": "Phát hành 25/08/2026, đáo hạn 25/08/2029 (dài hạn)",
+    "v": 1000.0,
+    "v0": 0.0
+   },
+   {
+    "n": "Trái phiếu đã đáo hạn/không còn dư nợ tại 30/09/2026 (TCXCH2426004, TCXCH2426005, TCX12503, TCX12505, TCSCH2126002, TCSCH2126003)",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "7,90%; 7,90%; 6,88%; 8,00%; 9,80%; 10,80%/năm (theo BCTC năm 2025)",
+    "term": "Đáo hạn 29/01/2026; 08/02/2026; 10/07/2026; 31/03/2027; 16/06/2026; 24/06/2026",
+    "v": 0.0,
+    "v0": 1508.92
+   }
+  ],
+  "byCcy": {
+   "VND": 21383.82,
+   "USD": 25580.9
+  },
+  "byCcy0": {
+   "VND": 25637.33,
+   "USD": 8456.65
+  },
+  "byTerm": {
+   "Vay ngắn hạn": 40489.28,
+   "Vay dài hạn": 2907.15,
+   "Trái phiếu ngắn hạn": 568.29,
+   "Trái phiếu dài hạn": 3000.0
+  },
+  "byTerm0": {
+   "Vay ngắn hạn": 31079.7,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 1504.31,
+   "Trái phiếu dài hạn": 1509.97
+  },
+  "byMaturity": {
+   "Đến 01 năm": 41057.57,
+   "Trên 01 đến 05 năm": 5907.15
+  },
+  "cost": "9 tháng 2026 (lũy kế 01/01–30/09): chi phí lãi vay 2.453,20 tỷ đồng (lãi vay 2.264,86 tỷ; lãi trái phiếu 188,33 tỷ), so với 1.435,64 tỷ cùng kỳ 2025. Ngoài ra chi phí tài chính khác 467,33 tỷ (phí đại lý, thu xếp, phí thường niên, tư vấn pháp lý vay hợp vốn/song phương ngoại tệ, chi phí thuần phòng ngừa rủi ro vay ngoại tệ) và lỗ tỷ giá 4,37 tỷ. Chi phí lãi vay phải trả cuối kỳ 571,91 tỷ, lãi trái phiếu phải trả 96,52 tỷ. Lãi suất bình quân không công bố; lãi suất vay ngắn hạn còn dư nợ 5,74–10,00%/năm, trái phiếu 7,875–8,625%/năm.",
+  "note": "Vay ngoại tệ: 973 triệu USD (tương đương 25.580,90 tỷ đồng), đã phòng ngừa rủi ro tỷ giá và lãi suất bằng hợp đồng hoán đổi tiền tệ chéo/hoán đổi ngoại tệ với Techcombank và các NHTM khác. Một số khoản vay ngắn hạn VND được bảo đảm bằng hợp đồng tiền gửi HTM giá gốc 520 tỷ (31/12/2025: 1.614,10 tỷ) và chứng chỉ tiền gửi AFS giá gốc 1.000 tỷ. Thuyết minh chỉ nêu khoảng lãi suất chung, không công bố lãi suất/kỳ hạn theo từng khoản vay (trừ khoản DEG). Trái phiếu đều là trái phiếu thường không tài sản bảo đảm. Lưu ý mâu thuẫn trong nguồn: BCTC năm 2025 ghi TCX12506 mệnh giá 5 tỷ, đáo hạn 30/06/2028 và TCX12505 5 tỷ, đáo hạn 31/03/2027; BCTC Q3/2026 ghi TCX12506 500 tỷ, đáo hạn 31/03/2027 và không còn TCX12505 — giữ nguyên số Q3/2026, v0 khớp theo mã. TCX12504 giảm từ 500 tỷ xuống 67 tỷ (thuyết minh không giải thích, có thể đã mua lại trước hạn). byTerm theo cách công ty phân loại trên BCĐKT; byMaturity theo bảng rủi ro thanh khoản (TM 36.4). Số đầu năm = 31/12/2025."
+ },
+ "margin": {
+  "total": 54739.64,
+  "open": 43859.73,
+  "items": [
+   {
+    "n": "Cho vay ký quỹ (margin)",
+    "v": 54368.39,
+    "v0": 43162.73
+   },
+   {
+    "n": "Ứng trước tiền bán chứng khoán",
+    "v": 371.25,
+    "v0": 697.0
+   }
+  ],
+  "provision": 5.91,
+  "provision0": 12.76,
+  "netFV": 54733.73,
+  "netFV0": 43846.97,
+  "accruedInterest": {
+   "n": "Lãi dự thu từ hoạt động cho vay ký quỹ",
+   "v": 784.36,
+   "v0": 426.58
+  },
+  "quality": {
+   "Không quá hạn và không bị suy giảm": 54727.49,
+   "Đã quá hạn và đã bị suy giảm": 10.66,
+   "Quá hạn nhưng không suy giảm – đến 90 ngày": 1.48,
+   "Quá hạn nhưng không suy giảm – 91–180 ngày": 0.01,
+   "Không quá hạn nhưng đã bị suy giảm": 0.0
+  },
+  "income9M": "Lãi từ các khoản cho vay và phải thu 9 tháng 2026: 4.187,93 tỷ đồng",
+  "note": "Thuyết minh 7.4, 8, 9 và 36.4. Không công bố phân loại theo đối tượng/khách hàng, lãi suất cho vay, kỳ hạn hay giá trị tài sản đảm bảo (chỉ nêu chứng khoán của nhà đầu tư trong giao dịch ký quỹ được Công ty giữ làm tài sản cầm cố). Giá trị hợp lý = giá trị ghi sổ trừ dự phòng. Bảng chất lượng tín dụng (TM 36.4) bị lệch dòng trong bản số hoá; số trên đã đối chiếu: tổng các cột = 54.739,64 tỷ."
+ },
+ "portfolio": {
+  "FVTPL": {
+   "cost": 125.65,
+   "fv": 117.17,
+   "cost0": 38.47,
+   "fv0": 38.92,
+   "groups": [
+    {
+     "n": "Cổ phiếu niêm yết (không gồm cổ phiếu phòng ngừa rủi ro chứng quyền)",
+     "cls": "trading",
+     "cost": 5.75,
+     "fv": 5.4,
+     "cost0": 5.7,
+     "fv0": 5.84
+    },
+    {
+     "n": "Cổ phiếu niêm yết cho hoạt động phòng ngừa rủi ro của chứng quyền",
+     "cls": "cw",
+     "cost": 106.3,
+     "fv": 97.68,
+     "cost0": 19.17,
+     "fv0": 18.59
+    },
+    {
+     "n": "Chứng chỉ quỹ",
+     "cls": "holding",
+     "cost": 13.59,
+     "fv": 14.09,
+     "cost0": 13.59,
+     "fv0": 14.5
+    }
+   ],
+   "note": "Thuyết minh 7.1. Không công bố danh mục theo từng mã. Chứng chỉ quỹ xếp 'holding' (tự chọn): giá gốc không đổi suốt 9 tháng, không phải tự doanh lướt sóng."
+  },
+  "AFS": {
+   "cost": 30380.72,
+   "fv": 30254.61,
+   "cost0": 25207.65,
+   "fv0": 25218.44,
+   "groups": [
+    {
+     "n": "Cổ phiếu niêm yết",
+     "cls": "holding",
+     "cost": 0.01,
+     "fv": 0.02,
+     "cost0": 0.0,
+     "fv0": 0.02
+    },
+    {
+     "n": "Cổ phiếu chưa niêm yết",
+     "cls": "holding",
+     "cost": 1999.2,
+     "fv": 1999.2,
+     "cost0": 1701.0,
+     "fv0": 1701.0
+    },
+    {
+     "n": "Trái phiếu niêm yết",
+     "cls": "fi",
+     "cost": 2136.66,
+     "fv": 2161.95,
+     "cost0": 2970.98,
+     "fv0": 2979.31
+    },
+    {
+     "n": "Trái phiếu doanh nghiệp chưa niêm yết",
+     "cls": "fi",
+     "cost": 23048.6,
+     "fv": 22894.18,
+     "cost0": 20328.84,
+     "fv0": 20328.84
+    },
+    {
+     "n": "Chứng chỉ tiền gửi",
+     "cls": "fi",
+     "cost": 3190.74,
+     "fv": 3190.74,
+     "cost0": 201.31,
+     "fv0": 201.31,
+     "holdings": [
+      {
+       "t": "CD Ngân hàng TMCP Kỹ Thương Việt Nam (TCB) – mệnh giá",
+       "cost": 150.0
+      }
+     ]
+    },
+    {
+     "n": "Chứng chỉ quỹ",
+     "cls": "holding",
+     "cost": 5.51,
+     "fv": 8.52,
+     "cost0": 5.51,
+     "fv0": 7.97
+    }
+   ],
+   "note": "Thuyết minh 7.2. Không công bố tên tổ chức phát hành/mã của cổ phiếu chưa niêm yết, trái phiếu hay CD (trừ CD của Techcombank mệnh giá 150 tỷ, TM 36.1). CD giá gốc 1.000 tỷ đang thế chấp cho vay ngắn hạn. Cổ phiếu niêm yết AFS rất nhỏ (giá gốc 0,005 tỷ), xếp 'holding'. Lãi AFS 9 tháng 2026: 889,78 tỷ. Theo kỳ hạn thanh toán (TM 36.4): đến 1 năm 12.380,93 tỷ; 1–5 năm 10.058,11 tỷ; trên 5 năm 5.807,83 tỷ; không kỳ hạn 2.007,74 tỷ."
+  },
+  "HTM": {
+   "cost": 2148.2,
+   "fv": 2148.2,
+   "cost0": 4067.42,
+   "fv0": 4067.42,
+   "groups": [
+    {
+     "n": "Tiền gửi có kỳ hạn gốc trên 03 tháng, kỳ hạn còn lại không quá 12 tháng",
+     "cls": "fi",
+     "cost": 2148.2,
+     "fv": 2148.2,
+     "cost0": 3657.42,
+     "fv0": 3657.42
+    },
+    {
+     "n": "Tiền gửi có kỳ hạn gốc trên 12 tháng",
+     "cls": "fi",
+     "cost": 0.0,
+     "fv": 0.0,
+     "cost0": 410.0,
+     "fv0": 410.0
+    }
+   ],
+   "note": "Thuyết minh 7.3; chỉ có giá gốc (fv = giá gốc). Tại 31/12/2025 khoản 410 tỷ kỳ hạn trên 12 tháng nằm ở đầu tư dài hạn trên BCĐKT, nên HTM ngắn hạn trên BCĐKT là 3.657,42 tỷ. Đang thế chấp 520 tỷ cho vay ngắn hạn, 210 tỷ ký quỹ cho chứng quyền phát hành, 1,20 tỷ cho thẻ tín dụng."
+  },
+  "LTOther": {
+   "cost": 3292.84,
+   "fv": 3292.84,
+   "cost0": 3200.27,
+   "fv0": 3200.27,
+   "groups": [
+    {
+     "n": "Góp vốn/cổ phần dài hạn khác",
+     "cls": "holding",
+     "cost": 3292.84,
+     "fv": 3292.84,
+     "cost0": 3200.27,
+     "fv0": 3200.27,
+     "holdings": [
+      {
+       "t": "Công ty Cổ phần Thời Đại Mới T&T (sở hữu 5,17%)",
+       "cost": 3259.5,
+       "fv": 3259.5,
+       "cost0": 0.0,
+       "fv0": 0.0
+      },
+      {
+       "t": "Công ty Cổ phần WealthTech Innovations (sở hữu 11,00%; đầu năm 0,50%)",
+       "cost": 33.04,
+       "fv": 33.04,
+       "cost0": 1.54,
+       "fv0": 1.54
+      },
+      {
+       "t": "Công ty Cổ phần Sàn Giao dịch Tài sản mã hóa Techcom (0,29%)",
+       "cost": 0.3,
+       "fv": 0.3,
+       "cost0": 0.3,
+       "fv0": 0.3
+      },
+      {
+       "t": "Công ty Cổ phần Đầu tư và Phát triển Đô thị Hưng Yên (đầu năm 8,20%)",
+       "cost": 0.0,
+       "fv": 0.0,
+       "cost0": 2026.83,
+       "fv0": 2026.83
+      },
+      {
+       "t": "Công ty Cổ phần Đầu tư và Phát triển NewCo (đầu năm 9,90%)",
+       "cost": 0.0,
+       "fv": 0.0,
+       "cost0": 1006.6,
+       "fv0": 1006.6
+      },
+      {
+       "t": "Công ty Cổ phần Đầu tư và Công nghệ TokenBay (đầu năm sở hữu 10,99%)",
+       "cost": 0.0,
+       "fv": 0.0,
+       "cost0": 165.0,
+       "fv0": 165.0
+      }
+     ]
+    }
+   ],
+   "note": "Thuyết minh 10 – Các khoản đầu tư dài hạn khác (ngoài FVTPL/AFS/HTM, chỉ tiêu bs212_4 trên BCĐKT). Danh mục thay đổi hoàn toàn trong 9 tháng: thoái Hưng Yên, NewCo, TokenBay; mua 5,17% T&T Thời Đại Mới 3.259,50 tỷ."
+  },
+  "cw": {
+   "issued": "Phải trả chứng quyền đang lưu hành 31,03 tỷ đồng (31/12/2025: 4,09 tỷ). Được phép phát hành 34.000.000 CW, đang lưu hành 18.610.800 CW (31/12/2025: 4.000.000 / 2.795.100), gồm 9 mã đợt 02: ACB 1.992.200; FPT 2.639.400; HPG 4.398.500; MBB 954.300; MWG 3.674.400; STB 114.200; VHM 3.740.000; VPB 1.097.800 (đơn vị: chứng quyền đang lưu hành). Đảm bảo thanh toán bằng ký quỹ hợp đồng tiền gửi 210 tỷ.",
+   "hedge": "Cổ phiếu niêm yết phòng ngừa rủi ro chứng quyền (FVTPL): giá gốc 106,30 tỷ, giá trị hợp lý 97,68 tỷ (31/12/2025: 19,17 / 18,59 tỷ). Không công bố theo từng mã; cổ phiếu cơ sở theo danh sách CW: ACB, FPT, HPG, MBB, MWG, STB, VHM, VPB."
+  }
+ },
+ "note": "Hai tài liệu 44451 và 43431 cùng là BCTC riêng Q3/2026 (44451 = bản có công văn CBTT và giải trình LNST ở đầu, số liệu trùng khớp hoàn toàn); không có bản hợp nhất. Đối chiếu BCĐKT (WiData fs_sec, riêng lẻ): FVTPL 117,17; HTM 2.148,20; cho vay 54.739,64; AFS 30.254,61; dự phòng (5,91); vay ngắn hạn 40.489,28; vay dài hạn 2.907,15; TP ngắn hạn 568,29; TP dài hạn 3.000,00 – khớp thuyết minh. Thuyết minh không liệt kê danh mục theo từng mã cổ phiếu/trái phiếu. Mục LTOther là khoản đầu tư dài hạn khác (TM 10), bổ sung ngoài schema."
+}

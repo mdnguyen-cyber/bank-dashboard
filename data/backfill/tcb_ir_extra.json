@@ -1,0 +1,808 @@
+{
+ "_src": "Techcombank — Tài liệu trình bày công bố KQKD quý 3/2026 (22/10/2026), techcombank.com › Nhà đầu tư › Công bố kết quả kinh doanh",
+ "charts": [
+  {
+   "id": "chIrIea",
+   "title": "Tài sản sinh lãi, lợi suất tài sản, chi phí vốn và NIM theo quý",
+   "sub": "nghìn tỷ đồng (cột chồng) · % (đường, trục phải), lãi suất theo quý dựa trên số dư bình quân ngày (cách tính của Techcombank)",
+   "type": "barline",
+   "unit": " nghìn tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Tín dụng (cho vay KH và TPDN)",
+     "v": [
+      805,
+      824,
+      854,
+      949,
+      961
+     ]
+    },
+    {
+     "n": "TPCP và tài sản sinh lãi khác",
+     "v": [
+      273,
+      289,
+      264,
+      259,
+      290
+     ]
+    },
+    {
+     "n": "Lợi suất tài sản sinh lãi",
+     "v": [
+      7.0,
+      7.1,
+      7.2,
+      8.1,
+      8.4
+     ],
+     "line": 1,
+     "axis": "y1"
+    },
+    {
+     "n": "Chi phí vốn",
+     "v": [
+      3.4,
+      3.6,
+      4.2,
+      4.9,
+      5.2
+     ],
+     "line": 1,
+     "axis": "y1"
+    },
+    {
+     "n": "NIM quý",
+     "v": [
+      3.9,
+      3.9,
+      3.1,
+      3.4,
+      3.5
+     ],
+     "line": 1,
+     "axis": "y1"
+    }
+   ],
+   "ins": "Lợi suất tài sản sinh lãi tăng từ <b>7,0%</b> (Q3/2025) lên <b>8,4%</b> (Q3/2026), nhanh hơn chi phí vốn (3,4% → 5,2%), nên NIM quý hồi phục quý thứ hai liên tiếp lên <b>3,5%</b> sau đáy 3,1% ở Q1/2026; NIM 12 tháng vẫn giảm còn 3,5% (Q3/2025: 3,8%). Tín dụng (gồm trái phiếu doanh nghiệp) chiếm 77% tài sản sinh lãi."
+  },
+  {
+   "id": "chIrFund",
+   "title": "Huy động từ khách hàng theo loại, lãi suất huy động và tỷ lệ CASA",
+   "sub": "nghìn tỷ đồng (cột chồng) · % (đường, trục phải) · CASA gồm số dư Sinh lời tự động",
+   "type": "barline",
+   "unit": " nghìn tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Tiền gửi có kỳ hạn",
+     "v": [
+      367,
+      397,
+      404,
+      430,
+      446
+     ]
+    },
+    {
+     "n": "Không kỳ hạn (gồm Sinh lời tự động)",
+     "v": [
+      272,
+      269,
+      247,
+      267,
+      246
+     ]
+    },
+    {
+     "n": "Chứng chỉ tiền gửi",
+     "v": [
+      59,
+      70,
+      77,
+      86,
+      105
+     ]
+    },
+    {
+     "n": "Lãi suất huy động",
+     "v": [
+      3.0,
+      3.1,
+      3.8,
+      4.4,
+      4.7
+     ],
+     "line": 1,
+     "axis": "y1"
+    },
+    {
+     "n": "Tỷ lệ CASA",
+     "v": [
+      42.5,
+      40.4,
+      37.9,
+      38.3,
+      35.5
+     ],
+     "line": 1,
+     "axis": "y1"
+    }
+   ],
+   "ins": "Khách hàng chuyển sang tiền gửi có kỳ hạn và chứng chỉ tiền gửi lãi cao hơn: CASA giảm còn <b>35,5%</b> (Q3/2025: 42,5%), chứng chỉ tiền gửi tăng gần gấp đôi lên <b>105</b> nghìn tỷ, lãi suất huy động lên <b>4,7%</b> (Q3/2025: 3,0%). CASA doanh nghiệp giảm 20% trong quý do thời điểm dòng tiền; CASA cá nhân giữ 160 nghìn tỷ."
+  },
+  {
+   "id": "chIrCasaSeg",
+   "title": "CASA theo phân khúc khách hàng",
+   "sub": "nghìn tỷ đồng · cột chồng · gồm số dư Sinh lời tự động",
+   "type": "stack",
+   "unit": " nghìn tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Cá nhân",
+     "v": [
+      167,
+      172,
+      158,
+      160,
+      160
+     ]
+    },
+    {
+     "n": "Doanh nghiệp",
+     "v": [
+      105,
+      97,
+      89,
+      107,
+      86
+     ]
+    }
+   ],
+   "ins": "CASA cá nhân ổn định quanh <b>160</b> nghìn tỷ; biến động nằm ở CASA doanh nghiệp (107 → <b>86</b> nghìn tỷ trong Q3/2026), theo chu kỳ dòng tiền kinh doanh."
+  },
+  {
+   "id": "chIrCorp",
+   "title": "Tín dụng khách hàng doanh nghiệp theo ngành",
+   "sub": "nghìn tỷ đồng · cột chồng · tính từ tổng dư nợ và tỷ trọng ngành công bố (làm tròn)",
+   "type": "stack",
+   "unit": " nghìn tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Bất động sản",
+     "v": [
+      268.5,
+      253.1,
+      247.3,
+      303.5,
+      287.3
+     ]
+    },
+    {
+     "n": "Xây dựng",
+     "v": [
+      18.5,
+      27.1,
+      45.8,
+      43.4,
+      65.0
+     ]
+    },
+    {
+     "n": "Vật liệu xây dựng",
+     "v": [
+      27.8,
+      22.6,
+      22.9,
+      21.7,
+      21.7
+     ]
+    },
+    {
+     "n": "FMCG, bán lẻ, logistics",
+     "v": [
+      46.3,
+      45.2,
+      45.8,
+      54.2,
+      54.2
+     ]
+    },
+    {
+     "n": "Tiện ích, viễn thông",
+     "v": [
+      23.1,
+      13.6,
+      18.3,
+      16.3,
+      21.7
+     ]
+    },
+    {
+     "n": "Khác",
+     "v": [
+      78.7,
+      85.9,
+      82.4,
+      103.0,
+      92.1
+     ]
+    }
+   ],
+   "ins": "Dư nợ doanh nghiệp đi ngang trong Q3/2026 (<b>542</b> nghìn tỷ, +20% từ đầu năm). Xây dựng hạ tầng tăng mạnh nhất (+153% từ đầu năm, tỷ trọng 4% → <b>12%</b>) nhờ các dự án trọng điểm quốc gia; bất động sản giảm 6% trong quý, tỷ trọng còn <b>53%</b> dư nợ doanh nghiệp, dưới 30% tổng dư nợ."
+  },
+  {
+   "id": "chIrRetail",
+   "title": "Tín dụng khách hàng cá nhân và SME theo sản phẩm",
+   "sub": "nghìn tỷ đồng · cột chồng · tính từ tổng dư nợ và tỷ trọng công bố (làm tròn) · cho vay ký quỹ là của ngân hàng",
+   "type": "stack",
+   "unit": " nghìn tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Cho vay mua nhà",
+     "v": [
+      239.4,
+      260.4,
+      276.5,
+      272.7,
+      272.4
+     ]
+    },
+    {
+     "n": "Thẻ tín dụng",
+     "v": [
+      23.9,
+      26.0,
+      23.7,
+      28.5,
+      25.1
+     ]
+    },
+    {
+     "n": "Cho vay ký quỹ",
+     "v": [
+      41.0,
+      44.6,
+      43.5,
+      52.9,
+      54.5
+     ]
+    },
+    {
+     "n": "Cho vay tín chấp",
+     "v": [
+      10.3,
+      11.2,
+      15.8,
+      16.3,
+      25.1
+     ]
+    },
+    {
+     "n": "SME",
+     "v": [
+      13.7,
+      14.9,
+      19.8,
+      20.4,
+      20.9
+     ]
+    },
+    {
+     "n": "Khác",
+     "v": [
+      10.3,
+      14.9,
+      15.8,
+      16.3,
+      16.8
+     ]
+    }
+   ],
+   "ins": "Dư nợ cá nhân và SME <b>419</b> nghìn tỷ, +13% từ đầu năm. Cho vay tín chấp (gồm ShopCash cho hộ kinh doanh) tăng nhanh nhất: +95% từ đầu năm, tỷ trọng 3% → <b>6%</b>; cho vay ký quỹ +25%; vay mua nhà vẫn chiếm 65% nhưng chỉ tăng 5%."
+  },
+  {
+   "id": "chIrFee",
+   "title": "Thu từ dịch vụ theo sản phẩm",
+   "sub": "tỷ đồng/quý · cột chồng · ngân hàng đầu tư gồm tư vấn phát hành trái phiếu, ủy thác, đại lý, môi giới, quản lý quỹ; bảo hiểm gồm banca và phí từ TCGI, Techcom Life",
+   "type": "stack",
+   "unit": " tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Ngân hàng đầu tư",
+     "v": [
+      1049,
+      797,
+      624,
+      1142,
+      1022
+     ]
+    },
+    {
+     "n": "Bảo hiểm",
+     "v": [
+      377,
+      409,
+      429,
+      583,
+      705
+     ]
+    },
+    {
+     "n": "Thẻ",
+     "v": [
+      410,
+      494,
+      443,
+      492,
+      586
+     ]
+    },
+    {
+     "n": "Thư tín dụng, tiền mặt, thanh toán",
+     "v": [
+      748,
+      1001,
+      1593,
+      1694,
+      1565
+     ]
+    },
+    {
+     "n": "Ngoại hối và phái sinh",
+     "v": [
+      312,
+      315,
+      349,
+      359,
+      430
+     ]
+    },
+    {
+     "n": "Khác",
+     "v": [
+      16,
+      7,
+      -20,
+      -77,
+      -98
+     ]
+    }
+   ],
+   "ins": "Phí 9 tháng <b>11.823</b> tỷ, +40%. Động lực là thư tín dụng, quản lý tiền mặt và thanh toán (+137% so cùng kỳ 9 tháng) và bảo hiểm (+106%); phí ngân hàng đầu tư giảm 18% (phân phối trái phiếu chỉ 259 tỷ so với 1.347 tỷ cùng kỳ)."
+  },
+  {
+   "id": "chIrOpex",
+   "title": "Chi phí hoạt động theo loại và tỷ lệ chi phí / thu nhập",
+   "sub": "tỷ đồng/quý (cột chồng) · CIR % (đường, trục phải)",
+   "type": "barline",
+   "unit": " tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Nhân sự",
+     "v": [
+      1961,
+      1972,
+      1626,
+      1950,
+      2117
+     ]
+    },
+    {
+     "n": "Trang thiết bị",
+     "v": [
+      310,
+      387,
+      288,
+      366,
+      406
+     ]
+    },
+    {
+     "n": "Khấu hao",
+     "v": [
+      499,
+      502,
+      491,
+      532,
+      559
+     ]
+    },
+    {
+     "n": "Tiếp thị",
+     "v": [
+      569,
+      437,
+      312,
+      512,
+      789
+     ]
+    },
+    {
+     "n": "IT",
+     "v": [
+      371,
+      454,
+      375,
+      411,
+      453
+     ]
+    },
+    {
+     "n": "Khác",
+     "v": [
+      783,
+      1070,
+      776,
+      849,
+      972
+     ]
+    },
+    {
+     "n": "CIR",
+     "v": [
+      31.5,
+      32.6,
+      28.3,
+      30.9,
+      31.9
+     ],
+     "line": 1,
+     "axis": "y1"
+    }
+   ],
+   "ins": "Chi phí Q3/2026 <b>5.295</b> tỷ, +18% so cùng kỳ; tiếp thị tăng nhanh nhất (+39%), nhân sự chỉ +8%. CIR 9 tháng <b>30,5%</b> (9T/2025: 30,1%)."
+  },
+  {
+   "id": "chIrSeg",
+   "title": "Thu nhập hoạt động theo phân khúc",
+   "sub": "tỷ đồng/quý · cột chồng · CIBG = khối khách hàng doanh nghiệp và định chế",
+   "type": "stack",
+   "unit": " tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Cá nhân",
+     "v": [
+      7518,
+      7753,
+      7507,
+      7934,
+      8318
+     ]
+    },
+    {
+     "n": "CIBG",
+     "v": [
+      5086,
+      4714,
+      4976,
+      5665,
+      6217
+     ]
+    },
+    {
+     "n": "Markets",
+     "v": [
+      899,
+      1305,
+      1229,
+      842,
+      1327
+     ]
+    },
+    {
+     "n": "Khác",
+     "v": [
+      178,
+      768,
+      -217,
+      306,
+      578
+     ]
+    },
+    {
+     "n": "Thu nợ đã xử lý",
+     "v": [
+      561,
+      254,
+      177,
+      197,
+      148
+     ]
+    }
+   ],
+   "ins": "Khối khách hàng doanh nghiệp (CIBG) tăng nhanh nhất: <b>+22%</b> so cùng kỳ trong Q3/2026, phí CIBG 9 tháng +45%; khối cá nhân +11%. Thu nợ đã xử lý giảm còn 148 tỷ."
+  },
+  {
+   "id": "chIrAq",
+   "title": "Chi phí dự phòng, tỷ lệ nợ xấu và tỷ lệ bao phủ",
+   "sub": "tỷ đồng (cột, trục trái, số công bố làm tròn tới 0,1 nghìn tỷ) · tỷ lệ nợ xấu và bao phủ nợ xấu (%, hai trục phải)",
+   "type": "barline",
+   "unit": " tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Chi phí dự phòng",
+     "v": [
+      1500,
+      800,
+      900,
+      700,
+      900
+     ]
+    },
+    {
+     "n": "Tỷ lệ nợ xấu",
+     "v": [
+      1.23,
+      1.13,
+      1.16,
+      1.15,
+      1.36
+     ],
+     "line": 1,
+     "axis": "y1"
+    },
+    {
+     "n": "Tỷ lệ bao phủ nợ xấu",
+     "v": [
+      119.1,
+      127.9,
+      129.3,
+      125.5,
+      107.0
+     ],
+     "line": 1,
+     "axis": "y2"
+    }
+   ],
+   "ins": "Nợ xấu tăng lên <b>1,36%</b> (Q2/2026: 1,15%), chủ yếu do phân loại theo CIC; loại trừ CIC là <b>1,26%</b>, phát sinh từ vài khoản riêng lẻ ở lĩnh vực không trọng tâm. Bao phủ nợ xấu giảm mạnh còn <b>107%</b>; chi phí tín dụng 12 tháng 0,4%."
+  },
+  {
+   "id": "chIrCap",
+   "title": "Vốn và thanh khoản",
+   "sub": "% · CAR theo Basel II · LDR và vốn ngắn hạn cho vay trung dài hạn là số riêng lẻ theo báo cáo NHNN",
+   "type": "line",
+   "unit": "%",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "CAR (Basel II)",
+     "v": [
+      15.8,
+      14.6,
+      15.2,
+      15.0,
+      15.0
+     ]
+    },
+    {
+     "n": "Vốn cấp 1",
+     "v": [
+      14.2,
+      13.7,
+      14.3,
+      14.0,
+      14.1
+     ],
+     "dash": 1
+    },
+    {
+     "n": "LDR",
+     "v": [
+      81.2,
+      76.5,
+      80.5,
+      80.1,
+      77.7
+     ]
+    },
+    {
+     "n": "Vốn ngắn hạn cho vay trung dài hạn",
+     "v": [
+      24.1,
+      24.6,
+      26.9,
+      27.8,
+      27.9
+     ]
+    }
+   ],
+   "ins": "CAR Basel II giữ <b>15,0%</b>, vốn cấp 1 14,1%. LDR giảm còn <b>77,7%</b> nhờ đa dạng nguồn vốn; vốn ngắn hạn cho vay trung dài hạn 27,9%, đi lên đều từ 24,1% nhưng còn xa trần."
+  },
+  {
+   "id": "chIrBond",
+   "title": "Hoạt động trái phiếu: giá trị tư vấn phát hành và phân phối",
+   "sub": "tỷ đồng/quý",
+   "type": "line",
+   "unit": " tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "Giá trị phát hành (tư vấn)",
+     "v": [
+      21384,
+      32008,
+      28296,
+      60722,
+      29680
+     ]
+    },
+    {
+     "n": "Giá trị phân phối",
+     "v": [
+      21799,
+      25372,
+      21942,
+      30306,
+      31063
+     ]
+    }
+   ],
+   "ins": "Giá trị trái phiếu phân phối Q3/2026 <b>31.063</b> tỷ, +43% so cùng kỳ; giá trị tư vấn phát hành 9 tháng 118.698 tỷ, gấp 2,2 lần. Phí phân phối trái phiếu vẫn thấp (166 tỷ trong quý)."
+  },
+  {
+   "id": "chIrBanca",
+   "title": "Bảo hiểm qua ngân hàng: APE và phí năm đầu",
+   "sub": "tỷ đồng/quý · APE = phí bảo hiểm quy năm",
+   "type": "line",
+   "unit": " tỷ",
+   "labels": [
+    "Q3/2025",
+    "Q4/2025",
+    "Q1/2026",
+    "Q2/2026",
+    "Q3/2026"
+   ],
+   "series": [
+    {
+     "n": "APE",
+     "v": [
+      221,
+      343,
+      416,
+      552,
+      645
+     ]
+    },
+    {
+     "n": "Phí năm đầu (FYP)",
+     "v": [
+      211,
+      310,
+      402,
+      550,
+      633
+     ]
+    }
+   ],
+   "ins": "APE 9 tháng <b>1.613</b> tỷ, gấp 2,5 lần cùng kỳ; Q3/2026 645 tỷ, gấp gần 3 lần Q3/2025. Phí bảo hiểm đóng góp 705 tỷ thu dịch vụ trong quý."
+  }
+ ],
+ "facts": [
+  [
+   "Tăng trưởng tín dụng (riêng lẻ)",
+   "16,3% YTD",
+   "Q3/2026"
+  ],
+  [
+   "Nợ xấu loại trừ tác động CIC",
+   "1,26%",
+   "Q3/2026 (sau CIC: 1,36%)"
+  ],
+  [
+   "Dư nợ cho vay ký quỹ",
+   "54.740 tỷ",
+   "Q3/2026; +31% so cùng kỳ"
+  ],
+  [
+   "Dư nợ tín chấp và thẻ tín dụng",
+   "50,7 nghìn tỷ",
+   "9T/2026; tín chấp +142% so cùng kỳ"
+  ],
+  [
+   "Khách hàng cá nhân dùng ngân hàng số",
+   "14,8 triệu",
+   "Q3/2026 (Q3/2025: 12,4 triệu)"
+  ],
+  [
+   "Giao dịch cá nhân qua kênh số",
+   "99,0%",
+   "9T/2026"
+  ],
+  [
+   "Hội viên Techcombank OneU",
+   "14,8 triệu",
+   "5,1 triệu hoạt động mỗi tháng"
+  ],
+  [
+   "Cơ sở kinh doanh dùng Techcombank Merchant",
+   "> 2,7 triệu",
+   "Q3/2026"
+  ],
+  [
+   "Thẻ ghi nợ · thẻ tín dụng",
+   "8,41 · 1,27 triệu thẻ",
+   "Q3/2026"
+  ],
+  [
+   "Thị phần bancassurance · bảo hiểm",
+   "23,1% · 10,4%",
+   "9T/2026"
+  ]
+ ]
+}
