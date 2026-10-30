@@ -103,3 +103,13 @@ CTCK dùng các cột bảng cân đối đã có trong `fs_sec` (bs111–bs115,
 
 ## Đấu thầu trái phiếu Kho bạc Mỹ
 `scripts/fetch_ust.py` lấy kết quả từ Fiscal Data (auctions_query); Fiscal Data cập nhật chậm vài tuần nên các phiên coupon gần đây (60 ngày) được bổ sung từ TreasuryDirect (TA_WS `securities/auctioned`). Cần số ngay sau phiên: chạy workflow **Cập nhật nhanh UST** (`fetch-ust.yml`) rồi `python3 scripts/build_global.py`.
+
+## TCB: số liệu tài liệu công bố KQKD (nhập tay mỗi quý)
+- Nguồn: techcombank.com › Nhà đầu tư › Công bố kết quả kinh doanh (bản trình bày PDF quý mới nhất). Trang chặn máy chủ đám mây, mở bằng trình duyệt.
+- `data/backfill/tcb_ir_extra.json` (cùng khuôn với ACB): tài sản sinh lãi, lợi suất, chi phí vốn, NIM; huy động, CASA theo phân khúc; tín dụng doanh nghiệp theo ngành, cá nhân và SME theo sản phẩm; phí theo sản phẩm; chi phí và CIR; thu nhập theo phân khúc; dự phòng, nợ xấu, bao phủ; vốn và thanh khoản; trái phiếu; bancassurance; bảng chỉ tiêu khác. Thêm cột quý mới vào `labels` và mọi `series`, bỏ quý cũ nhất nếu muốn giữ 5 quý, sửa `ins`.
+- Build: `python3 scripts/build_ctg_data.py --ticker TCB`.
+
+## Công ty chứng khoán: nguồn vốn vay, cho vay ký quỹ, danh mục tự doanh (trang dn.html)
+- Mỗi mã một file `data/backfill/sec_detail/<MÃ>.json`, trích từ thuyết minh BCTC quý (Wi MCP, document_miner loại 7): từng khoản vay theo bên cho vay, đồng tiền, lãi suất, kỳ hạn; trái phiếu phát hành; cho vay ký quỹ, chất lượng dư nợ; FVTPL/AFS/HTM/đầu tư dài hạn khác theo nhóm, mã niêm yết có `tk`; mục đích nắm giữ `cls` (holding, fi, cw, trading); chứng quyền đang lưu hành `cwList`; lời đọc `ins`.
+- Giá các mã niêm yết trong danh mục (cuối quý BCTC và phiên gần nhất): `data/backfill/sec_detail/_px.json`, lấy từ Wi MCP `eod_adjust`. Cập nhật mỗi lần build để cột "Diễn biến" mới.
+- Build: `python3 scripts/build_sec_detail.py` → `data/sec-detail.js`. Hiển thị: `assets/secdet.js` (tab Tài chính: mục Chi tiết; tab Tổng quan: top khoản đầu tư).

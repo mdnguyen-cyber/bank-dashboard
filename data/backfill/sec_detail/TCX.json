@@ -467,5 +467,188 @@
    "t": "STB",
    "n": 114200
   }
- ]
+ ],
+ "ir": {
+  "_src": "TCBS — Chỉ số tài chính, trang \"Chỉ tiêu kinh doanh\" (tcbs.com.vn › Nhà đầu tư › Thông tin tài chính); Q3/2025 suy từ lũy kế năm và mức thay đổi so cùng kỳ công bố",
+  "charts": [
+   {
+    "id": "sdIrBond",
+    "title": "Trái phiếu và chứng chỉ quỹ: tư vấn phát hành, phân phối, giao dịch",
+    "sub": "tỷ đồng/quý (cột) · thị phần tư vấn phát hành trái phiếu % (đường, trục phải)",
+    "type": "bar",
+    "unit": " tỷ",
+    "y1t": "% thị phần",
+    "labels": [
+     "Q2/2025",
+     "Q3/2025",
+     "Q4/2025",
+     "Q1/2026",
+     "Q2/2026",
+     "Q3/2026"
+    ],
+    "series": [
+     {
+      "n": "Tư vấn phát hành trái phiếu",
+      "v": [
+       25500,
+       21384,
+       32008,
+       28296,
+       60722,
+       29680
+      ]
+     },
+     {
+      "n": "Phân phối trái phiếu qua iBond",
+      "v": [
+       18285,
+       14848,
+       19693,
+       18555,
+       22450,
+       19988
+      ]
+     },
+     {
+      "n": "Giao dịch trái phiếu trên iConnect",
+      "v": [
+       5799,
+       6979,
+       5680,
+       3387,
+       7856,
+       11075
+      ]
+     },
+     {
+      "n": "Phân phối chứng chỉ quỹ qua iFund",
+      "v": [
+       6463,
+       6464,
+       4499,
+       3268,
+       1810,
+       473
+      ]
+     },
+     {
+      "n": "Thị phần tư vấn phát hành",
+      "v": [
+       44.5,
+       35.8,
+       32.7,
+       86.1,
+       48.1,
+       46.4
+      ],
+      "line": 1,
+      "axis": "y1",
+      "u": "%",
+      "dp": 1
+     }
+    ],
+    "ins": "TCBS đứng đầu tư vấn phát hành trái phiếu với thị phần <b>46,4%</b> trong Q3/2026; giá trị tư vấn 9 tháng 118.698 tỷ, gấp 2,2 lần cùng kỳ. Giao dịch thứ cấp trên iConnect tăng mạnh (+59% so cùng kỳ), trong khi phân phối chứng chỉ quỹ qua iFund giảm còn 473 tỷ."
+   },
+   {
+    "id": "sdIrShare",
+    "title": "Thị phần môi giới cổ phiếu và cho vay ký quỹ",
+    "sub": "% · môi giới HOSE, HNX theo số sở giao dịch; cho vay ký quỹ theo TCBS (Q3/2026 chưa công bố)",
+    "type": "line",
+    "unit": "%",
+    "labels": [
+     "Q2/2025",
+     "Q3/2025",
+     "Q4/2025",
+     "Q1/2026",
+     "Q2/2026",
+     "Q3/2026"
+    ],
+    "series": [
+     {
+      "n": "Môi giới HOSE",
+      "v": [
+       7.5,
+       7.7,
+       9.0,
+       8.9,
+       9.4,
+       10.0
+      ],
+      "dp": 1
+     },
+     {
+      "n": "Môi giới HNX",
+      "v": [
+       8.8,
+       6.8,
+       8.9,
+       9.5,
+       9.0,
+       10.0
+      ],
+      "dp": 1
+     },
+     {
+      "n": "Cho vay ký quỹ",
+      "v": [
+       11.1,
+       10.8,
+       10.6,
+       10.5,
+       11.4,
+       null
+      ],
+      "dp": 1
+     }
+    ],
+    "ins": "Thị phần môi giới lên <b>10,0%</b> ở cả HOSE (top 3) và HNX (top 2), tăng 2,3 và 3,2 điểm % so cùng kỳ. TCBS dẫn đầu thị phần cho vay ký quỹ (11,4% ở Q2/2026)."
+   },
+   {
+    "id": "sdIrCust",
+    "title": "Khách hàng: mở mới mỗi quý và tổng số tài khoản",
+    "sub": "nghìn khách hàng mới (cột) · tổng số khách hàng, nghìn (đường, trục phải)",
+    "type": "bar",
+    "unit": " nghìn",
+    "y1t": "nghìn KH (tổng)",
+    "labels": [
+     "Q2/2025",
+     "Q3/2025",
+     "Q4/2025",
+     "Q1/2026",
+     "Q2/2026",
+     "Q3/2026"
+    ],
+    "series": [
+     {
+      "n": "Khách hàng mới",
+      "v": [
+       29.752,
+       51.197,
+       33.322,
+       53.704,
+       35.36,
+       38.747
+      ],
+      "dp": 1
+     },
+     {
+      "n": "Tổng số khách hàng",
+      "v": [
+       1118.5,
+       null,
+       1203.0,
+       1256.8,
+       1292.2,
+       1330.9
+      ],
+      "line": 1,
+      "axis": "y1",
+      "u": " nghìn",
+      "dp": 0
+     }
+    ],
+    "ins": "Tổng khách hàng <b>1,33 triệu</b>, +14% so cùng kỳ. Khách mở mới Q3/2026 38.747, thấp hơn 24% so với quý sôi động Q3/2025; lũy kế 9 tháng 127.811, +32%."
+   }
+  ]
+ }
 }

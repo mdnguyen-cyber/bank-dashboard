@@ -82,7 +82,8 @@
       <div class="src">Nguồn: ${srcD(d)}</div></article>
     ${cwL.length ? `<article class="card"><h3 class="sub">Chứng quyền đang lưu hành và cổ phiếu cơ sở</h3><p class="chart-sub">số chứng quyền lưu hành cuối quý · giá cổ phiếu cơ sở đóng cửa ${dd((SD.px[cwL[0].t] || {}).d0)} → ${dd((SD.px[cwL[0].t] || {}).d1)}</p>
       ${tbl(['Mã cơ sở', 'CW lưu hành', 'Giá cuối quý', 'Giá gần nhất', 'Thay đổi'], cwL.map(c => { const x = pxChg(c.t); return [`<b>${c.t}</b>`, nf(c.n), x ? nf(x.p.c0) : '—', x ? nf(x.p.c1) : '—', x ? `<span class="${cls(x.r)}">${sg(x.r)}</span>` : '—']; }))}
-      <div class="insight">${esc(d.portfolio.cw && d.portfolio.cw.hedge || '')}</div><div class="src">Nguồn: ${srcD(d)}; giá: ${WI}</div></article>` : ''}`;
+      <div class="insight">${esc(d.portfolio.cw && d.portfolio.cw.hedge || '')}</div><div class="src">Nguồn: ${srcD(d)}; giá: ${WI}</div></article>` : ''}
+    ${d.ir ? `<h3 class="sec2">Chỉ tiêu kinh doanh do ${SYM} công bố</h3><div class="grid g2 gap">${d.ir.charts.map(c => card({ id: c.id, title: c.title, sub: c.sub, ins: c.ins, src: esc(d.ir._src) })).join('')}</div>` : ''}`;
   };
 
   window.sdFinDraw = function () {
@@ -106,6 +107,14 @@
     const R = rows(d), byC = (k, f) => tot(R.filter(r => r.cls === k), f);
     mk('sdCls', { type: 'bar', data: { labels: lab, datasets: Object.keys(CLS).map(k => bar(CLS[k], [byC(k, 'fv0'), byC(k, 'fv')], CLSC[k], { stack: 'p', unit: ' tỷ' })).filter(ds => ds.data.some(v => v > 0.01)) },
       options: { scales: { x: { stacked: true }, y: yNum('tỷ đồng', { stacked: true }) } } });
+    if (d.ir) d.ir.charts.forEach(c => {
+      const PAL = [C.navy, C.teal, C.gold, C.blue, C.grey], y1 = c.series.some(x => x.axis === 'y1');
+      mk(c.id, { type: 'bar', data: { labels: c.labels, datasets: c.series.map((x, i) => {
+        const ln = c.type === 'line' || x.line, col = x.axis === 'y1' ? C.purple : PAL[i % PAL.length];
+        return { type: ln ? 'line' : 'bar', label: x.n, data: x.v, backgroundColor: col, borderColor: col, borderWidth: ln ? 2 : 0, pointRadius: ln ? 2.5 : 0, spanGaps: true, yAxisID: x.axis || 'y', unit: x.u || c.unit, dp: x.dp ?? 0, order: ln ? 0 : 1 }; }) },
+        options: { scales: Object.assign({ y: Object.assign(yNum(c.unit.trim()), c.unit === '%' ? { ticks: { callback: v => nf(v, 0) + '%' } } : {}) },
+          y1 ? { y1: Object.assign(yNum(c.y1t), { position: 'right', grid: { display: false } }) } : {}) } });
+    });
     // sankey
     if (!window.Chart || !Chart.registry.controllers.get('sankey')) return;
     const fl = [], col = {}, root = 'Danh mục tự doanh';
