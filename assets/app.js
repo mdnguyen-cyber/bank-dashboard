@@ -78,7 +78,7 @@ function mk(id, cfg, opt = {}) {
     if (rl && rl.some(l => l.label && /^x/.test(l.axis || 'y'))) { const L = cfg.options.layout = cfg.options.layout || {}, pd = L.padding; L.padding = typeof pd === 'number' ? { top: Math.max(pd, 18), right: pd, bottom: pd, left: pd } : Object.assign({}, pd || {}, { top: Math.max((pd || {}).top || 0, 18) }); } }
   FSK.prep(cfg);
   charts[id] = new Chart(el, cfg);
-  FSK.enhance(charts[id], { today: new Date(TODAY), last: opt.last, win: opt.win ?? (el.closest('#fin') ? 60 : undefined) });
+  FSK.enhance(charts[id], { today: new Date(TODAY), last: opt.last, anchor: opt.anchor, win: opt.win ?? (el.closest('#fin') ? 60 : undefined) });
   charts[id]._base = JSON.parse(JSON.stringify(cfg.data.datasets.map(d => d.type || cfg.type)));
   if (opt.switch) {
     const box = document.querySelector(`[data-ctl="${id}"]`);
@@ -1049,15 +1049,29 @@ function drCpb() {
     ctx.save(); ctx.font = '600 10.5px Arial'; ctx.textBaseline = 'middle';
     L.forEach(l => { ctx.fillStyle = l.c; l.t.forEach((t, j) => ctx.fillText(t, a.right + 10, l.y + j * 13)); });
     ctx.restore(); } };
-  mk('chCpb', { type: 'line', data: { labels: dates.map(dvn), datasets: ds }, plugins: [endLbl], options: { layout: { padding: { right: wide ? 165 : 0 } }, plugins: { refLines: { lines }, tooltip: { filter: it => !it.dataset.keep || it.dataIndex >= n0, callbacks: { title: its => its.length && its[0].dataIndex >= n0 ? 'Dự phóng 31/12/' + dates[dates.length - 1].slice(0, 4) : its.length ? its[0].label : '', label: c => c.dataset.keep ? `${c.dataset.tl}: P/B ${x(c.dataset.pbEnd)} (TP ${nf(c.dataset.tpEnd)}đ, BVPS 2026F)` : c.parsed.y == null ? null : `${c.dataset.label}: ${x(c.parsed.y)}` } } }, scales: { x: { ticks: { maxTicksLimit: 12 } }, y: numAxis('', { beginAtZero: false, ticks: { callback: z => nf(z, 1) + 'x' } }) } } }, { win: 36 });
+  // TB và ±1σ tính theo khung thời gian đang xem (1Y, 3Y…, kéo zoom): đổi khung thì đường và lời đọc tính lại
+  function cpbInsW(i0, i1) {
+    const w = v.slice(i0, i1 + 1).filter(y => y != null); if (!w.length) return;
+    const mw = w.reduce((a, b) => a + b, 0) / w.length, sw = Math.sqrt(w.reduce((a, b) => a + (b - mw) ** 2, 0) / w.length);
+    lines[0].value = mw; lines[0].label = `TB ${x(mw)}`; lines[1].value = mw + sw; lines[1].label = `+1σ ${x(mw + sw)}`; lines[2].value = mw - sw; lines[2].label = `−1σ ${x(mw - sw)}`;
+    const z = sw ? (now - mw) / sw : 0, pct = w.filter(y => y <= now).length / w.length * 100, per = `${dvn(ser[i0][0])} – ${dvn(ser[i1][0])}`;
+    const el = $('#cpbIns'); if (!el) return;
+    el.innerHTML = `${nm}: P/B <b>${x(now)}</b> (${dvn(last)}), ${z >= 0 ? 'cao' : 'thấp'} hơn trung bình ${x(mw)} của khung ${per} <b>${nf(Math.abs(z), 1)} độ lệch chuẩn</b>; cao hơn ${nf(pct, 0)}% số ${daily ? 'phiên' : 'quý'} trong khung (thấp nhất ${x(Math.min(...w))}, cao nhất ${x(Math.max(...w))}).`
+      + tgt.map((t, k) => ` ${k ? '' : 'Nếu giá đạt '}${t.l} <b>${nf(t.tp)}đ</b> vào cuối năm, P/B trên BVPS 2026F là <b>${x(t.pb)}</b> — ${t.pb > mw + sw ? 'cao hơn mốc +1σ' : t.pb > mw ? 'trên trung bình nhưng trong dải ±1σ' : t.pb > mw - sw ? 'dưới trung bình của khung' : 'dưới mốc −1σ'} (giá ${sg((t.tp / M.price - 1) * 100, 0)} so với hiện tại).`).join('');
+  }
+  let cpbW = '';
+  const cpbStat = { id: 'cpbStat', beforeDatasetsDraw(ch) {
+    const sx = ch.scales.x; if (!sx) return;
+    const i0 = Math.max(0, Math.ceil(sx.min ?? 0)), i1 = Math.min(n0 - 1, Math.floor(sx.max ?? n0 - 1)); if (i1 < i0) return;
+    const key = i0 + '-' + i1; if (key === cpbW) return; cpbW = key; cpbInsW(i0, i1); } };
+  mk('chCpb', { type: 'line', data: { labels: dates.map(dvn), datasets: ds }, plugins: [endLbl, cpbStat], options: { layout: { padding: { right: wide ? 165 : 0 } }, plugins: { refLines: { lines }, tooltip: { filter: it => !it.dataset.keep || it.dataIndex >= n0, callbacks: { title: its => its.length && its[0].dataIndex >= n0 ? 'Dự phóng 31/12/' + dates[dates.length - 1].slice(0, 4) : its.length ? its[0].label : '', label: c => c.dataset.keep ? `${c.dataset.tl}: P/B ${x(c.dataset.pbEnd)} (TP ${nf(c.dataset.tpEnd)}đ, BVPS 2026F)` : c.parsed.y == null ? null : `${c.dataset.label}: ${x(c.parsed.y)}` } } }, scales: { x: { ticks: { maxTicksLimit: 12 } }, y: numAxis('', { beginAtZero: false, ticks: { callback: z => nf(z, 1) + 'x' } }) } } }, { win: 36, anchor: n0 - 1 });
   $('#cpbH').textContent = own ? `P/B ${T} theo phiên và P/B ngụ ý tại giá mục tiêu` : cpbSel === '_med' ? 'P/B trung vị ngành ngân hàng (26 ngân hàng niêm yết)' : `P/B ${cpbSel} theo phiên so với trung vị ngành`;
-  $('#cpbSub').textContent = `Lần · ${daily ? `theo phiên từ ${dvn(ser[0][0])}` : `cuối mỗi quý từ ${dvn(ser[0][0])}`} · đường xám = trung bình, vàng = ±1 độ lệch chuẩn của chính chuỗi${tgt.length ? ` · nét đứt = P/B đi từ hiện tại tới giá mục tiêu vào 31/12, tính trên BVPS 2026F ${nf(FW.bvps2026F)}đ` : ''} · bấm lại mã đang chọn để về ${T}`;
+  $('#cpbSub').textContent = `Lần · ${daily ? `theo phiên từ ${dvn(ser[0][0])}` : `cuối mỗi quý từ ${dvn(ser[0][0])}`} · đường xám = trung bình, vàng = ±1 độ lệch chuẩn trong khung thời gian đang xem${tgt.length ? ` · nét đứt = P/B đi từ hiện tại tới giá mục tiêu vào 31/12, tính trên BVPS 2026F ${nf(FW.bvps2026F)}đ` : ''} · bấm lại mã đang chọn để về ${T}`;
   const peers = H ? Object.keys(H.banks).filter(b => b !== T && (D.peers.rows || []).some(r => (r.symbol || r.s) === b && r.group === GRP)) : [];
   $('#cpbPick').innerHTML = [T, ...peers, '_med'].map(b => `<button type="button" data-b="${b}" class="${b === cpbSel ? 'on' : ''}">${b === '_med' ? 'Trung vị ngành' : b}</button>`).join('');
   $$('#cpbPick button').forEach(b => b.onclick = () => { cpbSel = b.dataset.b === cpbSel ? T : b.dataset.b; drCpb(); });
   const z = sd ? (now - m) / sd : 0, pct = v.filter(y => y <= now).length / v.length * 100;
-  $('#cpbIns').innerHTML = `${nm}: P/B <b>${x(now)}</b> (${dvn(last)}), ${z >= 0 ? 'cao' : 'thấp'} hơn trung bình ${x(m)} của chuỗi <b>${nf(Math.abs(z), 1)} độ lệch chuẩn</b>; cao hơn ${nf(pct, 0)}% số ${daily ? 'phiên' : 'quý'} (thấp nhất ${x(Math.min(...v))}, cao nhất ${x(Math.max(...v))}).`
-    + tgt.map((t, k) => ` ${k ? '' : 'Nếu giá đạt '}${t.l} <b>${nf(t.tp)}đ</b> vào cuối năm, P/B trên BVPS 2026F là <b>${x(t.pb)}</b> — ${t.pb > m + sd ? 'cao hơn mốc +1σ' : t.pb > m ? 'trên trung bình nhưng trong dải ±1σ' : t.pb > m - sd ? 'dưới trung bình lịch sử' : 'dưới mốc −1σ'} (giá ${sg((t.tp / M.price - 1) * 100, 0)} so với hiện tại).`).join('');
+  cpbInsW(0, n0 - 1);
 }
 function paneCons() {
   const S = CS.summary; const s = store.get(); const myTp = s.decision && +s.decision.tp;

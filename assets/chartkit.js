@@ -43,8 +43,8 @@
   }
 
   /* ---- 2) khung thời gian + kéo để zoom ---- */
-  function windowFor(ds, k) {
-    const n = ds.length, end = ds[n - 1];
+  function windowFor(ds, k, ai) {   // ai: vị trí điểm dữ liệu thật cuối cùng (chart có phần dự phóng phía sau) — khung tính lùi từ đó
+    const n = ds.length, end = ds[ai != null && ai < n ? ai : n - 1];
     if (!k) return [0, n - 1];
     const isEom = new Date(end.getFullYear(), end.getMonth(), end.getDate() + 1).getDate() === 1;   // dữ liệu tháng/quý: so theo cuối tháng
     const from = k === 'ytd' ? new Date(end.getFullYear(), 0, 1) : isEom ? new Date(end.getFullYear(), end.getMonth() - k + 1, 0) : new Date(end.getFullYear(), end.getMonth() - k, end.getDate());
@@ -111,7 +111,7 @@
     if (!ds) return;
     const n = ds.length;
     const bar = document.createElement('div'); bar.className = 'rng';
-    const wins = RANGES.map(([l, k]) => [l, k, windowFor(ds, k)]);
+    const wins = RANGES.map(([l, k]) => [l, k, windowFor(ds, k, opt.anchor)]);
     bar.innerHTML = wins.map(([l, k, w]) => {
       const pts = w[1] - w[0] + 1, dis = k && (pts < 2 || pts >= n);
       return `<button type="button" data-k="${k}"${dis ? ' disabled' : ''}>${l}</button>`;
@@ -236,9 +236,9 @@
       if (ymode === 'fit') { const r = visRange(), y = Y(); if (r) { y.min = r[0]; y.max = r[1]; } }
       ch.update('none'); mark(k);
     };
-    bar.querySelectorAll('button[data-k]').forEach(b => b.onclick = () => { const k = b.dataset.k === '0' ? 0 : b.dataset.k === 'ytd' ? 'ytd' : +b.dataset.k; const w = windowFor(ds, k); setWin(w[0], w[1], k); });
+    bar.querySelectorAll('button[data-k]').forEach(b => b.onclick = () => { const k = b.dataset.k === '0' ? 0 : b.dataset.k === 'ytd' ? 'ytd' : +b.dataset.k; const w = windowFor(ds, k, opt.anchor); setWin(w[0], w[1], k); });
     if (opt.last && opt.last < n) setWin(n - opt.last, n - 1, 'custom');
-    else if (opt.win) { const w = windowFor(ds, opt.win); if (w[0] > 0) setWin(w[0], w[1], opt.win); else mark(0); }
+    else if (opt.win) { const w = windowFor(ds, opt.win, opt.anchor); if (w[0] > 0) setWin(w[0], w[1], opt.win); else mark(0); }
     else mark(0);
 
     // kéo để zoom (chuột; trên điện thoại dùng nút khung thời gian)
