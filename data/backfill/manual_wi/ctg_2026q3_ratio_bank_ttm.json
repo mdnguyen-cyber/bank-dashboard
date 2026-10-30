@@ -1,0 +1,26 @@
+{
+ "tool": "wi_data_companies",
+ "request": {
+  "action": "get_data",
+  "endpoint_name": "ratio_bank_ttm",
+  "filters": "{\"symbol\": \"CTG\", \"year\": \"2026\", \"quarter\": \"1,2,3,4\"}"
+ },
+ "response": {
+  "data": [
+   {
+    "symbol": "CTG",
+    "year": 2026,
+    "quarter": 3,
+    "nim": 0.028557468299989792,
+    "yea": 0.06383958322777852,
+    "cof": 0.0376074831808827,
+    "cir": 0.2796986968261445,
+    "pct_net_service_income": 0.08013361821357218,
+    "pct_other_income": 0.10421357625110193,
+    "total_operating_income_growth_yoy": 0.21618881032654436,
+    "earning_spread": 0.026232100046895822
+   }
+  ]
+ },
+ "_src": "BCTC hợp nhất Quý III/2026 của VietinBank (investor.vietinbank.vn, công bố 30/10/2026), nhập tay; tiền thu nợ đã xử lý quý = lũy kế 9 tháng − 6 tháng; chỉ số TTM tính theo cùng công thức Wi MCP (bình quân 5 quý)"
+}

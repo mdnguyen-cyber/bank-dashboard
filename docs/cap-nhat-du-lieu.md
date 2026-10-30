@@ -118,3 +118,7 @@ CTCK dùng các cột bảng cân đối đã có trong `fs_sec` (bs111–bs115,
 - Workflow `fetch-hose.yml` (4 lần/ngày) chạy `scripts/fetch_hose_reports.py` (api.hsx.vn, mục "Các báo cáo định kỳ" của từng mã, ngày công bố = ngày đầu tên file HOSE đăng) rồi `scripts/build_report_dates.py` → `data/report-dates.js`.
 - `assets/rptcal.js` hiện thanh "BCTC Qx" dưới tiêu đề trang ngân hàng, trang doanh nghiệp, trang ngành: đã công bố chưa, so với ngày thường lệ (trung vị 6 quý gần nhất); đỏ khi đã quá ngày muộn nhất của 6 quý trước. Mã niêm yết HNX (MBS, SHS, PVI, PTI) chưa có nguồn.
 - Thêm mã: sửa danh sách `SYMS` trong `fetch_hose_reports.py` và nhóm `G` trong `rptcal.js`.
+
+## BCTC ngân hàng đăng trước khi Wi MCP cập nhật (nhập tay)
+- Ngân hàng đăng BCTC quý mà Wi chưa có: nhập số từ PDF (OCR `tesseract`) vào `data/backfill/manual_wi/<mã>_<kỳ>_<endpoint>.json` cùng khuôn lần kéo Wi (`fs_bank`, `ratio_bank`, `ratio_bank_ttm`, `ratio_common_ttm`), đơn vị VND, tỷ lệ dạng phân số; chỉ số TTM tính theo công thức Wi (bình quân 5 quý); VCSH thuộc cổ đông mẹ thêm vào `equity_parent.json`; cơ cấu kỳ hạn, tiền gửi vào `notes_mix.json`.
+- `build_ctg_data.py` đọc thư mục này trước raw Wi, nên khi Wi có kỳ đó thì số Wi tự ghi đè. Ví dụ: CTG Q3/2026 (BCTC hợp nhất đăng 30/10/2026).

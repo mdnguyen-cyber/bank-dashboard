@@ -1,0 +1,30 @@
+{
+ "tool": "wi_data_companies",
+ "request": {
+  "action": "get_data",
+  "endpoint_name": "ratio_bank",
+  "filters": "{\"symbol\": \"CTG\", \"year\": \"2026\", \"quarter\": \"1,2,3,4\"}"
+ },
+ "response": {
+  "data": [
+   {
+    "symbol": "CTG",
+    "year": 2026,
+    "quarter": 3,
+    "casa_ratio": 0.23108855656059293,
+    "npl_ratio": 0.012039117470369539,
+    "group2_loan_ratio": 0.01076964720517474,
+    "npl_coverage_ratio": 1.6039775322092455,
+    "npl": 25781262000000.0,
+    "ldr": 0.856297783025183,
+    "credit_growth_yoy": 0.07580497770681172,
+    "credit_growth_qoq": 0.023295197723446348,
+    "customer_funding_growth_yoy": 0.05529982094573671,
+    "mid_long_term_loan_ratio": 0.38607211703451366,
+    "accrued_interest_to_total_assets": 0.007104035499644576,
+    "mobilization": 2500833053000000.0
+   }
+  ]
+ },
+ "_src": "BCTC hợp nhất Quý III/2026 của VietinBank (investor.vietinbank.vn, công bố 30/10/2026), nhập tay; tiền thu nợ đã xử lý quý = lũy kế 9 tháng − 6 tháng"
+}

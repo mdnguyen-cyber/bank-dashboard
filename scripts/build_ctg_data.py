@@ -28,7 +28,9 @@ PEER_GROUPS = {   # cùng cách nhóm với dashboard ngành (build_sector_data.
 # ---------------------------------------------------------------- raw helpers
 def load_raw(folder):
     out = []
-    for p in sorted(glob.glob(f'{folder}/*.json')):
+    # số nhập tay từ BCTC doanh nghiệp đăng trước khi Wi MCP cập nhật (đã commit); đọc trước để lần kéo Wi cùng kỳ ghi đè khi có
+    man = sorted(glob.glob(str(ROOT / 'data/backfill/manual_wi/*.json'))) if str(folder).rstrip('/').endswith('raw/wi') else []
+    for p in man + sorted(glob.glob(f'{folder}/*.json')):
         d = json.load(open(p, encoding='utf-8'))
         d['_file'] = p.split('/')[-1]
         r = d.get('response')
