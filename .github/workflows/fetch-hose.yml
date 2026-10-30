@@ -1,0 +1,23 @@
+name: Lịch công bố BCTC (HOSE)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 1,5,10,14 * * *'
+permissions:
+  contents: write
+jobs:
+  hose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/fetch_hose_reports.py
+      - run: |
+          git config user.name "fs-data-bot"
+          git config user.email "fs-data-bot@users.noreply.github.com"
+          git add data/vn/report_dates.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Lịch công bố BCTC HOSE (tự động)"
+          for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
