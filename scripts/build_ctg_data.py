@@ -230,6 +230,11 @@ def build(raw):
     last_q = fsq[-1]
     lq = qlabel(last_q['year'], last_q['quarter'])
     bvps, eps = v_('bvps'), v_('eps')
+    _ep = (json.loads((ROOT / 'data/backfill/equity_parent.json').read_text(encoding='utf-8')) if (ROOT / 'data/backfill/equity_parent.json').exists() else {}).get(TICKER, {})
+    _newq = sorted(k for k in _ep if k > f"{last_q['year']}Q{last_q['quarter']}")
+    bv_src = f"ratio_daily {rd['bvps'][0]}"
+    if _newq:   # BCTC quý mới doanh nghiệp đã đăng, Wi MCP chưa có: BVPS = VCSH thuộc cổ đông mẹ / CP lưu hành
+        bvps = _ep[_newq[-1]] * 1e9 / (shares_m * 1e6); bv_src = f"BCTC hợp nhất {qlabel(int(_newq[-1][:4]), int(_newq[-1][5]))} do ngân hàng đăng (VCSH thuộc cổ đông mẹ)"
     D['meta'] = {
         'ticker': TICKER, 'name': BANK['name'], 'short': BANK.get('short'), 'exchange': BANK.get('exchange', 'HOSE'), 'sector': 'bank', 'peerGroup': GRP,
         'updated': asof, 'price': price, 'priceDate': last_px['trading_date'],
@@ -238,7 +243,7 @@ def build(raw):
         'sharesOut': round(shares_m, 1), 'latestQuarter': lq,
         'view': None,  # analyst nhập ở tab FinSuccess; không tự gán
         'irUrl': BANK.get('irUrl'), 'strategic': BANK.get('strategic'),
-        'src': f"Wi MCP eod_adjust {last_px['trading_date']} (giá), ratio_daily {rd['bvps'][0]} (BVPS, EPS TTM, vốn hóa); BCTC hợp nhất {lq}",
+        'src': f"Wi MCP eod_adjust {last_px['trading_date']} (giá), {bv_src} (BVPS), ratio_daily {rd['bvps'][0]} (EPS TTM, vốn hóa); BCTC hợp nhất {lq}",
     }
 
     # ------------------------------------------------ quarterly financial block (tỷ VND)
@@ -583,6 +588,10 @@ def build(raw):
     _mf.write_text(json.dumps(_mp, separators=(',', ':')), encoding='utf-8')
     _pe = _mp.get(TICKER, {})
     QE = [(qend_of(q['year'], q['quarter']), _pe.get(f"{q['year']}Q{q['quarter']}", q['equity'])) for q in Q if q.get('equity')]
+    _lastQ = max((f"{q['year']}Q{q['quarter']}" for q in Q if q.get('equity')), default='')
+    for k, v in sorted(_pe.items()):   # quý mới đã có VCSH (nhập từ BCTC doanh nghiệp đăng) trước khi Wi MCP cập nhật
+        if k > _lastQ:
+            QE.append((qend_of(int(k[:4]), int(k[5])), v))
     def bv_at(t):
         cur = None
         for qe, eq in QE:   # quý chứa phiên t (nếu đã có) hoặc quý mới nhất trước đó
