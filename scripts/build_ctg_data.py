@@ -433,12 +433,14 @@ def build(raw):
     # P/B theo phiên (ratio_daily) của mã này và các NH cùng nhóm có trang riêng; bản dẫn xuất commit ở data/backfill/pb_daily.json
     _pf = ROOT / 'data/backfill/pb_daily.json'
     _pd = json.loads(_pf.read_text(encoding='utf-8')) if _pf.exists() else {}
-    for d in raw:
-        if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily':
-            for r in rows(d['response']):
-                sy = r.get('symbol'); sy = sy[0] if isinstance(sy, list) else sy
-                if sy and r.get('pb') is not None and r.get('trading_date'):
-                    _pd.setdefault(sy, {})[r['trading_date'][:10]] = round(float(r['pb']), 4)
+    # lần kéo có phiên mới hơn ghi đè sau cùng: số của một phiên lấy trong giờ giao dịch được thay bằng số chốt theo giá đóng cửa
+    _rd = [d for d in raw if d['tool'] == 'wi_data_companies' and d['request'].get('endpoint_name') == 'ratio_daily']
+    _rd.sort(key=lambda d: max([str(r.get('trading_date') or '') for r in rows(d['response'])] or ['']))
+    for d in _rd:
+        for r in rows(d['response']):
+            sy = r.get('symbol'); sy = sy[0] if isinstance(sy, list) else sy
+            if sy and r.get('pb') is not None and r.get('trading_date'):
+                _pd.setdefault(sy, {})[r['trading_date'][:10]] = round(float(r['pb']), 4)
     # trung vị P/B 26 NH theo phiên: từ các lần gom (aggregate median:pb theo trading_date) và từ bảng ratio_daily đủ ≥ 20 mã/phiên
     _md, _cnt = _pd.setdefault('_median', {}), {}
     for d in raw:
