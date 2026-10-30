@@ -15,6 +15,15 @@
   /* Vẽ bảng ra canvas. o.rows: chỉ giữ các dòng thân bảng này; o.cols: [trái, phải] theo toạ độ màn hình (mặc định = phần đang hiện, cắt về cột trọn) */
   function render(sc, o = {}) {
     const tbl = sc.querySelector('table'); if (!tbl) return null;
+    if (sc.getBoundingClientRect().width) sc._fsw = sc.getBoundingClientRect().width;
+    else if (!o._ghost) {   // bảng đang ẩn (tab khác, khôi phục phiên): dựng bản sao tạm ngoài màn hình để đo và vẽ
+      const host = document.createElement('main'), wrap = document.createElement('div'), card = document.createElement('article');
+      wrap.className = 'wrap'; card.className = (sc.closest('article.card') || {}).className || 'card'; host.appendChild(wrap); wrap.appendChild(card);
+      host.style.cssText = `position:fixed;left:-30000px;top:0;width:${(sc._fsw || 900) + 80}px;visibility:visible;display:block`;
+      const cl = sc.cloneNode(true); cl.hidden = false; cl.style.display = ''; card.appendChild(cl); document.body.appendChild(host);
+      const keepIdx = o.rows ? o.rows.map(tr => [...tbl.rows].indexOf(tr)) : null, t2 = cl.querySelector('table');
+      try { return render(cl, { ...o, _ghost: 1, cols: null, rows: keepIdx ? keepIdx.map(i => t2.rows[i]).filter(Boolean) : undefined }); } finally { host.remove(); }
+    }
     sc.querySelectorAll('.xh,.xh-on').forEach(c => c.classList.remove('xh', 'xh-on'));
     const R = sc.getBoundingClientRect();
     const sticky = [...tbl.querySelectorAll('th,td')].filter(c => c.cellIndex === 0 && getComputedStyle(c).position === 'sticky');
