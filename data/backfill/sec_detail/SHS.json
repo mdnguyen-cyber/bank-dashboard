@@ -1,0 +1,358 @@
+{
+ "sym": "SHS",
+ "q": "2026Q3",
+ "asOf": "2026-09-30",
+ "src": "BCTC quý 3/2026 của Công ty Cổ phần Chứng khoán Sài Gòn – Hà Nội – báo cáo riêng (Công ty không có công ty con, không lập BCTC hợp nhất), thuyết minh A.7.3.1–A.7.3.5, A.7.5, A.7.6, A.7.32, A.7.37, A.7.38, A.7.42, B.7.45.3, B.7.48 và thông tin bên liên quan (mục C); số đầu năm = 01/01/2026",
+ "debt": {
+  "total": 15935.25,
+  "open": 9350.0,
+  "items": [
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Phát triển TP. Hồ Chí Minh (HDBank)",
+    "lender": "HDBank",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 2669.0,
+    "v0": 1990.0,
+    "lbl": "HDBank"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Việt Nam Thương Tín (VietBank) – CN Hồ Chí Minh",
+    "lender": "VietBank",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 1900.0,
+    "v0": 1000.0,
+    "lbl": "VietBank"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Sài Gòn – Hà Nội (SHB) – CN Đông Đô (bên liên quan)",
+    "lender": "SHB",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 1034.0,
+    "v0": 900.0,
+    "lbl": "SHB"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Sài Gòn – Hà Nội (SHB) – CN Ba Đình (bên liên quan)",
+    "lender": "SHB",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 914.0,
+    "v0": 0.0,
+    "lbl": "SHB"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Việt Nam Thịnh Vượng (VPBank)",
+    "lender": "VPBank",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 1000.0,
+    "v0": 835.0,
+    "lbl": "VPBank"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TNHH Indovina – Hội sở chính",
+    "lender": "Indovina Bank",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 570.0,
+    "v0": 295.0,
+    "lbl": "Indovina"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Đầu tư và Phát triển Việt Nam (BIDV) – CN Hà Thành",
+    "lender": "BIDV",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 490.0,
+    "v0": 980.0,
+    "lbl": "BIDV"
+   },
+   {
+    "n": "Vay ngắn hạn các ngân hàng khác",
+    "lender": "Không nêu tên",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 5563.0,
+    "v0": 2220.0,
+    "lbl": "Ngân hàng khác"
+   },
+   {
+    "n": "Vay của đối tượng khác",
+    "lender": "Không nêu tên",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 648.25,
+    "v0": 0.0,
+    "lbl": "Vay đối tượng khác"
+   },
+   {
+    "n": "Trái phiếu phát hành ngắn hạn – nhà đầu tư tổ chức",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 1145.0,
+    "v0": 1120.0,
+    "lbl": "Trái phiếu phát hành"
+   },
+   {
+    "n": "Trái phiếu phát hành ngắn hạn – nhà đầu tư cá nhân",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 2.0,
+    "v0": 10.0,
+    "lbl": "Trái phiếu phát hành"
+   }
+  ],
+  "byCcy": {
+   "VND": 15935.25,
+   "USD": 0.0
+  },
+  "byCcy0": {
+   "VND": 9350.0,
+   "USD": 0.0
+  },
+  "byTerm": {
+   "Vay ngắn hạn": 14788.25,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 1147.0,
+   "Trái phiếu dài hạn": 0.0
+  },
+  "byTerm0": {
+   "Vay ngắn hạn": 8220.0,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 1130.0,
+   "Trái phiếu dài hạn": 0.0
+  },
+  "byMaturity": {
+   "Đến 01 năm": 15935.25
+  },
+  "cost": "9 tháng 2026 (lũy kế 01/01–30/09): chi phí lãi vay 710,03 tỷ đồng, so với 150,80 tỷ cùng kỳ 2025 (gấp 4,7 lần); riêng quý III 348,78 tỷ (cùng kỳ 71,72 tỷ). Thuyết minh không tách lãi trái phiếu khỏi lãi vay. Lãi phải trả cuối kỳ: vay TCTD và đối tượng khác 107,77 tỷ, trái phiếu 28,15 tỷ. Không công bố lãi suất vay, lãi suất trái phiếu hay lãi suất bình quân.",
+  "note": "Toàn bộ nợ vay bằng VND và phân loại ngắn hạn trên BCĐKT; không có vay hay trái phiếu dài hạn. Thuyết minh nêu tên 6 ngân hàng (SHB qua 2 chi nhánh), phần còn lại gộp 'ngân hàng khác' 5.563 tỷ. Không công bố lãi suất, kỳ hạn cụ thể, tài sản bảo đảm từng khoản vay (BCTC có khoản HTM 390 tỷ đem thế chấp, không nêu cho khoản vay nào). Trái phiếu chỉ công bố theo loại người nắm giữ (tổ chức/cá nhân), không có mã, lãi suất, ngày đáo hạn; 9 tháng phát hành thêm 575 tỷ, thanh toán 558 tỷ. Số dư vay SHB (bên liên quan) 1.948 tỷ khớp mục thông tin bên liên quan. byMaturity theo phân loại ngắn hạn trên BCĐKT (không có bảng đáo hạn trong thuyết minh).",
+  "ins": "Phần tăng chủ yếu từ vay ngân hàng: nhóm ngân hàng không nêu tên +3.343 tỷ, SHB (bên liên quan) lên 1.948 tỷ, VietBank +900 tỷ, HDBank +679 tỷ. Toàn bộ nợ vay bằng VND, không có rủi ro tỷ giá. Chi phí lãi vay 9 tháng <b>710 tỷ</b>, gấp 4,7 lần cùng kỳ.",
+  "insT": "Không có vay hay trái phiếu dài hạn: toàn bộ <b>15.935 tỷ</b> đến hạn trong 12 tháng, gồm 1.147 tỷ trái phiếu ngắn hạn chủ yếu do tổ chức nắm giữ."
+ },
+ "margin": {
+  "total": 12435.41,
+  "open": 9097.72,
+  "items": [
+   {
+    "n": "Cho vay ký quỹ (margin)",
+    "v": 12216.41,
+    "v0": 8825.43
+   },
+   {
+    "n": "Ứng trước tiền bán chứng khoán",
+    "v": 219.0,
+    "v0": 272.3
+   }
+  ],
+  "provision": 107.11,
+  "provision0": 156.01,
+  "accruedInterest": {
+   "n": "Dự thu tiền lãi nghiệp vụ margin",
+   "v": 198.26,
+   "v0": 122.52
+  },
+  "income9M": "Lãi từ các khoản cho vay 9 tháng 2026: 929,77 tỷ đồng (cùng kỳ 2025: 536,49 tỷ); riêng quý III 341,15 tỷ",
+  "note": "Thuyết minh A.7.3.4, A.7.5.2, A.7.5.4, A.7.6, A.7.42, B.7.45.3. Toàn bộ dư nợ margin là của nhà đầu tư trong nước. Dự phòng là dự phòng phải thu hoạt động margin khó đòi (giá trị phải thu khó đòi 195,70 tỷ, chủ yếu phát sinh 2018–2023), hạch toán trong dự phòng phải thu; quý III trích thêm 2,95 tỷ. Không công bố bảng chất lượng tín dụng, lãi suất, kỳ hạn hay giá trị tài sản đảm bảo.",
+  "ins": "Lãi cho vay 9 tháng <b>930 tỷ</b>, +73% so cùng kỳ. Nợ margin khó đòi 195,7 tỷ (phát sinh chủ yếu 2018–2023), đã dự phòng 107,1 tỷ, giảm từ 156,0 tỷ đầu năm. Thuyết minh không công bố lãi suất, kỳ hạn hay đối tượng vay."
+ },
+ "portfolio": {
+  "FVTPL": {
+   "cost": 8680.68,
+   "fv": 8357.77,
+   "cost0": 10384.59,
+   "fv0": 11291.56,
+   "groups": [
+    {
+     "n": "Trái phiếu chưa niêm yết",
+     "cls": "fi",
+     "cost": 4349.89,
+     "fv": 4349.89,
+     "cost0": 3152.29,
+     "fv0": 3152.29
+    },
+    {
+     "n": "Trái phiếu niêm yết",
+     "cls": "fi",
+     "cost": 1587.67,
+     "fv": 1525.38,
+     "cost0": 1866.07,
+     "fv0": 1787.15
+    },
+    {
+     "n": "Cổ phiếu niêm yết và UPCOM khác (không công bố mã)",
+     "cls": "trading",
+     "cost": 1413.34,
+     "fv": 1317.96,
+     "cost0": 3053.3,
+     "fv0": 4570.13
+    },
+    {
+     "n": "Cổ phiếu chưa niêm yết",
+     "cls": "trading",
+     "cost": 951.2,
+     "fv": 814.13,
+     "cost0": 1139.02,
+     "fv0": 596.73
+    },
+    {
+     "n": "Cổ phiếu CTG",
+     "tk": "CTG",
+     "cls": "trading",
+     "cost": 109.38,
+     "fv": 94.5,
+     "cost0": 153.13,
+     "fv0": 161.2
+    },
+    {
+     "n": "Cổ phiếu HPG",
+     "tk": "HPG",
+     "cls": "trading",
+     "cost": 99.59,
+     "fv": 82.64,
+     "cost0": 190.69,
+     "fv0": 187.7
+    },
+    {
+     "n": "Cổ phiếu VPB",
+     "tk": "VPB",
+     "cls": "trading",
+     "cost": 65.02,
+     "fv": 66.7,
+     "cost0": 69.06,
+     "fv0": 61.45
+    },
+    {
+     "n": "Cổ phiếu FRT",
+     "tk": "FRT",
+     "cls": "trading",
+     "cost": 16.92,
+     "fv": 19.21,
+     "cost0": 22.54,
+     "fv0": 35.38
+    },
+    {
+     "n": "Chứng chỉ quỹ",
+     "cls": "holding",
+     "cost": 55.0,
+     "fv": 55.99,
+     "cost0": 40.0,
+     "fv0": 42.69
+    },
+    {
+     "n": "Ủy thác đầu tư (BVIM quản lý)",
+     "cls": "trading",
+     "cost": 32.66,
+     "fv": 31.38,
+     "cost0": 39.77,
+     "fv0": 38.13
+    },
+    {
+     "n": "Công cụ thị trường tiền tệ",
+     "cls": "fi",
+     "cost": 0.0,
+     "fv": 0.0,
+     "cost0": 658.71,
+     "fv0": 658.71
+    }
+   ],
+   "note": "Thuyết minh A.7.3.1 và A.7.3.5. Thuyết minh chỉ nêu tên 4 mã cổ phiếu (CTG, HPG, VPB, FRT); 'Cổ phiếu khác' 2.132,08 tỷ giá trị hợp lý được tách thành cổ phiếu chưa niêm yết (814,13 tỷ theo A.7.3.1) và phần niêm yết/UPCOM còn lại (1.317,96 tỷ, tính bằng hiệu). FRT (0,5% danh mục cổ phiếu) giữ riêng vì là mã được công bố. Cổ phiếu chưa niêm yết FVTPL xếp 'trading' theo phân loại kế toán. Ủy thác đầu tư do CTCP Quản lý quỹ BVIM (bên liên quan) quản lý. Lãi/cổ tức từ FVTPL 9 tháng 2026: 390,06 tỷ."
+  },
+  "AFS": {
+   "cost": 2233.48,
+   "fv": 2494.86,
+   "cost0": 723.24,
+   "fv0": 1536.3,
+   "groups": [
+    {
+     "n": "Trái phiếu chưa niêm yết",
+     "cls": "fi",
+     "cost": 1300.0,
+     "fv": 1300.0,
+     "cost0": 0.0,
+     "fv0": 0.0
+    },
+    {
+     "n": "Cổ phiếu SHB",
+     "tk": "SHB",
+     "cls": "holding",
+     "cost": 275.22,
+     "fv": 769.52,
+     "cost0": 275.24,
+     "fv0": 1098.91
+    },
+    {
+     "n": "Cổ phiếu TCD",
+     "tk": "TCD",
+     "cls": "holding",
+     "cost": 200.0,
+     "fv": 12.3,
+     "cost0": 200.0,
+     "fv0": 24.59
+    },
+    {
+     "n": "Cổ phiếu khác",
+     "cls": "holding",
+     "cost": 458.26,
+     "fv": 413.04,
+     "cost0": 248.0,
+     "fv0": 412.8
+    }
+   ],
+   "note": "Thuyết minh A.7.3.2 và A.7.3.5. SHB là bên liên quan (công ty có chung thành viên quản lý chủ chốt). TCD (0,3% danh mục cổ phiếu) giữ riêng vì là mã được công bố; lỗ chưa thực hiện 187,70 tỷ trên giá gốc 200 tỷ. Thuyết minh không nêu mã của 'Cổ phiếu khác' (giá gốc tăng 210,26 tỷ trong 9 tháng) và không nêu khoản góp vốn 225 tỷ vào CTCP Sở giao dịch hàng hóa Việt Nam Quốc tế (bên liên quan, tăng 150 tỷ trong 9 tháng) nằm ở khoản mục nào; BCĐKT không có đầu tư dài hạn. Lãi AFS 9 tháng 2026: 0,81 tỷ."
+  },
+  "HTM": {
+   "cost": 1429.17,
+   "fv": 1429.17,
+   "cost0": 0.0,
+   "fv0": 0.0,
+   "groups": [
+    {
+     "n": "Trái phiếu chưa niêm yết",
+     "cls": "fi",
+     "cost": 744.67,
+     "fv": 744.67,
+     "cost0": 0.0,
+     "fv0": 0.0
+    },
+    {
+     "n": "Công cụ thị trường tiền tệ",
+     "cls": "fi",
+     "cost": 294.5,
+     "fv": 294.5,
+     "cost0": 0.0,
+     "fv0": 0.0
+    },
+    {
+     "n": "Khoản đầu tư HTM đem thế chấp",
+     "cls": "fi",
+     "cost": 390.0,
+     "fv": 390.0,
+     "cost0": 0.0,
+     "fv0": 0.0
+    }
+   ],
+   "note": "Thuyết minh A.7.3.3; giá trị hợp lý bằng giá trị ghi sổ. Đầu năm không có HTM. Không công bố tổ chức phát hành hay mục đích thế chấp của khoản 390 tỷ. Lãi HTM 9 tháng 2026: 25,33 tỷ."
+  },
+  "ins": "Trái phiếu chưa niêm yết FVTPL <b>4.350 tỷ</b> là khoản lớn nhất, tăng từ 3.152 tỷ đầu năm. Cổ phiếu FVTPL thu hẹp mạnh: giá trị hợp lý từ 5.613 tỷ còn 2.395 tỷ, từ lãi đánh giá lại 985 tỷ chuyển sang lỗ 260 tỷ. Cổ phiếu SHB (AFS) 770 tỷ, lãi chưa thực hiện 494 tỷ.",
+  "insCls": "Thu nhập cố định <b>8.604 tỷ</b>, 70% danh mục (đầu năm 5.598 tỷ, 44%). Cổ phiếu tự doanh và ủy thác còn 2.427 tỷ, gồm 814 tỷ cổ phiếu chưa niêm yết; nhóm nắm giữ dài hạn chủ yếu là cổ phiếu SHB."
+ },
+ "note": "Hai tài liệu 46643 (bản đầy đủ, 40 trang) và 54748 (bản rút gọn) cùng là BCTC riêng Q3/2026; không có bản hợp nhất. Đối chiếu BCĐKT (WiData fs_sec, riêng lẻ, Q3/2026): FVTPL 8.357,77; HTM 1.429,17; cho vay 12.435,41; AFS 2.494,86; dự phòng phải thu (519,64); vay ngắn hạn 14.788,25; trái phiếu ngắn hạn 1.147,00; vay/trái phiếu dài hạn 0; đầu tư dài hạn 0; VCSH 12.521,43 – khớp thuyết minh. Giá gốc cổ phiếu AFS lệch 0,0002 tỷ giữa A.7.3.2 và A.7.3.5 (lỗi đánh máy trong nguồn), dùng số A.7.3.2. Không có chứng quyền phát hành.",
+ "insTop": "Thuyết minh chỉ nêu tên 4 mã cổ phiếu tự doanh (CTG, HPG, VPB, FRT) và 2 mã AFS (SHB, TCD); khoảng 70% giá trị cổ phiếu và toàn bộ trái phiếu không công bố theo mã."
+}

@@ -1,0 +1,320 @@
+{
+ "sym": "VCK",
+ "q": "2026Q3",
+ "asOf": "2026-09-30",
+ "src": "BCTC quý 3/2026 của Công ty Cổ phần Chứng khoán VPS – báo cáo riêng (Công ty không có công ty con, không lập BCTC hợp nhất), thuyết minh số 7.1–7.5, 8, 10, 17, 18, 19, 23, 26.1, 27.2, 27.3, 32; số đầu năm = 31/12/2025",
+ "debt": {
+  "total": 15708.03,
+  "open": 17924.27,
+  "items": [
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Nông nghiệp và PTNT Việt Nam (Agribank)",
+    "lender": "Agribank",
+    "ccy": "VND",
+    "rate": "Dưới 9,7%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 2800.0,
+    "v0": 500.0,
+    "lbl": "Agribank"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Kỹ Thương Việt Nam (Techcombank)",
+    "lender": "Techcombank",
+    "ccy": "VND",
+    "rate": "Dưới 9,7%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 2620.0,
+    "v0": 3330.0,
+    "lbl": "Techcombank"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Đầu tư và Phát triển Việt Nam – CN Hà Thành (BIDV)",
+    "lender": "BIDV – CN Hà Thành",
+    "ccy": "VND",
+    "rate": "Dưới 9,7%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 1702.0,
+    "v0": 2115.0,
+    "lbl": "BIDV"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Quốc tế Việt Nam (VIB)",
+    "lender": "VIB",
+    "ccy": "VND",
+    "rate": "Dưới 9,7%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 1030.0,
+    "v0": 1950.0,
+    "lbl": "VIB"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Công Thương Việt Nam (VietinBank)",
+    "lender": "VietinBank",
+    "ccy": "VND",
+    "rate": "Dưới 9,7%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 250.0,
+    "v0": 500.0,
+    "lbl": "VietinBank"
+   },
+   {
+    "n": "Vay ngắn hạn các ngân hàng khác",
+    "lender": "Không nêu tên",
+    "ccy": "VND",
+    "rate": "Dưới 9,7%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 1220.0,
+    "v0": 1990.0,
+    "lbl": "Ngân hàng khác"
+   },
+   {
+    "n": "Vay ngắn hạn các tổ chức khác",
+    "lender": "Không nêu tên",
+    "ccy": "VND",
+    "rate": "Dưới 9,7%/năm (khoảng chung cho toàn bộ vay ngắn hạn)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 1086.06,
+    "v0": 2539.36,
+    "lbl": "Tổ chức khác"
+   },
+   {
+    "n": "Trái phiếu VCK125005 (giá trị sổ sách, đã trừ chi phí phát hành)",
+    "lender": "Trái phiếu phát hành",
+    "ccy": "VND",
+    "rate": "8,4%/năm kỳ hiện tại (8,3%/năm hai kỳ đầu; sau đó max 8,3% và lãi suất tham chiếu + 2,5%)",
+    "term": "Phát hành 03/03/2025, đáo hạn 03/03/2027; ghi ở trái phiếu dài hạn trên BCĐKT",
+    "v": 4999.97,
+    "v0": 4999.91,
+    "lbl": "Trái phiếu phát hành"
+   }
+  ],
+  "byCcy": {
+   "VND": 15708.03,
+   "USD": 0.0
+  },
+  "byCcy0": {
+   "VND": 17924.27,
+   "USD": 0.0
+  },
+  "byTerm": {
+   "Vay ngắn hạn": 10708.06,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 0.0,
+   "Trái phiếu dài hạn": 4999.97
+  },
+  "byTerm0": {
+   "Vay ngắn hạn": 12924.36,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 0.0,
+   "Trái phiếu dài hạn": 4999.91
+  },
+  "cost": "9 tháng 2026 (lũy kế 01/01–30/09): chi phí lãi vay 401,81 tỷ và lãi trái phiếu 310,78 tỷ, tổng 712,59 tỷ đồng, so với 724,23 tỷ cùng kỳ 2025 (lãi vay 483,19 tỷ; lãi trái phiếu 241,04 tỷ). Riêng quý 3/2026: 215,25 tỷ (cùng kỳ 262,37 tỷ). Chi phí lãi vay phải trả cuối kỳ 73,02 tỷ, lãi trái phiếu phải trả 32,22 tỷ. Lãi suất bình quân không công bố; vay ngắn hạn dưới 9,7%/năm, trái phiếu 8,4%/năm.",
+  "note": "Thuyết minh 18, 19, 17, 23. Toàn bộ vay bằng VND, không có vay ngoại tệ (ngoại tệ nắm giữ chỉ 1.175,92 USD). Vay dùng bổ sung vốn lưu động; được bảo đảm bằng tiền gửi có kỳ hạn 4.826 tỷ, chứng chỉ tiền gửi 3.360 tỷ và trái phiếu 1.902 tỷ (tổng 10.088 tỷ; 31/12/2025: 7.068 tỷ). Thuyết minh chỉ nêu một khoảng lãi suất chung, không công bố lãi suất/kỳ hạn theo từng bên cho vay. Trái phiếu VCK125005 không có tài sản bảo đảm, kỳ tính lãi 6 tháng. Đáo hạn 03/03/2027 (còn khoảng 5 tháng) nhưng BCĐKT vẫn ghi ở trái phiếu phát hành dài hạn – byTerm giữ theo cách phân loại của công ty. Không có bảng rủi ro thanh khoản theo kỳ hạn trong BCTC quý nên không có byMaturity. Lỗi số hoá trong nguồn: bảng TM 19 hiển thị mệnh giá \"5.000.000.000,000\" và chi phí phát hành \"(33.333,346)\" – đã đối chiếu với BCĐKT (4.999,97 tỷ); tiêu đề cột cuối kỳ bảng TM 18 ghi nhầm \"30/09/2025\".",
+  "ins": "Nợ vay giảm chủ yếu do vay các tổ chức khác giảm từ 2.539 tỷ còn 1.086 tỷ, Techcombank và VIB thu hẹp; Agribank tăng từ 500 tỷ lên 2.800 tỷ. Công ty không vay ngoại tệ nên không có rủi ro tỷ giá. Chi phí lãi vay và lãi trái phiếu 9 tháng <b>713 tỷ</b>, giảm 2% so cùng kỳ.",
+  "insT": "Khoản dài hạn duy nhất là trái phiếu VCK125005 5.000 tỷ, lãi 8,4%/năm, không tài sản bảo đảm, đáo hạn 03/03/2027 – còn khoảng 5 tháng nhưng vẫn ghi ở nợ dài hạn."
+ },
+ "margin": {
+  "total": 25623.27,
+  "open": 22596.28,
+  "items": [
+   {
+    "n": "Cho vay ký quỹ (margin)",
+    "v": 25363.39,
+    "v0": 22083.49
+   },
+   {
+    "n": "Ứng trước tiền bán chứng khoán",
+    "v": 259.88,
+    "v0": 512.79
+   }
+  ],
+  "provision": 0.0,
+  "provision0": 0.0,
+  "netFV": 25623.27,
+  "netFV0": 22596.28,
+  "accruedInterest": {
+   "n": "Phải thu lãi cho vay ký quỹ, ứng trước tiền bán",
+   "v": 304.39,
+   "v0": 257.09
+  },
+  "income9M": "Lãi từ các khoản cho vay và phải thu 9 tháng 2026: 2.926,34 tỷ đồng (cùng kỳ 2025: 1.739,05 tỷ); riêng quý 3: 947,95 tỷ",
+  "note": "Thuyết minh 7.3, 8, 26.1, 26.12, 27.3. Giá trị hợp lý bằng giá gốc; không trích dự phòng cho vay (BCĐKT dự phòng suy giảm tài sản tài chính = 0). Nợ cho vay ký quỹ khó đòi đã xử lý, theo dõi ngoại bảng: 4,88 tỷ (không đổi so với đầu năm). Toàn bộ người vay là nhà đầu tư trong nước. Ứng trước tiền bán có thời hạn hoàn trả trong 2 ngày giao dịch. Không công bố lãi suất cho vay, kỳ hạn, giá trị tài sản đảm bảo hay bảng chất lượng tín dụng.",
+  "ins": "Lãi cho vay và phải thu 9 tháng 2.926 tỷ, +68% so cùng kỳ. Công ty không trích dự phòng cho vay ký quỹ; nợ margin khó đòi đã xử lý ngoại bảng 4,9 tỷ."
+ },
+ "portfolio": {
+  "FVTPL": {
+   "cost": 7553.04,
+   "fv": 7546.4,
+   "cost0": 7291.64,
+   "fv0": 7294.52,
+   "groups": [
+    {
+     "n": "Chứng chỉ tiền gửi",
+     "cls": "fi",
+     "cost": 5975.04,
+     "fv": 5975.04,
+     "cost0": 4950.23,
+     "fv0": 4950.23
+    },
+    {
+     "n": "Trái phiếu chưa niêm yết",
+     "cls": "fi",
+     "cost": 1111.6,
+     "fv": 1111.6,
+     "cost0": 1111.6,
+     "fv0": 1111.6
+    },
+    {
+     "n": "Trái phiếu niêm yết",
+     "cls": "fi",
+     "cost": 297.98,
+     "fv": 282.36,
+     "cost0": 297.98,
+     "fv0": 291.65
+    },
+    {
+     "n": "Tiền gửi có kỳ hạn cố định",
+     "cls": "fi",
+     "cost": 144.52,
+     "fv": 144.52,
+     "cost0": 901.67,
+     "fv0": 901.67
+    },
+    {
+     "n": "Cổ phiếu và chứng chỉ quỹ niêm yết",
+     "cls": "trading",
+     "cost": 4.9,
+     "fv": 12.28,
+     "cost0": 14.17,
+     "fv0": 21.85
+    },
+    {
+     "n": "Cổ phiếu đăng ký giao dịch UPCoM",
+     "cls": "trading",
+     "cost": 0.56,
+     "fv": 2.03,
+     "cost0": 0.6,
+     "fv0": 2.12
+    },
+    {
+     "n": "Cổ phiếu hủy niêm yết, ngừng giao dịch",
+     "cls": "trading",
+     "cost": 0.08,
+     "fv": 0.08,
+     "cost0": 0.04,
+     "fv0": 0.04
+    },
+    {
+     "n": "Cổ phiếu chưa niêm yết khác",
+     "cls": "holding",
+     "cost": 15.36,
+     "fv": 15.36,
+     "cost0": 15.36,
+     "fv0": 15.36
+    },
+    {
+     "n": "Chứng chỉ quỹ chưa niêm yết",
+     "cls": "holding",
+     "cost": 3.0,
+     "fv": 3.14,
+     "cost0": 0.0,
+     "fv0": 0.0
+    }
+   ],
+   "note": "Thuyết minh 7.1, 7.5, 27.2. Không công bố danh mục theo mã cổ phiếu, trái phiếu hay tổ chức phát hành CD. Cổ phiếu chưa niêm yết khác và chứng chỉ quỹ chưa niêm yết xếp 'holding' (giá gốc gần như không đổi). Lãi từ FVTPL (cổ tức, tiền lãi) 9 tháng: 595,63 tỷ."
+  },
+  "AFS": {
+   "cost": 4517.94,
+   "fv": 4488.11,
+   "cost0": 5004.43,
+   "fv0": 4968.99,
+   "groups": [
+    {
+     "n": "Trái phiếu chưa niêm yết",
+     "cls": "fi",
+     "cost": 2776.8,
+     "fv": 2776.8,
+     "cost0": 3016.21,
+     "fv0": 3016.21
+    },
+    {
+     "n": "Trái phiếu niêm yết",
+     "cls": "fi",
+     "cost": 1741.14,
+     "fv": 1711.31,
+     "cost0": 1988.22,
+     "fv0": 1952.78
+    }
+   ],
+   "note": "Thuyết minh 7.2. Danh mục AFS chỉ gồm trái phiếu; không công bố tổ chức phát hành. Lỗ đánh giá lại lũy kế 29,83 tỷ (đầu năm 35,44 tỷ). Lãi AFS 9 tháng 2026: 196,32 tỷ. Trái phiếu cầm cố cho vay ngắn hạn 1.902 tỷ (TM 17)."
+  },
+  "HTM": {
+   "cost": 5306.0,
+   "fv": 5306.0,
+   "cost0": 3666.0,
+   "fv0": 3666.0,
+   "groups": [
+    {
+     "n": "Tiền gửi kỳ hạn trên 03 tháng đến 01 năm",
+     "cls": "fi",
+     "cost": 3806.0,
+     "fv": 3806.0,
+     "cost0": 3666.0,
+     "fv0": 3666.0
+    },
+    {
+     "n": "Tiền gửi kỳ hạn trên 12 tháng",
+     "cls": "fi",
+     "cost": 1500.0,
+     "fv": 1500.0,
+     "cost0": 0.0,
+     "fv0": 0.0
+    }
+   ],
+   "note": "Thuyết minh 7.4; chỉ có giá gốc (fv = giá gốc). Lãi suất 8–9,7%/năm (kỳ hạn đến 1 năm) và 9,3–9,5%/năm (trên 12 tháng), nhận lãi cuối kỳ. Khoản 1.500 tỷ trên 12 tháng nằm ở đầu tư dài hạn trên BCĐKT. Lãi HTM 9 tháng 2026: 250,00 tỷ (cùng kỳ 388,47 tỷ)."
+  },
+  "LTOther": {
+   "cost": 39.7,
+   "fv": 25.44,
+   "cost0": 39.7,
+   "fv0": 34.8,
+   "groups": [
+    {
+     "n": "Góp vốn/cổ phần dài hạn khác",
+     "cls": "holding",
+     "cost": 39.7,
+     "fv": 25.44,
+     "cost0": 39.7,
+     "fv0": 34.8,
+     "holdings": [
+      {
+       "t": "Công ty Cổ phần Xếp hạng Tín nhiệm Đầu tư Việt Nam (15,0%)",
+       "cost": 29.2,
+       "cost0": 29.2
+      },
+      {
+       "t": "Công ty Cổ phần Ezdirect (11,0%)",
+       "cost": 5.5,
+       "cost0": 5.5
+      },
+      {
+       "t": "Công ty TNHH Xã hội Chắp Cánh Foundation (5,0%)",
+       "cost": 2.5,
+       "cost0": 2.5
+      },
+      {
+       "t": "Công ty Cổ phần Âm nhạc Cổ điển Việt (10,0%)",
+       "cost": 2.5,
+       "cost0": 2.5
+      }
+     ]
+    }
+   ],
+   "note": "Thuyết minh 10. Giá gốc 39,70 tỷ không đổi; dự phòng suy giảm tăng từ 4,90 tỷ lên 14,26 tỷ (trích 9,36 tỷ trong 9 tháng), fv = giá trị ròng sau dự phòng. Không công bố dự phòng theo từng khoản. Ba khoản đầu là bên liên quan (TM 37.1)."
+  },
+  "ins": "Chứng chỉ tiền gửi FVTPL <b>5.975 tỷ</b> là khoản lớn nhất, tăng từ 4.950 tỷ đầu năm. HTM tăng từ 3.666 tỷ lên 5.306 tỷ, trong đó 1.500 tỷ tiền gửi trên 12 tháng mới (9,3–9,5%/năm); trái phiếu AFS giảm từ 4.969 tỷ còn 4.488 tỷ.",
+  "insCls": "Thu nhập cố định <b>17.308 tỷ</b>, chiếm 99,7% danh mục. Cổ phiếu tự doanh chỉ khoảng 14 tỷ; công ty không phát hành chứng quyền nên không có cổ phiếu phòng ngừa."
+ },
+ "note": "Chỉ có một tài liệu BCTC quý 3/2026 (báo cáo riêng, Công ty không có công ty con). Đối chiếu BCĐKT (WiData fs_sec, riêng lẻ, 30/09/2026): FVTPL 7.546,40; HTM ngắn hạn 3.806,00 + HTM dài hạn 1.500,00; cho vay 25.623,27; AFS 4.488,11; dự phòng suy giảm TSTC 0; vay ngắn hạn 10.708,06; trái phiếu phát hành dài hạn 4.999,97; đầu tư dài hạn khác 39,70 và dự phòng (14,26) – khớp thuyết minh. 31/12/2025 cũng khớp (FVTPL 7.294,52; HTM 3.666; cho vay 22.596,28; AFS 4.968,99; vay 12.924,36; TP 4.999,91). BCTC quý không có thuyết minh quản lý rủi ro tín dụng/thanh khoản (thuyết minh kết thúc ở mục 38). Công ty không phát hành chứng quyền.",
+ "insTop": "Thuyết minh chỉ chia danh mục theo loại tài sản, không công bố mã cổ phiếu, tổ chức phát hành trái phiếu hay chứng chỉ tiền gửi; công ty không phát hành chứng quyền."
+}

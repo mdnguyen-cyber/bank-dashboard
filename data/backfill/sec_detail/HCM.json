@@ -1,0 +1,283 @@
+{
+ "sym": "HCM",
+ "q": "2026Q3",
+ "asOf": "2026-09-30",
+ "src": "BCTC quý 3/2026 của Công ty Cổ phần Chứng khoán TP. Hồ Chí Minh – báo cáo tài chính của Công ty (không phải hợp nhất; thuyết minh không nêu công ty con), thuyết minh 3.2a, 3.2b, 3.3, 3.9, 3.10, 3.12, 3.13, 4.2, 5.1–5.2, 7, 8, 10; số đầu năm = 31/12/2025 (HTM theo số trình bày lại)",
+ "debt": {
+  "total": 22455.54,
+  "open": 30889.15,
+  "items": [
+   {
+    "n": "Vay ngắn hạn ngân hàng trong nước (bổ sung vốn lưu động)",
+    "lender": "Các ngân hàng trong nước (không nêu tên)",
+    "ccy": "VND",
+    "rate": "5,0–9,7%/năm",
+    "term": "Ngắn hạn (1–12 tháng)",
+    "v": 18829.0,
+    "v0": 24229.5,
+    "lbl": "Ngân hàng trong nước"
+   },
+   {
+    "n": "Vay khác trong nước (tín chấp, các tổ chức trong nước)",
+    "lender": "Tổ chức trong nước (không nêu tên)",
+    "ccy": "VND",
+    "rate": "5,0–9,1%/năm",
+    "term": "Ngắn hạn (1–12 tháng)",
+    "v": 2641.54,
+    "v0": 2437.06,
+    "lbl": "Vay tổ chức khác"
+   },
+   {
+    "n": "Vay ngắn hạn nước ngoài (tín chấp, lãi suất theo SOFR)",
+    "lender": "Bên cho vay nước ngoài (không nêu tên)",
+    "ccy": "USD",
+    "rate": "SOFR + 1,6–2,1%/năm",
+    "term": "Ngắn hạn (1–12 tháng)",
+    "v": 789.0,
+    "v0": 2101.99,
+    "lbl": "Vay nước ngoài USD"
+   },
+   {
+    "n": "Vay thấu chi ngân hàng trong nước (có tài sản bảo đảm)",
+    "lender": "Các ngân hàng trong nước (không nêu tên)",
+    "ccy": "VND",
+    "rate": "5,1–8,3%/năm",
+    "term": "Thấu chi ngắn hạn",
+    "v": 196.0,
+    "v0": 2120.59,
+    "lbl": "Thấu chi ngân hàng"
+   }
+  ],
+  "byCcy": {
+   "VND": 21666.54,
+   "USD": 789.0
+  },
+  "byCcy0": {
+   "VND": 28787.16,
+   "USD": 2101.99
+  },
+  "byTerm": {
+   "Vay ngắn hạn": 22455.54,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 0.0,
+   "Trái phiếu dài hạn": 0.0
+  },
+  "byTerm0": {
+   "Vay ngắn hạn": 30889.15,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 0.0,
+   "Trái phiếu dài hạn": 0.0
+  },
+  "byMaturity": {
+   "Đến 01 năm": 22455.54
+  },
+  "cost": "9 tháng 2026 (lũy kế 01/01–30/09): chi phí đi vay ghi trong chi phí hoạt động 1.539,76 tỷ đồng (Q3/2026: 508,11 tỷ), so với 982,05 tỷ cùng kỳ 2025 (+56,8%); số này trùng với chi phí bộ phận kinh doanh vốn trong báo cáo bộ phận (TM 7). Chi phí lãi vay phải trả cuối kỳ 87,69 tỷ (đầu năm 90,81 tỷ). Lãi suất bình quân không công bố; khung lãi suất: vay ngân hàng trong nước 5,0–9,7%/năm, thấu chi 5,1–8,3%/năm, vay khác 5,0–9,1%/năm, vay nước ngoài SOFR + 1,6–2,1%/năm.",
+  "note": "Thuyết minh 3.9 chỉ trình bày theo nhóm (trong nước, nước ngoài, thấu chi, vay khác), không nêu tên từng ngân hàng/bên cho vay. Vay ngắn hạn trong nước có tài sản bảo đảm 6.045 tỷ (đầu năm 8.255,5 tỷ), còn lại tín chấp; thấu chi có tài sản bảo đảm; vay nước ngoài tín chấp. Vay nước ngoài xếp USD vì lãi suất tham chiếu là SOFR áp dụng cho USD (thuyết minh không ghi rõ nguyên tệ); chính sách kế toán 2.27 nêu Công ty phòng ngừa rủi ro tỷ giá các khoản vay ngoại tệ bằng hợp đồng kỳ hạn và hoán đổi ngoại tệ với ngân hàng thương mại trong nước. Không có vay từ bên liên quan, không có khoản vay quá hạn. Công ty không có trái phiếu phát hành và vay dài hạn tại cả hai thời điểm; byMaturity suy ra từ kỳ hạn 1–12 tháng. Số đầu năm = 31/12/2025.",
+  "ins": "Nợ vay giảm chủ yếu ở vay ngân hàng trong nước (giảm 5.401 tỷ) và thấu chi (giảm 1.925 tỷ); vay nước ngoài còn 789 tỷ; theo chính sách kế toán, vay ngoại tệ được phòng ngừa tỷ giá bằng hợp đồng kỳ hạn và hoán đổi với ngân hàng trong nước. Chi phí đi vay 9 tháng <b>1.540 tỷ</b>, +57% so cùng kỳ.",
+  "insT": "Không có vay dài hạn hay trái phiếu phát hành; toàn bộ là vay 1–12 tháng. 6.045 tỷ vay ngân hàng trong nước có tài sản bảo đảm, phần còn lại tín chấp."
+ },
+ "margin": {
+  "total": 29169.88,
+  "open": 28150.11,
+  "items": [
+   {
+    "n": "Cho vay ký quỹ (margin) và ứng trước tiền bán chứng khoán (không tách)",
+    "v": 29169.88,
+    "v0": 28150.11
+   }
+  ],
+  "provision": 0.0,
+  "provision0": 0.0,
+  "income9M": "Lãi từ các khoản cho vay và phải thu 9 tháng 2026: 2.288,93 tỷ đồng (cùng kỳ 2025: 1.663,46 tỷ, +37,6%); Q3/2026: 757,70 tỷ",
+  "note": "Thuyết minh 3.3 chỉ có một dòng 'Cho vay giao dịch chứng khoán', gồm cả hợp đồng ký quỹ và ứng trước tiền bán, không tách số. Không trích dự phòng (BCĐKT: dự phòng suy giảm tài sản tài chính bằng 0). Không công bố bảng chất lượng tín dụng, lãi suất, kỳ hạn, đối tượng vay hay giá trị tài sản đảm bảo; chỉ nêu tỷ lệ ký quỹ ban đầu không thấp hơn 50% và dư nợ được bảo đảm bằng chứng khoán được phép ký quỹ. Lãi cho vay lấy từ báo cáo kết quả hoạt động (cộng 3 quý).",
+  "ins": "Thuyết minh gộp ký quỹ và ứng trước, không tách số. Lãi cho vay và phải thu 9 tháng 2.289 tỷ, +38% so cùng kỳ; Công ty không trích dự phòng và không công bố chất lượng dư nợ, lãi suất hay đối tượng vay."
+ },
+ "portfolio": {
+  "FVTPL": {
+   "cost": 9187.52,
+   "fv": 9362.55,
+   "cost0": 13486.35,
+   "fv0": 13766.13,
+   "groups": [
+    {
+     "n": "Cổ phiếu VPB",
+     "cls": "trading",
+     "cost": 426.55,
+     "fv": 444.6,
+     "cost0": 582.52,
+     "fv0": 573.03,
+     "tk": "VPB"
+    },
+    {
+     "n": "Cổ phiếu TCB",
+     "cls": "trading",
+     "cost": 224.3,
+     "fv": 227.85,
+     "cost0": 873.39,
+     "fv0": 895.66,
+     "tk": "TCB"
+    },
+    {
+     "n": "Cổ phiếu niêm yết và UPCoM khác",
+     "cls": "trading",
+     "cost": 33.02,
+     "fv": 32.55,
+     "cost0": 2443.16,
+     "fv0": 2473.35
+    },
+    {
+     "n": "Cổ phiếu TCB",
+     "cls": "cw",
+     "cost": 91.8,
+     "fv": 92.28,
+     "cost0": 0.0,
+     "fv0": 0.0,
+     "tk": "TCB"
+    },
+    {
+     "n": "Cổ phiếu MWG",
+     "cls": "cw",
+     "cost": 83.35,
+     "fv": 83.38,
+     "cost0": 72.88,
+     "fv0": 79.48,
+     "tk": "MWG"
+    },
+    {
+     "n": "Cổ phiếu HPG",
+     "cls": "cw",
+     "cost": 79.06,
+     "fv": 73.1,
+     "cost0": 168.19,
+     "fv0": 163.67,
+     "tk": "HPG"
+    },
+    {
+     "n": "Cổ phiếu ACB",
+     "cls": "cw",
+     "cost": 46.27,
+     "fv": 44.35,
+     "cost0": 0.0,
+     "fv0": 0.0,
+     "tk": "ACB"
+    },
+    {
+     "n": "Cổ phiếu phòng ngừa chứng quyền khác",
+     "cls": "cw",
+     "cost": 169.83,
+     "fv": 168.06,
+     "cost0": 309.24,
+     "fv0": 310.82
+    },
+    {
+     "n": "Trái phiếu niêm yết và đăng ký giao dịch trên sàn trái phiếu riêng lẻ HNX",
+     "cls": "fi",
+     "cost": 8000.0,
+     "fv": 8161.62,
+     "cost0": 7000.0,
+     "fv0": 7169.3
+    },
+    {
+     "n": "Chứng chỉ quỹ ETF",
+     "cls": "trading",
+     "cost": 18.34,
+     "fv": 19.48,
+     "cost0": 36.97,
+     "fv0": 39.77
+    },
+    {
+     "n": "Chứng chỉ quỹ mở",
+     "cls": "holding",
+     "cost": 15.0,
+     "fv": 15.28,
+     "cost0": 0.0,
+     "fv0": 0.0
+    },
+    {
+     "n": "Chứng chỉ tiền gửi có thể chuyển nhượng",
+     "cls": "fi",
+     "cost": 0.0,
+     "fv": 0.0,
+     "cost0": 2000.0,
+     "fv0": 2061.05
+    }
+   ],
+   "note": "Thuyết minh 3.2a và 5.2. Cổ phiếu tự doanh nêu theo mã VPB, TCB; cổ phiếu phòng ngừa chứng quyền nêu theo mã TCB, MWG, HPG, ACB; phần còn lại gộp 'cổ phiếu khác'. Không nêu tổ chức phát hành trái phiếu. CCQ ETF xếp 'trading' (giá gốc giảm một nửa trong 9 tháng, gắn với hoạt động tạo lập thị trường ETF); CCQ quỹ mở mới mua 15 tỷ xếp 'holding'. CD 2.000 tỷ giá gốc đã tất toán hết. Đánh giá lại FVTPL 9 tháng lỗ 94,99 tỷ."
+  },
+  "HTM": {
+   "cost": 2058.02,
+   "fv": 2058.02,
+   "cost0": 2372.33,
+   "fv0": 2372.33,
+   "groups": [
+    {
+     "n": "Tiền gửi có kỳ hạn",
+     "cls": "fi",
+     "cost": 1676.52,
+     "fv": 1676.52,
+     "cost0": 2051.83,
+     "fv0": 2051.83
+    },
+    {
+     "n": "Tiền ký quỹ đảm bảo thanh toán cho chứng quyền",
+     "cls": "fi",
+     "cost": 381.5,
+     "fv": 381.5,
+     "cost0": 320.5,
+     "fv0": 320.5
+    }
+   ],
+   "note": "Thuyết minh 3.2b và 8 (chỉ có giá gốc, fv = giá gốc). Từ kỳ này Công ty phân loại lại tiền gửi có kỳ hạn từ 'Tiền và tương đương tiền' sang HTM; số đầu năm theo thuyết minh đã trình bày lại (ngắn hạn 2.265,83 tỷ, dài hạn 106,50 tỷ là ký quỹ chứng quyền), trong khi BCĐKT 31/12/2025 trên Wi MCP vẫn ghi HTM = 0. Tiền ký quỹ chứng quyền bị phong tỏa suốt thời gian chứng quyền hiệu lực, tối thiểu 50% giá trị chứng quyền đã phát hành."
+  },
+  "cw": {
+   "issued": "Phải trả chứng quyền đang lưu hành 70,66 tỷ đồng theo giá trị thị trường (giá trị phát hành 117,63 tỷ). Được phép phát hành 247.000.000 CW, đang lưu hành 110.782.200 CW thuộc 26 mã, đáo hạn 16/12/2026–29/03/2027, trên 10 cổ phiếu cơ sở: HPG 27.721.400; MWG 17.965.300; TCB 16.639.800; FPT 12.878.000; MBB 11.862.800; ACB 10.422.500; VNM 5.428.000; MSN 3.473.100; VPB 2.389.700; STB 2.001.600. Ký quỹ đảm bảo thanh toán 381,50 tỷ (HTM).",
+   "hedge": "Cổ phiếu phòng ngừa rủi ro chứng quyền (FVTPL): giá gốc 470,32 tỷ, giá trị hợp lý 461,17 tỷ (31/12/2025: 550,31 / 553,97 tỷ). Nêu theo mã: TCB 92,28 tỷ; MWG 83,38 tỷ; HPG 73,10 tỷ; ACB 44,35 tỷ; cổ phiếu khác 168,06 tỷ."
+  },
+  "ins": "Trái phiếu niêm yết và giao dịch trên sàn trái phiếu riêng lẻ HNX <b>8.162 tỷ</b> là khoản lớn nhất, giá gốc tăng 1.000 tỷ. Cổ phiếu tự doanh giảm từ 3.942 tỷ xuống 705 tỷ: TCB từ 896 tỷ còn 228 tỷ, nhóm cổ phiếu khác từ 2.473 tỷ còn 33 tỷ; CD 2.061 tỷ đã tất toán hết.",
+  "insCls": "Thu nhập cố định <b>10.220 tỷ</b>, khoảng 89% danh mục. Cổ phiếu phòng ngừa chứng quyền 461 tỷ cho 110,8 triệu CW lưu hành; cổ phiếu tự doanh còn 705 tỷ, tập trung ở VPB (445 tỷ) và TCB (228 tỷ)."
+ },
+ "note": "Đối chiếu BCĐKT (Wi MCP fs_sec, báo cáo riêng lẻ) tại 30/09/2026: FVTPL 9.362,55; HTM 2.058,02; cho vay 29.169,88; dự phòng 0; vay ngắn hạn 22.455,54; trái phiếu phát hành 0; AFS 0; đầu tư dài hạn 0 – khớp thuyết minh. Tại 31/12/2025: FVTPL 13.766,12, cho vay 28.150,11, vay 30.889,15 khớp; HTM lệch do phân loại lại tiền gửi có kỳ hạn (TM 8). Công ty không có tài sản AFS, đầu tư dài hạn, trái phiếu phát hành. Chi phí đi vay và lãi cho vay 9 tháng cộng từ báo cáo kết quả hoạt động 3 quý (Wi MCP fs_sec), đối chiếu khớp báo cáo bộ phận. Sau kỳ báo cáo, ngày 09/10/2026 vốn điều lệ tăng 2.919,89 tỷ lên 13.727,86 tỷ (ESOP và chào bán cho cổ đông hiện hữu); tiền thu 2.919,55 tỷ đang ghi ở phải trả khác tại 30/09/2026.",
+ "insTop": "Thuyết minh nêu theo mã các cổ phiếu lớn (VPB, TCB tự doanh; TCB, MWG, HPG, ACB phòng ngừa chứng quyền) nhưng không nêu tổ chức phát hành của 8.162 tỷ trái phiếu.",
+ "cwList": [
+  {
+   "t": "HPG",
+   "n": 27721400
+  },
+  {
+   "t": "MWG",
+   "n": 17965300
+  },
+  {
+   "t": "TCB",
+   "n": 16639800
+  },
+  {
+   "t": "FPT",
+   "n": 12878000
+  },
+  {
+   "t": "MBB",
+   "n": 11862800
+  },
+  {
+   "t": "ACB",
+   "n": 10422500
+  },
+  {
+   "t": "VNM",
+   "n": 5428000
+  },
+  {
+   "t": "MSN",
+   "n": 3473100
+  },
+  {
+   "t": "VPB",
+   "n": 2389700
+  },
+  {
+   "t": "STB",
+   "n": 2001600
+  }
+ ]
+}
