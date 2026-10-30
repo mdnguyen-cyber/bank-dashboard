@@ -1,0 +1,321 @@
+{
+ "sym": "VCI",
+ "q": "2026Q3",
+ "asOf": "2026-09-30",
+ "src": "BCTC quý 3/2026 của Công ty Cổ phần Chứng khoán Vietcap, công bố 20/10/2026 – báo cáo riêng (Công ty không có công ty con, không lập BCTC hợp nhất), thuyết minh số 3, 4, 8, 13, 14, 18, 19, giải trình LNST quý 3; chi phí lãi vay và lãi cho vay lũy kế 9 tháng cộng từ BCKQHĐ các quý; mô tả khoản vay nước ngoài (USD, hợp vốn, Term SOFR, phòng ngừa tỷ giá) theo BCTC bán niên 2026 (TM 3.10); số đầu năm = 31/12/2025.",
+ "debt": {
+  "total": 22709.4,
+  "open": 16064.55,
+  "items": [
+   {
+    "n": "Vay ngân hàng nước ngoài – vay hợp vốn tín chấp bằng USD",
+    "lender": "Các ngân hàng nước ngoài (không nêu tên)",
+    "ccy": "USD",
+    "rate": "Tham chiếu Term SOFR (theo BCTC bán niên 2026); mức cụ thể không công bố",
+    "term": "Ngắn hạn, 1 tháng–364 ngày",
+    "v": 11622.4,
+    "v0": 4262.55,
+    "lbl": "Hợp vốn USD"
+   },
+   {
+    "n": "Vay ngân hàng trong nước",
+    "lender": "Các ngân hàng trong nước (không nêu tên)",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn, 1 tháng–364 ngày",
+    "v": 9880.0,
+    "v0": 9641.0,
+    "lbl": "Ngân hàng trong nước"
+   },
+   {
+    "n": "Vay tổ chức trong nước (công ty cổ phần, tín chấp)",
+    "lender": "Các công ty cổ phần trong nước (không nêu tên)",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn, 1 tháng–364 ngày",
+    "v": 701.0,
+    "v0": 1561.0,
+    "lbl": "Tổ chức trong nước"
+   },
+   {
+    "n": "Vay công ty tài chính trong nước (tín chấp)",
+    "lender": "Công ty tài chính trong nước (không nêu tên)",
+    "ccy": "VND",
+    "rate": "Không công bố",
+    "term": "Ngắn hạn, 1 tháng–364 ngày",
+    "v": 506.0,
+    "v0": 600.0,
+    "lbl": "Công ty tài chính"
+   }
+  ],
+  "byCcy": {
+   "VND": 11087.0,
+   "USD": 11622.4
+  },
+  "byCcy0": {
+   "VND": 11802.0,
+   "USD": 4262.55
+  },
+  "byTerm": {
+   "Vay ngắn hạn": 22709.4,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 0.0,
+   "Trái phiếu dài hạn": 0.0
+  },
+  "byTerm0": {
+   "Vay ngắn hạn": 16064.55,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 0.0,
+   "Trái phiếu dài hạn": 0.0
+  },
+  "byMaturity": {
+   "Đến 01 năm": 22709.4
+  },
+  "cost": "9 tháng 2026 (cộng 3 quý trên BCKQHĐ): chi phí lãi vay 976,18 tỷ đồng, +92% so với 508,31 tỷ cùng kỳ 2025; riêng quý 3/2026 385,22 tỷ (+101%). Chi phí tài chính khác (phí vay hợp vốn, chi phí phòng ngừa tỷ giá) 177,54 tỷ, cùng kỳ 25,44 tỷ. Chi phí lãi vay ngân hàng và lãi trái phiếu phải trả cuối kỳ 89,41 tỷ (đầu năm 67,44 tỷ). Lãi suất không công bố; vay USD tham chiếu Term SOFR.",
+  "note": "Thuyết minh 13 chỉ phân loại theo nhóm bên cho vay, không nêu tên ngân hàng, lãi suất hay kỳ hạn từng khoản. Khoản vay ngân hàng nước ngoài là vay hợp vốn tín chấp bằng USD (BCTC bán niên 2026), tại 30/06/2026 được phòng ngừa 100% rủi ro tỷ giá (2025: 87%) bằng hoán đổi lãi suất hai đồng tiền, vay ngắn hạn có ký quỹ USD…; chính sách kế toán quý 3 nêu không đánh giá lại các khoản vay hợp vốn ngoại tệ đã phòng ngừa. Dư nợ có tài sản đảm bảo 4.129 tỷ tại 30/06/2026 (quý 3 không cập nhật). Không có khoản vay từ bên liên quan, không có trái phiếu phát hành hay vay dài hạn. byMaturity suy từ phân loại BCĐKT; BCTC quý không có bảng rủi ro thanh khoản.",
+  "ins": "Nợ vay tăng gần hết từ vay hợp vốn USD của ngân hàng nước ngoài (+7.360 tỷ, gấp 2,7 lần đầu năm), trong khi vay tổ chức trong nước giảm 860 tỷ. Vay USD được phòng ngừa 100% rủi ro tỷ giá (theo BCTC bán niên 2026). Chi phí lãi vay 9 tháng <b>976 tỷ</b>, +92% so cùng kỳ.",
+  "insT": "Toàn bộ là vay ngắn hạn kỳ hạn 1 tháng–364 ngày, trả gốc một lần khi đáo hạn; không có trái phiếu phát hành hay vay dài hạn."
+ },
+ "margin": {
+  "total": 17307.72,
+  "open": 16167.19,
+  "items": [
+   {
+    "n": "Cho vay ký quỹ (margin)",
+    "v": 17155.06,
+    "v0": 16023.49
+   },
+   {
+    "n": "Ứng trước tiền bán chứng khoán",
+    "v": 152.66,
+    "v0": 143.7
+   }
+  ],
+  "provision": 2.17,
+  "provision0": 2.17,
+  "netFV": 17305.55,
+  "netFV0": 16165.02,
+  "byInvestor": {
+   "Nhà đầu tư trong nước": 17307.72,
+   "Nhà đầu tư nước ngoài": 0.0
+  },
+  "income9M": "Lãi từ các khoản cho vay và phải thu 9 tháng 2026 (cộng 3 quý trên BCKQHĐ): 1.349,95 tỷ đồng, +63% so với 828,53 tỷ cùng kỳ; quý 3/2026: 472,39 tỷ (+51%).",
+  "note": "Thuyết minh 4 (mục III và chi tiết (i), (ii)). Toàn bộ dư nợ ký quỹ và ứng trước là nhà đầu tư trong nước. Dự phòng 2,17 tỷ không đổi từ đầu năm. Không công bố lãi suất, kỳ hạn, giá trị tài sản đảm bảo hay bảng chất lượng tín dụng trong BCTC quý.",
+  "ins": "Toàn bộ dư nợ là nhà đầu tư trong nước. Lãi cho vay 9 tháng <b>1.350 tỷ</b>, +63% so cùng kỳ; dự phòng giữ nguyên 2,2 tỷ."
+ },
+ "portfolio": {
+  "FVTPL": {
+   "cost": 4244.52,
+   "fv": 4237.32,
+   "cost0": 2236.07,
+   "fv0": 2237.95,
+   "groups": [
+    {
+     "n": "Cổ phiếu chờ hoán đổi ETF",
+     "cls": "trading",
+     "cost": 347.71,
+     "fv": 339.42,
+     "cost0": 45.42,
+     "fv0": 44.98
+    },
+    {
+     "n": "Chứng chỉ quỹ niêm yết",
+     "cls": "trading",
+     "cost": 37.19,
+     "fv": 38.28,
+     "cost0": 55.41,
+     "fv0": 57.73
+    },
+    {
+     "n": "Trái phiếu chính phủ",
+     "cls": "fi",
+     "cost": 2129.81,
+     "fv": 2129.81,
+     "cost0": 1500.98,
+     "fv0": 1500.98
+    },
+    {
+     "n": "Trái phiếu chưa niêm yết",
+     "cls": "fi",
+     "cost": 1729.81,
+     "fv": 1729.81,
+     "cost0": 634.26,
+     "fv0": 634.26
+    }
+   ],
+   "note": "Thuyết minh 4 (mục I). Không công bố danh mục cổ phiếu chờ hoán đổi ETF, chứng chỉ quỹ hay trái phiếu theo mã/tổ chức phát hành. Cổ phiếu chờ hoán đổi ETF xếp 'trading' (hoạt động hoán đổi quỹ ETF, nắm giữ ngắn hạn)."
+  },
+  "AFS": {
+   "cost": 12573.52,
+   "fv": 13617.89,
+   "cost0": 9940.04,
+   "fv0": 13307.7,
+   "groups": [
+    {
+     "n": "Cổ phiếu IDP",
+     "cls": "holding",
+     "cost": 440.99,
+     "fv": 2108.77,
+     "cost0": 440.99,
+     "fv0": 1945.2,
+     "tk": "IDP"
+    },
+    {
+     "n": "Cổ phiếu MCH",
+     "cls": "holding",
+     "cost": 940.64,
+     "fv": 1071.56,
+     "cost0": 1541.98,
+     "fv0": 2529.68,
+     "tk": "MCH"
+    },
+    {
+     "n": "Cổ phiếu TDM",
+     "cls": "holding",
+     "cost": 715.84,
+     "fv": 999.77,
+     "cost0": 648.37,
+     "fv0": 884.07,
+     "tk": "TDM"
+    },
+    {
+     "n": "Cổ phiếu MWG",
+     "cls": "holding",
+     "cost": 901.31,
+     "fv": 827.54,
+     "cost0": 192.2,
+     "fv0": 194.75,
+     "tk": "MWG"
+    },
+    {
+     "n": "Cổ phiếu KDH",
+     "cls": "holding",
+     "cost": 929.59,
+     "fv": 527.76,
+     "cost0": 920.03,
+     "fv0": 1065.24,
+     "tk": "KDH"
+    },
+    {
+     "n": "Cổ phiếu FPT",
+     "cls": "holding",
+     "cost": 630.78,
+     "fv": 414.51,
+     "cost0": 656.32,
+     "fv0": 588.79,
+     "tk": "FPT"
+    },
+    {
+     "n": "Cổ phiếu MBB",
+     "cls": "holding",
+     "cost": 211.74,
+     "fv": 203.87,
+     "cost0": 447.48,
+     "fv0": 450.94,
+     "tk": "MBB"
+    },
+    {
+     "n": "Cổ phiếu STB",
+     "cls": "holding",
+     "cost": 0,
+     "fv": 0,
+     "cost0": 148.91,
+     "fv0": 148.81,
+     "tk": "STB"
+    },
+    {
+     "n": "Cổ phiếu khác (chứng khoán AFS niêm yết khác)",
+     "cls": "holding",
+     "cost": 4409.84,
+     "fv": 3839.66,
+     "cost0": 2876.8,
+     "fv0": 2740.69
+    },
+    {
+     "n": "Trái phiếu niêm yết",
+     "cls": "fi",
+     "cost": 1966.94,
+     "fv": 2011.0,
+     "cost0": 1174.46,
+     "fv0": 1679.43
+    },
+    {
+     "n": "Chứng khoán chưa niêm yết NAP01",
+     "cls": "holding",
+     "cost": 408.24,
+     "fv": 595.84,
+     "cost0": 408.24,
+     "fv0": 595.84
+    },
+    {
+     "n": "Chứng khoán chưa niêm yết VPB02",
+     "cls": "holding",
+     "cost": 161.29,
+     "fv": 161.29,
+     "cost0": 161.29,
+     "fv0": 161.29
+    },
+    {
+     "n": "Chứng khoán chưa niêm yết LTH01",
+     "cls": "holding",
+     "cost": 74.79,
+     "fv": 74.79,
+     "cost0": 74.79,
+     "fv0": 74.79
+    },
+    {
+     "n": "Cổ phiếu chưa niêm yết khác",
+     "cls": "holding",
+     "cost": 781.53,
+     "fv": 781.53,
+     "cost0": 248.18,
+     "fv0": 248.18
+    }
+   ],
+   "note": "Thuyết minh 4 (mục IV). Công bố 8 mã cổ phiếu niêm yết và 3 khoản chưa niêm yết ghi theo mã nội bộ (NAP01, VPB02, LTH01 – thuyết minh không nêu tên tổ chức phát hành; giá gốc không đổi nhiều năm). STB đã bán hết. Tại 30/06/2026 có 1.060,50 tỷ trái phiếu chưa niêm yết AFS, đến 30/09/2026 về 0. Chênh lệch đánh giá lại AFS (trước thuế) 1.044,38 tỷ, đầu năm 3.367,68 tỷ (TM 19, thuế hoãn lại). Lãi từ AFS 9 tháng 2026: 555,08 tỷ (BCKQHĐ)."
+  },
+  "HTM": {
+   "cost": 821.96,
+   "fv": 821.96,
+   "cost0": 412.0,
+   "fv0": 412.0,
+   "groups": [
+    {
+     "n": "Tiền gửi có kỳ hạn",
+     "cls": "fi",
+     "cost": 821.96,
+     "fv": 821.96,
+     "cost0": 412.0,
+     "fv0": 412.0
+    }
+   ],
+   "note": "Thuyết minh 4 (mục II); tiền gửi có kỳ hạn, fv = giá gốc."
+  },
+  "LTOther": {
+   "cost": 50.0,
+   "fv": 50.0,
+   "cost0": 0.0,
+   "fv0": 0.0,
+   "groups": [
+    {
+     "n": "Đầu tư dài hạn khác (không có thuyết minh chi tiết)",
+     "cls": "holding",
+     "cost": 50.0,
+     "fv": 50.0,
+     "cost0": 0.0,
+     "fv0": 0.0
+    }
+   ],
+   "note": "Khoản 50 tỷ xuất hiện trên BCĐKT (đầu tư dài hạn khác, mới trong năm) nhưng thuyết minh quý 3/2026 không có mục chi tiết."
+  },
+  "cw": {
+   "issued": "Không còn chứng quyền lưu hành tại 30/09/2026: phải trả chứng quyền do Vietcap phát hành bằng 0 (31/12/2025: 33,41 tỷ).",
+   "hedge": "Thuyết minh không tách cổ phiếu phòng ngừa rủi ro chứng quyền."
+  },
+  "ins": "Cổ phiếu <b>IDP</b> là khoản lớn nhất: giá trị hợp lý 2.109 tỷ trên giá gốc 441 tỷ. Trong 9 tháng, VCI mua thêm MWG (giá gốc từ 192 lên 901 tỷ), bán bớt MCH (giá gốc từ 1.542 xuống 941 tỷ) và thoái hết STB; KDH và FPT đang lỗ tạm tính 402 tỷ và 216 tỷ.",
+  "insCls": "Cổ phiếu nắm giữ trong AFS <b>11.607 tỷ</b>, chiếm 62% danh mục. Thu nhập cố định 6.693 tỷ (36%) tăng mạnh từ đầu năm nhờ trái phiếu chính phủ và trái phiếu chưa niêm yết trong FVTPL. Lãi đánh giá lại AFS chưa thực hiện còn 1.044 tỷ, giảm từ 3.368 tỷ đầu năm."
+ },
+ "cwList": [],
+ "insTop": "Thuyết minh liệt kê 8 mã cổ phiếu AFS niêm yết (IDP, MCH, TDM, MWG, KDH, FPT, MBB, STB) và 3 khoản chưa niêm yết theo mã nội bộ; danh mục FVTPL và trái phiếu không công bố theo mã.",
+ "note": "Đối chiếu BCĐKT (WiData fs_sec, báo cáo riêng, Q3/2026): FVTPL 4.237,32; HTM 821,96; cho vay 17.307,72; AFS 13.617,90; dự phòng (2,17); đầu tư dài hạn khác 50,00; vay ngắn hạn 22.709,40; không có vay dài hạn/trái phiếu phát hành – khớp thuyết minh. Số đầu năm khớp BCĐKT 31/12/2025. Bản số hoá BCTC quý 3 không có thuyết minh rủi ro tín dụng/thanh khoản và mục chi tiết khoản đầu tư dài hạn 50 tỷ. Không còn chứng quyền lưu hành nên cwList rỗng."
+}

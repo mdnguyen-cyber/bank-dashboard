@@ -1,0 +1,417 @@
+{
+ "sym": "SSI",
+ "q": "2026Q3",
+ "asOf": "2026-09-30",
+ "src": "BCTC riêng (công ty mẹ) quý 3/2026 của Công ty Cổ phần Chứng khoán SSI, công bố 21/10/2026 – thuyết minh số 7.1–7.5, 8, 11, 18, 19, 20, 24, 28.2, 28.4, 35, 42. Công ty có 3 công ty con trực tiếp (SSIAM, Quỹ SSI IMF, Quỹ SSI-NextGen) nhưng BCTC hợp nhất quý 3/2026 chưa có trong nguồn tại thời điểm trích; số dư vay USD đầu năm từ BCTC hợp nhất năm 2025 (TM 21, rủi ro ngoại tệ); số đầu năm = 31/12/2025.",
+ "debt": {
+  "total": 51904.4,
+  "open": 60160.5,
+  "items": [
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Đầu tư và Phát triển Việt Nam (BIDV)",
+    "lender": "BIDV",
+    "ccy": "VND",
+    "rate": "Dưới 9,35%/năm (trần lãi suất vay ngắn hạn công bố chung)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 11105.0,
+    "v0": 10706.0,
+    "lbl": "BIDV"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Ngoại Thương Việt Nam (Vietcombank)",
+    "lender": "Vietcombank",
+    "ccy": "VND",
+    "rate": "Dưới 9,35%/năm (trần lãi suất vay ngắn hạn công bố chung)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 10354.0,
+    "v0": 8558.1,
+    "lbl": "Vietcombank"
+   },
+   {
+    "n": "Vay ngắn hạn Ngân hàng TMCP Công Thương Việt Nam (VietinBank)",
+    "lender": "VietinBank",
+    "ccy": "VND",
+    "rate": "Dưới 9,35%/năm (trần lãi suất vay ngắn hạn công bố chung)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 4011.5,
+    "v0": 7392.5,
+    "lbl": "VietinBank"
+   },
+   {
+    "n": "Vay ngắn hạn các ngân hàng và tổ chức khác (gồm khoản vay tín chấp gốc USD, không tách số dư)",
+    "lender": "Các ngân hàng và tổ chức khác (không nêu tên)",
+    "ccy": "VND/USD",
+    "rate": "Dưới 9,35%/năm (trần lãi suất vay ngắn hạn công bố chung)",
+    "term": "Ngắn hạn (≤12 tháng)",
+    "v": 20205.15,
+    "v0": 24338.45,
+    "lbl": "NH và tổ chức khác"
+   },
+   {
+    "n": "Vay thấu chi ngân hàng",
+    "lender": "Các ngân hàng (không nêu tên)",
+    "ccy": "VND",
+    "rate": "Dưới 8,10%/năm",
+    "term": "Thấu chi (ngắn hạn)",
+    "v": 6228.75,
+    "v0": 9165.45,
+    "lbl": "Thấu chi ngân hàng"
+   }
+  ],
+  "byCcy": {},
+  "byCcy0": {
+   "VND": 54222.05,
+   "USD": 5938.45
+  },
+  "byTerm": {
+   "Vay ngắn hạn": 51904.4,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 0.0,
+   "Trái phiếu dài hạn": 0.0
+  },
+  "byTerm0": {
+   "Vay ngắn hạn": 60160.5,
+   "Vay dài hạn": 0.0,
+   "Trái phiếu ngắn hạn": 0.0,
+   "Trái phiếu dài hạn": 0.0
+  },
+  "byMaturity": {
+   "Đến 01 năm": 51904.4
+  },
+  "cost": "9 tháng 2026 (lũy kế 01/01–30/09): chi phí lãi vay ngắn hạn 2.369,34 tỷ đồng, +34% so với 1.771,55 tỷ cùng kỳ 2025; riêng quý 3/2026 849,69 tỷ (+24%). Chi phí tài chính khác 118,38 tỷ (cùng kỳ 12,00 tỷ), lỗ tỷ giá 36,00 tỷ (cùng kỳ 20,05 tỷ). Chi phí lãi vay phải trả cuối kỳ 88,56 tỷ. Lãi suất bình quân không công bố; trần lãi suất thấu chi dưới 8,10%/năm, vay ngắn hạn dưới 9,35%/năm.",
+  "note": "Thuyết minh 19 chỉ tách theo 3 ngân hàng lớn (Vietcombank, BIDV, VietinBank), phần còn lại gộp \"các ngân hàng và tổ chức khác\"; không công bố lãi suất, kỳ hạn theo từng khoản. Không có trái phiếu phát hành, vay dài hạn. BCTC quý 3 không công bố số dư vay ngoại tệ tại 30/09/2026 (byCcy để trống); đầu năm có 225 triệu USD vay tín chấp (5.938,45 tỷ), 30/06/2026 là 220 triệu USD (5.810,90 tỷ), đều được phòng ngừa toàn bộ bằng hợp đồng kỳ hạn mua ngoại tệ (BCTC năm 2025 và bán niên 2026). Tài sản cầm cố cho vay ngắn hạn (TM 18): trái phiếu và CD FVTPL mệnh giá 30.077,20 tỷ, tiền gửi 3.444 tỷ, trái phiếu HTM dài hạn mệnh giá 2.895 tỷ, cổ phiếu PAN mệnh giá 318,80 tỷ. byMaturity suy từ phân loại BCĐKT (toàn bộ là vay ngắn hạn); BCTC quý không có bảng rủi ro thanh khoản.",
+  "ins": "Nợ vay giảm ở nhóm ngân hàng và tổ chức khác (−4.133 tỷ), VietinBank (−3.381 tỷ) và thấu chi (−2.937 tỷ), trong khi Vietcombank (+1.796 tỷ) và BIDV (+399 tỷ) tăng. Vay USD (225 triệu USD đầu năm) được phòng ngừa toàn bộ bằng hợp đồng kỳ hạn; BCTC quý 3 không nêu số dư USD cuối kỳ. Chi phí lãi vay 9 tháng <b>2.369 tỷ</b>, +34% so cùng kỳ.",
+  "insT": "Toàn bộ là vay ngắn hạn, không có trái phiếu phát hành. Tài sản cầm cố cho vay mệnh giá 36.735 tỷ, chủ yếu là trái phiếu, chứng chỉ tiền gửi và tiền gửi trong danh mục tự doanh."
+ },
+ "margin": {
+  "total": 38293.91,
+  "open": 38940.06,
+  "items": [
+   {
+    "n": "Cho vay ký quỹ (margin)",
+    "v": 38122.13,
+    "v0": 38616.23
+   },
+   {
+    "n": "Ứng trước tiền bán chứng khoán",
+    "v": 171.78,
+    "v0": 323.83
+   }
+  ],
+  "provision": 0.01,
+  "provision0": 0.01,
+  "netFV": 38293.9,
+  "netFV0": 38940.05,
+  "collateral": {
+   "n": "Giá trị thị trường chứng khoán cầm cố cho vay ký quỹ",
+   "v": 112877.68,
+   "v0": 115527.08
+  },
+  "income9M": "Lãi từ các khoản cho vay và phải thu 9 tháng 2026: 3.256,63 tỷ đồng (+32% so với 2.463,59 tỷ cùng kỳ); quý 3/2026: 1.115,20 tỷ (+11%).",
+  "note": "Thuyết minh 7.4, 8, 28.4. Chứng khoán cầm cố cho vay ký quỹ: mệnh giá 41.735,12 tỷ, giá thị trường 112.877,68 tỷ (31/12/2025: 35.651,07 / 115.527,08 tỷ). Dự phòng 11,93 triệu đồng, không đổi. Không công bố đối tượng vay, lãi suất, kỳ hạn hay bảng chất lượng tín dụng trong BCTC quý. Giá trị hợp lý = giá trị ghi sổ trừ dự phòng.",
+  "ins": "Chứng khoán cầm cố theo giá thị trường 112.878 tỷ, gần gấp 3 lần dư nợ ký quỹ. Lãi cho vay và phải thu 9 tháng <b>3.257 tỷ</b>, +32% so cùng kỳ dù dư nợ cuối kỳ thấp hơn đầu năm; dự phòng gần như bằng 0."
+ },
+ "portfolio": {
+  "FVTPL": {
+   "cost": 43238.48,
+   "fv": 43133.11,
+   "cost0": 37774.21,
+   "fv0": 37634.05,
+   "groups": [
+    {
+     "n": "Cổ phiếu MSB",
+     "cls": "trading",
+     "cost": 272.56,
+     "fv": 311.17,
+     "cost0": 0.13,
+     "fv0": 0.13,
+     "tk": "MSB"
+    },
+    {
+     "n": "Cổ phiếu VIC",
+     "cls": "trading",
+     "cost": 71.17,
+     "fv": 69.29,
+     "cost0": 1.3,
+     "fv0": 1.34,
+     "tk": "VIC"
+    },
+    {
+     "n": "Cổ phiếu MWG",
+     "cls": "trading",
+     "cost": 61.23,
+     "fv": 61.14,
+     "cost0": 3.9,
+     "fv0": 4.17,
+     "tk": "MWG"
+    },
+    {
+     "n": "Cổ phiếu FPT",
+     "cls": "trading",
+     "cost": 59.83,
+     "fv": 58.09,
+     "cost0": 19.83,
+     "fv0": 19.5,
+     "tk": "FPT"
+    },
+    {
+     "n": "Cổ phiếu HPG",
+     "cls": "trading",
+     "cost": 58.2,
+     "fv": 56.42,
+     "cost0": 24.09,
+     "fv0": 23.53,
+     "tk": "HPG"
+    },
+    {
+     "n": "Cổ phiếu và chứng khoán niêm yết khác",
+     "cls": "trading",
+     "cost": 485.1,
+     "fv": 478.79,
+     "cost0": 128.99,
+     "fv0": 129.31
+    },
+    {
+     "n": "Cổ phiếu niêm yết phòng ngừa rủi ro chứng quyền",
+     "cls": "cw",
+     "cost": 0.49,
+     "fv": 0.48,
+     "cost0": 1134.25,
+     "fv0": 1128.73,
+     "holdings": [
+      {
+       "t": "VIC",
+       "cost": 0.23,
+       "fv": 0.22
+      },
+      {
+       "t": "HPG",
+       "cost": 0.1,
+       "fv": 0.1,
+       "cost0": 221.5,
+       "fv0": 216.36
+      },
+      {
+       "t": "VRE",
+       "cost": 0.09,
+       "fv": 0.09,
+       "cost0": 12.46,
+       "fv0": 12.85
+      },
+      {
+       "t": "VPB",
+       "cost": 0.04,
+       "fv": 0.04,
+       "cost0": 31.16,
+       "fv0": 31.01
+      },
+      {
+       "t": "VNM",
+       "cost": 0.01,
+       "fv": 0.01,
+       "cost0": 74.45,
+       "fv0": 73.54
+      },
+      {
+       "t": "Cổ phiếu khác",
+       "cost": 0.03,
+       "fv": 0.03,
+       "cost0": 794.69,
+       "fv0": 794.96
+      }
+     ]
+    },
+    {
+     "n": "Cổ phiếu và chứng chỉ quỹ chưa niêm yết",
+     "cls": "holding",
+     "cost": 200.58,
+     "fv": 182.06,
+     "cost0": 46.35,
+     "fv0": 27.17
+    },
+    {
+     "n": "Trái phiếu",
+     "cls": "fi",
+     "cost": 19688.64,
+     "fv": 19574.99,
+     "cost0": 13207.56,
+     "fv0": 13092.36
+    },
+    {
+     "n": "Chứng chỉ tiền gửi",
+     "cls": "fi",
+     "cost": 22340.68,
+     "fv": 22340.68,
+     "cost0": 23207.81,
+     "fv0": 23207.81
+    }
+   ],
+   "note": "Thuyết minh 7.1, 7.5, 28.2. Chỉ công bố 5 mã cổ phiếu niêm yết lớn nhất và 5 mã cổ phiếu phòng ngừa chứng quyền; trái phiếu và chứng chỉ tiền gửi không công bố tổ chức phát hành. Trái phiếu FVTPL mệnh giá 11.015,20 tỷ và CD mệnh giá 19.062 tỷ đang cầm cố cho vay ngắn hạn; CD mệnh giá 618 tỷ đảm bảo thanh toán chứng quyền và hợp đồng dịch vụ. Cổ phiếu/chứng chỉ quỹ chưa niêm yết xếp 'holding' (tự chọn). Lãi từ FVTPL (cổ tức, tiền lãi) 9 tháng 2026: 1.585,82 tỷ."
+  },
+  "AFS": {
+   "cost": 299.73,
+   "fv": 300.81,
+   "cost0": 455.75,
+   "fv0": 473.29,
+   "groups": [
+    {
+     "n": "Cổ phiếu niêm yết (không công bố theo mã)",
+     "cls": "holding",
+     "cost": 160.6,
+     "fv": 160.18,
+     "cost0": 28.15,
+     "fv0": 42.75
+    },
+    {
+     "n": "Cổ phiếu Công ty Cổ phần Pan Farm (chưa niêm yết)",
+     "cls": "holding",
+     "cost": 32.0,
+     "fv": 32.0,
+     "cost0": 32.0,
+     "fv0": 32.0
+    },
+    {
+     "n": "Cổ phiếu Công ty Cổ phần Công nghệ số SSI (chưa niêm yết)",
+     "cls": "holding",
+     "cost": 0,
+     "fv": 0,
+     "cost0": 150.0,
+     "fv0": 150.0
+    },
+    {
+     "n": "Cổ phiếu chưa niêm yết khác",
+     "cls": "holding",
+     "cost": 107.13,
+     "fv": 108.63,
+     "cost0": 197.6,
+     "fv0": 200.54
+    },
+    {
+     "n": "Trái phiếu",
+     "cls": "fi",
+     "cost": 0,
+     "fv": 0,
+     "cost0": 48.0,
+     "fv0": 48.0
+    }
+   ],
+   "note": "Thuyết minh 7.2, 7.5. Cổ phiếu niêm yết AFS không công bố theo mã. Khoản Công nghệ số SSI (150 tỷ) chuyển sang đầu tư liên kết gián tiếp do công ty con mua thêm cổ phần. Quý 3/2026 ghi nhận 65,23 tỷ chênh lệch đánh giá lại AFS khi phân loại lại (9 tháng: 76,16 tỷ)."
+  },
+  "HTM": {
+   "cost": 6566.44,
+   "fv": 6566.44,
+   "cost0": 8178.7,
+   "fv0": 8178.7,
+   "groups": [
+    {
+     "n": "Tiền gửi có kỳ hạn còn lại dưới 1 năm",
+     "cls": "fi",
+     "cost": 3635.35,
+     "fv": 3635.35,
+     "cost0": 5206.79,
+     "fv0": 5206.79
+    },
+    {
+     "n": "Trái phiếu nắm giữ đến ngày đáo hạn (dài hạn)",
+     "cls": "fi",
+     "cost": 2931.09,
+     "fv": 2931.09,
+     "cost0": 2971.91,
+     "fv0": 2971.91
+    }
+   ],
+   "note": "Thuyết minh 7.3 và 11; chỉ có giá trị phân bổ (fv = giá gốc). Trên BCĐKT: tiền gửi HTM ngắn hạn 3.635,35 tỷ, trái phiếu HTM nằm trong đầu tư dài hạn 2.931,09 tỷ. Đang cầm cố cho vay ngắn hạn: tiền gửi 3.444 tỷ, trái phiếu HTM mệnh giá 2.895 tỷ. Lãi HTM 9 tháng 2026: 397,41 tỷ."
+  },
+  "LTOther": {
+   "cost": 1521.58,
+   "fv": 1521.58,
+   "cost0": 871.58,
+   "fv0": 871.58,
+   "groups": [
+    {
+     "n": "Đầu tư vào công ty con (giá gốc)",
+     "cls": "holding",
+     "cost": 979.0,
+     "fv": 979.0,
+     "cost0": 479.0,
+     "fv0": 479.0,
+     "holdings": [
+      {
+       "t": "Công ty TNHH Quản lý Quỹ SSI (SSIAM, sở hữu 100%)",
+       "cost": 75.0,
+       "fv": 75.0,
+       "cost0": 75.0,
+       "fv0": 75.0
+      },
+      {
+       "t": "Quỹ Đầu tư Thành viên SSI (SSI IMF, sở hữu 76,15%)",
+       "cost": 404.0,
+       "fv": 404.0,
+       "cost0": 404.0,
+       "fv0": 404.0
+      },
+      {
+       "t": "Quỹ Đầu tư Công nghệ Thế hệ mới SSI (SSI-NextGen, sở hữu 83,33%)",
+       "cost": 500.0,
+       "fv": 500.0,
+       "cost0": 0.0,
+       "fv0": 0.0
+      }
+     ]
+    },
+    {
+     "n": "Đầu tư vào công ty liên kết (giá gốc)",
+     "cls": "holding",
+     "cost": 542.58,
+     "fv": 542.58,
+     "cost0": 392.58,
+     "fv0": 392.58,
+     "holdings": [
+      {
+       "t": "Công ty Cổ phần Tập đoàn PAN (liên kết trực tiếp)",
+       "tk": "PAN",
+       "cost": 392.58,
+       "fv": 392.58,
+       "cost0": 392.58,
+       "fv0": 392.58
+      },
+      {
+       "t": "Công ty Cổ phần Công nghệ số SSI (liên kết gián tiếp, chuyển từ AFS)",
+       "cost": 150.0,
+       "fv": 150.0,
+       "cost0": 0.0,
+       "fv0": 0.0
+      }
+     ]
+    }
+   ],
+   "note": "Thuyết minh 11 – đầu tư vào công ty con và công ty liên kết, theo giá gốc trên BCTC riêng. Góp mới 500 tỷ vào Quỹ SSI-NextGen (thành lập 08/2026). 31.880.120 cổ phiếu PAN (mệnh giá 318,80 tỷ) đang cầm cố cho vay ngắn hạn."
+  },
+  "cw": {
+   "issued": "Phải trả chứng quyền đang lưu hành 0,14 tỷ đồng (31/12/2025: 279,85 tỷ). Được phép phát hành 329.000.000 CW, đang lưu hành 60.500 CW (31/12/2025: 167.500.000 / 118.163.400): HPG/7M-2/SSI/2026-02 17.500; VRE/4M-1/SSI/2026-03 10.000; VIC/4M-1/SSI/2026-03 7.900; VIC/7M-1/SSI/2026-02 6.600; VPB/7M-1/SSI/2026-02 5.000; chứng quyền khác 13.500 (không nêu mã). Đảm bảo thanh toán bằng chứng chỉ tiền gửi mệnh giá 618 tỷ (dùng chung cho hợp đồng dịch vụ).",
+   "hedge": "Cổ phiếu phòng ngừa rủi ro chứng quyền (FVTPL) gần như về 0: giá gốc 0,49 tỷ, giá trị hợp lý 0,48 tỷ (31/12/2025: 1.134,25 / 1.128,73 tỷ), gồm VIC 0,22; HPG 0,10; VRE 0,09; VPB 0,04; VNM 0,01; khác 0,03 tỷ."
+  },
+  "ins": "Chứng chỉ tiền gửi <b>22.341 tỷ</b> và trái phiếu FVTPL 19.575 tỷ là hai khoản lớn nhất; trái phiếu tăng 6.483 tỷ trong 9 tháng. Cổ phiếu niêm yết tự doanh tăng từ 178 tỷ lên 1.035 tỷ, lớn nhất là MSB 311 tỷ (lãi tạm tính 39 tỷ); rổ cổ phiếu phòng ngừa chứng quyền giảm từ 1.129 tỷ về 0,5 tỷ.",
+  "insCls": "Thu nhập cố định <b>48.482 tỷ</b>, chiếm 94% danh mục. Góp vốn công ty con, liên kết 1.522 tỷ, tăng 650 tỷ do góp vào Quỹ SSI-NextGen và chuyển Công nghệ số SSI từ AFS sang."
+ },
+ "cwList": [
+  {
+   "t": "HPG",
+   "n": 17500
+  },
+  {
+   "t": "VIC",
+   "n": 14500
+  },
+  {
+   "t": "VRE",
+   "n": 10000
+  },
+  {
+   "t": "VPB",
+   "n": 5000
+  }
+ ],
+ "insTop": "Thuyết minh chỉ công bố 5 mã cổ phiếu FVTPL lớn nhất (MSB, VIC, MWG, FPT, HPG) và cổ phiếu liên kết PAN; trái phiếu, chứng chỉ tiền gửi và cổ phiếu AFS niêm yết không công bố theo mã.",
+ "note": "Nguồn là BCTC riêng (công ty mẹ) – bản duy nhất của quý 3/2026 hiện có; BCTC hợp nhất quý 3 chưa có. Đối chiếu BCĐKT công ty mẹ (WiData fs_sec_parent, Q3/2026): FVTPL 43.133,10; HTM ngắn hạn 3.635,35; cho vay 38.293,91; AFS 300,81; dự phòng (0,01); đầu tư dài hạn 4.452,67 (HTM 2.931,09 + công ty con 979,00 + liên kết 542,58); vay ngắn hạn 51.904,40; không có vay dài hạn/trái phiếu phát hành; VCSH 38.056,83 – khớp thuyết minh. Số đầu năm khớp BCĐKT 31/12/2025. cwList chỉ gồm các mã CW được nêu tên (47.000/60.500 CW); 13.500 CW khác không nêu mã cơ sở. Không có bảng rủi ro tín dụng/thanh khoản trong BCTC quý."
+}

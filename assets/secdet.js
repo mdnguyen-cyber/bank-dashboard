@@ -34,9 +34,9 @@
   window.sdOvHtml = function () {
     const d = det(); if (!d) return '';
     const R = rows(d).filter(r => r.fv > 0.5).sort((a, b) => b.fv - a.fv), T = tot(R, 'fv');
-    const cwT = d.cwList || [], bsk = cwT.map(c => pxChg(c.t)).filter(Boolean), bR = bsk.length ? bsk.reduce((s, x) => s + x.r, 0) / bsk.length : null, p0 = bsk[0] && bsk[0].p;
+    const cwT = d.cwList || [], bsk = cwT.map(c => pxChg(c.t)).filter(Boolean), bR = bsk.length ? bsk.reduce((s, x) => s + x.r, 0) / bsk.length : null, p0 = Object.values(SD.px).sort((a, b) => b.d1.localeCompare(a.d1))[0];
     const perf = r => {
-      if (r.tk && pxChg(r.tk)) return `<span class="${cls(pxChg(r.tk).r)}">${sg(pxChg(r.tk).r)}</span>`;
+      if (r.tk && pxChg(r.tk)) { const x = pxChg(r.tk); return `<span class="${cls(x.r)}">${sg(x.r)}</span>${p0 && x.p.d1 !== p0.d1 ? `<small class="muted"> đến ${dd(x.p.d1)}</small>` : ''}`; }
       if (r.cls === 'cw' && bR != null) return `<span class="${cls(bR)}">${sg(bR)}</span><small class="muted"> rổ ${bsk.length} mã cơ sở</small>`;
       if (r.cls === 'fi') return '<span class="muted">lãi cố định</span>';
       return `<span class="muted">${/chưa niêm yết|Công ty/.test(r.n) ? 'không niêm yết' : 'không công bố mã'}</span>`;
@@ -55,9 +55,11 @@
   window.sdFinHtml = function () {
     const d = det(); if (!d) return '';
     const D = d.debt, M = d.margin, rq = last(QS()), eq = sv(rq, 'bs400'), R = rows(d), T = tot(R, 'fv'), T0 = tot(R, 'fv0');
-    const usd = D.byCcy.USD || 0, it = D.items.filter(i => i.v || i.v0);
-    const insD = `Nợ vay ${nf(D.total)} tỷ, ${sg(chg(D.total, D.open))} từ đầu năm; vay USD <b>${pc(usd / D.total, 0)}</b> (đầu năm ${pc((D.byCcy0.USD || 0) / D.open, 0)}). ${D.ins || ''}`;
-    const insT = `Vay đến hạn trong 12 tháng <b>${pc((D.byMaturity['Đến 01 năm'] || 0) / D.total, 0)}</b> tổng nợ vay, khớp với kỳ hạn cho vay ký quỹ ngắn. ${D.insT || ''}`;
+    const usd = (D.byCcy || {}).USD || 0, it = D.items.filter(i => i.v || i.v0);
+    const hasC = Object.keys(D.byCcy || {}).length > 0, usd0 = (D.byCcy0 || {}).USD || 0;
+    const insD = `Nợ vay ${nf(D.total)} tỷ, ${sg(chg(D.total, D.open))} từ đầu năm${hasC && usd ? `; vay USD <b>${pc(usd / D.total, 0)}</b> (đầu năm ${pc(usd0 / D.open, 0)})` : ''}. ${D.ins || ''}`;
+    const mat1 = D.byMaturity ? Object.entries(D.byMaturity).find(([k]) => /01 năm|1 năm|12 tháng|ngắn/i.test(k)) : null;
+    const insT = `${mat1 ? `Vay đến hạn trong 12 tháng <b>${pc(mat1[1] / D.total, 0)}</b> tổng nợ vay. ` : ''}${D.insT || ''}`;
     const insM = `Dư nợ ký quỹ và ứng trước ${nf(M.total)} tỷ, ${sg(chg(M.total, M.open))} từ đầu năm, bằng <b>${pc(M.total / eq, 0)}</b> vốn chủ. ${M.ins || ''}`;
     const cwL = d.cwList || [];
     const insP = `Danh mục ${nf(T)} tỷ (đầu năm ${nf(T0)} tỷ). ${d.portfolio.ins || ''}`;
@@ -99,8 +101,8 @@
         { text: 'USD (' + dd(d.asOf) + ')', fillStyle: C.purple, strokeStyle: C.purple }, { text: 'VND (' + dd(d.asOf) + ')', fillStyle: C.navy, strokeStyle: C.navy }, { text: 'Đầu năm', fillStyle: '#c9cfdc', strokeStyle: '#c9cfdc' }] } } } } });
     const lab = ['Đầu năm', dd(d.asOf)], TC = ['#1D2678', '#2938A8', '#59C5C8', '#1f8a8d'];
     mk('sdDebtM', { type: 'bar', data: { labels: lab, datasets: [
-      ...['VND', 'USD'].map((k, i) => bar(k, [D.byCcy0[k] || 0, D.byCcy[k] || 0], i ? C.purple : C.navy, { stack: 'c', unit: ' tỷ' })),
-      ...Object.keys(D.byTerm).map((k, i) => bar(k, [D.byTerm0[k] || 0, D.byTerm[k] || 0], [C.teal, C.gold, '#9aa3b2', '#5b6170'][i], { stack: 't', unit: ' tỷ' }))] },
+      ...['VND', 'USD'].filter(k => (D.byCcy0 || {})[k] || (D.byCcy || {})[k]).map((k, i) => bar(k, [(D.byCcy0 || {})[k] || 0, Object.keys(D.byCcy || {}).length ? (D.byCcy[k] || 0) : null], k === 'USD' ? C.purple : C.navy, { stack: 'c', unit: ' tỷ' })),
+      ...Object.keys(D.byTerm || {}).map((k, i) => bar(k, [(D.byTerm0 || {})[k] || 0, D.byTerm[k] || 0], [C.teal, C.gold, '#9aa3b2', '#5b6170'][i], { stack: 't', unit: ' tỷ' }))] },
       options: { scales: { x: { stacked: true }, y: yNum('tỷ đồng', { stacked: true }) } } });
     mk('sdMg', { type: 'bar', data: { labels: lab, datasets: M.items.map((x, i) => bar(x.n, [x.v0, x.v], i ? C.teal : C.navy, { stack: 'm', unit: ' tỷ' })) },
       options: { scales: { x: { stacked: true }, y: yNum('tỷ đồng', { stacked: true }) } } });
@@ -120,7 +122,7 @@
     const fl = [], col = {}, root = 'Danh mục tự doanh';
     col[root] = '#5b6170';
     Object.keys(ACC).forEach(a => { const A = d.portfolio[a]; if (!A) return; const v = A.groups.reduce((s, x) => s + (a === 'HTM' || a === 'LTOther' ? x.cost : x.fv), 0); if (v > 0.5) { fl.push({ from: root, to: ACC[a], flow: v }); col[ACC[a]] = ACCC[a]; } });
-    const CO = ['fi', 'holding', 'cw', 'trading'], AO = ['AFS', 'HTM', 'LTOther', 'FVTPL'], pri = {}, T = tot(R, 'fv');
+    const CO = ['fi', 'holding', 'cw', 'trading'], AO = Object.keys(ACC).sort((x, y) => tot(R.filter(r => r.a === y), 'fv') - tot(R.filter(r => r.a === x), 'fv')), pri = {}, T = tot(R, 'fv');
     AO.forEach((a, i) => pri[ACC[a]] = i); CO.forEach((k, i) => pri[CLS[k]] = i);
     const nodes = {};
     R.filter(r => r.fv > 0.5).forEach(r => {
