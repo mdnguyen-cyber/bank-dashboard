@@ -1,5 +1,5 @@
 {
- "fetched": "2026-10-29T17:53:57Z",
+ "fetched": "2026-10-30T02:39:02Z",
  "report": {
   "us_cpi": [
    {
@@ -140,8 +140,8 @@
   "us_breakeven5": [
    {
     "id": "fred:T5YIE",
-    "n": 4208,
-    "last": "2026-10-28"
+    "n": 4209,
+    "last": "2026-10-29"
    }
   ],
   "us_unrate": [
@@ -217,8 +217,8 @@
   "us_effr": [
    {
     "id": "fred:DFF",
-    "n": 6144,
-    "last": "2026-10-27"
+    "n": 6145,
+    "last": "2026-10-28"
    }
   ],
   "us_fedtgt_up": [
@@ -238,8 +238,8 @@
   "us_iorb": [
    {
     "id": "fred:IORB",
-    "n": 1919,
-    "last": "2026-10-29"
+    "n": 1920,
+    "last": "2026-10-30"
    }
   ],
   "us_sofr": [
@@ -266,29 +266,29 @@
   "us_2y": [
    {
     "id": "fred:DGS2",
-    "n": 4207,
-    "last": "2026-10-27"
+    "n": 4208,
+    "last": "2026-10-28"
    }
   ],
   "us_10y": [
    {
     "id": "fred:DGS10",
-    "n": 4207,
-    "last": "2026-10-27"
+    "n": 4208,
+    "last": "2026-10-28"
    }
   ],
   "us_walcl": [
    {
     "id": "fred:WALCL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "us_bills": [
    {
     "id": "fred:WSHOBL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "us_rstar": [
@@ -301,29 +301,29 @@
   "us_reserves": [
    {
     "id": "fred:WRESBAL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "us_tga": [
    {
     "id": "fred:WTREGEN",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "us_rrp": [
    {
     "id": "fred:RRPONTSYD",
-    "n": 3282,
-    "last": "2026-10-28"
+    "n": 3283,
+    "last": "2026-10-29"
    }
   ],
   "us_repo": [
    {
     "id": "fred:RPONTSYD",
-    "n": 1787,
-    "last": "2026-10-28"
+    "n": 1788,
+    "last": "2026-10-29"
    }
   ],
   "us_dxy": [
@@ -357,85 +357,85 @@
   "fed_notes": [
    {
     "id": "fred:WSHONBNL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_tips": [
    {
     "id": "fred:WSHONBIIL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_tips_ic": [
    {
     "id": "fred:WSHOICL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_ust": [
    {
     "id": "fred:WSHOTSL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_mbs": [
    {
     "id": "fred:WSHOMCB",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_loans": [
    {
     "id": "fred:WLCFLL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_repo_fima": [
    {
     "id": "fred:H41RESPPALGTRFNWW",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_repo_oth": [
    {
     "id": "fred:H41RESPPALGTRONWW",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_tm15": [
    {
     "id": "fred:TREAS15",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_tm90": [
    {
     "id": "fred:TREAS1590",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_tm1y": [
    {
     "id": "fred:TREAS911Y",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_tm5y": [
    {
     "id": "fred:TREAS1T5",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    },
    {
     "id": "fred:TREAS1T5Y",
@@ -445,8 +445,8 @@
   "fed_tm10y": [
    {
     "id": "fred:TREAS5T10",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    },
    {
     "id": "fred:TREAS5T10Y",
@@ -456,48 +456,48 @@
   "fed_tmlong": [
    {
     "id": "fred:TREAS10Y",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_currency": [
    {
     "id": "fred:WCURCIR",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_rrp_all": [
    {
     "id": "fred:WLRRAL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_res_wed": [
    {
     "id": "fred:WRBWFRBL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_tga_wed": [
    {
     "id": "fred:WDTGAL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "fed_currency_wed": [
    {
     "id": "fred:WLFN",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    },
    {
     "id": "fred:WCURCIR",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "ust_nfc": [
@@ -562,8 +562,8 @@
   "fed_rrp_foreign": [
    {
     "id": "fred:WLRRAFOIAL",
-    "n": 877,
-    "last": "2026-10-21"
+    "n": 878,
+    "last": "2026-10-28"
    }
   ],
   "tsy_debt_total": [
