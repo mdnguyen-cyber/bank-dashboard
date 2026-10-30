@@ -1720,7 +1720,7 @@ function dnRisks() {
 /* =====================================================================
    ĐIỀU HƯỚNG
 ===================================================================== */
-window.FSH = { SYM, IS_INS, QS, sv, last, card, tbl, kpi, mk, nf, pc, sg, cls, esc, qLbl, C, WI, bar, yNum };
+window.FSH = { W, SYM, IS_INS, QS, sv, last, card, tbl, kpi, mk, nf, pc, sg, cls, esc, qLbl, C, WI, bar, yNum };
 const builders = PAGE === 'dn' ? { ov: dnOv, fin: dnFin, events: dnEvents, cons: dnCons, val: dnVal }
   : { ov: PAGE === 'bh' ? paneOvBH : paneOvCK, picture: panePicture, policy: panePolicy, catalyst: paneCatalyst, cons: paneCons, book: paneBook, src: paneSrc };
 const built = {};

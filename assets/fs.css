@@ -817,3 +817,6 @@ body.print-all .cpick,body.pdf-cap .cpick{display:none!important}
 
 .ibar .fss-tbl{margin-left:auto}.ibar .fss-tbl+.fss-tbl,.ibar .fss-tbl+.fss-add{margin-left:6px}
 body.print-all .fss-tbl,body.pdf-cap .fss-tbl{display:none!important}
+details.fold{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 22px;margin-bottom:18px}
+details.fold>summary{cursor:pointer;color:var(--navy);font-weight:700;font-size:14px}
+details.fold[open]>summary{margin-bottom:10px}

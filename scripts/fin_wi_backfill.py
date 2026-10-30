@@ -153,6 +153,23 @@ def main():
         cand = [t for _, t in pick_all(ep, lambda f: True) if t and keys[1] in t[0]]
         rows = max(cand, key=len) if cand else []
         notes[ep] = {'k': keys, 'v': fs_rows(rows, keys)}
+    # thuyết minh CTCK chi tiết: FVTPL/AFS (giá trị hợp lý) theo loại, HTM theo loại, cho vay ký quỹ, ứng trước
+    SECX = ['fn112_7', 'fn112_8', 'fn112_9', 'fn112_10', 'fn112_11', 'fn112_12', 'fn115_7', 'fn115_8', 'fn115_9', 'fn115_10', 'fn115_11', 'fn115_12', 'fn113_1', 'fn113_2', 'fn113_3', 'fn113_4', 'fn114_2', 'fn114_3']
+    cand = [t for _, t in pick_all('fs_sec_notes', lambda f: True) if t and 'fn115_8' in t[0]]
+    rows = []; seen = set()
+    for t in sorted(cand, key=len, reverse=True):
+        for r in t:
+            k = (r.get('symbol'), r.get('year'), r.get('quarter'))
+            if k not in seen: seen.add(k); rows.append(r)
+    notes['secx'] = {'k': SECX, 'v': fs_rows(rows, SECX)}
+    SECD = ['bs311', 'bs315', 'bs316', 'bs341', 'bs345', 'bs346']   # nợ vay theo kỳ hạn và loại
+    cand = [t for _, t in pick_all('fs_sec', lambda f: True) if t and 'bs341' in t[0] and 'bs345' in t[0]]
+    rows = []; seen = set()
+    for t in sorted(cand, key=len, reverse=True):
+        for r in t:
+            k = (r.get('symbol'), r.get('year'), r.get('quarter'))
+            if k not in seen: seen.add(k); rows.append(r)
+    notes['secd'] = {'k': SECD, 'v': fs_rows(rows, SECD)}
     rep = []
     for r in pick('co_reports', lambda f: 'SSI' in f):
         rep.append({'s': r['symbol'], 'org': r['source'], 'd': r['recommendation_date'], 'rec': r['recommendation'], 'tp': r.get('target_price_adjusted'),
