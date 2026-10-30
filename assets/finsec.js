@@ -1236,6 +1236,7 @@ function dnOv() {
   </div>
   <article class="card"><h3 class="sub">Thông tin doanh nghiệp</h3><div class="facts">${dnFacts()}</div>
     <div class="src">Nguồn: ${WI} (BCTC hợp nhất, định giá theo phiên, thông tin niêm yết)</div></article>
+  ${window.sdOvHtml ? sdOvHtml() : ''}
   ${card({ id: 'chPrice', title: `Giá cổ phiếu so với ngành ${IS_INS ? 'bảo hiểm' : 'chứng khoán'} và VN-Index`, sub: `đ/CP · giá đóng cửa đã điều chỉnh từ ${dvn(pxS().d[0])} · đường ngang là đỉnh và đáy 52 tuần · chỉ số ngành và VN-Index quy về cùng điểm xuất phát với giá ${SYM} ở đầu khung đang xem`,
     ins: dnPerfTxt(), src: WI + ' (giá điều chỉnh, chỉ số giá ngành, VN-Index)' })}
   <div class="grid g2 gap">
@@ -1405,7 +1406,7 @@ function dnFin() {
       ${stackCard('dnL', 'Nguồn vốn theo quý', 'nghìn tỷ đồng · cột chồng', `Vay và trái phiếu phát hành ${nf(debt / 1000, 1)} nghìn tỷ, bằng ${pc(debt / eq, 0)} vốn chủ (cùng kỳ ${pc(debtOf(rq0) / sv(rq0, 'bs400'), 0)}).`, WI + ' (BCTC hợp nhất)')}
       ${card({ id: 'dnMg', title: 'Cho vay ký quỹ và ứng trước', sub: 'nghìn tỷ đồng · đường: cho vay / VCSH (trục phải), vạch đỏ: trần 200%', ins: `${mg ? `Dư nợ ký quỹ ${nf(mg / 1000, 1)} nghìn tỷ, bằng ${pc(mg / eq, 0)} vốn chủ. ` : ''}${sv(rq, 'bs114') / eq > 1.7 ? 'Cho vay đã từ 170% vốn chủ: dư nợ năm sau chỉ tăng theo mức tăng vốn chủ.' : 'Còn dư địa mở rộng cho vay trước trần 200% vốn chủ.'}`, src: WI + ' (thuyết minh cho vay)' })}
       ${card({ id: 'dnN', title: 'Danh mục FVTPL: cổ phiếu và thu nhập cố định', sub: 'nghìn tỷ đồng · giá trị hợp lý · đường: cổ phiếu FVTPL / VCSH (trục phải)', ins: 'Cổ phiếu FVTPL trên 30% vốn chủ thì lợi nhuận năm sau tăng giảm theo giá cổ phiếu cuối kỳ; trái phiếu, chứng chỉ tiền gửi cho thu nhập ổn định theo lãi suất.', src: WI + ' (thuyết minh FVTPL)' })}
-    </div>
+    </div>${window.sdFinHtml ? sdFinHtml() : ''}
     ${sec(2, 'Kết quả kinh doanh')}
     <div class="grid g2 gap">
       ${card({ id: 'dnY', title: `Lợi nhuận trước thuế theo năm + kế hoạch ${cy}`, sub: `tỷ đồng · ${cy}: cột đặc = lũy kế ${nQ(cy)} quý, viền đứt = kế hoạch ĐHĐCĐ`, ins: dnPlanIns(), src: WI + ' (BCTC, kế hoạch ĐHĐCĐ)' })}
@@ -1451,6 +1452,7 @@ function dnFin() {
   }
   $('#fin').innerHTML = `<h2 class="sec">Tài chính</h2><p class="sec-sub">BCTC hợp nhất theo quý từ 2019, quý mới nhất ${qLbl(q)}. Bảng cân đối → kết quả kinh doanh → hiệu quả.</p>${html}`;
   dnFinDraw(A, R, L, years, cy, P);
+  if (window.sdFinDraw) sdFinDraw();
 }
 function dnPlanIns() {
   const ys = [...new Set(QS().map(r => r[0].slice(0, 4)))], done = W.plans.filter(p => p.s === SYM && p.pbt).sort((a, b) => b.y - a.y).map(p => { const s = yearSum(p.y, PBT_K()); return { y: p.y, r: s.v / p.pbt, n: s.n }; });
@@ -1718,6 +1720,7 @@ function dnRisks() {
 /* =====================================================================
    ĐIỀU HƯỚNG
 ===================================================================== */
+window.FSH = { SYM, IS_INS, QS, sv, last, card, tbl, kpi, mk, nf, pc, sg, cls, esc, qLbl, C, WI, bar, yNum };
 const builders = PAGE === 'dn' ? { ov: dnOv, fin: dnFin, events: dnEvents, cons: dnCons, val: dnVal }
   : { ov: PAGE === 'bh' ? paneOvBH : paneOvCK, picture: panePicture, policy: panePolicy, catalyst: paneCatalyst, cons: paneCons, book: paneBook, src: paneSrc };
 const built = {};
