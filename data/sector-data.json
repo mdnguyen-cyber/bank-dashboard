@@ -59,7 +59,7 @@
    "NVB": "Tư nhân nhỏ"
   },
   "note": "Số liệu Wi MCP; phần tự tính có công thức ở chân trang và tab Sources.",
-  "auto": "2026-10-30T16:27Z"
+  "auto": "2026-10-31T02:36Z"
  },
  "idx": {
   "now": {
@@ -141475,6 +141475,71 @@
  },
  "news": [
   {
+   "d": "2026-10-31",
+   "t": "HDBank đạt 18.379 tỷ đồng lợi nhuận 9 tháng, tổng tài sản vượt 1,14 triệu tỷ đồng",
+   "src": "CafeF",
+   "url": "https://cafef.vn/hdbank-dat-18379-ty-dong-loi-nhuan-9-thang-tong-tai-san-vuot-114-trieu-ty-dong-188261031092148074.chn",
+   "sym": [
+    "HDB"
+   ]
+  },
+  {
+   "d": "2026-10-31",
+   "t": "Giá vàng miếng, vàng nhẫn hôm nay (31/10) tại SJC, DOJI, Bảo Tín Mạnh Hải, PNJ,... tiếp tục giảm mạnh tới 2,6 triệu đồng/lượng: Bao nhiêu tiền một chỉ?",
+   "src": "CafeF",
+   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-hom-nay-31-10-tai-sjc-doji-bao-tin-manh-hai-pnj-bao-nhieu-tien-mot-chi-188261031073825033.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-31",
+   "t": "Cập nhật lợi nhuận quý 3/2026 các ngân hàng sáng 31/10: Kết quả bất ngờ của Vietcombank, VietinBank",
+   "src": "CafeF",
+   "url": "https://cafef.vn/cap-nhat-loi-nhuan-quy-3-2026-cac-ngan-hang-sang-31-10-ket-qua-bat-ngo-cua-vietcombank-vietinbank-188261031075812515.chn",
+   "sym": [
+    "VCB",
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-31",
+   "t": "Chứng chỉ tiền gửi một ngân hàng \"đắt khách\", số dư giấy tờ có giá tăng vọt",
+   "src": "CafeF",
+   "url": "https://cafef.vn/chung-chi-tien-gui-mot-ngan-hang-dat-khach-so-du-giay-to-co-gia-tang-vot-188261030155624672.chn",
+   "sym": []
+  },
+  {
+   "d": "2026-10-31",
+   "t": "Giá USD ngân hàng xuống dưới 26.000 đồng",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/gia-usd-ngan-hang-xuong-duoi-26-000-dong-5139037.html",
+   "sym": []
+  },
+  {
+   "d": "2026-10-31",
+   "t": "VietinBank dẫn đầu lợi nhuận ngành ngân hàng trong quý III",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/vietinbank-dan-dau-loi-nhuan-nganh-ngan-hang-trong-quy-iii-5139002.html",
+   "sym": [
+    "CTG"
+   ]
+  },
+  {
+   "d": "2026-10-31",
+   "t": "Vietcombank lãi hơn 40.000 tỷ đồng sau 9 tháng",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/vietcombank-lai-hon-40-000-ty-dong-sau-9-thang-5138942.html",
+   "sym": [
+    "VCB"
+   ]
+  },
+  {
+   "d": "2026-10-31",
+   "t": "Lợi nhuận công ty bầu Đức tăng gấp đôi nhờ xóa nợ lãi trái phiếu",
+   "src": "VnExpress",
+   "url": "https://vnexpress.net/loi-nhuan-cong-ty-bau-duc-tang-gap-doi-nho-xoa-no-lai-trai-phieu-5138964.html",
+   "sym": []
+  },
+  {
    "d": "2026-10-30",
    "t": "Vietcombank, VietinBank, BIDV, Agribank đồng loạt phát thông báo quan trọng, người dùng chú ý để tránh mất tiền",
    "src": "CafeF",
@@ -143508,76 +143573,6 @@
    "src": "CafeF",
    "url": "https://cafef.vn/chinh-thuc-khai-mac-song-festival-2026-tai-ha-noi-31-ngan-hang-to-chuc-tai-chinh-to-chuc-the-quoc-te-tham-gia-188261024214012162.chn",
    "sym": []
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Các ngân hàng vừa thống nhất \"bơm\" 230 nghìn tỷ đồng cho doanh nghiệp và các dự án: Đâu là những cái tên chú ý?",
-   "src": "CafeF",
-   "url": "https://cafef.vn/cac-ngan-hang-vua-thong-nhat-bom-230-nghin-ty-dong-cho-doanh-nghiep-va-cac-du-an-dau-la-nhung-cai-ten-chu-y-188261024211526717.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Agribank giảm lãi suất cho vay hỗ trợ phát triển sản xuất kinh doanh",
-   "src": "VnExpress",
-   "url": "https://vnexpress.net/agribank-giam-lai-suat-cho-vay-ho-tro-phat-trien-san-xuat-kinh-doanh-5136224.html",
-   "sym": []
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Hà Nội: Tòa kêu gọi cựu Giám đốc SeABank Hai Bà Trưng đầu thú trước ngày xét xử vắng mặt",
-   "src": "CafeF",
-   "url": "https://cafef.vn/ha-noi-toa-keu-goi-cuu-giam-doc-seabank-hai-ba-trung-dau-thu-truoc-ngay-xet-xu-vang-mat-188261024205500847.chn",
-   "sym": [
-    "SSB"
-   ]
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Lãi suất ngày 24/10 tại Agribank, Vietcombank, BIDV, VietinBank, MB, VPBank, Techcombank, Sacombank, HDBank,...",
-   "src": "CafeF",
-   "url": "https://cafef.vn/lai-suat-ngay-24-10-tai-agribank-vietcombank-bidv-vietinbank-mb-vpbank-techcombank-sacombank-hdbank-188261024203010563.chn",
-   "sym": [
-    "VCB",
-    "BID",
-    "CTG",
-    "TCB",
-    "VPB",
-    "HDB",
-    "STB"
-   ]
-  },
-  {
-   "d": "2026-10-24",
-   "t": "BIDV đề xuất giải pháp thúc đẩy tăng trưởng vùng Đông Nam Bộ",
-   "src": "CafeF",
-   "url": "https://cafef.vn/bidv-de-xuat-giai-phap-thuc-day-tang-truong-vung-dong-nam-bo-188261024154559365.chn",
-   "sym": [
-    "BID"
-   ]
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Giá vàng miếng, vàng nhẫn chiều 24/10 tại SJC, PNJ, DOJI, Bảo Tín Minh Châu và Bảo Tín Mạnh Hải",
-   "src": "CafeF",
-   "url": "https://cafef.vn/gia-vang-mieng-vang-nhan-chieu-24-10-tai-sjc-pnj-doji-bao-tin-minh-chau-va-bao-tin-manh-hai-188261023214427223.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-24",
-   "t": "Thay đổi lớn trong hoạt động kinh doanh vàng ở Việt Nam",
-   "src": "CafeF",
-   "url": "https://cafef.vn/thay-doi-lon-trong-hoat-dong-kinh-doanh-vang-o-viet-nam-188261024113524273.chn",
-   "sym": []
-  },
-  {
-   "d": "2026-10-24",
-   "t": "BIDV SmartBanking tiên phong thiết kế giao diện riêng cho iPhone Duo",
-   "src": "CafeF",
-   "url": "https://cafef.vn/bidv-smartbanking-tien-phong-thiet-ke-giao-dien-rieng-cho-iphone-duo-188261024121125589.chn",
-   "sym": [
-    "BID"
-   ]
   }
  ],
  "goldWi": [
