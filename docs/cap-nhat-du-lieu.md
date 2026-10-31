@@ -117,6 +117,7 @@ CTCK dùng các cột bảng cân đối đã có trong `fs_sec` (bs111–bs115,
 ## Lịch công bố BCTC quý (HOSE)
 - Workflow `fetch-hose.yml` (4 lần/ngày) chạy `scripts/fetch_hose_reports.py` (api.hsx.vn, mục "Các báo cáo định kỳ" của từng mã, ngày công bố = ngày đầu tên file HOSE đăng) rồi `scripts/build_report_dates.py` → `data/report-dates.js`.
 - `assets/rptcal.js` hiện thanh "BCTC Qx" dưới tiêu đề trang ngân hàng, trang doanh nghiệp, trang ngành: đã công bố chưa, so với ngày thường lệ (trung vị 6 quý gần nhất); đỏ khi đã quá ngày muộn nhất của 6 quý trước. Mã niêm yết HNX (MBS, SHS, PVI, PTI) chưa có nguồn.
+- HOSE đăng mục "báo cáo định kỳ" chậm hơn ngày doanh nghiệp công bố (vd CTG, VCB, BID, HDB Q3/2026 công bố 30/10 trên website ngân hàng): ghi ngày vào `data/backfill/report_dates_extra.json`, build lấy ngày sớm hơn.
 - Thêm mã: sửa danh sách `SYMS` trong `fetch_hose_reports.py` và nhóm `G` trong `rptcal.js`.
 
 ## BCTC ngân hàng đăng trước khi Wi MCP cập nhật (nhập tay)
