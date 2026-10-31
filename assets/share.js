@@ -262,10 +262,14 @@
     x.beginPath(); x.moveTo(b.x, b.y); x.lineTo(b.x - hd * Math.cos(ang - 0.42), b.y - hd * Math.sin(ang - 0.42)); x.lineTo(b.x - hd * Math.cos(ang + 0.42), b.y - hd * Math.sin(ang + 0.42)); x.closePath(); x.fill();
   }
   function rectOf(sh) { const a = sh.a, b = sh.b || sh.a; return { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(b.x - a.x), h: Math.abs(b.y - a.y) }; }
-  function textBox(x, sh, W) {   // khung chữ (để vẽ và để chọn)
+  function textBox(x, sh, W) {   // khung chữ (để vẽ và để chọn): sh.w = bề rộng vùng chữ (tự xuống dòng), sh.h = chiều cao tối thiểu
     const fs = Math.round(20 * W / 1600); x.font = `700 ${fs}px Arial, sans-serif`;   // cỡ chữ = dòng nhận định trên ảnh
-    const lines = sh.s.split('\n'), tw = Math.max(...lines.map(l => x.measureText(l).width)), pd = fs * 0.4;
-    return { fs, lines, pd, x: sh.a.x - pd, y: sh.a.y - pd, w: tw + 2 * pd, h: lines.length * fs * 1.25 + pd * 1.6 };
+    const pd = fs * 0.4, lh = fs * 1.25;
+    let lines = [];
+    if (sh.w) sh.s.split('\n').forEach(par => { let cur = ''; const out = []; par.split(' ').forEach(w => { const t = cur ? cur + ' ' + w : w; if (x.measureText(t).width > sh.w && cur) { out.push(cur); cur = w; } else cur = t; }); out.push(cur); out.forEach((l, i) => lines.push({ t: l, last: i === out.length - 1 })); });
+    else lines = sh.s.split('\n').map(t => ({ t, last: true }));
+    const tw = sh.w || Math.max(...lines.map(l => x.measureText(l.t).width)), th = Math.max(lines.length * lh, sh.h || 0);
+    return { fs, lh, lines, pd, tw, x: sh.a.x - pd, y: sh.a.y - pd, w: tw + 2 * pd, h: th + pd * 1.6 };
   }
   function drawShape(x, sh, W) {
     const s = W / 1000 * 1.6; x.save(); x.lineCap = 'round'; x.lineJoin = 'round'; x.strokeStyle = col(sh.c); x.fillStyle = col(sh.c); x.lineWidth = 2.5 * s;
@@ -276,17 +280,18 @@
     else if (sh.t === 'box') { x.setLineDash(dash ? [12 * s, 8 * s] : []); x.strokeRect(R.x, R.y, R.w, R.h); }
     else if (sh.t === 'ring') { x.setLineDash(dash ? [12 * s, 8 * s] : []); x.beginPath(); x.ellipse(R.x + R.w / 2, R.y + R.h / 2, Math.max(R.w / 2, 1), Math.max(R.h / 2, 1), 0, 0, Math.PI * 2); x.stroke(); }
     else if (sh.t === 'text') {
-      const T = textBox(x, sh, W); x.textBaseline = 'top';
-      x.fillStyle = 'rgba(255,255,255,0.92)'; x.fillRect(T.x, T.y, T.w, T.h);
-      x.strokeStyle = col(sh.c); x.lineWidth = 1.5 * s; x.strokeRect(T.x, T.y, T.w, T.h);
-      x.fillStyle = sh.c === 'gold' ? FIN.ink : col(sh.c); T.lines.forEach((l, i) => x.fillText(l, a.x, a.y + i * T.fs * 1.25));
+      const T = textBox(x, sh, W), al = sh.al || 'l'; x.textBaseline = 'top';   // nền trong suốt, không khung
+      x.fillStyle = sh.c === 'gold' ? FIN.ink : col(sh.c);
+      T.lines.forEach((l, i) => { const y = a.y + i * T.lh, w = x.measureText(l.t).width;
+        if (al === 'j' && sh.w && !l.last && l.t.includes(' ')) { const ws = l.t.split(' '), gap = (T.tw - ws.reduce((q, z) => q + x.measureText(z).width, 0)) / (ws.length - 1); let xx = a.x; ws.forEach(z => { x.fillText(z, xx, y); xx += x.measureText(z).width + gap; }); }
+        else x.fillText(l.t, al === 'r' ? a.x + T.tw - w : al === 'c' ? a.x + (T.tw - w) / 2 : a.x, y); });
     }
     x.restore();
   }
   /* ---------- chọn & sửa hình đã vẽ: kéo thân để di chuyển, kéo nút vuông để đổi cỡ/đầu mũi tên ---------- */
   const scl = () => { const cv = M.querySelector('.fss-cv'), r = cv.getBoundingClientRect(); return r.width ? cv.width / r.width : 1; };
   function handles(sh) {
-    if (sh.t === 'text') return [];
+    if (sh.t === 'text') { const T = textBox(M.querySelector('.fss-cv').getContext('2d'), sh, st.base.width); return [{ k: 'a', x: T.x, y: T.y }, { k: 'ab', x: T.x + T.w, y: T.y }, { k: 'b', x: T.x + T.w, y: T.y + T.h }, { k: 'ba', x: T.x, y: T.y + T.h }, { k: 'w', x: T.x, y: T.y + T.h / 2 }, { k: 'e', x: T.x + T.w, y: T.y + T.h / 2 }, ...(T.h > T.lh * 3 ? [{ k: 'n', x: T.x + T.w / 2, y: T.y }, { k: 's', x: T.x + T.w / 2, y: T.y + T.h }] : [])]; }
     if (sh.t === 'arrow' || sh.t === 'darrow') return [{ k: 'a', x: sh.a.x, y: sh.a.y }, { k: 'b', x: sh.b.x, y: sh.b.y }];
     const a = sh.a, b = sh.b, R = rectOf(sh), mx = R.x + R.w / 2, my = R.y + R.h / 2;
     return [{ k: 'a', x: a.x, y: a.y }, { k: 'ab', x: b.x, y: a.y }, { k: 'b', x: b.x, y: b.y }, { k: 'ba', x: a.x, y: b.y },
@@ -358,7 +363,7 @@
     <div class="fss-body"><div class="fss-left">
       <div class="fss-tools">${TOOLS.map(([k, i, l]) => k === 'none' ? `<button type="button" data-tool="none" class="fss-ptr" title="Chọn (Esc)" aria-label="Chọn"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 3l13 8.2-6 1.2 3.6 7-2.6 1.3-3.6-7L5 18z" fill="currentColor"/></svg></button>` : `<button type="button" data-tool="${k}" title="${l}"><span>${i}</span>${l}</button>`).join('')}
         <span class="fss-sep"></span>${SW.map(([k, l]) => `<button type="button" class="fss-sw" data-c="${k}" title="${l}" style="background:${FIN[k]}"></button>`).join('')}
-        <span class="fss-sep"></span><button type="button" data-act="dash" class="fss-dash" title="Nét đứt cho mũi tên, khung, vòng (áp dụng cả hình đang chọn)"><span>┄</span>Nét đứt</button>
+        <span class="fss-sep"></span><span class="fss-al" hidden><button type="button" data-al="l" title="Căn trái">⯇</button><button type="button" data-al="c" title="Căn giữa">≡</button><button type="button" data-al="r" title="Căn phải">⯈</button><button type="button" data-al="j" title="Căn đều hai bên">☰</button></span><button type="button" data-act="dash" class="fss-dash" title="Nét đứt cho mũi tên, khung, vòng (áp dụng cả hình đang chọn)"><span>┄</span>Nét đứt</button>
         <span class="fss-sep"></span><button type="button" data-act="del" class="fss-del" title="Xóa hình đang chọn (Delete)" disabled>🗑 Xóa hình</button><button type="button" data-act="undo" title="Hoàn tác (Ctrl+Z)">↶ Hoàn tác</button><button type="button" data-act="clear" title="Xóa hết hình vẽ">Xóa vẽ</button></div>
       <div class="fss-stage"><canvas class="fss-cv" aria-label="Ảnh xem trước"></canvas><button type="button" class="fss-ebtn" hidden>✎ Chỉnh chart</button><div class="fss-wait">Đang tạo ảnh…</div></div>
 </div>
@@ -387,6 +392,7 @@
   function syncUi() {
     M.querySelectorAll('[data-tool]').forEach(b => b.classList.toggle('on', b.dataset.tool === st.tool));
     M.querySelector('.fss-dash').classList.toggle('on', st.dash);
+    { const ts = st.shapes[st.sel], on = st.tool === 'text' || (ts && ts.t === 'text'); const g = M.querySelector('.fss-al'); g.hidden = !on; const cur = ts && ts.t === 'text' ? (ts.al || 'l') : (st.align || 'l'); g.querySelectorAll('[data-al]').forEach(b => b.classList.toggle('on', b.dataset.al === cur)); }
     M.querySelectorAll('[data-c]').forEach(b => b.classList.toggle('on', b.dataset.c === st.color));
     M.querySelectorAll('[data-fmt]').forEach(b => b.classList.toggle('on', b.dataset.fmt === st.fmt));
     M.querySelector('.fss-stage').classList.toggle('draw', st.tool !== 'none'); syncSel();
@@ -394,13 +400,14 @@
   }
   function syncSel() {   // thanh công cụ phản ánh hình đang chọn
     const sh = st.shapes[st.sel]; M.querySelector('.fss-del').disabled = !sh;
+    { const g = M.querySelector('.fss-al'); if (g) { const on = st.tool === 'text' || (sh && sh.t === 'text'); g.hidden = !on; const cur = sh && sh.t === 'text' ? (sh.al || 'l') : (st.align || 'l'); g.querySelectorAll('[data-al]').forEach(b => b.classList.toggle('on', b.dataset.al === cur)); } }
     if (sh) { M.querySelectorAll('[data-c]').forEach(b => b.classList.toggle('on', b.dataset.c === sh.c)); M.querySelector('.fss-dash').classList.toggle('on', !!(sh.d || sh.t === 'darrow')); }
   }
   function build() {
     M.querySelector('.fss-wait').hidden = false;
     setTimeout(() => {
       try { const old = st.base, L = compose(); st.base = L.bg; st.fg = L.fg; st.cells = L.cells;
-        if (old && (old.width !== st.base.width || old.height !== st.base.height)) { st.sel = -1; st.shapes = st.shapes.map(s => ({ ...s, a: { x: s.a.x / old.width * st.base.width, y: s.a.y / old.height * st.base.height }, b: s.b && { x: s.b.x / old.width * st.base.width, y: s.b.y / old.height * st.base.height } })); }
+        if (old && (old.width !== st.base.width || old.height !== st.base.height)) { st.sel = -1; st.shapes = st.shapes.map(s => ({ ...s, ...(s.w ? { w: s.w / old.width * st.base.width } : {}), ...(s.h ? { h: s.h / old.height * st.base.height } : {}), a: { x: s.a.x / old.width * st.base.width, y: s.a.y / old.height * st.base.height }, b: s.b && { x: s.b.x / old.width * st.base.width, y: s.b.y / old.height * st.base.height } })); }
         render(); } catch (e) { msg('Không tạo được ảnh: ' + e.message); }
       M.querySelector('.fss-wait').hidden = true;
     }, 30);
@@ -498,6 +505,7 @@
   M.addEventListener('click', e => {
     if (e.target === M || e.target.closest('.fss-x')) return close();
     const t = e.target.closest('[data-tool]'); if (t) { st.tool = t.dataset.tool; st.sel = -1; st.hover = -1; M.querySelector('.fss-ebtn').hidden = true; if (!st.picked) st.color = BACK(st.tool) ? 'gold' : 'navy'; syncUi(); return render(); }
+    const ag = e.target.closest('[data-al]'); if (ag) { st.align = ag.dataset.al; const sh = st.shapes[st.sel]; if (sh && sh.t === 'text' && (sh.al || 'l') !== st.align) { snapH(); sh.al = st.align; if (!sh.w) { const T = textBox(M.querySelector('.fss-cv').getContext('2d'), sh, st.base.width); sh.w = T.tw; } } syncUi(); return render(); }
     const c = e.target.closest('[data-c]'); if (c) { st.color = c.dataset.c; st.picked = true; const sh = st.shapes[st.sel]; if (sh && sh.c !== st.color) { snapH(); sh.c = st.color; } syncUi(); return render(); }
     const ed = e.target.closest('[data-ed]'); if (ed) return editChart(+ed.dataset.ed);
     if (e.target.closest('.fss-ebtn')) return editChart(st.hover);
@@ -595,6 +603,14 @@
     }
     st.guides = [];
     const rectLike = sh => sh && sh.b && sh.t !== 'arrow' && sh.t !== 'darrow' && sh.t !== 'text', th = 7 * scl();
+    if (d.move === 'h' && d.sh.t === 'text') {   // đổi bề rộng/chiều cao ô chữ: chữ tự xuống dòng theo bề rộng
+      const sh = d.sh, T = textBox(M.querySelector('.fss-cv').getContext('2d'), sh, st.base.width), pd = T.pd, mn = T.fs * 2;
+      let L0 = T.x, R0 = T.x + T.w, T0 = T.y, B0 = T.y + T.h; const k = d.k;
+      if (/a|ba|w/.test(k) && k !== 'ab') L0 = Math.min(p.x, R0 - mn); if (k === 'ab' || k === 'b' || k === 'e') R0 = Math.max(p.x, L0 + mn);
+      if (k === 'a' || k === 'ab' || k === 'n') T0 = Math.min(p.y, B0 - T.lh); if (k === 'b' || k === 'ba' || k === 's') B0 = Math.max(p.y, T0 + T.lh);
+      sh.a = { x: L0 + pd, y: T0 + pd }; if (k !== 'n' && k !== 's') sh.w = R0 - L0 - 2 * pd; if (k !== 'e' && k !== 'w') sh.h = Math.max(0, B0 - T0 - pd * 1.6);
+      render(); return;
+    }
     if (d.move === 'h') {
       const sh = d.sh, L = rectLike(sh) ? snapLines(sh) : null, sx = v => { if (!L) return v; const k = snapTo(v, L.xs, th); if (k === null) return v; st.guides.push({ x: v + k }); return v + k; },
         sy = v => { if (!L) return v; const k = snapTo(v, L.ys, th); if (k === null) return v; st.guides.push({ y: v + k }); return v + k; };
@@ -636,7 +652,7 @@
     const done = ok => {
       box.hidden = true; ta.onkeydown = ta.onblur = null; const s = ta.value.trim(); if (!ok) return;
       if (idx != null) { if (s !== st.shapes[idx].s) { snapH(); if (s) st.shapes[idx].s = s; else { st.shapes.splice(idx, 1); st.sel = -1; } } }
-      else if (s) { snapH(); st.shapes.push({ t: 'text', c: st.color, a: p, s }); st.sel = st.shapes.length - 1; }
+      else if (s) { snapH(); st.shapes.push({ t: 'text', c: st.color, a: p, s, ...(st.align && st.align !== 'l' ? { al: st.align } : {}) }); st.sel = st.shapes.length - 1; }
       render();
     };
     ta.onkeydown = ev => { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); done(true); } else if (ev.key === 'Escape') { ev.stopPropagation(); done(false); } };
