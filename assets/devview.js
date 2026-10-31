@@ -49,3 +49,50 @@
     };
   });
 })();
+
+/* Chế độ nhúng (iframe vào website công ty): thêm ?embed=1 vào link.
+   Ẩn logo FinSuccess và thanh chuyển trang; mỗi link chỉ giữ phần chọn của nhóm mình:
+   vĩ mô (vimo.html) · ngành (nganh/bh/ck.html) · cổ phiếu (trang ngân hàng + dn.html).
+   Gửi chiều cao trang cho trang cha qua postMessage {type:'fs-embed-height', h}. */
+(function () {
+  var root = document.documentElement, K = 'fsEmbed', on = false;
+  var q = new URLSearchParams(location.search), v = q.get('embed');
+  try {
+    if (v === '0') sessionStorage.removeItem(K);
+    else if (v !== null) sessionStorage.setItem(K, '1');
+    on = v !== null ? v !== '0' : sessionStorage.getItem(K) === '1';
+  } catch (e) { on = v !== null && v !== '0'; }
+  if (!on) return;
+  var page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  var grp = page === 'vimo.html' ? 'vimo' : /^(nganh|bh|ck)\.html$/.test(page) ? 'nganh' : 'cp';
+  root.classList.add('embed', 'embed-' + grp);
+  var st = document.createElement('style');
+  st.textContent = 'html.embed .logo-bar .logo-left>img{display:none!important}'
+    + 'html.embed .site-nav a[href="backend.html"]{display:none!important}'
+    + 'html.embed-vimo .site-nav{display:none!important}'
+    + 'html.embed-nganh .site-nav a[href="vimo.html"],html.embed-nganh .site-nav .bank-pick{display:none!important}'
+    + 'html.embed-nganh:not(.dev) .site-nav{display:none!important}'
+    + 'html.embed-cp .site-nav>a{display:none!important}';
+  document.head.appendChild(st);
+  function tag(u) {
+    if (!u || /^(#|mailto:|tel:|javascript:)/i.test(u)) return u;
+    try {
+      var x = new URL(u, location.href);
+      if (x.origin !== location.origin || !/\.html$|\/$/.test(x.pathname) || x.searchParams.has('embed')) return u;
+      x.searchParams.set('embed', '1'); return x.pathname.split('/').pop() + x.search + x.hash;
+    } catch (e) { return u; }
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]'); if (!a || a.target === '_blank') return;
+    var h = a.getAttribute('href'), t = tag(h); if (t !== h) a.setAttribute('href', t);
+  }, true);
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.site-nav select option[value]').forEach(function (o) { if (o.value) o.value = tag(o.value); });
+    if (window.parent === window || !window.ResizeObserver) return;
+    var last = 0, send = function () {
+      var h = Math.ceil(document.documentElement.scrollHeight);
+      if (h !== last) { last = h; try { window.parent.postMessage({ type: 'fs-embed-height', h: h }, '*'); } catch (e) {} }
+    };
+    new ResizeObserver(send).observe(document.body); send();
+  });
+})();
