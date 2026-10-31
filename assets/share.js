@@ -263,7 +263,7 @@
   }
   function rectOf(sh) { const a = sh.a, b = sh.b || sh.a; return { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(b.x - a.x), h: Math.abs(b.y - a.y) }; }
   function textBox(x, sh, W) {   // khung chữ (để vẽ và để chọn)
-    const s = W / 1000 * 1.6, fs = Math.round(11 * s); x.font = `700 ${fs}px Arial, sans-serif`;
+    const fs = Math.round(20 * W / 1600); x.font = `700 ${fs}px Arial, sans-serif`;   // cỡ chữ = dòng nhận định trên ảnh
     const lines = sh.s.split('\n'), tw = Math.max(...lines.map(l => x.measureText(l).width)), pd = fs * 0.4;
     return { fs, lines, pd, x: sh.a.x - pd, y: sh.a.y - pd, w: tw + 2 * pd, h: lines.length * fs * 1.25 + pd * 1.6 };
   }
