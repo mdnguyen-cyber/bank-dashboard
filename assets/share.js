@@ -364,11 +364,11 @@
 </div>
     <div class="fss-right">
       <div class="fss-fmt">${Object.entries(FMT).map(([k, f]) => `<button type="button" data-fmt="${k}"><b>${f.t}</b><small>${f.s}</small></button>`).join('')}</div>
-      <div class="fss-lab">CHART TRONG ẢNH <small>tối đa ${MAXN} · nhận định ngắn hiện ngay dưới tên chart</small></div>
+      <div class="fss-lab">CHART TRONG ẢNH</div>
       <ol class="fss-items"></ol>
       <div class="fss-row"><button type="button" data-act="add">＋ Thêm chart</button><select class="fss-lay" aria-label="Bố cục">${LAY.map(([k, l]) => `<option value="${k}">Bố cục: ${l}</option>`).join('')}</select></div>
       <label class="fss-rng">Khung thời gian chung <select class="fss-rg">${RNG.map(([k, l]) => `<option value="${k}">${l}</option>`).join('')}</select></label>
-      <label class="fss-lab">THÔNG ĐIỆP CHÍNH <small>tuỳ chọn · thành tiêu đề lớn trên ảnh, tên chart thu nhỏ màu xám</small><textarea class="fss-key" rows="2" placeholder="VD: Lợi suất TPCP tăng ở mọi kỳ hạn, kỳ hạn ngắn tăng mạnh nhất so với đầu năm"></textarea></label>
+      <label class="fss-lab">THÔNG ĐIỆP CHÍNH<textarea class="fss-key" rows="2" placeholder="VD: Lợi suất TPCP tăng ở mọi kỳ hạn, kỳ hạn ngắn tăng mạnh nhất so với đầu năm"></textarea></label>
       <label class="fss-lab">CAPTION<textarea class="fss-cap" rows="7"></textarea></label>
       <button type="button" class="fss-main" data-act="share">⇪ Chia sẻ…</button>
       <div class="fss-row"><button type="button" data-act="dl">Tải ảnh</button><button type="button" data-act="copy">Chép ảnh</button></div>
