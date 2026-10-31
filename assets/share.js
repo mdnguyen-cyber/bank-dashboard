@@ -256,11 +256,16 @@
 
   /* ---------- vẽ chú thích ---------- */
   const col = (c, a) => { const h = FIN[c]; if (a == null) return h; const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${n >> 8 & 255},${n & 255},${a})`; };
-  function arrow(x, a, b, s, dash) {
-    const ang = Math.atan2(b.y - a.y, b.x - a.x), hd = 9 * s + 10, ex = b.x - Math.cos(ang) * hd * 0.8, ey = b.y - Math.sin(ang) * hd * 0.8;
-    x.setLineDash(dash ? [14 * s, 10 * s] : []); x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(ex, ey); x.stroke(); x.setLineDash([]);
-    x.beginPath(); x.moveTo(b.x, b.y); x.lineTo(b.x - hd * Math.cos(ang - 0.42), b.y - hd * Math.sin(ang - 0.42)); x.lineTo(b.x - hd * Math.cos(ang + 0.42), b.y - hd * Math.sin(ang + 0.42)); x.closePath(); x.fill();
+  const LW = { 1: 0.55, 2: 1, 3: 1.7 };   // độ dày nét: mảnh, vừa, đậm
+  function arrow(x, a, b, s, dash, hd0, lwk) {   // hd0: 'end' (mặc định) | 'start' | 'both' | 'none'
+    const mode = hd0 || 'end', k = lwk || 1, ang = Math.atan2(b.y - a.y, b.x - a.x), hd = (9 * s + 10) * Math.pow(k, 0.6);
+    const head = (P, an) => { x.beginPath(); x.moveTo(P.x, P.y); x.lineTo(P.x - hd * Math.cos(an - 0.42), P.y - hd * Math.sin(an - 0.42)); x.lineTo(P.x - hd * Math.cos(an + 0.42), P.y - hd * Math.sin(an + 0.42)); x.closePath(); x.fill(); };
+    const atE = mode === 'end' || mode === 'both', atS = mode === 'start' || mode === 'both';
+    const e = atE ? { x: b.x - Math.cos(ang) * hd * 0.8, y: b.y - Math.sin(ang) * hd * 0.8 } : b, st0 = atS ? { x: a.x + Math.cos(ang) * hd * 0.8, y: a.y + Math.sin(ang) * hd * 0.8 } : a;
+    x.setLineDash(dash ? [14 * s, 10 * s] : []); x.beginPath(); x.moveTo(st0.x, st0.y); x.lineTo(e.x, e.y); x.stroke(); x.setLineDash([]);
+    if (atE) head(b, ang); if (atS) head(a, ang + Math.PI);
   }
+  const snap45 = (o, p) => { const dx = p.x - o.x, dy = p.y - o.y, L = Math.hypot(dx, dy), an = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * (Math.PI / 4); return { x: o.x + L * Math.cos(an), y: o.y + L * Math.sin(an) }; };   // giữ Shift/Ctrl: góc 0°, 45°, 90°…
   function rectOf(sh) { const a = sh.a, b = sh.b || sh.a; return { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(b.x - a.x), h: Math.abs(b.y - a.y) }; }
   function textBox(x, sh, W) {   // khung chữ (để vẽ và để chọn): sh.w = bề rộng vùng chữ (tự xuống dòng), sh.h = chiều cao tối thiểu
     const fs = Math.round(20 * W / 1600); x.font = `700 ${fs}px Arial, sans-serif`;   // cỡ chữ = dòng nhận định trên ảnh
@@ -274,7 +279,8 @@
   function drawShape(x, sh, W) {
     const s = W / 1000 * 1.6; x.save(); x.lineCap = 'round'; x.lineJoin = 'round'; x.strokeStyle = col(sh.c); x.fillStyle = col(sh.c); x.lineWidth = 2.5 * s;
     const a = sh.a, b = sh.b || sh.a, R = rectOf(sh), dash = sh.d || sh.t === 'darrow';
-    if (sh.t === 'arrow' || sh.t === 'darrow') arrow(x, a, b, s, dash);
+    const lwk = LW[sh.lw || 2]; x.lineWidth = 2.5 * s * lwk;
+    if (sh.t === 'arrow' || sh.t === 'darrow') arrow(x, a, b, s, dash, sh.hd, lwk);
     else if (sh.t === 'hl') { x.fillStyle = col(sh.c, 0.16); x.fillRect(R.x, R.y, R.w, R.h); }
     else if (sh.t === 'hle') { x.fillStyle = col(sh.c, 0.16); x.beginPath(); x.ellipse(R.x + R.w / 2, R.y + R.h / 2, Math.max(R.w / 2, 1), Math.max(R.h / 2, 1), 0, 0, Math.PI * 2); x.fill(); }
     else if (sh.t === 'box') { x.setLineDash(dash ? [12 * s, 8 * s] : []); x.strokeRect(R.x, R.y, R.w, R.h); }
@@ -363,7 +369,7 @@
     <div class="fss-body"><div class="fss-left">
       <div class="fss-tools">${TOOLS.map(([k, i, l]) => k === 'none' ? `<button type="button" data-tool="none" class="fss-ptr" title="Chọn (Esc)" aria-label="Chọn"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 3l13 8.2-6 1.2 3.6 7-2.6 1.3-3.6-7L5 18z" fill="currentColor"/></svg></button>` : `<button type="button" data-tool="${k}" title="${l}"><span>${i}</span>${l}</button>`).join('')}
         <span class="fss-sep"></span>${SW.map(([k, l]) => `<button type="button" class="fss-sw" data-c="${k}" title="${l}" style="background:${FIN[k]}"></button>`).join('')}
-        <span class="fss-sep"></span><span class="fss-al" hidden><button type="button" data-al="l" title="Căn trái" aria-label="Căn trái"><svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><rect x="0" y="1" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="4.4" width="10" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="7.8" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="11.2" width="10" height="1.8" rx=".5" fill="currentColor"/></svg></button><button type="button" data-al="c" title="Căn giữa" aria-label="Căn giữa"><svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><rect x="0" y="1" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="3" y="4.4" width="10" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="7.8" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="3" y="11.2" width="10" height="1.8" rx=".5" fill="currentColor"/></svg></button><button type="button" data-al="r" title="Căn phải" aria-label="Căn phải"><svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><rect x="0" y="1" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="6" y="4.4" width="10" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="7.8" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="6" y="11.2" width="10" height="1.8" rx=".5" fill="currentColor"/></svg></button><button type="button" data-al="j" title="Căn đều hai bên" aria-label="Căn đều hai bên"><svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><rect x="0" y="1" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="4.4" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="7.8" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="11.2" width="16" height="1.8" rx=".5" fill="currentColor"/></svg></button></span><button type="button" data-act="dash" class="fss-dash" title="Nét đứt cho mũi tên, khung, vòng (áp dụng cả hình đang chọn)"><span>┄</span>Nét đứt</button>
+        <span class="fss-sep"></span><span class="fss-arr" hidden><button type="button" data-hd="end" title="Mũi tên ở cuối" aria-label="Mũi tên ở cuối"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="2" y="6.1" width="13" height="1.8" fill="currentColor"/><path d="M20 7 l-6 -4 v8z" fill="currentColor"/></svg></button><button type="button" data-hd="start" title="Mũi tên ở đầu" aria-label="Mũi tên ở đầu"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="7" y="6.1" width="13" height="1.8" fill="currentColor"/><path d="M2 7 l6 -4 v8z" fill="currentColor"/></svg></button><button type="button" data-hd="both" title="Mũi tên hai đầu" aria-label="Mũi tên hai đầu"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="7" y="6.1" width="8" height="1.8" fill="currentColor"/><path d="M20 7 l-6 -4 v8z" fill="currentColor"/><path d="M2 7 l6 -4 v8z" fill="currentColor"/></svg></button><button type="button" data-hd="none" title="Không có mũi tên (đường thẳng)" aria-label="Không có mũi tên (đường thẳng)"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="2" y="6.1" width="18" height="1.8" fill="currentColor"/></svg></button></span><span class="fss-lw" hidden><button type="button" data-lw="1" title="Nét mảnh" aria-label="Nét mảnh"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="2" y="6.4" width="18" height="1.2" rx="0.6" fill="currentColor"/></svg></button><button type="button" data-lw="2" title="Nét vừa" aria-label="Nét vừa"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="2" y="5.8" width="18" height="2.4" rx="1.2" fill="currentColor"/></svg></button><button type="button" data-lw="3" title="Nét đậm" aria-label="Nét đậm"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="2" y="5.0" width="18" height="4" rx="2.0" fill="currentColor"/></svg></button></span><span class="fss-al" hidden><button type="button" data-al="l" title="Căn trái" aria-label="Căn trái"><svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><rect x="0" y="1" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="4.4" width="10" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="7.8" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="11.2" width="10" height="1.8" rx=".5" fill="currentColor"/></svg></button><button type="button" data-al="c" title="Căn giữa" aria-label="Căn giữa"><svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><rect x="0" y="1" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="3" y="4.4" width="10" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="7.8" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="3" y="11.2" width="10" height="1.8" rx=".5" fill="currentColor"/></svg></button><button type="button" data-al="r" title="Căn phải" aria-label="Căn phải"><svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><rect x="0" y="1" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="6" y="4.4" width="10" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="7.8" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="6" y="11.2" width="10" height="1.8" rx=".5" fill="currentColor"/></svg></button><button type="button" data-al="j" title="Căn đều hai bên" aria-label="Căn đều hai bên"><svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><rect x="0" y="1" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="4.4" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="7.8" width="16" height="1.8" rx=".5" fill="currentColor"/><rect x="0" y="11.2" width="16" height="1.8" rx=".5" fill="currentColor"/></svg></button></span><button type="button" data-act="dash" class="fss-dash" title="Nét đứt cho mũi tên, khung, vòng (áp dụng cả hình đang chọn)"><span>┄</span>Nét đứt</button>
         <span class="fss-sep"></span><button type="button" data-act="del" class="fss-del" title="Xóa hình đang chọn (Delete)" disabled>🗑 Xóa hình</button><button type="button" data-act="undo" title="Hoàn tác (Ctrl+Z)">↶ Hoàn tác</button><button type="button" data-act="clear" title="Xóa hết hình vẽ">Xóa vẽ</button></div>
       <div class="fss-stage"><canvas class="fss-cv" aria-label="Ảnh xem trước"></canvas><button type="button" class="fss-ebtn" hidden>✎ Chỉnh chart</button><div class="fss-wait">Đang tạo ảnh…</div></div>
 </div>
@@ -400,6 +406,9 @@
   }
   function syncSel() {   // thanh công cụ phản ánh hình đang chọn
     const sh = st.shapes[st.sel]; M.querySelector('.fss-del').disabled = !sh;
+    { const ga = M.querySelector('.fss-arr'), gw = M.querySelector('.fss-lw'), isA = st.tool === 'arrow' || (sh && (sh.t === 'arrow' || sh.t === 'darrow')), isL = DASHABLE(st.tool) || (sh && (DASHABLE(sh.t) || sh.t === 'darrow'));
+      if (ga) { ga.hidden = !isA; const cur = sh && (sh.t === 'arrow' || sh.t === 'darrow') ? (sh.hd || 'end') : (st.hd || 'end'); ga.querySelectorAll('[data-hd]').forEach(b => b.classList.toggle('on', b.dataset.hd === cur)); }
+      if (gw) { gw.hidden = !isL; const cur = String(sh && (DASHABLE(sh.t) || sh.t === 'darrow') ? (sh.lw || 2) : (st.lw || 2)); gw.querySelectorAll('[data-lw]').forEach(b => b.classList.toggle('on', b.dataset.lw === cur)); } }
     { const g = M.querySelector('.fss-al'); if (g) { const on = st.tool === 'text' || (sh && sh.t === 'text'); g.hidden = !on; const cur = sh && sh.t === 'text' ? (sh.al || 'l') : (st.align || 'l'); g.querySelectorAll('[data-al]').forEach(b => b.classList.toggle('on', b.dataset.al === cur)); } }
     if (sh) { M.querySelectorAll('[data-c]').forEach(b => b.classList.toggle('on', b.dataset.c === sh.c)); M.querySelector('.fss-dash').classList.toggle('on', !!(sh.d || sh.t === 'darrow')); }
   }
@@ -505,6 +514,8 @@
   M.addEventListener('click', e => {
     if (e.target === M || e.target.closest('.fss-x')) return close();
     const t = e.target.closest('[data-tool]'); if (t) { st.tool = t.dataset.tool; st.sel = -1; st.hover = -1; M.querySelector('.fss-ebtn').hidden = true; if (!st.picked) st.color = BACK(st.tool) ? 'gold' : 'navy'; syncUi(); return render(); }
+    const hg = e.target.closest('[data-hd]'); if (hg) { st.hd = hg.dataset.hd; const sh = st.shapes[st.sel]; if (sh && (sh.t === 'arrow' || sh.t === 'darrow') && (sh.hd || 'end') !== st.hd) { snapH(); sh.hd = st.hd; } syncSel(); return render(); }
+    const wg = e.target.closest('[data-lw]'); if (wg) { st.lw = +wg.dataset.lw; const sh = st.shapes[st.sel]; if (sh && (DASHABLE(sh.t) || sh.t === 'darrow') && (sh.lw || 2) !== st.lw) { snapH(); sh.lw = st.lw; } syncSel(); return render(); }
     const ag = e.target.closest('[data-al]'); if (ag) { st.align = ag.dataset.al; const sh = st.shapes[st.sel]; if (sh && sh.t === 'text' && (sh.al || 'l') !== st.align) { snapH(); sh.al = st.align; if (!sh.w) { const T = textBox(M.querySelector('.fss-cv').getContext('2d'), sh, st.base.width); sh.w = T.tw; } } syncUi(); return render(); }
     const c = e.target.closest('[data-c]'); if (c) { st.color = c.dataset.c; st.picked = true; const sh = st.shapes[st.sel]; if (sh && sh.c !== st.color) { snapH(); sh.c = st.color; } syncUi(); return render(); }
     const ed = e.target.closest('[data-ed]'); if (ed) return editChart(+ed.dataset.ed);
@@ -591,7 +602,7 @@
     if (st.sel >= 0) { st.sel = -1; render(); return; }   // bấm ra chỗ khác: chỉ bỏ chọn
     if (st.tool === 'none') { const c = cellAt(p); if (c) editChart(c.i); return; }
     if (st.tool === 'text') { textAt(p, e); return; }
-    cv.setPointerCapture(e.pointerId); st.drag = { t: st.tool, c: st.color, a: p, b: p, ...(DASHABLE(st.tool) && st.dash ? { d: true } : {}) }; e.preventDefault();
+    cv.setPointerCapture(e.pointerId); st.drag = { t: st.tool, c: st.color, a: p, b: p, ...(DASHABLE(st.tool) && st.dash ? { d: true } : {}), ...(st.tool === 'arrow' && st.hd && st.hd !== 'end' ? { hd: st.hd } : {}), ...(DASHABLE(st.tool) && st.lw && st.lw !== 2 ? { lw: st.lw } : {}) }; e.preventDefault();
   });
   cv.addEventListener('pointermove', e => {
     const p = pt(e), d = st.drag;
@@ -611,6 +622,7 @@
       sh.a = { x: L0 + pd, y: T0 + pd }; if (k !== 'n' && k !== 's') sh.w = R0 - L0 - 2 * pd; if (k !== 'e' && k !== 'w') sh.h = Math.max(0, B0 - T0 - pd * 1.6);
       render(); return;
     }
+    if (d.move === 'h' && (d.sh.t === 'arrow' || d.sh.t === 'darrow')) { const sh = d.sh, sn = e.shiftKey || e.ctrlKey; if (d.k === 'a') sh.a = sn ? snap45(sh.b, p) : p; else sh.b = sn ? snap45(sh.a, p) : p; render(); return; }
     if (d.move === 'h') {
       const sh = d.sh, L = rectLike(sh) ? snapLines(sh) : null, sx = v => { if (!L) return v; const k = snapTo(v, L.xs, th); if (k === null) return v; st.guides.push({ x: v + k }); return v + k; },
         sy = v => { if (!L) return v; const k = snapTo(v, L.ys, th); if (k === null) return v; st.guides.push({ y: v + k }); return v + k; };
@@ -632,7 +644,7 @@
       }
       d.sh.a = { x: d.a0.x + dx, y: d.a0.y + dy }; if (d.b0) d.sh.b = { x: d.b0.x + dx, y: d.b0.y + dy };
     }
-    else d.b = p;
+    else d.b = (e.shiftKey || e.ctrlKey) && (d.t === 'arrow' || d.t === 'darrow') ? snap45(d.a, p) : p;
     render();
   });
   cv.addEventListener('pointerleave', () => { if (!st.drag && st.hover >= 0) { setTimeout(() => { if (!ebtn.matches(':hover')) { st.hover = -1; ebtn.hidden = true; render(); } }, 60); } });

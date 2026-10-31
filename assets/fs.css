@@ -824,3 +824,4 @@ details.fold[open]>summary{margin-bottom:10px}
 .sd-hit{animation:sdHit 2.4s ease-out}@keyframes sdHit{0%,40%{background:#fff1b8}100%{background:transparent}}
 details.fold.sd-hit{animation:none;box-shadow:0 0 0 3px var(--teal)}
 .fss-al{display:inline-flex;gap:6px;margin-left:6px}.fss-al button{display:inline-flex;align-items:center;justify-content:center;width:34px;height:30px;padding:0}.fss-al svg{display:block}
+.fss-arr,.fss-lw{display:inline-flex;gap:6px;margin-left:6px}.fss-arr button,.fss-lw button{display:inline-flex;align-items:center;justify-content:center;width:36px;height:30px;padding:0}.fss-arr svg,.fss-lw svg{display:block}
