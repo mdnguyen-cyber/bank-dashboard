@@ -288,9 +288,27 @@
   function handles(sh) {
     if (sh.t === 'text') return [];
     if (sh.t === 'arrow' || sh.t === 'darrow') return [{ k: 'a', x: sh.a.x, y: sh.a.y }, { k: 'b', x: sh.b.x, y: sh.b.y }];
-    const a = sh.a, b = sh.b; return [{ k: 'a', x: a.x, y: a.y }, { k: 'ab', x: b.x, y: a.y }, { k: 'b', x: b.x, y: b.y }, { k: 'ba', x: a.x, y: b.y }];
+    const a = sh.a, b = sh.b, R = rectOf(sh), mx = R.x + R.w / 2, my = R.y + R.h / 2;
+    return [{ k: 'a', x: a.x, y: a.y }, { k: 'ab', x: b.x, y: a.y }, { k: 'b', x: b.x, y: b.y }, { k: 'ba', x: a.x, y: b.y },
+      { k: 'n', x: mx, y: R.y }, { k: 's', x: mx, y: R.y + R.h }, { k: 'w', x: R.x, y: my }, { k: 'e', x: R.x + R.w, y: my }];
   }
-  function hitHandle(sh, p) { const t = 9 * scl(); return handles(sh).find(h => Math.abs(h.x - p.x) <= t && Math.abs(h.y - p.y) <= t) || null; }
+  function hitHandle(sh, p) {
+    const t = 9 * scl(), h = handles(sh).find(h => Math.abs(h.x - p.x) <= t && Math.abs(h.y - p.y) <= t); if (h) return h;
+    if (sh.t === 'text' || sh.t === 'arrow' || sh.t === 'darrow') return null;
+    const R = rectOf(sh), e = 6 * scl(), inX = p.x > R.x + t && p.x < R.x + R.w - t, inY = p.y > R.y + t && p.y < R.y + R.h - t;   // kéo cả cạnh, không chỉ nút giữa cạnh
+    if (inX && Math.abs(p.y - R.y) <= e) return { k: 'n' }; if (inX && Math.abs(p.y - R.y - R.h) <= e) return { k: 's' };
+    if (inY && Math.abs(p.x - R.x) <= e) return { k: 'w' }; if (inY && Math.abs(p.x - R.x - R.w) <= e) return { k: 'e' };
+    return null;
+  }
+  const CUR = { a: 'nwse-resize', b: 'nwse-resize', ab: 'nesw-resize', ba: 'nesw-resize', n: 'ns-resize', s: 'ns-resize', e: 'ew-resize', w: 'ew-resize' };
+  // căn thẳng hàng: mép/tâm của hình đang kéo bắt vào mép/tâm của hình khác và mép ô chart (trong ngưỡng), hiện đường gióng
+  function snapLines(skip) {
+    const xs = [], ys = [];
+    st.shapes.forEach(o => { if (o === skip || o.t === 'text' || o.t === 'arrow' || o.t === 'darrow') return; const R = rectOf(o); xs.push(R.x, R.x + R.w, R.x + R.w / 2); ys.push(R.y, R.y + R.h, R.y + R.h / 2); });
+    st.cells.forEach(c => { xs.push(c.X, c.X + c.w); ys.push(c.Y, c.Y + c.h); });
+    return { xs, ys };
+  }
+  function snapTo(v, list, th) { let best = null; list.forEach(c => { const d = c - v; if (Math.abs(d) <= th && (best === null || Math.abs(d) < Math.abs(best))) best = d; }); return best; }
   function hitShape(sh, p, inside) {   // inside = tính cả phần trong (khi hình đang được chọn)
     const t = 8 * scl(), x = M.querySelector('.fss-cv').getContext('2d');
     if (sh.t === 'arrow' || sh.t === 'darrow') { const a = sh.a, b = sh.b, dx = b.x - a.x, dy = b.y - a.y, L = dx * dx + dy * dy || 1, u = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / L)); return Math.hypot(a.x + u * dx - p.x, a.y + u * dy - p.y) <= t * 1.3; }
@@ -322,6 +340,8 @@
     const c = st.cells.find(c => c.i === st.hover);
     if (c && !st.drag) { const k = scl(); x.save(); x.strokeStyle = FIN.teal; x.lineWidth = 2 * k; x.setLineDash([8 * k, 5 * k]); x.strokeRect(c.X - 4 * k, c.Y - 4 * k, c.w + 8 * k, c.h + 8 * k); x.restore(); }
     if (st.shapes[st.sel]) drawSel(x, st.shapes[st.sel]);
+    if (st.guides && st.guides.length && st.drag) { const k = scl(); x.save(); x.strokeStyle = '#e0457b'; x.lineWidth = 1.2 * k; x.setLineDash([4 * k, 3 * k]);
+      st.guides.forEach(g => { x.beginPath(); if (g.x != null) { x.moveTo(g.x, 0); x.lineTo(g.x, x.canvas.height); } else { x.moveTo(0, g.y); x.lineTo(x.canvas.width, g.y); } x.stroke(); }); x.restore(); }
   }
   function render() {
     const cv = M.querySelector('.fss-cv'); if (!st.base) return;
@@ -569,19 +589,40 @@
     const p = pt(e), d = st.drag;
     if (!d) {   // rê chuột: con trỏ theo vị trí, nút "Chỉnh chart" trên chart đang rê
       const cur = st.shapes[st.sel], h = cur && hitHandle(cur, p);
-      cv.style.cursor = h ? 'nwse-resize' : topHit(p) >= 0 ? 'move' : st.tool === 'none' ? (cellAt(p) ? 'pointer' : 'default') : 'crosshair';
+      cv.style.cursor = h ? (CUR[h.k] || 'nwse-resize') : topHit(p) >= 0 ? 'move' : st.tool === 'none' ? (cellAt(p) ? 'pointer' : 'default') : 'crosshair';
       const c = st.tool === 'none' && !h && topHit(p) < 0 ? cellAt(p) : null, hv = c ? c.i : -1; if (hv !== st.hover) { st.hover = hv; render(); } placeEbtn(c);   // đang vẽ thì không hiện nút chỉnh chart
       return;
     }
-    if (d.move === 'h') { const sh = d.sh; if (d.k === 'a') sh.a = p; else if (d.k === 'b') sh.b = p; else if (d.k === 'ab') { sh.b = { x: p.x, y: sh.b.y }; sh.a = { x: sh.a.x, y: p.y }; } else { sh.a = { x: p.x, y: sh.a.y }; sh.b = { x: sh.b.x, y: p.y }; } }
-    else if (d.move === 'm') { const dx = p.x - d.p0.x, dy = p.y - d.p0.y; if (Math.hypot(dx, dy) > 2) d.moved = true; d.sh.a = { x: d.a0.x + dx, y: d.a0.y + dy }; if (d.b0) d.sh.b = { x: d.b0.x + dx, y: d.b0.y + dy }; }
+    st.guides = [];
+    const rectLike = sh => sh && sh.b && sh.t !== 'arrow' && sh.t !== 'darrow' && sh.t !== 'text', th = 7 * scl();
+    if (d.move === 'h') {
+      const sh = d.sh, L = rectLike(sh) ? snapLines(sh) : null, sx = v => { if (!L) return v; const k = snapTo(v, L.xs, th); if (k === null) return v; st.guides.push({ x: v + k }); return v + k; },
+        sy = v => { if (!L) return v; const k = snapTo(v, L.ys, th); if (k === null) return v; st.guides.push({ y: v + k }); return v + k; };
+      if (d.k === 'a') sh.a = { x: sx(p.x), y: sy(p.y) }; else if (d.k === 'b') sh.b = { x: sx(p.x), y: sy(p.y) };
+      else if (d.k === 'ab') { sh.b = { x: sx(p.x), y: sh.b.y }; sh.a = { x: sh.a.x, y: sy(p.y) }; } else if (d.k === 'ba') { sh.a = { x: sx(p.x), y: sh.a.y }; sh.b = { x: sh.b.x, y: sy(p.y) }; }
+      else {   // cạnh: chuẩn hóa a = góc trên trái, b = góc dưới phải rồi chỉ dời cạnh đó
+        const R = rectOf(sh); sh.a = { x: R.x, y: R.y }; sh.b = { x: R.x + R.w, y: R.y + R.h };
+        if (d.k === 'n') sh.a.y = sy(p.y); else if (d.k === 's') sh.b.y = sy(p.y); else if (d.k === 'w') sh.a.x = sx(p.x); else sh.b.x = sx(p.x);
+      }
+    }
+    else if (d.move === 'm') {
+      let dx = p.x - d.p0.x, dy = p.y - d.p0.y; if (Math.hypot(dx, dy) > 2) d.moved = true;
+      if (rectLike(d.sh)) {   // bắt mép trái/phải/tâm và trên/dưới/tâm vào hình khác, mép ô chart
+        const L = snapLines(d.sh), x0 = Math.min(d.a0.x, d.b0.x) + dx, x1 = Math.max(d.a0.x, d.b0.x) + dx, y0 = Math.min(d.a0.y, d.b0.y) + dy, y1 = Math.max(d.a0.y, d.b0.y) + dy;
+        let bx = null, by = null, gx = null, gy = null;
+        [x0, x1, (x0 + x1) / 2].forEach(v => { const k = snapTo(v, L.xs, th); if (k !== null && (bx === null || Math.abs(k) < Math.abs(bx))) { bx = k; gx = v + k; } });
+        [y0, y1, (y0 + y1) / 2].forEach(v => { const k = snapTo(v, L.ys, th); if (k !== null && (by === null || Math.abs(k) < Math.abs(by))) { by = k; gy = v + k; } });
+        if (bx !== null) { dx += bx; st.guides.push({ x: gx }); } if (by !== null) { dy += by; st.guides.push({ y: gy }); }
+      }
+      d.sh.a = { x: d.a0.x + dx, y: d.a0.y + dy }; if (d.b0) d.sh.b = { x: d.b0.x + dx, y: d.b0.y + dy };
+    }
     else d.b = p;
     render();
   });
   cv.addEventListener('pointerleave', () => { if (!st.drag && st.hover >= 0) { setTimeout(() => { if (!ebtn.matches(':hover')) { st.hover = -1; ebtn.hidden = true; render(); } }, 60); } });
   ebtn.addEventListener('pointerleave', e => { if (e.relatedTarget !== cv) { st.hover = -1; ebtn.hidden = true; render(); } });
   const end = () => {
-    const d = st.drag; if (!d) return; st.drag = null;
+    const d = st.drag; if (!d) return; st.drag = null; st.guides = [];
     if (d.move) { if (d.move === 'm' && !d.moved) st.hist.pop(); render(); return; }   // chỉ bấm chọn, không đổi gì
     if (Math.hypot(d.b.x - d.a.x, d.b.y - d.a.y) > 8) { snapH(); st.shapes.push(d); st.sel = st.shapes.length - 1; }
     render();
